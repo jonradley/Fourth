@@ -21,7 +21,7 @@
 ******************************************************************************************
  14/10/2004 | Lee Boyton  | Created module.
 ******************************************************************************************
-                    |                     |
+ 16/03/2005 | A Sheppard | H347. Added debit note mapping 
 ******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="#default xsl">
@@ -44,6 +44,16 @@
 		<xsl:apply-templates select="CreditNoteHeader"/>
 		<xsl:apply-templates select="CreditNoteDetail"/>
 		<xsl:apply-templates select="CreditNoteTrailer"/>
+	</CreditNote>
+</xsl:template>
+
+<xsl:template match="/DebitNote">
+	<xsl:processing-instruction name="xml-stylesheet">type="text/xsl" href="NavisionDebit.xsl"</xsl:processing-instruction>
+	<CreditNote>
+		<xsl:apply-templates select="TradeSimpleHeader"/>
+		<xsl:apply-templates select="DebitNoteHeader"/>
+		<xsl:apply-templates select="DebitNoteDetail"/>
+		<xsl:apply-templates select="DebitNoteTrailer"/>
 	</CreditNote>
 </xsl:template>
 
@@ -70,7 +80,7 @@
 	</xsl:element>
 </xsl:template>
 
-<xsl:template match="InvoiceHeader | CreditNoteHeader">
+<xsl:template match="InvoiceHeader | CreditNoteHeader | DebitNoteHeader">
 	<xsl:element name="{name(current())}">
 		<DocumentStatus><xsl:value-of select="DocumentStatus"/></DocumentStatus>
 		<Buyer>
@@ -152,12 +162,21 @@
 				<VATRegNo><xsl:value-of select="CreditNoteReferences/VATRegNo"/></VATRegNo>
 			</CreditNoteReferences>
 		</xsl:if>
+		<!-- NB: DebitNoteReferences will only exist in a debit note document -->
+		<xsl:if test="DebitNoteReferences">
+			<CreditNoteReferences>
+				<CreditNoteReference><xsl:value-of select="DebitNoteReferences/DebitNoteReference"/></CreditNoteReference>
+				<CreditNoteDate><xsl:value-of select="DebitNoteReferences/DebitNoteDate"/></CreditNoteDate>
+				<TaxPointDate><xsl:value-of select="DebitNoteReferences/TaxPointDate"/></TaxPointDate>
+				<VATRegNo><xsl:value-of select="DebitNoteReferences/VATRegNo"/></VATRegNo>
+			</CreditNoteReferences>
+		</xsl:if>
 		<xsl:apply-templates select="SequenceNumber"/>
 	</xsl:element>
 </xsl:template>
 
 <!-- Basic copying template to handle optional elements in the header section -->
-<xsl:template match="BuyersName | SuppliersName | ShipToName | GoodsReceivedNoteReference | GoodsReceivedNoteDate | CreditNoteReference | CreditNoteDate | SequenceNumber">
+<xsl:template match="BuyersName | SuppliersName | ShipToName | GoodsReceivedNoteReference | GoodsReceivedNoteDate | CreditNoteReference | CreditNoteDate | DebitNoteReference | DebitNoteDate | SequenceNumber">
 	<xsl:element name="{name(current())}">
 		<xsl:value-of select="."/>
 	</xsl:element>
@@ -192,15 +211,16 @@
 
 <!-- Templates for outputting the line information -->
 
-<xsl:template match="InvoiceDetail | CreditNoteDetail">
+<xsl:template match="InvoiceDetail | CreditNoteDetail | DebitNoteDetail">
 	<xsl:element name="{name(current())}">
 		<!-- the following works because there will either be just InvoiceLine elements or CreditNoteLine elements NOT both in any one document -->
 		<xsl:apply-templates select="InvoiceLine"/>
 		<xsl:apply-templates select="CreditNoteLine"/>
+		<xsl:apply-templates select="DebitNoteLine"/>
 	</xsl:element>
 </xsl:template>
 
-<xsl:template match="InvoiceLine | CreditNoteLine">
+<xsl:template match="InvoiceLine | CreditNoteLine | DebitNoteLine">
 	<xsl:element name="{name(current())}">
 		<xsl:apply-templates select="LineNumber"/>
 		<xsl:apply-templates select="ProductID"/>
@@ -210,6 +230,7 @@
 		<xsl:apply-templates select="DeliveredQuantity"/>
 		<xsl:apply-templates select="InvoicedQuantity"/>
 		<xsl:apply-templates select="CreditedQuantity"/>
+		<xsl:apply-templates select="DebitedQuantity"/>
 		<xsl:apply-templates select="PackSize"/>
 		<xsl:apply-templates select="UnitValueExclVAT"/>
 		<xsl:apply-templates select="LineValueExclVAT"/>
@@ -230,7 +251,7 @@
 	</ProductID>
 </xsl:template>
 
-<xsl:template match="OrderedQuantity | ConfirmedQuantity | DeliveredQuantity | InvoicedQuantity | CreditedQuantity">
+<xsl:template match="OrderedQuantity | ConfirmedQuantity | DeliveredQuantity | InvoicedQuantity | CreditedQuantity | DebitedQuantity">
 	<xsl:element name="{name(current())}">
 		<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="@UnitOfMeasure"/></xsl:attribute>
 		<xsl:value-of select="."/>
@@ -246,7 +267,7 @@
 
 <!-- Templates for outputting the trailer information -->
 
-<xsl:template match="InvoiceTrailer | CreditNoteTrailer">
+<xsl:template match="InvoiceTrailer | CreditNoteTrailer | DebitNoteTrailer">
 	<xsl:element name="{name(current())}">
 		<xsl:apply-templates select="NumberOfLines"/>
 		<xsl:apply-templates select="DocumentDiscountRate"/>
