@@ -24,7 +24,10 @@
 	<xsl:output method="xml"/>
 
 	<xsl:template match="/">
-		<xsl:apply-templates select="@*|node()" />
+		<!-- create the BatchRoot element required by the Inbound XSL Transform processor -->
+		<BatchRoot>
+			<xsl:apply-templates select="@*|node()" />
+		</BatchRoot>
 	</xsl:template>
 	
 	<!--
