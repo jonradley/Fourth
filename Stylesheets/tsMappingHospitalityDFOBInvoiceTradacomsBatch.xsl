@@ -118,11 +118,7 @@ The sum of the individual daily values will equal the content of the QTYI:1 (for
 				</xsl:variable>	   		
 		   		<!-- Convert result tree fragment into a proper node set -->
 		   		<xsl:variable name="DNReferencesNodeList" select="msxsl:node-set($DNResultTreeFragment)"/>
-		   		<!-- Now get the first non-empty element -->
-		   		<xsl:variable name="DNReferencesFirstValidNode" select="$DNReferencesNodeList/DN[string-length(text()) &gt; 0][1]"/>
-		   		<!-- And find out how many previous siblings it has -->
-		   		<xsl:variable name="DNReferencesFirstValidNodeIndex" select="count($DNReferencesFirstValidNode/preceding-sibling::*)"/>
-		   		<!-- Get the date of the (first) delivery pertaining to this invoice from that found in ODD segment - relates to first non-null delivery reference YYMMDD -->
+		   		<!-- Delivery date found in ODD segment pertaining to this invoice is day 8 -->
 		   		<xsl:variable name="DNDate" select="InvoiceDetail/InvoiceLine/DeliveryNoteReferences/DeliveryNoteDate/text()"/>
 		   		<xsl:variable name="DNYear" select="substring($DNDate, 1, 2)"/>
 		   		<xsl:variable name="DNMonth" select="substring($DNDate, 3, 2)"/>
@@ -133,8 +129,8 @@ The sum of the individual daily values will equal the content of the QTYI:1 (for
 						<!-- Current context is now our delivery note reference node set which has 7 elements, some empty -->
 						<!--Only add an element to the data node list if there is a delivery on this day-->
 						<xsl:if test="string(.)">
-							<!-- First work out how many days after the first delivery -->
-							<xsl:variable name="DNDateOffset" select="position() - $DNReferencesFirstValidNodeIndex - 1"/>
+							<!-- First work out how many days into the week -->
+							<xsl:variable name="DNDateOffset" select="position() - 7"/>
 							<xsl:element name="Ref">
 								<xsl:attribute name="Date">
 									<!-- Only write the adjusted Date attribute value if the delivery date is valid, failing that copy the date garbage over unchanged to fail validation -->
