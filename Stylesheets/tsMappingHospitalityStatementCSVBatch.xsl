@@ -30,10 +30,12 @@
 	
 	<!-- BUG FIX - Doc-level validation requires <StatementHeader/> tag just above <StatementDetail> otherwise infiller cannot populate it after batch split  -->
 	<xsl:template match="StatementDetail">
-		<xsl:element name="StatementHeader">
-			<xsl:element name="BatchInformation"/>
-			<xsl:element name="StatementReferences"/>
-		</xsl:element>
+		<xsl:if test="not(../StatementHeader)">
+			<xsl:element name="StatementHeader">
+				<xsl:element name="BatchInformation"/>
+				<xsl:element name="StatementReferences"/>
+			</xsl:element>
+		</xsl:if>
 		<xsl:copy>
 			<xsl:apply-templates/>
 		</xsl:copy>
