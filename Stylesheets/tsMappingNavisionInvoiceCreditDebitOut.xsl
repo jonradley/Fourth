@@ -49,12 +49,12 @@
 
 <xsl:template match="/DebitNote">
 	<xsl:processing-instruction name="xml-stylesheet">type="text/xsl" href="NavisionDebit.xsl"</xsl:processing-instruction>
-	<CreditNote>
+	<DebitNote>
 		<xsl:apply-templates select="TradeSimpleHeader"/>
 		<xsl:apply-templates select="DebitNoteHeader"/>
 		<xsl:apply-templates select="DebitNoteDetail"/>
 		<xsl:apply-templates select="DebitNoteTrailer"/>
-	</CreditNote>
+	</DebitNote>
 </xsl:template>
 
 <!-- Templates for outputting the header information -->
