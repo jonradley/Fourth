@@ -164,12 +164,12 @@
 		</xsl:if>
 		<!-- NB: DebitNoteReferences will only exist in a debit note document -->
 		<xsl:if test="DebitNoteReferences">
-			<CreditNoteReferences>
-				<CreditNoteReference><xsl:value-of select="DebitNoteReferences/DebitNoteReference"/></CreditNoteReference>
-				<CreditNoteDate><xsl:value-of select="DebitNoteReferences/DebitNoteDate"/></CreditNoteDate>
+			<DebitNoteReferences>
+				<DebitNoteReference><xsl:value-of select="DebitNoteReferences/DebitNoteReference"/></DebitNoteReference>
+				<DebitNoteDate><xsl:value-of select="DebitNoteReferences/DebitNoteDate"/></DebitNoteDate>
 				<TaxPointDate><xsl:value-of select="DebitNoteReferences/TaxPointDate"/></TaxPointDate>
 				<VATRegNo><xsl:value-of select="DebitNoteReferences/VATRegNo"/></VATRegNo>
-			</CreditNoteReferences>
+			</DebitNoteReferences>
 		</xsl:if>
 		<xsl:apply-templates select="SequenceNumber"/>
 	</xsl:element>
