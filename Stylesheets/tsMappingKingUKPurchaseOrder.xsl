@@ -42,6 +42,15 @@
 							</ORDERHEAD>
 						</xsl:otherwise>
 					</xsl:choose>
+					<!-- Recipient's Branch reference -->
+					<xsl:if test="TradeSimpleHeader/RecipientsBranchReference">
+						<REFERENCE REFTYPE="RBR">
+							<REFDESC>Recipients Branch Reference</REFDESC>
+							<REFCODE>
+								<xsl:value-of select="TradeSimpleHeader/RecipientsBranchReference"/>
+							</REFCODE>
+						</REFERENCE>
+					</xsl:if>
 					<!-- Purchase Order Number -->
 					<REFERENCE REFTYPE="CUR">
 						<REFDESC>Customer's Purchase Order Number</REFDESC>
@@ -49,14 +58,6 @@
 							<xsl:value-of select="PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
 						</REFCODE>
 					</REFERENCE>
-					<!-- Proxy Branch reference
-					<REFERENCE REFTYPE="UNO">
-						<REFDESC>Unit number</REFDESC>
-						<REFCODE>
-							<xsl:value-of select="TradeSimpleHeader/SendersBranchReference"/>
-						</REFCODE>
-					</REFERENCE>
-					 -->
 					<!-- Purchase Order Date (and time) -->
 					<DATEINFO DATETYPE="ORD">
 						<DATEDESC>Purchase Order Date</DATEDESC>
