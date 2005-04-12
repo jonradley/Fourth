@@ -12,6 +12,11 @@
  /*/DocBuilder/Url
  /*/DocBuilder/MessageID
  
+ NOTE2:
+ The CSS styles are based on the SSP brand colours so if you want this to work for another
+ brand you will need to create a new stylesheet based on this one and update the CSS styles
+ as required.
+ 
  © Alternative Business Solutions Ltd., 2005.
 ******************************************************************************************
  Module History
@@ -32,26 +37,28 @@
 				BODY
 				{
 				    FONT-SIZE: 8pt;
-				    COLOR: #0d0d67;
-				    FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif;
-				    BACKGROUND-COLOR: #ffffff;
+				    COLOR: #00299c;
+				    FONT-FAMILY: Tahoma, Arial;
+				    BACKGROUND-COLOR: white;
 				    style: "text-decoration: none"
 				}
 				TR.listrow0
 				{
-				    BACKGROUND-COLOR: #dde6e4
+				    BACKGROUND-COLOR: #cbe7ff
 				}
 				TR.listrow1
 				{
-				    BACKGROUND-COLOR: #ffffff
+				    BACKGROUND-COLOR: #ddf0ff
 				}
 				TH
 				{
 				    FONT-WEIGHT: bold;
-				    FONT-SIZE: 10pt;
-				    COLOR: #ffffff;
-				    FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif;
-				    BACKGROUND-COLOR: #024a37
+				    FONT-SIZE: 8pt;
+				    PADDING-BOTTOM: 2pt;
+				    COLOR: white;
+				    PADDING-TOP: 2pt;
+				    FONT-FAMILY: Tahoma, Arial;
+				    BACKGROUND-COLOR: #629acd
 				}
 				TD
 				{
@@ -59,30 +66,31 @@
 				}
 				TABLE.DocumentSurround
 				{
-				    BACKGROUND-COLOR: #dde6e4;
 				    WIDTH: 100%;
+				    BACKGROUND-COLOR: #629acd
 				}
 				TABLE.DocumentSurround TH
 				{
-				    FONT-SIZE: larger
+				    FONT-SIZE: larger;
+				    BACKGROUND-COLOR: #00299c
 				}
 				TABLE.DocumentInner
 				{
 				    WIDTH: 100%;
-				    BACKGROUND-COLOR: white;
+				    BACKGROUND-COLOR: white
 				}
 				TABLE.DocumentInner TH
 				{
-				    FONT-SIZE: smaller
+				    FONT-SIZE: 8pt
 				}
 				TABLE.DocumentLines
 				{
 				    WIDTH: 100%;
-				    BACKGROUND-COLOR: white;
+				    BACKGROUND-COLOR: white
 				}
 				TABLE.DocumentLines TH
 				{
-				    FONT-SIZE: smaller
+				    FONT-SIZE: 8pt
 				}
 				TR.Rejected
 				{
@@ -98,7 +106,7 @@
 				}
 				TR.Added
 				{
-				    BACKGROUND-COLOR: palegreen
+				    BACKGROUND-COLOR: plum
 				}
 				TR.Breakage
 				{
