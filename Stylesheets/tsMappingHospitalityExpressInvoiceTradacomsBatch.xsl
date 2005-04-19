@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
+	EXPRESS DAIRIES invoice mapper
+
 	Based upon tsMappingHospitalityInvoiceTradacomsBatch.xsl - search for EXP to locate variations
+	19th April 05 Added check for non-2DP unit values, writes error to tag as non numeric if found
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
@@ -146,7 +149,24 @@
 	<!-- SIMPLE CONVERSION IMPLICIT TO EXPLICIT 4 D.P -->
 	<!-- Add any XPath whose text node needs to be converted from implicit to explicit 4 D.P. -->
 	<xsl:template match="InvoiceLine/UnitValueExclVAT">
-		<xsl:call-template name="copyCurrentNodeExplicit4DP"/>
+		<!-- Get unit value with *up to* 4 D.P. as a string or 'NaN', but no less than 2 D.P. even if trailing zeroes -->
+		<xsl:variable name="UnitValue4DP" select="format-number(.  div 10000.0, '0.00##')"/>
+		<!-- Get unit value with 2 D.P. as a string or 'NaN' even if just 2 trailing zeroes (division repeated for clarity) -->
+		<xsl:variable name="UnitValue2DP" select="format-number(.  div 10000.0, '0.00')"/>
+		<xsl:copy>
+			<!-- Ensure we are not comparing 2 NaN's -->
+			<xsl:if test="string($UnitValue4DP) != 'NaN'">
+				<!-- Now ensure that there are no non-zeroes in the 3 and 4 DP locations -->
+				<xsl:choose>
+					<xsl:when test="$UnitValue4DP = $UnitValue2DP">
+						<xsl:value-of select="$UnitValue4DP"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="concat('Only 2 D.P. values permitted in this field: ', $UnitValue4DP, ' is invalid.')"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:if>
+		</xsl:copy>
 	</xsl:template>
 	<!-- END of SIMPLE CONVERSIONS-->
 	
