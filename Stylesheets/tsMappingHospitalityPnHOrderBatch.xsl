@@ -2,31 +2,25 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 
 	<xsl:output method="text" encoding="UTF-8"/>
-	<xsl:template match="PurchaseOrder">
+	<xsl:template match="/PurchaseOrder">
 		
 		<!-- 1.01 - Rectype -->
 		<xsl:text>1</xsl:text>
 		<xsl:text>,</xsl:text>
 		
 		<!-- 1.02 - Store Code -->
-		<xsl:text>&quot;</xsl:text>
 		<xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/>
-		<xsl:text>&quot;</xsl:text>
 		<xsl:text>,</xsl:text>
 
 		<!-- 1.03 - Transmission Date -->
-		<xsl:text>&quot;</xsl:text>
 		<xsl:variable name="dtPODate">
 			<xsl:value-of select="PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderDate"/>
 		</xsl:variable>
 		<xsl:value-of select="concat(substring($dtPODate,9,2),substring($dtPODate,6,2),substring($dtPODate,1,4))"/>
-		<xsl:text>&quot;</xsl:text>
 		<xsl:text>,</xsl:text>
 
 		<!-- 1.04 - Order Number -->
-		<xsl:text>&quot;</xsl:text>
 		<xsl:value-of select="PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
-		<xsl:text>&quot;</xsl:text>
 		<xsl:text>,</xsl:text>
 		
 		<!-- 1.05 - Type 2 Count -->
@@ -34,33 +28,27 @@
 		<xsl:text>,</xsl:text>
 
 		<!-- 1.06 - Order Type -->
-		<xsl:text>&quot;</xsl:text>
 		<xsl:text>T</xsl:text>
-		<xsl:text>&quot;</xsl:text>
 		<xsl:text>,</xsl:text>
 		
 		<!-- 1.07 - Delivery Date -->
-		<xsl:text>&quot;</xsl:text>
 		<xsl:variable name="dtDelDate">
 			<xsl:value-of select="PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate"/>
 		</xsl:variable>
 		<xsl:value-of select="concat(substring($dtDelDate,9,2),substring($dtDelDate,6,2),substring($dtDelDate,1,4))"/>
-		<xsl:text>&quot;</xsl:text>
 		<xsl:text>,</xsl:text>
 		
 		<!-- 1.08 - SSP Delivery Time -->
-		<xsl:text>&quot;</xsl:text>
-		<xsl:variable name="tmSlotStart">
-			<xsl:value-of select="PurchaseOrderHeader/OrderedDeliveryDetails/DeliverySlot/SlotStart"/>
-		</xsl:variable>
-		<xsl:value-of select="concat(substring($tmSlotStart,1,2),'.',substring($tmSlotStart,4,2))"/>
-		<xsl:text>&quot;</xsl:text>
+		<xsl:if test="PurchaseOrderHeader/OrderedDeliveryDetails/DeliverySlot/SlotStart != ''">
+			<xsl:variable name="tmSlotStart">
+				<xsl:value-of select="PurchaseOrderHeader/OrderedDeliveryDetails/DeliverySlot/SlotStart"/>
+			</xsl:variable>
+			<xsl:value-of select="concat(substring($tmSlotStart,1,2),'.',substring($tmSlotStart,4,2))"/>
+		</xsl:if>
 		<xsl:text>,</xsl:text>
 		
 		<!-- 1.09 - SSP Vendor No -->
-		<xsl:text>&quot;</xsl:text>
 		<xsl:value-of select="TradeSimpleHeader/RecipientsBranchReference"/>
-		<xsl:text>&quot;</xsl:text>
 		<xsl:text>&#13;&#10;</xsl:text>
 
 		<xsl:for-each select="PurchaseOrderDetail/PurchaseOrderLine">
@@ -86,7 +74,7 @@
 			<xsl:text>,</xsl:text>
 
 			<!-- 2.06 - Cost Price -->
-			<xsl:value-of select="format-number(UnitValueExclVAT,'0.00')"/>
+			<xsl:value-of select="format-number(UnitValueExclVAT * 100,'0')"/>
 			<xsl:text>&#13;&#10;</xsl:text>
 
 			
