@@ -14,6 +14,8 @@
 '******************************************************************************************
 ' 08/02/2005  | Lee Boyton   | Created        
 '******************************************************************************************
+' 27/04/2005  | Lee Boyton   | H412. Swap various seller codes to support Burger King requirement.
+'******************************************************************************************
 '             |              | 
 '******************************************************************************************
 -->
@@ -93,28 +95,19 @@
 			-->
 			<Buyer>
 				<BuyerGLN scheme="GLN">
-					<xsl:choose>
-						<xsl:when test="PurchaseOrderHeader/Buyer/BuyersLocationID/GLN = '0000000000000'">
-							<xsl:text>5555555555555</xsl:text>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="substring(PurchaseOrderHeader/Buyer/BuyersLocationID/GLN,1,13)"/>
-						</xsl:otherwise>
-					</xsl:choose>					
+					<xsl:text>5555555555555</xsl:text>
 				</BuyerGLN>
 				<xsl:if test="PurchaseOrderHeader/Buyer/BuyersLocationID/BuyersCode">
 					<BuyerAssigned scheme="OTHER">
 						<xsl:value-of select="substring(PurchaseOrderHeader/Buyer/BuyersLocationID/BuyersCode,1,13)"/>
 					</BuyerAssigned>			
 				</xsl:if>
-				<xsl:if test="PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode">
-					<SellerAssigned scheme="OTHER">
-						<xsl:value-of select="substring(PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode,1,13)"/>
-					</SellerAssigned>
-				</xsl:if>
+				<!-- 3663 specific requirement to use the seller's code for Ship-To in the seller' code for buyer value -->
+				<SellerAssigned scheme="OTHER">
+					<xsl:value-of select="substring(TradeSimpleHeader/RecipientsCodeForSender,1,13)"/>
+				</SellerAssigned>
 			</Buyer>
 			<Seller>
-				<!-- The 3663 GLN is 5027615000008 but it will be in the document so rather than hard code it... -->
 				<SellerGLN scheme="GLN">
 					<xsl:choose>
 						<xsl:when test="PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN = '0000000000000'">
