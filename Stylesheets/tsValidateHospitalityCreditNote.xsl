@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+IMPORTANT NOTE
+Any changes to this stylesheet may also need to be replicated to the
+following branched files:
+tsValidateBibendumCreditNote.xsl
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Name		: tsValidateHospitalityCreditNote.xsl
 Description	: Validates hospitality credit notes
 Author		: A Sheppard
