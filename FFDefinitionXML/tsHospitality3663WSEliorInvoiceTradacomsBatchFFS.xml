@@ -2,6 +2,7 @@
 <!--
 3663 Wholesale for Elior
 12 April 05 - Andy T - tsHospitality3663WSEliorInvoiceTradacomsBatchFFS.xml created from tsHospitalityInvoiceTradacomsBatchFFs.xml
+25 April 05 - Andy T - Updates to reflect 3663 specific requirement in Appendix A of ELI010 - Integration Proposal For 3663 v1 DRAFT 2.doc - search for '3663'
 -->
 <ffsFlatFileSchema>
 	<ffsSettings>
@@ -203,6 +204,8 @@
 									<GTIN RecordPos="ILD=" LPos="13"/>
 									<!-- OPTIONAL Supplier’s Product Code, MANDATORY, INVOIC – ILD – SPRO(2), Your unique code for this product -->
 									<SuppliersProductCode RecordPos="ILD=" LPos="3" SFPos="2"/>
+									<!-- 3663 Specific - NOT BuyersProductCode, actually just the sequence number because it will always be present, so ProductID element will always be present in FFS output -->
+									<BuyersProductCode RecordPos="ILD=" LPos="1" SFPos="1"/>
 								</ProductID>
 								<!-- MANDATORY Product Description, OPTIONAL, INVOIC – ILD – TDES(1), While not strictly mandatory, this is a very useful textual piece of information. This will always contain something but may be set to ‘Not Provided’ -->
 								<ProductDescription RecordPos="ILD=" LPos="14" SFPos="1"/>
