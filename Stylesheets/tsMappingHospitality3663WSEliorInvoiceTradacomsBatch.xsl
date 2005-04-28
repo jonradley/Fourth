@@ -2,6 +2,7 @@
 <!--
 3663 Wholesale for Elior
 12 April 05 - Andy T - tsMappingHospitality3663WSEliorInvoiceTradacomsBatch.xsl Created from tsMappingHospitalityInvoiceTradacomsBatch.xsl
+25 April 05 - Andy T - Updates to reflect 3663 specific requirement in Appendix A of ELI010 - Integration Proposal For 3663 v1 DRAFT 2.doc - search for '3663'
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
@@ -36,7 +37,9 @@
 	<!-- END of GENERIC HANDLERS -->
 
 	<!-- InvoiceLine/ProductID/GTIN is used as a placeholder for INVOIC-ILD-CRLI and should not be copied over -->
-	<xsl:template match="GTIN"/>
+	<!--<xsl:template match="GTIN"/> Redundant as 3663 mapper has template for entire ProductID tag-->
+	<!-- 3663 Specific -  InvoiceLine/ProductID/BuyersProductCode is a placeholder containing ILD sequence number to ensure that FFS output always contains a ProductID tag, value can be discarded -->
+	<!--<xsl:template match="BuyersProductCode"/>Redundant for the same reasons -->
 	
 	<!-- Tags which need to be stripped of all leading zeros and have 2 optional trailing digits (not zero) -->
 	<xsl:template match="InvoiceLine/LineNumber | Measure/UnitsInPack">
@@ -44,6 +47,58 @@
 			<xsl:value-of select="format-number(., '#0.##')"/>
 		</xsl:copy>
 	</xsl:template>
+	
+	<!-- 3663 specific - Manual product lines: SuppliersProductCode can be missing, but ProductID and underlying BuyersProductCode (a placeholder) will always be present -->
+	<xsl:template match="InvoiceLine/ProductID">
+		<!-- Copy always-present ProductID tag -->
+		<xsl:copy>
+			<xsl:element name="SuppliersProductCode">
+				<xsl:choose>
+					<xsl:when test="string-length(SuppliersProductCode) &gt; 0" >
+						<xsl:value-of select="SuppliersProductCode"/>
+					</xsl:when>				
+					<xsl:otherwise>
+						<xsl:value-of select="'MANUAL'"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:element>
+		</xsl:copy>
+	</xsl:template>
+	
+	<!-- Also 3663 specific - combine first 2 chars of IRF-INVN with (fragment of CLO-CLOC(2) before / or ? and left padded with zeroes to 6 chars) to produce real SendersCodeForRecipient and ShipToLocationID/SuppliersCode-->
+	<xsl:template match="TradeSimpleHeader/SendersCodeForRecipient">
+		<xsl:copy>
+			<xsl:call-template name="Combine3663DocRefAndCLOC2">
+				<!-- DocRef requires backout to TradeSimpleHeader, backout to Invoice, then find InvoiceHeader -->
+				<xsl:with-param name="DocRef" select="../../InvoiceHeader/InvoiceReferences/InvoiceReference"/>
+				<!-- CLO-CLOC(2) is in the current node -->
+				<xsl:with-param name="CLOC2" select="."/>
+			</xsl:call-template>
+		</xsl:copy>
+	</xsl:template>
+	<xsl:template match="ShipToLocationID/SuppliersCode">
+		<xsl:copy>
+			<xsl:call-template name="Combine3663DocRefAndCLOC2">
+				<!-- DocRef requires backout to ShipToLocationID, another backout to ShipTo and another to InvoiceHeader -->
+				<xsl:with-param name="DocRef" select="../../../InvoiceReferences/InvoiceReference"/>
+				<!-- CLO-CLOC(2) requires backout to ShipToLocationID, another backout to ShipTo, another to InvoiceHeader and another to Invoice -->
+				<xsl:with-param name="CLOC2" select="../../../../TradeSimpleHeader/SendersCodeForRecipient"/>
+			</xsl:call-template>
+		</xsl:copy>
+	</xsl:template>
+	<xsl:template name="Combine3663DocRefAndCLOC2">
+		<xsl:param name="DocRef"/>
+		<xsl:param name="CLOC2"/>
+		<!-- Concat a ? to the end of CLOC2, convert all / in CLOC2 to ?, then get the substring before the first ? - which also means before the first / or the whole thing if no / or ? found -->
+		<xsl:variable name="CLOC2Fragment" select="substring-before(translate(concat($CLOC2, '?'), '/', '?'), '?')"/>
+		<!-- Now create left pad string with enough zeroes to make final CLOC2 Fragment 6 chars: if fragment was length 0, copy starts at posn 1 to end - 6 chars, if length was 6 copy starts at posn 7 - 0 chars -->
+		<xsl:variable name="CLOC2LeadingZeroString" select="substring('000000', 1 + string-length($CLOC2Fragment))"/>
+		<!-- Now create our always 6 character CLOC2Fragment -->
+		<xsl:variable name="CLOC2Fragment6Char" select="concat($CLOC2LeadingZeroString, $CLOC2Fragment)"/>
+		<!-- Finally, concat first two chars of DocRef with this value -->
+		<xsl:value-of select="concat(substring($DocRef,1,2), $CLOC2Fragment6Char)"/>
+	</xsl:template>
+	<!--  End of this 3663 specific block -->
 	
 	<!-- INVOIC-ILD-QTYI (InvoiceLine/InvoicedQuantity) needs to be multiplied by -1 if (InvoiceLine/ProductID/GTIN) is NOT blank -->
 	<xsl:template match="InvoiceLine/InvoicedQuantity">
