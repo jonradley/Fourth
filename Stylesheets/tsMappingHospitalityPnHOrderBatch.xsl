@@ -9,7 +9,7 @@
 		<xsl:text>,</xsl:text>
 		
 		<!-- 1.02 - Store Code -->
-		<xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/>
+		<xsl:value-of select="translate(TradeSimpleHeader/RecipientsCodeForSender,',','')"/>
 		<xsl:text>,</xsl:text>
 
 		<!-- 1.03 - Transmission Date -->
@@ -66,7 +66,7 @@
 			<xsl:text>,</xsl:text>
 
 			<!-- 2.04 - Ordered SKU -->
-			<xsl:value-of select="ProductID/SuppliersProductCode"/>
+			<xsl:value-of select="translate(ProductID/SuppliersProductCode,',','')"/>
 			<xsl:text>,</xsl:text>
 
 			<!-- 2.05 - Order GTIN -->
