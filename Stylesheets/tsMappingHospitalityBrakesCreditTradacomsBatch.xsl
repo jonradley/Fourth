@@ -81,6 +81,11 @@
 		</xsl:choose>
 	</xsl:template>
 	
+	<!--Don't copy invoicereferences if no invoice reference is present-->
+	<xsl:template match="InvoiceReferences[not(InvoiceReference)]">
+		
+	</xsl:template>
+	
 	<!-- SIMPLE CONVERSION IMPLICIT TO EXPLICIT 2 D.P -->
 	<!-- Add any XPath whose text node needs to be converted from implicit to explicit 2 D.P. -->
 	<xsl:template match="BatchHeader/DocumentTotalExclVAT |
