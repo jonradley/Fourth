@@ -209,6 +209,8 @@ BRITVIC
 								<ProductDescription RecordPos="ILD=" LPos="14" SFPos="1"/>
 								<!-- MANDATORY Quantity Invoiced, MANDATORY, INVOIC – ILD – QTYI(1), If INVOIC – ILD – CRLI <> {blank} then multiply by –1 Must be greater or equal to zero -->
 								<InvoicedQuantity RecordPos="ILD=" LPos="7" SFPos="1"/>
+								<!-- Britvic put pack size in UNOR(1) -->
+								<PackSize RecordPos="ILD=" LPos="6" SFPos="1"/>
 								<!-- MANDATORY Unit Value Ex VAT, MANDATORY, INVOIC – ILD – AUCT(1), 4 d.p. implied, Must be numeric (it may be either positive or negative) and must have only two places of decimal -->
 								<UnitValueExclVAT RecordPos="ILD=" LPos="8" SFPos="1"/>
 								<!-- MANDATORY Line Value Ex VAT, DERIVE, INVOIC – ILD – LEXC, 4 d.p. implied - If INVOIC – ILD – CRLI <> {blank} then multiply by –1, The quantity invoiced x the unit value rounded to two decimal places -->
