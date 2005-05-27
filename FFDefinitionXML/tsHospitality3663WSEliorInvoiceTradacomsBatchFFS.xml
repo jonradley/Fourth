@@ -4,6 +4,7 @@
 12 April 05 - Andy T - tsHospitality3663WSEliorInvoiceTradacomsBatchFFS.xml created from tsHospitalityInvoiceTradacomsBatchFFs.xml
 25 April 05 - Andy T - Updates to reflect 3663 specific requirement in Appendix A of ELI010 - Integration Proposal For 3663 v1 DRAFT 2.doc - search for '3663'
 17 May 05 - Andy T - Updated to accept SendersCodeForRecipient in CLOC(3) not 2
+27th May05 - Andy T - Updated to use ILD-UNOR(3) to fill PackSize tag unlike current standard Tradacoms
 -->
 <ffsFlatFileSchema>
 	<ffsSettings>
@@ -212,6 +213,8 @@
 								<ProductDescription RecordPos="ILD=" LPos="14" SFPos="1"/>
 								<!-- MANDATORY Quantity Invoiced, MANDATORY, INVOIC – ILD – QTYI(1), If INVOIC – ILD – CRLI <> {blank} then multiply by –1 Must be greater or equal to zero -->
 								<InvoicedQuantity RecordPos="ILD=" LPos="7" SFPos="1"/>
+								<!-- 3663 Pack Size is in UNOR(3) -->
+								<PackSize RecordPos="ILD=" LPos="6" SFPos="3"/>
 								<!-- MANDATORY Unit Value Ex VAT, MANDATORY, INVOIC – ILD – AUCT(1), 4 d.p. implied, Must be numeric (it may be either positive or negative) and must have only two places of decimal -->
 								<UnitValueExclVAT RecordPos="ILD=" LPos="8" SFPos="1"/>
 								<!-- MANDATORY Line Value Ex VAT, DERIVE, INVOIC – ILD – LEXC, 4 d.p. implied - If INVOIC – ILD – CRLI <> {blank} then multiply by –1, The quantity invoiced x the unit value rounded to two decimal places -->
