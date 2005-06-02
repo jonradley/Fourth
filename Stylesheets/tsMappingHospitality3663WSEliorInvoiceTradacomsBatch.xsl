@@ -3,6 +3,7 @@
 3663 Wholesale for Elior
 12 April 05 - Andy T - tsMappingHospitality3663WSEliorInvoiceTradacomsBatch.xsl Created from tsMappingHospitalityInvoiceTradacomsBatch.xsl
 25 April 05 - Andy T - Updates to reflect 3663 specific requirement in Appendix A of ELI010 - Integration Proposal For 3663 v1 DRAFT 2.doc - search for '3663'
+02 June 05 - Andy T - H433 3663-Elior: fix to ensure unique FGNs
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
@@ -98,6 +99,35 @@
 		<!-- Finally, concat first two chars of DocRef with this value -->
 		<xsl:value-of select="concat(substring($DocRef,1,2), $CLOC2Fragment6Char)"/>
 	</xsl:template>
+	<!-- 3663 specific, H433 implemenatation ensure unique FGNs by prepending SendersBranchReference to left 0 padded original FGN -->
+	<xsl:template match="BatchInformation/FileGenerationNo">
+		<xsl:variable name="FGN" select="string(.)"/>
+		<xsl:variable name="FGNLength" select="string-length($FGN)"/>
+		<xsl:variable name="PaddedFGN" select="substring(concat('0000', $FGN), 1 + $FGNLength)"/>
+		<xsl:copy>
+			<xsl:choose>
+				<xsl:when test="($FGNLength &gt; 0) and ($FGNLength &lt; 5) and (string(number($FGN)) != 'NaN')">
+					<!-- Action to take if FGN is between 1 and 4 in length and is a numeric:  -->
+					<!-- Back out to BatchInformation, again to DocumentHeader, again to Invoice/CreditNote, then down into TradeSimpleHeader, and again into SendersBranchReference -->
+					<xsl:variable name="SBR" select="string(../../../TradeSimpleHeader/SendersBranchReference)"/>
+					<xsl:variable name="SBRLength" select="string-length($SBR)"/>
+					<xsl:choose>
+						<xsl:when test="($SBRLength &gt; 0) and ($SBRLength &lt; 5) and (string(number($SBR)) != 'NaN')">
+							<!-- Action to take when SBR is numeric and between 1 and 4 characters long -->
+							<xsl:value-of select="concat($SBR, $PaddedFGN)"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="concat('FGN cannot be combined with SBR: ', $SBR, ' to meet requirements of H433')"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="concat('FGN: ', $FGN, ' does not meet requirements of H433')"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:copy>
+	</xsl:template>
+	
 	<!--  End of this 3663 specific block -->
 	
 	<!-- INVOIC-ILD-QTYI (InvoiceLine/InvoicedQuantity) needs to be multiplied by -1 if (InvoiceLine/ProductID/GTIN) is NOT blank -->
