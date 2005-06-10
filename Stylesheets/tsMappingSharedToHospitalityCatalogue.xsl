@@ -23,7 +23,9 @@
 	<xsl:output method="xml"/>
 	
 	<xsl:template match="/">
-		<xsl:apply-templates select="@*|node()" />
+		<BatchRoot>
+			<xsl:apply-templates select="@*|node()" />
+		</BatchRoot>
 	</xsl:template>
 
 	<!--change the old PriceCatHdr element to use the new PriceCatHeader naming convention-->
