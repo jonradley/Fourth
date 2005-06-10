@@ -16,12 +16,19 @@
 '******************************************************************************************
 ' 27/04/2005  | Lee Boyton   | H412. Swap various seller codes to support Burger King requirement.
 '******************************************************************************************
+' 10/06/2005 | Steve Hewitt | H438, COM020. Change to BuyerGLN logic so one SSP unit can hold a 3663 and Burger King account
+'******************************************************************************************
 '             |              | 
 '******************************************************************************************
 -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 version="1.0">
 	<xsl:output method="xml" encoding="ISO-8859-1"/>
+	
+	<!-- use a constant for the BK seller GLN -->
+	<xsl:variable name="supplierGLN_BK" select="5027615000886"/>
+	<xsl:variable name="buyerGLN_SSPBK" select="50600790600029 "/> 
+	
 	<xsl:template match="/PurchaseOrder">
 		<Order xmlns="http://www.eanucc.org/2002/Order/FoodService/FoodService/UK/EanUcc/Order" xmlns:cc="http://www.ean-ucc.org/2002/gsmp/schemas/CoreComponents">
 			<!-- header information -->
@@ -95,7 +102,23 @@
 			-->
 			<Buyer>
 				<BuyerGLN scheme="GLN">
-					<xsl:text>5555555555555</xsl:text>
+					<!-- with the Buyer GLN we have to check whether we have the SSP BK account and, if so, we must hard code 
+					      the SSP BK value -->
+					<xsl:choose>
+						<xsl:when test="substring(PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN,1,13) = $supplierGLN_BK">
+							<xsl:value-of select="$buyerGLN_SSPBK"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:choose>
+								<xsl:when test="PurchaseOrderHeader/Buyer/BuyersLocationID/GLN = '0000000000000'">
+									<xsl:text>5555555555555</xsl:text>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="substring(PurchaseOrderHeader/Buyer/BuyersLocationID/GLN,1,13)"/>
+								</xsl:otherwise>
+							</xsl:choose>					
+						</xsl:otherwise>
+					</xsl:choose>
 				</BuyerGLN>
 				<xsl:if test="PurchaseOrderHeader/Buyer/BuyersLocationID/BuyersCode">
 					<BuyerAssigned scheme="OTHER">
