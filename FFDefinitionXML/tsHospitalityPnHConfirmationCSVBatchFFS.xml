@@ -20,9 +20,6 @@ ALLISON RISEBRO
 		<ffsSplitBatchRecord RecordPos="1"/>
 	</ffsSettings>
 	<ffsRoot>
-		<Batch>
-			<BatchDocuments>
-				<BatchDocument>
 		<PurchaseOrderConfirmation>
 			<TradeSimpleHeader>
 				<SendersCodeForRecipient RecordPos="1" LPos="2"/>
@@ -153,8 +150,5 @@ ALLISON RISEBRO
 				<TotalExclVAT RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
 			</PurchaseOrderConfirmationTrailer-->
 		</PurchaseOrderConfirmation>
-				</BatchDocument>
-			</BatchDocuments>
-		</Batch>
 	</ffsRoot>
 </ffsFlatFileSchema>
