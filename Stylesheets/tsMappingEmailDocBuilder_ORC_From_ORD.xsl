@@ -25,6 +25,8 @@
 ******************************************************************************************
  24/03/2005 | Lee Boyton | Created module.
 ******************************************************************************************
+ 22/06/2005 | Lee Boyton | H369. Display new contact name field.
+******************************************************************************************
             |            | 
 ******************************************************************************************
 -->
@@ -277,6 +279,12 @@
 											<td>
 												<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
 											</td>
+										</tr>
+									</xsl:if>
+									<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ContactName">
+										<tr>
+											<th width="50%">Contact Name</th>
+											<td><xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ContactName"/></td>
 										</tr>
 									</xsl:if>
 									<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToName">
