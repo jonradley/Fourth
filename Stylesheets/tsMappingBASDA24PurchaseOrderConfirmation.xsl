@@ -271,6 +271,12 @@
 											</xsl:otherwise>
 										</xsl:choose>
 									</DeliveryDate>
+									<!-- optional confirmation narrative text -->
+									<xsl:if test="NARRATIVE[1]/TEXT != ''">
+										<SpecialDeliveryInstructions>
+											<xsl:value-of select="NARRATIVE[1]/TEXT"/>
+										</SpecialDeliveryInstructions>
+									</xsl:if>
 								</ConfirmedDeliveryDetails>
 							</PurchaseOrderConfirmationHeader>			
 							<!-- Order line details -->
@@ -334,9 +340,9 @@
 											</LineValueExclVAT>							
 										</xsl:if>
 										<!-- optional line narrative -->
-										<xsl:if test="NARRATIVE[@NARRTYPE = 'OLI']/TEXT != ''">
+										<xsl:if test="NARRATIVE[1]/TEXT != ''">
 											<Narrative>
-												<xsl:value-of select="NARRATIVE[@NARRTYPE = 'OLI']/TEXT"/>
+												<xsl:value-of select="NARRATIVE[1]/TEXT"/>
 											</Narrative>
 										</xsl:if>
 									</PurchaseOrderConfirmationLine>
