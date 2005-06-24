@@ -35,317 +35,321 @@
                 exclude-result-prefixes="#default msxsl user">
 	<xsl:output method="xml"/>
 	<xsl:template match="/ORDER">
-		<Batch>
-			<BatchHeader/>
-			<BatchDocuments>
-				<BatchDocument>
-					<PurchaseOrderConfirmation>
-						<!-- Routing information -->
-						<TradeSimpleHeader>
-							<SendersCodeForRecipient>
-								<xsl:value-of select="BUYER/PARTYCODE[@IDTYPE = 'SCB']/IDCODE"/>
-							</SendersCodeForRecipient>
-							<TestFlag>
-								<xsl:choose>
-									<xsl:when test="ORDERHEAD/@FUNCCODE = 'TEO'">true</xsl:when>
-									<xsl:otherwise>false</xsl:otherwise>
-								</xsl:choose>
-							</TestFlag>
-						</TradeSimpleHeader>
-						<!-- Purchase order confirmation header information -->
-						<PurchaseOrderConfirmationHeader>
-							<DocumentStatus>
-								<xsl:text>Original</xsl:text>
-							</DocumentStatus>
-							<!-- Trading partner and coding information -->
-							<Buyer>
-								<BuyersLocationID>
-									<GLN>
-										<xsl:text>5555555555555</xsl:text>
-									</GLN>
-									<xsl:if test="BUYER/PARTYCODE[@IDTYPE = 'SCB']/IDCODE != ''">
+		<!-- BatchRoot is required by the Inbound XSL Transform processor-->
+		<BatchRoot>
+			<!-- The actual mapped document starts here -->
+			<Batch>
+				<BatchHeader/>
+				<BatchDocuments>
+					<BatchDocument>
+						<PurchaseOrderConfirmation>
+							<!-- Routing information -->
+							<TradeSimpleHeader>
+								<SendersCodeForRecipient>
+									<xsl:value-of select="BUYER/PARTYCODE[@IDTYPE = 'SCB']/IDCODE"/>
+								</SendersCodeForRecipient>
+								<TestFlag>
+									<xsl:choose>
+										<xsl:when test="ORDERHEAD/@FUNCCODE = 'TEO'">true</xsl:when>
+										<xsl:otherwise>false</xsl:otherwise>
+									</xsl:choose>
+								</TestFlag>
+							</TradeSimpleHeader>
+							<!-- Purchase order confirmation header information -->
+							<PurchaseOrderConfirmationHeader>
+								<DocumentStatus>
+									<xsl:text>Original</xsl:text>
+								</DocumentStatus>
+								<!-- Trading partner and coding information -->
+								<Buyer>
+									<BuyersLocationID>
+										<GLN>
+											<xsl:text>5555555555555</xsl:text>
+										</GLN>
+										<xsl:if test="BUYER/PARTYCODE[@IDTYPE = 'SCB']/IDCODE != ''">
+											<SuppliersCode>
+												<xsl:value-of select="BUYER/PARTYCODE[@IDTYPE = 'SCB']/IDCODE"/>						
+											</SuppliersCode>
+										</xsl:if>
+									</BuyersLocationID>
+									<xsl:if test="BUYER/ADDRESS/NAME != ''">
+										<BuyersName>
+											<xsl:value-of select="BUYER/ADDRESS/NAME"/>				
+										</BuyersName>
+									</xsl:if>		
+									<xsl:if test="BUYER/ADDRESS/STREET[1] != ''">
+										<BuyersAddress>
+											<AddressLine1>
+												<xsl:value-of select="BUYER/ADDRESS/STREET[1]"/>
+											</AddressLine1>
+											<xsl:if test="BUYER/ADDRESS/STREET[2] != ''">
+												<AddressLine2>
+													<xsl:value-of select="BUYER/ADDRESS/STREET[2]"/>
+												</AddressLine2>
+											</xsl:if>
+											<xsl:if test="BUYER/ADDRESS/CITY != ''">
+												<AddressLine3>
+													<xsl:value-of select="BUYER/ADDRESS/CITY"/>
+												</AddressLine3>
+											</xsl:if>
+											<xsl:if test="BUYER/ADDRESS/STATE != ''">
+												<AddressLine4>
+													<xsl:value-of select="BUYER/ADDRESS/STATE"/>
+												</AddressLine4>
+											</xsl:if>
+											<xsl:if test="BUYER/ADDRESS/POSTCODE != ''">
+												<PostCode>
+													<xsl:value-of select="BUYER/ADDRESS/POSTCODE"/>
+												</PostCode>
+											</xsl:if>
+										</BuyersAddress>
+									</xsl:if>	
+								</Buyer>
+								<Supplier>
+									<SuppliersLocationID>
+										<GLN>
+											<xsl:text>5555555555555</xsl:text>
+										</GLN>
+										<BuyersCode>
+											<xsl:value-of select="SUPPLIER/PARTYCODE[@IDTYPE = 'BCS']/IDCODE"/>					
+										</BuyersCode>
+									</SuppliersLocationID>
+									<xsl:if test="SUPPLIER/ADDRESS/NAME != ''">
+										<SuppliersName>
+											<xsl:value-of select="SUPPLIER/ADDRESS/NAME"/>				
+										</SuppliersName>
+									</xsl:if>		
+									<xsl:if test="SUPPLIER/ADDRESS/STREET[1] != ''">
+										<SuppliersAddress>
+											<AddressLine1>
+												<xsl:value-of select="SUPPLIER/ADDRESS/STREET[1]"/>
+											</AddressLine1>
+											<xsl:if test="SUPPLIER/ADDRESS/STREET[2] != ''">
+												<AddressLine2>
+													<xsl:value-of select="SUPPLIER/ADDRESS/STREET[2]"/>
+												</AddressLine2>
+											</xsl:if>
+											<xsl:if test="SUPPLIER/ADDRESS/CITY != ''">
+												<AddressLine3>
+													<xsl:value-of select="SUPPLIER/ADDRESS/CITY"/>
+												</AddressLine3>
+											</xsl:if>
+											<xsl:if test="SUPPLIER/ADDRESS/STATE != ''">
+												<AddressLine4>
+													<xsl:value-of select="SUPPLIER/ADDRESS/STATE"/>
+												</AddressLine4>
+											</xsl:if>
+											<xsl:if test="SUPPLIER/ADDRESS/POSTCODE != ''">
+												<PostCode>
+													<xsl:value-of select="SUPPLIER/ADDRESS/POSTCODE"/>
+												</PostCode>
+											</xsl:if>
+										</SuppliersAddress>
+									</xsl:if>	
+								</Supplier>
+								<ShipTo>
+									<ShipToLocationID>
+										<GLN>
+											<xsl:text>5555555555555</xsl:text>
+										</GLN>
 										<SuppliersCode>
 											<xsl:value-of select="BUYER/PARTYCODE[@IDTYPE = 'SCB']/IDCODE"/>						
 										</SuppliersCode>
+									</ShipToLocationID>
+									<xsl:if test="DELIVERY/ADDRESS/NAME != ''">
+										<ShipToName>
+											<xsl:value-of select="DELIVERY/ADDRESS/NAME"/>				
+										</ShipToName>
 									</xsl:if>
-								</BuyersLocationID>
-								<xsl:if test="BUYER/ADDRESS/NAME != ''">
-									<BuyersName>
-										<xsl:value-of select="BUYER/ADDRESS/NAME"/>				
-									</BuyersName>
-								</xsl:if>		
-								<xsl:if test="BUYER/ADDRESS/STREET[1] != ''">
-									<BuyersAddress>
+									<!-- ShipToAddress and AddressLine1 are mandatory -->		
+									<ShipToAddress>
 										<AddressLine1>
-											<xsl:value-of select="BUYER/ADDRESS/STREET[1]"/>
+											<xsl:choose>
+												<xsl:when test="DELIVERY/ADDRESS/STREET[1] != ''">
+													<xsl:value-of select="DELIVERY/ADDRESS/STREET[1]"/>
+												</xsl:when>
+												<xsl:otherwise>
+													<xsl:text>Not Provided</xsl:text>
+												</xsl:otherwise>
+											</xsl:choose>
 										</AddressLine1>
-										<xsl:if test="BUYER/ADDRESS/STREET[2] != ''">
+										<xsl:if test="DELIVERY/ADDRESS/STREET[2] != ''">
 											<AddressLine2>
-												<xsl:value-of select="BUYER/ADDRESS/STREET[2]"/>
+												<xsl:value-of select="DELIVERY/ADDRESS/STREET[2]"/>
 											</AddressLine2>
 										</xsl:if>
-										<xsl:if test="BUYER/ADDRESS/CITY != ''">
+										<xsl:if test="DELIVERY/ADDRESS/CITY != ''">
 											<AddressLine3>
-												<xsl:value-of select="BUYER/ADDRESS/CITY"/>
+												<xsl:value-of select="DELIVERY/ADDRESS/CITY"/>
 											</AddressLine3>
 										</xsl:if>
-										<xsl:if test="BUYER/ADDRESS/STATE != ''">
+										<xsl:if test="DELIVERY/ADDRESS/STATE != ''">
 											<AddressLine4>
-												<xsl:value-of select="BUYER/ADDRESS/STATE"/>
+												<xsl:value-of select="DELIVERY/ADDRESS/STATE"/>
 											</AddressLine4>
 										</xsl:if>
-										<xsl:if test="BUYER/ADDRESS/POSTCODE != ''">
+										<xsl:if test="DELIVERY/ADDRESS/POSTCODE != ''">
 											<PostCode>
-												<xsl:value-of select="BUYER/ADDRESS/POSTCODE"/>
+												<xsl:value-of select="DELIVERY/ADDRESS/POSTCODE"/>
 											</PostCode>
 										</xsl:if>
-									</BuyersAddress>
-								</xsl:if>	
-							</Buyer>
-							<Supplier>
-								<SuppliersLocationID>
-									<GLN>
-										<xsl:text>5555555555555</xsl:text>
-									</GLN>
-									<BuyersCode>
-										<xsl:value-of select="SUPPLIER/PARTYCODE[@IDTYPE = 'BCS']/IDCODE"/>					
-									</BuyersCode>
-								</SuppliersLocationID>
-								<xsl:if test="SUPPLIER/ADDRESS/NAME != ''">
-									<SuppliersName>
-										<xsl:value-of select="SUPPLIER/ADDRESS/NAME"/>				
-									</SuppliersName>
-								</xsl:if>		
-								<xsl:if test="SUPPLIER/ADDRESS/STREET[1] != ''">
-									<SuppliersAddress>
-										<AddressLine1>
-											<xsl:value-of select="SUPPLIER/ADDRESS/STREET[1]"/>
-										</AddressLine1>
-										<xsl:if test="SUPPLIER/ADDRESS/STREET[2] != ''">
-											<AddressLine2>
-												<xsl:value-of select="SUPPLIER/ADDRESS/STREET[2]"/>
-											</AddressLine2>
-										</xsl:if>
-										<xsl:if test="SUPPLIER/ADDRESS/CITY != ''">
-											<AddressLine3>
-												<xsl:value-of select="SUPPLIER/ADDRESS/CITY"/>
-											</AddressLine3>
-										</xsl:if>
-										<xsl:if test="SUPPLIER/ADDRESS/STATE != ''">
-											<AddressLine4>
-												<xsl:value-of select="SUPPLIER/ADDRESS/STATE"/>
-											</AddressLine4>
-										</xsl:if>
-										<xsl:if test="SUPPLIER/ADDRESS/POSTCODE != ''">
-											<PostCode>
-												<xsl:value-of select="SUPPLIER/ADDRESS/POSTCODE"/>
-											</PostCode>
-										</xsl:if>
-									</SuppliersAddress>
-								</xsl:if>	
-							</Supplier>
-							<ShipTo>
-								<ShipToLocationID>
-									<GLN>
-										<xsl:text>5555555555555</xsl:text>
-									</GLN>
-									<SuppliersCode>
-										<xsl:value-of select="BUYER/PARTYCODE[@IDTYPE = 'SCB']/IDCODE"/>						
-									</SuppliersCode>
-								</ShipToLocationID>
-								<xsl:if test="DELIVERY/ADDRESS/NAME != ''">
-									<ShipToName>
-										<xsl:value-of select="DELIVERY/ADDRESS/NAME"/>				
-									</ShipToName>
-								</xsl:if>
-								<!-- ShipToAddress and AddressLine1 are mandatory -->		
-								<ShipToAddress>
-									<AddressLine1>
+									</ShipToAddress>
+								</ShipTo>
+								<!-- Purchase order number and date -->
+								<PurchaseOrderReferences>
+									<PurchaseOrderReference>
+										<xsl:value-of select="REFERENCE[@REFTYPE = 'CUR']/REFCODE"/>
+									</PurchaseOrderReference>
+									<PurchaseOrderDate>
 										<xsl:choose>
-											<xsl:when test="DELIVERY/ADDRESS/STREET[1] != ''">
-												<xsl:value-of select="DELIVERY/ADDRESS/STREET[1]"/>
+											<xsl:when test="DATEINFO[@DATETYPE = 'ORD']/DATE != ''">
+												<xsl:apply-templates select="DATEINFO[@DATETYPE = 'ORD']/DATE"/>
 											</xsl:when>
 											<xsl:otherwise>
-												<xsl:text>Not Provided</xsl:text>
+												<xsl:apply-templates select="DATEINFO[@DATETYPE = 'FIA']/DATE"/>
 											</xsl:otherwise>
 										</xsl:choose>
-									</AddressLine1>
-									<xsl:if test="DELIVERY/ADDRESS/STREET[2] != ''">
-										<AddressLine2>
-											<xsl:value-of select="DELIVERY/ADDRESS/STREET[2]"/>
-										</AddressLine2>
+									</PurchaseOrderDate>
+									<xsl:if test="DATEINFO[@DATETYPE = 'ORD']/TIME != ''">
+										<PurchaseOrderTime>
+											<xsl:value-of select="DATEINFO[@DATETYPE = 'ORD']/TIME"/>
+											<xsl:if test="string-length(DATEINFO[@DATETYPE = 'ORD']/TIME) = 5">
+												<xsl:text>:00</xsl:text>
+											</xsl:if>
+										</PurchaseOrderTime>
 									</xsl:if>
-									<xsl:if test="DELIVERY/ADDRESS/CITY != ''">
-										<AddressLine3>
-											<xsl:value-of select="DELIVERY/ADDRESS/CITY"/>
-										</AddressLine3>
-									</xsl:if>
-									<xsl:if test="DELIVERY/ADDRESS/STATE != ''">
-										<AddressLine4>
-											<xsl:value-of select="DELIVERY/ADDRESS/STATE"/>
-										</AddressLine4>
-									</xsl:if>
-									<xsl:if test="DELIVERY/ADDRESS/POSTCODE != ''">
-										<PostCode>
-											<xsl:value-of select="DELIVERY/ADDRESS/POSTCODE"/>
-										</PostCode>
-									</xsl:if>
-								</ShipToAddress>
-							</ShipTo>
-							<!-- Purchase order number and date -->
-							<PurchaseOrderReferences>
-								<PurchaseOrderReference>
-									<xsl:value-of select="REFERENCE[@REFTYPE = 'CUR']/REFCODE"/>
-								</PurchaseOrderReference>
-								<PurchaseOrderDate>
-									<xsl:choose>
-										<xsl:when test="DATEINFO[@DATETYPE = 'ORD']/DATE != ''">
-											<xsl:apply-templates select="DATEINFO[@DATETYPE = 'ORD']/DATE"/>
-										</xsl:when>
-										<xsl:otherwise>
-											<xsl:apply-templates select="DATEINFO[@DATETYPE = 'FIA']/DATE"/>
-										</xsl:otherwise>
-									</xsl:choose>
-								</PurchaseOrderDate>
-								<xsl:if test="DATEINFO[@DATETYPE = 'ORD']/TIME != ''">
-									<PurchaseOrderTime>
-										<xsl:value-of select="DATEINFO[@DATETYPE = 'ORD']/TIME"/>
-										<xsl:if test="string-length(DATEINFO[@DATETYPE = 'ORD']/TIME) = 5">
-											<xsl:text>:00</xsl:text>
-										</xsl:if>
-									</PurchaseOrderTime>
-								</xsl:if>
-							</PurchaseOrderReferences>
-							<!-- Purchase order confirmation number and date -->
-							<PurchaseOrderConfirmationReferences>
-								<PurchaseOrderConfirmationReference>
-									<xsl:choose>
-										<xsl:when test="REFERENCE[@REFTYPE = 'FIA']/REFCODE != ''">
-											<xsl:value-of select="REFERENCE[@REFTYPE = 'FIA']/REFCODE"/>
-										</xsl:when>
-										<!-- use purchase order number if confirmation number is missing -->
-										<xsl:otherwise>										
-											<xsl:value-of select="REFERENCE[@REFTYPE = 'CUR']/REFCODE"/>
-										</xsl:otherwise>
-									</xsl:choose>
-								</PurchaseOrderConfirmationReference>
-								<PurchaseOrderConfirmationDate>
-									<xsl:choose>
-										<xsl:when test="DATEINFO[@DATETYPE = 'FIA']/DATE != ''">
-											<xsl:apply-templates select="DATEINFO[@DATETYPE = 'FIA']/DATE"/>
-										</xsl:when>
-										<!-- use today's date if confirmation date is missing -->
-										<xsl:otherwise>
-											<xsl:value-of select="user:sTodayAsXMLDate()"/>
-										</xsl:otherwise>
-									</xsl:choose>
-								</PurchaseOrderConfirmationDate>
-							</PurchaseOrderConfirmationReferences>
-							<!-- Original order delivery date - copy the confirmed delivery date (see header notes for explanation) -->
-							<OrderedDeliveryDetails>
-								<DeliveryType><xsl:text>Delivery</xsl:text></DeliveryType>
-								<DeliveryDate>
-									<xsl:choose>
-										<xsl:when test="DATEINFO[@DATETYPE = 'DED']/DATE != ''">
-											<xsl:apply-templates select="DATEINFO[@DATETYPE = 'DED']/DATE"/>
-										</xsl:when>
-										<xsl:otherwise>
-											<xsl:text>1900-01-01</xsl:text>
-										</xsl:otherwise>
-									</xsl:choose>
-								</DeliveryDate>
-							</OrderedDeliveryDetails>
-							<!-- Confirmed delivery date -->
-							<ConfirmedDeliveryDetails>
-								<DeliveryType><xsl:text>Delivery</xsl:text></DeliveryType>
-								<DeliveryDate>
-									<xsl:choose>
-										<xsl:when test="DATEINFO[@DATETYPE = 'DED']/DATE != ''">
-											<xsl:apply-templates select="DATEINFO[@DATETYPE = 'DED']/DATE"/>
-										</xsl:when>
-										<xsl:otherwise>
-											<xsl:text>1900-01-01</xsl:text>
-										</xsl:otherwise>
-									</xsl:choose>
-								</DeliveryDate>
-							</ConfirmedDeliveryDetails>
-						</PurchaseOrderConfirmationHeader>			
-						<!-- Order line details -->
-						<PurchaseOrderConfirmationDetail>
-							<xsl:for-each select="ORDERLINE">
-								<xsl:sort select="LINENO" data-type="number"/>
-								<PurchaseOrderConfirmationLine>
-									<!-- line status -->
-									<xsl:attribute name="LineStatus">
+								</PurchaseOrderReferences>
+								<!-- Purchase order confirmation number and date -->
+								<PurchaseOrderConfirmationReferences>
+									<PurchaseOrderConfirmationReference>
 										<xsl:choose>
-											<xsl:when test="@LINEACTION = '1'"><xsl:text>Added</xsl:text></xsl:when>
-											<xsl:when test="@LINEACTION = '2'"><xsl:text>Rejected</xsl:text></xsl:when>
-											<xsl:when test="@LINEACTION = '3'"><xsl:text>Changed</xsl:text></xsl:when>
-											<xsl:when test="@LINEACTION = '4'"><xsl:text>Accepted</xsl:text></xsl:when>
-											<xsl:when test="@LINEACTION = '5'"><xsl:text>Rejected</xsl:text></xsl:when>
+											<xsl:when test="REFERENCE[@REFTYPE = 'FIA']/REFCODE != ''">
+												<xsl:value-of select="REFERENCE[@REFTYPE = 'FIA']/REFCODE"/>
+											</xsl:when>
+											<!-- use purchase order number if confirmation number is missing -->
+											<xsl:otherwise>										
+												<xsl:value-of select="REFERENCE[@REFTYPE = 'CUR']/REFCODE"/>
+											</xsl:otherwise>
 										</xsl:choose>
-									</xsl:attribute>
-									<!-- line number -->
-									<LineNumber>
-										<xsl:value-of select="LINENO"/>
-									</LineNumber>
-									<!-- product code and description -->
-									<ProductID>
-										<GTIN><xsl:text>55555555555555</xsl:text></GTIN>
-										<SuppliersProductCode>
-											<xsl:value-of select="PRODUCT[@PRODCODETYPE = 'SPC']/PRODNUM"/>
-										</SuppliersProductCode>
-									</ProductID>
-									<ProductDescription>
-										<xsl:value-of select="PRODUCT[@PRODCODETYPE = 'SPC']/DESCRIPTION"/>
-									</ProductDescription>
-									<!-- use the confirmed quantity for the original order quantity (see header notes for explanation) -->
-									<OrderedQuantity UnitOfMeasure="EA">
-										<xsl:value-of select="QUANTITY[@QTYCODE = 'ORD']/QUANTITYAMOUNT"/>
-									</OrderedQuantity>
-									<ConfirmedQuantity UnitOfMeasure="EA">
-										<xsl:value-of select="QUANTITY[@QTYCODE = 'ORD']/QUANTITYAMOUNT"/>
-									</ConfirmedQuantity>
-									<!-- optional pack size -->
-									<xsl:if test="QUANTITY[@QTYCODE = 'ORD']/QTYUOMDESC != ''">
-										<PackSize>
-											<xsl:value-of select="QUANTITY[@QTYCODE = 'ORD']/QTYUOMDESC"/>
-										</PackSize>
-									</xsl:if>
-									<!-- optional price and line total -->
-									<xsl:if test="PRICE[@PRICETYPE = 'SEL']/PRICEAMOUNT != ''">
-										<UnitValueExclVAT>
-											<xsl:value-of select="PRICE[@PRICETYPE = 'SEL']/PRICEAMOUNT"/>
-										</UnitValueExclVAT>
-									</xsl:if>
-									<xsl:if test="LINETOTAL">
-										<LineValueExclVAT>
-											<xsl:value-of select="LINETOTAL"/>
-										</LineValueExclVAT>							
-									</xsl:if>
-									<!-- optional line narrative -->
-									<xsl:if test="NARRATIVE[@NARRTYPE = 'OLI']/TEXT != ''">
-										<Narrative>
-											<xsl:value-of select="NARRATIVE[@NARRTYPE = 'OLI']/TEXT"/>
-										</Narrative>
-									</xsl:if>
-								</PurchaseOrderConfirmationLine>
-							</xsl:for-each>
-						</PurchaseOrderConfirmationDetail>
-						<!-- Document totals -->
-						<PurchaseOrderConfirmationTrailer>
-							<!-- recalculate the number of lines in case the inbound file is incorrect -->
-							<NumberOfLines>
-								<xsl:value-of select="count(ORDERLINE)"/>						
-							</NumberOfLines>
-							<TotalExclVAT>
-								<xsl:value-of select="ORDERTOTAL/ORDLINETOT"/>						
-							</TotalExclVAT>
-						</PurchaseOrderConfirmationTrailer>
-					</PurchaseOrderConfirmation>
-				</BatchDocument>
-			</BatchDocuments>
-		</Batch>
+									</PurchaseOrderConfirmationReference>
+									<PurchaseOrderConfirmationDate>
+										<xsl:choose>
+											<xsl:when test="DATEINFO[@DATETYPE = 'FIA']/DATE != ''">
+												<xsl:apply-templates select="DATEINFO[@DATETYPE = 'FIA']/DATE"/>
+											</xsl:when>
+											<!-- use today's date if confirmation date is missing -->
+											<xsl:otherwise>
+												<xsl:value-of select="user:sTodayAsXMLDate()"/>
+											</xsl:otherwise>
+										</xsl:choose>
+									</PurchaseOrderConfirmationDate>
+								</PurchaseOrderConfirmationReferences>
+								<!-- Original order delivery date - copy the confirmed delivery date (see header notes for explanation) -->
+								<OrderedDeliveryDetails>
+									<DeliveryType><xsl:text>Delivery</xsl:text></DeliveryType>
+									<DeliveryDate>
+										<xsl:choose>
+											<xsl:when test="DATEINFO[@DATETYPE = 'DED']/DATE != ''">
+												<xsl:apply-templates select="DATEINFO[@DATETYPE = 'DED']/DATE"/>
+											</xsl:when>
+											<xsl:otherwise>
+												<xsl:text>1900-01-01</xsl:text>
+											</xsl:otherwise>
+										</xsl:choose>
+									</DeliveryDate>
+								</OrderedDeliveryDetails>
+								<!-- Confirmed delivery date -->
+								<ConfirmedDeliveryDetails>
+									<DeliveryType><xsl:text>Delivery</xsl:text></DeliveryType>
+									<DeliveryDate>
+										<xsl:choose>
+											<xsl:when test="DATEINFO[@DATETYPE = 'DED']/DATE != ''">
+												<xsl:apply-templates select="DATEINFO[@DATETYPE = 'DED']/DATE"/>
+											</xsl:when>
+											<xsl:otherwise>
+												<xsl:text>1900-01-01</xsl:text>
+											</xsl:otherwise>
+										</xsl:choose>
+									</DeliveryDate>
+								</ConfirmedDeliveryDetails>
+							</PurchaseOrderConfirmationHeader>			
+							<!-- Order line details -->
+							<PurchaseOrderConfirmationDetail>
+								<xsl:for-each select="ORDERLINE">
+									<xsl:sort select="LINENO" data-type="number"/>
+									<PurchaseOrderConfirmationLine>
+										<!-- line status -->
+										<xsl:attribute name="LineStatus">
+											<xsl:choose>
+												<xsl:when test="@LINEACTION = '1'"><xsl:text>Added</xsl:text></xsl:when>
+												<xsl:when test="@LINEACTION = '2'"><xsl:text>Rejected</xsl:text></xsl:when>
+												<xsl:when test="@LINEACTION = '3'"><xsl:text>Changed</xsl:text></xsl:when>
+												<xsl:when test="@LINEACTION = '4'"><xsl:text>Accepted</xsl:text></xsl:when>
+												<xsl:when test="@LINEACTION = '5'"><xsl:text>Rejected</xsl:text></xsl:when>
+											</xsl:choose>
+										</xsl:attribute>
+										<!-- line number -->
+										<LineNumber>
+											<xsl:value-of select="LINENO"/>
+										</LineNumber>
+										<!-- product code and description -->
+										<ProductID>
+											<GTIN><xsl:text>55555555555555</xsl:text></GTIN>
+											<SuppliersProductCode>
+												<xsl:value-of select="PRODUCT[@PRODCODETYPE = 'SPC']/PRODNUM"/>
+											</SuppliersProductCode>
+										</ProductID>
+										<ProductDescription>
+											<xsl:value-of select="PRODUCT[@PRODCODETYPE = 'SPC']/DESCRIPTION"/>
+										</ProductDescription>
+										<!-- use the confirmed quantity for the original order quantity (see header notes for explanation) -->
+										<OrderedQuantity UnitOfMeasure="EA">
+											<xsl:value-of select="QUANTITY[@QTYCODE = 'ORD']/QUANTITYAMOUNT"/>
+										</OrderedQuantity>
+										<ConfirmedQuantity UnitOfMeasure="EA">
+											<xsl:value-of select="QUANTITY[@QTYCODE = 'ORD']/QUANTITYAMOUNT"/>
+										</ConfirmedQuantity>
+										<!-- optional pack size -->
+										<xsl:if test="QUANTITY[@QTYCODE = 'ORD']/QTYUOMDESC != ''">
+											<PackSize>
+												<xsl:value-of select="QUANTITY[@QTYCODE = 'ORD']/QTYUOMDESC"/>
+											</PackSize>
+										</xsl:if>
+										<!-- optional price and line total -->
+										<xsl:if test="PRICE[@PRICETYPE = 'SEL']/PRICEAMOUNT != ''">
+											<UnitValueExclVAT>
+												<xsl:value-of select="PRICE[@PRICETYPE = 'SEL']/PRICEAMOUNT"/>
+											</UnitValueExclVAT>
+										</xsl:if>
+										<xsl:if test="LINETOTAL">
+											<LineValueExclVAT>
+												<xsl:value-of select="LINETOTAL"/>
+											</LineValueExclVAT>							
+										</xsl:if>
+										<!-- optional line narrative -->
+										<xsl:if test="NARRATIVE[@NARRTYPE = 'OLI']/TEXT != ''">
+											<Narrative>
+												<xsl:value-of select="NARRATIVE[@NARRTYPE = 'OLI']/TEXT"/>
+											</Narrative>
+										</xsl:if>
+									</PurchaseOrderConfirmationLine>
+								</xsl:for-each>
+							</PurchaseOrderConfirmationDetail>
+							<!-- Document totals -->
+							<PurchaseOrderConfirmationTrailer>
+								<!-- recalculate the number of lines in case the inbound file is incorrect -->
+								<NumberOfLines>
+									<xsl:value-of select="count(ORDERLINE)"/>						
+								</NumberOfLines>
+								<TotalExclVAT>
+									<xsl:value-of select="ORDERTOTAL/ORDLINETOT"/>						
+								</TotalExclVAT>
+							</PurchaseOrderConfirmationTrailer>
+						</PurchaseOrderConfirmation>
+					</BatchDocument>
+				</BatchDocuments>
+			</Batch>
+		</BatchRoot>
 	</xsl:template>
 
 	<!--
