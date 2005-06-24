@@ -300,7 +300,14 @@
 											</SuppliersProductCode>
 										</ProductID>
 										<ProductDescription>
-											<xsl:value-of select="PRODUCT[@PRODCODETYPE = 'SPC']/DESCRIPTION"/>
+											<xsl:choose>
+												<xsl:when test="PRODUCT[@PRODCODETYPE = 'SPC']/DESCRIPTION != ''">
+													<xsl:value-of select="PRODUCT[@PRODCODETYPE = 'SPC']/DESCRIPTION"/>
+												</xsl:when>
+												<xsl:otherwise>
+													<xsl:text>Not Provided</xsl:text>
+												</xsl:otherwise>
+											</xsl:choose>
 										</ProductDescription>
 										<!-- use the confirmed quantity for the original order quantity (see header notes for explanation) -->
 										<OrderedQuantity UnitOfMeasure="EA">
