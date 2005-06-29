@@ -99,7 +99,6 @@
 	<xsl:value-of select="$sLineBreak"/>
 	
 	<xsl:text>CDT=</xsl:text>
-		<xsl:text>:</xsl:text>
 		<xsl:value-of select="/BatchRoot/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/>
 		<xsl:text>:</xsl:text>
 		<xsl:value-of select="/BatchRoot/PurchaseOrder/TradeSimpleHeader/RecipientsCodeForSender"/>
@@ -182,14 +181,21 @@
 			<xsl:value-of select="substring(PurchaseOrderHeader/OrderedDeliveryDetails/DeliverySlot/SlotEnd,1,2)"/>
 			<xsl:value-of select="substring(PurchaseOrderHeader/OrderedDeliveryDetails/DeliverySlot/SlotEnd,4,2)"/>
 			<xsl:text>+</xsl:text>
-			<xsl:value-of select="substring(PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions,1,40)"/>
-			<xsl:text>:</xsl:text>
-			<xsl:value-of select="substring(PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions,41,40)"/>
-			<xsl:text>:</xsl:text>
-			<xsl:value-of select="substring(PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions,81,40)"/>
-			<xsl:text>:</xsl:text>
-			<xsl:value-of select="substring(PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions,121,40)"/>
-			<xsl:text>:</xsl:text>
+			<xsl:if test="substring(PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions,1,40) != ''">
+				<xsl:value-of select="substring(PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions,1,40)"/>
+			</xsl:if>
+			<xsl:if test="substring(PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions,41,40) != ''">
+				<xsl:text>:</xsl:text>
+				<xsl:value-of select="substring(PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions,41,40)"/>
+			</xsl:if>
+			<xsl:if test="substring(PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions,81,40) != ''">
+				<xsl:text>:</xsl:text>
+				<xsl:value-of select="substring(PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions,81,40)"/>
+			</xsl:if>
+			<xsl:if test="substring(PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions,121,40) != ''">
+				<xsl:text>:</xsl:text>
+				<xsl:value-of select="substring(PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions,121,40)"/>
+			</xsl:if>
 		<xsl:text>'</xsl:text>
 		<xsl:value-of select="$sLineBreak"/>
 		
