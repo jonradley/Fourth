@@ -12,7 +12,9 @@
 ******************************************************************************************
  Date       | Name       | Description of modification
 ******************************************************************************************
- 06/06/2005 | Lee Boyton | Created module.
+ 06/06/2005 | Lee Boyton | H369. Created module.
+******************************************************************************************
+ 05/07/2005 | Lee Boyton | H369. Cater for Coors using CatSpecificPrices="True" rather than "Yes"
 ******************************************************************************************
             |            |
 ******************************************************************************************
@@ -28,6 +30,22 @@
 		</BatchRoot>
 	</xsl:template>
 
+	<!--ensure that the catalogue specific prices element is set to 'Yes' if it is incorrectly specified as another boolean true value-->
+	<xsl:template match="@CatSpecificPrices">
+		<xsl:choose>
+			<xsl:when test=". = 'True' or . = 'true' or . = '1'">
+				<xsl:attribute name="CatSpecificPrices">
+					<xsl:text>Yes</xsl:text>
+				</xsl:attribute>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:attribute name="CatSpecificPrices">
+					<xsl:value-of select="."/>
+				</xsl:attribute>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	
 	<!--change the old PriceCatHdr element to use the new PriceCatHeader naming convention-->
 	<xsl:template match="PriceCatHdr">
 		<PriceCatHeader>
