@@ -20,7 +20,7 @@
 	xmlns:HelperObj="urn:XSLHelper" 
 	xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript"
 	xmlns:msxsl="urn:schemas-microsoft-com:xslt">
-<xsl:output method="text"/>
+<xsl:output method="text" encoding="utf-8"/>
 
 <xsl:param name="sDocumentDate">Not Provided</xsl:param>
 <xsl:param name="sDocumentTime">Not Provided</xsl:param>
@@ -29,8 +29,8 @@
 <xsl:template match="/BatchRoot[PurchaseOrder]">
 
 	<xsl:variable name="sLineBreak">
-		<xsl:text>&#13;&#10;</xsl:text>
-		<!--xsl:text></xsl:text-->
+		<!--xsl:text>&#13;&#10;</xsl:text-->
+		<xsl:text></xsl:text>
 	</xsl:variable>
 
 	<xsl:value-of select="HelperObj:ResetCounter('MessageHeader')"/>
