@@ -177,9 +177,11 @@
 			<xsl:text>+</xsl:text>
 			<xsl:value-of select="substring(PurchaseOrderHeader/OrderedDeliveryDetails/DeliverySlot/SlotStart,1,2)"/>
 			<xsl:value-of select="substring(PurchaseOrderHeader/OrderedDeliveryDetails/DeliverySlot/SlotStart,4,2)"/>
-			<xsl:text>:</xsl:text>
-			<xsl:value-of select="substring(PurchaseOrderHeader/OrderedDeliveryDetails/DeliverySlot/SlotEnd,1,2)"/>
-			<xsl:value-of select="substring(PurchaseOrderHeader/OrderedDeliveryDetails/DeliverySlot/SlotEnd,4,2)"/>
+			<xsl:if test="PurchaseOrderHeader/OrderedDeliveryDetails/DeliverySlot/SlotEnd != ''">
+				<xsl:text>:</xsl:text>
+				<xsl:value-of select="substring(PurchaseOrderHeader/OrderedDeliveryDetails/DeliverySlot/SlotEnd,1,2)"/>
+				<xsl:value-of select="substring(PurchaseOrderHeader/OrderedDeliveryDetails/DeliverySlot/SlotEnd,4,2)"/>
+			</xsl:if>
 			<xsl:text>+</xsl:text>
 			<xsl:if test="substring(PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions,1,40) != ''">
 				<xsl:value-of select="substring(PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions,1,40)"/>
