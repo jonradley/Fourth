@@ -284,18 +284,13 @@
 function msTruncate(vsField, nLength){
 
 var sText;
-var objRegExp = new RegExp("[?]*$");
 
 	//truncate the string
 	sText = vsField.substring(0,nLength);
 	
-	//capture any sequence of '?' at the end of the string
-	objRegExp.exec(sText);
-	
-	//length of a sequence of '?' is odd the last one 
-	//is acting as an escape character and should be removed
-	if((RegExp.lastMatch.length % 2) == 1){
-		sText = sText.substring(0,nLength-1)
+	if(sText.substr(nLength - 1) == '?' && sText.substr(nLength - 2) != '??')
+	{
+		sText = sText.substring(0, nLength - 1);
 	}
 	
 	return sText;
