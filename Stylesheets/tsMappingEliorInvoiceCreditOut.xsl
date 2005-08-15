@@ -25,6 +25,8 @@ the final file produced by the batch mapper.
 ******************************************************************************************
  04/01/2005 | Lee Boyton  | H297. Output summary elements even if zero.
 ******************************************************************************************
+ 15/08/2005 | Lee Boyton  | H487. ELI011. Remove trailing /n from PL Account Code if present.
+******************************************************************************************
             |             |
 ******************************************************************************************
 -->
@@ -52,8 +54,15 @@ the final file produced by the batch mapper.
 	</CompanyCode>
 	<Transaction DocumentType="Invoice">
 		<xsl:attribute name="SupplierID">
-			<!-- Supplier ID is the PL Account code -->
-			<xsl:value-of select="TradeSimpleHeader/RecipientsCodeForSender"/>
+			<!-- Supplier ID is the root of the PL Account code (bit before the / if present) -->
+			<xsl:choose>
+				<xsl:when test="contains(TradeSimpleHeader/RecipientsCodeForSender,'/')">
+					<xsl:value-of select="substring-before(TradeSimpleHeader/RecipientsCodeForSender,'/')"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="TradeSimpleHeader/RecipientsCodeForSender"/>
+				</xsl:otherwise>
+			</xsl:choose>
 		</xsl:attribute>
 		<xsl:attribute name="DocumentDate">
 			<xsl:value-of select="InvoiceHeader/InvoiceReferences/InvoiceDate"/>
@@ -96,8 +105,15 @@ the final file produced by the batch mapper.
 	</CompanyCode>
 	<Transaction DocumentType="CreditMemo">
 		<xsl:attribute name="SupplierID">
-			<!-- Supplier ID is the PL Account code -->
-			<xsl:value-of select="TradeSimpleHeader/RecipientsCodeForSender"/>
+			<!-- Supplier ID is the root of the PL Account code (bit before the / if present) -->
+			<xsl:choose>
+				<xsl:when test="contains(TradeSimpleHeader/RecipientsCodeForSender,'/')">
+					<xsl:value-of select="substring-before(TradeSimpleHeader/RecipientsCodeForSender,'/')"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="TradeSimpleHeader/RecipientsCodeForSender"/>
+				</xsl:otherwise>
+			</xsl:choose>
 		</xsl:attribute>
 		<xsl:attribute name="DocumentDate">
 			<xsl:value-of select="CreditNoteHeader/CreditNoteReferences/CreditNoteDate"/>
