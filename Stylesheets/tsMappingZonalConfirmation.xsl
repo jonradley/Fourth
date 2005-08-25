@@ -16,22 +16,36 @@
 			<xsl:if test="/PurchaseOrderConfirmation/PurchaseOrderConfirmationDetail/PurchaseOrderConfirmationLine/LineValueExclVAT">
 				<xsl:attribute name="Value"><xsl:value-of select="sum(/PurchaseOrderConfirmation/PurchaseOrderConfirmationDetail/PurchaseOrderConfirmationLine/LineValueExclVAT)"/></xsl:attribute>
 			</xsl:if>
-			<xsl:for-each select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationDetail/PurchaseOrderConfirmationLine[@LineStatus != 'Rejected']">
-				<Line>
-					<xsl:attribute name="LineNo"><xsl:value-of select="LineNumber"/></xsl:attribute>
-					<xsl:attribute name="ImpExpRef"><xsl:value-of select="ProductID/SuppliersProductCode"/></xsl:attribute>
-					<xsl:if test="ProductDescription">
-						<xsl:attribute name="Description"><xsl:value-of select="ProductDescription"/></xsl:attribute>
-					</xsl:if>
-					<xsl:if test="PackSize">
-						<xsl:attribute name="PackSize"><xsl:value-of select="PackSize"/></xsl:attribute>
-					</xsl:if>
-					<xsl:attribute name="Quantity"><xsl:value-of select="ConfirmedQuantity"/></xsl:attribute>
-					<xsl:if test="UnitValueExclVAT">
-						<xsl:attribute name="UnitCost"><xsl:value-of select="UnitValueExclVAT"/></xsl:attribute>
-					</xsl:if>
-				</Line>
-			</xsl:for-each>
+			<xsl:choose>
+				<xsl:when test="/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/HeaderExtraData/CompressedAztecOutput and /GoodsReceivedNote/GoodsReceivedNoteHeader/HeaderExtraData/CompressedAztecOutput != ''">
+					<Line>
+						<xsl:attribute name="LineNo">1</xsl:attribute>
+						<xsl:attribute name="ImpExpRef"><xsl:value-of select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/HeaderExtraData/CompressedAztecOutput"/></xsl:attribute>
+						<xsl:attribute name="Quantity">1</xsl:attribute>
+						<xsl:if test="/PurchaseOrderConfirmation/PurchaseOrderConfirmationDetail/PurchaseOrderConfirmationLine/LineValueExclVAT">
+							<xsl:attribute name="UnitCost"><xsl:value-of select="sum(/PurchaseOrderConfirmation/PurchaseOrderConfirmationDetail/PurchaseOrderConfirmationLine/LineValueExclVAT)"/></xsl:attribute>
+						</xsl:if>
+					</Line>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:for-each select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationDetail/PurchaseOrderConfirmationLine[@LineStatus != 'Rejected']">
+						<Line>
+							<xsl:attribute name="LineNo"><xsl:value-of select="LineNumber"/></xsl:attribute>
+							<xsl:attribute name="ImpExpRef"><xsl:value-of select="ProductID/SuppliersProductCode"/></xsl:attribute>
+							<xsl:if test="ProductDescription">
+								<xsl:attribute name="Description"><xsl:value-of select="ProductDescription"/></xsl:attribute>
+							</xsl:if>
+							<xsl:if test="PackSize">
+								<xsl:attribute name="PackSize"><xsl:value-of select="PackSize"/></xsl:attribute>
+							</xsl:if>
+							<xsl:attribute name="Quantity"><xsl:value-of select="ConfirmedQuantity"/></xsl:attribute>
+							<xsl:if test="UnitValueExclVAT">
+								<xsl:attribute name="UnitCost"><xsl:value-of select="UnitValueExclVAT"/></xsl:attribute>
+							</xsl:if>
+						</Line>
+					</xsl:for-each>
+				</xsl:otherwise>
+			</xsl:choose>
 		</Order>
 	</xsl:template>
 </xsl:stylesheet>
