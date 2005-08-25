@@ -31,7 +31,7 @@
 						Line.Stock Product = ‘Y’ and 
 						Document.Stock System Identifier = {blank} or ‘CL’. -->
 	
-	<xsl:template match="/*[*/*/LineExtraData[StockSystemID='CW' and IsStockProduct[.='true' or .='1']]]">
+	<xsl:template match="/*[*/HeaderExtraData[StockSystemIdentifier='CW']][*/*/LineExtraData[IsStockProduct[.='true' or .='1']]]">
 
 	
 		<!--
@@ -105,7 +105,7 @@
 			<xsl:with-param name="vsText" select="$sHeader"/>
 		</xsl:call-template>
 	
-		<xsl:for-each select="(/Invoice/InvoiceDetail/InvoiceLine | /CreditNote/CreditNoteDetail/CreditNoteLine)[LineExtraData[StockSystemID='CW' and IsStockProduct[.='true' or .='1']]]">
+		<xsl:for-each select="(/Invoice/InvoiceDetail/InvoiceLine | /CreditNote/CreditNoteDetail/CreditNoteLine)[LineExtraData/IsStockProduct[.='true' or .='1']]">
 			
 					
 			<!-- From section 4.1.1.3
