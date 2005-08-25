@@ -1,4 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!--
+**********************************************************************
+Alterations
+**********************************************************************
+Name		| Date			| Change
+**********************************************************************
+S Jefford	| 22/08/2005	| GTIN field now sourced from CLD/SPRO(1).
+			|				| CLD/DRLI now stored in BuyersProductCode
+**********************************************************************
+			|				|
+**********************************************************************
+-->
 <ffsFlatFileSchema>
 	<ffsSettings>
 		<ffsRecordPositionType>named</ffsRecordPositionType>
@@ -196,10 +208,12 @@
 									<PurchaseOrderDate RecordPos="CLD=" LPos="23" SFPos="3"/>
 								</PurchaseOrderReferences>
 								<ProductID>
-									<!-- NOT GTIN, actually CLD - DRLI used by stylesheet to action -1.0 multiplier on QTYC and EXLV -->
-									<GTIN RecordPos="CLD=" LPos="13"/>
+									<!-- MANDATORY GTIN, INVOIC - CLD - SPRO(1) -->
+									<GTIN RecordPos="CLD=" LPos="2" SFPos="1"/>
 									<!-- OPTIONAL Supplier’s Product Code, MANDATORY, CREDIT – CLD – SPRO(2), Your unique code for this product -->
 									<SuppliersProductCode RecordPos="CLD=" LPos="2" SFPos="2"/>
+									<!-- NOT BuyersProductCode, actually CLD - DRLI used by stylesheet to action -1.0 multiplier on QTYC and EXLV -->
+									<BuyersProductCode RecordPos="CLD=" LPos="13"/>
 								</ProductID>
 								<!-- MANDATORY Product Description, OPTIONAL, CREDIT – CLD – TDES(1), While not strictly mandatory, this is a very useful textual piece of information.  This will always contain something but may be set to ‘Not Provided’ -->
 								<ProductDescription RecordPos="CLD=" LPos="14" SFPos="1"/>
