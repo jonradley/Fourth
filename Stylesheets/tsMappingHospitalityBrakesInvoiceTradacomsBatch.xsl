@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+**********************************************************************
+Alterations
+**********************************************************************
+Name		| Date			| Change
+**********************************************************************
+S Jefford	| 22/08/2005	| GTIN field now sourced from ILD/SPRO(1).
+			|				| ILD/CRLI now stored in BuyersProductCode
+**********************************************************************
+			|				|
+**********************************************************************
+-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
 	<!-- NOTE that these string literals are not only enclosed with double quotes, but have single quotes within also-->
@@ -31,8 +43,8 @@
 	</xsl:template>
 	<!-- END of GENERIC HANDLERS -->
 
-	<!-- InvoiceLine/ProductID/GTIN is used as a placeholder for INVOIC-ILD-CRLI and should not be copied over -->
-	<xsl:template match="GTIN"/>
+	<!-- InvoiceLine/ProductID/BuyersProductCode is used as a placeholder for INVOIC-ILD-CRLI and should not be copied over -->
+	<xsl:template match="BuyersProductCode"/>
 	
 	<!-- Tags which need to be stripped of all leading zeros and have 2 optional trailing digits (not zero) -->
 	<xsl:template match="InvoiceLine/LineNumber | Measure/UnitsInPack">
@@ -41,11 +53,11 @@
 		</xsl:copy>
 	</xsl:template>
 	
-	<!-- INVOIC-ILD-QTYI (InvoiceLine/InvoicedQuantity) needs to be multiplied by -1 if (InvoiceLine/ProductID/GTIN) is NOT blank -->
+	<!-- INVOIC-ILD-QTYI (InvoiceLine/InvoicedQuantity) needs to be multiplied by -1 if (InvoiceLine/ProductID/BuyersProductCode) is NOT blank -->
 	<xsl:template match="InvoiceLine/InvoicedQuantity">
 		<xsl:choose>
 			<!--Parent of InvoicedQuantity is InvoiceLine-->
-			<xsl:when test="string-length(../ProductID/GTIN) &gt; 0" >
+			<xsl:when test="string-length(../ProductID/BuyersProductCode) &gt; 0" >
 				<!--INVOIC-ILD-CRLI is not blank, multiply by -1-->
 				<xsl:call-template name="copyCurrentNodeDPUnchanged">
 					<xsl:with-param name="lMultiplier" select="-1.0"/>
@@ -57,12 +69,12 @@
 		</xsl:choose>
 	</xsl:template>
 	
-	<!-- INVOIC-ILD-LEXC(InvoiceLine/LineValueExclVAT) need to be multiplied by -1 if (InvoiceLine/ProductID/GTIN) is NOT blank -->
+	<!-- INVOIC-ILD-LEXC(InvoiceLine/LineValueExclVAT) need to be multiplied by -1 if (InvoiceLine/ProductID/BuyersProductCode) is NOT blank -->
 	<xsl:template match="InvoiceLine/LineValueExclVAT">
-		<!-- Implicit 4DP conversion required regardless of GTIN -->
+		<!-- Implicit 4DP conversion required regardless of BuyersProductCode -->
 		<xsl:choose>
 			<!--Parent of LineValueExclVAT is InvoiceLine -->
-			<xsl:when test="string-length(../ProductID/GTIN) &gt; 0" >
+			<xsl:when test="string-length(../ProductID/BuyersProductCode) &gt; 0" >
 				<!--INVOIC-ILD-CRLI is not blank, multiply by -1-->
 				<xsl:call-template name="copyCurrentNodeExplicit4DP">
 					<xsl:with-param name="lMultiplier" select="-1.0"/>
