@@ -18,9 +18,9 @@
 ==========================================================================================
  Date			| Name 			| Description of modification
 ==========================================================================================
- 23/08/2005	| R Cambridge	| Created module
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-				| 					|
+ 23/08/2005		| R Cambridge	| Created module
+==========================================================================================
+ 30/08/2005		| A Sheppard	| Bug fix
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -91,10 +91,10 @@
 			</xsl:call-template>
 			<xsl:text>,</xsl:text>
 			
-			<xsl:value-of select="/*/*/Supplier/SuppliersLocationID/GLN"/>
+			<xsl:value-of select="/*/*/Supplier/SuppliersLocationID/SuppliersCode"/>
 			<xsl:text>,</xsl:text>
 			
-			<xsl:value-of select="/*/*/ShipTo/ShipToLocationID/GLN"/>
+			<xsl:value-of select="/*/*/ShipTo/ShipToLocationID/SuppliersCode"/>
 			<xsl:text>,</xsl:text>
 			
 			<xsl:text>,</xsl:text>
