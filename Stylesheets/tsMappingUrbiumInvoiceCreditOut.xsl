@@ -15,6 +15,10 @@ will be concatenated by a subsequent processor.
 ******************************************************************************************
  22/08/2005 	| A Sheppard  	| Created module.
 ******************************************************************************************
+ 05/09/2005 	| Lee Boyton	| H488. The Bar (unit) code is the buyer's branch reference.
+******************************************************************************************
+ 06/09/2005 	| Lee Boyton	| H488. Fix to Credit notes incorrectly outputing invoice details.
+******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 	
 			xmlns:user="http://mycompany.com/mynamespace"
@@ -23,6 +27,9 @@ will be concatenated by a subsequent processor.
 	<xsl:output method="text"/>
 	<xsl:include href="HospitalityInclude.xsl"/>
 	<xsl:template match="/Invoice">
+		<xsl:variable name="BarCode">
+			<xsl:value-of select="TradeSimpleHeader/RecipientsBranchReference"/>
+		</xsl:variable>
 		<!--Purchase Lines-->
 		<xsl:for-each select="//InvoiceLine">
 			<xsl:sort select="LineExtraData/AccountCode"/>
@@ -38,7 +45,7 @@ will be concatenated by a subsequent processor.
 				<xsl:text>,</xsl:text>
 				<xsl:value-of select="/Invoice/InvoiceHeader/InvoiceReferences/InvoiceReference"/>
 				<xsl:text>,</xsl:text>
-				<xsl:value-of select="/Invoice/InvoiceHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
+				<xsl:value-of select="$BarCode"/>
 				<xsl:text> </xsl:text>
 				<xsl:value-of select="substring(translate(/Invoice/InvoiceHeader/Supplier/SuppliersName, ',', ';'), 1, 18)"/>
 				<xsl:text> INV</xsl:text>
@@ -55,7 +62,7 @@ will be concatenated by a subsequent processor.
 				<xsl:text>,</xsl:text>
 				<xsl:value-of select="$AccountCode"/>
 				<xsl:text>,</xsl:text>
-				<xsl:value-of select="/Invoice/InvoiceHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
+				<xsl:value-of select="$BarCode"/>
 				<xsl:text>,</xsl:text>
 				<xsl:value-of select="LineExtraData/BuyersVATCode"/>
 				<xsl:value-of select="user:msCarriageReturn()"/>
@@ -67,7 +74,7 @@ will be concatenated by a subsequent processor.
 			<xsl:text>,</xsl:text>
 			<xsl:value-of select="/Invoice/InvoiceHeader/InvoiceReferences/InvoiceReference"/>
 			<xsl:text>,</xsl:text>
-			<xsl:value-of select="/Invoice/InvoiceHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
+			<xsl:value-of select="$BarCode"/>
 			<xsl:text> </xsl:text>
 			<xsl:value-of select="substring(translate(/Invoice/InvoiceHeader/Supplier/SuppliersName, ',', ';'), 1, 18)"/>
 			<xsl:text> INV</xsl:text>
@@ -90,7 +97,7 @@ will be concatenated by a subsequent processor.
 		<xsl:text>,</xsl:text>
 		<xsl:value-of select="/Invoice/InvoiceHeader/InvoiceReferences/InvoiceReference"/>
 		<xsl:text>,</xsl:text>
-		<xsl:value-of select="/Invoice/InvoiceHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
+		<xsl:value-of select="$BarCode"/>
 		<xsl:text> </xsl:text>
 		<xsl:value-of select="substring(translate(/Invoice/InvoiceHeader/Supplier/SuppliersName, ',', ';'), 1, 18)"/>
 		<xsl:text> INV</xsl:text>
@@ -109,6 +116,9 @@ will be concatenated by a subsequent processor.
 	</xsl:template>
 	
 	<xsl:template match="/CreditNote">
+		<xsl:variable name="BarCode">
+			<xsl:value-of select="TradeSimpleHeader/RecipientsBranchReference"/>
+		</xsl:variable>
 		<!--Purchase Lines-->
 		<xsl:for-each select="//CreditNoteLine">
 			<xsl:sort select="HeaderExtraData/AccountCode"/>
@@ -122,9 +132,9 @@ will be concatenated by a subsequent processor.
 				</xsl:variable>
 				<xsl:value-of select="translate(/CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteDate, '-', '')"/>
 				<xsl:text>,</xsl:text>
-				<xsl:value-of select="/CreditNote/CreditNoteHeader/InvoiceReferences/InvoiceReference"/>
+				<xsl:value-of select="/CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteReference"/>
 				<xsl:text>,</xsl:text>
-				<xsl:value-of select="/CreditNote/CreditNoteHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
+				<xsl:value-of select="$BarCode"/>
 				<xsl:text> </xsl:text>
 				<xsl:value-of select="substring(translate(/CreditNote/CreditNoteHeader/Supplier/SuppliersName, ',', ';'), 1, 18)"/>
 				<xsl:text> CN</xsl:text>
@@ -141,7 +151,7 @@ will be concatenated by a subsequent processor.
 				<xsl:text>,</xsl:text>
 				<xsl:value-of select="$AccountCode"/>
 				<xsl:text>,</xsl:text>
-				<xsl:value-of select="/CreditNote/CreditNoteHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
+				<xsl:value-of select="$BarCode"/>
 				<xsl:text>,</xsl:text>
 				<xsl:value-of select="LineExtraData/BuyersVATCode"/>
 				<xsl:value-of select="user:msCarriageReturn()"/>
@@ -149,11 +159,11 @@ will be concatenated by a subsequent processor.
 		</xsl:for-each>
 		<!--Taxes Lines-->
 		<xsl:for-each select="//VATSubTotal[@VATRate != 0.00]">
-			<xsl:value-of select="translate(/CreditNote/CreditNoteHeader/InvoiceReferences/InvoiceDate, '-', '')"/>
+			<xsl:value-of select="translate(/CreditNoteHeader/CreditNoteReferences/CreditNoteDate, '-', '')"/>
 			<xsl:text>,</xsl:text>
-			<xsl:value-of select="/CreditNote/CreditNoteHeader/InvoiceReferences/InvoiceReference"/>
+			<xsl:value-of select="/CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteReference"/>
 			<xsl:text>,</xsl:text>
-			<xsl:value-of select="/CreditNote/CreditNoteHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
+			<xsl:value-of select="$BarCode"/>
 			<xsl:text> </xsl:text>
 			<xsl:value-of select="substring(translate(/CreditNote/CreditNoteHeader/Supplier/SuppliersName, ',', ';'), 1, 18)"/>
 			<xsl:text> CN</xsl:text>
@@ -172,11 +182,11 @@ will be concatenated by a subsequent processor.
 			<xsl:value-of select="user:msCarriageReturn()"/>
 		</xsl:for-each>
 		<!--Supplier Line-->
-		<xsl:value-of select="translate(/CreditNote/CreditNoteHeader/InvoiceReferences/InvoiceDate, '-', '')"/>
+		<xsl:value-of select="translate(/CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteDate, '-', '')"/>
 		<xsl:text>,</xsl:text>
-		<xsl:value-of select="/CreditNote/CreditNoteHeader/InvoiceReferences/InvoiceReference"/>
+		<xsl:value-of select="/CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteReference"/>
 		<xsl:text>,</xsl:text>
-		<xsl:value-of select="/CreditNote/CreditNoteHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
+		<xsl:value-of select="$BarCode"/>
 		<xsl:text> </xsl:text>
 		<xsl:value-of select="substring(translate(/CreditNote/CreditNoteHeader/Supplier/SuppliersName, ',', ';'), 1, 18)"/>
 		<xsl:text> CN</xsl:text>
@@ -187,9 +197,9 @@ will be concatenated by a subsequent processor.
 		<xsl:text>,</xsl:text>
 		<xsl:value-of select="/CreditNote/CreditNoteTrailer/DocumentTotalInclVAT"/>
 		<xsl:text>,</xsl:text>
-		<xsl:text>PI</xsl:text>
+		<xsl:text>PC</xsl:text>
 		<xsl:text>,</xsl:text>
-		<xsl:text>C</xsl:text>
+		<xsl:text>D</xsl:text>
 		<xsl:text>,</xsl:text>
 		<xsl:value-of select="/CreditNote/CreditNoteHeader/HeaderExtraData/NominalCode"/>
 	</xsl:template>
