@@ -27,6 +27,52 @@
 		<xsl:copy/>
 	</xsl:template>
 	<!-- END of GENERIC HANDLERS -->
+	
+	<!-- 3663 specific, H433 implemenatation ensure unique FGNs by prepending SendersBranchReference to left 0 padded original FGN -->
+	<xsl:template match="BatchInformation/FileGenerationNo">
+		<xsl:variable name="FGN" select="string(.)"/>
+		<xsl:variable name="FGNLength" select="string-length($FGN)"/>
+		<xsl:variable name="PaddedFGN" select="substring(concat('0000', $FGN), 1 + $FGNLength)"/>
+		<xsl:copy>
+			<xsl:choose>
+				<xsl:when test="($FGNLength &gt; 0) and ($FGNLength &lt; 5) and (string(number($FGN)) != 'NaN')">
+					<!-- Action to take if FGN is between 1 and 4 in length and is a numeric:  -->
+					<!-- Back out to BatchInformation, again to StatementHeader, again to Statement, then down into TradeSimpleHeader, and again into SendersBranchReference -->
+					<xsl:variable name="SBR" select="string(../../../TradeSimpleHeader/SendersBranchReference)"/>
+					<xsl:variable name="SBRLength" select="string-length($SBR)"/>
+					<xsl:choose>
+						<xsl:when test="($SBRLength &gt; 0) and ($SBRLength &lt; 5) and (string(number($SBR)) != 'NaN')">
+							<!-- Action to take when SBR is numeric and between 1 and 4 characters long -->
+							<xsl:value-of select="concat($SBR, $PaddedFGN)"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="concat('FGN cannot be combined with SBR: ', $SBR, ' to meet requirements of H433')"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="concat('FGN: ', $FGN, ' does not meet requirements of H433')"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:copy>
+	</xsl:template>
+	
+	<xsl:template match="ShipToLocationID/SuppliersCode">
+		<xsl:copy>
+			<xsl:call-template name="Combine3663DocRefAndUnitCode">
+				<!-- DocRef requires backout to ShipToLocationID. again to StatementLine -->
+				<xsl:with-param name="DocRef" select="../../DocumentReference"/>
+				<xsl:with-param name="UnitCode" select="."/>
+			</xsl:call-template>
+		</xsl:copy>
+	</xsl:template>
+	<xsl:template name="Combine3663DocRefAndUnitCode">
+		<xsl:param name="DocRef"/>
+		<xsl:param name="UnitCode"/>
+		<!-- Concat first two chars of DocRef with this value -->
+		<xsl:value-of select="concat(substring($DocRef,1,2), $UnitCode)"/>
+	</xsl:template>
+	<!-- End of 3663 specific section -->
 
 	<!-- StatementLine/DocumentType needs to be mapped: 05 -> Invoice, 06 -> Credit -->
 	<xsl:template match="StatementLine/DocumentType">
