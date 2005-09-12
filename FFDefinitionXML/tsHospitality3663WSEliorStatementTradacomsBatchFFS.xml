@@ -120,11 +120,11 @@
 							<StatementLine>
 								<ShipToLocationID>
 									<!-- NOT USED FOR GLN, actually used to store SRMINF - SRD - SEQA for matching with SRMINF - DNB - SEQA -->
-									<GLN RecordPos="SRD=" LPos="1"/>
+									<!--<GLN RecordPos="SRD=" LPos="1"/>-->
 									<!-- NOT USED FOR BuyersCode, actually used to store SRMINF - DNB - SEQA -->
-									<BuyersCode RecordPos="DNB=" LPos="1"/>
-									<!-- OPTIONAL Supplier’s Delivery Location Code, MANDATORY, SRMINF – SRD – CLOC(2), Same value as Sender’s code for recipient on the invoice/credit note -->
-									<SuppliersCode RecordPos="SRD=" LPos="2" SFPos="2"/>
+									<!--<BuyersCode RecordPos="DNB=" LPos="1"/>-->
+									<!-- OPTIONAL Supplier’s Delivery Location Code, MANDATORY, SRMINF – SRD – CLOC(3), Same value as Sender’s code for recipient on the invoice/credit note -->
+									<SuppliersCode RecordPos="SRD=" LPos="2" SFPos="3"/>
 								</ShipToLocationID>
 								<!-- MANDATORY Invoice/Credit Indicator, MANDATORY, SRMINF – SRD – LINE, TRADACOMS: 05 – Invoice, 06 – Credit note, SCHEMA 'Invoice' or 'Credit'	“Invoice” or “Credit” -->
 								<DocumentType RecordPos="SRD=" LPos="3"/>
@@ -137,10 +137,10 @@
 								<!-- MANDATORY Invoice/Credit VAT Amount, MANDATORY, SRMINF – SRD – LIDV, 2 d.p. implied - If SRMINF – SRD – LINE = “06” then multiply by –1.The document total amount of VAT payable -->
 								<LineVATAmount RecordPos="SRD=" LPos="7"/>
 								<!-- OPTIONAL Narrative, OPTIONAL, SRMINF – DNB – GNAR(1…4), (where SEQA matches line above) Any free text associated with this document -->
-								<Narrative RecordPos="DNB=" LPos="5">
-									<!-- NOT USED FOR Code, actually used to store SRMINF - DNB - SEQB -->
+								<!--<Narrative RecordPos="DNB=" LPos="5">
+									 NOT USED FOR Code, actually used to store SRMINF - DNB - SEQB 
 									<ffsAttribute1 name="Code" RecordPos="DNB=" LPos="2"/>
-								</Narrative>
+								</Narrative>-->
 							</StatementLine>
 						</StatementDetail>
 						<StatementTrailer>
