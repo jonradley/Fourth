@@ -23,6 +23,8 @@
  30/08/2005        | A Sheppard    | Bug fix
 =========================================================================================
  14/09/2005		| A Sheppard 	| Minor alteration for spec change
+=========================================================================================
+ 23/09/2005		| Lee Boyton	| H510. Strip leading zeros from numeric delivery note references.
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -82,7 +84,9 @@
 			</xsl:if>
 			<xsl:text>,</xsl:text>
 			
-			<xsl:value-of select="(/*/*/InvoiceLine | /*/*/CreditNoteLine)/DeliveryNoteReferences/DeliveryNoteReference"/>
+			<xsl:call-template name="msStripLeadingZeros">
+				<xsl:with-param name="vsDNRef" select="(/*/*/InvoiceLine | /*/*/CreditNoteLine)/DeliveryNoteReferences/DeliveryNoteReference"/>
+			</xsl:call-template>
 			<xsl:text>,</xsl:text>
 			
 			<xsl:call-template name="msFormatDate">
@@ -185,5 +189,25 @@
             		</xsl:otherwise>
         	</xsl:choose>
     	</xsl:template>
+
+	<xsl:template name="msStripLeadingZeros">
+		<xsl:param name="vsDNRef"/>
+		
+		<!--
+		 convert the input value to a number to strip leading zeros.
+		 if the input value is not a number then it will return the 'NaN' token, hence
+		 the slightly bizarre test below because NaN != NaN.
+		 -->
+		<xsl:choose>
+			<xsl:when test="number($vsDNRef) != number($vsDNRef)">
+				<!-- i.e. not a number -->
+				<xsl:value-of select="$vsDNRef"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="number($vsDNRef)"/>
+			</xsl:otherwise>
+		</xsl:choose>
+		
+	</xsl:template>
 	
 </xsl:stylesheet>
