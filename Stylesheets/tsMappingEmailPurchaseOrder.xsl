@@ -13,6 +13,10 @@
 ******************************************************************************************
  02/02/2004 | A Sheppard | Created module.
 ******************************************************************************************
+ 30/09/2005 | Lee Boyton | H488. Added banner for test documents.
+******************************************************************************************
+            |            |
+******************************************************************************************
 -->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 	
@@ -52,6 +56,10 @@
 				{
 				    FONT-SIZE: 8pt
 				}
+				TABLE.Test
+				{
+				    BACKGROUND-COLOR: #ff0000;
+				}				
 				TABLE.DocumentSurround
 				{
 				    BACKGROUND-COLOR: #dde6e4;
@@ -102,6 +110,21 @@
 			</style>
 			<body>
 				<table class="DocumentSurround">	
+					<!-- if this is a test document then add a distinctive banner to indicate this fact -->
+					<xsl:if test="/PurchaseOrder/TradeSimpleHeader/TestFlag = 'true' or /PurchaseOrder/TradeSimpleHeader/TestFlag = '1'">
+						<tr>
+							<td align="center" colspan="2">
+								<table class="Test" width="100%">
+									<tr>
+										<td align="center"><b>TEST ORDER</b></td>		
+									</tr>
+									<tr>
+										<td><b>This order should <u>not</u> be fulfilled.</b> This order has been generated from the ABS test Portal or under a test account from the live Portal. It is a test order, and does not constitute a request for provisions or services. If you have received this on a live trading account, then please contact the ABS Helpdesk team on 01993 899294.</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</xsl:if>				
 					<!--Header-->
 					<tr>
 						<td align="center" colspan="2">
