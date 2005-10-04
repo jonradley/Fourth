@@ -14,6 +14,8 @@
 '******************************************************************************************
 ' 22/09/2005  | Calum Scott  | Created
 '******************************************************************************************
+' 04/10/2005  | Lee Boyton   | Minor corrections to use pipe rather than a comma.
+'******************************************************************************************
 '             |              | 
 '******************************************************************************************
 -->
@@ -27,7 +29,7 @@
 	
 		<!-- Row Type -->
 		<xsl:text>H</xsl:text>
-		<xsl:text>,</xsl:text>
+		<xsl:text>|</xsl:text>
 		
 		<!-- Recipient's Code for Unit -->
 		<xsl:value-of select="string(TradeSimpleHeader/RecipientsCodeForSender)"/>
@@ -91,7 +93,7 @@
 		
 		<!-- Delivery Location Address PostCode -->
 		<xsl:value-of select="substring(PurchaseOrderHeader/ShipTo/ShipToAddress/PostCode,1,9)"/>
-		<xsl:text>,</xsl:text>
+		<xsl:text>|</xsl:text>
 		
 		<!-- Number Of Lines -->
 		<xsl:value-of select="PurchaseOrderTrailer/NumberOfLines"/>
