@@ -25,6 +25,8 @@
  14/09/2005		| A Sheppard 	| Minor alteration for spec change
 =========================================================================================
  23/09/2005		| Lee Boyton	| H510. Strip leading zeros from numeric delivery note references.
+=========================================================================================
+ 04/10/2005		| A Sheppard	| H512. A couple of alterations in line with new spec version.
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -48,14 +50,15 @@
 		
 		Record Type		A (1)						-								M		Fixed as ‘1’
 		House Code			A (7)						Delivery Location (House) Code	M
-		House Name		A (??)						Delivery Location (House) Name	O		Leave empty if not provided.
+		House Name		A (30)						Delivery Location (House) Name	O		Leave empty if not provided.
 		Purchase Order 	A (??)						Purchase Order Number			O		Leave empty if not provided.
 		  Reference	
 		Purchase Order 	D							Purchase Order Date			O		DD/MM/YYYY
 		  Date
-		Delivery Note 		??							Delivery Note Number			O	
+		Delivery Note 		30							Delivery Note Number			O	
 		  Number	
-		Delivery Date		D							Delivery Date					O		DD/MM/YYYY
+		Delivery/Credit 		D							Delivery/Credit Date				O		DD/MM/YYYY (credit note date for credit, delivery date for invoice)
+		  Date
 		Empty 1				
 		Empty 2				
 		Empty 3				
@@ -71,7 +74,7 @@
 			<xsl:value-of select="/*/*/ShipTo/ShipToLocationID/SuppliersCode"/>
 			<xsl:text>,</xsl:text>
 			
-			<xsl:value-of select="/*/*/ShipTo/ShipToName"/>
+			<xsl:value-of select="substring(/*/*/ShipTo/ShipToName, 1, 30)"/>
 			<xsl:text>,</xsl:text>
 			
 			<xsl:value-of select="(/*/*/InvoiceLine | /*/*/CreditNoteLine)/PurchaseOrderReferences/PurchaseOrderReference"/>
@@ -90,7 +93,7 @@
 			<xsl:text>,</xsl:text>
 			
 			<xsl:call-template name="msFormatDate">
-				<xsl:with-param name="vsDate" select="(/*/*/InvoiceLine | /*/*/CreditNoteLine)/DeliveryNoteReferences/DeliveryNoteDate"/>
+				<xsl:with-param name="vsDate" select="(/Invoice/InvoiceDetail/InvoiceLine/DeliveryNoteReferences/DeliveryNoteDate | /CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteDate)"/>
 			</xsl:call-template>
 			<xsl:text>,</xsl:text>
 
@@ -201,10 +204,10 @@
 		<xsl:choose>
 			<xsl:when test="number($vsDNRef) != number($vsDNRef)">
 				<!-- i.e. not a number -->
-				<xsl:value-of select="$vsDNRef"/>
+				<xsl:value-of select="substring($vsDNRef, 1, 30)"/>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:value-of select="number($vsDNRef)"/>
+				<xsl:value-of select="substring(number($vsDNRef), 1, 30)"/>
 			</xsl:otherwise>
 		</xsl:choose>
 		
