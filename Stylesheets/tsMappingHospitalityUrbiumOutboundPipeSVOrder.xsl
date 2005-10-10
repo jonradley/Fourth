@@ -16,6 +16,8 @@
 '******************************************************************************************
 ' 04/10/2005  | Lee Boyton   | Minor corrections to use pipe rather than a comma.
 '******************************************************************************************
+' 10/10/2005  | Lee Boyton   | Corrected delivery date element name.
+'******************************************************************************************
 '             |              | 
 '******************************************************************************************
 -->
@@ -56,7 +58,7 @@
 		<xsl:text>|</xsl:text>
 		
 		<!-- Requested Delivery Date -->
-		<xsl:value-of select="translate(PurchaseOrderHeader/OrderedDeliveryDetails/RequestedDeliveryDate,'-','')"/>
+		<xsl:value-of select="translate(PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate,'-','')"/>
 		<xsl:text>|</xsl:text>
 		
 		<!-- Delivery Slot Start Time -->
