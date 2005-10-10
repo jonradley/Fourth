@@ -14,6 +14,8 @@
 '******************************************************************************************
 ' 13/09/2005  | Calum Scott  | Created
 '******************************************************************************************
+' 10/10/2005  | Lee Boyton   | Corrected delivery date element name.
+'******************************************************************************************
 '             |              | 
 '******************************************************************************************
 -->
@@ -69,7 +71,7 @@
 		<xsl:text>,</xsl:text>
 		
 		<!-- Requested Delivery Date -->
-		<xsl:value-of select="translate(PurchaseOrderHeader/OrderedDeliveryDetails/RequestedDeliveryDate,'-','')"/>
+		<xsl:value-of select="translate(PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate,'-','')"/>
 		<xsl:text>,</xsl:text>
 		
 		<!-- Delivery Slot Start Time -->
