@@ -119,11 +119,6 @@
 				}
 			</style>
 			<body>
-				<table width="100%">
-					<tr>
-						<td align="right"><a href="javascript:window.print();"><img src="/Images/print_btn.gif" border="0"/></a></td>
-					</tr>
-				</table>
 				<table class="DocumentSurround">	
 					<!--Header-->
 					<tr>
