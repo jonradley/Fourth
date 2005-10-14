@@ -79,7 +79,7 @@ Alterations	:
 				<xsl:variable name="DiscountableTotalAtRate">
 					<xsl:choose>
 						<xsl:when test="//DebitNoteLine/NetPriceFlag">
-							<xsl:value-of select="format-number(sum(//DebitNoteLine[NetPriceFlag != '1' and NetPriceFlag!= 'true' and VATCode=$VATCode and format-number(VATRate, '#.00')=format-number($VATRate, '#.00')]/LineValueExclVAT) - sum(//DebitNoteLine[NetPriceFlag != '1' and NetPriceFlag!= 'true' and VATCode=$VATCode and format-number(VATRate, '#.00')=format-number($VATRate, '#.00')]/LineDiscountValue), '#.00')"/>
+							<xsl:value-of select="format-number(sum(//DebitNoteLine[(NetPriceFlag = '0' or NetPriceFlag = 'false' or not(NetPriceFlag)) and VATCode=$VATCode and format-number(VATRate, '#.00')=format-number($VATRate, '#.00')]/LineValueExclVAT) - sum(//DebitNoteLine[(NetPriceFlag = '0' or NetPriceFlag = 'false' or not(NetPriceFlag)) and VATCode=$VATCode and format-number(VATRate, '#.00')=format-number($VATRate, '#.00')]/LineDiscountValue), '#.00')"/>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:value-of select="DiscountedLinesTotalExclVATAtRate"/>

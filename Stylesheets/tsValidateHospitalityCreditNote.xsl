@@ -85,7 +85,7 @@ Alterations	: A Sheppard, 17/12/2004. Add tolerances
 				<xsl:variable name="DiscountableTotalAtRate">
 					<xsl:choose>
 						<xsl:when test="//CreditNoteLine/NetPriceFlag">
-							<xsl:value-of select="format-number(sum(//CreditNoteLine[NetPriceFlag != '1' and NetPriceFlag!= 'true' and VATCode=$VATCode and format-number(VATRate, '#.00')=format-number($VATRate, '#.00')]/LineValueExclVAT) - sum(//CreditNoteLine[NetPriceFlag != '1' and NetPriceFlag!= 'true' and VATCode=$VATCode and format-number(VATRate, '#.00')=format-number($VATRate, '#.00')]/LineDiscountValue), '#.00')"/>
+							<xsl:value-of select="format-number(sum(//CreditNoteLine[(NetPriceFlag = '0' or NetPriceFlag = 'false' or not(NetPriceFlag)) and VATCode=$VATCode and format-number(VATRate, '#.00')=format-number($VATRate, '#.00')]/LineValueExclVAT) - sum(//CreditNoteLine[(NetPriceFlag = '0' or NetPriceFlag = 'false' or not(NetPriceFlag)) and VATCode=$VATCode and format-number(VATRate, '#.00')=format-number($VATRate, '#.00')]/LineDiscountValue), '#.00')"/>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:value-of select="DiscountedLinesTotalExclVATAtRate"/>
