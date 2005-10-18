@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
-BRITVIC
-29th March 05 Andy Trafford Copied from tsHospitalityInvoiceTradacomsBatchFFS.xml 
-18th May 05 Andy Trafford updated to take SCR from CLO-CLOC(3) rather than (2)
-11/10/2005		R Cambridge		Removed branch reference
+<!--
+**********************************************************************
+Alterations
+**********************************************************************
+Date       | Name        | Change
+**********************************************************************
+29/03/2005 | A Trafford  | Copied from tsHospitalityInvoiceTradacomsBatchFFS.xml
+**********************************************************************
+18/05/2005 | A Trafford  | Updated to take SCR from CLO-CLOC(3) rather than (2)
+**********************************************************************
+11/10/2005 | R Cambridge | Removed branch reference
+**********************************************************************
+           |				  |
+**********************************************************************
 -->
 <ffsFlatFileSchema>
 	<ffsSettings>
@@ -106,7 +115,7 @@ BRITVIC
 				<BatchDocument>
 					<Invoice>
 						<TradeSimpleHeader>
-							<!-- Britvic specific use CLOC(3) not (2) MANDATORY Sender’s code for recipient, MANDATORY, INVOIC – CLO – CLOC(3), You must provide this code.  It is your internal identifier for the company that is to receive the document.  It must match the code that you have entered on the trading relationship you have with the other company-->
+							<!-- Urbium specific use CLOC(3) not (2) MANDATORY Sender’s code for recipient, MANDATORY, INVOIC – CLO – CLOC(3), You must provide this code.  It is your internal identifier for the company that is to receive the document.  It must match the code that you have entered on the trading relationship you have with the other company-->
 							<SendersCodeForRecipient RecordPos="CLO=" LPos="1" SFPos="3"/>
 						</TradeSimpleHeader>
 						<InvoiceHeader>
