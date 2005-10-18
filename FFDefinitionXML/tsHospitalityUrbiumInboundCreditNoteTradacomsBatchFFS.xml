@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+**********************************************************************
+Alterations
+**********************************************************************
+Date       | Name        | Change
+**********************************************************************
+11/10/2005 | R Cambridge | Removed branch reference
+**********************************************************************
+17/10/2005 | L Boyton    | Updated to take SCR from CLO-CLOC(3) rather than (2)
+**********************************************************************
+           |				  |
+**********************************************************************
+-->
 <ffsFlatFileSchema>
 	<ffsSettings>
 		<ffsRecordPositionType>named</ffsRecordPositionType>
@@ -64,12 +77,6 @@
 	</ffsSettings>
 	<ffsRoot>
 		<Batch>
-						<TradeSimpleHeader>
-							<!-- MANDATORY Sender’s code for recipient, MANDATORY, CREDIT – CLO – CLOC(2), You must provide this code.  It is your internal identifier for the company that is to receive the document. It must match the code that you have entered on the trading relationship you have with the other company -->
-							<SendersCodeForRecipient RecordPos="CLO=" LPos="1" SFPos="2"/>
-							<!-- OPTIONAL Sender’s Branch Reference, MANDATORY, CREHDR – CDT – CIDN(2), Depending on your particular relationship with the company, you must provide this code.  It is your internal identifier for the “contract” that the receiving company belongs to. It must match the code that you have provided to ABS on set-up -->
-							<!--SendersBranchReference RecordPos="CDT=" LPos="1" SFPos="2"/-->
-						</TradeSimpleHeader>
 			<BatchHeader>
 				<MHDSegment>
 					<MHDHeader RecordPos="MHD=" LPos="2" SFPos="1"/>
@@ -106,10 +113,8 @@
 				<BatchDocument>
 					<CreditNote>
 						<TradeSimpleHeader>
-							<!-- MANDATORY Sender’s code for recipient, MANDATORY, CREDIT – CLO – CLOC(2), You must provide this code.  It is your internal identifier for the company that is to receive the document. It must match the code that you have entered on the trading relationship you have with the other company -->
-							<SendersCodeForRecipient RecordPos="CLO=" LPos="1" SFPos="2"/>
-							<!-- OPTIONAL Sender’s Branch Reference, MANDATORY, CREHDR – CDT – CIDN(2), Depending on your particular relationship with the company, you must provide this code.  It is your internal identifier for the “contract” that the receiving company belongs to. It must match the code that you have provided to ABS on set-up -->
-							<!--SendersBranchReference RecordPos="CDT=" LPos="1" SFPos="2"/-->
+							<!-- MANDATORY Sender’s code for recipient, MANDATORY, CREDIT – CLO – CLOC(3), You must provide this code.  It is your internal identifier for the company that is to receive the document. It must match the code that you have entered on the trading relationship you have with the other company -->
+							<SendersCodeForRecipient RecordPos="CLO=" LPos="1" SFPos="3"/>
 						</TradeSimpleHeader>
 						<CreditNoteHeader>
 							<BatchInformation>
