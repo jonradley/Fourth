@@ -9,6 +9,8 @@ Date       | Name        | Change
 **********************************************************************
 17/10/2005 | L Boyton    | Updated to take SCR from CLO-CLOC(3) rather than (2)
 **********************************************************************
+19/10/2005 | L Boyton    | Updated to take ShipTo suppliers code from CLO-CLOC(3) rather than (2)
+**********************************************************************
            |				  |
 **********************************************************************
 -->
@@ -163,8 +165,8 @@ Date       | Name        | Change
 							</Supplier>
 							<ShipTo>
 								<ShipToLocationID>
-									<!--CREHDR-CLO-(1)2)-->
-									<SuppliersCode RecordPos="CLO=" LPos="1" SFPos="2"/>
+									<!--CREHDR-CLO-(1)3)-->
+									<SuppliersCode RecordPos="CLO=" LPos="1" SFPos="3"/>
 								</ShipToLocationID>
 								<!-- OPTIONAL Delivery Location Name, OPTIONAL, CREDIT – CLO – CNAM -->
 								<ShipToName RecordPos="CLO=" LPos="2"/>
