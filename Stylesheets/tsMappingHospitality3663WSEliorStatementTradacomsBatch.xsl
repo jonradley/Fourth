@@ -1,4 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+'******************************************************************************************
+' Overview
+'
+' Translates a 3663 Wholesale statement into the iXML statement format.
+' 
+' © Alternative Business Solutions Ltd., 2005.
+'******************************************************************************************
+' Module History
+'******************************************************************************************
+' Date        | Name         | Description of modification
+'******************************************************************************************
+'  27/06/2005 | A Trafford   | Created 
+'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+'  24/10/2005 | Lee Boyton   | H507. Line VAT amount and total should not be multiplied by
+'                            | -1 for credit lines.
+'                            | Create the StatementReferences element if it does not exist
+'                            | so that child elements are added by the in-filler.
+'                            | Only output Narrative elements if there is content.
+'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+'             |              |
+'******************************************************************************************
+-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
 	<!-- Get a node list of all the BuyersCode nodes under the Batch tag, used for matching DNB sequence number with correct line sequence number-->
@@ -72,6 +95,16 @@
 		<!-- Concat first two chars of DocRef with this value -->
 		<xsl:value-of select="concat(substring($DocRef,1,2), $UnitCode)"/>
 	</xsl:template>
+	
+	<!-- add the StatementReferences header element if it does not exist so that child elements
+	     are handled by the Hospitality in-filler -->
+	<xsl:template match="StatementHeader[not(StatementReferences)]">
+		<xsl:element name="StatementHeader">
+			<xsl:apply-templates/>
+			<xsl:element name="StatementReferences"/>
+		</xsl:element>
+	</xsl:template>
+	
 	<!-- End of 3663 specific section -->
 
 	<!-- StatementLine/DocumentType needs to be mapped: 05 -> Invoice, 06 -> Credit -->
@@ -108,12 +141,14 @@
 				<!--Now get a nodeset of all statement lines whose buyer code matches THIS line's GLN. This means we have located the statement lines containing THIS line's Narrative-->
 				<xsl:variable name="StatementLinesHoldingThisStatementLinesNarrative" select="$StatementLineNodeList[./ShipToLocationID/BuyersCode = $lLineSequence]"/>
 				<!--Copy the correct Narrative elements-->
-				<xsl:element name="Narrative">
-					<xsl:for-each select="$StatementLinesHoldingThisStatementLinesNarrative">
-						<xsl:sort select="Narrative/@Code"/>
-						<xsl:value-of select="Narrative"/>
-					</xsl:for-each>
-				</xsl:element>
+				<xsl:if test="$StatementLinesHoldingThisStatementLinesNarrative">
+					<xsl:element name="Narrative">
+						<xsl:for-each select="$StatementLinesHoldingThisStatementLinesNarrative">
+							<xsl:sort select="Narrative/@Code"/>
+							<xsl:value-of select="Narrative"/>
+						</xsl:for-each>
+					</xsl:element>
+				</xsl:if>
 			</xsl:copy>
 		</xsl:if>
 	</xsl:template>
@@ -127,12 +162,13 @@
 	</xsl:template>
 
 	<!-- SRMINF-SRD-LIDT(StatementLine/LineValueExclVAT) and SRMINF-SRD-LIDV(StatementLine/LineVATAmount) need to be multiplied by -1 if SRMINF-SRD-LINE (StatementLine/DocumentType) is 06 -->
+	<!--
 	<xsl:template match="StatementLine/LineValueExclVAT |
 						StatementLine/LineVATAmount">
 		<xsl:choose>
-			<!--Parent of these is StatementLine -->
+			Parent of these is StatementLine
 			<xsl:when test="../DocumentType = '06'" >
-				<!--SRMINF-SRD-LINE is 06, multiply by -1-->
+				SRMINF-SRD-LINE is 06, multiply by -1
 				<xsl:call-template name="copyCurrentNodeExplicit2DP">
 					<xsl:with-param name="lMultiplier" select="-1.0"/>
 				</xsl:call-template>
@@ -142,11 +178,14 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+	-->	
 	
 	<!-- SIMPLE CONVERSION IMPLICIT TO EXPLICIT 2 D.P -->
 	<!-- Add any XPath whose text node needs to be converted from implicit to explicit 2 D.P. -->
 	<xsl:template match="StatementTrailer/TotalExclVAT |
-						StatementTrailer/VATAmount">
+						StatementTrailer/VATAmount |
+						StatementLine/LineValueExclVAT |
+						StatementLine/LineVATAmount">
 		<xsl:call-template name="copyCurrentNodeExplicit2DP"/>
 	</xsl:template>
 	
