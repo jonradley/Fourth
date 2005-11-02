@@ -15,6 +15,9 @@
 ==========================================================================================
  28/10/2005	| R Cambridge	| H522 Created module
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 02/12/2005 | Lee Boyton  | H522. Map Supplier's ANA to SuppliersCode for
+                          | consistency with invoices and credit note documents.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 				| 					|
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="msxsl">
@@ -71,6 +74,7 @@
 									<Supplier>
 										<SuppliersLocationID>
 											<GLN><xsl:value-of select="$objDoc/SendersANA"/></GLN>
+											<SuppliersCode><xsl:value-of select="$sCurrentANA"/></SuppliersCode>
 										</SuppliersLocationID>
 									</Supplier>
 									<ShipTo>
