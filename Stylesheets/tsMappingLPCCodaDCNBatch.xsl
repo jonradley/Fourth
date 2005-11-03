@@ -11,6 +11,8 @@
  Date           	 	| Name             	| Description of modification
 ==========================================================================================
  25/10/2005        | A Sheppard    | Created module
+==========================================================================================
+ 03/11/2005        | Lee Boyton    | H522. We now have the house code for 'CDC' lines.
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl script">
@@ -43,7 +45,7 @@
 		<xsl:text>&#13;&#10;</xsl:text>
 		
 		<!--Add the CDC stock reduction line-->
-		<xsl:text>TO BE DEFINED</xsl:text>
+		<xsl:text>9000</xsl:text>
 		<xsl:text>,</xsl:text>
 		<xsl:value-of select="/DeliveryNote/DeliveryNoteHeader/DeliveryNoteReferences/DeliveryNoteReference"/>
 		<xsl:text>,</xsl:text>
