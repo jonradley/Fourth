@@ -37,34 +37,9 @@
 				
 				
 					<xsl:for-each select="/Batch/BatchDocuments/BatchDocument/DeliveryNote">
-					
-						<!-- get distinct supplier ANA numbers in this doc -=>	
-						
-						<xsl:variable name="sDistinctANAs">
-						
-							<xsl:for-each select="Lines/Line">
-							
-								<xsl:variable name="sANA" select="string(@SuppliersANANumber)"/>
-								
-								<xsl:if test="not(preceding-sibling::Line[string(@SuppliersANANumber) = $sANA])">
-									<ANA><xsl:value-of select="$sANA"/></ANA>
-								</xsl:if>			
-							
-							</xsl:for-each>
-							
-						</xsl:variable>
-						
-						<!=- Bind current doc to this variable as current node goes out of scope in the following for-each -=>
-						<xsl:variable name="objDoc" select="."/>			
-						
-						<xsl:for-each select="msxsl:node-set($sDistinctANAs)/ANA">
-						
-						<xsl:variable name="sCurrentANA" select="string(.)"/-->
 				
 						<BatchDocument>
-							<xsl:attribute name="DocumentTypeNo">
-								<xsl:value-of select="number(/Batch/BatchDocuments/BatchDocument/@DocumentTypeNo)"/>
-							</xsl:attribute>
+							<xsl:attribute name="DocumentTypeNo">7</xsl:attribute>
 							<DeliveryNote>
 								<TradeSimpleHeader>
 									<SendersCodeForRecipient><xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/></SendersCodeForRecipient>
