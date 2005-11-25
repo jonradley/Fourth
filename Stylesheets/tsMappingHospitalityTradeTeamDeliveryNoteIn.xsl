@@ -18,179 +18,183 @@
  02/12/2005 | Lee Boyton  | H522. Map Supplier's ANA to SuppliersCode for
                           | consistency with invoices and credit note documents.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 25/11/2005	| R Cambridge	| H522 Changed input can be output of FF2XML
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 				| 					|
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="msxsl">
 	<xsl:output method="xml" encoding="utf-8"/>
 
 	<xsl:template match="/">
+
+		<BatchRoot>
 	
-		<Batch>
-			<TradeSimpleHeader>
-				<SendersCodeForRecipient><xsl:value-of select="/Documents/Document/SendersCodeForRecipient"/></SendersCodeForRecipient>
-			</TradeSimpleHeader>
-			<BatchDocuments>
-			
-			
-				<xsl:for-each select="/Documents/Document">
+			<Batch>
+				<TradeSimpleHeader>
+					<SendersCodeForRecipient><xsl:value-of select="/Batch/BatchDocuments/BatchDocument/DeliveryNote/SendersCodeForRecipient"/></SendersCodeForRecipient>
+				</TradeSimpleHeader>
+				<BatchDocuments>
 				
-					<!-- get distinct supplier ANA numbers in this doc -->	
+				
+					<xsl:for-each select="/Batch/BatchDocuments/BatchDocument/DeliveryNote">
 					
-					<xsl:variable name="sDistinctANAs">
-					
-						<xsl:for-each select="Lines/Line">
+						<!-- get distinct supplier ANA numbers in this doc -=>	
 						
-							<xsl:variable name="sANA" select="string(@SuppliersANANumber)"/>
+						<xsl:variable name="sDistinctANAs">
+						
+							<xsl:for-each select="Lines/Line">
 							
-							<xsl:if test="not(preceding-sibling::Line[string(@SuppliersANANumber) = $sANA])">
-								<ANA><xsl:value-of select="$sANA"/></ANA>
-							</xsl:if>			
+								<xsl:variable name="sANA" select="string(@SuppliersANANumber)"/>
+								
+								<xsl:if test="not(preceding-sibling::Line[string(@SuppliersANANumber) = $sANA])">
+									<ANA><xsl:value-of select="$sANA"/></ANA>
+								</xsl:if>			
+							
+							</xsl:for-each>
+							
+						</xsl:variable>
 						
-						</xsl:for-each>
+						<!=- Bind current doc to this variable as current node goes out of scope in the following for-each -=>
+						<xsl:variable name="objDoc" select="."/>			
 						
-					</xsl:variable>
-					
-					<!-- Bind current doc to this variable as current node goes out of scope in the following for-each -->
-					<xsl:variable name="objDoc" select="."/>			
-					
-					<xsl:for-each select="msxsl:node-set($sDistinctANAs)/ANA">
-					
-						<xsl:variable name="sCurrentANA" select="string(.)"/>
-			
-						<BatchDocument DocumentTypeNo="7">
+						<xsl:for-each select="msxsl:node-set($sDistinctANAs)/ANA">
+						
+						<xsl:variable name="sCurrentANA" select="string(.)"/-->
+				
+						<BatchDocument>
+							<xsl:attribute name="DocumentTypeNo">
+								<xsl:value-of select="number(/Batch/BatchDocuments/BatchDocument/@DocumentTypeNo)"/>
+							</xsl:attribute>
 							<DeliveryNote>
 								<TradeSimpleHeader>
-									<SendersCodeForRecipient><xsl:value-of select="$objDoc/SendersCodeForRecipient"/></SendersCodeForRecipient>
-									<xsl:if test="string() != ''"><SendersBranchReference><xsl:value-of select="$sCurrentANA"/></SendersBranchReference></xsl:if>
+									<SendersCodeForRecipient><xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/></SendersCodeForRecipient>
+									<!--xsl:if test="string() != ''"><SendersBranchReference><xsl:value-of select="$sCurrentANA"/></SendersBranchReference></xsl:if-->
 								</TradeSimpleHeader>
 								<DeliveryNoteHeader>
-									<!--BatchInformation/>
-									<DocumentStatus/-->
+								
 									<Buyer>
 										<BuyersLocationID>
-											<GLN><xsl:value-of select="$objDoc/SendersCodeForRecipient"/></GLN>
+											<GLN><xsl:value-of select="DeliveryNoteHeader/Buyer/BuyersLocationID/GLN"/></GLN>
 										</BuyersLocationID>
 									</Buyer>
+									
 									<Supplier>
 										<SuppliersLocationID>
-											<GLN><xsl:value-of select="$objDoc/SendersANA"/></GLN>
-											<SuppliersCode><xsl:value-of select="$sCurrentANA"/></SuppliersCode>
+											<GLN><xsl:value-of select="DeliveryNoteHeader/Supplier/SuppliersLocationID/GLN"/></GLN>
+											<SuppliersCode><xsl:value-of select="DeliveryNoteHeader/Supplier/SuppliersLocationID/GLN"/></SuppliersCode>
 										</SuppliersLocationID>
 									</Supplier>
+									
 									<ShipTo>
 										<ShipToLocationID>
 											<GLN>5555555555555</GLN>
-											<SuppliersCode><xsl:value-of select="$objDoc/ShipToCode"/></SuppliersCode>
+											<SuppliersCode><xsl:value-of select="DeliveryNoteHeader/ShipTo/ShipToLocationID/SuppliersCode"/></SuppliersCode>
 										</ShipToLocationID>
-										<ShipToName><xsl:value-of select="$objDoc/ShipToName"/></ShipToName>
+										<ShipToName><xsl:value-of select="DeliveryNoteHeader/ShipTo/ShipToName"/></ShipToName>
 										<ShipToAddress>
-											<xsl:call-template name="mobjShuffleAddressLines">
+											<xsl:for-each select="DeliveryNoteHeader/ShipTo/ShipToAddress/*[string != '']">
+												<xsl:element name="{concat('AddressLine',string(position()))}">
+													<xsl:value-of select="."/>
+												</xsl:element>										
+											</xsl:for-each>									
+											<!--xsl:call-template name="mobjShuffleAddressLines">
 												<xsl:with-param name="vsAddressLines" select="concat($objDoc/ShipToAddress,':')"/>
 												<xsl:with-param name="vnLineNumber" select="1"/>
-											</xsl:call-template>
+											</xsl:call-template-->
 										</ShipToAddress>
 									</ShipTo>
+									
+									<xsl:variable name="sDocumentDate">
+										<xsl:call-template name="msFormatDate">
+											<xsl:with-param name="vsYYMMDD" select="DeliveryNoteHeader/DeliveryNoteReferences/DeliveryNoteDate"/>
+										</xsl:call-template>
+									</xsl:variable>
+									<xsl:variable name="sDeliveryDate">
+										<xsl:call-template name="msFormatDate">
+											<xsl:with-param name="vsYYMMDD" select="DeliveryNoteHeader/DeliveredDeliveryDetails/DeliveryDate"/>
+										</xsl:call-template>
+									</xsl:variable>
+									
 									<PurchaseOrderReferences>
 										<PurchaseOrderReference>Not provided</PurchaseOrderReference>
-										<PurchaseOrderDate><xsl:value-of select="$objDoc/DeliveryNoteDate"/></PurchaseOrderDate>
+										<PurchaseOrderDate><xsl:value-of select="$sDocumentDate"/></PurchaseOrderDate>
 									</PurchaseOrderReferences>
+									
 									<PurchaseOrderConfirmationReferences>
 										<PurchaseOrderConfirmationReference>Not provided</PurchaseOrderConfirmationReference>
-										<PurchaseOrderConfirmationDate><xsl:value-of select="$objDoc/DeliveryNoteDate"/></PurchaseOrderConfirmationDate>
+										<PurchaseOrderConfirmationDate><xsl:value-of select="$sDocumentDate"/></PurchaseOrderConfirmationDate>
 									</PurchaseOrderConfirmationReferences>
+									
 									<DeliveryNoteReferences>
-										<DeliveryNoteReference><xsl:value-of select="$objDoc/DeliveryNoteNumber"/></DeliveryNoteReference>
-										<DeliveryNoteDate><xsl:value-of select="$objDoc/DeliveryNoteDate"/></DeliveryNoteDate>
-										<DespatchDate><xsl:value-of select="$objDoc/DeliveryDate"/></DespatchDate>
+										<DeliveryNoteReference><xsl:value-of select="DeliveryNoteHeader/DeliveryNoteReferences/DeliveryNoteReference"/></DeliveryNoteReference>
+										<DeliveryNoteDate><xsl:value-of select="$sDocumentDate"/></DeliveryNoteDate>
+										<DespatchDate><xsl:value-of select="$sDeliveryDate"/></DespatchDate>
 									</DeliveryNoteReferences>
+									
 									<DeliveredDeliveryDetails>
 										<!--DeliveryType/-->
-										<DeliveryDate><xsl:value-of select="$objDoc/DeliveryDate"/></DeliveryDate>
+										<DeliveryDate><xsl:value-of select="$sDeliveryDate"/></DeliveryDate>
 									</DeliveredDeliveryDetails>
+									
 								</DeliveryNoteHeader>
 								
 								<DeliveryNoteDetail>
 								
-									<xsl:for-each select="$objDoc/Lines/Line[string(@SuppliersANANumber) = $sCurrentANA]">
+									<!--xsl:for-each select="$objDoc/Lines/Line[string(@SuppliersANANumber) = $sCurrentANA]"-->
+									<xsl:for-each select="DeliveryNoteDetail/DeliveryNoteLine">								
 									
 										<DeliveryNoteLine>
 										
 											<ProductID>
 												<GTIN>5555555555555</GTIN>
-												<SuppliersProductCode><xsl:value-of select="SuppliersProductCode"/></SuppliersProductCode>
+												<SuppliersProductCode><xsl:value-of select="ProductID/SuppliersProductCode"/></SuppliersProductCode>
 											</ProductID>
 											
 											<ProductDescription><xsl:value-of select="ProductDescription"/></ProductDescription>
 											
 											<xsl:variable name="sQuantity">
-												<xsl:if test="string(CreditFlag) = 'C'">-</xsl:if>
-												<xsl:value-of select="DeliveredQuantity"/>
+												<xsl:if test="string(OrderedQuantity) = 'C'">-</xsl:if>
+												<xsl:value-of select="DespatchedQuantity"/>
 											</xsl:variable>
 											
 											<OrderedQuantity UnitOfMeasure="EA"><xsl:value-of select="$sQuantity"/></OrderedQuantity>
 											<ConfirmedQuantity UnitOfMeasure="EA"><xsl:value-of select="$sQuantity"/></ConfirmedQuantity>
 											<DespatchedQuantity UnitOfMeasure="EA"><xsl:value-of select="$sQuantity"/></DespatchedQuantity>
 											<UnitValueExclVAT><xsl:value-of select="UnitPrice"/></UnitValueExclVAT>
-
+			
 											<LineExtraData>
 												<IsStockProduct>true</IsStockProduct>
-												<xsl:if test="$sCurrentANA = ''">
-													<UnallocatedLine>true</UnallocatedLine>
-												</xsl:if>
-											</LineExtraData>
-																						
+												<UnallocatedLine>true</UnallocatedLine>
+											</LineExtraData>																					
 											
 										</DeliveryNoteLine>
-
+			
 									</xsl:for-each>
 									
 								</DeliveryNoteDetail>
 								<DeliveryNoteTrailer>
-									<NumberOfLines><xsl:value-of select="count($objDoc/Lines/Line[string(@SuppliersANANumber) = $sCurrentANA])"/></NumberOfLines>
+									<NumberOfLines><xsl:value-of select="count(DeliveryNoteDetail/DeliveryNoteLine)"/></NumberOfLines>
 								</DeliveryNoteTrailer>
 							</DeliveryNote>
 						</BatchDocument>
+							
+						<!--/xsl:for-each-->
 						
 					</xsl:for-each>
-					
-				</xsl:for-each>
-					
-			</BatchDocuments>
-		</Batch>
+						
+				</BatchDocuments>
+			</Batch>
+			
+		</BatchRoot>
 	
 	</xsl:template>
 	
 	
-	<xsl:template name="mobjShuffleAddressLines">
-		<xsl:param name="vsAddressLines"/>
-		<xsl:param name="vnLineNumber"/>
-
-		<xsl:choose>
+	<xsl:template name="msFormatDate">
+		<xsl:param name="vsYYMMDD"/>
 		
-			<xsl:when test="$vsAddressLines = '' or $vnLineNumber &gt; 4"/>
-			
-			<xsl:when test="substring-before($vsAddressLines,':') = ''">			
-				<xsl:call-template name="mobjShuffleAddressLines">
-					<xsl:with-param name="vsAddressLines" select="substring-after($vsAddressLines,':')"/>
-					<xsl:with-param name="vnLineNumber" select="$vnLineNumber"/>
-				</xsl:call-template>			
-			</xsl:when>
-			
-			<xsl:otherwise>
-			
-				<xsl:element name="{concat('AddressLine',string($vnLineNumber))}">
-					<xsl:value-of select="substring-before($vsAddressLines,':')"/>
-				</xsl:element>
-			
-				<xsl:call-template name="mobjShuffleAddressLines">
-					<xsl:with-param name="vsAddressLines" select="substring-after($vsAddressLines,':')"/>
-					<xsl:with-param name="vnLineNumber" select="$vnLineNumber + 1"/>
-				</xsl:call-template>
-			
-			</xsl:otherwise>
-			
-		</xsl:choose>
-
+		<xsl:value-of select="concat('20',substring($vsYYMMDD,1,2),'-',substring($vsYYMMDD,3,2),'-',substring($vsYYMMDD,5,2))"/>
+		
 	</xsl:template>
 										
 
