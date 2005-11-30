@@ -13,14 +13,14 @@
 ==========================================================================================
  Date			| Name 			| Description of modification
 ==========================================================================================
- 28/10/2005	| R Cambridge	| H522 Created module
+ 28/10/2005		| R Cambridge	| H522 Created module
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- 02/12/2005 | Lee Boyton  | H522. Map Supplier's ANA to SuppliersCode for
-                          | consistency with invoices and credit note documents.
+ 02/12/2005 	| Lee Boyton  	| H522. Map Supplier's ANA to SuppliersCode for
+                          					| consistency with invoices and credit note documents.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- 25/11/2005	| R Cambridge	| H522 Changed input can be output of FF2XML
+ 25/11/2005		| R Cambridge	| H522 Changed input can be output of FF2XML
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-				| 					|
+30/11/2005		| A Sheppard	| H522. Removed unallocated line
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="msxsl">
 	<xsl:output method="xml" encoding="utf-8"/>
@@ -138,8 +138,7 @@
 											<UnitValueExclVAT><xsl:value-of select="UnitPrice"/></UnitValueExclVAT>
 			
 											<LineExtraData>
-												<IsStockProduct>true</IsStockProduct>
-												<UnallocatedLine>true</UnallocatedLine>
+												<IsStockProduct>1</IsStockProduct>
 											</LineExtraData>																					
 											
 										</DeliveryNoteLine>
