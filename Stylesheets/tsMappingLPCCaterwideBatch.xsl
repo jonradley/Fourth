@@ -173,7 +173,7 @@
 						
 				<xsl:text>1,</xsl:text>
 							
-				<xsl:text>CDC</xsl:text>
+				<xsl:text>9000</xsl:text>
 				<xsl:text>,</xsl:text>
 				
 				<xsl:value-of select="substring(/*/*/ShipTo/ShipToName, 1, 30)"/>
