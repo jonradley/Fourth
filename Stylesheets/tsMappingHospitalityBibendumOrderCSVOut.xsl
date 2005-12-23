@@ -12,7 +12,7 @@
 		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/><xsl:text>,</xsl:text>
 		<xsl:text>220,</xsl:text>
 		<xsl:text>,</xsl:text>
-		Sequential number allocated by tradesimple for each buyer-Bibendum pair<xsl:text>,</xsl:text>
+		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/FileGenerationNumber"/><xsl:text>,</xsl:text>
 		<xsl:text>1,</xsl:text>
 		<xsl:value-of select="vbscript:msGetDate()"/><xsl:text>,</xsl:text>		
 		<xsl:value-of select="vbscript:msGetTime()"/><xsl:text>,</xsl:text>		
