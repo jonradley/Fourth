@@ -152,9 +152,7 @@
 			<xsl:text>,</xsl:text>
 			<xsl:value-of select="OrderedQuantity"/><xsl:text>,</xsl:text>
 			<xsl:text>,</xsl:text>
-			See below
 			<xsl:value-of select="translate(format-number(UnitValueExclVAT,'#.0000'),'.','')"/><xsl:text>,</xsl:text>
-			(4 d.p. implied e.g. £10.50 = 105000)
 			<xsl:text>,</xsl:text>
 			<xsl:text>,</xsl:text>
 			<xsl:variable name="sProductDesc" select="concat(ProductDescription, ' (', Packsize,')')"/>
