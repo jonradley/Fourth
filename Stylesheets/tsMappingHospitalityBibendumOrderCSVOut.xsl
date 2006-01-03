@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--======================================================================================
+ Overview
+
+ © Alternative Business Solutions Ltd, 2006
+==========================================================================================
+ Module History
+==========================================================================================
+ Version		| 
+==========================================================================================
+ Date			| Name 					| Description of modification
+==========================================================================================
+ 03/01/2006	| Robert Cambridge	| Created module
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+				| 							|
+=======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 	xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:vbscript="http://abs-ltd.com/blah">
+	
+	<xsl:output method="text" encoding="utf-8"/>
 
 	<xsl:template match="/">
 	
@@ -32,12 +49,13 @@
 		<xsl:text>,</xsl:text>
 		<xsl:text>,</xsl:text>
 		<xsl:text>,</xsl:text>
+		<xsl:text>&#13;&#10;</xsl:text>
 		
 		
 		<xsl:text>SUPPLIER,</xsl:text>
 		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/><xsl:text>,</xsl:text>
 		<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN != '5555555555555' and /PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN != '55555555555555'">
-			<xsl:value-of select="ProductID/GTIN"/>
+			<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN"/>
 		</xsl:if>
 		<xsl:text>,</xsl:text>
 		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/BuyersCode"/><xsl:text>,</xsl:text>
@@ -64,12 +82,13 @@
 		<xsl:text>,</xsl:text>
 		<xsl:text>,</xsl:text>
 		<xsl:text>,</xsl:text>
+		<xsl:text>&#13;&#10;</xsl:text>
 		
 		
 		<xsl:text>BUYER,</xsl:text>
 		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/><xsl:text>,</xsl:text>
 		<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN != '5555555555555' and /PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN != '55555555555555'">
-			<xsl:value-of select="ProductID/GTIN"/>
+			<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/>
 		</xsl:if>
 		<xsl:text>,</xsl:text>
 		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/BuyersCode"/><xsl:text>,</xsl:text>
@@ -96,12 +115,13 @@
 		<xsl:text>,</xsl:text>
 		<xsl:text>,</xsl:text>
 		<xsl:text>,</xsl:text>
+		<xsl:text>&#13;&#10;</xsl:text>
 		
 		
 		<xsl:text>DELIVERY,</xsl:text>
 		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/><xsl:text>,</xsl:text>
 		<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/GLN != '5555555555555' and /PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/GLN != '55555555555555'">
-			<xsl:value-of select="ProductID/GTIN"/>
+			<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/GLN"/>
 		</xsl:if>
 		<xsl:text>,</xsl:text>
 		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode"/><xsl:text>,</xsl:text>
@@ -128,8 +148,9 @@
 		<xsl:text>,</xsl:text>
 		<xsl:text>,</xsl:text>
 		<xsl:text>,</xsl:text>
+		<xsl:text>&#13;&#10;</xsl:text>
 		
-		<xsl:value-of select="/PurchaseOrder/PurchaseOrderDetail/PurchaseOrderLine">
+		<xsl:for-each select="/PurchaseOrder/PurchaseOrderDetail/PurchaseOrderLine">
 		
 			<xsl:text>ORDERLINE,</xsl:text>
 			<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/><xsl:text>,</xsl:text>
@@ -142,7 +163,7 @@
 				</xsl:if>
 			</xsl:variable>
 			<xsl:value-of select="$sGTIN"/><xsl:text>,</xsl:text>
-			<xsl:value-of select="ProductID/SuppliersProductCode (but see below)"/><xsl:text>,</xsl:text>
+			<xsl:value-of select="ProductID/SuppliersProductCode"/><xsl:text>,</xsl:text>
 			<xsl:value-of select="$sGTIN"/><xsl:text>,</xsl:text>
 			<xsl:value-of select="ProductID/BuyersProductCode"/><xsl:text>,</xsl:text>
 			
@@ -150,35 +171,60 @@
 			<xsl:text>,</xsl:text>
 			<xsl:text>,</xsl:text>
 			<xsl:text>,</xsl:text>
-			<xsl:value-of select="OrderedQuantity"/><xsl:text>,</xsl:text>
+			
+			<!--xsl:value-of select="OrderedQuantity"/-->
+			<xsl:call-template name="msIntegerise">
+				<xsl:with-param name="vsNum" select="OrderedQuantity"/>
+			</xsl:call-template>
 			<xsl:text>,</xsl:text>
+			
+			<xsl:text>,</xsl:text>
+			
+			<xsl:choose>
+				<xsl:when test="OrderedQuantity/@UnitOfMeasure = 'EA'">BOTTLE</xsl:when>
+				<xsl:when test="OrderedQuantity/@UnitOfMeasure = 'CS' and number(PackSize) &gt; 0 "><xsl:value-of select="concat('CASE',PackSize)"/></xsl:when>
+				<xsl:when test="OrderedQuantity/@UnitOfMeasure = 'CS' and number(PackSize) = 0"></xsl:when>
+				<xsl:otherwise></xsl:otherwise>
+			</xsl:choose>
+			<xsl:text>,</xsl:text>
+			
+			<!-- does rounding requirement apply to UnitValueExclVAT before this expression? -->
 			<xsl:value-of select="translate(format-number(UnitValueExclVAT,'#.0000'),'.','')"/><xsl:text>,</xsl:text>
 			<xsl:text>,</xsl:text>
 			<xsl:text>,</xsl:text>
-			<xsl:variable name="sProductDesc" select="concat(ProductDescription, ' (', Packsize,')')"/>
+			
+			<xsl:variable name="sProductDesc" select="concat(ProductDescription, ' (', PackSize,')')"/>
 			<xsl:value-of select="substring($sProductDesc,1,40)"/><xsl:text>,</xsl:text>
 			<xsl:value-of select="substring($sProductDesc,41,40)"/><xsl:text>,</xsl:text>
 			<xsl:value-of select="translate(/PurchaseOrder/PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate,'-','')"/><!-- (CCYYMMDD) --><xsl:text>,</xsl:text>
 			<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/OrderedDeliveryDetails/DeliverySlot/SlotStart"/><!-- (HH:MM:SS) --><xsl:text>,</xsl:text>
-			<xsl:text>,</xsl:text>
-			<xsl:text>,</xsl:text>
-			<xsl:text>,</xsl:text>
-			<xsl:text>,</xsl:text>
-			<xsl:text>,</xsl:text>
-			<xsl:text>,</xsl:text>
-			<xsl:text>,</xsl:text>
-			<xsl:text>,</xsl:text>
-			<xsl:text>,</xsl:text>
-			<xsl:text>,</xsl:text>
-			<xsl:text>,</xsl:text>
-			<xsl:text>,</xsl:text>
 			
-		</xsl:value-of>
+			<xsl:text>,</xsl:text>
+			<xsl:text>,</xsl:text>
+			<xsl:text>,</xsl:text>
+			<xsl:text>,</xsl:text>
+			<xsl:text>,</xsl:text>
+			<xsl:text>,</xsl:text>
+			<xsl:text>,</xsl:text>
+			<xsl:text>,</xsl:text>
+			<xsl:text>,</xsl:text>
+			<xsl:text>,</xsl:text>
+			<xsl:text>,</xsl:text>
+			<xsl:text>,</xsl:text>
+			<xsl:text>&#13;&#10;</xsl:text>
+			
+		</xsl:for-each>
 		
 		
 		<xsl:text>ORDERTLR,</xsl:text>
 		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/><xsl:text>,</xsl:text>
-		<xsl:value-of select="sum(/PurchaseOrder/PurchaseOrderDetail/PurchaseOrderLine/OrderedQuantity)"/><xsl:text>,</xsl:text>
+		
+		<!--xsl:value-of select="sum(/PurchaseOrder/PurchaseOrderDetail/PurchaseOrderLine/OrderedQuantity)"/-->
+		<xsl:call-template name="msIntegerise">
+			<xsl:with-param name="vsNum" select="sum(/PurchaseOrder/PurchaseOrderDetail/PurchaseOrderLine/OrderedQuantity)"/>
+		</xsl:call-template>
+		<xsl:text>,</xsl:text>
+		
 		<xsl:value-of select="/PurchaseOrder/PurchaseOrderTrailer/NumberOfLines"/><xsl:text>,</xsl:text>
 		<xsl:text>,</xsl:text>
 		<xsl:text>,</xsl:text>
@@ -186,12 +232,25 @@
 		<xsl:text>,</xsl:text>
 		<xsl:text>,</xsl:text>
 		<xsl:text>,</xsl:text>	
+		<xsl:text>&#13;&#10;</xsl:text>
+	
+	</xsl:template>
+	
+	<xsl:template name="msIntegerise">
+		<xsl:param name="vsNum"/>
+		
+		<xsl:variable name="nNum" select="number($vsNum)"/>
+		
+		<xsl:choose>
+			<xsl:when test="$nNum &lt;= 0">0</xsl:when>
+			<xsl:when test="$nNum &lt; 1">1</xsl:when>
+			<xsl:otherwise><xsl:value-of select="floor($nNum)"/></xsl:otherwise>
+		</xsl:choose>
 	
 	</xsl:template>
 	
 	<msxsl:script language="VBScript" implements-prefix="vbscript">
-<![CDATA[ 
-   
+	<![CDATA[    
 		
 		Function msGetDate()
 			Dim sTemp 
@@ -200,7 +259,7 @@
 		End Function
 		
 		Function msGetTime()
-			msGetDate = FormatDateTime(Date(),vbLongTime))
+			msGetTime = FormatDateTime(now,vbLongTime)
 		End Function
 				
   ]]> 
