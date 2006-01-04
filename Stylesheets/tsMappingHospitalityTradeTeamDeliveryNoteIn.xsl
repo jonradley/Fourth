@@ -67,7 +67,7 @@
 										</ShipToLocationID>
 										<ShipToName><xsl:value-of select="DeliveryNoteHeader/ShipTo/ShipToName"/></ShipToName>
 										<ShipToAddress>
-											<xsl:for-each select="DeliveryNoteHeader/ShipTo/ShipToAddress/*[string != '']">
+											<xsl:for-each select="DeliveryNoteHeader/ShipTo/ShipToAddress/*[. != '']">
 												<xsl:element name="{concat('AddressLine',string(position()))}">
 													<xsl:value-of select="."/>
 												</xsl:element>										
