@@ -364,101 +364,221 @@
 						</td>
 						<td valign="top" width="50%"><br/></td>
 					</tr>
-					<tr>
-						<td colspan="2"><br/></td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<!--Credit Request Lines-->
-							<table class="DocumentLines" cellpadding="1" cellspacing="1">
-								<tr>
-									<th colspan="8">Credit Request Lines</th>
-								</tr>
-								<tr>
-									<th>Line Status</th>
-									<xsl:if test="number(/CreditRequest/CreditRequestDetail/CreditRequestLine[1]/ProductID/GTIN) != 0">
-										<th>GTIN</th>
-									</xsl:if>
-									<th>Suppliers Product Code</th>
-									<xsl:if test="/CreditRequest/CreditRequestDetail/CreditRequestLine/ProductID/BuyersProductCode">
-										<th>Buyers Product Code</th>
-									</xsl:if>
-									<th>Description</th>
-									<th>Requested Qty</th>
-									<xsl:if test="/CreditRequest/CreditRequestDetail/CreditRequestLine/PackSize">
-										<th>Pack Size</th>
-									</xsl:if>
-									<th>Unit Value Excl VAT</th>
-									<th>Line Value Excl VAT</th>
-								</tr>
-								<xsl:for-each select="/CreditRequest/CreditRequestDetail/CreditRequestLine">
-									<xsl:variable name="LineClass">
-										<xsl:value-of select="user:gsGetRowClass()"/>
-									</xsl:variable>
+					<xsl:if test="/CreditRequest/CreditRequestDetail/CreditRequestLine[not(NotAuthorised) or NotAuthorised='0']">
+						<tr>
+							<td colspan="2"><br/></td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<!--Authorised Credit Request Lines-->
+								<table class="DocumentLines" cellpadding="1" cellspacing="1">			
 									<tr>
-										<xsl:attribute name="class">
-											<xsl:value-of select="$LineClass"/>
-										</xsl:attribute>		
-										<td>
-											<xsl:choose>
-												<xsl:when test="@LineStatus = 'PriceChanged'">Price Change</xsl:when>
-												<xsl:when test="@LineStatus = 'QuantityChanged'">Quantity Change</xsl:when>
-												<xsl:when test="@LineStatus = 'Rejected'">Reject</xsl:when>
-												<xsl:otherwise><xsl:value-of select="@LineStatus"/></xsl:otherwise>
-											</xsl:choose>
-										</td>
-										<xsl:if test="number(/CreditRequest/CreditRequestDetail/CreditRequestLine[1]/ProductID/GTIN) != 0">
-											<td><xsl:value-of select="ProductID/GTIN"/></td>
-										</xsl:if>
-										<td><xsl:value-of select="ProductID/SuppliersProductCode"/>&#xa0;</td>
-										<xsl:if test="/CreditRequest/CreditRequestDetail/CreditRequestLine/ProductID/BuyersProductCode">
-											<td><xsl:value-of select="ProductID/BuyersProductCode"/>&#xa0;</td>
-										</xsl:if>
-										<td><xsl:value-of select="ProductDescription"/></td>
-										<td align="right"><xsl:value-of select="RequestedQuantity"/></td>
-										<xsl:if test="/CreditRequest/CreditRequestDetail/CreditRequestLine/PackSize">
-											<td><xsl:value-of select="PackSize"/>&#xa0;</td>
-										</xsl:if>
-										<td align="right"><xsl:value-of select="UnitValueExclVAT"/></td>
-										<td align="right"><xsl:value-of select="LineValueExclVAT"/></td>
+										<th colspan="8">
+											Credit Request Lines
+										</th>
 									</tr>
-									<xsl:if test="Narrative">
+									<tr>
+										<th>Line Status</th>
+										<th>Suppliers Code</th>
+										<xsl:if test="/CreditRequest/CreditRequestDetail/CreditRequestLine/ProductID/BuyersProductCode">
+											<th>Buyers Code</th>
+										</xsl:if>
+										<th>Description</th>
+										<th>Requested Qty</th>
+										<xsl:if test="/CreditRequest/CreditRequestDetail/CreditRequestLine/PackSize">
+											<th>Pack</th>
+										</xsl:if>							
+										<th>Price</th>
+										<th>Line Value</th>
+									</tr>
+									<xsl:for-each select="/CreditRequest/CreditRequestDetail/CreditRequestLine[not(NotAuthorised) or NotAuthorised='0']">
+										<xsl:variable name="LineClass">
+											<xsl:value-of select="user:gsGetRowClass()"/>
+										</xsl:variable>
 										<tr>
 											<xsl:attribute name="class">
 												<xsl:value-of select="$LineClass"/>
-											</xsl:attribute>
-											<td colspan="8">
-												<xsl:if test="Narrative/@Code"><xsl:value-of select="Narrative/@Code"/>: </xsl:if><xsl:value-of select="Narrative"/>
+											</xsl:attribute>								
+											<td>
+												<xsl:choose>
+													<xsl:when test="@LineStatus = 'PriceChanged'">Price Change</xsl:when>
+													<xsl:when test="@LineStatus = 'QuantityChanged'">Quantity Change</xsl:when>
+													<xsl:when test="@LineStatus = 'Rejected'">Reject</xsl:when>
+													<xsl:otherwise><xsl:value-of select="@LineStatus"/></xsl:otherwise>
+												</xsl:choose>
 											</td>
+											<td><xsl:value-of select="ProductID/SuppliersProductCode"/>&#xa0;</td>
+											<xsl:if test="/CreditRequest/CreditRequestDetail/CreditRequestLine/ProductID/BuyersProductCode">
+												<td><xsl:value-of select="ProductID/BuyersProductCode"/>&#xa0;</td>
+											</xsl:if>
+											<td><xsl:value-of select="ProductDescription"/></td>
+											<td align="right"><xsl:value-of select="RequestedQuantity"/></td>
+											<xsl:if test="/CreditRequest/CreditRequestDetail/CreditRequestLine/PackSize">
+												<td><xsl:value-of select="PackSize"/>&#xa0;</td>
+											</xsl:if>								
+											<td align="right"><xsl:value-of select="UnitValueExclVAT"/></td>
+											<td align="right"><xsl:value-of select="LineValueExclVAT"/></td>
 										</tr>
-									</xsl:if>
-								</xsl:for-each>
-							</table>
-						</td>
-					</tr>
-					<tr>
-						<td><br/></td>
-						<td>
-							<!--Totals-->
-							<table class="DocumentInner" cellpadding="1" cellspacing="1">
-								<tr>
-									<th colspan="2">Totals</th>
-								</tr>
-								<tr>
-									<th width="50%">Number Of Lines</th>
-									<td align="right"><xsl:value-of select="/CreditRequest/CreditRequestTrailer/NumberOfLines"/></td>
-								</tr>
-								<tr>
-									<th width="50%">Number Of Items</th>
-									<td align="right"><xsl:value-of select="/CreditRequest/CreditRequestTrailer/NumberOfItems"/></td>
-								</tr>
-								<tr>
-									<th width="50%">Total Excl VAT</th>
-									<td align="right"><xsl:value-of select="/CreditRequest/CreditRequestTrailer/TotalExclVAT"/></td>
-								</tr>
-							</table>
-						</td>
-					</tr>
+										<xsl:if test="Narrative">
+											<tr>
+												<xsl:attribute name="class">
+													<xsl:value-of select="$LineClass"/>
+												</xsl:attribute>	
+												<td colspan="8">
+													<xsl:if test="Narrative/@Code"><xsl:value-of select="Narrative/@Code"/>: </xsl:if><xsl:value-of select="Narrative"/>
+												</td>
+											</tr>
+										</xsl:if>
+									</xsl:for-each>
+								</table>
+							</td>
+						</tr>
+						<tr>
+							<td><br/></td>
+							<td>
+								<!--Totals-->
+								<table class="DocumentInner" cellpadding="1" cellspacing="1">
+									<tr>
+										<th colspan="2">Totals</th>
+									</tr>
+									<tr>
+										<th width="50%">Number Of Lines</th>
+										<td align="right"><xsl:value-of select="/CreditRequest/CreditRequestTrailer/NumberOfLines"/></td>
+									</tr>
+									<tr>
+										<th width="50%">Number Of Items</th>
+										<td align="right"><xsl:value-of select="/CreditRequest/CreditRequestTrailer/NumberOfItems"/></td>
+									</tr>					
+									<tr>
+										<th width="50%">Total Excl VAT</th>
+										<td align="right"><xsl:value-of select="/CreditRequest/CreditRequestTrailer/TotalExclVAT"/></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</xsl:if>
+					<xsl:if test="/CreditRequest/CreditRequestDetail/CreditRequestLine[NotAuthorised='1']">
+						<tr>
+							<td colspan="2"><br/></td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<!--Unauthorised Credit Request Lines-->
+								<table class="DocumentLines" cellpadding="1" cellspacing="1">				
+									<tr>
+										<th colspan="8">
+											Unauthorised Credit Request Lines
+										</th>
+									</tr>
+									<tr>
+										<th>Line Status</th>
+										<th>Suppliers Code</th>
+										<xsl:if test="/CreditRequest/CreditRequestDetail/CreditRequestLine/ProductID/BuyersProductCode">
+											<th>Buyers Code</th>
+										</xsl:if>
+										<th>Description</th>
+										<th>Requested Qty</th>
+										<xsl:if test="/CreditRequest/CreditRequestDetail/CreditRequestLine/PackSize">
+											<th>Pack</th>
+										</xsl:if>						
+										<th>Price</th>
+										<th>Line Value</th>
+									</tr>
+									<xsl:for-each select="/CreditRequest/CreditRequestDetail/CreditRequestLine[NotAuthorised='1']">
+										<xsl:variable name="LineClass">
+											<xsl:value-of select="user:gsGetRowClass()"/>
+										</xsl:variable>
+										<tr>
+											<xsl:attribute name="class">
+												<xsl:value-of select="$LineClass"/>
+											</xsl:attribute>								
+											<td>
+												<xsl:choose>
+													<xsl:when test="@LineStatus = 'PriceChanged'">Price Change</xsl:when>
+													<xsl:when test="@LineStatus = 'QuantityChanged'">Quantity Change</xsl:when>
+													<xsl:when test="@LineStatus = 'Rejected'">Reject</xsl:when>
+													<xsl:otherwise><xsl:value-of select="@LineStatus"/></xsl:otherwise>
+												</xsl:choose>
+											</td>
+											<td><xsl:value-of select="ProductID/SuppliersProductCode"/>&#xa0;</td>
+											<xsl:if test="/CreditRequest/CreditRequestDetail/CreditRequestLine/ProductID/BuyersProductCode">
+												<td><xsl:value-of select="ProductID/BuyersProductCode"/>&#xa0;</td>
+											</xsl:if>
+											<td><xsl:value-of select="ProductDescription"/></td>
+											<td align="right"><xsl:value-of select="RequestedQuantity"/></td>
+											<xsl:if test="/CreditRequest/CreditRequestDetail/CreditRequestLine/PackSize">
+												<td><xsl:value-of select="PackSize"/>&#xa0;</td>
+											</xsl:if>							
+											<td align="right"><xsl:value-of select="UnitValueExclVAT"/></td>
+											<td align="right"><xsl:value-of select="LineValueExclVAT"/></td>
+										</tr>
+										<xsl:if test="Narrative">
+											<tr>
+												<xsl:attribute name="class">
+													<xsl:value-of select="$LineClass"/>
+												</xsl:attribute>	
+												<td colspan="8">
+													<xsl:if test="Narrative/@Code"><xsl:value-of select="Narrative/@Code"/>: </xsl:if><xsl:value-of select="Narrative"/>
+												</td>
+											</tr>
+										</xsl:if>
+									</xsl:for-each>
+								</table>
+							</td>
+						</tr>
+						<tr>
+							<td><br/></td>
+							<td>
+								<!--Totals-->
+								<table class="DocumentInner" cellpadding="1" cellspacing="1">
+									<tr>
+										<th colspan="2">Unauthorised Totals</th>
+									</tr>
+									<tr>
+										<th width="50%">Number Of Lines</th>
+										<td align="right">
+											<xsl:choose>
+												<xsl:when test="/CreditRequest/CreditRequestDetail/CreditRequestLine[not(NotAuthorised) or NotAuthorised='0']">
+													<xsl:value-of select="/CreditRequest/CreditRequestTrailer/UnauthorisedLines/NumberOfLines"/>
+												</xsl:when>
+												<xsl:otherwise>
+													<xsl:value-of select="/CreditRequest/CreditRequestTrailer/NumberOfLines"/>
+												</xsl:otherwise>
+											</xsl:choose>
+										</td>
+									</tr>
+									<tr>
+										<th width="50%">Number Of Items</th>
+										<td align="right">
+											<xsl:choose>
+												<xsl:when test="/CreditRequest/CreditRequestDetail/CreditRequestLine[not(NotAuthorised) or NotAuthorised='0']">
+													<xsl:value-of select="/CreditRequest/CreditRequestTrailer/UnauthorisedLines/NumberOfItems"/>
+												</xsl:when>
+												<xsl:otherwise>
+													<xsl:value-of select="/CreditRequest/CreditRequestTrailer/NumberOfItems"/>
+												</xsl:otherwise>
+											</xsl:choose>
+										</td>
+									</tr>
+			
+									<!-- we may now be hiding monetary values -->					
+									<tr>
+										<th width="50%">Total Excl VAT</th>
+										<td align="right">
+											<xsl:choose>
+												<xsl:when test="/CreditRequest/CreditRequestDetail/CreditRequestLine[not(NotAuthorised) or NotAuthorised='0']">
+													<xsl:value-of select="/CreditRequest/CreditRequestTrailer/UnauthorisedLines/TotalExclVAT"/>
+												</xsl:when>
+												<xsl:otherwise>
+													<xsl:value-of select="/CreditRequest/CreditRequestTrailer/TotalExclVAT"/>
+												</xsl:otherwise>
+											</xsl:choose>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</xsl:if>
 				</table>	
 			</body>
 		</html>
