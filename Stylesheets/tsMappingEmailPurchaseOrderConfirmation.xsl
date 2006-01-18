@@ -26,6 +26,8 @@
  30/08/2005 | A Sheppard | H488. Display subtituted product code if present
 ******************************************************************************************
  22/09/2005 | A Sheppard | H495. Converted to outbound mapping xsl.
+****************************************************************************************** 
+ 18/01/2006 | A Sheppard | H548. Change Buyer to Buyer/Invoice To
 ******************************************************************************************
 -->
 
@@ -136,7 +138,7 @@
 							<!--Buyer-->
 							<table class="DocumentInner" style="height:100%" cellpadding="1" cellspacing="1">
 								<tr>
-									<th colspan="2">Buyer</th>
+									<th colspan="2">Buyer/Invoice To</th>
 								</tr>
 								<xsl:if test="/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/Buyer/BuyersLocationID/BuyersCode">
 									<tr>

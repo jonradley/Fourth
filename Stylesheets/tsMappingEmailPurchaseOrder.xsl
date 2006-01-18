@@ -14,6 +14,8 @@
  02/02/2004 | A Sheppard | Created module.
 ******************************************************************************************
  30/09/2005 | Lee Boyton | H488. Added banner for test documents.
+****************************************************************************************** 
+ 18/01/2006 | A Sheppard | H548. Change Buyer to Buyer/Invoice To
 ******************************************************************************************
             |            |
 ******************************************************************************************
@@ -141,7 +143,7 @@
 							<!--Buyer-->
 							<table class="DocumentInner" style="height:100%" cellpadding="1" cellspacing="1">
 								<tr>
-									<th colspan="2">Buyer</th>
+									<th colspan="2">Buyer/Invoice To</th>
 								</tr>
 								<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/BuyersCode">
 									<tr>

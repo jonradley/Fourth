@@ -14,6 +14,8 @@
  27/09/2004 | A Sheppard | Created module.
 ******************************************************************************************
  13/01/2005 | A Sheppard | H298. Display line status to user
+****************************************************************************************** 
+ 18/01/2006 | A Sheppard | H548. Change Buyer to Buyer/Invoice To
 ******************************************************************************************
 -->
 
@@ -119,7 +121,7 @@
 							<!--Buyer-->
 							<table class="DocumentInner" style="height:100%" cellpadding="1" cellspacing="1">
 								<tr>
-									<th colspan="2">Buyer</th>
+									<th colspan="2">Buyer/Invoice To</th>
 								</tr>
 								<xsl:if test="number(/CreditRequest/CreditRequestHeader/Buyer/BuyersLocationID/GLN) != 0">
 									<tr>

@@ -26,6 +26,8 @@
  24/03/2005 | Lee Boyton | Created module.
 ******************************************************************************************
  22/06/2005 | Lee Boyton | H369. Display new contact name field.
+****************************************************************************************** 
+ 18/01/2006 | A Sheppard | H548. Change Buyer to Buyer/Invoice To
 ******************************************************************************************
             |            | 
 ******************************************************************************************
@@ -144,7 +146,7 @@
 								<!--Buyer-->
 								<table class="DocumentInner" style="height:100%" cellpadding="1" cellspacing="1">
 									<tr>
-										<th colspan="2">Buyer</th>
+										<th colspan="2">Buyer/Invoice To</th>
 									</tr>
 									<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/BuyersCode">
 										<tr>
