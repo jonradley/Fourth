@@ -29,6 +29,8 @@
  04/10/2005		| A Sheppard	| H512. A couple of alterations in line with new spec version.
 =========================================================================================
  25/10/2005		| A Sheppard	| H522. Added delivery notes.
+=========================================================================================
+ 08/02/2006		| A Sheppard	| H556. Change output for food suppliers
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -115,56 +117,80 @@
 				<xsl:with-param name="vsText" select="$sHeader"/>
 			</xsl:call-template>
 	
-			<xsl:for-each select="(/Invoice/InvoiceDetail/InvoiceLine | /CreditNote/CreditNoteDetail/CreditNoteLine | /DeliveryNote/DeliveryNoteDetail/DeliveryNoteLine)[LineExtraData/IsStockProduct[.='true' or .='1']]">
-				
+			<xsl:choose>
+				<xsl:when test="//HeaderExtraData/IsFoodSupplier = '1' or //HeaderExtraData/IsFoodSupplier = 'true'">
+					<xsl:variable name="sLine">
 						
-				<!-- From section 4.1.1.3
-			
-					Record Type 2 - Detail line record
+							<xsl:text>2,</xsl:text>
+											
+							<xsl:value-of select="//PurchaseOrderReferences[1]/PurchaseOrderReference"/>
+							<xsl:text>,</xsl:text>
+							
+							<xsl:text>D/1999/657</xsl:text>
+							<xsl:text>,</xsl:text>
+							
+							<xsl:text>DRY RECIPE COSTING</xsl:text>
+							<xsl:text>,</xsl:text>
+							
+							<xsl:text>,</xsl:text>
+							
+							<xsl:value-of select="//NumberOfItems"/>
+						</xsl:variable>
+						
+						<xsl:text>&#13;&#10;</xsl:text>
+						
+						<xsl:call-template name="msPad">
+							<xsl:with-param name="vsText" select="$sLine"/>
+						</xsl:call-template>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:for-each select="(/Invoice/InvoiceDetail/InvoiceLine | /CreditNote/CreditNoteDetail/CreditNoteLine | /DeliveryNote/DeliveryNoteDetail/DeliveryNoteLine)[LineExtraData/IsStockProduct[.='true' or .='1']]">
+						<!-- From section 4.1.1.3
 					
-					Caterwide Field		Type (Max Length)			EDI Invoice Service Field(s)		Mand or Opt	Notes
-					~~~~~~~~~~~~~~~	~~~~~~~~~~~~~~~~~		~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	~~~~~~~~~~~	~~~~~
+							Record Type 2 - Detail line record
+							
+							Caterwide Field		Type (Max Length)			EDI Invoice Service Field(s)		Mand or Opt	Notes
+							~~~~~~~~~~~~~~~	~~~~~~~~~~~~~~~~~		~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	~~~~~~~~~~~	~~~~~
+							
+							Record Type		A (1)						-							M		Fixed as ‘2’
+							Order Number		A (??)						Order Number				O		
+							Supplier’s 			A (??)						Supplier’s Product Code		M
+							  Product Code		
+							Description			A (??)						Product Description			M	
+							Product Type																O		Leave empty
+							Quantity Invoiced	??							Quantity Invoiced			M		Will be negative for credit notes and for credit lines on invoices.
+						-->	
+						<xsl:variable name="sLine">
+						
+							<xsl:text>2,</xsl:text>
+											
+							<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderReference"/>
+							<xsl:text>,</xsl:text>
+							
+							<xsl:value-of select="ProductID/SuppliersProductCode"/>
+							<xsl:text>,</xsl:text>
+							
+							<xsl:value-of select="ProductDescription"/>
+							<xsl:text>,</xsl:text>
+							
+							<xsl:text>,</xsl:text>
+							
+							<xsl:choose>
+								<xsl:when test="self::InvoiceLine/InvoicedQuantity"><xsl:value-of select="InvoicedQuantity"/></xsl:when>
+								<xsl:when test="CreditedQuantity">-<xsl:value-of select="CreditedQuantity"/></xsl:when>
+								<xsl:otherwise><xsl:value-of select="DespatchedQuantity"/></xsl:otherwise>
+							</xsl:choose>
+						</xsl:variable>
+						
+						<xsl:text>&#13;&#10;</xsl:text>
+						
+						<xsl:call-template name="msPad">
+							<xsl:with-param name="vsText" select="$sLine"/>
+						</xsl:call-template>
 					
-					Record Type		A (1)						-							M		Fixed as ‘2’
-					Order Number		A (??)						Order Number				O		
-					Supplier’s 			A (??)						Supplier’s Product Code		M
-					  Product Code		
-					Description			A (??)						Product Description			M	
-					Product Type																O		Leave empty
-					Quantity Invoiced	??							Quantity Invoiced			M		Will be negative for credit notes and for credit lines on invoices.
-				-->	
-				
-				
-				<xsl:variable name="sLine">
-				
-					<xsl:text>2,</xsl:text>
-									
-					<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderReference"/>
-					<xsl:text>,</xsl:text>
-					
-					<xsl:value-of select="ProductID/SuppliersProductCode"/>
-					<xsl:text>,</xsl:text>
-					
-					<xsl:value-of select="ProductDescription"/>
-					<xsl:text>,</xsl:text>
-					
-					<xsl:text>,</xsl:text>
-					
-					<xsl:choose>
-						<xsl:when test="self::InvoiceLine/InvoicedQuantity"><xsl:value-of select="InvoicedQuantity"/></xsl:when>
-						<xsl:when test="CreditedQuantity">-<xsl:value-of select="CreditedQuantity"/></xsl:when>
-						<xsl:otherwise><xsl:value-of select="DespatchedQuantity"/></xsl:otherwise>
-					</xsl:choose>
-								
-				</xsl:variable>
-				
-				<xsl:text>&#13;&#10;</xsl:text>
-				
-				<xsl:call-template name="msPad">
-					<xsl:with-param name="vsText" select="$sLine"/>
-				</xsl:call-template>
-			
-			</xsl:for-each>
+					</xsl:for-each>
+				</xsl:otherwise>
+			</xsl:choose>
 		</xsl:if>
 		
 		<!--This CDC bit happens for all delivery notes only-->
