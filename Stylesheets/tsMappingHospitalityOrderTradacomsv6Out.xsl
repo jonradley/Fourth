@@ -47,8 +47,10 @@
 			<xsl:text>:</xsl:text>
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersName), 35)"/>
 			<xsl:text>+</xsl:text>
-			<xsl:value-of select="$sFileGenerationDate"/><xsl:text>:</xsl:text><xsl:value-of select="vb:msFileGenerationTime()"/><xsl:text>+</xsl:text>
-			<xsl:text>+</xsl:text>		
+			<xsl:value-of select="$sFileGenerationDate"/><xsl:text>:</xsl:text><xsl:value-of select="vb:msFileGenerationTime()"/>
+			<xsl:text>+</xsl:text>
+			<xsl:value-of select="PurchaseOrderHeader/FileGenerationNumber"/>
+			<xsl:text>+</xsl:text>
 			<xsl:text>+</xsl:text>		
 			<xsl:choose>
 				<xsl:when test="TradeSimpleHeader/TestFlag = 'false'">
@@ -72,7 +74,7 @@
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:text>SDT=</xsl:text>
-			<!--xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN"/-->
+			<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN"/>
 			<xsl:text>:</xsl:text>
 			<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/BuyersCode"/>
 			<xsl:text>+</xsl:text>
@@ -214,7 +216,8 @@
 					<xsl:with-param name="vobjNode" select="ProductID/BuyersProductCode"/>
 					<xsl:with-param name="vnLength" select="30"/>
 				</xsl:call-template>
-				<xsl:text>+</xsl:text>
+				<xsl:text>+::</xsl:text>
+				<xsl:value-of select="OrderedQuantity/@UnitOfMeasure"/>
 				<xsl:text>+:</xsl:text>
 				<xsl:value-of select="translate(format-number(OrderedQuantity,'#.000'),'.','')"/>
 				<xsl:text>+</xsl:text>
