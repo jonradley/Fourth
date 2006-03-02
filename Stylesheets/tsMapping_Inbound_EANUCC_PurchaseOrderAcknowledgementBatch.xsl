@@ -44,6 +44,9 @@
 		<Batch>
 			<BatchDocuments>
 				<BatchDocument>
+				
+					<xsl:attribute name="DocumentTypeNo">84</xsl:attribute>
+					
 					<PurchaseOrderAcknowledgement>
 					
 						<!-- ~~~~~~~~~~~~~~~~~~~~~~~
