@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--======================================================================================
  Overview
 
@@ -15,25 +14,18 @@
 ==========================================================================================
            	|                 	|
 =======================================================================================-->
-
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-	xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript"
-	xmlns:vb="http://www.abs-ltd.com/dummynamespaces/vbscript"
-	xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript" xmlns:vb="http://www.abs-ltd.com/dummynamespaces/vbscript" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	<xsl:output method="text" encoding="utf-8"/>
-
-<!--xsl:param name="nBatchID">Not Provided</xsl:param-->
 	
 	<xsl:template match="/PurchaseOrder">
-	
+		
 		<xsl:variable name="sRecordSep">
 			<xsl:text>'</xsl:text>
-			<!--xsl:text>&#13;&#10;</xsl:text-->
-			<xsl:text></xsl:text>
+			<!--xsl:text>'&#13;&#10;</xsl:text-->
 		</xsl:variable>
 		
 		<xsl:variable name="sFileGenerationDate" select="vb:msFileGenerationDate()"/>
-	
+		
 		<xsl:text>STX=</xsl:text>
 			<xsl:text>ANA:1+</xsl:text>
 			<!--Our mailbox reference-->
@@ -47,31 +39,35 @@
 			<xsl:text>:</xsl:text>
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersName), 35)"/>
 			<xsl:text>+</xsl:text>
-			<xsl:value-of select="$sFileGenerationDate"/><xsl:text>:</xsl:text><xsl:value-of select="vb:msFileGenerationTime()"/>
+			<xsl:value-of select="$sFileGenerationDate"/>
+			<xsl:text>:</xsl:text>
+			<xsl:value-of select="vb:msFileGenerationTime()"/>
 			<xsl:text>+</xsl:text>
 			<xsl:value-of select="PurchaseOrderHeader/FileGenerationNumber"/>
 			<xsl:text>+</xsl:text>
-			<xsl:text>+</xsl:text>		
+			<xsl:text>+</xsl:text>
 			<xsl:choose>
 				<xsl:when test="TradeSimpleHeader/TestFlag = 'false'">
 					<xsl:text>ORDHDR</xsl:text>
 				</xsl:when>
-				<xsl:otherwise><xsl:text>ORDTES</xsl:text></xsl:otherwise>
+				<xsl:otherwise>
+					<xsl:text>ORDTES</xsl:text>
+				</xsl:otherwise>
 			</xsl:choose>
-		<xsl:text>+</xsl:text>			
-		<xsl:text>B</xsl:text>			
-		<xsl:value-of select="$sRecordSep"/>
-		
-		<xsl:text>MHD=</xsl:text>	
+			<xsl:text>+</xsl:text>
+			<xsl:text>B</xsl:text>
+			<xsl:value-of select="$sRecordSep"/>
+			
+		<xsl:text>MHD=</xsl:text>
 			<!--<xsl:value-of select="HelperObj:GetNextCounterValue('MessageHeader')"/><xsl:text>+</xsl:text>-->
 			<xsl:text>1+ORDHDR:6</xsl:text>
-		<xsl:value-of select="$sRecordSep"/>
+			<xsl:value-of select="$sRecordSep"/>
 		
-		<xsl:text>TYP=</xsl:text>	
+		<xsl:text>TYP=</xsl:text>
 			<xsl:text>0430</xsl:text>
 			<xsl:text>+</xsl:text>
-			<xsl:text></xsl:text>
-		<xsl:value-of select="$sRecordSep"/>
+			<xsl:text/>
+			<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:text>SDT=</xsl:text>
 			<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN"/>
@@ -81,7 +77,7 @@
 			<!-- truncate to 40 SNAM = 3060 = AN..40-->
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersName),40)"/>
 			<xsl:text>+</xsl:text>
-			<!-- truncate to 35 SADD 1-4 = 3062 = AN..35-->		
+			<!-- truncate to 35 SADD 1-4 = 3062 = AN..35-->
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersAddress/AddressLine1),35)"/>
 			<xsl:text>:</xsl:text>
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersAddress/AddressLine2),35)"/>
@@ -90,29 +86,33 @@
 			<xsl:text>:</xsl:text>
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersAddress/AddressLine4),35)"/>
 			<xsl:text>:</xsl:text>
-			<!-- truncate to 8 (just in case) SADD 5 = 3063 = AN..8-->		
-			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersAddress/PostCode),8)"/>		
+			<!-- truncate to 8 (just in case) SADD 5 = 3063 = AN..8-->
+			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersAddress/PostCode),8)"/>
 			<!--xsl:text>+</xsl:text>
-			<xsl:value-of select=""/-->
-		<xsl:value-of select="$sRecordSep"/>
+				<xsl:value-of select=""/-->
+			<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:text>CDT=</xsl:text>
 			<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/GLN"/>
 			<xsl:text>:</xsl:text>
-			<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
+			<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
 			<xsl:text>+</xsl:text>
 			<!-- truncate to 40 CNAM = 3060 = AN..40-->
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Buyer/BuyersName),40)"/>
-			<xsl:text>+</xsl:text> 
+			<xsl:text>+</xsl:text>
 			<!-- truncate to 35 CADD 1-4 = 3032 = AN..35-->
-			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine1),35)"/><xsl:text>:</xsl:text>
-			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine2),35)"/><xsl:text>:</xsl:text>
-			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine3),35)"/><xsl:text>:</xsl:text>
-			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine4),35)"/><xsl:text>:</xsl:text>
+			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine1),35)"/>
+			<xsl:text>:</xsl:text>
+			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine2),35)"/>
+			<xsl:text>:</xsl:text>
+			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine3),35)"/>
+			<xsl:text>:</xsl:text>
+			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine4),35)"/>
+			<xsl:text>:</xsl:text>
 			<!-- truncate to 8 (just in case) CADD 5 = 3033 = AN..8-->
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Buyer/BuyersAddress/PostCode),8)"/>
-		<xsl:value-of select="$sRecordSep"/>
-		
+			<xsl:value-of select="$sRecordSep"/>
+			
 		<!--
 		<xsl:text>DNA=</xsl:text>
 
@@ -122,28 +122,25 @@
 		-->
 		
 		<xsl:text>FIL=</xsl:text>
-			<xsl:value-of select="PurchaseOrderHeader/FileGenerationNumber"/><xsl:text>+</xsl:text>
+			<xsl:value-of select="PurchaseOrderHeader/FileGenerationNumber"/>
+			<xsl:text>+</xsl:text>
 			<xsl:text>1+</xsl:text>
 			<xsl:value-of select="$sFileGenerationDate"/>
-		<xsl:value-of select="$sRecordSep"/>
+			<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:text>MTR=</xsl:text>
 			<xsl:text>6</xsl:text>
-		<xsl:value-of select="$sRecordSep"/>
-	
-
-	
-		<!--xsl:value-of select="HelperObj:ResetCounter('DataNarativeA')"/-->
-	
-		<xsl:text>MHD=</xsl:text>	
+			<xsl:value-of select="$sRecordSep"/>
+			<!--xsl:value-of select="HelperObj:ResetCounter('DataNarativeA')"/-->
+		
+		<xsl:text>MHD=</xsl:text>
 			<!--xsl:value-of select="HelperObj:GetNextCounterValue('MessageHeader')"/-->
 			<xsl:text>2+</xsl:text>
 			<xsl:text>ORDERS:8</xsl:text>
-		<xsl:value-of select="$sRecordSep"/>
-
+			<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:text>CLO=</xsl:text>
-			<!--xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/GLN"/-->
+			<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/GLN"/>
 			<xsl:text>:</xsl:text>
 			<!--xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode"/-->
 			<xsl:text>:</xsl:text>
@@ -153,14 +150,18 @@
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/ShipTo/ShipToName),40)"/>
 			<xsl:text>+</xsl:text>
 			<!-- truncate to 35 CADD 1-4 = 3032 = AN..35-->
-			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine1),35)"/><xsl:text>:</xsl:text>
-			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine2),35)"/><xsl:text>:</xsl:text>
-			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine3),35)"/><xsl:text>:</xsl:text>
-			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine4),35)"/><xsl:text>:</xsl:text>
+			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine1),35)"/>
+			<xsl:text>:</xsl:text>
+			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine2),35)"/>
+			<xsl:text>:</xsl:text>
+			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine3),35)"/>
+			<xsl:text>:</xsl:text>
+			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine4),35)"/>
+			<xsl:text>:</xsl:text>
 			<!-- truncate to 8 (just in case) CADD 5 = 3033 = AN..8-->
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/ShipTo/ShipToAddress/PostCode),8)"/>
-		<xsl:value-of select="$sRecordSep"/>
-	
+			<xsl:value-of select="$sRecordSep"/>
+		
 		<xsl:text>ORD=</xsl:text>
 			<xsl:call-template name="msCheckField">
 				<xsl:with-param name="vobjNode" select="PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
@@ -174,7 +175,7 @@
 			<xsl:text>+</xsl:text>
 			<xsl:text>+</xsl:text>
 			<xsl:text>N+</xsl:text>
-		<xsl:value-of select="$sRecordSep"/>
+			<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:text>DIN=</xsl:text>
 			<!--xsl:value-of select="HelperObj:FormatDate(string(PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate))"/-->
@@ -186,9 +187,9 @@
 			<xsl:call-template name="msFormateDate">
 				<xsl:with-param name="vsUTCDate" select="PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate"/>
 			</xsl:call-template>
-			<xsl:text>+</xsl:text>
-		<xsl:value-of select="$sRecordSep"/>
-		
+			<!--xsl:text>+</xsl:text-->
+			<xsl:value-of select="$sRecordSep"/>
+			
 		<!--
 		<xsl:text>DNA=</xsl:text>
 
@@ -199,37 +200,36 @@
 		
 		<!--xsl:value-of select="HelperObj:ResetCounter('OrderLineDetails')"/-->
 		<xsl:for-each select="PurchaseOrderDetail/PurchaseOrderLine">
-		
 			<xsl:text>OLD=</xsl:text>
-				<!--xsl:value-of select="HelperObj:GetNextCounterValue('OrderLineDetails')"/-->
-				<xsl:value-of select="count(preceding-sibling::* | self::*)"/>
-				<xsl:text>+</xsl:text>
-				<xsl:text>:</xsl:text>
-				<xsl:text>+</xsl:text>
-				<!-- The barcode -->
-				<xsl:call-template name="msCheckField">
-					<xsl:with-param name="vobjNode" select="ProductID/SuppliersProductCode"/>
-					<xsl:with-param name="vnLength" select="30"/>
-				</xsl:call-template>
-				<xsl:text>+</xsl:text>
-				<xsl:text>:</xsl:text>
-				<xsl:call-template name="msCheckField">
-					<xsl:with-param name="vobjNode" select="ProductID/BuyersProductCode"/>
-					<xsl:with-param name="vnLength" select="30"/>
-				</xsl:call-template>
-				<xsl:text>+::</xsl:text>
-				<xsl:value-of select="js:msSafeText(string(OrderedQuantity/@UnitOfMeasure),6)"/>
-				<xsl:text>+</xsl:text>
-				<xsl:value-of select="translate(format-number(OrderedQuantity,'#.000'),'.','')"/>
-				<xsl:text>+</xsl:text>
-				<xsl:value-of select="translate(format-number(UnitValueExclVAT,'#.00'),'.','')"/><xsl:text>00</xsl:text>
-				<xsl:text>+</xsl:text>
-				<xsl:text>+</xsl:text>
-				<xsl:text>+</xsl:text>
-				<!-- truncate to 40 TDES = 9030 = AN..40-->
-				<xsl:value-of select="js:msSafeText(string(ProductDescription),40)"/>
-				
-				
+			<!--xsl:value-of select="HelperObj:GetNextCounterValue('OrderLineDetails')"/-->
+			<xsl:value-of select="count(preceding-sibling::* | self::*)"/>
+			<xsl:text>+</xsl:text>
+			<!-- ? Barcode -->
+			<xsl:text>:</xsl:text>
+			<xsl:call-template name="msCheckField">
+				<xsl:with-param name="vobjNode" select="ProductID/SuppliersProductCode"/>
+				<xsl:with-param name="vnLength" select="30"/>
+			</xsl:call-template>
+			<xsl:text>+</xsl:text>
+			<!-- ? -->
+			<xsl:text>+</xsl:text>
+			<xsl:text>:</xsl:text>
+			<xsl:call-template name="msCheckField">
+				<xsl:with-param name="vobjNode" select="ProductID/BuyersProductCode"/>
+				<xsl:with-param name="vnLength" select="30"/>
+			</xsl:call-template>
+			<xsl:text>+::</xsl:text>
+			<xsl:value-of select="OrderedQuantity/@UnitOfMeasure"/>
+			<xsl:text>+:</xsl:text>
+			<xsl:value-of select="translate(format-number(OrderedQuantity,'#.000'),'.','')"/>
+			<xsl:text>+</xsl:text>
+			<xsl:value-of select="translate(format-number(UnitValueExclVAT,'#.00'),'.','')"/>
+			<xsl:text>00</xsl:text>
+			<xsl:text>+</xsl:text>
+			<xsl:text>+</xsl:text>
+			<xsl:text>+</xsl:text>
+			<!-- truncate to 40 TDES = 9030 = AN..40-->
+			<xsl:value-of select="js:msSafeText(string(ProductDescription),40)"/>
 			<xsl:value-of select="$sRecordSep"/>
 			
 			<!--
@@ -243,36 +243,35 @@
 			
 		</xsl:for-each>
 		
-		<xsl:text>OTR=</xsl:text>	
+		<xsl:text>OTR=</xsl:text>
 			<xsl:value-of select="PurchaseOrderTrailer/NumberOfLines"/>
-		<xsl:value-of select="$sRecordSep"/>
+			<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:text>MTR=</xsl:text>
 			<xsl:value-of select="6 + count(PurchaseOrderDetail/PurchaseOrderLine)"/>
-		<xsl:value-of select="$sRecordSep"/>
+			<xsl:value-of select="$sRecordSep"/>
 		
-				
-		<xsl:text>MHD=</xsl:text>	
+		<xsl:text>MHD=</xsl:text>
 			<!--xsl:value-of select="HelperObj:GetNextCounterValue('MessageHeader')"/><xsl:text>+</xsl:text-->
-			<xsl:text>3+ORDTLR:4</xsl:text>		
-		<xsl:value-of select="$sRecordSep"/>
+			<xsl:text>3+ORDTLR:4</xsl:text>
+			<xsl:value-of select="$sRecordSep"/>
 		
-		<xsl:text>OFT=</xsl:text>	
+		<xsl:text>OFT=</xsl:text>
 			<xsl:text>1</xsl:text>
-		<xsl:value-of select="$sRecordSep"/>
+			<xsl:value-of select="$sRecordSep"/>
 		
-		<xsl:text>MTR=</xsl:text>	
+		<xsl:text>MTR=</xsl:text>
 			<xsl:text>3</xsl:text>
-		<xsl:value-of select="$sRecordSep"/>
-	
+			<xsl:value-of select="$sRecordSep"/>
+		
 		<xsl:text>END=</xsl:text>
-			<xsl:text>3</xsl:text>	
-		<xsl:value-of select="$sRecordSep"/>
+			<xsl:text>3</xsl:text>
+			<xsl:value-of select="$sRecordSep"/>
 		
 	</xsl:template>
 	
-
-<!--=======================================================================================
+	
+	<!--=======================================================================================
   Routine        : msFormateDate()
   Description    :  
   Inputs         : vsUTCDate
@@ -284,12 +283,13 @@
  =======================================================================================-->
 	<xsl:template name="msFormateDate">
 		<xsl:param name="vsUTCDate"/>
-	
+		
 		<xsl:value-of select="substring(translate($vsUTCDate,'-',''), 3)"/>
-	
+		
 	</xsl:template>
 	
-<!--=======================================================================================
+	
+	<!--=======================================================================================
   Routine        : msCheckField()
   Description    : Checks the (escaped) value of the given element won't be truncated
   						  Raises an error if it will.
@@ -308,47 +308,38 @@
 		<xsl:variable name="sEscapedField" select="js:msEscape(string($vobjNode))"/>
 		
 		<xsl:choose>
-		
 			<xsl:when test="string-length($sEscapedField) &gt; $vnLength">
 				<xsl:message terminate="yes">
-				
 					<xsl:text>[[tradesimple defined XSLT error]]&#13;&#10;</xsl:text>
-				
 					<xsl:text>This message contains data that would be truncated when mapped to the appropriate tradacoms field.&#13;&#10;&#13;&#10;</xsl:text>
-					
 					<xsl:text>THE RECIPIENT MUST BE INFORMED THAT THEY NEED TO PROCESS THIS ORDER MANUALLY </xsl:text>
 					<xsl:text>(by reading it from the website or by obtaining a fax from the buyer).&#13;&#10;&#13;&#10;</xsl:text>
-					
-					<xsl:text>Technical information:&#13;&#10;&#13;&#10;</xsl:text>					
-					
+					<xsl:text>Technical information:&#13;&#10;&#13;&#10;</xsl:text>
 					<xsl:text>1)&#13;&#10;</xsl:text>
 					<xsl:text>Error raised by tsMappingHospitalityOrderTradacomsv6Out.xsl.&#13;&#10;&#13;&#10;</xsl:text>
-					
 					<xsl:text>2)&#13;&#10;</xsl:text>
 					<xsl:text>The problem element is </xsl:text>
 					<xsl:call-template name="msWriteXPath">
-						<xsl:with-param name="vobjNode" select="$vobjNode"/>					
+						<xsl:with-param name="vobjNode" select="$vobjNode"/>
 					</xsl:call-template>
 					<xsl:text>[. = '</xsl:text>
 					<xsl:value-of select="$vobjNode"/>
 					<xsl:text>'].&#13;&#10;&#13;&#10;</xsl:text>
-					
 					<xsl:text>3)&#13;&#10;</xsl:text>
 					<xsl:text>The maximum length after escaping is </xsl:text>
 					<xsl:value-of select="$vnLength"/>
 					<xsl:text> characters.</xsl:text>
 				</xsl:message>
 			</xsl:when>
-			
 			<xsl:otherwise>
 				<xsl:value-of select="$sEscapedField"/>
 			</xsl:otherwise>
-			
-		</xsl:choose>		
+		</xsl:choose>
+		
+	</xsl:template>
 	
-	</xsl:template> 
-
-<!--=======================================================================================
+	
+	<!--=======================================================================================
   Routine        : msWriteXPath()
   Description    : Writes out the Xpath to the given element 
   Inputs         :  ;  ;  ;  
@@ -357,22 +348,22 @@
   Author         : Robert Cambridge
   Version        : 1.0
   Alterations    : (none)
- =======================================================================================-->	
+ =======================================================================================-->
 	<xsl:template name="msWriteXPath">
-		<xsl:param name="vobjNode"/>		
+		<xsl:param name="vobjNode"/>
 		
 		<xsl:if test="$vobjNode != /*">
 			<xsl:call-template name="msWriteXPath">
 				<xsl:with-param name="vobjNode" select="$vobjNode/ancestor::*[1]"/>
 			</xsl:call-template>
 		</xsl:if>
-		
 		<xsl:text>/</xsl:text>
 		<xsl:value-of select="name($vobjNode)"/>
 		
 	</xsl:template>
-
-<msxsl:script language="VBScript" implements-prefix="vb"><![CDATA[
+	
+	
+	<msxsl:script language="VBScript" implements-prefix="vb"><![CDATA[
 
 '==========================================================================================
 ' Routine        : msFileGenerationDate()
@@ -418,8 +409,7 @@ End Function
 
 ]]></msxsl:script>
 
-
-<msxsl:script language="JScript" implements-prefix="js"><![CDATA[ 
+	<msxsl:script language="JScript" implements-prefix="js"><![CDATA[ 
 
 /*=========================================================================================
 ' Routine        : msSafeText()
@@ -494,11 +484,4 @@ function msEscape(vsField){
 
    
 ]]></msxsl:script>
-
-
-
-
-
-
-
 </xsl:stylesheet>
