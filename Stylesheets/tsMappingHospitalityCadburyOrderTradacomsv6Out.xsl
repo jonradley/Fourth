@@ -37,10 +37,10 @@
 		<xsl:text>STX=</xsl:text>
 			<xsl:text>ANA:1+</xsl:text>
 			<!--Our mailbox reference-->
-			<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
+			<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
 			<!--xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/-->
 			<xsl:text>:</xsl:text>
-			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Buyer/BuyersName), 35)"/>
+			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/ShipTo/ShipToName), 35)"/>
 			<xsl:text>+</xsl:text>
 			<!--Your mailbox reference-->
 			<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN"/>
