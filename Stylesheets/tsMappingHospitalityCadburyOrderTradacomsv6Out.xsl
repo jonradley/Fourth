@@ -204,25 +204,39 @@
 				<!--xsl:value-of select="HelperObj:GetNextCounterValue('OrderLineDetails')"/-->
 				<xsl:value-of select="count(preceding-sibling::* | self::*)"/>
 				<xsl:text>+</xsl:text>
-				<xsl:text>:</xsl:text>
-				<xsl:text>+</xsl:text>
 				<!-- The barcode -->
 				<xsl:call-template name="msCheckField">
 					<xsl:with-param name="vobjNode" select="ProductID/SuppliersProductCode"/>
 					<xsl:with-param name="vnLength" select="30"/>
 				</xsl:call-template>
 				<xsl:text>+</xsl:text>
+				<xsl:text>+</xsl:text>
 				<xsl:text>:</xsl:text>
 				<xsl:call-template name="msCheckField">
-					<xsl:with-param name="vobjNode" select="ProductID/BuyersProductCode"/>
+					<xsl:with-param name="vobjNode">
+						<xsl:choose>
+							<xsl:when test="string(ProductID/BuyersProductCode) != ''">
+								<xsl:value-of select="ProductID/BuyersProductCode"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="ProductID/SuppliersProductCode"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:with-param>
 					<xsl:with-param name="vnLength" select="30"/>
 				</xsl:call-template>
-				<xsl:text>+::</xsl:text>
+				<xsl:text>+</xsl:text>
+				<xsl:value-of select="js:msSafeText(string(PackSize),15)"/>
+				<xsl:text>::</xsl:text>
 				<xsl:value-of select="js:msSafeText(string(OrderedQuantity/@UnitOfMeasure),6)"/>
 				<xsl:text>+</xsl:text>
 				<xsl:value-of select="translate(format-number(OrderedQuantity,'#.000'),'.','')"/>
+				<xsl:text>::</xsl:text>
+				<xsl:value-of select="js:msSafeText(string(OrderedQuantity/@UnitOfMeasure),6)"/>
 				<xsl:text>+</xsl:text>
 				<xsl:value-of select="translate(format-number(UnitValueExclVAT,'#.00'),'.','')"/><xsl:text>00</xsl:text>
+				<xsl:text>:</xsl:text>
+				<xsl:value-of select="js:msSafeText(string(OrderedQuantity/@UnitOfMeasure),6)"/>
 				<xsl:text>+</xsl:text>
 				<xsl:text>+</xsl:text>
 				<xsl:text>+</xsl:text>
