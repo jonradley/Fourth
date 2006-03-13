@@ -28,8 +28,7 @@
 	
 		<xsl:variable name="sRecordSep">
 			<xsl:text>'</xsl:text>
-			<!--xsl:text>&#13;&#10;</xsl:text-->
-			<xsl:text></xsl:text>
+			<!--xsl:text>'&#13;&#10;</xsl:text-->
 		</xsl:variable>
 		
 		<xsl:variable name="sFileGenerationDate" select="vb:msFileGenerationDate()"/>
@@ -97,7 +96,7 @@
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:text>CDT=</xsl:text>
-			<!--xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/-->
+			<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/>
 			<xsl:text>:</xsl:text>
 			<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
 			<xsl:text>+</xsl:text>
@@ -143,7 +142,7 @@
 
 		
 		<xsl:text>CLO=</xsl:text>
-			<!--xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/GLN"/-->
+			<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/GLN"/>
 			<xsl:text>:</xsl:text>
 			<!--xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode"/-->
 			<xsl:text>:</xsl:text>
@@ -186,7 +185,7 @@
 			<xsl:call-template name="msFormateDate">
 				<xsl:with-param name="vsUTCDate" select="PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate"/>
 			</xsl:call-template>
-			<xsl:text>+</xsl:text>
+			<!--xsl:text>+</xsl:text-->
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<!--
@@ -204,12 +203,14 @@
 				<!--xsl:value-of select="HelperObj:GetNextCounterValue('OrderLineDetails')"/-->
 				<xsl:value-of select="count(preceding-sibling::* | self::*)"/>
 				<xsl:text>+</xsl:text>
+				<!-- ? Barcode -->
 				<xsl:text>:</xsl:text>
 				<xsl:call-template name="msCheckField">
 					<xsl:with-param name="vobjNode" select="ProductID/SuppliersProductCode"/>
 					<xsl:with-param name="vnLength" select="30"/>
 				</xsl:call-template>
 				<xsl:text>+</xsl:text>
+				<!-- ? -->
 				<xsl:text>+</xsl:text>
 				<xsl:text>:</xsl:text>
 				<xsl:call-template name="msCheckField">
@@ -226,11 +227,8 @@
 				<xsl:text>+</xsl:text>
 				<xsl:text>+</xsl:text>
 				<!-- truncate to 40 TDES = 9030 = AN..40-->
-				<xsl:call-template name="msCheckField">
-					<xsl:with-param name="vobjNode" select="ProductDescription"/>
-					<xsl:with-param name="vnLength" select="40"/>
-				</xsl:call-template>
-				
+				<xsl:value-of select="js:msSafeText(string(ProductDescription),40)"/>
+								
 				
 			<xsl:value-of select="$sRecordSep"/>
 			
@@ -313,17 +311,29 @@
 		
 			<xsl:when test="string-length($sEscapedField) &gt; $vnLength">
 				<xsl:message terminate="yes">
-					<xsl:text>Error raised by tsMappingHospitalityOrderTradacomsv6Out.xsl.&#13;&#10;</xsl:text>
+				
+					<xsl:text>[[tradesimple defined XSLT error]]&#13;&#10;</xsl:text>
+				
+					<xsl:text>This message contains data that would be truncated when mapped to the appropriate tradacoms field.&#13;&#10;&#13;&#10;</xsl:text>
 					
-					<xsl:text>The internal format of this message contains a field that would be truncated when mapped to a corresponding tradacoms field.&#13;&#10;</xsl:text>
-					<xsl:text>The element is </xsl:text>
+					<xsl:text>THE RECIPIENT MUST BE INFORMED THAT THEY NEED TO PROCESS THIS ORDER MANUALLY </xsl:text>
+					<xsl:text>(by reading it from the website or by obtaining a fax from the buyer).&#13;&#10;&#13;&#10;</xsl:text>
+					
+					<xsl:text>Technical information:&#13;&#10;&#13;&#10;</xsl:text>					
+					
+					<xsl:text>1)&#13;&#10;</xsl:text>
+					<xsl:text>Error raised by tsMappingHospitalityOrderTradacomsv6Out.xsl.&#13;&#10;&#13;&#10;</xsl:text>
+					
+					<xsl:text>2)&#13;&#10;</xsl:text>
+					<xsl:text>The problem element is </xsl:text>
 					<xsl:call-template name="msWriteXPath">
 						<xsl:with-param name="vobjNode" select="$vobjNode"/>					
 					</xsl:call-template>
 					<xsl:text>[. = '</xsl:text>
 					<xsl:value-of select="$vobjNode"/>
-					<xsl:text>'].&#13;&#10;</xsl:text>
+					<xsl:text>'].&#13;&#10;&#13;&#10;</xsl:text>
 					
+					<xsl:text>3)&#13;&#10;</xsl:text>
 					<xsl:text>The maximum length after escaping is </xsl:text>
 					<xsl:value-of select="$vnLength"/>
 					<xsl:text> characters.</xsl:text>
@@ -336,12 +346,12 @@
 			
 		</xsl:choose>		
 	
-	</xsl:template>
+	</xsl:template> 
 
 <!--=======================================================================================
   Routine        : msWriteXPath()
   Description    : Writes out the Xpath to the given element 
-  Inputs         : 
+  Inputs         :  ;  ;  ;  
   Outputs        : 
   Returns        : A string
   Author         : Robert Cambridge
