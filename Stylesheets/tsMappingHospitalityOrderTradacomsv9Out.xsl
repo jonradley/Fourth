@@ -29,8 +29,8 @@
 	<xsl:template match="/PurchaseOrder">
 	
 		<xsl:variable name="sRecordSep">
-			<!--<xsl:text>'</xsl:text>-->
-			<xsl:text>&#13;&#10;</xsl:text>
+			<xsl:text>'</xsl:text>
+			<!--<xsl:text>&#13;&#10;</xsl:text>-->
 			<xsl:text></xsl:text>
 		</xsl:variable>
 		
