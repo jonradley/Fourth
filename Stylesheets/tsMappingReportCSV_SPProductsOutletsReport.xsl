@@ -23,12 +23,15 @@
 		<xsl:value-of select="script:msFormatForCSV(/Report/ReportName)"/><xsl:text> - </xsl:text><xsl:value-of select="script:msFormatDate(/Report/ReportDate)"/>
 		<xsl:text>&#xD;</xsl:text>
 		<xsl:text>&#xD;</xsl:text>
+		
 		<!--Header Details-->
 		<xsl:if test="/Report/HeaderDetails">
 			<xsl:for-each select="/Report/HeaderDetails/HeaderDetail">
-				<xsl:value-of select="script:msFormatForCSV(Description)"/><xsl:text>,</xsl:text><xsl:value-of select="script:msFormatForCSV(Value)"/><xsl:text>&#xD;</xsl:text>
+				<xsl:value-of select="script:msFormatForCSV(Description)"/><xsl:text>,</xsl:text><xsl:value-of select="script:msFormatForCSV(Value)"/>
+				<xsl:text>&#xD;</xsl:text>
 			</xsl:for-each>
 		</xsl:if>
+		<xsl:text>&#xD;</xsl:text>
 		
 		<!--Line Details-->
 		<!-- Due to the nature of this report this does not follow a nice generic report structure - most values are hard coded -->
