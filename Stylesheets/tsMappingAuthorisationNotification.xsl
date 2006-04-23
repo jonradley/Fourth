@@ -114,7 +114,7 @@
 							<td align="center" colspan="2">
 								<table width="100%">
 									<tr>
-										<th align="center">Purchase Order Confirmation Creation</th>
+										<th align="center">Purchase Order Authorisation Request</th>
 									</tr>
 								</table>
 							</td>
