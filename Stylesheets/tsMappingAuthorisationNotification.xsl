@@ -12,6 +12,8 @@
  Date            | Name           | Description of modification
 ******************************************************************************************
  18/04/2004 | A Sheppard | Created module.
+****************************************************************************************** 
+ 04/05/2006 | Lee Boyton | H588. Minor formatting changes.
 ******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:user="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl user">
@@ -513,9 +515,9 @@
 						</tr>
 						<tr>
 							<td colspan="2" align="center">
-								<xsl:text>Current spend with </xsl:text><xsl:value-of select="/PurchaseOrder/BudgetDetails/SupplierName"/><xsl:text> for this period (</xsl:text><xsl:value-of select="/PurchaseOrder/BudgetDetails/Period"/><xsl:text>) including this order is £</xsl:text><xsl:value-of select="format-number(/PurchaseOrder/BudgetDetails/SpendValue, '0.00')"/><xsl:text>*.</xsl:text>
+								<xsl:text>Current spend with </xsl:text><xsl:value-of select="/PurchaseOrder/BudgetDetails/SupplierName"/><xsl:text> for this period (</xsl:text><xsl:value-of select="substring(/PurchaseOrder/BudgetDetails/Period,5)"/><xsl:text>/</xsl:text><xsl:value-of select="substring(/PurchaseOrder/BudgetDetails/Period,1,4)"/><xsl:text>) including this order is £</xsl:text><xsl:value-of select="format-number(/PurchaseOrder/BudgetDetails/SpendValue, '#,##0.00')"/><xsl:text>*.</xsl:text>
 								<br/><br/>
-								<xsl:text>This is £</xsl:text><xsl:value-of select="format-number(/PurchaseOrder/BudgetDetails/Overspend, '0.00')"/><xsl:text> more than their budget of £</xsl:text><xsl:value-of select="format-number(/PurchaseOrder/BudgetDetails/BudgetValue, '0.00')"/><xsl:text>.</xsl:text>
+								<xsl:text>This is £</xsl:text><xsl:value-of select="format-number(/PurchaseOrder/BudgetDetails/Overspend, '#,##0.00')"/><xsl:text> more than their budget of £</xsl:text><xsl:value-of select="format-number(/PurchaseOrder/BudgetDetails/BudgetValue, '#,##0.00')"/><xsl:text>.</xsl:text>
 								<br/><br/>
 								<xsl:text>*Note that this information was correct at the time of sending (</xsl:text><xsl:value-of select="/PurchaseOrder/BudgetDetails/BudgetCalculationTime"/><xsl:text>).</xsl:text>
 								<br/><br/>
