@@ -16,6 +16,8 @@
 '******************************************************************************************
 ' 13/07/2005  | Lee Boyton   | H465. King core upgrade - new internal format.
 '******************************************************************************************
+' 16/06/2005  | Lee Boyton   | H577. Remove the delivery cut of date and time.
+'******************************************************************************************
 '             |              | 
 '******************************************************************************************
 -->
@@ -63,7 +65,7 @@
 	</xsl:template>
 	
 	<!--remove any elements from the document that are either not supported or should not be populated on the King platform -->
-	<xsl:template match="OrderID|HeaderExtraData|LineExtraData|TrailerExtraData">
+	<xsl:template match="OrderID|HeaderExtraData|LineExtraData|TrailerExtraData|DeliveryCutOffDate|DeliveryCutOffTime">
 	</xsl:template>
 	
 	<!--identity transformation -->
