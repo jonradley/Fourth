@@ -14,6 +14,8 @@
  18/04/2004 | A Sheppard | Created module.
 ****************************************************************************************** 
  04/05/2006 | Lee Boyton | H588. Minor formatting changes.
+****************************************************************************************** 
+ 26/05/2006 | Lee Boyton | H588. Removed use of Javascript to workaround security issues.
 ******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:user="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl user">
@@ -108,7 +110,6 @@
 						<xsl:value-of select="/PurchaseOrder/DocBuilder/Url"/>
 						<xsl:text>OrderID=</xsl:text>
 						<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/OrderID"/>
-						<xsl:text>&amp;Action=</xsl:text>
 					</xsl:attribute>
 					<table class="DocumentSurround">
 						<!--Header-->
@@ -545,8 +546,8 @@
 						</tr>
 						<tr>
 							<td colspan="2" align="center">
-								<input type="submit" onclick="Javascript:document.frmMain.action += 'Approve';" value="Approve"/>
-								<input type="submit" onclick="Javascript:document.frmMain.action += 'Reject';" value="Reject"/>
+								<input type="submit" name="btnAction" value="Approve"/>
+								<input type="submit" name="btnAction" value="Reject"/>
 							</td>
 						</tr>
 					</table>					
