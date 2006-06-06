@@ -56,9 +56,18 @@
 		</xsl:copy>
 	</xsl:template>
 
-	<!-- Cafe Bar UK specific - if a purchase order date has been provided without
-	     an associated reference then remove the PurchaseOrderReferences element -->
-	<xsl:template match="PurchaseOrderReferences[PurchaseOrderDate and not(PurchaseOrderReference)]"/>
+	<!-- Cafe Bar UK specific - if a contract reference has been provided without
+	     an associated purchase order reference then add a default reference value -->
+	<xsl:template match="PurchaseOrderReferences[TradeAgreement/ContractReference and not(PurchaseOrderReference)]">
+		<xsl:element name="PurchaseOrderReferences">
+			<!-- add a static Purchase Order Reference value as it is mandatory -->
+			<xsl:element name="PurchaseOrderReference">
+				<xsl:text>Not Provided</xsl:text>
+			</xsl:element>
+			<!-- continue processing all other child elements within the PurchaseOrderReferences element -->
+			<xsl:apply-templates/>
+		</xsl:element>
+	</xsl:template>
 	
 	<!-- INVOIC-ILD-QTYI (InvoiceLine/InvoicedQuantity) needs to be multiplied by -1 if (InvoiceLine/ProductID/GTIN) is NOT blank -->
 	<!-- Cafe Bar UK specific - the UnitOfMeasure needs to be translated from the TotalMeasureIndicator -->
@@ -138,7 +147,7 @@
 	<!-- END of SIMPLE CONVERSIONS-->
 	
 	<!-- DATE CONVERSION YYMMDD to xsd:date -->
-	<xsl:template match="PurchaseOrderReferences/PurchaseOrderDate[../PurchaseOrderReference != ''] | 
+	<xsl:template match="PurchaseOrderReferences/PurchaseOrderDate | 
 						DeliveryNoteReferences/DeliveryNoteDate |
 						DeliveryNoteReferences/DespatchDate |
 						BatchInformation/FileCreationDate |

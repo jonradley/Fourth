@@ -200,6 +200,10 @@
 									<PurchaseOrderReference RecordPos="ILD=" LPos="27" SFPos="2"/>
 									<!-- LPos 2 OPTIONAL Purchase Order Date, OPTIONAL, INVOIC – ODD – ORNO(3), YYMMDD, Must be valid date, and should be set to the order date associated with the reference above -->
 									<PurchaseOrderDate RecordPos="ILD=" LPos="27" SFPos="3"/>
+									<!-- Cafe Bar UK specific. MANDATORY Contract Reference, OPTIONAL, INVOIC - ODD - SCRF(1) -->
+									<TradeAgreement>
+										<ContractReference RecordPos="ILD=" LPos="36" SFPos="1"/>
+									</TradeAgreement>
 								</PurchaseOrderReferences>
 								<DeliveryNoteReferences>
 									<!-- LPos 3 OPTIONAL Delivery Note Reference, CONDITIONAL, INVOIC – ODD – DELN(1), The delivery note reference for the goods being invoiced -->

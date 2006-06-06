@@ -209,6 +209,10 @@
 									<PurchaseOrderReference RecordPos="CLD=" LPos="23" SFPos="2"/>
 									<!-- OIR LPos 5 OPTIONAL Purchase Order Date, OPTIONAL, CREDIT – OIR – ORNO(3), YYMMDD, Must be valid date, and should be set to the order date associated with the reference above -->
 									<PurchaseOrderDate RecordPos="CLD=" LPos="23" SFPos="3"/>
+									<!-- Cafe Bar UK specific. MANDATORY Contract Reference, OPTIONAL, CREDIT - OIR - SCRF(1) -->
+									<TradeAgreement>
+										<ContractReference RecordPos="CLD=" LPos="24" SFPos="1"/>
+									</TradeAgreement>									
 								</PurchaseOrderReferences>
 								<ProductID>
 									<!-- NOT GTIN, actually CLD - DRLI used by stylesheet to action -1.0 multiplier on QTYC and EXLV -->
