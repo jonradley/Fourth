@@ -1,6 +1,5 @@
 <!--
 ******************************************************************************************
- $Header: $
  Overview
 
  This XSL file is used to transform XML for an authorisation notification into an HTML page
@@ -16,6 +15,8 @@
  04/05/2006 | Lee Boyton | H588. Minor formatting changes.
 ****************************************************************************************** 
  26/05/2006 | Lee Boyton | H588. Removed use of Javascript to workaround security issues.
+****************************************************************************************** 
+ 05/06/2006 | Lee Boyton | H588. Added missing authorisation comment text.
 ******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:user="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl user">
@@ -522,6 +523,11 @@
 								<br/><br/>
 								<xsl:text>*Note that this information was correct at the time of sending (</xsl:text><xsl:value-of select="/PurchaseOrder/BudgetDetails/BudgetCalculationTime"/><xsl:text>).</xsl:text>
 								<br/><br/>
+								<xsl:if test="/PurchaseOrder/BudgetDetails/AuthorisationComments">
+									<xsl:text>Authorisation comment: </xsl:text>
+									<xsl:value-of select="/PurchaseOrder/BudgetDetails/AuthorisationComments"/>
+									<br/><br/>
+								</xsl:if>
 								<xsl:text>To approve this overspend:</xsl:text>
 								<br/>
 								<xsl:text>1. Please enter your username and password.</xsl:text>
