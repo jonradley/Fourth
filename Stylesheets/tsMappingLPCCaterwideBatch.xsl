@@ -31,6 +31,8 @@
  25/10/2005		| A Sheppard	| H522. Added delivery notes.
 =========================================================================================
  08/02/2006		| A Sheppard	| H556. Change output for food suppliers
+=========================================================================================
+ 16/06/2006		| A Sheppard	| H604. Cater for goods received notes and product code location change
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -84,23 +86,23 @@
 				<xsl:value-of select="substring(/*/*/ShipTo/ShipToName, 1, 30)"/>
 				<xsl:text>,</xsl:text>
 				
-				<xsl:value-of select="(/*/*/InvoiceLine | /*/*/CreditNoteLine)/PurchaseOrderReferences/PurchaseOrderReference"/>
+				<xsl:value-of select="(/*/*/InvoiceLine | /*/*/CreditNoteLine | /GoodsReceivedNote/GoodsReceivedNoteHeader)/PurchaseOrderReferences/PurchaseOrderReference"/>
 				<xsl:text>,</xsl:text>
 				
-				<xsl:if test="(/*/*/InvoiceLine | /*/*/CreditNoteLine)/PurchaseOrderReferences/PurchaseOrderDate">
+				<xsl:if test="(/*/*/InvoiceLine | /*/*/CreditNoteLine | /GoodsReceivedNote/GoodsReceivedNoteHeader)/PurchaseOrderReferences/PurchaseOrderDate">
 					<xsl:call-template name="msFormatDate">
-						<xsl:with-param name="vsDate" select="(/*/*/InvoiceLine | /*/*/CreditNoteLine)/PurchaseOrderReferences/PurchaseOrderDate"/>
+						<xsl:with-param name="vsDate" select="(/*/*/InvoiceLine | /*/*/CreditNoteLine | /GoodsReceivedNote/GoodsReceivedNoteHeader)/PurchaseOrderReferences/PurchaseOrderDate"/>
 					</xsl:call-template>
 				</xsl:if>
 				<xsl:text>,</xsl:text>
 				
 				<xsl:call-template name="msStripLeadingZeros">
-					<xsl:with-param name="vsDNRef" select="(/*/*/InvoiceLine | /*/*/CreditNoteLine | /DeliveryNote/DeliveryNoteHeader)/DeliveryNoteReferences/DeliveryNoteReference"/>
+					<xsl:with-param name="vsDNRef" select="(/*/*/InvoiceLine | /*/*/CreditNoteLine | /DeliveryNote/DeliveryNoteHeader | /GoodsReceivedNote/GoodsReceivedNoteHeader)/DeliveryNoteReferences/DeliveryNoteReference"/>
 				</xsl:call-template>
 				<xsl:text>,</xsl:text>
 				
 				<xsl:call-template name="msFormatDate">
-					<xsl:with-param name="vsDate" select="(/Invoice/InvoiceDetail/InvoiceLine/DeliveryNoteReferences/DeliveryNoteDate | /CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteDate | /DeliveryNote/DeliveryNoteHeader/DeliveryNoteReferences/DeliveryNoteDate)"/>
+					<xsl:with-param name="vsDate" select="(/Invoice/InvoiceDetail/InvoiceLine/DeliveryNoteReferences/DeliveryNoteDate | /CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteDate | /DeliveryNote/DeliveryNoteHeader/DeliveryNoteReferences/DeliveryNoteDate | /GoodsReceivedNote/GoodsReceivedNoteHeader/DeliveryNoteReferences/DeliveryNoteDate)"/>
 				</xsl:call-template>
 				<xsl:text>,</xsl:text>
 	
@@ -144,7 +146,7 @@
 						</xsl:call-template>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:for-each select="(/Invoice/InvoiceDetail/InvoiceLine | /CreditNote/CreditNoteDetail/CreditNoteLine | /DeliveryNote/DeliveryNoteDetail/DeliveryNoteLine)[LineExtraData/IsStockProduct[.='true' or .='1']]">
+					<xsl:for-each select="(/Invoice/InvoiceDetail/InvoiceLine | /CreditNote/CreditNoteDetail/CreditNoteLine | /DeliveryNote/DeliveryNoteDetail/DeliveryNoteLine | /GoodsReceivedNote/GoodsReceivedNoteDetail/GoodsReceivedNoteLine)[LineExtraData/IsStockProduct[.='true' or .='1']]">
 						<!-- From section 4.1.1.3
 					
 							Record Type 2 - Detail line record
@@ -178,7 +180,8 @@
 							<xsl:choose>
 								<xsl:when test="self::InvoiceLine/InvoicedQuantity"><xsl:value-of select="InvoicedQuantity"/></xsl:when>
 								<xsl:when test="CreditedQuantity">-<xsl:value-of select="CreditedQuantity"/></xsl:when>
-								<xsl:otherwise><xsl:value-of select="DespatchedQuantity"/></xsl:otherwise>
+								<xsl:when test="DespatchedQuantity"><xsl:value-of select="DespatchedQuantity"/></xsl:when>
+								<xsl:when test="AcceptedQuantity"><xsl:value-of select="AcceptedQuantity"/></xsl:when>
 							</xsl:choose>
 						</xsl:variable>
 						

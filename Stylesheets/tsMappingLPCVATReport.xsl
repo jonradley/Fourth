@@ -9,11 +9,13 @@
 ******************************************************************************************
  Module History
 ******************************************************************************************
- Date            | Name      | Description of modification
+ Date            | Name     		| Description of modification
 ******************************************************************************************
- 03/06/2003 | L Beattie | Created module.
+ 03/06/2003 | L Beattie 		| Created module.
 ******************************************************************************************
- 06/11/2003 | L Boyton  | H72. Minor changes for GENTRAN Batches.
+ 06/11/2003 | L Boyton  		| H72. Minor changes for GENTRAN Batches.
+******************************************************************************************
+ 19/06/2006 | A Sheppard 	| H604. Added debits
 ******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 	
@@ -319,6 +321,80 @@
 			</table>
 		</tr>
 	</xsl:if>
+	
+	<!-- DEBIT NOTES -->
+		<tr>
+			<table class="summary" cellpadding="0" cellspacing="0" width="100%">
+				<tr><td colspan="7" style="border-top:black thin solid">DEBIT NOTES</td></tr>
+				<tr><td colspan="7">Total Number of Debit Notes: <xsl:value-of select="LaurelVATReportTrailer/NumberOfDebits"></xsl:value-of></td></tr>
+				<tr><td colspan="7" style="border-bottom:black thin solid">Total Number of Debit Note Lines: <xsl:value-of select="LaurelVATReportTrailer/NumberOfDebitLines"></xsl:value-of></td></tr>
+			</table>
+		</tr>
+	<xsl:if test="LaurelVATReportTrailer/NumberOfDebits!= '0'">		
+		<tr>
+			<td align="center" colspan="7">
+				<table class="products" cellpadding="0" cellspacing="0" width="100%">
+					<tr>
+						<th style="border-top:black thin solid" width="13%">From</th>		
+						<th style="border-top:black thin solid" width="12%">Docs at Rate</th>		
+						<th style="border-top:black thin solid" width="13%">
+							<xsl:choose>
+								<xsl:when test="LaurelVATReportHeader/BatchID = '0'">EDI VAT Code</xsl:when>
+								<xsl:otherwise>Coda VAT Code</xsl:otherwise>
+							</xsl:choose>
+						</th>		
+						<th style="border-top:black thin solid" width="12%">VAT Rate</th>		
+						<th style="border-top:black thin solid" width="20%">Lines Total Excluding VAT</th>		
+						<th style="border-top:black thin solid" width="10%">VAT Amount</th>		
+						<th style="border-top:black thin solid;border-right:black thin solid" width="20%">Payable Amount Excl. Settlement Discount</th>
+					</tr>
+					<xsl:for-each select="LaurelVATReportDetail/LaurelVATReportLine[DocumentType='Debit']">
+							<tr><td width="13%" colspan="1" class="Supplier" style="border-left:black thin solid"><xsl:value-of select="SuppliersName"></xsl:value-of>&#xA0;</td>
+								<td width="25%" colspan="6" class="Supplier" style="border-right:black thin solid"><xsl:value-of select="SuppliersAddress/AddressLine1"></xsl:value-of>&#xA0;</td></tr>
+							<tr><td width="13%" colspan="1" class="Supplier" style="border-left:black thin solid"><br/></td>
+								<td width="25%" colspan="6" class="Supplier" style="border-right:black thin solid"><xsl:value-of select="SuppliersAddress/AddressLine2"></xsl:value-of>&#xA0;</td></tr>
+							<tr><td width="13%" colspan="1" class="Supplier" style="border-left:black thin solid"><br/></td>
+								<td width="25%" colspan="6" class="Supplier" style="border-right:black thin solid"><xsl:value-of select="SuppliersAddress/AddressLine3"></xsl:value-of>&#xA0;</td></tr>
+							<tr><td width="13%" colspan="1" class="Supplier" style="border-left:black thin solid"><br/></td>
+								<td width="25%" colspan="6" class="Supplier" style="border-right:black thin solid"><xsl:value-of select="SuppliersAddress/AddressLine4"></xsl:value-of>&#xA0;</td></tr>
+							<tr><td width="13%" colspan="1" class="Supplier" style="border-left:black thin solid;BORDER-BOTTOM: black thin solid"><br/></td>
+								<td width="25%" colspan="6" class="Supplier" style="border-right:black thin solid;BORDER-BOTTOM: black thin solid"><xsl:value-of select="SuppliersAddress/PostCode"></xsl:value-of>&#xA0;</td></tr>
+						<xsl:for-each select="VATSubtotals/VATSubtotal">
+							<tr>
+								<td width="13%"><br/></td>
+								<td width="12%"><xsl:value-of select="NumberOfDocumentsAtRate"></xsl:value-of>&#xA0;</td>
+								<td width="13%"><xsl:value-of select="CodaVATCode"></xsl:value-of>&#xA0;</td>
+								<td width="12%" align="right"><xsl:value-of select="VATRate"></xsl:value-of>&#xA0;</td>
+								<td width="20%" align="right"><xsl:value-of select="format-number(TotalExclVATAtRate,'0.00')"></xsl:value-of>&#xA0;</td>
+								<td width="10%" align="right"><xsl:value-of select="format-number(VATAmountAtRate,'0.00')"></xsl:value-of>&#xA0;</td>
+								<td width="20%" align="right" style="border-right:black thin solid"><xsl:value-of select="format-number(TotalInclVATExclDiscountAtRate,'0.00')"></xsl:value-of>&#xA0;</td>								</tr>
+						</xsl:for-each>						
+					</xsl:for-each>				
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<table class="summary" cellpadding="0" cellspacing="0" width="100%">
+				<tr><td colspan="7" style="border-bottom:black thin solid">Batch Totals for Debit Notes</td></tr>
+			</table>		
+		</tr>
+		<tr>
+			<table class="products" cellpadding="0" cellspacing="0" width="100%">
+				<xsl:for-each select="LaurelVATReportTrailer/DebitVATSubtotals/VATSubtotal">
+					<tr>
+						<td width="13%"><br/></td>
+						<td width="12%"><xsl:value-of select="NumberOfDocumentsAtRate"></xsl:value-of>&#xA0;</td>
+						<td width="13%"><xsl:value-of select="CodaVATCode"></xsl:value-of>&#xA0;</td>
+						<td width="12%" align="right"><xsl:value-of select="VATRate"></xsl:value-of>&#xA0;</td>
+						<td width="20%" align="right"><xsl:value-of select="format-number(TotalExclVATAtRate,'0.00')"></xsl:value-of>&#xA0;</td>
+						<td width="10%" align="right"><xsl:value-of select="format-number(VATAmountAtRate,'0.00')"></xsl:value-of>&#xA0;</td>
+						<td width="20%" align="right" style="border-right:black thin solid"><xsl:value-of select="format-number(TotalInclVATExclDiscountAtRate,'0.00')"></xsl:value-of>&#xA0;</td>		
+					</tr>
+				</xsl:for-each>
+			</table>
+		</tr>
+	</xsl:if>
+
 		<tr>
 			<table class="Address"><tr><td>END OF VAT REPORT</td></tr></table>
 		</tr>
