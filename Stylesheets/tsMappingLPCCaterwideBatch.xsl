@@ -33,6 +33,8 @@
  08/02/2006		| A Sheppard	| H556. Change output for food suppliers
 =========================================================================================
  16/06/2006		| A Sheppard	| H604. Cater for goods received notes and product code location change
+=========================================================================================
+ 20/06/2006		| Lee Boyton	| H604. Cater for house code location change.
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -80,7 +82,7 @@
 			
 				<xsl:text>1,</xsl:text>
 							
-				<xsl:value-of select="/*/*/ShipTo/ShipToLocationID/SuppliersCode"/>
+				<xsl:value-of select="/*/*/ShipTo/ShipToLocationID/BuyersCode"/>
 				<xsl:text>,</xsl:text>
 				
 				<xsl:value-of select="substring(/*/*/ShipTo/ShipToName, 1, 30)"/>
