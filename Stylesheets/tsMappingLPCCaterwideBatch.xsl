@@ -45,10 +45,10 @@
 	4.1.1.1	The file is an ASCII text file, with comma separated fields and cr-lf separated lines.
 	4.1.1.2	Each line is padded with spaces to a length of 201 characters.
 	-->
-	<xsl:template match="/*[*/HeaderExtraData[StockSystemIdentifier='CW'] | */HeaderExtraData[StockSystemIdentifier='ZZ']][*/*/LineExtraData[IsStockProduct[.='true' or .='1']]]">
+	<xsl:template match="/GoodsReceivedNote | /*[*/HeaderExtraData[StockSystemIdentifier='CW'] | */HeaderExtraData[StockSystemIdentifier='ZZ']][*/*/LineExtraData[IsStockProduct[.='true' or .='1']]]">
 	
 		<!--The main bit happens for CW documents only-->
-		<xsl:if test="/*/*/HeaderExtraData[StockSystemIdentifier='CW']">
+		<xsl:if test="/GoodsReceivedNote | /*/*/HeaderExtraData[StockSystemIdentifier='CW']">
 			<xsl:variable name="sHeader">
 			
 			<!-- From section 4.1.1.3	 
@@ -148,7 +148,7 @@
 						</xsl:call-template>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:for-each select="(/Invoice/InvoiceDetail/InvoiceLine | /CreditNote/CreditNoteDetail/CreditNoteLine | /DeliveryNote/DeliveryNoteDetail/DeliveryNoteLine | /GoodsReceivedNote/GoodsReceivedNoteDetail/GoodsReceivedNoteLine)[LineExtraData/IsStockProduct[.='true' or .='1']]">
+					<xsl:for-each select="/GoodsReceivedNote/GoodsReceivedNoteDetail/GoodsReceivedNoteLine | (/Invoice/InvoiceDetail/InvoiceLine | /CreditNote/CreditNoteDetail/CreditNoteLine | /DeliveryNote/DeliveryNoteDetail/DeliveryNoteLine)[LineExtraData/IsStockProduct[.='true' or .='1']]">
 						<!-- From section 4.1.1.3
 					
 							Record Type 2 - Detail line record
