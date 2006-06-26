@@ -35,6 +35,8 @@
  16/06/2006		| A Sheppard	| H604. Cater for goods received notes and product code location change
 =========================================================================================
  20/06/2006		| Lee Boyton	| H604. Cater for house code location change.
+=========================================================================================
+ 26/06/2006		| A Sheppard	| H604. Added debit notes
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -88,23 +90,23 @@
 				<xsl:value-of select="substring(/*/*/ShipTo/ShipToName, 1, 30)"/>
 				<xsl:text>,</xsl:text>
 				
-				<xsl:value-of select="(/*/*/InvoiceLine | /*/*/CreditNoteLine | /GoodsReceivedNote/GoodsReceivedNoteHeader)/PurchaseOrderReferences/PurchaseOrderReference"/>
+				<xsl:value-of select="(/*/*/InvoiceLine | /*/*/CreditNoteLine | /*/*/DebitNoteLine | /GoodsReceivedNote/GoodsReceivedNoteHeader)/PurchaseOrderReferences/PurchaseOrderReference"/>
 				<xsl:text>,</xsl:text>
 				
-				<xsl:if test="(/*/*/InvoiceLine | /*/*/CreditNoteLine | /GoodsReceivedNote/GoodsReceivedNoteHeader)/PurchaseOrderReferences/PurchaseOrderDate">
+				<xsl:if test="(/*/*/InvoiceLine | /*/*/CreditNoteLine | /*/*/DebitNoteLine | /GoodsReceivedNote/GoodsReceivedNoteHeader)/PurchaseOrderReferences/PurchaseOrderDate">
 					<xsl:call-template name="msFormatDate">
-						<xsl:with-param name="vsDate" select="(/*/*/InvoiceLine | /*/*/CreditNoteLine | /GoodsReceivedNote/GoodsReceivedNoteHeader)/PurchaseOrderReferences/PurchaseOrderDate"/>
+						<xsl:with-param name="vsDate" select="(/*/*/InvoiceLine | /*/*/CreditNoteLine | /*/*/DebitNoteLine | /GoodsReceivedNote/GoodsReceivedNoteHeader)/PurchaseOrderReferences/PurchaseOrderDate"/>
 					</xsl:call-template>
 				</xsl:if>
 				<xsl:text>,</xsl:text>
 				
 				<xsl:call-template name="msStripLeadingZeros">
-					<xsl:with-param name="vsDNRef" select="(/*/*/InvoiceLine | /*/*/CreditNoteLine | /DeliveryNote/DeliveryNoteHeader | /GoodsReceivedNote/GoodsReceivedNoteHeader)/DeliveryNoteReferences/DeliveryNoteReference"/>
+					<xsl:with-param name="vsDNRef" select="(/*/*/InvoiceLine | /*/*/CreditNoteLine | /*/*/DebitNoteLine | /DeliveryNote/DeliveryNoteHeader | /GoodsReceivedNote/GoodsReceivedNoteHeader)/DeliveryNoteReferences/DeliveryNoteReference"/>
 				</xsl:call-template>
 				<xsl:text>,</xsl:text>
 				
 				<xsl:call-template name="msFormatDate">
-					<xsl:with-param name="vsDate" select="(/Invoice/InvoiceDetail/InvoiceLine/DeliveryNoteReferences/DeliveryNoteDate | /CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteDate | /DeliveryNote/DeliveryNoteHeader/DeliveryNoteReferences/DeliveryNoteDate | /GoodsReceivedNote/GoodsReceivedNoteHeader/DeliveryNoteReferences/DeliveryNoteDate)"/>
+					<xsl:with-param name="vsDate" select="(/Invoice/InvoiceDetail/InvoiceLine/DeliveryNoteReferences/DeliveryNoteDate | /CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteDate | /DebitNote/DebitNoteHeader/DebitNoteReferences/DebitNoteDate | /DeliveryNote/DeliveryNoteHeader/DeliveryNoteReferences/DeliveryNoteDate | /GoodsReceivedNote/GoodsReceivedNoteHeader/DeliveryNoteReferences/DeliveryNoteDate)"/>
 				</xsl:call-template>
 				<xsl:text>,</xsl:text>
 	
@@ -148,7 +150,7 @@
 						</xsl:call-template>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:for-each select="/GoodsReceivedNote/GoodsReceivedNoteDetail/GoodsReceivedNoteLine | (/Invoice/InvoiceDetail/InvoiceLine | /CreditNote/CreditNoteDetail/CreditNoteLine | /DeliveryNote/DeliveryNoteDetail/DeliveryNoteLine)[LineExtraData/IsStockProduct[.='true' or .='1']]">
+					<xsl:for-each select="/GoodsReceivedNote/GoodsReceivedNoteDetail/GoodsReceivedNoteLine | (/Invoice/InvoiceDetail/InvoiceLine | /CreditNote/CreditNoteDetail/CreditNoteLine | /DebitNote/DebitNoteDetail/DebitNoteLine | /DeliveryNote/DeliveryNoteDetail/DeliveryNoteLine)[LineExtraData/IsStockProduct[.='true' or .='1']]">
 						<!-- From section 4.1.1.3
 					
 							Record Type 2 - Detail line record
@@ -181,9 +183,10 @@
 							
 							<xsl:choose>
 								<xsl:when test="self::InvoiceLine/InvoicedQuantity"><xsl:value-of select="InvoicedQuantity"/></xsl:when>
-								<xsl:when test="CreditedQuantity">-<xsl:value-of select="CreditedQuantity"/></xsl:when>
-								<xsl:when test="DespatchedQuantity"><xsl:value-of select="DespatchedQuantity"/></xsl:when>
-								<xsl:when test="AcceptedQuantity"><xsl:value-of select="AcceptedQuantity"/></xsl:when>
+								<xsl:when test="self::DebitNoteLine/DebitedQuantity">-<xsl:value-of select="DebitedQuantity"/></xsl:when>
+								<xsl:when test="self::CreditNoteLine/CreditedQuantity">-<xsl:value-of select="CreditedQuantity"/></xsl:when>
+								<xsl:when test="self::DeliveryNoteLine/DespatchedQuantity"><xsl:value-of select="DespatchedQuantity"/></xsl:when>
+								<xsl:when test="self::GoodsReceivedNoteLine/AcceptedQuantity"><xsl:value-of select="AcceptedQuantity"/></xsl:when>
 							</xsl:choose>
 						</xsl:variable>
 						
