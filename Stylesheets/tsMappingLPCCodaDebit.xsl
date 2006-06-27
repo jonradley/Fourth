@@ -124,7 +124,7 @@
 							<detail-line-type>
 								<xsl:choose>
 									<xsl:when test="$LineValue &lt; 0">Debit</xsl:when>
-									<xsl:otherwise>Debit</xsl:otherwise>
+									<xsl:otherwise>Credit</xsl:otherwise>
 								</xsl:choose>
 							</detail-line-type>
 							<detail-line-tax-code>
@@ -157,7 +157,7 @@
 						<tax-line-value>
 							<xsl:value-of select="format-number(VATAmountAtRate,'0.00')"/>
 						</tax-line-value>
-						<tax-line-type>Debit</tax-line-type>
+						<tax-line-type>Credit</tax-line-type>
 						<tax-line-tax-code>
 							<xsl:value-of select="VATTrailerExtraData/CodaVATCode"/>
 						</tax-line-tax-code>
