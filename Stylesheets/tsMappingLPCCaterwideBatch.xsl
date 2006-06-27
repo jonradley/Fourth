@@ -173,7 +173,7 @@
 							<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderReference"/>
 							<xsl:text>,</xsl:text>
 							
-							<xsl:value-of select="ProductID/SuppliersProductCode"/>
+							<xsl:value-of select="ProductID/BuyersProductCode"/>
 							<xsl:text>,</xsl:text>
 							
 							<xsl:value-of select="ProductDescription"/>
@@ -259,7 +259,7 @@
 					<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderReference"/>
 					<xsl:text>,</xsl:text>
 					
-					<xsl:value-of select="ProductID/SuppliersProductCode"/>
+					<xsl:value-of select="ProductID/BuyersProductCode"/>
 					<xsl:text>,</xsl:text>
 					
 					<xsl:value-of select="ProductDescription"/>
