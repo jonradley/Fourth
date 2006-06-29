@@ -11,16 +11,19 @@
 ******************************************************************************************
  Module History
 ******************************************************************************************
- Date            | Name           | Description of modification
+ Date       | Name       | Description of modification
 ******************************************************************************************
- 20/05/2003 | L Beattie      | Created module.
+ 20/05/2003 | L Beattie  | Created module.
 ******************************************************************************************
  24/06/2003 | A Sheppard | Bug fix.
 ******************************************************************************************
- 04/11/2004 | L Boyton      | Modified to use new Hospitality internal schemas
-                                          | and use key method for grouping lines.
+ 04/11/2004 | Lee Boyton | Modified to use new Hospitality internal schemas
+                         | and use key method for grouping lines.
 ******************************************************************************************
  16/06/2006 | A Sheppard | H605. Changed into a debit note mapper
+******************************************************************************************
+ 29/06/2006 | Lee Boyton | H604. Remove trailing /n from Coda code for Supplier if present.
+                         |       The house code has moved from the suppliers to buyers code.
 ******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:user="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl user">
@@ -69,7 +72,17 @@
 					<xsl:value-of select="DebitNoteHeader/HeaderExtraData/CodaPLAccount1"/>
 				</pl-control-account>
 				<supplier-account>
-					<xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/>
+					<!-- where Laurel refer to different Supplier "PL" accounts by the same Coda code
+					     a /n is added to the end of the Coda code to make them unique in the trading relationship;
+					     this needs to be removed here -->
+					<xsl:choose>
+						<xsl:when test="contains(TradeSimpleHeader/SendersCodeForRecipient,'/')">
+							<xsl:value-of select="substring-before(TradeSimpleHeader/SendersCodeForRecipient,'/')"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/>
+						</xsl:otherwise>
+					</xsl:choose>					
 				</supplier-account>
 				<house-number>
 					<xsl:value-of select="DebitNoteHeader/HeaderExtraData/CodaPLAccount2"/>
@@ -100,7 +113,7 @@
 								<xsl:value-of select="$LedgerCode"/>
 							</nominal-account>
 							<house-number>
-								<xsl:value-of select="/DebitNote/DebitNoteHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
+								<xsl:value-of select="/DebitNote/DebitNoteHeader/ShipTo/ShipToLocationID/BuyersCode"/>
 							</house-number>
 							<detail-line-description>
 								<xsl:choose>
