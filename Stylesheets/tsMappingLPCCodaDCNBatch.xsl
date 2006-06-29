@@ -13,6 +13,8 @@
  25/10/2005        | A Sheppard    | Created module
 ==========================================================================================
  03/11/2005        | Lee Boyton    | H522. We now have the house code for 'CDC' lines.
+=========================================================================================
+ 29/06/2006		     | Lee Boyton    | H604. Cater for house code location change.
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl script">
@@ -30,7 +32,7 @@
 		<xsl:text>&#13;&#10;</xsl:text>
 		
 		<!--Add the pub stock receipt line-->
-		<xsl:value-of select="/DeliveryNote/DeliveryNoteHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
+		<xsl:value-of select="/DeliveryNote/DeliveryNoteHeader/ShipTo/ShipToLocationID/BuyersCode"/>
 		<xsl:text>,</xsl:text>
 		<xsl:value-of select="/DeliveryNote/DeliveryNoteHeader/DeliveryNoteReferences/DeliveryNoteReference"/>
 		<xsl:text>,</xsl:text>
