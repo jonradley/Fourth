@@ -6,6 +6,8 @@ Name			| Date			| Change
 **********************************************************************
 R Cambridge	| 25/11/2005	| Created
 **********************************************************************
+Lee Boyton | 28/06/2006	| H604. Cater for Laurel houses being members.
+**********************************************************************
 				|					|
 *******************************************************************-->
 <ffsFlatFileSchema>
@@ -69,7 +71,7 @@ R Cambridge	| 25/11/2005	| Created
 			<BatchDocument>
 				<DeliveryNote>
 					<TradeSimpleHeader>
-						<SendersCodeForRecipient RecordPos="CDT=" LPos="1" SFPos="1"/>
+						<SendersCodeForRecipient RecordPos="CLO=" LPos="1" SFPos="2"/>
 					</TradeSimpleHeader>
 					<DeliveryNoteHeader>
 						<Buyer>
