@@ -32,6 +32,8 @@
  					|						|		- Delivery date
 ******************************************************************************************
              	|               	|  
+******************************************************************************************
+ 30/06/2006  	| R Cambridge   	| Change SCR to be looked up from ShipTo
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" 
 				xmlns:xsl="http://www.w3.org/1999/XSL/Transform"  
@@ -44,6 +46,10 @@
 		<BatchRoot>
 		
 			<Batch>
+			
+			
+			
+			
 				<BatchDocuments>
 					<BatchDocument>
 					
@@ -59,11 +65,11 @@
 								<!-- SCR comes from Sellers code for Buyer if there, else it comes from Buyer GLN -->
 								<SendersCodeForRecipient>
 									<xsl:choose>
-										<xsl:when test="/OrderAcknowledgement/Buyer/SellerAssigned">
-											<xsl:value-of select="/OrderAcknowledgement/Buyer/SellerAssigned"/>
+										<xsl:when test="/OrderAcknowledgement/ShipTo/SellerAssigned">
+											<xsl:value-of select="/OrderAcknowledgement/ShipTo/SellerAssigned"/>
 										</xsl:when>
 										<xsl:otherwise>
-											<xsl:value-of select="/OrderAcknowledgement/Buyer/BuyerGLN"/>
+											<xsl:value-of select="/OrderAcknowledgement/ShipTo/ShipToGLN"/>
 										</xsl:otherwise>
 									</xsl:choose>
 								</SendersCodeForRecipient>
