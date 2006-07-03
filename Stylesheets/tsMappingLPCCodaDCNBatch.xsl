@@ -15,8 +15,9 @@
  03/11/2005        | Lee Boyton    | H522. We now have the house code for 'CDC' lines.
 =========================================================================================
  29/06/2006		     | Lee Boyton    | H604. Cater for house code location change.
+=========================================================================================
+ 03/07/2006        | Lee Boyton    | H604. Cater for old documents without Buyer code fields.
 =======================================================================================-->
-
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl script">
 	<xsl:output method="text" encoding="utf-8"/>
 	
@@ -32,7 +33,15 @@
 		<xsl:text>&#13;&#10;</xsl:text>
 		
 		<!--Add the pub stock receipt line-->
-		<xsl:value-of select="/DeliveryNote/DeliveryNoteHeader/ShipTo/ShipToLocationID/BuyersCode"/>
+		<!-- Cater for old documents that do not have a Buyers code, by using the Suppliers code instead -->
+		<xsl:choose>
+			<xsl:when test="/DeliveryNote/DeliveryNoteHeader/ShipTo/ShipToLocationID/BuyersCode">
+				<xsl:value-of select="/DeliveryNote/DeliveryNoteHeader/ShipTo/ShipToLocationID/BuyersCode"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="/DeliveryNote/DeliveryNoteHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
+			</xsl:otherwise>
+		</xsl:choose>															
 		<xsl:text>,</xsl:text>
 		<xsl:value-of select="/DeliveryNote/DeliveryNoteHeader/DeliveryNoteReferences/DeliveryNoteReference"/>
 		<xsl:text>,</xsl:text>
