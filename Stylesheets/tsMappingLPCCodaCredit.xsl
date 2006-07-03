@@ -23,6 +23,8 @@
  29/06/2006 | Lee Boyton | H604. Remove trailing /n from Coda code for Supplier if present.
                          |       The house code has moved from the suppliers to buyers code.
 ******************************************************************************************
+ 03/07/2006 | Lee Boyton | H604. Cater for old documents without Buyer code fields.
+******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:user="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl user">
 	<xsl:output method="xml"/>
@@ -111,7 +113,15 @@
 								<xsl:value-of select="$LedgerCode"/>
 							</nominal-account>
 							<house-number>
-								<xsl:value-of select="/CreditNote/CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode"/>
+								<!-- Cater for old documents that do not have a Buyers code, by using the Suppliers code instead -->
+								<xsl:choose>
+									<xsl:when test="/CreditNote/CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode">
+										<xsl:value-of select="/CreditNote/CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode"/>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:value-of select="/CreditNote/CreditNoteHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
+									</xsl:otherwise>
+								</xsl:choose>															
 							</house-number>
 							<detail-line-description>
 								<xsl:choose>

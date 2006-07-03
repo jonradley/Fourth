@@ -37,6 +37,8 @@
  20/06/2006		| Lee Boyton	| H604. Cater for house code location change.
 =========================================================================================
  26/06/2006		| A Sheppard	| H604. Added debit notes
+=======================================================================================
+ 03/07/2006		| Lee Boyton	| H604. Cater for old documents without Buyer code fields.
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -84,7 +86,15 @@
 			
 				<xsl:text>1,</xsl:text>
 							
-				<xsl:value-of select="/*/*/ShipTo/ShipToLocationID/BuyersCode"/>
+				<!-- Cater for old documents that do not have a Buyers code, by using the Suppliers code instead -->
+				<xsl:choose>
+					<xsl:when test="/*/*/ShipTo/ShipToLocationID/BuyersCode">
+						<xsl:value-of select="/*/*/ShipTo/ShipToLocationID/BuyersCode"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="/*/*/ShipTo/ShipToLocationID/SuppliersCode"/>
+					</xsl:otherwise>
+				</xsl:choose>															
 				<xsl:text>,</xsl:text>
 				
 				<xsl:value-of select="substring(/*/*/ShipTo/ShipToName, 1, 30)"/>
@@ -173,7 +183,15 @@
 							<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderReference"/>
 							<xsl:text>,</xsl:text>
 							
-							<xsl:value-of select="ProductID/BuyersProductCode"/>
+							<!-- Cater for old documents that do not have a Buyers code, by using the Suppliers code instead -->
+							<xsl:choose>
+								<xsl:when test="ProductID/BuyersProductCode">
+									<xsl:value-of select="ProductID/BuyersProductCode"/>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="ProductID/SuppliersProductCode"/>
+								</xsl:otherwise>
+							</xsl:choose>															
 							<xsl:text>,</xsl:text>
 							
 							<xsl:value-of select="ProductDescription"/>
@@ -259,7 +277,15 @@
 					<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderReference"/>
 					<xsl:text>,</xsl:text>
 					
-					<xsl:value-of select="ProductID/BuyersProductCode"/>
+					<!-- Cater for old documents that do not have a Buyers code, by using the Suppliers code instead -->
+					<xsl:choose>
+						<xsl:when test="ProductID/BuyersProductCode">
+							<xsl:value-of select="ProductID/BuyersProductCode"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="ProductID/SuppliersProductCode"/>
+						</xsl:otherwise>
+					</xsl:choose>															
 					<xsl:text>,</xsl:text>
 					
 					<xsl:value-of select="ProductDescription"/>
