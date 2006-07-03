@@ -39,6 +39,9 @@
  26/06/2006		| A Sheppard	| H604. Added debit notes
 =======================================================================================
  03/07/2006		| Lee Boyton	| H604. Cater for old documents without Buyer code fields.
+=======================================================================================
+ 03/07/2006		| Lee Boyton	| H604. Fix the Food supplier Product code as WFOOD for Woodward.
+            	|           	| This will change to a per supplier value once further development has been completed.
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -142,7 +145,7 @@
 							<xsl:value-of select="//PurchaseOrderReferences[1]/PurchaseOrderReference"/>
 							<xsl:text>,</xsl:text>
 							
-							<xsl:text>D/1999/657</xsl:text>
+							<xsl:text>WFOOD</xsl:text>
 							<xsl:text>,</xsl:text>
 							
 							<xsl:text>DRY RECIPE COSTING</xsl:text>
