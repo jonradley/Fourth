@@ -39,9 +39,11 @@
  26/06/2006		| A Sheppard	| H604. Added debit notes
 =======================================================================================
  03/07/2006		| Lee Boyton	| H604. Cater for old documents without Buyer code fields.
-=======================================================================================
+=========================================================================================
  03/07/2006		| Lee Boyton	| H604. Fix the Food supplier Product code as WFOOD for Woodward.
             	|           	| This will change to a per supplier value once further development has been completed.
+=========================================================================================
+ 03/07/2006		| Lee Boyton	| H613. Strip commas from text elements.
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -100,7 +102,7 @@
 				</xsl:choose>															
 				<xsl:text>,</xsl:text>
 				
-				<xsl:value-of select="substring(/*/*/ShipTo/ShipToName, 1, 30)"/>
+				<xsl:value-of select="substring(translate(/*/*/ShipTo/ShipToName,',',''), 1, 30)"/>
 				<xsl:text>,</xsl:text>
 				
 				<xsl:value-of select="(/*/*/InvoiceLine | /*/*/CreditNoteLine | /*/*/DebitNoteLine | /GoodsReceivedNote/GoodsReceivedNoteHeader)/PurchaseOrderReferences/PurchaseOrderReference"/>
@@ -197,7 +199,7 @@
 							</xsl:choose>															
 							<xsl:text>,</xsl:text>
 							
-							<xsl:value-of select="ProductDescription"/>
+							<xsl:value-of select="translate(ProductDescription,',','')"/>
 							<xsl:text>,</xsl:text>
 							
 							<xsl:text>,</xsl:text>
@@ -231,7 +233,7 @@
 				<xsl:text>9000</xsl:text>
 				<xsl:text>,</xsl:text>
 				
-				<xsl:value-of select="substring(/*/*/ShipTo/ShipToName, 1, 30)"/>
+				<xsl:value-of select="substring(translate(/*/*/ShipTo/ShipToName,',',''), 1, 30)"/>
 				<xsl:text>,</xsl:text>
 				
 				<xsl:value-of select="(/*/*/InvoiceLine | /*/*/CreditNoteLine)/PurchaseOrderReferences/PurchaseOrderReference"/>
@@ -291,7 +293,7 @@
 					</xsl:choose>															
 					<xsl:text>,</xsl:text>
 					
-					<xsl:value-of select="ProductDescription"/>
+					<xsl:value-of select="translate(ProductDescription,',','')"/>
 					<xsl:text>,</xsl:text>
 					
 					<xsl:text>,</xsl:text>
