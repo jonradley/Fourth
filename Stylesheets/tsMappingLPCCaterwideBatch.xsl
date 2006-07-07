@@ -44,6 +44,8 @@
             	|           	| This will change to a per supplier value once further development has been completed.
 =========================================================================================
  03/07/2006		| Lee Boyton	| H613. Strip commas from text elements.
+=========================================================================================
+ 07/07/2006		| Lee Boyton	| H618. GRNs do not contains a NumberOfItems element in the trailer.
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -155,7 +157,15 @@
 							
 							<xsl:text>,</xsl:text>
 							
-							<xsl:value-of select="//NumberOfItems"/>
+							<!-- GRNs do not contain a NumberOfItems element so sum the line quantities -->
+							<xsl:choose>
+								<xsl:when test="//NumberOfItems">
+									<xsl:value-of select="//NumberOfItems"/>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="sum(//GoodsReceivedNoteLine/AcceptedQuantity)"/>
+								</xsl:otherwise>
+							</xsl:choose>							
 						</xsl:variable>
 						
 						<xsl:text>&#13;&#10;</xsl:text>
