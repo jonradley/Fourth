@@ -61,11 +61,11 @@
 										
 			-->
 			
+			<!-- Britvic Account Code -->
+			<xsl:variable name="sSuppliersCodeForBuyer" select="translate(/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode,' ','')"/>
+
 			<xsl:choose>
-			
-				<!-- Britvic Account Code -->
-				<xsl:variable name="sSuppliersCodeForBuyer" select="translate(/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode,' ','')"/>
-				
+							
 				<!-- Acc Code Set in Trading relationship -->
 				<xsl:when test="$sSuppliersCodeForBuyer !=''">
 					<xsl:value-of select="concat('ABS',$sSuppliersCodeForBuyer)"/>
