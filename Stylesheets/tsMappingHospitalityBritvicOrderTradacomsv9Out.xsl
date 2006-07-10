@@ -35,15 +35,53 @@
 		<xsl:variable name="sFileGenerationDate" select="vb:msFileGenerationDate()"/>
 	
 		<xsl:text>STX=</xsl:text>
+		
+			<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+			
 			<xsl:text>ANA:1+</xsl:text>
-			<!--Our mailbox reference-->
-			<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
-			<!--xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/-->
+			<!-- 
+			
+					Needs to be the Britvic internal account code for 
+					Novus Leisure etc.
+					
+					Britvic use this code to indentify the head office buyer
+					
+					Therefore to create a unquie trading relationship, we will 
+					use a concatation of 'ABS' & Britvic account code for the buyer.
+					
+					Account codes:
+					==============
+					
+					Ordering Company		Britvic Acc Code		Mapping Flag
+					~~~~~~~~~~~~~~~~		~~~~~~~~~~~~~~~~		~~~~~~~~~~~~
+					Novus:						402696						BritvicCodeNovus
+					
+					
+					Nigel Emsen, 7th July 2006.
+										
+			-->
+			
+			<xsl:choose>
+			
+				<!-- Novus Order -->
+				<xsl:when test="PurchaseOrderHeader/Buyer/BuyersLocationID/GLN='BritvicCodeNovus'">
+					<xsl:text>ABS402696</xsl:text>
+				</xsl:when>
+				
+				<!-- No Code Set -->
+				<xsl:otherwise>
+					<xsl:text>ABS_NoCodeSet</xsl:text>
+				</xsl:otherwise>	
+				
+			</xsl:choose>
+		
+			<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+			
 			<xsl:text>:</xsl:text>
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/ShipTo/ShipToName), 35)"/>
 			<xsl:text>+</xsl:text>
 			<!--Your mailbox reference-->
-			<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN"/>
+			<xsl:value-of select="/PurchaseOrder/TradeSimpleHeader/RecipientsCodeForSender"/>
 			<xsl:text>:</xsl:text>
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersName), 35)"/>
 			<xsl:text>+</xsl:text>
@@ -64,7 +102,7 @@
 		
 		<xsl:text>MHD=</xsl:text>	
 			<!--<xsl:value-of select="HelperObj:GetNextCounterValue('MessageHeader')"/><xsl:text>+</xsl:text>-->
-			<xsl:text>1+ORDHDR:6</xsl:text>
+			<xsl:text>1+ORDHDR:9</xsl:text>
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:text>TYP=</xsl:text>	
