@@ -52,9 +52,9 @@
 					Account codes:
 					==============
 					
-					Ordering Company		Britvic Acc Code		Mapping Flag
-					~~~~~~~~~~~~~~~~		~~~~~~~~~~~~~~~~		~~~~~~~~~~~~
-					Novus:						402696						BritvicCodeNovus
+					Ordering Company		Britvic Acc Code		
+					~~~~~~~~~~~~~~~~		~~~~~~~~~~~~~~~~		
+					Novus:						402696						
 					
 					
 					Nigel Emsen, 7th July 2006.
@@ -63,14 +63,17 @@
 			
 			<xsl:choose>
 			
-				<!-- Novus Order -->
-				<xsl:when test="PurchaseOrderHeader/Buyer/BuyersLocationID/GLN='BritvicCodeNovus'">
-					<xsl:text>ABS402696</xsl:text>
+				<!-- Britvic Account Code -->
+				<xsl:variable name="sSuppliersCodeForBuyer" select="translate(/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode,' ','')"/>
+				
+				<!-- Acc Code Set in Trading relationship -->
+				<xsl:when test="$sSuppliersCodeForBuyer !=''">
+					<xsl:value-of select="concat('ABS',$sSuppliersCodeForBuyer)"/>
 				</xsl:when>
 				
 				<!-- No Code Set -->
 				<xsl:otherwise>
-					<xsl:text>ABS_NoCodeSet</xsl:text>
+					<xsl:text>ABS_No_SuppliersCodeForBuyer_Set</xsl:text>
 				</xsl:otherwise>	
 				
 			</xsl:choose>
