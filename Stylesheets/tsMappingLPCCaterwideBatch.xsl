@@ -46,6 +46,8 @@
  03/07/2006		| Lee Boyton	| H613. Strip commas from text elements.
 =========================================================================================
  07/07/2006		| Lee Boyton	| H618. GRNs do not contains a NumberOfItems element in the trailer.
+=========================================================================================
+ 10/07/2006		| Lee Boyton	| H620. Cater for GRNs where the ANA number is in the GLN element.
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -127,7 +129,15 @@
 				</xsl:call-template>
 				<xsl:text>,</xsl:text>
 	
-				<xsl:value-of select="/*/*/Supplier/SuppliersLocationID/SuppliersCode"/>
+				<!-- Take the ANA number from the GLN (for GRNs) if it is not the default 13 5's otherwise use the SuppliersCode for Supplier -->
+				<xsl:choose>
+					<xsl:when test="/GoodsReceivedNote/GoodsReceivedNoteHeader/Supplier/SuppliersLocationID/GLN and /GoodsReceivedNote/GoodsReceivedNoteHeader/Supplier/SuppliersLocationID/GLN != '5555555555555'">
+						<xsl:value-of select="/GoodsReceivedNote/GoodsReceivedNoteHeader/Supplier/SuppliersLocationID/GLN"/>						
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="/*/*/Supplier/SuppliersLocationID/SuppliersCode"/>
+					</xsl:otherwise>
+				</xsl:choose>	
 				<xsl:text>,</xsl:text>
 				
 				<xsl:text>,</xsl:text>
