@@ -34,6 +34,7 @@
 		
 		<xsl:variable name="sFileGenerationDate" select="vb:msFileGenerationDate()"/>
 	
+		<!-- STX -->
 		<xsl:text>STX=</xsl:text>
 		
 			<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++ -->
@@ -73,7 +74,7 @@
 				
 				<!-- No Code Set -->
 				<xsl:otherwise>
-					<xsl:text>ABS_No_SuppliersCodeForBuyer_Set</xsl:text>
+					<xsl:text>ABSErrMsg_No_SuppliersCodeForBuyer_Set</xsl:text>
 				</xsl:otherwise>	
 				
 			</xsl:choose>
@@ -103,17 +104,20 @@
 		<xsl:text>B</xsl:text>			
 		<xsl:value-of select="$sRecordSep"/>
 		
+		<!-- MHD -->
 		<xsl:text>MHD=</xsl:text>	
 			<!--<xsl:value-of select="HelperObj:GetNextCounterValue('MessageHeader')"/><xsl:text>+</xsl:text>-->
 			<xsl:text>1+ORDHDR:9</xsl:text>
 		<xsl:value-of select="$sRecordSep"/>
 		
+		<!-- TYP -->
 		<xsl:text>TYP=</xsl:text>	
 			<xsl:text>0430</xsl:text>
 			<xsl:text>+</xsl:text>
 			<xsl:text></xsl:text>
 		<xsl:value-of select="$sRecordSep"/>
 		
+		<!-- SDT -->
 		<xsl:text>SDT=</xsl:text>
 			<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN"/>
 			<xsl:text>:</xsl:text>
@@ -137,6 +141,7 @@
 			<xsl:value-of select=""/-->
 		<xsl:value-of select="$sRecordSep"/>
 		
+		<!-- CDT -->
 		<xsl:text>CDT=</xsl:text>
 			<!-- normally ANA here. Novus do not use ANA's -->
 			<xsl:text>:</xsl:text>
@@ -154,41 +159,30 @@
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Buyer/BuyersAddress/PostCode),8)"/>
 		<xsl:value-of select="$sRecordSep"/>
 		
-		<!--
-		<xsl:text>DNA=</xsl:text>
-
-				???
-				
-		<xsl:value-of select="$sRecordSep"/>
-		-->
-		
+		<!-- FIL -->	
 		<xsl:text>FIL=</xsl:text>
 			<xsl:value-of select="PurchaseOrderHeader/FileGenerationNumber"/><xsl:text>+</xsl:text>
 			<xsl:text>1+</xsl:text>
 			<xsl:value-of select="$sFileGenerationDate"/>
 		<xsl:value-of select="$sRecordSep"/>
 		
+		<!-- MTR -->
 		<xsl:text>MTR=</xsl:text>
 			<xsl:text>6</xsl:text>
 		<xsl:value-of select="$sRecordSep"/>
-	
 
-	
-		<!--xsl:value-of select="HelperObj:ResetCounter('DataNarativeA')"/-->
-	
+		<!-- MHD -->
 		<xsl:text>MHD=</xsl:text>	
 			<!--xsl:value-of select="HelperObj:GetNextCounterValue('MessageHeader')"/-->
 			<xsl:text>2+</xsl:text>
 			<xsl:text>ORDERS:8</xsl:text>
 		<xsl:value-of select="$sRecordSep"/>
 
-		
+		<!-- CLO -->
 		<xsl:text>CLO=</xsl:text>
-			<!-- xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/ -->
 			<xsl:text>:</xsl:text>
 			<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode"/>
 			<xsl:text>:</xsl:text>
-			<!-- xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/ -->
 			<xsl:text>+</xsl:text>
 			<!-- truncate to 40 CNAM = 3060 = AN..40-->
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/ShipTo/ShipToName),40)"/>
@@ -202,6 +196,7 @@
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/ShipTo/ShipToAddress/PostCode),8)"/>
 		<xsl:value-of select="$sRecordSep"/>
 	
+		<!-- ORD -->
 		<xsl:text>ORD=</xsl:text>
 			<xsl:call-template name="msCheckField">
 				<xsl:with-param name="vobjNode" select="PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
@@ -217,6 +212,7 @@
 			<xsl:text>N+</xsl:text>
 		<xsl:value-of select="$sRecordSep"/>
 		
+		<!-- DIN -->
 		<xsl:text>DIN=</xsl:text>
 			<!--xsl:value-of select="HelperObj:FormatDate(string(PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate))"/-->
 			<xsl:call-template name="msFormateDate">
@@ -241,84 +237,83 @@
 		<!--xsl:value-of select="HelperObj:ResetCounter('OrderLineDetails')"/-->
 		<xsl:for-each select="PurchaseOrderDetail/PurchaseOrderLine">
 		
+			<!-- OLD -->
 			<xsl:text>OLD=</xsl:text>
-				<!--xsl:value-of select="HelperObj:GetNextCounterValue('OrderLineDetails')"/-->
+			
+				<!-- ITEM  SEQA   { First level sequence number             } -->
 				<xsl:value-of select="count(preceding-sibling::* | self::*)"/>
 				<xsl:text>+</xsl:text>
-				<xsl:text>+</xsl:text>
+				<!-- ITEM  SPRO   { Supplier's product number               } -->
 				<xsl:call-template name="msCheckField">
 					<xsl:with-param name="vobjNode" select="ProductID/SuppliersProductCode"/>
 					<xsl:with-param name="vnLength" select="30"/>
 				</xsl:call-template>
 				<xsl:text>+</xsl:text>
-				<xsl:text>:</xsl:text>
-				<xsl:call-template name="msCheckField">
-					<xsl:with-param name="vobjNode">
-						<xsl:choose>
-							<xsl:when test="string(ProductID/BuyersProductCode) != ''">
-								<xsl:value-of select="ProductID/BuyersProductCode"/>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:value-of select="ProductID/SuppliersProductCode"/>
-							</xsl:otherwise>
-						</xsl:choose>
-					</xsl:with-param>
-					<xsl:with-param name="vnLength" select="30"/>
-				</xsl:call-template>
+				<!--	ITEM  SACU   { Sup. ean art. no. for d.c.u.            } -->
+				<!-- NOT USED -->
+				<xsl:text>:</xsl:text>			
+				<!-- ITEM  CPRO   { Customer's product number               } -->
+				<!-- NOT USED -->
 				<xsl:text>+</xsl:text>
-				<xsl:value-of select="js:msSafeText(string(PackSize),15)"/>
-				<xsl:text>::</xsl:text>
+				<!-- ITEM  UNOR   { Unit of ordering                        } can be Alpha numeric in our file -->
 				<xsl:value-of select="js:msSafeText(string(OrderedQuantity/@UnitOfMeasure),6)"/>
+				<xsl:text>::</xsl:text>
 				<xsl:text>+</xsl:text>
+				<!-- ITEM  OQTY   { Quantity ordered                        } -->
 				<xsl:value-of select="translate(format-number(OrderedQuantity,'#.000'),'.','')"/>
-				<xsl:text>::</xsl:text>
-				<xsl:value-of select="js:msSafeText(string(OrderedQuantity/@UnitOfMeasure),6)"/>
 				<xsl:text>+</xsl:text>
+				<!-- ITEM  OUCT   { Ordering unit cost                      } -->
 				<xsl:value-of select="translate(format-number(UnitValueExclVAT,'#.00'),'.','')"/><xsl:text>00</xsl:text>
+				<xsl:text>::</xsl:text>
+				<!-- ITEM  PIND   { Special price indicator                 } -->
+				<!-- NOT USED -->
+				<xsl:text>+</xsl:text>
 				<xsl:text>:</xsl:text>
 				<xsl:value-of select="js:msSafeText(string(OrderedQuantity/@UnitOfMeasure),6)"/>
+				<!-- ITEM  TFIN   { To follow indicator                     } -->
+				<!-- NOT USED -->
 				<xsl:text>+</xsl:text>
-				<xsl:text>+</xsl:text>
-				<xsl:text>+</xsl:text>
+				<!-- ITEM  TDES   { Traded unit description                 } -->
 				<!-- truncate to 40 TDES = 9030 = AN..40-->
 				<xsl:value-of select="js:msSafeText(string(ProductDescription),40)"/>
+				<xsl:text>+</xsl:text>
+				<!-- ITEM  SCRF   { Specification/contract refs.            } -->
+				<!-- NOT USED -->
+				<xsl:text>+</xsl:text>
 				
-				
+			<!-- End of OLD Segment -->
 			<xsl:value-of select="$sRecordSep"/>
 			
-			<!--
-			<xsl:text>DNB=</xsl:text>
-	
-					???
-					
-			<xsl:text>'</xsl:text>
-			<xsl:value-of select="$sLineBreak"/>
-			-->
-			
+		<!-- END OF ORDER LINES -->
 		</xsl:for-each>
 		
+		<!-- OTR -->
 		<xsl:text>OTR=</xsl:text>	
 			<xsl:value-of select="PurchaseOrderTrailer/NumberOfLines"/>
 		<xsl:value-of select="$sRecordSep"/>
 		
+		<!-- MTR -->
 		<xsl:text>MTR=</xsl:text>
 			<xsl:value-of select="6 + count(PurchaseOrderDetail/PurchaseOrderLine)"/>
 		<xsl:value-of select="$sRecordSep"/>
 		
-				
+		<!-- MHD -->	
 		<xsl:text>MHD=</xsl:text>	
 			<!--xsl:value-of select="HelperObj:GetNextCounterValue('MessageHeader')"/><xsl:text>+</xsl:text-->
 			<xsl:text>3+ORDTLR:4</xsl:text>		
 		<xsl:value-of select="$sRecordSep"/>
 		
+		<!-- OFT -->
 		<xsl:text>OFT=</xsl:text>	
 			<xsl:text>1</xsl:text>
 		<xsl:value-of select="$sRecordSep"/>
 		
+		<!-- MTR -->
 		<xsl:text>MTR=</xsl:text>	
 			<xsl:text>3</xsl:text>
 		<xsl:value-of select="$sRecordSep"/>
 	
+		<!-- END -->
 		<xsl:text>END=</xsl:text>
 			<xsl:text>3</xsl:text>	
 		<xsl:value-of select="$sRecordSep"/>
