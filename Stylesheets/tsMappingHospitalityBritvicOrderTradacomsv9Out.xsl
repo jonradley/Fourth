@@ -138,7 +138,7 @@
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:text>CDT=</xsl:text>
-			<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/GLN"/>
+			<!-- normally ANA here. Novus do not use ANA's -->
 			<xsl:text>:</xsl:text>
 			<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
 			<xsl:text>+</xsl:text>
@@ -184,11 +184,11 @@
 
 		
 		<xsl:text>CLO=</xsl:text>
-			<!--xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/GLN"/-->
+			<!-- xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/ -->
 			<xsl:text>:</xsl:text>
-			<!--xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode"/-->
+			<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode"/>
 			<xsl:text>:</xsl:text>
-			<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
+			<!-- xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/ -->
 			<xsl:text>+</xsl:text>
 			<!-- truncate to 40 CNAM = 3060 = AN..40-->
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/ShipTo/ShipToName),40)"/>
@@ -245,12 +245,11 @@
 				<!--xsl:value-of select="HelperObj:GetNextCounterValue('OrderLineDetails')"/-->
 				<xsl:value-of select="count(preceding-sibling::* | self::*)"/>
 				<xsl:text>+</xsl:text>
-				<!-- The barcode -->
+				<xsl:text>+</xsl:text>
 				<xsl:call-template name="msCheckField">
 					<xsl:with-param name="vobjNode" select="ProductID/SuppliersProductCode"/>
 					<xsl:with-param name="vnLength" select="30"/>
 				</xsl:call-template>
-				<xsl:text>+</xsl:text>
 				<xsl:text>+</xsl:text>
 				<xsl:text>:</xsl:text>
 				<xsl:call-template name="msCheckField">
