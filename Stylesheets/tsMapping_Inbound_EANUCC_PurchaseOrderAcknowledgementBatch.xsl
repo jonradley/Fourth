@@ -31,10 +31,9 @@
  					|						|		- PO ack ref and date
  					|						|		- Delivery date
 ******************************************************************************************
-             	|               	|  
+ 13/07/2006 	| Nigel Emsen 	|  changes SenderBranchReference & contract date - added </xsl:if>
 ******************************************************************************************
- 30/06/2006  	| R Cambridge   	| Change SCR to be looked up from ShipTo
-***************************************************************************************-->
+-->
 <xsl:stylesheet version="1.0" 
 				xmlns:xsl="http://www.w3.org/1999/XSL/Transform"  
 				xmlns:script="http://mycompany.com/mynamespace" 
@@ -74,9 +73,11 @@
 									</xsl:choose>
 								</SendersCodeForRecipient>
 								
-								<SendersBranchReference>
-									<xsl:value-of select="/OrderAcknowledgement/Seller/SellerAssigned"/>
-								</SendersBranchReference>
+								<xsl:if test="/OrderAcknowledgement/Seller/SellerAssigned != '' ">
+									<SendersBranchReference>
+										<xsl:value-of select="/OrderAcknowledgement/Seller/SellerAssigned"/>
+									</SendersBranchReference>
+								</xsl:if>
 								
 								<!-- SendersName, Address1 - 4 and PostCode will be populated by subsequent processors -->
 					
@@ -185,9 +186,13 @@
 												<xsl:value-of select="/OrderAcknowledgement/TradeAgreementReference/ContractReferenceNumber"/>
 											</ContractReference>
 					
-											<ContractDate>
-												<xsl:value-of select="substring-before	(/OrderAcknowledgement/TradeAgreementReference/ContractReferenceDate, 'T')"/>
-											</ContractDate>
+											<xsl:if test="substring-before	(/OrderAcknowledgement/TradeAgreementReference/ContractReferenceDate, 'T') !='' ">
+												<ContractDate>
+													<xsl:value-of select="substring-before	(/OrderAcknowledgement/TradeAgreementReference/ContractReferenceDate, 'T')"/>
+												</ContractDate>
+											</xsl:if>
+											
+											
 										</TradeAgreement>
 									</xsl:if>
 									
