@@ -242,45 +242,22 @@
 			
 				<!-- ITEM  SEQA   { First level sequence number             } -->
 				<xsl:value-of select="count(preceding-sibling::* | self::*)"/>
-				<xsl:text>+</xsl:text>
+				<xsl:text>+:</xsl:text>
 				<!-- ITEM  SPRO   { Supplier's product number               } -->
 				<xsl:call-template name="msCheckField">
 					<xsl:with-param name="vobjNode" select="ProductID/SuppliersProductCode"/>
 					<xsl:with-param name="vnLength" select="30"/>
 				</xsl:call-template>
-				<xsl:text>+</xsl:text>
-				<!--	ITEM  SACU   { Sup. ean art. no. for d.c.u.            } -->
-				<!-- NOT USED -->
-				<xsl:text>:</xsl:text>			
-				<!-- ITEM  CPRO   { Customer's product number               } -->
-				<!-- NOT USED -->
-				<xsl:text>+</xsl:text>
-				<!-- ITEM  UNOR   { Unit of ordering                        } can be Alpha numeric in our file -->
+				<xsl:text>+++::</xsl:text>
 				<xsl:value-of select="js:msSafeText(string(OrderedQuantity/@UnitOfMeasure),6)"/>
-				<xsl:text>::</xsl:text>
 				<xsl:text>+</xsl:text>
-				<!-- ITEM  OQTY   { Quantity ordered                        } -->
 				<xsl:value-of select="translate(format-number(OrderedQuantity,'#.000'),'.','')"/>
-				<xsl:text>+</xsl:text>
-				<!-- ITEM  OUCT   { Ordering unit cost                      } -->
-				<xsl:value-of select="translate(format-number(UnitValueExclVAT,'#.00'),'.','')"/><xsl:text>00</xsl:text>
 				<xsl:text>::</xsl:text>
-				<!-- ITEM  PIND   { Special price indicator                 } -->
-				<!-- NOT USED -->
-				<xsl:text>+</xsl:text>
-				<xsl:text>:</xsl:text>
 				<xsl:value-of select="js:msSafeText(string(OrderedQuantity/@UnitOfMeasure),6)"/>
-				<!-- ITEM  TFIN   { To follow indicator                     } -->
-				<!-- NOT USED -->
 				<xsl:text>+</xsl:text>
-				<!-- ITEM  TDES   { Traded unit description                 } -->
-				<!-- truncate to 40 TDES = 9030 = AN..40-->
+				<xsl:value-of select="translate(format-number(UnitValueExclVAT,'#.00'),'.','')"/><xsl:text>00</xsl:text>
+				<xsl:text>+++</xsl:text>
 				<xsl:value-of select="js:msSafeText(string(ProductDescription),40)"/>
-				<xsl:text>+</xsl:text>
-				<!-- ITEM  SCRF   { Specification/contract refs.            } -->
-				<!-- NOT USED -->
-				<xsl:text>+</xsl:text>
-				
 			<!-- End of OLD Segment -->
 			<xsl:value-of select="$sRecordSep"/>
 			
