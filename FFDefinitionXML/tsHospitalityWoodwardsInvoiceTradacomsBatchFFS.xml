@@ -116,9 +116,9 @@ R Cambridge		| 23/06/2006	| Adapted for Woodwards from
 					<Invoice>
 						<TradeSimpleHeader>
 							<!-- MANDATORY Sender’s code for recipient, MANDATORY, INVOIC – CLO – CLOC(2), You must provide this code.  It is your internal identifier for the company that is to receive the document.  It must match the code that you have entered on the trading relationship you have with the other company-->
-							<SendersCodeForRecipient RecordPos="CLO=" LPos="1" SFPos="2"/>
+							<SendersCodeForRecipient RecordPos="CLO=" LPos="1" SFPos="3"/>
 							<!-- OPTIONAL Sender’s Branch Reference, MANDATORY, INVFIL – CDT – CIDN(2), Depending on your particular relationship with the company, you must provide this code.  It is your internal identifier for the “contract” that the receiving company belongs to.  It must match the code that you have provided to ABS on set-up -->
-							<SendersBranchReference RecordPos="CDT=" LPos="1" SFPos="2"/>
+							<SendersBranchReference RecordPos="CLO=" LPos="1" SFPos="2"/>
 						</TradeSimpleHeader>
 						<InvoiceHeader>
 							<BatchInformation>
@@ -220,6 +220,10 @@ R Cambridge		| 23/06/2006	| Adapted for Woodwards from
 								</ProductID>
 								<!-- MANDATORY Product Description, OPTIONAL, INVOIC – ILD – TDES(1), While not strictly mandatory, this is a very useful textual piece of information. This will always contain something but may be set to ‘Not Provided’ -->
 								<ProductDescription RecordPos="ILD=" LPos="14" SFPos="1"/>
+								<!-- BOTCH catch weight products have their invoiced quantity in a different sub field, this will be move if necessary in the translator-->
+								<OrderedQuantity RecordPos="ILD=" LPos="7" SFPos="2">
+									<ffsAttribute1 name="UnitOfMeasure" RecordPos="ILD=" LPos="7" SFPos="3"/>
+								</OrderedQuantity>
 								<!-- MANDATORY Quantity Invoiced, MANDATORY, INVOIC – ILD – QTYI(1), If INVOIC – ILD – CRLI <> {blank} then multiply by –1 Must be greater or equal to zero -->
 								<InvoicedQuantity RecordPos="ILD=" LPos="7" SFPos="1"/>
 								<!-- MANDATORY Unit Value Ex VAT, MANDATORY, INVOIC – ILD – AUCT(1), 4 d.p. implied, Must be numeric (it may be either positive or negative) and must have only two places of decimal -->
