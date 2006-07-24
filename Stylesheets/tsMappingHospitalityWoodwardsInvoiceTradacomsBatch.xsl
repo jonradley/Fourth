@@ -54,16 +54,35 @@ R cambridge 	| 13/07/2006	| H611 Adapted for Woodwoods
 	</xsl:template>
 	
 	<!-- INVOIC-ILD-QTYI (InvoiceLine/InvoicedQuantity) needs to be multiplied by -1 if (InvoiceLine/ProductID/BuyersProductCode) is NOT blank -->
-	<!-- H621 check OrderedQuantity as catchwieght products quantities are held there. Only one should be present-->
-	<xsl:template match="(InvoiceLine/InvoicedQuantity | InvoiceLine/OrderedQuantity)">
-					
+	<!-- H621 remove OrderedQuantity, catchwieght products quantities are held there. -->
+	<xsl:template match="InvoiceLine/OrderedQuantity"/>	
+	
+	<xsl:template match="InvoiceLine/OrderedQuantity[not(following-sibling::InvoicedQuantity)] | InvoiceLine/InvoicedQuantity[not(preceding-sibling::OrderedQuantity)]">					
 		<xsl:element name="InvoicedQuantity">		
-								
+			
+			<!--xsl:if test="string(../OrderedQuantity/@UnitOfMeasure) != ''">
+				<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="../OrderedQuantity/@UnitOfMeasure"/></xsl:attribute>
+			</xsl:if-->
+			
 			<xsl:choose>
+				<xsl:when test="string(../OrderedQuantity) != ''">
+						<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="../OrderedQuantity/@UnitOfMeasure"/></xsl:attribute>
+						<xsl:if test="string-length(../ProductID/BuyersProductCode) &gt; 0">-</xsl:if>
+						<xsl:if test="string(number(.)) != 'NaN'">
+							<xsl:value-of select="format-number(. div 1000.0, '0.00#')"/>
+						</xsl:if>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:if test="string-length(../ProductID/BuyersProductCode) &gt; 0">-</xsl:if>						
+					<xsl:value-of select="."/>
+				</xsl:otherwise>
+			</xsl:choose>
+								
+			<!--xsl:choose>
 		
-				<!--Parent of InvoicedQuantity is InvoiceLine-->
+				<Parent of InvoicedQuantity is InvoiceLine>
 				<xsl:when test="string-length(../ProductID/BuyersProductCode) &gt; 0" >
-					<!--INVOIC-ILD-CRLI is not blank, multiply by -1-->
+					<INVOIC-ILD-CRLI is not blank, multiply by -1>
 					<xsl:value-of select=". * -1.0"/>
 				</xsl:when>
 				
@@ -71,7 +90,7 @@ R cambridge 	| 13/07/2006	| H611 Adapted for Woodwoods
 					<xsl:value-of select="."/>
 				</xsl:otherwise>
 				
-			</xsl:choose>
+			</xsl:choose-->
 						
 		</xsl:element>	
 						
