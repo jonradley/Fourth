@@ -60,37 +60,41 @@ R cambridge 	| 13/07/2006	| H611 Adapted for Woodwoods
 	<xsl:template match="InvoiceLine/OrderedQuantity[not(following-sibling::InvoicedQuantity)] | InvoiceLine/InvoicedQuantity[not(preceding-sibling::OrderedQuantity)]">					
 		<xsl:element name="InvoicedQuantity">		
 			
-			<!--xsl:if test="string(../OrderedQuantity/@UnitOfMeasure) != ''">
-				<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="../OrderedQuantity/@UnitOfMeasure"/></xsl:attribute>
-			</xsl:if-->
-			
 			<xsl:choose>
+			
+				<!-- OrderedQuantity holds the total measure invoiced  -->
+			
 				<xsl:when test="string(../OrderedQuantity) != ''">
-						<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="../OrderedQuantity/@UnitOfMeasure"/></xsl:attribute>
-						<xsl:if test="string-length(../ProductID/BuyersProductCode) &gt; 0">-</xsl:if>
-						<xsl:if test="string(number(.)) != 'NaN'">
-							<xsl:value-of select="format-number(. div 1000.0, '0.00#')"/>
-						</xsl:if>
+				
+					<xsl:variable name="sUoM">
+						<xsl:choose>
+							<xsl:when test="../OrderedQuantity/@UnitOfMeasure = 'KGS'">KGM</xsl:when>
+							<xsl:otherwise></xsl:otherwise>
+						</xsl:choose>
+					</xsl:variable>
+				
+
+					<xsl:if test="$sUoM != ''">
+						<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="$sUoM"/></xsl:attribute>
+					</xsl:if>
+					
+					
+					
+					
+					<xsl:if test="string-length(../ProductID/BuyersProductCode) &gt; 0">-</xsl:if>
+					<xsl:if test="string(number(.)) != 'NaN'">
+						<xsl:value-of select="format-number(. div 1000.0, '0.00#')"/>
+					</xsl:if>
 				</xsl:when>
+				
+				<!-- if OrderedQuantity is missing use 'number of traded units invoiced' in InvoicedQuantity -->
+				
 				<xsl:otherwise>
 					<xsl:if test="string-length(../ProductID/BuyersProductCode) &gt; 0">-</xsl:if>						
 					<xsl:value-of select="."/>
 				</xsl:otherwise>
 			</xsl:choose>
 								
-			<!--xsl:choose>
-		
-				<Parent of InvoicedQuantity is InvoiceLine>
-				<xsl:when test="string-length(../ProductID/BuyersProductCode) &gt; 0" >
-					<INVOIC-ILD-CRLI is not blank, multiply by -1>
-					<xsl:value-of select=". * -1.0"/>
-				</xsl:when>
-				
-				<xsl:otherwise>
-					<xsl:value-of select="."/>
-				</xsl:otherwise>
-				
-			</xsl:choose-->
 						
 		</xsl:element>	
 						
