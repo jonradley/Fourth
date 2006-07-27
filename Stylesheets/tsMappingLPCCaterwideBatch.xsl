@@ -48,6 +48,8 @@
  07/07/2006		| Lee Boyton	| H618. GRNs do not contains a NumberOfItems element in the trailer.
 =========================================================================================
  10/07/2006		| Lee Boyton	| H620. Cater for GRNs where the ANA number is in the GLN element.
+=========================================================================================
+ 27/07/2006		| Lee Boyton	| 188. Food supplier lines should include the total value not quantity.
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -166,16 +168,18 @@
 							<xsl:text>,</xsl:text>
 							
 							<xsl:text>,</xsl:text>
-							
-							<!-- GRNs do not contain a NumberOfItems element so sum the line quantities -->
+						
+							<!-- GRNs just have a trailer total, whereas just the stock lines
+							     need to be summed for invoices and credit notes -->
 							<xsl:choose>
-								<xsl:when test="//NumberOfItems">
-									<xsl:value-of select="//NumberOfItems"/>
+								<xsl:when test="/GoodsReceivedNote/GoodsReceivedNoteTrailer/TotalExclVAT != ''">
+									<xsl:value-of select="round(/GoodsReceivedNote/GoodsReceivedNoteTrailer/TotalExclVAT)"/>
 								</xsl:when>
 								<xsl:otherwise>
-									<xsl:value-of select="sum(//GoodsReceivedNoteLine/AcceptedQuantity)"/>
+									<xsl:value-of select="round(sum(//LineValueExclVAT[../LineExtraData[IsStockProduct[.='true' or .='1']]]))"/>
 								</xsl:otherwise>
-							</xsl:choose>							
+							</xsl:choose>	
+										
 						</xsl:variable>
 						
 						<xsl:text>&#13;&#10;</xsl:text>
