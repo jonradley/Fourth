@@ -13,7 +13,7 @@
 ==========================================================================================
  29/06/2006	| Nigel Emsen		| Created module from Cabury Tradacoms V6 mapper
 ==========================================================================================
-           	|							|
+ 28/07/2006 	| Nigel Emsen		|	Amend CLO to include Suppliers unit code
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -181,8 +181,17 @@
 		<!-- CLO -->
 		<xsl:text>CLO=</xsl:text>
 			<xsl:text>:</xsl:text>
-			<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode"/>
+			
+			<!-- buyers unit code -->
+			<xsl:if test="string(PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode) != '' ">
+				<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode"/>
+			</xsl:if>
+			
 			<xsl:text>:</xsl:text>
+			
+			<!-- britvic unit account code -->
+			<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/> 
+			
 			<xsl:text>+</xsl:text>
 			<!-- truncate to 40 CNAM = 3060 = AN..40-->
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/ShipTo/ShipToName),40)"/>
