@@ -182,11 +182,8 @@
 		<xsl:text>CLO=</xsl:text>
 			<xsl:text>:</xsl:text>
 			
-			<!-- buyers unit code -->
-			<xsl:if test="string(PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode) != '' ">
-				<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode"/>
-			</xsl:if>
-			
+			<!-- britvic unit account code -->
+			<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/> 			
 			<xsl:text>:</xsl:text>
 			
 			<!-- britvic unit account code -->
