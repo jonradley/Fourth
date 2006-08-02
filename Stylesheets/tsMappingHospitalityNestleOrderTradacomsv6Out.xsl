@@ -12,6 +12,8 @@
 ==========================================================================================
  13/02/2006	| R Cambridge			| Created module
 ==========================================================================================
+ 02/08/2006	| Lee Boyton      	| 194. Quantity should be in OLD OQTY(1)
+==========================================================================================
            	|                 	|
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript" xmlns:vb="http://www.abs-ltd.com/dummynamespaces/vbscript" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
@@ -220,8 +222,8 @@
 			</xsl:call-template>
 			<xsl:text>+::</xsl:text>
 			<xsl:value-of select="OrderedQuantity/@UnitOfMeasure"/>
-			<xsl:text>+:</xsl:text>
-			<xsl:value-of select="translate(format-number(OrderedQuantity,'#.000'),'.','')"/>
+			<xsl:text>+</xsl:text>
+			<xsl:value-of select="format-number(OrderedQuantity,'0')"/>
 			<xsl:text>+</xsl:text>
 			<xsl:value-of select="translate(format-number(UnitValueExclVAT,'#.00'),'.','')"/>
 			<xsl:text>00</xsl:text>
