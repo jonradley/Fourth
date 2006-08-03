@@ -18,6 +18,8 @@
 '******************************************************************************************
 ' 10/06/2005 | Steve Hewitt | H438, COM020. Change to BuyerGLN logic so one SSP unit can hold a 3663 and Burger King account
 '******************************************************************************************
+' 02/08/2006  | Lee Boyton   | H610. Add support for wholesale orders (based on certain GLNs.)
+'******************************************************************************************
 '             |              | 
 '******************************************************************************************
 -->
@@ -28,19 +30,51 @@
 	<!-- use a constant for the BK seller GLN -->
 	<xsl:variable name="supplierGLN_BK" select="5027615000886"/>
 	<xsl:variable name="buyerGLN_SSPBK" select="50600790600029 "/> 
-	
+
+	<!-- wholesale GLNs -->
+	<xsl:variable name="supplierGLN_WSFrozen" select="5027615000824"/>
+	<xsl:variable name="supplierGLN_WSMultiTemp" select="5027615000831"/>
+		
 	<xsl:template match="/PurchaseOrder">
+
+		<!-- determine whether we are dealing with a wholesale order as this 
+		     changes the format of the order output. -->
+		<xsl:variable name="isWholesale">
+			<xsl:choose>
+				<xsl:when test="substring(PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN,1,13) = $supplierGLN_WSFrozen">
+					<xsl:value-of select="1"/>
+				</xsl:when>		
+				<xsl:when test="substring(PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN,1,13) = $supplierGLN_WSMultiTemp">
+					<xsl:value-of select="1"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="0"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		
 		<Order xmlns="http://www.eanucc.org/2002/Order/FoodService/FoodService/UK/EanUcc/Order" xmlns:cc="http://www.ean-ucc.org/2002/gsmp/schemas/CoreComponents">
 			<!-- header information -->
 			<OrderDocumentDetails>
-				<!-- PurchaseOrderDate (and time) -->
-				<PurchaseOrderDate format="YYYY-MM-DDThh:mm:ss:TZD">
-					<xsl:value-of select="PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderDate"/>
-					<xsl:if test="PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderTime">
-						<xsl:text>T</xsl:text>
-						<xsl:value-of select="PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderTime"/>					
-					</xsl:if>
-				</PurchaseOrderDate>
+			
+				<!-- PurchaseOrderDate (and time if not a wholesale order) -->
+				<xsl:choose>
+					<xsl:when test="$isWholesale = 1">
+						<PurchaseOrderDate format="YYYY-MM-DD">
+							<xsl:value-of select="PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderDate"/>
+						</PurchaseOrderDate>
+					</xsl:when>
+					<xsl:otherwise>
+						<PurchaseOrderDate format="YYYY-MM-DDThh:mm:ss:TZD">
+							<xsl:value-of select="PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderDate"/>
+							<xsl:if test="PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderTime">
+								<xsl:text>T</xsl:text>
+								<xsl:value-of select="PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderTime"/>					
+							</xsl:if>
+						</PurchaseOrderDate>
+					</xsl:otherwise>
+				</xsl:choose>
+				
 				<!-- PurchaseOrderNumber -->
 				<PurchaseOrderNumber scheme="OTHER">
 					<xsl:value-of select="substring(PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference,1,23)"/>					
@@ -56,38 +90,64 @@
 					<xsl:text>9</xsl:text>
 				</DocumentStatus>
 			</OrderDocumentDetails>
-			<!-- MovementDateTime -->
-			<MovementDateTime format="YYYY-MM-DDThh:mm:ss:TZD">
-				<xsl:value-of select="PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate"/>
-				<xsl:text>T</xsl:text>
-				<xsl:choose>
-					<xsl:when test="PurchaseOrderHeader/OrderedDeliveryDetails/DeliverySlot/SlotStart">
-						<xsl:value-of select="PurchaseOrderHeader/OrderedDeliveryDetails/DeliverySlot/SlotStart"/>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:text>00:00:00</xsl:text>				
-					</xsl:otherwise>
-				</xsl:choose>
-			</MovementDateTime>
-			<!-- Optional Delivery Slot Start and End times -->
-			<xsl:if test="PurchaseOrderHeader/OrderedDeliveryDetails/DeliverySlot/SlotStart or PurchaseOrderHeader/OrderedDeliveryDetails/DeliverySlot/SlotEnd">
-				<SlotTime>
-					<xsl:if test="PurchaseOrderHeader/OrderedDeliveryDetails/DeliverySlot/SlotStart">
-						<SlotStartTime format="YYYY-MM-DDThh:mm:ss:TZD">
-							<xsl:value-of select="PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate"/>				
-							<xsl:text>T</xsl:text>
-							<xsl:value-of select="PurchaseOrderHeader/OrderedDeliveryDetails/DeliverySlot/SlotStart"/>
+			
+			<!-- MovementDateTime (time is not included in wholesale orders) -->
+			<xsl:choose>
+				<xsl:when test="$isWholesale = 1">
+					<MovementDateTime format="YYYY-MM-DD">
+						<xsl:value-of select="PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate"/>
+					</MovementDateTime>				
+				</xsl:when>
+				<xsl:otherwise>
+					<MovementDateTime format="YYYY-MM-DDThh:mm:ss:TZD">
+						<xsl:value-of select="PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate"/>
+						<xsl:text>T</xsl:text>
+						<xsl:choose>
+							<xsl:when test="PurchaseOrderHeader/OrderedDeliveryDetails/DeliverySlot/SlotStart">
+								<xsl:value-of select="PurchaseOrderHeader/OrderedDeliveryDetails/DeliverySlot/SlotStart"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:text>00:00:00</xsl:text>				
+							</xsl:otherwise>
+						</xsl:choose>
+					</MovementDateTime>				
+				</xsl:otherwise>
+			</xsl:choose>
+			
+			<!-- Optional Delivery Slot Start and End times (mandatory elements for wholesale orders even though they use lead times) -->
+			<xsl:choose>
+				<xsl:when test="$isWholesale = 1">
+					<SlotTime>
+						<SlotStartTime format="YYYY-MM-DD">
+							<xsl:value-of select="PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate"/>
 						</SlotStartTime>
-					</xsl:if>
-					<xsl:if test="PurchaseOrderHeader/OrderedDeliveryDetails/DeliverySlot/SlotEnd">
-						<SlotEndTime format="YYYY-MM-DDThh:mm:ss:TZD">
-							<xsl:value-of select="PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate"/>				
-							<xsl:text>T</xsl:text>
-							<xsl:value-of select="PurchaseOrderHeader/OrderedDeliveryDetails/DeliverySlot/SlotEnd"/>
+						<SlotEndTime format="YYYY-MM-DD">
+							<xsl:value-of select="PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate"/>
 						</SlotEndTime>
+					</SlotTime>				
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:if test="PurchaseOrderHeader/OrderedDeliveryDetails/DeliverySlot/SlotStart or PurchaseOrderHeader/OrderedDeliveryDetails/DeliverySlot/SlotEnd">
+						<SlotTime>
+							<xsl:if test="PurchaseOrderHeader/OrderedDeliveryDetails/DeliverySlot/SlotStart">
+								<SlotStartTime format="YYYY-MM-DDThh:mm:ss:TZD">
+									<xsl:value-of select="PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate"/>				
+									<xsl:text>T</xsl:text>
+									<xsl:value-of select="PurchaseOrderHeader/OrderedDeliveryDetails/DeliverySlot/SlotStart"/>
+								</SlotStartTime>
+							</xsl:if>
+							<xsl:if test="PurchaseOrderHeader/OrderedDeliveryDetails/DeliverySlot/SlotEnd">
+								<SlotEndTime format="YYYY-MM-DDThh:mm:ss:TZD">
+									<xsl:value-of select="PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate"/>				
+									<xsl:text>T</xsl:text>
+									<xsl:value-of select="PurchaseOrderHeader/OrderedDeliveryDetails/DeliverySlot/SlotEnd"/>
+								</SlotEndTime>
+							</xsl:if>
+						</SlotTime>
 					</xsl:if>
-				</SlotTime>
-			</xsl:if>
+				</xsl:otherwise>
+			</xsl:choose>
+			
 			<!-- MovementType (Always X14 Delivery) -->
 			<MovementType codeList="EANCOM">
 				<xsl:text>X14</xsl:text>
