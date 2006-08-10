@@ -14,6 +14,8 @@
 ******************************************************************************************
  05/08/2006 | Lee Boyton | Created module.
 ******************************************************************************************
+ 10/08/2006 | Lee Boyton | Take the supplier Nominal Code from the recipient's code for sender.
+******************************************************************************************
             |            |
 ******************************************************************************************
 -->
@@ -161,7 +163,7 @@
 		</xsl:for-each>
 		
 		<!--Supplier Line-->
-		<xsl:value-of select="/Invoice/InvoiceHeader/HeaderExtraData/NominalCode"/>
+		<xsl:value-of select="TradeSimpleHeader/RecipientsCodeForSender"/>
 		<xsl:text>,</xsl:text>
 		<xsl:value-of select="$DocumentDate"/>
 		<xsl:text>,</xsl:text>
