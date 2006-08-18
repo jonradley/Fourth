@@ -27,8 +27,7 @@
 	
 		<xsl:variable name="sRecordSep">
 			<xsl:text>'</xsl:text>
-			<!--<xsl:text>&#13;&#10;</xsl:text>-->
-			<xsl:text></xsl:text>
+			<xsl:text>&#13;&#10;</xsl:text>
 		</xsl:variable>
 		
 		<xsl:variable name="sFileGenerationDate" select="vb:msFileGenerationDate()"/>
