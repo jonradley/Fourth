@@ -12,9 +12,12 @@
  Date      	| Name 					| Description of modification
 ==========================================================================================
  29/06/2006	| Nigel Emsen		| Created module from Cabury Tradacoms V6 mapper
-==========================================================================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  28/07/2006 	| Nigel Emsen		|	Amend CLO to include Suppliers unit code
-=======================================================================================-->
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 21/08/2006	|	Nigel Emsen		| Case 258: Britvic order mapper changes for implied 3dp.
+==========================================================================================
+-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 	xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript"
@@ -249,20 +252,27 @@
 				<!-- ITEM  SEQA   { First level sequence number             } -->
 				<xsl:value-of select="count(preceding-sibling::* | self::*)"/>
 				<xsl:text>+:</xsl:text>
+				
 				<!-- ITEM  SPRO   { Supplier's product number               } -->
 				<xsl:call-template name="msCheckField">
 					<xsl:with-param name="vobjNode" select="ProductID/SuppliersProductCode"/>
 					<xsl:with-param name="vnLength" select="30"/>
 				</xsl:call-template>
+				
 				<xsl:text>+++::</xsl:text>
 				<xsl:value-of select="js:msSafeText(string(OrderedQuantity/@UnitOfMeasure),6)"/>
 				<xsl:text>+</xsl:text>
-				<xsl:value-of select="translate(format-number(OrderedQuantity,'#.000'),'.','')"/>
+				
+				<!-- 23 Aug 2006 - NE - Bunzl can not apply 3dp to the QTY -->
+				<xsl:value-of select="format-number(OrderedQuantity,'#0')"/>
 				<xsl:text>::</xsl:text>
+				
 				<xsl:value-of select="js:msSafeText(string(OrderedQuantity/@UnitOfMeasure),6)"/>
 				<xsl:text>+</xsl:text>
+				
 				<xsl:value-of select="translate(format-number(UnitValueExclVAT,'#.00'),'.','')"/><xsl:text>00</xsl:text>
 				<xsl:text>+++</xsl:text>
+				
 				<xsl:value-of select="js:msSafeText(string(ProductDescription),40)"/>
 			<!-- End of OLD Segment -->
 			<xsl:value-of select="$sRecordSep"/>
