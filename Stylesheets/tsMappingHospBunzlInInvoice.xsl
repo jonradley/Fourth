@@ -2,9 +2,9 @@
 <!--**************************************************************************************
  Overview
 
-Maps TRADACOMS invoices/credit notes into SPEx internal format
+Maps TRADACOMS invoicesinto SPEx internal format
 
-BUNZL Invoices
+BUNZL HOSP Invoices
 
  © Alternative Business Solutions Ltd., 2000.
 ******************************************************************************************
@@ -14,279 +14,485 @@ BUNZL Invoices
 ******************************************************************************************
  Date 	     	| Name 				| Description of modification
 ******************************************************************************************
- 18/10/02005 	| Nigel Emsen	|	Created from Acco Eastlight mapper.
+ 23/08/2006 		| Nigel Emsen	|	Created from Bunzl Spicers Mapper.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:vbscript="http://abs-Ltd.com">
+
 	<xsl:template match="/Document">
+	
 		<BatchRoot>
-			<xsl:element name="Invoice">
-				<!-- tradesimple header -->
-				<!-- ================== -->
+		
+			<Invoice>
+			
 				<xsl:variable name="sRecipientID" select="CDT/L2[2]/L3[1]/L4[1]"/>
+				
 				<xsl:variable name="sDeliveryName" select="CLO/L2[2]/L3[1]/L4"/>
+				
 				<TradeSimpleHeader>
+				
 					<SendersCodeForRecipient>
-						<xsl:value-of select="concat($sRecipientID, '/', $sDeliveryName)"/>
+					
+						<!-- xsl:value-of select="concat($sRecipientID, '/', $sDeliveryName)"/ -->
+						<xsl:value-of select="concat($sRecipientID)"/>
 					</SendersCodeForRecipient>
+					
 				</TradeSimpleHeader>
-				<!-- the invoice or credit note header -->
-				<!-- ================================= -->
-				<xsl:element name="InvoiceHeader">
+				
+				<InvoiceHeader>
+				
 					<BatchInformation>
+					
 						<FileGenerationNumber>
+						
 							<xsl:value-of select="FIL/L2[2]/L3[1]/L4"/>
 						</FileGenerationNumber>
+						
+						
 						<FileVersionNumber>
+						
 							<xsl:value-of select="FIL/L2[2]/L3[2]/L4"/>
+							
 						</FileVersionNumber>
+						
+						
 						<FileCreationDate>
+						
 							<xsl:call-template name="msFormatDate">
 								<xsl:with-param name="vsDate" select="concat('20', FIL/L2[2]/L3[3]/L4)"/>
 							</xsl:call-template>
+							
 						</FileCreationDate>
+						
+					</BatchInformation>
+					
+					<Buyer>
+					
+						<BuyersLocationID>
+						
+							<GLN>xx</GLN>
+							
+							<BuyersCode>xx</BuyersCode>
+							
+							<SuppliersCode>xx</SuppliersCode>
+							
+						</BuyersLocationID>
+						
+						<xsl:if test="CDT/L2/L3[2]/L4 != ''">
+						
+							<BuyersName>
+								<xsl:value-of select="CDT/L2/L3[2]/L4"/>
+							</BuyersName>
+							
+						</xsl:if>
+						
+						<BuyersAddress>
+							<!--shuffle up address lines to avoid blanks-->
+							<xsl:for-each select="CDT/L2[2]/L3[3]/L4[position() &lt; 5][not(.='')]">
+							
+								<xsl:if test="position() &lt; 5 ">
+								
+									<xsl:element name="{concat('AddressLine', position())}">
+										<xsl:value-of select="."/>
+									</xsl:element>
+									
+								</xsl:if>
+								
+							</xsl:for-each>
+							
+							<xsl:if test="CDT/L2[2]/L3[3]/L4[5] !='' ">
+							
+								<PostCode>
+									<xsl:value-of select="CDT/L2[2]/L3[3]/L4[5]"/>
+								</PostCode>
+								
+							</xsl:if>
+							
+						</BuyersAddress>
+						
+					</Buyer>
+					
+					<Supplier>
+					
+						<SuppliersLocationID>
+						
+							<GLN>xx</GLN>
+							
+							<BuyersCode>xx</BuyersCode>
+							
+							<SuppliersCode>xx</SuppliersCode>
+							
+						</SuppliersLocationID>
+						
 						<xsl:if test="SDT/L2[2]/L3[2]/L4 != ''">
+						
 							<SuppliersName>
 								<xsl:value-of select="SDT/L2[2]/L3[2]/L4"/>
 							</SuppliersName>
+							
 						</xsl:if>
-						<SuppliersVATRegNo>181501390</SuppliersVATRegNo>
-						<xsl:if test="CDT/L2/L3[2]/L4 != ''">
-							<CustomersName>
-								<xsl:value-of select="CDT/L2/L3[2]/L4"/>
-							</CustomersName>
-						</xsl:if>
-						<xsl:if test="CDT/L2[2]/L3[3]/L4[1] != ''">
-							<CustomersAddress>
+						<!--
+							<SuppliersAddress>
+								<AddressLine1>xx</AddressLine1>
+								<AddressLine2>xx</AddressLine2>
+								<AddressLine3>xx</AddressLine3>
+								<AddressLine4>xx</AddressLine4>
+								<PostCode>String</PostCode>
+							</SuppliersAddress>
+						-->
+						
+					</Supplier>
+					
+					<ShipTo>
+					
+						<ShipToLocationID>
+						
+							<GLN>xx</GLN>
+							
+							<BuyersCode>xx</BuyersCode>
+							
+							<SuppliersCode>xx</SuppliersCode>
+							
+						</ShipToLocationID>
+						
+						<ShipToName>
+						
+							<xsl:value-of select="CLO/L2/L3[2]/L4"/>
+							
+						</ShipToName>
+						
+						<xsl:if test="CLO/L2[2]/L3[3]/L4 != ''">
+						
+							<ShipToAddress>
+							
 								<!--shuffle up address lines to avoid blanks-->
-								<xsl:for-each select="CDT/L2[2]/L3[3]/L4[position() &lt; 5][not(.='')]">
+								<xsl:for-each select="CLO/L2[2]/L3[3]/L4[position() &lt; 4][not(.='')]">
+								
 									<xsl:if test="position() &lt; 5 ">
+									
 										<xsl:element name="{concat('AddressLine', position())}">
 											<xsl:value-of select="."/>
+											
 										</xsl:element>
+										
 									</xsl:if>
+									
 								</xsl:for-each>
-								<xsl:if test="CDT/L2[2]/L3[3]/L4[5] !='' ">
-									<PostCode>
-										<xsl:value-of select="CDT/L2[2]/L3[3]/L4[5]"/>
-									</PostCode>
-								</xsl:if>
-							</CustomersAddress>
+								
+								<PostCode>
+									<xsl:value-of select="CLO/L2[2]/L3[3]/L4[5]"/>
+								</PostCode>
+								
+							</ShipToAddress>
+							
 						</xsl:if>
-					</BatchInformation>
+						
+					</ShipTo>
+					
 					<InvoiceReferences>
+					
 						<InvoiceReference>
+						
 							<xsl:value-of select="IRF/L2[2]/L3[1]/L4"/>
+							
 						</InvoiceReference>
+						
 						<InvoiceDate>
+						
 							<xsl:call-template name="msFormatDate">
 								<xsl:with-param name="vsDate" select="concat('20', IRF/L2[2]/L3[2]/L4)"/>
 							</xsl:call-template>
+							
 						</InvoiceDate>
+						
 						<TaxPointDate>
+						
 							<xsl:call-template name="msFormatDate">
 								<xsl:with-param name="vsDate" select="concat('20', IRF/L2[2]/L3[3]/L4)"/>
 							</xsl:call-template>
+							
 						</TaxPointDate>
+						
+						<!-- Bunzls VAT Reg No. -->
+						<VATRegNo>181501390</VATRegNo>
+						
+						<InvoiceMatchingDetails>
+							<!--
+								<MatchingStatus>Passed</MatchingStatus>
+								<MatchingDate>1967-08-13</MatchingDate>
+								<MatchingTime>14:20:00-05:00</MatchingTime>
+								<GoodsReceivedNoteReference>xx</GoodsReceivedNoteReference>
+								<GoodsReceivedNoteDate>1967-08-13</GoodsReceivedNoteDate>
+								<DebitNoteReference>xx</DebitNoteReference>
+								<DebitNoteDate>1967-08-13</DebitNoteDate>
+								<CreditNoteReference>xx</CreditNoteReference>
+								<CreditNoteDate>1967-08-13</CreditNoteDate>
+							-->
+						</InvoiceMatchingDetails>
+						
 					</InvoiceReferences>
-					<xsl:if test="CLO/L2/L3[2]/L4 != ''">
-						<DeliveryDetails>
-							<DeliveryLocationName>
-								<xsl:value-of select="CLO/L2/L3[2]/L4"/>
-							</DeliveryLocationName>
-							<xsl:if test="CLO/L2[2]/L3[3]/L4 != ''">
-								<DeliveryLocationAddress>
-									<!--shuffle up address lines to avoid blanks-->
-									<xsl:for-each select="CLO/L2[2]/L3[3]/L4[position() &lt; 4][not(.='')]">
-										<xsl:if test="position() &lt; 5 ">
-											<xsl:element name="{concat('AddressLine', position())}">
-												<xsl:value-of select="."/>
-											</xsl:element>
-										</xsl:if>
-									</xsl:for-each>
-									<PostCode>
-										<xsl:value-of select="CLO/L2[2]/L3[3]/L4[5]"/>
-									</PostCode>
-								</DeliveryLocationAddress>
-							</xsl:if>
-						</DeliveryDetails>
-					</xsl:if>
-					<Currency>GBP</Currency>
-				</xsl:element>
-				<!-- the detail lines -->
-				<!-- ================ -->
-				<xsl:element name="InvoiceDetail">
+					
+					<!--
+						<Currency>xx</Currency>
+						<SequenceNumber>2</SequenceNumber>
+					-->
+					
+				</InvoiceHeader>
+				
+				<InvoiceDetail>
+				
 					<xsl:for-each select="ILD">
-						<xsl:element name="InvoiceLine">
-							<DeliveryNoteReferences>
-								<DeliveryNoteReference>
-									<xsl:value-of select="/Document/ODD/L2[2]/L3[3]/L4[1]"/>
-								</DeliveryNoteReference>
-								<DeliveryNoteDate>
-									<xsl:call-template name="msFormatDate">
-										<xsl:with-param name="vsDate" select="concat('20', /Document/ODD/L2[2]/L3[3]/L4[2])"/>
-									</xsl:call-template>
-								</DeliveryNoteDate>
-							</DeliveryNoteReferences>
+					
+						<InvoiceLine>
+						
+							<LineNumber>
+								<xsl:value-of select="position()"/>
+							</LineNumber>
+							
 							<PurchaseOrderReferences>
+							
 								<PurchaseOrderReference>
 									<xsl:value-of select="/Document/ODD/L2[2]/L3[2]/L4[1]"/>
 								</PurchaseOrderReference>
+								
+								<!--PurchaseOrderDate>1967-08-13</PurchaseOrderDate -->
+								<!--PurchaseOrderTime>14:20:00-05:00</PurchaseOrderTime-->
+								
+								<!--
+									<TradeAgreement>
+										<ContractReference>xx</ContractReference>
+										<ContractDate>1967-08-13</ContractDate>
+									</TradeAgreement>
+								-->
+								
+								<!--
+									<CustomerPurchaseOrderReference>xx</CustomerPurchaseOrderReference>
+									<JobNumber>xx</JobNumber>
+								-->
+								
 							</PurchaseOrderReferences>
+							
+							<!--
+								<PurchaseOrderConfirmationReferences>
+								<PurchaseOrderConfirmationReference>xx</PurchaseOrderConfirmationReference>
+								<PurchaseOrderConfirmationDate>1967-08-13</PurchaseOrderConfirmationDate>
+								</PurchaseOrderConfirmationReferences>
+							-->
+							
+							<DeliveryNoteReferences>
+							
+								<DeliveryNoteReference>
+									<xsl:value-of select="/Document/ODD/L2[2]/L3[3]/L4[1]"/>
+								</DeliveryNoteReference>
+								
+								<DeliveryNoteDate>
+								
+									<xsl:call-template name="msFormatDate">
+										<xsl:with-param name="vsDate" select="concat('20', /Document/ODD/L2[2]/L3[3]/L4[2])"/>
+									</xsl:call-template>
+									
+								</DeliveryNoteDate>
+								
+								<!--
+									<DespatchDate>1967-08-13</DespatchDate>
+								-->
+								
+							</DeliveryNoteReferences>
+							
+							<!--
+								<GoodsReceivedNoteReferences>
+								<GoodsReceivedNoteReference>xx</GoodsReceivedNoteReference>
+								<GoodsReceivedNoteDate>1967-08-13</GoodsReceivedNoteDate>
+								</GoodsReceivedNoteReferences>
+							-->
+							
 							<ProductID>
-								<BarCode>
+							
+								<GTIN>
 									<xsl:value-of select="vbscript:msPopulateBarcode(L2[2]/L3[3]/L4[1], L2[2]/L3[3]/L4[2]) "/>
-								</BarCode>
-								<xsl:if test="L2[2]/L3[5]/L4[2] != ''">
-									<BuyersProductCode>
-										<xsl:value-of select="L2[2]/L3[5]/L4[2]"/>
-									</BuyersProductCode>
-								</xsl:if>
+								</GTIN>
+								
 								<xsl:if test="L2[2]/L3[3]/L4[2] != ''">
+								
 									<SuppliersProductCode>
 										<xsl:value-of select="L2[2]/L3[3]/L4[2]"/>
 									</SuppliersProductCode>
+									
 								</xsl:if>
+								
+								<xsl:if test="L2[2]/L3[5]/L4[2] != ''">
+								
+									<BuyersProductCode>
+										<xsl:value-of select="L2[2]/L3[5]/L4[2]"/>
+									</BuyersProductCode>
+									
+								</xsl:if>
+								
 							</ProductID>
+							
 							<xsl:choose>
+							
 								<xsl:when test="L2[2]/L3[14]/L4[1] != ''">
+								
 									<ProductDescription>
 										<xsl:value-of select="L2[2]/L3[14]/L4[1]"/>
 									</ProductDescription>
+									
 								</xsl:when>
+								
 								<xsl:otherwise>
+								
 									<ProductDescription>Not Provided</ProductDescription>
 								</xsl:otherwise>
+								
 							</xsl:choose>
-							<QuantityInvoiced>
+							
+							<!--
+								<OrderedQuantity UnitOfMeasure="Text">3.14159</OrderedQuantity>
+								<ConfirmedQuantity UnitOfMeasure="Text">3.14159</ConfirmedQuantity>
+								<DeliveredQuantity UnitOfMeasure="Text">3.14159</DeliveredQuantity>
+							-->
+							
+							<InvoicedQuantity UnitOfMeasure="Text">
 								<xsl:value-of select="format-number(L2[2]/L3[7]/L4[1],'0')"/>
-							</QuantityInvoiced>
+							</InvoicedQuantity>
+							
+							<!--
+								<PackSize>xx</PackSize>
+							-->
+							
 							<UnitValueExclVAT>
 								<xsl:value-of select="format-number(L2[2]/L3[8]/L4[1] div 10000, '0.0000')"/>
 							</UnitValueExclVAT>
+							
 							<LineValueExclVAT>
 								<xsl:value-of select="format-number(L2[2]/L3[9]/L4[1] div 10000, '0.00')"/>
 							</LineValueExclVAT>
+							
+							<!--
+								<LineDiscountRate>xx</LineDiscountRate>
+								<LineDiscountValue>xx</LineDiscountValue>
+							-->
+							
 							<VATCode>
+							
 								<xsl:choose>
 									<xsl:when test="L2[2]/L3[10]/L4[1] = 'S'">Standard</xsl:when>
 									<xsl:when test="L2[2]/L3[10]/L4[1] = 'Z'">Zero-Rated</xsl:when>
 									<xsl:when test="L2[2]/L3[10]/L4[1] = 'E'">Exempt</xsl:when>
 								</xsl:choose>
+								
 							</VATCode>
+							
 							<VATRate>
 								<xsl:value-of select="format-number(L2[2]/L3[11]/L4[1] div 1000, '0.00')"/>
 							</VATRate>
-						</xsl:element>
+							
+							<!--
+								<NetPriceFlag>1</NetPriceFlag>
+							-->
+							
+							<!--
+								<Measure>
+									<UnitsInPack>xx</UnitsInPack>
+									<OrderingMeasure>xx</OrderingMeasure>
+									<MeasureIndicator>xx</MeasureIndicator>
+									<TotalMeasure>xx</TotalMeasure>
+									<TotalMeasureIndicator>xx</TotalMeasureIndicator>
+								</Measure>
+							-->
+							
+							<!-- LineExtraData/ -->
+							
+						</InvoiceLine>
+						
 					</xsl:for-each>
-					<xsl:for-each select="STL">
-						<!-- If we have the SURA element being non-blank then we have a delivery charge line-->
-						<xsl:if test="L2[2]/L3[9]/L4[1] !=''">
-							<xsl:element name="InvoiceLine">
-								<DeliveryNoteReferences>
-									<DeliveryNoteReference>
-										<xsl:value-of select="/Document/ODD/L2[2]/L3[3]/L4[1]"/>
-									</DeliveryNoteReference>
-									<DeliveryNoteDate>
-										<xsl:call-template name="msFormatDate">
-											<xsl:with-param name="vsDate" select="concat('20', /Document/ODD/L2[2]/L3[3]/L4[2])"/>
-										</xsl:call-template>
-									</DeliveryNoteDate>
-								</DeliveryNoteReferences>
-								<ProductID>
-									<BarCode>0000000000000</BarCode>
-									<BuyersProductCode>DELCHRG</BuyersProductCode>
-								</ProductID>
-								<ProductDescription>Delivery Charge</ProductDescription>
-								<QuantityInvoiced>1</QuantityInvoiced>
-								<UnitValueExclVAT>
-									<xsl:value-of select="format-number(L2[2]/L3[9]/L4[1] div 10000, '0.0000')"/>
-								</UnitValueExclVAT>
-								<LineValueExclVAT>
-									<xsl:value-of select="format-number(L2[2]/L3[9]/L4[1] div 10000, '0.0000')"/>
-								</LineValueExclVAT>
-								<VATCode>
-									<xsl:choose>
-										<xsl:when test="L2[2]/L3[3]/L4[1] = 'S'">Standard</xsl:when>
-										<xsl:when test="L2[2]/L3[3]/L4[1] = 'Z'">Zero-Rated</xsl:when>
-										<xsl:when test="L2[2]/L3[3]/L4[1] = 'E'">Exempt</xsl:when>
-									</xsl:choose>
-								</VATCode>
-								<VATRate>
-									<xsl:value-of select="format-number(L2[2]/L3[4]/L4[1] div 1000, '0.00')"/>
-								</VATRate>
-							</xsl:element>
-						</xsl:if>
-					</xsl:for-each>
-				</xsl:element>
-				<!-- the trailer -->
-				<!-- =========== -->
-				<xsl:element name="InvoiceTrailer">
-					<SettlementDiscountRate>
-						<xsl:value-of select="vbscript:msCalculateSettlementRate(TLR/L2[2]/L3[7]/L4, TLR/L2[2]/L3[9]/L4)"/>
-					</SettlementDiscountRate>
-					<DocumentTotalExclVAT>
-						<xsl:value-of select="format-number(TLR/L2[2]/L3[7]/L4 div 100, '0.00')"/>
-					</DocumentTotalExclVAT>
-					<SettlementTotalExclVAT>
-						<xsl:value-of select="format-number(TLR/L2[2]/L3[9]/L4 div 100, '0.00')"/>
-					</SettlementTotalExclVAT>
-					<!--VATSubtotals -->
-					<xsl:element name="VATSubtotals">
+					
+				</InvoiceDetail>
+				
+				<InvoiceTrailer>
+				
+					<NumberOfLines>
+						<xsl:value-of select="count(//ILD)"/>
+					</NumberOfLines>
+					
+					<!--
+					<DocumentDiscountRate>xx</DocumentDiscountRate>
+					<SettlementDiscountRate SettlementDiscountDays="2">3.14159</SettlementDiscountRate>
+					-->
+					
+					<VATSubTotals>
+					
 						<xsl:for-each select="STL">
-							<xsl:element name="VATSubtotal">
-								<VATCode>
-									<xsl:choose>
-										<xsl:when test="L2[2]/L3[2]/L4 = 'S'">Standard</xsl:when>
-										<xsl:when test="L2[2]/L3[2]/L4 = 'Z'">Zero-Rated</xsl:when>
-										<xsl:when test="L2[2]/L3[2]/L4 = 'E'">Exempt</xsl:when>
-									</xsl:choose>
-								</VATCode>
-								<VATRate>
-									<xsl:value-of select="format-number(L2[2]/L3[3]/L4 div 1000, '0.00')"/>
-								</VATRate>
+						
+							<VATSubTotal>
+							
+								<xsl:attribute name="VATCode"><xsl:choose><xsl:when test="L2[2]/L3[2]/L4 = 'S'">Standard</xsl:when><xsl:when test="L2[2]/L3[2]/L4 = 'Z'">Zero-Rated</xsl:when><xsl:when test="L2[2]/L3[2]/L4 = 'E'">Exempt</xsl:when></xsl:choose></xsl:attribute>
+								<xsl:attribute name="VATRate"><xsl:value-of select="format-number(L2[2]/L3[3]/L4 div 1000, '0.00')"/></xsl:attribute>
+
 								<DocumentTotalExclVATAtRate>
 									<xsl:value-of select="format-number(L2[2]/L3[10]/L4 div 100, '0.00')"/>
 								</DocumentTotalExclVATAtRate>
+								
 								<SettlementTotalExclVATAtRate>
 									<xsl:value-of select="format-number(L2[2]/L3[12]/L4 div 100, '0.00')"/>
 								</SettlementTotalExclVATAtRate>
+								
 								<VATAmountAtRate>
 									<xsl:value-of select="format-number(L2[2]/L3[13]/L4 div 100, '0.00')"/>
 								</VATAmountAtRate>
+								
 								<DocumentTotalInclVATAtRate>
 									<xsl:value-of select="format-number(L2[2]/L3[14]/L4 div 100, '0.00')"/>
 								</DocumentTotalInclVATAtRate>
+								
 								<SettlementTotalInclVATAtRate>
 									<xsl:value-of select="format-number(L2[2]/L3[15]/L4 div 100, '0.00')"/>
 								</SettlementTotalInclVATAtRate>
-							</xsl:element>
+								
+								<VATTrailerExtraData/>
+								
+							</VATSubTotal>
+							
 						</xsl:for-each>
-					</xsl:element>
+						
+					</VATSubTotals>
+
 					<VATAmount>
 						<xsl:value-of select="format-number(TLR/L2[2]/L3[10]/L4  div 100, '0.00')"/>
 					</VATAmount>
+					
 					<DocumentTotalInclVAT>
 						<xsl:value-of select="format-number(TLR/L2[2]/L3[11]/L4 div 100, '0.00')"/>
 					</DocumentTotalInclVAT>
-					<SettlementTotalInclVAT>
+					
+					<SettlementTotalInclVAT>		
 						<xsl:value-of select="format-number(TLR/L2[2]/L3[12]/L4 div 100, '0.00')"/>
 					</SettlementTotalInclVAT>
-				</xsl:element>
-			</xsl:element>
+					
+					<TrailerExtraData/>
+					
+				</InvoiceTrailer>
+
+			</Invoice>
+			
 		</BatchRoot>
+		
 	</xsl:template>
+	
 	<xsl:template name="msFormatDate">
 		<xsl:param name="vsDate"/>
 		<xsl:value-of select="concat(substring($vsDate,1,4), '-', substring($vsDate,5,2), '-', substring($vsDate,7,2))"/>
 	</xsl:template>
+	
 	<xsl:template name="msCalculateVATRate">
 		<xsl:param name="vsVATAmount"/>
 		<xsl:param name="vsLineCost"/>
 		<xsl:value-of select="format-number(($vsVATAmount * 100) div $vsLineCost, '#.0')"/>
 	</xsl:template>
+	
 	<msxsl:script language="VBScript" implements-prefix="vbscript"><![CDATA[ 
 
 	Function msFormatNumber(inputValue, inputValue2, inputValue3)
@@ -359,4 +565,5 @@ BUNZL Invoices
 	
 
 	]]></msxsl:script>
+
 </xsl:stylesheet>
