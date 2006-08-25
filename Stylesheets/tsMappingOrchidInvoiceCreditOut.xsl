@@ -16,6 +16,8 @@
 ******************************************************************************************
  10/08/2006 | Lee Boyton | Take the supplier Nominal Code from the recipient's code for sender.
 ******************************************************************************************
+ 25/08/2006 | Lee Boyton | 285. Company code should appear on all line types.
+******************************************************************************************
             |            |
 ******************************************************************************************
 -->
@@ -152,6 +154,7 @@
 			<xsl:text>,</xsl:text>
 			<xsl:text>GBP</xsl:text>
 			<xsl:text>,</xsl:text>
+			<xsl:value-of select="//HeaderExtraData/CompanyCode"/>			
 			<xsl:text>,</xsl:text>
 			<xsl:value-of select="$UnitCode"/>
 			<xsl:text>,</xsl:text>
@@ -182,6 +185,7 @@
 		<xsl:text>,</xsl:text>
 		<xsl:text>GBP</xsl:text>
 		<xsl:text>,</xsl:text>
+		<xsl:value-of select="//HeaderExtraData/CompanyCode"/>		
 		<xsl:text>,</xsl:text>
 		<xsl:value-of select="$UnitCode"/>
 		<xsl:text>,</xsl:text>
