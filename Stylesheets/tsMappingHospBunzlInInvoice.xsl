@@ -29,7 +29,7 @@ BUNZL HOSP Invoices
 			
 				<xsl:variable name="sRecipientID" select="CDT/L2[2]/L3[1]/L4[1]"/>
 				
-				<xsl:variable name="sDeliveryName" select="CLO/L2[2]/L3[1]/L4"/>
+				<xsl:variable name="sDeliveryName" select="CLO/L2[3]/L3[1]/L4"/>
 				
 				<TradeSimpleHeader>
 				
