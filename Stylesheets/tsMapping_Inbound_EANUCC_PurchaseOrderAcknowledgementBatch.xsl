@@ -33,6 +33,8 @@
 ******************************************************************************************
  13/07/2006 	| Nigel Emsen 	|  changes SenderBranchReference & contract date - added </xsl:if>
 ******************************************************************************************
+ 07/09/2006	| Nigel Emsen	|	delivery for Britvic
+******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" 
 				xmlns:xsl="http://www.w3.org/1999/XSL/Transform"  
@@ -100,9 +102,12 @@
 								
 								<Buyer>
 									<BuyersLocationID>
-										<GLN>
-											<xsl:value-of select="/OrderAcknowledgement/Buyer/BuyerGLN"/>
-										</GLN>
+										
+										<xsl:if test="string(/OrderAcknowledgement/Buyer/BuyerGLN) != ''">
+											<GLN>
+												<xsl:value-of select="/OrderAcknowledgement/Buyer/BuyerGLN"/>
+											</GLN>
+										</xsl:if>
 										
 										<xsl:if test="/OrderAcknowledgement/Buyer/BuyerAssigned">
 											<BuyersCode>
