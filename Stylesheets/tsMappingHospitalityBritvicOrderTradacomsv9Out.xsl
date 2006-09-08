@@ -16,6 +16,8 @@
  28/07/2006 	| Nigel Emsen		|	Amend CLO to include Suppliers unit code
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  21/08/2006	|	Nigel Emsen		| Case 258: Britvic order mapper changes for implied 3dp.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 08/09/2006	|	Nigel Emsen		| Case 341: Addin Spiecal delivery instructions.
 ==========================================================================================
 -->
 
@@ -232,8 +234,25 @@
 			<xsl:call-template name="msFormateDate">
 				<xsl:with-param name="vsUTCDate" select="PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate"/>
 			</xsl:call-template>
-			<xsl:text>+</xsl:text>
+			<xsl:text>++</xsl:text>
+			
+			<!--
+					DIN-DINS-1394 (40 Characters long)
+					DIN-DINS-1395 (29 Characters long)
+
+					Please note that whilst the Tradacoms element is 40 characters long, our destination for the data is 70 characters long i.e. 40 characters + 1 					character space + 29 characters)
+
+					DIN=060907+060907++abcdefghijklmnopqrstuvwxyzabcdefghijklmn:opqrstuvwxyzabcdefghijklmnopq’
+			-->			
+			<xsl:variable name="sSpeInstructions" select="string(//OrderedDeliveryDetails/SpecialDeliveryInstructions)"/>
+			<!--	DIN-DINS-1394 (40 Characters long) -->
+			<xsl:value-of select="substring($sSpeInstructions,1,39)"/>
+			<xsl:text>:</xsl:text>
+			<!-- DIN-DINS-1395 (29 Characters long) -->
+			<xsl:value-of select="substring($sSpeInstructions,40,28)"/>
+			
 		<xsl:value-of select="$sRecordSep"/>
+		
 		
 		<!--
 		<xsl:text>DNA=</xsl:text>
