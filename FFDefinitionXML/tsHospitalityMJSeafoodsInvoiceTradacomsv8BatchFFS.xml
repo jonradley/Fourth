@@ -253,8 +253,8 @@
 									<DocumentTotalInclVATAtRate RecordPos="STL=" LPos="15"/>
 									<!-- MANDATORY Total Payable Inc Settlement Discount at rate, DERIVE, INVOIC – STL – APSI, 2 d.p. implied, The total which is payable at this VAT rate, including settlement discount -->
 									<SettlementTotalInclVATAtRate RecordPos="STL=" LPos="16"/>
-									<ffsAttribute1 name="VATCode" RecordPos="STL=" LPos="3"/>
-									<ffsAttribute1 name="VATRate" RecordPos="STL=" LPos="4"/>
+									<ffsAttribute1 name="VATCode" RecordPos="STL=" LPos="2"/>
+									<ffsAttribute1 name="VATRate" RecordPos="STL=" LPos="3"/>
 								</VATSubTotal>
 							</VATSubTotals>
 							<!-- MANDATORY Lines Total Ex VAT, DERIVE, INVOIC – TLR – EVLT, 2 d.p. implied, The total value of the all lines, before VAT and settlement discount -->
