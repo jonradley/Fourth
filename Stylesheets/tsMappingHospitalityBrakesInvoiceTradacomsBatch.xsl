@@ -259,13 +259,14 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from ILD/SPRO(1).
 		</xsl:if>
 	</xsl:template>	
 	
-	<!-- Check if invoice QTY is given, if not use measured quantity taking the value from @UnitOfMeasure -->
+	<!-- Check if invoice QTY is given, if not use measured quantity taking the value from @UnitOfMeasure. Also we need to ensure this attribute is stripped to avoid a validation error later on. -->
 	<xsl:template match="//InvoicedQuantity" >
 		<xsl:variable name="sUnitOfMeasure" select="@UnitOfMeasure"/>
 		<InvoicedQuantity>
 			<xsl:choose>
 				<xsl:when test="$sUnitOfMeasure">
-					<xsl:value-of select="$sUnitOfMeasure"/>
+					<!-- the value comes with an implied 3dp thats needs removing and reapplying as 0dp -->
+					<xsl:value-of select="format-number($sUnitOfMeasure div 1000,'#0')"/>
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:value-of select="."/>
