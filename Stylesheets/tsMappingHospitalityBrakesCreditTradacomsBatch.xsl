@@ -265,6 +265,17 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from CLD/SPRO(1).
 	</xsl:template>
 	<!-- END of Delivery Location Code Converter-->
 	
+	<!-- Check for Purchase Order Date -->
+	<xsl:template match="//PurchaseOrderReferences/PurchaseOrderDate">
+		<xsl:variable name="sPORefDate" select="translate(.,' ','')"/>
+		<xsl:if test="string($sPORefDate) !='' ">
+				<PurchaseOrderDate>
+					<xsl:value-of select="$sPORefDate"/>
+				</PurchaseOrderDate>
+		</xsl:if>
+	</xsl:template>
+	
+	
 	<msxsl:script language="JScript" implements-prefix="jscript"><![CDATA[ 
 		function toUpperCase(vs) {
 			return vs.toUpperCase();
