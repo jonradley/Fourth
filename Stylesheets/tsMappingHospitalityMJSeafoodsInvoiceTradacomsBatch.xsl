@@ -239,19 +239,13 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from ILD/SPRO(1).
 		</SendersBranchReference>
 	</xsl:template>
 	
-	<!-- Check for full matching pair of purchase order references -->
-	<xsl:template match="//PurchaseOrderReferences">
-		<xsl:variable name="sPORefDate" select="translate(PurchaseOrderReference,' ','')"/>
-		<xsl:variable name="sPOReference" select="translate(PurchaseOrderDate,' ','')"/>
-		<xsl:if test="string($sPOReference) !='' and string($sPORefDate) !='' ">
-			<PurchaseOrderReferences>
-				<PurchaseOrderReference>
-					<xsl:value-of select="$sPOReference"/>
-				</PurchaseOrderReference>
+	<!-- Check for Purchase Order Date -->
+	<xsl:template match="//PurchaseOrderReferences/PurchaseOrderDate">
+		<xsl:variable name="sPORefDate" select="translate(.,' ','')"/>
+		<xsl:if test="string($sPORefDate) !='' ">
 				<PurchaseOrderDate>
 					<xsl:value-of select="$sPORefDate"/>
 				</PurchaseOrderDate>
-			</PurchaseOrderReferences>
 		</xsl:if>
 	</xsl:template>
 	
