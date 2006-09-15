@@ -114,7 +114,7 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from CLD/SPRO(1).
 						<TradeSimpleHeader>
 							<!-- MANDATORY Sender’s code for recipient, MANDATORY, CREDIT – CLO – CLOC(2), You must provide this code.  It is your internal identifier for the company that is to receive the document. It must match the code that you have entered on the trading relationship you have with the other company -->
 							<SendersCodeForRecipient RecordPos="CLO=" LPos="1" SFPos="2"/>
-							<!-- OPTIONAL Sender’s Branch Reference, MANDATORY, INVFIL – CLO(3) , Depending on your particular relationship with the company, you must provide this code.  It is your internal identifier for the “contract” that the receiving company belongs to.  It must match the account code that you use for the unit that recieved the goods being invoiced. We will take the first letter of this code to be the proxy relationship between your depot and the head office. -->
+							<!-- OPTIONAL Sender’s Branch Reference, MANDATORY, CREHDR – CDT – CIDN(2), Depending on your particular relationship with the company, you must provide this code.  It is your internal identifier for the “contract” that the receiving company belongs to. It must match the code that you have provided to ABS on set-up -->
 							<SendersBranchReference RecordPos="CLO=" LPos="1" SFPos="3"/>
 						</TradeSimpleHeader>
 						<CreditNoteHeader>
