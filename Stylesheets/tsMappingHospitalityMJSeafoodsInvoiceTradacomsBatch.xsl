@@ -53,6 +53,7 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from ILD/SPRO(1).
 		</xsl:copy>
 	</xsl:template>
 	
+	
 	<!-- INVOIC-ILD-QTYI (InvoiceLine/InvoicedQuantity) needs to be multiplied by -1 if (InvoiceLine/ProductID/BuyersProductCode) is NOT blank -->
 	<xsl:template match="InvoiceLine/InvoicedQuantity">
 		<xsl:choose>
@@ -231,13 +232,23 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from ILD/SPRO(1).
 	</xsl:template>
 	<!-- END of MHDSegment HANDLER -->
 	
-	<!-- strips SendersBranchReference to first char -->
-	<xsl:template match="//SendersBranchReference">
-		<xsl:variable name="sValue" select="translate(.,' ','')"/>
-		<SendersBranchReference>
-			<xsl:value-of select="substring($sValue,1,1)"/>
-		</SendersBranchReference>
+	<!--
+	Delivery Location Code Converter
+	If the delivery location code is 6 characters long, add a "1" in as the second character
+	-->
+	<xsl:template match="ShipTo/ShipToLocationID/SuppliersCode">
+		<xsl:choose>
+			<xsl:when test="string-length(.) = 6">
+				<xsl:copy>
+					<xsl:value-of select="substring(.,1,1)"/>1<xsl:value-of select="substring(.,2,5)"/>
+				</xsl:copy>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:copy-of select="."/>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
+	<!-- END of Delivery Location Code Converter-->
 	
 	<!-- Check for Purchase Order Date -->
 	<xsl:template match="//PurchaseOrderReferences/PurchaseOrderDate">
@@ -246,6 +257,59 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from ILD/SPRO(1).
 				<PurchaseOrderDate>
 					<xsl:value-of select="$sPORefDate"/>
 				</PurchaseOrderDate>
+		</xsl:if>
+	</xsl:template>	
+	
+	<!-- Check if invoice QTY is given, if not use measured quantity taking the value from @UnitOfMeasure. Also we need to ensure this attribute is stripped to avoid a validation error later on. -->
+	<xsl:template match="//InvoicedQuantity" >
+		<xsl:variable name="sUnitOfMeasure" select="@UnitOfMeasure"/>
+		<xsl:variable name="sTotalMeasureIndicator" select="translate(../Measure/TotalMeasureIndicator,' ','')"/>
+		<InvoicedQuantity>
+			<!-- UnitOfMeasure -->
+			<xsl:attribute name="UnitOfMeasure">
+				<xsl:choose>
+					<xsl:when test="$sTotalMeasureIndicator='kg'">
+						<xsl:text>KGM</xsl:text>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="$sTotalMeasureIndicator"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:attribute>
+			<!-- actual value -->
+			<xsl:choose>
+				<xsl:when test="$sUnitOfMeasure">
+					<!-- the value comes with an implied 3dp thats needs to be maintained -->
+					<xsl:value-of select="format-number($sUnitOfMeasure div 1000,'#0.###')"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="."/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</InvoicedQuantity>
+	</xsl:template>
+	
+	<!-- strips SendersBranchReference to first char. MJ Seafood depots are coded to the first character of the Suppliers Account Code. Therefore we can identify the depot from accoutn code. -->
+	<xsl:template match="//SendersBranchReference">
+		<xsl:variable name="sValue" select="translate(.,' ','')"/>
+		<SendersBranchReference>
+			<xsl:value-of select="substring($sValue,1,1)"/>
+		</SendersBranchReference>
+	</xsl:template>
+		
+	<!-- Check for pairing of Purchase Order Date & Purchase Order Reference -->
+	<xsl:template match="//PurchaseOrderReferences">
+		<xsl:variable name="sPORefDate" select="translate(PurchaseOrderDate,' ','')"/>
+		<xsl:variable name="sPORefReference" select="translate(PurchaseOrderReference,' ','')"/>
+		<xsl:if test="string($sPORefDate) !='' and string($sPORefReference) != '' ">
+			<PurchaseOrderReferences>
+				<PurchaseOrderDate>
+					<xsl:value-of select="concat('20',substring($sPORefDate,1,2),'-',substring($sPORefDate,3,2),'-',substring($sPORefDate,5,2))"/>
+				</PurchaseOrderDate>
+				<PurchaseOrderReference>
+					<xsl:value-of select="$sPORefReference"/>
+				</PurchaseOrderReference>
+			</PurchaseOrderReferences>
 		</xsl:if>
 	</xsl:template>
 	
