@@ -52,23 +52,36 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from ILD/SPRO(1).
 			<xsl:value-of select="format-number(., '#0.##')"/>
 		</xsl:copy>
 	</xsl:template>
-	
-	<!-- INVOIC-ILD-QTYI (InvoiceLine/InvoicedQuantity) needs to be multiplied by -1 if (InvoiceLine/ProductID/BuyersProductCode) is NOT blank -->
-	<xsl:template match="InvoiceLine/InvoicedQuantity">
-		<xsl:choose>
-			<!--Parent of InvoicedQuantity is InvoiceLine-->
-			<xsl:when test="string-length(../ProductID/BuyersProductCode) &gt; 0" >
-				<!--INVOIC-ILD-CRLI is not blank, multiply by -1-->
-				<xsl:call-template name="copyCurrentNodeDPUnchanged">
-					<xsl:with-param name="lMultiplier" select="-1.0"/>
-				</xsl:call-template>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:call-template name="copyCurrentNodeDPUnchanged"/>
-			</xsl:otherwise>
-		</xsl:choose>
+		
+	<!-- Check if invoice QTY is given, if not use measured quantity taking the value from @UnitOfMeasure. Also we need to ensure this attribute is stripped to avoid a validation error later on. -->
+	<xsl:template match="//InvoicedQuantity" >
+		<xsl:variable name="sUnitOfMeasure" select="@UnitOfMeasure"/>
+		<xsl:variable name="sTotalMeasureIndicator" select="translate(../Measure/TotalMeasureIndicator,' ','')"/>
+		<InvoicedQuantity>
+			<!-- UnitOfMeasure -->
+			<xsl:attribute name="UnitOfMeasure">
+				<xsl:choose>
+					<xsl:when test="$sTotalMeasureIndicator='kg'">
+						<xsl:text>KGM</xsl:text>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="$sTotalMeasureIndicator"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:attribute>
+			<!-- actual value -->
+			<xsl:choose>
+				<xsl:when test="$sUnitOfMeasure">
+					<!-- the value comes with an implied 3dp thats needs to be maintained -->
+					<xsl:value-of select="format-number($sUnitOfMeasure div 1000,'#0.###')"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="."/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</InvoicedQuantity>
 	</xsl:template>
-	
+		
 	<!-- INVOIC-ILD-LEXC(InvoiceLine/LineValueExclVAT) need to be multiplied by -1 if (InvoiceLine/ProductID/BuyersProductCode) is NOT blank -->
 	<xsl:template match="InvoiceLine/LineValueExclVAT">
 		<!-- Implicit 4DP conversion required regardless of BuyersProductCode -->
@@ -249,30 +262,21 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from ILD/SPRO(1).
 	</xsl:template>
 	<!-- END of Delivery Location Code Converter-->
 	
-	<!-- Check for Purchase Order Date -->
-	<xsl:template match="//PurchaseOrderReferences/PurchaseOrderDate">
-		<xsl:variable name="sPORefDate" select="translate(.,' ','')"/>
-		<xsl:if test="string($sPORefDate) !='' ">
+
+	<!-- Check for pairing of Purchase Order Date & Purchase Order Reference -->
+	<xsl:template match="//PurchaseOrderReferences">
+		<xsl:variable name="sPORefDate" select="translate(PurchaseOrderDate,' ','')"/>
+		<xsl:variable name="sPORefReference" select="translate(PurchaseOrderReference,' ','')"/>
+		<xsl:if test="string($sPORefDate) !='' and string($sPORefReference) != '' ">
+			<PurchaseOrderReferences>
 				<PurchaseOrderDate>
-					<xsl:value-of select="$sPORefDate"/>
+					<xsl:value-of select="concat('20',substring($sPORefDate,1,2),'-',substring($sPORefDate,3,2),'-',substring($sPORefDate,5,2))"/>
 				</PurchaseOrderDate>
+				<PurchaseOrderReference>
+					<xsl:value-of select="$sPORefReference"/>
+				</PurchaseOrderReference>
+			</PurchaseOrderReferences>
 		</xsl:if>
-	</xsl:template>	
-	
-	<!-- Check if invoice QTY is given, if not use measured quantity taking the value from @UnitOfMeasure. Also we need to ensure this attribute is stripped to avoid a validation error later on. -->
-	<xsl:template match="//InvoicedQuantity" >
-		<xsl:variable name="sUnitOfMeasure" select="@UnitOfMeasure"/>
-		<InvoicedQuantity>
-			<xsl:choose>
-				<xsl:when test="$sUnitOfMeasure">
-					<!-- the value comes with an implied 3dp thats needs removing and reapplying as 0dp -->
-					<xsl:value-of select="format-number($sUnitOfMeasure div 1000,'#0')"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="."/>
-				</xsl:otherwise>
-			</xsl:choose>
-		</InvoicedQuantity>
 	</xsl:template>
 	
 	<msxsl:script language="JScript" implements-prefix="jscript"><![CDATA[ 
