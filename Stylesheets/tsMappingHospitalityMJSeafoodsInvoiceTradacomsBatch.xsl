@@ -21,9 +21,9 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from ILD/SPRO(1).
 	
 	<!-- Start point - ensure required outer BatchRoot tag is applied -->
 	<xsl:template match="/">
-<BatchRoot>
-		<xsl:apply-templates/>
-</BatchRoot>
+		<BatchRoot>
+			<xsl:apply-templates/>
+		</BatchRoot>
 	</xsl:template>
 	
 	<!-- GENERIC HANDLER to copy unchanged nodes, will be overridden by any node-specific templates below -->
@@ -267,14 +267,9 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from ILD/SPRO(1).
 		<InvoicedQuantity>
 			<!-- UnitOfMeasure -->
 			<xsl:attribute name="UnitOfMeasure">
-				<xsl:choose>
-					<xsl:when test="$sTotalMeasureIndicator='kg'">
-						<xsl:text>KGM</xsl:text>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:value-of select="$sTotalMeasureIndicator"/>
-					</xsl:otherwise>
-				</xsl:choose>
+				<xsl:call-template name="sConvertUOMForInternal">
+					<xsl:with-param name="vsGivenValue" select="$sTotalMeasureIndicator"/>
+				</xsl:call-template>
 			</xsl:attribute>
 			<!-- actual value -->
 			<xsl:choose>
@@ -311,6 +306,66 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from ILD/SPRO(1).
 				</PurchaseOrderReference>
 			</PurchaseOrderReferences>
 		</xsl:if>
+	</xsl:template>
+	
+	<!-- Reformatting of the  Purchase Order Date  -->
+	<!--
+	<xsl:template match="//PurchaseOrderDate">
+		<xsl:variable name="sPORefDate" select="translate(.,' ','')"/>
+		<PurchaseOrderDate>
+			<xsl:value-of select="concat('20',substring($sPORefDate,1,2),'-',substring($sPORefDate,3,2),'-',substring($sPORefDate,5,2))"/>
+		</PurchaseOrderDate>
+	</xsl:template>
+	-->
+	
+	<!-- 
+		Template to convert UOM's into internal values
+		
+		Values from Invoice Schema
+		
+			<xsd:enumeration value="CS"/>
+			<xsd:enumeration value="GRM"/>
+			<xsd:enumeration value="KGM"/>
+			<xsd:enumeration value="PND"/>
+			<xsd:enumeration value="ONZ"/>
+			<xsd:enumeration value="GLI"/>
+			<xsd:enumeration value="LTR"/>
+			<xsd:enumeration value="OZI"/>
+			<xsd:enumeration value="PTI"/>
+			<xsd:enumeration value="PTN"/>
+			<xsd:enumeration value="001"/>
+			<xsd:enumeration value="DZN"/>
+			<xsd:enumeration value="EA"/>
+			<xsd:enumeration value="PF"/>
+			<xsd:enumeration value="PR"/>
+			<xsd:enumeration value="HUR"/>
+	-->
+
+	<xsl:template name="sConvertUOMForInternal">
+		<xsl:param name="vsGivenValue" select="vsGivenValue"/>
+		
+		<xsl:choose>
+			<xsl:when test="$vsGivenValue ='cs' "><xsl:text></xsl:text>CS</xsl:when>
+			<xsl:when test="$vsGivenValue ='grm' "><xsl:text></xsl:text>GRM</xsl:when>
+			<xsl:when test="$vsGivenValue ='kg' "><xsl:text></xsl:text>KGM</xsl:when>
+			<xsl:when test="$vsGivenValue ='pnd' "><xsl:text></xsl:text>PND</xsl:when>
+			<xsl:when test="$vsGivenValue ='onz' "><xsl:text></xsl:text>ONZ</xsl:when>
+			<xsl:when test="$vsGivenValue ='gli' "><xsl:text></xsl:text>GLI</xsl:when>
+			<xsl:when test="$vsGivenValue ='ltr' "><xsl:text></xsl:text>LTR</xsl:when>
+			<xsl:when test="$vsGivenValue ='ozi' "><xsl:text></xsl:text>OZI</xsl:when>
+			<xsl:when test="$vsGivenValue ='pti' "><xsl:text></xsl:text>PTI</xsl:when>
+			<xsl:when test="$vsGivenValue ='ptn' "><xsl:text></xsl:text>PTN</xsl:when>
+			<xsl:when test="$vsGivenValue ='001' "><xsl:text></xsl:text>001</xsl:when>
+			<xsl:when test="$vsGivenValue ='dzn' "><xsl:text></xsl:text>DZN</xsl:when>
+			<xsl:when test="$vsGivenValue ='ea' "><xsl:text></xsl:text>EA</xsl:when>
+			<xsl:when test="$vsGivenValue ='pf' "><xsl:text></xsl:text>PF</xsl:when>
+			<xsl:when test="$vsGivenValue ='pr' "><xsl:text></xsl:text>PR</xsl:when>
+			<xsl:when test="$vsGivenValue ='hur' "><xsl:text></xsl:text>HUR</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$vsGivenValue"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	
 	</xsl:template>
 	
 	<msxsl:script language="JScript" implements-prefix="jscript"><![CDATA[ 
