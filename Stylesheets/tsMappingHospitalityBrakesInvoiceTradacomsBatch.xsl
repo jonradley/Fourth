@@ -264,12 +264,13 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from ILD/SPRO(1).
 		<xsl:variable name="sPORefReference" select="translate(PurchaseOrderReference,' ','')"/>
 		<xsl:if test="string($sPORefDate) !='' and string($sPORefReference) != '' ">
 			<PurchaseOrderReferences>
-				<PurchaseOrderDate>
-					<xsl:value-of select="concat('20',substring($sPORefDate,1,2),'-',substring($sPORefDate,3,2),'-',substring($sPORefDate,5,2))"/>
-				</PurchaseOrderDate>
 				<PurchaseOrderReference>
 					<xsl:value-of select="$sPORefReference"/>
 				</PurchaseOrderReference>
+				<PurchaseOrderDate>
+					<xsl:value-of select="concat('20',substring($sPORefDate,1,2),'-',substring($sPORefDate,3,2),'-',substring($sPORefDate,5,2))"/>
+				</PurchaseOrderDate>
+
 			</PurchaseOrderReferences>
 		</xsl:if>
 	</xsl:template>
