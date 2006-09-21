@@ -6,9 +6,9 @@ Alterations
 Name		| Date			| Change
 **********************************************************************
 S Jefford	| 22/08/2005	| GTIN field now sourced from CLD/SPRO(1).
-			|				| CLD/DRLI now stored in BuyersProductCode
+				|				| CLD/DRLI now stored in BuyersProductCode
 **********************************************************************
-			|				|
+				|				| delivery to live.
 **********************************************************************
 -->
 <ffsFlatFileSchema>
