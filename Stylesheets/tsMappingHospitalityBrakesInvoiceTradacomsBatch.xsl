@@ -313,6 +313,7 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from ILD/SPRO(1).
 		<xsl:param name="vsGivenValue" select="vsGivenValue"/>
 		
 		<xsl:choose>
+			<xsl:when test="$vsGivenValue ='Bx' "><xsl:text></xsl:text>CS</xsl:when>
 			<xsl:when test="$vsGivenValue ='cs' "><xsl:text></xsl:text>CS</xsl:when>
 			<xsl:when test="$vsGivenValue ='grm' "><xsl:text></xsl:text>GRM</xsl:when>
 			<xsl:when test="$vsGivenValue ='kg' "><xsl:text></xsl:text>KGM</xsl:when>
