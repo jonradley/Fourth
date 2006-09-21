@@ -345,24 +345,27 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from ILD/SPRO(1).
 
 	<xsl:template name="sConvertUOMForInternal">
 		<xsl:param name="vsGivenValue" select="vsGivenValue"/>
-		
+			
 		<xsl:choose>
-			<xsl:when test="$vsGivenValue ='cs' "><xsl:text></xsl:text>CS</xsl:when>
-			<xsl:when test="$vsGivenValue ='grm' "><xsl:text></xsl:text>GRM</xsl:when>
-			<xsl:when test="$vsGivenValue ='kg' "><xsl:text></xsl:text>KGM</xsl:when>
-			<xsl:when test="$vsGivenValue ='pnd' "><xsl:text></xsl:text>PND</xsl:when>
-			<xsl:when test="$vsGivenValue ='onz' "><xsl:text></xsl:text>ONZ</xsl:when>
-			<xsl:when test="$vsGivenValue ='gli' "><xsl:text></xsl:text>GLI</xsl:when>
-			<xsl:when test="$vsGivenValue ='ltr' "><xsl:text></xsl:text>LTR</xsl:when>
-			<xsl:when test="$vsGivenValue ='ozi' "><xsl:text></xsl:text>OZI</xsl:when>
-			<xsl:when test="$vsGivenValue ='pti' "><xsl:text></xsl:text>PTI</xsl:when>
-			<xsl:when test="$vsGivenValue ='ptn' "><xsl:text></xsl:text>PTN</xsl:when>
-			<xsl:when test="$vsGivenValue ='001' "><xsl:text></xsl:text>001</xsl:when>
-			<xsl:when test="$vsGivenValue ='dzn' "><xsl:text></xsl:text>DZN</xsl:when>
-			<xsl:when test="$vsGivenValue ='ea' "><xsl:text></xsl:text>EA</xsl:when>
-			<xsl:when test="$vsGivenValue ='pf' "><xsl:text></xsl:text>PF</xsl:when>
-			<xsl:when test="$vsGivenValue ='pr' "><xsl:text></xsl:text>PR</xsl:when>
-			<xsl:when test="$vsGivenValue ='hur' "><xsl:text></xsl:text>HUR</xsl:when>
+			<xsl:when test="contains($vsGivenValue,'kg') "><xsl:text>KGM</xsl:text></xsl:when>
+			<xsl:when test="contains($vsGivenValue,'Bx') "><xsl:text>CS</xsl:text></xsl:when>
+			<xsl:when test="contains($vsGivenValue,'cs') "><xsl:text>CS</xsl:text></xsl:when>
+			<xsl:when test="contains($vsGivenValue,'pkt') "><xsl:text>CS</xsl:text></xsl:when>
+			<xsl:when test="contains($vsGivenValue,'grm') "><xsl:text>GRM</xsl:text></xsl:when>
+			<xsl:when test="contains($vsGivenValue,'kg') "><xsl:text>KGM</xsl:text></xsl:when>
+			<xsl:when test="contains($vsGivenValue,'pnd') "><xsl:text>PND</xsl:text></xsl:when>
+			<xsl:when test="contains($vsGivenValue,'onz') "><xsl:text>ONZ</xsl:text></xsl:when>
+			<xsl:when test="contains($vsGivenValue,'gli') "><xsl:text>GLI</xsl:text></xsl:when>
+			<xsl:when test="contains($vsGivenValue,'ltr') "><xsl:text>LTR</xsl:text></xsl:when>
+			<xsl:when test="contains($vsGivenValue,'ozi') "><xsl:text>OZI</xsl:text></xsl:when>
+			<xsl:when test="contains($vsGivenValue,'pti') "><xsl:text>PTI</xsl:text></xsl:when>
+			<xsl:when test="contains($vsGivenValue,'ptn') "><xsl:text>PTN</xsl:text></xsl:when>
+			<xsl:when test="contains($vsGivenValue,'001') "><xsl:text>001</xsl:text></xsl:when>
+			<xsl:when test="contains($vsGivenValue,'dzn') "><xsl:text>DZN</xsl:text></xsl:when>
+			<xsl:when test="contains($vsGivenValue,'ea') "><xsl:text>EA</xsl:text></xsl:when>
+			<xsl:when test="contains($vsGivenValue,'pf') "><xsl:text>PF</xsl:text></xsl:when>
+			<xsl:when test="contains($vsGivenValue,'pr') "><xsl:text>PR</xsl:text></xsl:when>
+			<xsl:when test="contains($vsGivenValue,'hur') "><xsl:text>HUR</xsl:text></xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="$vsGivenValue"/>
 			</xsl:otherwise>
