@@ -59,11 +59,13 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from ILD/SPRO(1).
 		<xsl:variable name="sTotalMeasureIndicator" select="translate(../Measure/TotalMeasureIndicator,' ','')"/>
 		<InvoicedQuantity>
 			<!-- UnitOfMeasure -->
-			<xsl:attribute name="UnitOfMeasure">
-				<xsl:call-template name="sConvertUOMForInternal">
-					<xsl:with-param name="vsGivenValue" select="$sTotalMeasureIndicator"/>
-				</xsl:call-template>
-			</xsl:attribute>
+			<xsl:if test="$sTotalMeasureIndicator !='' ">
+				<xsl:attribute name="UnitOfMeasure">
+					<xsl:call-template name="sConvertUOMForInternal">
+						<xsl:with-param name="vsGivenValue" select="$sTotalMeasureIndicator"/>
+					</xsl:call-template>
+				</xsl:attribute>
+			</xsl:if>
 			<!-- actual value -->
 			<xsl:choose>
 				<xsl:when test="$sUnitOfMeasure">
@@ -332,6 +334,7 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from ILD/SPRO(1).
 		</xsl:choose>
 	
 	</xsl:template>
+
 
 	
 	<msxsl:script language="JScript" implements-prefix="jscript"><![CDATA[ 
