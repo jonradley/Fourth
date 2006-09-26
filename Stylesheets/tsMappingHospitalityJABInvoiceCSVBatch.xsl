@@ -18,6 +18,12 @@
 		</xsl:copy>
 	</xsl:template>
 	
+	<xsl:template match="VATCode">
+		<VATCode>
+			<xsl:value-of select="substring(.,1,1)"/>
+		</VATCode>
+	</xsl:template>
+	
 	<xsl:template match="InvoiceHeader">
 		<!-- Init our line number counter -->
 		<xsl:variable name="dummyVar" select="vbscript:resetLineNumber()"/>
