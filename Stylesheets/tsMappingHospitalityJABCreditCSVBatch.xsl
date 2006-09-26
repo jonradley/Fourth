@@ -43,6 +43,12 @@
 		</xsl:copy>
 	</xsl:template>
 	
+	<xsl:template match="VATCode">
+		<VATCode>
+			<xsl:value-of select="substring(.,1,1)"/>
+		</VATCode>
+	</xsl:template>
+	
 	<xsl:template match="CreditNoteLine/DeliveryNoteReferences">
 		<xsl:variable name="DeliveryNoteDate" select="string(./DeliveryNoteDate)"/>
 		<xsl:copy>
