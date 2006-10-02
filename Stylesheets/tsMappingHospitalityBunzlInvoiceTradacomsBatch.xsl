@@ -3,12 +3,12 @@
 **********************************************************************
 Alterations
 **********************************************************************
-Name		| Date			| Change
+Name					| Date				| Change
 **********************************************************************
-S Jefford	| 22/08/2005	| GTIN field now sourced from ILD/SPRO(1).
-			|				| ILD/CRLI now stored in BuyersProductCode
+S Jefford			| 22/08/2005		| GTIN field now sourced from ILD/SPRO(1).
+						|						| ILD/CRLI now stored in BuyersProductCode
 **********************************************************************
-			|				|
+02/10/2006		|	Nigel Emsen	|	Ready for delivery
 **********************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
