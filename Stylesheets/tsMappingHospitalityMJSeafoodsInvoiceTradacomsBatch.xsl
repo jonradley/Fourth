@@ -57,6 +57,14 @@ N Emsen		|	27/09/2006	|	Case 393 - Delivery to live
 		</xsl:copy>
 	</xsl:template>
 	
+	<!-- strip surplus chars from VATreg tag -->
+	<xsl:template match="//VATRegNo">
+		<VATRegNo>
+			<xsl:variable name="sValueStrip1" select="translate(.,' ','')"/>
+			<xsl:variable name="sValueStrip2" select="translate($sValueStrip1,':','')"/>
+			<xsl:value-of select="$sValueStrip2"/>
+		</VATRegNo>
+	</xsl:template>
 	
 	<!-- INVOIC-ILD-QTYI (InvoiceLine/InvoicedQuantity) needs to be multiplied by -1 if (InvoiceLine/ProductID/BuyersProductCode) is NOT blank -->
 	<xsl:template match="InvoiceLine/InvoicedQuantity">
@@ -291,17 +299,18 @@ N Emsen		|	27/09/2006	|	Case 393 - Delivery to live
 	<!-- strips SendersBranchReference to first char. MJ Seafood depots are coded to the first character of the Suppliers Account Code. Therefore we can identify the depot from account code. -->
 	<xsl:template match="//SendersBranchReference">
 		<xsl:variable name="sSBRValue" select="translate(.,' ','')"/>
+		<xsl:variable name="sPLAccountCode" select="//InvoiceLine[1]/PurchaseOrderReferences/TradeAgreement/ContractReference"/>
 		<SendersBranchReference>
 			<!-- check if not a PL account user -->
-			<xsl:variable name="sPLAccountCode">
+			<xsl:variable name="sPLAccountCodeReturn">
 				<xsl:call-template name="msIsPLAccount">
-					<xsl:with-param name="sValue" select="//InvoiceLine[1]/PurchaseOrderReferences/TradeAgreement/ContractReference"/>
+					<xsl:with-param name="sValue" select="$sPLAccountCode"/>
 				</xsl:call-template>
 			</xsl:variable>
 			<!-- compare -->
 			<xsl:choose>
 				<!-- IS not PL Account user -->
-				<xsl:when test="string($sPLAccountCode) != 'TRUE' ">
+				<xsl:when test="string($sPLAccountCodeReturn) = 'NOT' ">
 					<xsl:value-of select="substring($sSBRValue,1,1)"/>
 				</xsl:when>
 				<!-- Is a PL user -->				
