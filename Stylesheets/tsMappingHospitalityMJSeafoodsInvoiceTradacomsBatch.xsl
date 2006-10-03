@@ -13,6 +13,10 @@ N Emsen		|	27/09/2006	|	Case 393 - Delivery to live
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt"  xmlns:vbscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
+	<!-- INCLUDE: PL account lookup table. As a NONE MJ Seafood PL Account user/memberid is adopted, add a record to the lookup
+			table and re-deliver to live. -->
+	<xsl:include href="tsMappingHospMJSeafoodsPLAccountLookupFunctions.xsl"/>
+	
 	<!-- NOTE that these string literals are not only enclosed with double quotes, but have single quotes within also-->
 	<xsl:variable name="FileHeaderSegment" select="'INVFIL'"/>
 	<xsl:variable name="DocumentSegment" select="'INVOIC'"/>
@@ -286,21 +290,25 @@ N Emsen		|	27/09/2006	|	Case 393 - Delivery to live
 	
 	<!-- strips SendersBranchReference to first char. MJ Seafood depots are coded to the first character of the Suppliers Account Code. Therefore we can identify the depot from account code. -->
 	<xsl:template match="//SendersBranchReference">
-		<xsl:variable name="sValue" select="translate(.,' ','')"/>
+		<xsl:variable name="sSBRValue" select="translate(.,' ','')"/>
 		<SendersBranchReference>
 			<!-- check if not a PL account user -->
-			<xsl:variable name="sPLAccountCode" select="//InvoiceLine[1]/PurchaseOrderReferences/TradeAgreement/ContractReference"/>
+			<xsl:variable name="sPLAccountCode">
+				<xsl:call-template name="msIsPLAccount">
+					<xsl:with-param name="sValue" select="//InvoiceLine[1]/PurchaseOrderReferences/TradeAgreement/ContractReference"/>
+				</xsl:call-template>
+			</xsl:variable>
+			<!-- compare -->
 			<xsl:choose>
-				<!-- IS a PL Account user -->
-				<xsl:when test="string($sPLAccountCode) != 'NOVUS LEISURE' and string($sPLAccountCode) !='' ">
-					<xsl:value-of select="$sPLAccountCode"/>
+				<!-- IS not PL Account user -->
+				<xsl:when test="string($sPLAccountCode) != 'TRUE' ">
+					<xsl:value-of select="substring($sSBRValue,1,1)"/>
 				</xsl:when>
-				<!-- NOT a PL user -->				
+				<!-- Is a PL user -->				
 				<xsl:otherwise>
-					<xsl:value-of select="substring($sValue,1,1)"/>					
+					<xsl:value-of select="$sPLAccountCode"/>			
 				</xsl:otherwise>
-			</xsl:choose>
-			
+			</xsl:choose>	
 		</SendersBranchReference>
 	</xsl:template>
 		
