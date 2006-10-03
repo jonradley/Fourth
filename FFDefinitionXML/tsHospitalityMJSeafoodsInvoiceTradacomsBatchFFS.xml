@@ -115,7 +115,9 @@ N Emsen		|	27/09/2006	|	Case 393: Delivery to live.
 							<!-- MANDATORY Sender’s code for recipient, MANDATORY, INVOIC – CLO – CLOC(2), You must provide this code.  It is your internal identifier for the company that is to receive the document.  It must match the code that you have entered on the trading relationship you have with the other company-->
 							<SendersCodeForRecipient RecordPos="CLO=" LPos="1" SFPos="2"/>
 							<!-- OPTIONAL Sender’s Branch Reference, MANDATORY, INVFIL – CDT – CIDN(2), Depending on your particular relationship with the company, you must provide this code.  It is your internal identifier for the “contract” that the receiving company belongs to.  It must match the code that you have provided to ABS on set-up -->
+							<!-- logic to check for a PL account in CDT 2:1 -->
 							<SendersBranchReference RecordPos="CLO=" LPos="1" SFPos="3"/>
+							
 						</TradeSimpleHeader>
 						<InvoiceHeader>
 							<BatchInformation>
@@ -188,6 +190,7 @@ N Emsen		|	27/09/2006	|	Case 393: Delivery to live.
 								<!-- MANDATORY Supplier VAT Number, MANDATORY, INVFIL – SDT – VATN, NB: To make this a legal invoice, you must provide this field. Your VAT number-->
 								<VATRegNo RecordPos="SDT=" LPos="4"/>
 							</InvoiceReferences>
+
 						</InvoiceHeader>
 						<InvoiceDetail>
 							<InvoiceLine>
@@ -197,6 +200,11 @@ N Emsen		|	27/09/2006	|	Case 393: Delivery to live.
 									<PurchaseOrderReference RecordPos="ILD=" LPos="27" SFPos="1"/>
 									<!-- LPos 2 OPTIONAL Purchase Order Date, OPTIONAL, INVOIC – ODD – ORNO(3), YYMMDD, Must be valid date, and should be set to the order date associated with the reference above -->
 									<PurchaseOrderDate RecordPos="ILD=" LPos="27" SFPos="3"/>
+									<!-- used to store the PL account detail, this is handled in the following stylesheet: Extract in style sheet using xpath
+									/Invoice/InvoiceDetail/InvoiceLine/PurchaseOrderReferences/TradeAgreement/ContractReference  -->
+									<TradeAgreement>
+										<ContractReference RecordPos="CDT=" LPos="2" SFPos="1"/>
+									</TradeAgreement>
 								</PurchaseOrderReferences>
 								<DeliveryNoteReferences>
 									<!-- LPos 3 OPTIONAL Delivery Note Reference, CONDITIONAL, INVOIC – ODD – DELN(1), The delivery note reference for the goods being invoiced -->
