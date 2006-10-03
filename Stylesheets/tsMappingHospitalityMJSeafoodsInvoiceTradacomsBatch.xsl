@@ -286,11 +286,23 @@ N Emsen		|	27/09/2006	|	Case 393 - Delivery to live
 		</InvoicedQuantity>
 	</xsl:template>
 	
-	<!-- strips SendersBranchReference to first char. MJ Seafood depots are coded to the first character of the Suppliers Account Code. Therefore we can identify the depot from accoutn code. -->
+	<!-- strips SendersBranchReference to first char. MJ Seafood depots are coded to the first character of the Suppliers Account Code. Therefore we can identify the depot from account code. -->
 	<xsl:template match="//SendersBranchReference">
 		<xsl:variable name="sValue" select="translate(.,' ','')"/>
 		<SendersBranchReference>
-			<xsl:value-of select="substring($sValue,1,1)"/>
+			<!-- check if not a PL account user -->
+			<xsl:variable name="sPLAccountCode" select="//InvoiceLine[1]/PurchaseOrderReferences/TradeAgreement/ContractReference"/>
+			<xsl:choose>
+				<!-- IS a PL Account user -->
+				<xsl:when test="string($sPLAccountCode) != 'NOVUS LEISURE' and string($sPLAccountCode) !='' ">
+					<xsl:value-of select="$sPLAccountCode"/>
+				</xsl:when>
+				<!-- NOT a PL user -->				
+				<xsl:otherwise>
+					<xsl:value-of select="substring($sValue,1,1)"/>					
+				</xsl:otherwise>
+			</xsl:choose>
+			
 		</SendersBranchReference>
 	</xsl:template>
 		
