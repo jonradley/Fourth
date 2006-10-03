@@ -11,7 +11,7 @@ S Jefford	| 22/08/2005		| GTIN field now sourced from ILD/SPRO(1).
 N Emsen		|	27/09/2006	|	Case 393 - Delivery to live
 **********************************************************************
 -->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt"  xmlns:vbscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
 	<!-- NOTE that these string literals are not only enclosed with double quotes, but have single quotes within also-->
 	<xsl:variable name="FileHeaderSegment" select="'INVFIL'"/>
@@ -195,7 +195,7 @@ N Emsen		|	27/09/2006	|	Case 393 - Delivery to live
 	INVOIC segments, which are only required at document level, under InvoiceHeader, so the following template does not copy those.
 	-->
 	<xsl:template match="BatchHeader/MHDSegment">
-		<xsl:if test="contains(jscript:toUpperCase(string(./MHDHeader)), $FileHeaderSegment)">
+		<xsl:if test="contains(vbscript:sConvertToUpperCase(string(./MHDHeader)), $FileHeaderSegment)">
 			<!--
 			Only action when this template match occurs on the first useful MHDSegment (which is *probably* the first MHDSegment to be found). 
 			Once this tag is found, all other useful MHDSegment tags should follow as immediate siblings in the output, 
@@ -207,10 +207,10 @@ N Emsen		|	27/09/2006	|	Case 393 - Delivery to live
 			<!-- ... and ensure all the other useful MHDSegments follow on immediatley -->
 			<xsl:for-each select="../MHDSegment">
 				<xsl:choose>
-					<xsl:when test="contains(jscript:toUpperCase(string(./MHDHeader)), $FileTrailerSegment)">
+					<xsl:when test="contains(vbscript:sConvertToUpperCase(string(./MHDHeader)), $FileTrailerSegment)">
 						<xsl:copy-of select="."/>
 					</xsl:when>
-					<xsl:when test="contains(jscript:toUpperCase(string(./MHDHeader)), $VATTrailerSegment)">
+					<xsl:when test="contains(vbscript:sConvertToUpperCase(string(./MHDHeader)), $VATTrailerSegment)">
 						<xsl:copy-of select="."/>
 					</xsl:when>
 				</xsl:choose>
@@ -223,7 +223,7 @@ N Emsen		|	27/09/2006	|	Case 393 - Delivery to live
 		<!-- Get a node list of all the MHDSegment nodes under the BatchHeader tag-->
 		<xsl:variable name="MHDSegmentNodeList" select="/Batch/BatchHeader/MHDSegment"/>
 		<!-- Filter this node list to exclude any which do not have MHDHeader tag set to INVOIC -->
-		<xsl:variable name="DocumentSegmentNodeList" select="$MHDSegmentNodeList[contains(jscript:toUpperCase(string(MHDHeader)), $DocumentSegment)]"/>
+		<xsl:variable name="DocumentSegmentNodeList" select="$MHDSegmentNodeList[contains(vbscript:sConvertToUpperCase(string(MHDHeader)), $DocumentSegment)]"/>
 		<xsl:copy>
 			<!-- Copy the Nth instance of an INVOIC MHDSegment tag to this, the Nth Invoice header tag-->
 			<xsl:copy-of select="$DocumentSegmentNodeList[$BatchDocumentIndex]"/>
@@ -268,9 +268,7 @@ N Emsen		|	27/09/2006	|	Case 393 - Delivery to live
 			<!-- UnitOfMeasure -->
 			<xsl:if test="$sTotalMeasureIndicator !='' ">
 				<xsl:attribute name="UnitOfMeasure">
-					<xsl:call-template name="sConvertUOMForInternal">
-						<xsl:with-param name="vsGivenValue" select="$sTotalMeasureIndicator"/>
-					</xsl:call-template>
+					<xsl:value-of select="vbscript:sConvertPackSize($sTotalMeasureIndicator)"/>
 				</xsl:attribute>
 			</xsl:if>
 			<!-- actual value -->
@@ -322,74 +320,44 @@ N Emsen		|	27/09/2006	|	Case 393 - Delivery to live
 		</xsl:if>
 	</xsl:template>
 	
-	<!-- Reformatting of the  Purchase Order Date  -->
-	<!--
-	<xsl:template match="//PurchaseOrderDate">
-		<xsl:variable name="sPORefDate" select="translate(.,' ','')"/>
-		<PurchaseOrderDate>
-			<xsl:value-of select="concat('20',substring($sPORefDate,1,2),'-',substring($sPORefDate,3,2),'-',substring($sPORefDate,5,2))"/>
-		</PurchaseOrderDate>
-	</xsl:template>
-	-->
-	
-	<!-- 
-		Template to convert UOM's into internal values
-		
-		Values from Invoice Schema
-		
-			<xsd:enumeration value="CS"/>
-			<xsd:enumeration value="GRM"/>
-			<xsd:enumeration value="KGM"/>
-			<xsd:enumeration value="PND"/>
-			<xsd:enumeration value="ONZ"/>
-			<xsd:enumeration value="GLI"/>
-			<xsd:enumeration value="LTR"/>
-			<xsd:enumeration value="OZI"/>
-			<xsd:enumeration value="PTI"/>
-			<xsd:enumeration value="PTN"/>
-			<xsd:enumeration value="001"/>
-			<xsd:enumeration value="DZN"/>
-			<xsd:enumeration value="EA"/>
-			<xsd:enumeration value="PF"/>
-			<xsd:enumeration value="PR"/>
-			<xsd:enumeration value="HUR"/>
-	-->
+	<!-- VBScript Functions -->
+	<msxsl:script language="VBScript" implements-prefix="vbscript"><![CDATA[ 
 
-	<xsl:template name="sConvertUOMForInternal">
-		<xsl:param name="vsGivenValue" select="vsGivenValue"/>
-			
-		<xsl:choose>
-			<xsl:when test="contains($vsGivenValue,'kg') "><xsl:text>KGM</xsl:text></xsl:when>
-			<xsl:when test="contains($vsGivenValue,'Bx') "><xsl:text>CS</xsl:text></xsl:when>
-			<xsl:when test="contains($vsGivenValue,'cs') "><xsl:text>CS</xsl:text></xsl:when>
-			<xsl:when test="contains($vsGivenValue,'pkt') "><xsl:text>CS</xsl:text></xsl:when>
-			<xsl:when test="contains($vsGivenValue,'grm') "><xsl:text>GRM</xsl:text></xsl:when>
-			<xsl:when test="contains($vsGivenValue,'kg') "><xsl:text>KGM</xsl:text></xsl:when>
-			<xsl:when test="contains($vsGivenValue,'pnd') "><xsl:text>PND</xsl:text></xsl:when>
-			<xsl:when test="contains($vsGivenValue,'onz') "><xsl:text>ONZ</xsl:text></xsl:when>
-			<xsl:when test="contains($vsGivenValue,'gli') "><xsl:text>GLI</xsl:text></xsl:when>
-			<xsl:when test="contains($vsGivenValue,'ltr') "><xsl:text>LTR</xsl:text></xsl:when>
-			<xsl:when test="contains($vsGivenValue,'ozi') "><xsl:text>OZI</xsl:text></xsl:when>
-			<xsl:when test="contains($vsGivenValue,'pti') "><xsl:text>PTI</xsl:text></xsl:when>
-			<xsl:when test="contains($vsGivenValue,'ptn') "><xsl:text>PTN</xsl:text></xsl:when>
-			<xsl:when test="contains($vsGivenValue,'001') "><xsl:text>001</xsl:text></xsl:when>
-			<xsl:when test="contains($vsGivenValue,'dzn') "><xsl:text>DZN</xsl:text></xsl:when>
-			<xsl:when test="contains($vsGivenValue,'ea') "><xsl:text>EA</xsl:text></xsl:when>
-			<xsl:when test="contains($vsGivenValue,'pf') "><xsl:text>PF</xsl:text></xsl:when>
-			<xsl:when test="contains($vsGivenValue,'pr') "><xsl:text>PR</xsl:text></xsl:when>
-			<xsl:when test="contains($vsGivenValue,'hur') "><xsl:text>HUR</xsl:text></xsl:when>
-			<xsl:otherwise>
-				<xsl:value-of select="$vsGivenValue"/>
-			</xsl:otherwise>
-		</xsl:choose>
-	
-	</xsl:template>
-	
-	<msxsl:script language="JScript" implements-prefix="jscript"><![CDATA[ 
-		function toUpperCase(vs) {
-			return vs.toUpperCase();
-			//return vs;
-		}
+		' ------------------------------------------------------------	
+		' FUNCTION: to convert a given string into a UPPER case string
+		' ------------------------------------------------------------	
+		Function sConvertToUpperCase(vsValue)		
+			sConvertToUpperCase=UCase(vsValue)
+		End Function
+
+		'	------------------------------------------------------------------
+		' FUNCTION: to convert given UOM's into our Internal matched values.
+		'	------------------------------------------------------------------
+		Function sConvertPackSize(vsValue)
+			Dim sValue
+			sValue=LCase(vsValue)
+			' Set default to be given value and amend by comparision.
+			sConvertPackSize=sValue	
+				If InStrRev(sValue,"kg")>0 Then sConvertPackSize="KGM"					
+				If InStrRev(sValue,"cs")>0 Then sConvertPackSize="CS"
+				If InStrRev(sValue,"pkt")>0 Then sConvertPackSize="CS"
+				If InStrRev(sValue,"bx")>0 Then sConvertPackSize="CS"
+				If InStrRev(sValue,"grm")>0 Then sConvertPackSize="GRM"
+				If InStrRev(sValue,"pnd")>0 Then sConvertPackSize="PND"
+				If InStrRev(sValue,"onz")>0 Then sConvertPackSize="ONZ"
+				If InStrRev(sValue,"gli")>0 Then sConvertPackSize="GLI"
+				If InStrRev(sValue,"ltr")>0 Then sConvertPackSize="LTR"
+				If InStrRev(sValue,"ozi")>0 Then sConvertPackSize="OZI"
+				If InStrRev(sValue,"pti")>0 Then sConvertPackSize="PTI"
+				If InStrRev(sValue,"ptn")>0 Then sConvertPackSize="PTN"
+				If InStrRev(sValue,"001")>0 Then sConvertPackSize="001"
+				If InStrRev(sValue,"dzn")>0 Then sConvertPackSize="DZN"
+				If InStrRev(sValue,"ea")>0 Then sConvertPackSize="EA"
+				If InStrRev(sValue,"pf")>0 Then sConvertPackSize="PF"
+				If InStrRev(sValue,"pr")>0 Then sConvertPackSize="PR"
+				If InStrRev(sValue,"hur")>0 Then sConvertPackSize="HUR"
+		End Function
+
 	]]></msxsl:script>
 	
 </xsl:stylesheet>
