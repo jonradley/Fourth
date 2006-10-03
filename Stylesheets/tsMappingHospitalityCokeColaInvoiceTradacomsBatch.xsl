@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Dairy Farmers of Britain - Invoice mapper
+Coke Cola - Invoice mapper
 
-V1.0 	2nd October 2004 		Andy Trafford 		Created
+V1.0 	02/10/2006 		Nigel Emsen 		Created from DoFB mapper
 	
 {Information below supplied by DFOB}
 
@@ -470,6 +470,23 @@ The sum of the individual daily values will equal the content of the QTYI:1 (for
 		</xsl:copy>
 	</xsl:template>
 	<!-- END of MHDSegment HANDLER -->
+	
+	<!-- Check for pairing of Purchase Order Date & Purchase Order Reference -->
+	<xsl:template match="//PurchaseOrderReferences">
+		<xsl:variable name="sPORefDate" select="translate(PurchaseOrderDate,' ','')"/>
+		<xsl:variable name="sPORefReference" select="translate(PurchaseOrderReference,' ','')"/>
+		<xsl:if test="string($sPORefDate) !='' and string($sPORefReference) != '' ">
+			<PurchaseOrderReferences>
+				<PurchaseOrderReference>
+					<xsl:value-of select="$sPORefReference"/>
+				</PurchaseOrderReference>
+				<PurchaseOrderDate>
+					<xsl:value-of select="concat('20',substring($sPORefDate,1,2),'-',substring($sPORefDate,3,2),'-',substring($sPORefDate,5,2))"/>
+				</PurchaseOrderDate>
+			</PurchaseOrderReferences>
+		</xsl:if>
+	</xsl:template>
+	
 	
 	<msxsl:script language="VBScript" implements-prefix="vbscript"><![CDATA[ 
 		Function toUpperCase(vs)
