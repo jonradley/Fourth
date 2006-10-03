@@ -40,7 +40,7 @@ AUTHOR:
 		<record>
 			<value>NOVUS LEISURE</value>
 			<Description>Novus Leisure.</Description>
-			<boolean>TRUE</boolean>
+			<boolean>NOT</boolean>
 		</record>
 	</table>
 	<!-- end of table -->
