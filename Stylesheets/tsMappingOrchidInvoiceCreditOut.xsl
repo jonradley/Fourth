@@ -18,6 +18,8 @@
 ******************************************************************************************
  25/08/2006 | Lee Boyton | 285. Company code should appear on all line types.
 ******************************************************************************************
+ 06/10/2006 | Lee Boyton | 430. Changes required in the file format produced.
+******************************************************************************************
             |            |
 ******************************************************************************************
 -->
@@ -76,14 +78,31 @@
 			<xsl:text> </xsl:text>
 			<xsl:choose>
 				<xsl:when test="/Invoice/InvoiceHeader/Supplier/SuppliersName">
-					<xsl:value-of select="substring(translate(/Invoice/InvoiceHeader/Supplier/SuppliersName,',',''),1,16)"/>
-					<xsl:text> INV</xsl:text>
+					<xsl:value-of select="substring(translate(/Invoice/InvoiceHeader/Supplier/SuppliersName,',',''),1,19)"/>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:value-of select="substring(translate(/CreditNote/CreditNoteHeader/Supplier/SuppliersName,',',''),1,16)"/>
-					<xsl:text> CN</xsl:text>
+					<xsl:value-of select="substring(translate(/CreditNote/CreditNoteHeader/Supplier/SuppliersName,',',''),1,19)"/>
 				</xsl:otherwise>
 			</xsl:choose>
+		</xsl:variable>
+		
+		<!-- construct the value for the journal type field as it is used on multiple lines -->
+		<xsl:variable name="JournalType">
+			<xsl:choose>
+				<xsl:when test="/Invoice">
+					<xsl:text>EINV</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:text>ECRN</xsl:text>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+
+		<!-- construct the value for the Allocation indicator as it is used on multiple lines -->
+		<xsl:variable name="Allocation">
+			<xsl:if test="/CreditNote or /Invoice/InvoiceTrailer/CreditRequestTotalExclVAT">
+				<xsl:text>W</xsl:text>
+			</xsl:if>
 		</xsl:variable>
 		
 		<!--Purchase Lines-->		
@@ -98,12 +117,16 @@
 				<xsl:variable name="VATCode" select="VATCode"/>
 				
 					<!-- now output a summary line for the current Account Code and VAT Code combination -->					
-					<xsl:value-of select="$AccountCode"/>
+					<xsl:text>2;</xsl:text>
 					<xsl:text>,</xsl:text>
 					<xsl:value-of select="$DocumentDate"/>
 					<xsl:text>,</xsl:text>
+					<xsl:value-of select="$AccountCode"/>
+					<xsl:text>,</xsl:text>
 					<xsl:value-of select="$DocumentReference"/>
 					<xsl:text>,</xsl:text>
+					<xsl:value-of select="$JournalType"/>
+					<xsl:text>,</xsl:text>					
 					<xsl:value-of select="$Description"/>
 					<xsl:text>,</xsl:text>
 					<xsl:choose>
@@ -114,8 +137,6 @@
 							<xsl:value-of select="format-number(-1 * sum(//CreditNoteLine[LineExtraData/AccountCode = $AccountCode and VATCode = $VATCode]/LineValueExclVAT),'0.00')"/>
 						</xsl:otherwise>
 					</xsl:choose>
-					<xsl:text>,</xsl:text>
-					<xsl:text>GBP</xsl:text>
 					<xsl:text>,</xsl:text>
 					<xsl:value-of select="//HeaderExtraData/CompanyCode"/>
 					<xsl:text>,</xsl:text>
@@ -128,6 +149,8 @@
 					<xsl:value-of select="//HeaderExtraData/ZoneCode"/>
 					<xsl:text>,</xsl:text>
 					<xsl:value-of select="LineExtraData/BuyersVATCode"/>
+					<xsl:text>,</xsl:text>
+					<xsl:value-of select="$Allocation"/>					
 					<xsl:value-of select="$NewLine"/>
 				
 			</xsl:for-each>
@@ -135,12 +158,16 @@
 		
 		<!--Taxes Lines-->
 		<xsl:for-each select="//VATSubTotal[@VATRate != 0.00]">
-			<xsl:value-of select="//HeaderExtraData/TaxAccount"/>
+			<xsl:text>2;</xsl:text>
 			<xsl:text>,</xsl:text>
 			<xsl:value-of select="$DocumentDate"/>
 			<xsl:text>,</xsl:text>
+			<xsl:value-of select="//HeaderExtraData/TaxAccount"/>
+			<xsl:text>,</xsl:text>
 			<xsl:value-of select="$DocumentReference"/>
 			<xsl:text>,</xsl:text>
+			<xsl:value-of select="$JournalType"/>
+			<xsl:text>,</xsl:text>					
 			<xsl:value-of select="$Description"/>
 			<xsl:text>,</xsl:text>
 			<xsl:choose>
@@ -152,8 +179,6 @@
 				</xsl:otherwise>
 			</xsl:choose>
 			<xsl:text>,</xsl:text>
-			<xsl:text>GBP</xsl:text>
-			<xsl:text>,</xsl:text>
 			<xsl:value-of select="//HeaderExtraData/CompanyCode"/>			
 			<xsl:text>,</xsl:text>
 			<xsl:value-of select="$UnitCode"/>
@@ -162,16 +187,22 @@
 			<xsl:text>,</xsl:text>
 			<xsl:text>,</xsl:text>
 			<xsl:value-of select="VATTrailerExtraData/BuyersVATCode"/>			
+			<xsl:text>,</xsl:text>
+			<xsl:value-of select="$Allocation"/>					
 			<xsl:value-of select="$NewLine"/>
 		</xsl:for-each>
 		
 		<!--Supplier Line-->
-		<xsl:value-of select="TradeSimpleHeader/RecipientsCodeForSender"/>
+		<xsl:text>2;</xsl:text>
 		<xsl:text>,</xsl:text>
 		<xsl:value-of select="$DocumentDate"/>
 		<xsl:text>,</xsl:text>
+		<xsl:value-of select="TradeSimpleHeader/RecipientsCodeForSender"/>
+		<xsl:text>,</xsl:text>
 		<xsl:value-of select="$DocumentReference"/>
 		<xsl:text>,</xsl:text>
+		<xsl:value-of select="$JournalType"/>
+		<xsl:text>,</xsl:text>					
 		<xsl:value-of select="$Description"/>
 		<xsl:text>,</xsl:text>
 		<xsl:choose>
@@ -183,8 +214,6 @@
 			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:text>,</xsl:text>
-		<xsl:text>GBP</xsl:text>
-		<xsl:text>,</xsl:text>
 		<xsl:value-of select="//HeaderExtraData/CompanyCode"/>		
 		<xsl:text>,</xsl:text>
 		<xsl:value-of select="$UnitCode"/>
@@ -192,6 +221,8 @@
 		<xsl:text>,</xsl:text>
 		<xsl:text>,</xsl:text>
 		<xsl:text>,</xsl:text>
+		<xsl:text>,</xsl:text>
+		<xsl:value-of select="$Allocation"/>					
 		
 	</xsl:template>
 		
