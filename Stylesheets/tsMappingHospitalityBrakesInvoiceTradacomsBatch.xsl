@@ -98,12 +98,23 @@ N Emsen	|	27/09/2006	|	Case 393 - Delivery to live.
 	
 	<!-- SIMPLE CONVERSION IMPLICIT TO EXPLICIT 2 D.P -->
 	<!-- Add any XPath whose text node needs to be converted from implicit to explicit 2 D.P. -->
-	<xsl:template match="BatchHeader/DocumentTotalExclVAT |
+	<!-- xsl:template match="BatchHeader/DocumentTotalExclVAT |
 						BatchHeader/SettlementTotalExclVAT |
 						BatchHeader/VATAmount |
 						BatchHeader/DocumentTotalInclVAT |
 						BatchHeader/SettlementTotalInclVAT |
 						VATSubTotal/* |
+						InvoiceTrailer/DocumentTotalExclVAT |
+						InvoiceTrailer/SettlementDiscount |
+						InvoiceTrailer/SettlementTotalExclVAT |
+						InvoiceTrailer/VATAmount |
+						InvoiceTrailer/DocumentTotalInclVAT |
+						InvoiceTrailer/SettlementTotalInclVAT" -->
+		<xsl:template match="BatchHeader/DocumentTotalExclVAT |
+						BatchHeader/SettlementTotalExclVAT |
+						BatchHeader/VATAmount |
+						BatchHeader/DocumentTotalInclVAT |
+						BatchHeader/SettlementTotalInclVAT |
 						InvoiceTrailer/DocumentTotalExclVAT |
 						InvoiceTrailer/SettlementDiscount |
 						InvoiceTrailer/SettlementTotalExclVAT |
