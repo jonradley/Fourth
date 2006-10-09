@@ -223,6 +223,7 @@
 		<xsl:text>,</xsl:text>
 		<xsl:text>,</xsl:text>
 		<xsl:value-of select="$Allocation"/>					
+		<xsl:value-of select="$NewLine"/>
 		
 	</xsl:template>
 		
