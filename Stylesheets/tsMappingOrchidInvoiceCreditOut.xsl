@@ -100,7 +100,7 @@
 
 		<!-- construct the value for the Allocation indicator as it is used on multiple lines -->
 		<xsl:variable name="Allocation">
-			<xsl:if test="/CreditNote or /Invoice/InvoiceTrailer/CreditRequestTotalExclVAT">
+			<xsl:if test="/CreditNote or /Invoice/InvoiceTrailer/TrailerExtraData/CreditRequestTotalExclVAT">
 				<xsl:text>W</xsl:text>
 			</xsl:if>
 		</xsl:variable>
