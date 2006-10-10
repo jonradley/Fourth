@@ -28,6 +28,8 @@
  22/09/2005 | A Sheppard | H495. Converted to outbound mapping xsl.
 ****************************************************************************************** 
  18/01/2006 | A Sheppard | H548. Change Buyer to Buyer/Invoice To
+****************************************************************************************** 
+ 10/09/2006 | Lee Boyton | 452. Changed the style for 'Added' lines to differentiate between 'Accepted' lines.
 ******************************************************************************************
 -->
 
@@ -113,7 +115,7 @@
 				}
 				TR.Added
 				{
-				    BACKGROUND-COLOR: palegreen
+				    BACKGROUND-COLOR: plum
 				}
 				TR.Breakage
 				{
