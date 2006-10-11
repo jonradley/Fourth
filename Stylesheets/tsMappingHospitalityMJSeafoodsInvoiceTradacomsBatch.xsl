@@ -317,7 +317,8 @@ N Emsen		|	06/10/2006	|	Case 434 - Recommit to subversion.
 				</xsl:when>
 				<!-- Is a PL user -->				
 				<xsl:otherwise>
-					<xsl:value-of select="$sPLAccountCode"/>			
+					<!-- we need to concat the together the Branch single code from MJ's account code and the PL account code to create a valid branch reference. -->
+					<xsl:value-of select="contact(substring($sSBRValue,1,1),$sPLAccountCode)"/>			
 				</xsl:otherwise>
 			</xsl:choose>	
 		</SendersBranchReference>

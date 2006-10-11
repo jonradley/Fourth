@@ -247,15 +247,32 @@ N Emsen	| 06/10/2006	| Case 434: recommit.
 	</xsl:template>
 	<!-- END of MHDSegment HANDLER -->
 	
-	
-	
-	<!-- strips SendersBranchReference to first char -->
+	<!-- strips SendersBranchReference to first char. MJ Seafood depots are coded to the first character of the Suppliers Account Code. Therefore we can identify the depot from account code. -->
 	<xsl:template match="//SendersBranchReference">
-		<xsl:variable name="sValue" select="translate(.,' ','')"/>
+		<xsl:variable name="sSBRValue" select="translate(.,' ','')"/>
+		<xsl:variable name="sPLAccountCode" select="//InvoiceLine[1]/PurchaseOrderReferences/TradeAgreement/ContractReference"/>
 		<SendersBranchReference>
-			<xsl:value-of select="substring($sValue,1,1)"/>
+			<!-- check if not a PL account user -->
+			<xsl:variable name="sPLAccountCodeReturn">
+				<xsl:call-template name="msIsPLAccount">
+					<xsl:with-param name="sValue" select="$sPLAccountCode"/>
+				</xsl:call-template>
+			</xsl:variable>
+			<!-- compare -->
+			<xsl:choose>
+				<!-- IS not PL Account user -->
+				<xsl:when test="string($sPLAccountCodeReturn) = 'NOT' ">
+					<xsl:value-of select="substring($sSBRValue,1,1)"/>
+				</xsl:when>
+				<!-- Is a PL user -->				
+				<xsl:otherwise>
+					<!-- we need to concat the together the Branch single code from MJ's account code and the PL account code to create a valid branch reference. -->
+					<xsl:value-of select="contact(substring($sSBRValue,1,1),$sPLAccountCode)"/>			
+				</xsl:otherwise>
+			</xsl:choose>	
 		</SendersBranchReference>
 	</xsl:template>
+
 	
 	<!-- Check for full matching pair of purchase order references -->
 	<xsl:template match="//PurchaseOrderReferences">
