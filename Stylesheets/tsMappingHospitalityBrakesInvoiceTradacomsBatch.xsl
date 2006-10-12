@@ -3,12 +3,14 @@
 **********************************************************************
 Alterations
 **********************************************************************
-Name			| Date			| Change
+Name			| Date				| Change
 **********************************************************************
-S Jefford	| 22/08/2005	| GTIN field now sourced from ILD/SPRO(1).
-				|					| ILD/CRLI now stored in BuyersProductCode
+S Jefford	| 22/08/2005		| GTIN field now sourced from ILD/SPRO(1).
+				|						| ILD/CRLI now stored in BuyersProductCode
 **********************************************************************
-N Emsen	|	27/09/2006	|	Case 393 - Delivery to live.
+N Emsen		|	27/09/2006	|	Case 393 - Delivery to live.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+N Emsen		|	12/10/2006	|	Case 456: SubTotalValues to 2dp.
 **********************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
@@ -120,7 +122,8 @@ N Emsen	|	27/09/2006	|	Case 393 - Delivery to live.
 						InvoiceTrailer/SettlementTotalExclVAT |
 						InvoiceTrailer/VATAmount |
 						InvoiceTrailer/DocumentTotalInclVAT |
-						InvoiceTrailer/SettlementTotalInclVAT">
+						InvoiceTrailer/SettlementTotalInclVAT |
+						VATSubTotal/*">
 		<xsl:call-template name="copyCurrentNodeExplicit2DP"/>
 	</xsl:template>	
 	<!-- SIMPLE CONVERSION IMPLICIT TO EXPLICIT 3 D.P -->
