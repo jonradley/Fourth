@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Case 474: Adoption delivery -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:vbscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
 
@@ -34,12 +35,25 @@
 	
 	<xsl:template match="InvoiceLine/DeliveryNoteReferences">
 		<xsl:variable name="DeliveryNoteDate" select="string(./DeliveryNoteDate)"/>
-		<xsl:copy>
-			<xsl:apply-templates/>
+		<!-- DeliveryNoteReferences -->
+		<DeliveryNoteReferences>
+			<xsl:copy-of select="./DeliveryNoteReference"/>
+			<!-- delivery note date -->
+			<xsl:choose>
+				<xsl:when test="$DeliveryNoteDate != '' ">
+					<DeliveryNoteDate>
+						<xsl:value-of select="concat(substring($DeliveryNoteDate, 1, 4), '-', substring($DeliveryNoteDate, 5, 2), '-', substring($DeliveryNoteDate, 7, 2))"/>
+					</DeliveryNoteDate>
+				</xsl:when>
+				<xsl:otherwise>
+					<DeliveryNoteDate/>
+				</xsl:otherwise>
+			</xsl:choose>
+			<!-- despatch date -->
 			<xsl:element name="DespatchDate">
 				<xsl:value-of select="concat(substring($DeliveryNoteDate, 1, 4), '-', substring($DeliveryNoteDate, 5, 2), '-', substring($DeliveryNoteDate, 7, 2))"/>
 			</xsl:element>
-		</xsl:copy>
+		</DeliveryNoteReferences>
 	</xsl:template>
 	
 	<!-- GENERIC HANDLER to copy unchanged nodes, will be overridden by any node-specific templates below -->
@@ -101,19 +115,34 @@
 		</xsl:copy>
 	</xsl:template>
 	<!--END of DATE CONVERSIONS -->
+
 	
 	<msxsl:script language="VBScript" implements-prefix="vbscript"><![CDATA[ 
 		Dim lLineNumber
+		Dim sCurErrorMsg
 		
+		'
+		Function sSetCurErrorMsg(sDelRef)
+			sCurErrorMsg=sCurErrorMsg & sDelRef
+		End Function		
+		
+		'
+		Function sGetCurErrorMsg()
+			'sGetCurErrorMsg=sCurErrorMsg
+		End Function		
+		
+		'
 		Function resetLineNumber()
 			lLineNumber = 1
 			resetLineNumber = 1
 		End Function
 		
+		'
 		Function getLineNumber()
 			getLineNumber = lLineNumber
 			lLineNumber = lLineNumber + 1
 		End Function
+		
 ]]></msxsl:script>
 
 
