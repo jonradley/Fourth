@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 ******************************************************************************************
- $Header: $
  Overview
 
 Maps internal invoices and credits into a csv format for Urbium.  The csv files
@@ -18,6 +17,8 @@ will be concatenated by a subsequent processor.
  05/09/2005 	| Lee Boyton	| H488. The Bar (unit) code is the buyer's branch reference.
 ******************************************************************************************
  06/09/2005 	| Lee Boyton	| H488. Fix to Credit notes incorrectly outputing invoice details.
+******************************************************************************************
+ 23/10/2006 	| Lee Boyton	| 483. (NOV001) Change to the Journal Type column value.
 ******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 	
@@ -56,7 +57,7 @@ will be concatenated by a subsequent processor.
 				<xsl:text>,</xsl:text>
 				<xsl:value-of select="format-number(sum(//InvoiceLine[LineExtraData/AccountCode = $AccountCode and VATCode = $VATCode]/LineValueExclVAT),'0.00')"/>
 				<xsl:text>,</xsl:text>
-				<xsl:text>PI</xsl:text>
+				<xsl:text>PIZ</xsl:text>
 				<xsl:text>,</xsl:text>
 				<xsl:text>D</xsl:text>
 				<xsl:text>,</xsl:text>
@@ -85,7 +86,7 @@ will be concatenated by a subsequent processor.
 			<xsl:text>,</xsl:text>
 			<xsl:value-of select="VATAmountAtRate"/>
 			<xsl:text>,</xsl:text>
-			<xsl:text>PI</xsl:text>
+			<xsl:text>PIZ</xsl:text>
 			<xsl:text>,</xsl:text>
 			<xsl:text>D</xsl:text>
 			<xsl:text>,</xsl:text>
@@ -108,7 +109,7 @@ will be concatenated by a subsequent processor.
 		<xsl:text>,</xsl:text>
 		<xsl:value-of select="/Invoice/InvoiceTrailer/DocumentTotalInclVAT"/>
 		<xsl:text>,</xsl:text>
-		<xsl:text>PI</xsl:text>
+		<xsl:text>PIZ</xsl:text>
 		<xsl:text>,</xsl:text>
 		<xsl:text>C</xsl:text>
 		<xsl:text>,</xsl:text>
@@ -145,7 +146,7 @@ will be concatenated by a subsequent processor.
 				<xsl:text>,</xsl:text>
 				<xsl:value-of select="format-number(sum(//CreditNoteLine[LineExtraData/AccountCode = $AccountCode and VATCode = $VATCode]/LineValueExclVAT),'0.00')"/>
 				<xsl:text>,</xsl:text>
-				<xsl:text>PC</xsl:text>
+				<xsl:text>PCZ</xsl:text>
 				<xsl:text>,</xsl:text>
 				<xsl:text>C</xsl:text>
 				<xsl:text>,</xsl:text>
@@ -174,7 +175,7 @@ will be concatenated by a subsequent processor.
 			<xsl:text>,</xsl:text>
 			<xsl:value-of select="VATAmountAtRate"/>
 			<xsl:text>,</xsl:text>
-			<xsl:text>PC</xsl:text>
+			<xsl:text>PCZ</xsl:text>
 			<xsl:text>,</xsl:text>
 			<xsl:text>C</xsl:text>
 			<xsl:text>,</xsl:text>
@@ -197,7 +198,7 @@ will be concatenated by a subsequent processor.
 		<xsl:text>,</xsl:text>
 		<xsl:value-of select="/CreditNote/CreditNoteTrailer/DocumentTotalInclVAT"/>
 		<xsl:text>,</xsl:text>
-		<xsl:text>PC</xsl:text>
+		<xsl:text>PCZ</xsl:text>
 		<xsl:text>,</xsl:text>
 		<xsl:text>D</xsl:text>
 		<xsl:text>,</xsl:text>
