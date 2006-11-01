@@ -57,6 +57,7 @@
 						<TradeSimpleHeader>
 							<!-- JAB will use Buyers Unit Code -->
 							<SendersCodeForRecipient RecordPos="H" LPos="2"/>
+							<SendersBranchReference RecordPos="I" LPos="3"/>
 							<TestFlag RecordPos="I" LPos="3"/>
 						</TradeSimpleHeader>
 						<InvoiceHeader>
