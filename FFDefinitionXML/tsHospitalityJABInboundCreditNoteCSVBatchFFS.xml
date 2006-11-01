@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Case 474: Adoption delivery -->
+<!-- Case 513: Removal fo SCFR out of the batch header -->
 <ffsFlatFileSchema>
 	<ffsSettings>
 		<ffsRecordPositionType>named</ffsRecordPositionType>
@@ -49,10 +50,6 @@
 	</ffsSettings>
 	<ffsRoot>
 		<Batch>
-						<TradeSimpleHeader>
-							<SendersCodeForRecipient RecordPos="H" LPos="2"/>
-							<TestFlag RecordPos="C" LPos="3"/>
-						</TradeSimpleHeader>
 			<BatchDocuments>
 				<BatchDocument>
 					<CreditNote>
