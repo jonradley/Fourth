@@ -11,6 +11,10 @@ S Jefford	| 22/08/2005		| GTIN field now sourced from ILD/SPRO(1).
 N Emsen		|	27/09/2006	|	Case 393 - Delivery to live
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 N Emsen		|	06/10/2006	|	Case 434 - Recommit to subversion.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+N Emsen		|	02/11/2006	|	Case 454.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 **********************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt"  xmlns:vbscript="http://abs-Ltd.com">
@@ -318,7 +322,7 @@ N Emsen		|	06/10/2006	|	Case 434 - Recommit to subversion.
 				<!-- Is a PL user -->				
 				<xsl:otherwise>
 					<!-- we need to concat the together the Branch single code from MJ's account code and the PL account code to create a valid branch reference. -->
-					<xsl:value-of select="contact(substring($sSBRValue,1,1),$sPLAccountCode)"/>			
+					<xsl:value-of select="concat(substring($sSBRValue,1,1),$sPLAccountCode)"/>			
 				</xsl:otherwise>
 			</xsl:choose>	
 		</SendersBranchReference>
