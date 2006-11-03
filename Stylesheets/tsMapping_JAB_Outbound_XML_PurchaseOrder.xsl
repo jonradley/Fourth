@@ -209,6 +209,39 @@
 								<xsl:value-of select="ProductID/SuppliersProductCode"/>
 							</AlternateCode>
 						</xsl:if>
+						
+						<!-- None standard OFSCI tags, added to provide additional product information to the supplier. -->
+						<AdditionalInformation>
+							
+							<!-- product description -->
+							<xsl:if test="string(ProductDescription) != '' ">
+								<ProductDescription>
+									<xsl:value-of select="ProductDescription"/>
+								</ProductDescription>
+							</xsl:if>
+							
+							<!-- pack size -->
+							<xsl:if test="string(PackSize) !='' ">
+								<PackSize>
+									<xsl:value-of select="PackSize"/>
+								</PackSize>
+							</xsl:if>
+							
+							<!-- unit value -->
+							<xsl:if test="string(UnitValueExclVAT) != '' ">
+								<UnitValueExclVAT>
+									<xsl:value-of select="UnitValueExclVAT"/>
+								</UnitValueExclVAT>
+							</xsl:if>
+							
+							<!-- line value -->
+							<xsl:if test="string(LineValueExclVAT) != '' ">
+								<LineValueExclVAT>
+									<xsl:value-of select="LineValueExclVAT"/>
+								</LineValueExclVAT>
+							</xsl:if>
+																
+						</AdditionalInformation>
 					</ItemIdentification>
 				</OrderDetails>			
 			</xsl:for-each>
