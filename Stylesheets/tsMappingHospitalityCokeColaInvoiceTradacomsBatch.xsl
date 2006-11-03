@@ -45,6 +45,9 @@ Quantity/Weight Identifier		X(1)			21st character of GNAR:4
 As you can see, quantities/weights are presented identically as 10 complete units/units of measures followed by an implied decimal place followed by 10 decimal places  (the decimal places will contain zeroes for quantities).  Only the first 3 decimal places may contain actual data.  The remaining places are used to fill the fields to a size that allows the EDI files to be easily read.
 The Quantity/Weight Identifier tells you what the contents of the preceding fields represent.  It will have a value of “Q” for quantities or “W” for weights.
 The sum of the individual daily values will equal the content of the QTYI:1 (for quantities) or QTYI:2 (for weights) sub-element of the preceding ILD segment.
+
+03/11/2006 NE	Case 524: Delivery to live
+
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:vbscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
