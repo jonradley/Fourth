@@ -165,7 +165,7 @@ V1.0 	2nd October 2004 		Andy Trafford 		Created
 									<!-- NOT USED FOR GLN, actually used for DNA - GNAR at the document level by DFOB to store a weeks worth of delivery note numbers -->
 									<GLN RecordPos="DNA=" LPos="4"/>
 									<!--INVFIL-CLO-(1)2)-->
-									<SuppliersCode RecordPos="CLO=" LPos="1" SFPos="2"/>
+									<SuppliersCode RecordPos="CLO=" LPos="1" SFPos="3"/>
 								</ShipToLocationID>
 								<!-- OPTIONAL Delivery Location Name, DERIVE, INVOIC – CLO – CNAM, The “ship-to” name -->
 								<ShipToName RecordPos="CLO=" LPos="2"/>
