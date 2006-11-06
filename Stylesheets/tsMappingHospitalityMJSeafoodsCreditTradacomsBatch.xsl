@@ -8,15 +8,19 @@ Name		| Date			| Change
 S Jefford	| 22/08/2005		| GTIN field now sourced from CLD/SPRO(1).
 				|						| CLD/DRLI now stored in BuyersProductCode
 **********************************************************************
-N Emsen		| 06/10/2006		| Case 434: recommit.
+N Emsen		| 06/10/2006		| 	Case 434: recommit.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 N Emsen		|	02/11/2006	|	Case 454.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+N Emsen		|	06/11/2006	|	Case 527.
 **********************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
+	<!-- INCLUDE: PL account lookup table. As a NONE MJ Seafood PL Account user/memberid is adopted, add a record to the lookup
+			table and re-deliver to live. -->
+	<xsl:include href="tsMappingHospMJSeafoodsPLAccountLookupFunctions.xsl"/>
+	
 	<!-- NOTE that these string literals are not only enclosed with double quotes, but have single quotes within also-->
 	<xsl:variable name="FileHeaderSegment" select="'CREHDR'"/>
 	<xsl:variable name="DocumentSegment" select="'CREDIT'"/>
@@ -271,13 +275,12 @@ N Emsen		|	02/11/2006	|	Case 454.
 				<!-- Is a PL user -->				
 				<xsl:otherwise>
 					<!-- we need to concat the together the Branch single code from MJ's account code and the PL account code to create a valid branch reference. -->
-					<xsl:value-of select="contact(substring($sSBRValue,1,1),$sPLAccountCode)"/>			
+					<xsl:value-of select="concat(substring($sSBRValue,1,1),$sPLAccountCode)"/>			
 				</xsl:otherwise>
 			</xsl:choose>	
 		</SendersBranchReference>
 	</xsl:template>
-
-	
+		
 	<!-- Check for full matching pair of purchase order references -->
 	<xsl:template match="//PurchaseOrderReferences">
 		<xsl:variable name="sPORefDate" select="translate(PurchaseOrderReference,' ','')"/>
