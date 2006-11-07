@@ -231,16 +231,21 @@ N Emsen		| 14/09/2006	|	Purchase order date stipped if = blank
 	</xsl:template>
 	<!-- END of MHDSegment HANDLER -->
 	
-	<!-- Check for Purchase Order Date -->
-	<xsl:template match="//PurchaseOrderReferences/PurchaseOrderDate">
-		<xsl:variable name="sPORefDate" select="translate(.,' ','')"/>
-		<xsl:if test="string($sPORefDate) !='' ">
+	<!-- Check for pairing of Purchase Order Date & Purchase Order Reference -->
+	<xsl:template match="//PurchaseOrderReferences">
+		<xsl:variable name="sPORefDate" select="translate(PurchaseOrderDate,' ','')"/>
+		<xsl:variable name="sPORefReference" select="translate(PurchaseOrderReference,' ','')"/>
+		<xsl:if test="string($sPORefDate) !='' and string($sPORefReference) != '' ">
+			<PurchaseOrderReferences>
+				<PurchaseOrderReference>
+					<xsl:value-of select="$sPORefReference"/>
+				</PurchaseOrderReference>
 				<PurchaseOrderDate>
-					<xsl:value-of select="$sPORefDate"/>
+					<xsl:value-of select="concat('20',substring($sPORefDate,1,2),'-',substring($sPORefDate,3,2),'-',substring($sPORefDate,5,2))"/>
 				</PurchaseOrderDate>
+			</PurchaseOrderReferences>
 		</xsl:if>
-	</xsl:template>
-	
+	</xsl:template>	
 	
 	<msxsl:script language="JScript" implements-prefix="jscript"><![CDATA[ 
 		function toUpperCase(vs) {
