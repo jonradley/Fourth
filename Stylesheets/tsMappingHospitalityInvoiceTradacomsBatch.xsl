@@ -10,7 +10,7 @@ S Jefford	| 22/08/2005		| GTIN field now sourced from ILD/SPRO(1).
 **********************************************************************
 N Emsen		| 14/09/2006		|	Purchase order date stipped if = blank
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-N Emsen		|	08/11/2006	|	Case : Purchase order reference working.
+N Emsen		|	08/11/2006	|	Case 531: Purchase order reference working.
 **********************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
