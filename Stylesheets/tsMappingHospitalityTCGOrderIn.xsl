@@ -20,89 +20,95 @@
 
 	<xsl:template 	match="/OrderHeader">
 	
-		<PurchaseOrder>
-			
-			<TradeSimpleHeader>
-			
-				<SendersCodeForRecipient><xsl:value-of select="@SupplierCode"/></SendersCodeForRecipient>
-				<SendersBranchReference><xsl:value-of select="@LocationCode"/></SendersBranchReference>
-
-			</TradeSimpleHeader>
-			
-			
-			<PurchaseOrderHeader>
-				
-				<PurchaseOrderReferences>
-				
-					<PurchaseOrderReference><xsl:value-of select="@Reference"/></PurchaseOrderReference>
-					<PurchaseOrderDate><xsl:value-of select="@DateEntered"/></PurchaseOrderDate>
-
-				</PurchaseOrderReferences>
-				
-				<OrderedDeliveryDetails>
-
-					<DeliveryDate><xsl:value-of select="@DeliveryDate"/></DeliveryDate>
-
-					<SpecialDeliveryInstructions><xsl:value-of select="@Notes"/></SpecialDeliveryInstructions>
-					
-				</OrderedDeliveryDetails>
-
-			</PurchaseOrderHeader>
-			
-			
-			<PurchaseOrderDetail>
-			
-				<xsl:for-each select="/OrderHeader/OrderItem">
-			
-					<PurchaseOrderLine>
-						
-						<ProductID>
-							<SuppliersProductCode><xsl:value-of select="@SupplierPackageCode"/></SuppliersProductCode>
-						</ProductID>
-						
-						<ProductDescription><xsl:value-of select="@SupplierPackageDescription"/></ProductDescription>
-												
-						<OrderedQuantity>
-							<xsl:attribute name="UnitOfMeasure">
-								<xsl:choose>
-									<xsl:when test="@ProductType='[S]'">EA</xsl:when>
-									<xsl:when test="@ProductType='[P]'">CS</xsl:when>
-								</xsl:choose>
-							</xsl:attribute>
-								
-							<xsl:value-of select="@ItemQuantity"/>
-							
-						</OrderedQuantity>
-												
-						<PackSize>
-							<xsl:choose>
-								<xsl:when test="@ProductType='[S]'">Split</xsl:when>
-								<xsl:when test="@ProductType='[P]'">Pack</xsl:when>
-							</xsl:choose>
-						</PackSize>
-												
-						<UnitValueExclVAT><xsl:value-of select="@ItemUnitPrice"/></UnitValueExclVAT>
-						
-						<LineValueExclVAT><xsl:value-of select="@ItemTotalNet"/></LineValueExclVAT>
-
-					</PurchaseOrderLine>
-					
-				</xsl:for-each>
-					
-			</PurchaseOrderDetail>
-			
-			
-			<PurchaseOrderTrailer>
-			
-				<NumberOfLines><xsl:value-of select="count(/OrderHeader/OrderItem)"/></NumberOfLines>
-				
-				<TotalExclVAT><xsl:value-of select="@TotalNet"/></TotalExclVAT>
-				
-			</PurchaseOrderTrailer>
-			
-			
-		</PurchaseOrder>
+		<BatchRoot>
 	
+			<PurchaseOrder>
+				
+				<TradeSimpleHeader>
+				
+					<SendersCodeForRecipient><xsl:value-of select="@SupplierCode"/></SendersCodeForRecipient>
+					<SendersBranchReference><xsl:value-of select="@LocationCode"/></SendersBranchReference>
+	
+				</TradeSimpleHeader>
+				
+				
+				<PurchaseOrderHeader>
+					
+					<PurchaseOrderReferences>
+					
+						<PurchaseOrderReference><xsl:value-of select="@UserReference"/></PurchaseOrderReference>
+						<PurchaseOrderDate><xsl:value-of select="@DateEntered"/></PurchaseOrderDate>
+	
+					</PurchaseOrderReferences>
+					
+					<OrderedDeliveryDetails>
+	
+						<DeliveryDate><xsl:value-of select="@DeliveryDate"/></DeliveryDate>
+	
+						<xsl:for-each select="@Notes[.!='']">	
+							<SpecialDeliveryInstructions><xsl:value-of select="translate(.,'&#xD;&#xA;',' ')"/></SpecialDeliveryInstructions>	
+						</xsl:for-each>
+						
+					</OrderedDeliveryDetails>
+	
+				</PurchaseOrderHeader>
+				
+				
+				<PurchaseOrderDetail>
+				
+					<xsl:for-each select="/OrderHeader/OrderItem">
+				
+						<PurchaseOrderLine>
+							
+							<ProductID>
+								<SuppliersProductCode><xsl:value-of select="@SupplierProductCode"/></SuppliersProductCode>
+							</ProductID>
+							
+							<ProductDescription><xsl:value-of select="@SupplierPackageDescription"/></ProductDescription>
+													
+							<OrderedQuantity>
+								<xsl:attribute name="UnitOfMeasure">
+									<xsl:choose>
+										<xsl:when test="@ProductType='[S]'">EA</xsl:when>
+										<xsl:when test="@ProductType='[P]'">CS</xsl:when>
+									</xsl:choose>
+								</xsl:attribute>
+									
+								<xsl:value-of select="@ItemQuantity"/>
+								
+							</OrderedQuantity>
+													
+							<PackSize>
+								<xsl:choose>
+									<xsl:when test="@ProductType='[S]'">Split</xsl:when>
+									<xsl:when test="@ProductType='[P]'">Pack</xsl:when>
+								</xsl:choose>
+							</PackSize>
+													
+							<UnitValueExclVAT><xsl:value-of select="@ItemUnitPrice"/></UnitValueExclVAT>
+							
+							<LineValueExclVAT><xsl:value-of select="@ItemTotalNet"/></LineValueExclVAT>
+	
+						</PurchaseOrderLine>
+						
+					</xsl:for-each>
+						
+				</PurchaseOrderDetail>
+				
+				
+				<PurchaseOrderTrailer>
+				
+					<NumberOfLines><xsl:value-of select="count(/OrderHeader/OrderItem)"/></NumberOfLines>
+					
+					<TotalExclVAT><xsl:value-of select="@TotalNet"/></TotalExclVAT>
+					
+				</PurchaseOrderTrailer>
+				
+				
+			</PurchaseOrder>
+
+		</BatchRoot>
+		
 	</xsl:template>
 
 </xsl:stylesheet>
