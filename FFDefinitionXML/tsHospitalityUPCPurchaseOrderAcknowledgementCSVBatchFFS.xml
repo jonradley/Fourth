@@ -11,6 +11,8 @@ Name         | Date       | Change
 *********************************************************************
 Lee Boyton   | 22/09/2006 | Created
 **********************************************************************
+Lee Boyton   | 10/11/2006 | Our CSV format now seems to be PSV.
+**********************************************************************
              |            |
 *******************************************************************-->
 <ffsFlatFileSchema>
@@ -18,7 +20,7 @@ Lee Boyton   | 22/09/2006 | Created
 		<ffsRecordPositionType>sequenced</ffsRecordPositionType>
 		<ffsRecordSeparator>chr(13)chr(10)</ffsRecordSeparator>
 		<ffsFieldSeparators>
-			<ffsFieldSeparator>,</ffsFieldSeparator>
+			<ffsFieldSeparator>|</ffsFieldSeparator>
 		</ffsFieldSeparators>
 		<ffsSplitBatchRecord RecordLength="3" RecordPos="*"/>
 	</ffsSettings>
@@ -39,6 +41,6 @@ Lee Boyton   | 22/09/2006 | Created
 					</PurchaseOrderAcknowledgement>
 				</BatchDocument>
 			</BatchDocuments>
-		</Batch>	
+		</Batch>
 	</ffsRoot>
 </ffsFlatFileSchema>
