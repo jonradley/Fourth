@@ -51,7 +51,7 @@
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Buyer/BuyersName), 35)"/>
 			<xsl:text>+</xsl:text>
 			<!--Your mailbox reference-->
-			<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN"/>
+			<xsl:text>5013546009230</xsl:text>
 			<xsl:text>:</xsl:text>
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersName), 35)"/>
 			<xsl:text>+</xsl:text>
@@ -82,9 +82,19 @@
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:text>SDT=</xsl:text>
-			<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN"/>
+			<xsl:text>5013546009230</xsl:text>
 			<xsl:text>:</xsl:text>
-			<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/BuyersCode"/>
+			<!-- We need to add logic to check if there is a SendersCodeBranchReference map that value (This will be a PL account) if not map head office to head office trading relationship value. -->
+			<xsl:choose>
+				<!-- IS a PL account -->
+				<xsl:when test="string(/PurchaseOrder/TradeSimpleHeader/RecipientsBranchReference) !='' ">
+					<xsl:value-of select="/PurchaseOrder/TradeSimpleHeader/RecipientsBranchReference"/>
+				</xsl:when>
+				<!-- IS NOT a PL account -->
+				<xsl:otherwise>
+					<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
+				</xsl:otherwise>
+			</xsl:choose>
 			<xsl:text>+</xsl:text>
 			<!-- truncate to 40 SNAM = 3060 = AN..40-->
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersName),40)"/>
@@ -105,9 +115,10 @@
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:text>CDT=</xsl:text>
-			<!--xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/-->
+			<!-- CIDN (1) -->
 			<xsl:text>:</xsl:text>
-			<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
+			<!-- CIDN (2) -->
+			<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
 			<xsl:text>+</xsl:text>
 			<!-- truncate to 40 CNAM = 3060 = AN..40-->
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Buyer/BuyersName),40)"/>
@@ -345,6 +356,23 @@
 		</xsl:choose>		
 	
 	</xsl:template>
+	
+	
+<!-- ==============================================================
+		Function: to replace lower case with upcase and take the word
+						before the first space
+		============================================================== -->
+		<xsl:template name="msGetCIDN">
+			<xsl:param name="vsXPath"/>
+			
+			<xsl:variable name="sFirstWord" select="substring-before($vsXPath,' ')"/>
+			<xsl:variable name="sToUpperCase" select="translate($sFirstWord,'abcdefghijklmnopqrstuvxwyz','ABCDEFGHIJKLMNOPQRSTUVXWYZ')"/>
+			
+			<xsl:value-of select="$sToUpperCase"/>
+			
+		</xsl:template>
+
+
 
 <!--=======================================================================================
   Routine        : msWriteXPath()
@@ -371,6 +399,8 @@
 	</xsl:template>
 
 <msxsl:script language="VBScript" implements-prefix="vb"><![CDATA[
+
+
 
 '==========================================================================================
 ' Routine        : msFileGenerationDate()
