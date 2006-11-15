@@ -7,15 +7,18 @@
 ==========================================================================================
  Module History
 ==========================================================================================
- Version		| 
+ 	Version			| 
 ==========================================================================================
- Date      	| Name 					| Description of modification
-==========================================================================================
- 13/02/2006	| R Cambridge			| Created module
-==========================================================================================
- 13/03/2006	| Lee Boyton      	| H574. Turned into Tradacoms version 9.
-==========================================================================================
- 20/10/2006 	| Nigel Emsen  	|	created from standard mapper and CLO(2) activated.
+ 	Date      	| Name 					| Description of modification
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	13/02/2006	| R Cambridge		| Created module
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	13/03/2006	| Lee Boyton			| H574. Turned into Tradacoms version 9.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	20/10/2006 	| Nigel Emsen  	|	created from standard mapper and CLO(2) activated.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	15/11/2006	|	Nigel Emsen		|	Case: 476 - changes for interagtion with PL 
+						|							|	and none PL Accounts.
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -84,18 +87,18 @@
 		<xsl:text>SDT=</xsl:text>
 			<xsl:text>5013546009230</xsl:text>
 			<xsl:text>:</xsl:text>
-			<!-- We need to add logic to check if there is a SendersCodeBranchReference map that value (This will be a PL account) if not map head office to head office trading relationship value. -->
+			<!-- required to strip before the '/' on the Aramark orders as Bunzl require 'ARAMARK'. But Orchid does not have any '/'
+					in the trading relationship so we have to test for it first -->
 			<xsl:choose>
-				<!-- IS a PL account -->
-				<xsl:when test="string(/PurchaseOrder/TradeSimpleHeader/RecipientsBranchReference) !='' ">
-					<xsl:value-of select="/PurchaseOrder/TradeSimpleHeader/RecipientsBranchReference"/>
+				<!-- '/' IS present -->
+				<xsl:when test="string(substring-after(/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode,'/')) != '' ">
+					<xsl:value-of select="substring-after(/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode,'/')"/>
 				</xsl:when>
-				<!-- IS NOT a PL account -->
+				<!-- '/' IS NOT present -->
 				<xsl:otherwise>
 					<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
-				</xsl:otherwise>
-			</xsl:choose>
-			<xsl:text>+</xsl:text>
+				</xsl:otherwise>	
+			</xsl:choose>			<xsl:text>+</xsl:text>
 			<!-- truncate to 40 SNAM = 3060 = AN..40-->
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersName),40)"/>
 			<xsl:text>+</xsl:text>
@@ -118,7 +121,18 @@
 			<!-- CIDN (1) -->
 			<xsl:text>:</xsl:text>
 			<!-- CIDN (2) -->
-			<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
+			<!-- required to strip before the '/' on the Aramark orders as Bunzl require 'ARAMARK'. But Orchid does not have any '/'
+					in the trading relationship so we have to test for it first -->
+			<xsl:choose>
+				<!-- '/' IS present -->
+				<xsl:when test="string(substring-before(/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode,'/')) != '' ">
+					<xsl:value-of select="substring-before(/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode,'/')"/>
+				</xsl:when>
+				<!-- '/' IS NOT present -->
+				<xsl:otherwise>
+					<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
+				</xsl:otherwise>	
+			</xsl:choose>
 			<xsl:text>+</xsl:text>
 			<!-- truncate to 40 CNAM = 3060 = AN..40-->
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Buyer/BuyersName),40)"/>
