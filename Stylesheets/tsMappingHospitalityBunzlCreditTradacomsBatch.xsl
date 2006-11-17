@@ -6,8 +6,9 @@ Alterations
 Name		| Date			| Change
 **********************************************************************
 N Emsen	| 14/09/2006	| Not tested against any Brakes credit notes
-**********************************************************************
-			|				|
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+17/11/2006	|	Nigel Emsen	| Case: 476, changes required for AS2 Orders
+
 **********************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
@@ -280,7 +281,18 @@ N Emsen	| 14/09/2006	| Not tested against any Brakes credit notes
 			</PurchaseOrderReferences>
 		</xsl:if>
 	</xsl:template>	
-	
+			
+	<!-- template to concat sendersbranchreference to build new trading relationahip value -->
+	<xsl:template match="SendersBranchReference">
+		<SendersBranchReference>
+			<!-- Get the Buyer name, e.g. ARAMARK from CDT(1) and concat with
+					the current SendersBranchReference value, PL Account Number. -->
+			<xsl:variable name="sBuyerName" select="translate(//Buyer/BuyersLocationID/SuppliersCode,' ','')"/>
+			<xsl:variable name="sPLAccountNo" select="translate(//TradeSimpleHeader/SendersBranchReference,' ','')"/>
+			<xsl:value-of select="concat($sBuyerName,'/',$sPLAccountNo)"/>
+		</SendersBranchReference>
+	</xsl:template>
+
 	<msxsl:script language="JScript" implements-prefix="jscript"><![CDATA[ 
 		function toUpperCase(vs) {
 			return vs.toUpperCase();

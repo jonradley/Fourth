@@ -275,39 +275,18 @@ S Jefford			| 22/08/2005		| GTIN field now sourced from ILD/SPRO(1).
 			</PurchaseOrderReferences>
 		</xsl:if>
 	</xsl:template>
-	
-		<!-- Reformatting of the  Purchase Order Date  -->
-		<!--
-	<xsl:template match="//PurchaseOrderDate">
-		<xsl:variable name="sPORefDate" select="translate(.,' ','')"/>
-		<PurchaseOrderDate>
-			<xsl:value-of select="concat('20',substring($sPORefDate,1,2),'-',substring($sPORefDate,3,2),'-',substring($sPORefDate,5,2))"/>
-		</PurchaseOrderDate>
+			
+	<!-- template to concat sendersbranchreference to build new trading relationahip value -->
+	<xsl:template match="SendersBranchReference">
+		<SendersBranchReference>
+			<!-- Get the Buyer name, e.g. ARAMARK from CDT(1) and concat with
+					the current SendersBranchReference value, PL Account Number. -->
+			<xsl:variable name="sBuyerName" select="translate(//Buyer/BuyersLocationID/SuppliersCode,' ','')"/>
+			<xsl:variable name="sPLAccountNo" select="translate(//TradeSimpleHeader/SendersBranchReference,' ','')"/>
+			<xsl:value-of select="concat($sBuyerName,'/',$sPLAccountNo)"/>
+		</SendersBranchReference>
 	</xsl:template>
-		-->
-		<!-- 
-		Template to convert UOM's into internal values
-		
-		Values from Invoice Schema
-		
-			<xsd:enumeration value="CS"/>
-			<xsd:enumeration value="GRM"/>
-			<xsd:enumeration value="KGM"/>
-			<xsd:enumeration value="PND"/>
-			<xsd:enumeration value="ONZ"/>
-			<xsd:enumeration value="GLI"/>
-			<xsd:enumeration value="LTR"/>
-			<xsd:enumeration value="OZI"/>
-			<xsd:enumeration value="PTI"/>
-			<xsd:enumeration value="PTN"/>
-			<xsd:enumeration value="001"/>
-			<xsd:enumeration value="DZN"/>
-			<xsd:enumeration value="EA"/>
-			<xsd:enumeration value="PF"/>
-			<xsd:enumeration value="PR"/>
-			<xsd:enumeration value="HUR"/>
-	-->
-
+	
 	<xsl:template name="sConvertUOMForInternal">
 		<xsl:param name="vsGivenValue" select="vsGivenValue"/>
 		
