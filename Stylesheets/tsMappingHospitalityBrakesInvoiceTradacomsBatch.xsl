@@ -57,27 +57,27 @@ N Emsen		|	12/10/2006	|	Case 456: SubTotalValues to 2dp.
 		
 	<!-- Check if invoice QTY is given, if not use measured quantity taking the value from @UnitOfMeasure. Also we need to ensure this attribute is stripped to avoid a validation error later on. -->
 	<xsl:template match="//InvoicedQuantity" >
-		<xsl:variable name="sUnitOfMeasure" select="@UnitOfMeasure"/>
-		<xsl:variable name="sTotalMeasureIndicator" select="translate(../Measure/TotalMeasureIndicator,' ','')"/>
+		<xsl:variable name="sUnitOfMeasure" select="translate(@UnitOfMeasure,' ','')"/>
+		<xsl:variable name="sTotalMeasureIndicator" select="translate(../Measure/MeasureIndicator,' ','')"/>
+		<xsl:variable name="sQtyInvoiced" select="."/>
 		<InvoicedQuantity>
 			<!-- UnitOfMeasure -->
-			<xsl:if test="$sTotalMeasureIndicator !='' ">
-				<xsl:attribute name="UnitOfMeasure">
-					<xsl:call-template name="sConvertUOMForInternal">
-						<xsl:with-param name="vsGivenValue" select="$sTotalMeasureIndicator"/>
-					</xsl:call-template>
-				</xsl:attribute>
-			</xsl:if>
+			<xsl:attribute name="UnitOfMeasure">
+				<xsl:choose>
+					<xsl:when test="string($sTotalMeasureIndicator) !='' and string($sUnitOfMeasure)='' ">
+						<xsl:call-template name="sConvertUOMForInternal">
+							<xsl:with-param name="vsGivenValue" select="$sTotalMeasureIndicator"/>
+						</xsl:call-template>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:call-template name="sConvertUOMForInternal">
+							<xsl:with-param name="vsGivenValue" select="$sUnitOfMeasure"/>
+						</xsl:call-template>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:attribute>
 			<!-- actual value -->
-			<xsl:choose>
-				<xsl:when test="$sUnitOfMeasure">
-					<!-- the value comes with an implied 3dp thats needs to be maintained -->
-					<xsl:value-of select="format-number($sUnitOfMeasure div 1000,'#0.###')"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="."/>
-				</xsl:otherwise>
-			</xsl:choose>
+			<xsl:value-of select="$sQtyInvoiced"/>
 		</InvoicedQuantity>
 	</xsl:template>
 		
@@ -291,16 +291,7 @@ N Emsen		|	12/10/2006	|	Case 456: SubTotalValues to 2dp.
 		</xsl:if>
 	</xsl:template>
 	
-		<!-- Reformatting of the  Purchase Order Date  -->
-		<!--
-	<xsl:template match="//PurchaseOrderDate">
-		<xsl:variable name="sPORefDate" select="translate(.,' ','')"/>
-		<PurchaseOrderDate>
-			<xsl:value-of select="concat('20',substring($sPORefDate,1,2),'-',substring($sPORefDate,3,2),'-',substring($sPORefDate,5,2))"/>
-		</PurchaseOrderDate>
-	</xsl:template>
-		-->
-		<!-- 
+	<!-- 
 		Template to convert UOM's into internal values
 		
 		Values from Invoice Schema
@@ -324,32 +315,30 @@ N Emsen		|	12/10/2006	|	Case 456: SubTotalValues to 2dp.
 	-->
 
 	<xsl:template name="sConvertUOMForInternal">
-		<xsl:param name="vsGivenValue" select="translate(vsGivenValue,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'"/>
-		
+		<xsl:param name="vsGivenValue" select="vsGivenValue"/>
+		<xsl:variable name="vsLowerCaseGivenValue" select="translate($vsGivenValue,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"/>
 		<xsl:choose>
-			<xsl:when test="contains($vsGivenValue,'kg') "><xsl:text>KGM</xsl:text></xsl:when>
-			<xsl:when test="contains($vsGivenValue,'bx') "><xsl:text>CS</xsl:text></xsl:when>
-			<xsl:when test="contains($vsGivenValue,'cs') "><xsl:text>CS</xsl:text></xsl:when>
-			<xsl:when test="contains($vsGivenValue,'grm') "><xsl:text>GRM</xsl:text></xsl:when>
-			<xsl:when test="contains($vsGivenValue,'kg') "><xsl:text>KGM</xsl:text></xsl:when>
-			<xsl:when test="contains($vsGivenValue,'pnd') "><xsl:text>PND</xsl:text></xsl:when>
-			<xsl:when test="contains($vsGivenValue,'onz') "><xsl:text>ONZ</xsl:text></xsl:when>
-			<xsl:when test="contains($vsGivenValue,'gli') "><xsl:text>GLI</xsl:text></xsl:when>
-			<xsl:when test="contains($vsGivenValue,'ltr') "><xsl:text>LTR</xsl:text></xsl:when>
-			<xsl:when test="contains($vsGivenValue,'ozi') "><xsl:text>OZI</xsl:text></xsl:when>
-			<xsl:when test="contains($vsGivenValue,'pti') "><xsl:text>PTI</xsl:text></xsl:when>
-			<xsl:when test="contains($vsGivenValue,'ptn') "><xsl:text>PTN</xsl:text></xsl:when>
-			<xsl:when test="contains($vsGivenValue,'001') "><xsl:text>001</xsl:text></xsl:when>
-			<xsl:when test="contains($vsGivenValue,'dzn') "><xsl:text>DZN</xsl:text></xsl:when>
-			<xsl:when test="contains($vsGivenValue,'ea') "><xsl:text>EA</xsl:text></xsl:when>
-			<xsl:when test="contains($vsGivenValue,'pf') "><xsl:text>PF</xsl:text></xsl:when>
-			<xsl:when test="contains($vsGivenValue,'pr') "><xsl:text>PR</xsl:text></xsl:when>
-			<xsl:when test="contains($vsGivenValue,'hur') "><xsl:text>HUR</xsl:text></xsl:when>
+			<xsl:when test="contains($vsLowerCaseGivenValue,'kg') "><xsl:text>KGM</xsl:text></xsl:when>
+			<xsl:when test="contains($vsLowerCaseGivenValue,'bx') "><xsl:text>CS</xsl:text></xsl:when>
+			<xsl:when test="contains($vsLowerCaseGivenValue,'cs') "><xsl:text>CS</xsl:text></xsl:when>
+			<xsl:when test="contains($vsLowerCaseGivenValue,'grm') "><xsl:text>GRM</xsl:text></xsl:when>
+			<xsl:when test="contains($vsLowerCaseGivenValue,'pnd') "><xsl:text>PND</xsl:text></xsl:when>
+			<xsl:when test="contains($vsLowerCaseGivenValue,'onz') "><xsl:text>ONZ</xsl:text></xsl:when>
+			<xsl:when test="contains($vsLowerCaseGivenValue,'gli') "><xsl:text>GLI</xsl:text></xsl:when>
+			<xsl:when test="contains($vsLowerCaseGivenValue,'ltr') "><xsl:text>LTR</xsl:text></xsl:when>
+			<xsl:when test="contains($vsLowerCaseGivenValue,'ozi') "><xsl:text>OZI</xsl:text></xsl:when>
+			<xsl:when test="contains($vsLowerCaseGivenValue,'pti') "><xsl:text>PTI</xsl:text></xsl:when>
+			<xsl:when test="contains($vsLowerCaseGivenValue,'ptn') "><xsl:text>PTN</xsl:text></xsl:when>
+			<xsl:when test="contains($vsLowerCaseGivenValue,'001') "><xsl:text>001</xsl:text></xsl:when>
+			<xsl:when test="contains($vsLowerCaseGivenValue,'dzn') "><xsl:text>DZN</xsl:text></xsl:when>
+			<xsl:when test="contains($vsLowerCaseGivenValue,'ea') "><xsl:text>EA</xsl:text></xsl:when>
+			<xsl:when test="contains($vsLowerCaseGivenValue,'pf') "><xsl:text>PF</xsl:text></xsl:when>
+			<xsl:when test="contains($vsLowerCaseGivenValue,'pr') "><xsl:text>PR</xsl:text></xsl:when>
+			<xsl:when test="contains($vsLowerCaseGivenValue,'hur') "><xsl:text>HUR</xsl:text></xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="$vsGivenValue"/>
 			</xsl:otherwise>
 		</xsl:choose>
-	
 	</xsl:template>
 
 	
