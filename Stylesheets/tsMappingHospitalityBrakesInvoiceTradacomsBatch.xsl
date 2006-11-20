@@ -61,18 +61,30 @@ N Emsen		|	20/11/2006	|	Case 559: changes to UOM mapping raised
 	<!-- Check if invoice QTY is given, if not use measured quantity taking the value from @UnitOfMeasure. Also we need to ensure this attribute is stripped to avoid a validation error later on. -->
 	<xsl:template match="//InvoicedQuantity" >
 		<xsl:variable name="sUnitOfMeasure" select="translate(@UnitOfMeasure,' ','')"/>
+		<xsl:variable name="sTotalMeasureIndicator" select="translate(../Measure/TotalMeasureIndicator,' ','')"/>
+		<xsl:variable name="sTotalMeasure" select="translate(../Measure/TotalMeasure,' ','')"/>
 		<xsl:variable name="sQtyInvoiced" select="."/>
 		<InvoicedQuantity>
-			<!-- UnitOfMeasure -->
-			<xsl:if test="string($sUnitOfMeasure) != '' ">
+			<!-- UnitOfMeasure UOM given-->
+			<xsl:if test="string($sUnitOfMeasure) != '' and string($sTotalMeasureIndicator) ='' ">
 				<xsl:attribute name="UnitOfMeasure">
 					<xsl:call-template name="sConvertUOMForInternal">
 						<xsl:with-param name="vsGivenValue" select="$sUnitOfMeasure"/>
 					</xsl:call-template>
 				</xsl:attribute>
+				<!-- actual QTY Invoiced value -->
+				<xsl:value-of select="$sQtyInvoiced"/>
 			</xsl:if>
-			<!-- actual QTY Invoiced value -->
-			<xsl:value-of select="$sQtyInvoiced"/>
+			<!-- UnitOfMeasure is not given, but present in internal XPath /Invoice/InvoiceDetail/InvoiceLine/Measure/TotalMeasureIndicator -->
+			<xsl:if test="string($sTotalMeasureIndicator) != '' ">
+				<xsl:attribute name="UnitOfMeasure">
+					<xsl:call-template name="sConvertUOMForInternal">
+						<xsl:with-param name="vsGivenValue" select="$sTotalMeasureIndicator"/>
+					</xsl:call-template>
+				</xsl:attribute>
+				<!-- actual QTY Invoiced value -->
+				<xsl:value-of select="$sTotalMeasure"/>
+			</xsl:if>			
 		</InvoicedQuantity>
 	</xsl:template>
 		
