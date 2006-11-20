@@ -11,6 +11,9 @@ S Jefford	| 22/08/2005		| GTIN field now sourced from ILD/SPRO(1).
 N Emsen		|	27/09/2006	|	Case 393 - Delivery to live.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 N Emsen		|	12/10/2006	|	Case 456: SubTotalValues to 2dp.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+N Emsen		|	20/11/2006	|	Case 559: changes to UOM mapping raised
+				|						|	by Orchid testing.
 **********************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
@@ -58,25 +61,17 @@ N Emsen		|	12/10/2006	|	Case 456: SubTotalValues to 2dp.
 	<!-- Check if invoice QTY is given, if not use measured quantity taking the value from @UnitOfMeasure. Also we need to ensure this attribute is stripped to avoid a validation error later on. -->
 	<xsl:template match="//InvoicedQuantity" >
 		<xsl:variable name="sUnitOfMeasure" select="translate(@UnitOfMeasure,' ','')"/>
-		<xsl:variable name="sTotalMeasureIndicator" select="translate(../Measure/MeasureIndicator,' ','')"/>
 		<xsl:variable name="sQtyInvoiced" select="."/>
 		<InvoicedQuantity>
 			<!-- UnitOfMeasure -->
-			<xsl:attribute name="UnitOfMeasure">
-				<xsl:choose>
-					<xsl:when test="string($sTotalMeasureIndicator) !='' and string($sUnitOfMeasure)='' ">
-						<xsl:call-template name="sConvertUOMForInternal">
-							<xsl:with-param name="vsGivenValue" select="$sTotalMeasureIndicator"/>
-						</xsl:call-template>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:call-template name="sConvertUOMForInternal">
-							<xsl:with-param name="vsGivenValue" select="$sUnitOfMeasure"/>
-						</xsl:call-template>
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:attribute>
-			<!-- actual value -->
+			<xsl:if test="string($sUnitOfMeasure) != '' ">
+				<xsl:attribute name="UnitOfMeasure">
+					<xsl:call-template name="sConvertUOMForInternal">
+						<xsl:with-param name="vsGivenValue" select="$sUnitOfMeasure"/>
+					</xsl:call-template>
+				</xsl:attribute>
+			</xsl:if>
+			<!-- actual QTY Invoiced value -->
 			<xsl:value-of select="$sQtyInvoiced"/>
 		</InvoicedQuantity>
 	</xsl:template>
