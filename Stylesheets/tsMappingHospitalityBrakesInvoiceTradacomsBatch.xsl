@@ -324,11 +324,11 @@ N Emsen		|	12/10/2006	|	Case 456: SubTotalValues to 2dp.
 	-->
 
 	<xsl:template name="sConvertUOMForInternal">
-		<xsl:param name="vsGivenValue" select="vsGivenValue"/>
+		<xsl:param name="vsGivenValue" select="translate(vsGivenValue,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'"/>
 		
 		<xsl:choose>
 			<xsl:when test="contains($vsGivenValue,'kg') "><xsl:text>KGM</xsl:text></xsl:when>
-			<xsl:when test="contains($vsGivenValue,'Bx') "><xsl:text>CS</xsl:text></xsl:when>
+			<xsl:when test="contains($vsGivenValue,'bx') "><xsl:text>CS</xsl:text></xsl:when>
 			<xsl:when test="contains($vsGivenValue,'cs') "><xsl:text>CS</xsl:text></xsl:when>
 			<xsl:when test="contains($vsGivenValue,'grm') "><xsl:text>GRM</xsl:text></xsl:when>
 			<xsl:when test="contains($vsGivenValue,'kg') "><xsl:text>KGM</xsl:text></xsl:when>
