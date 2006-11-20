@@ -72,8 +72,6 @@ N Emsen		|	20/11/2006	|	Case 559: changes to UOM mapping raised
 						<xsl:with-param name="vsGivenValue" select="$sUnitOfMeasure"/>
 					</xsl:call-template>
 				</xsl:attribute>
-				<!-- actual QTY Invoiced value -->
-				<xsl:value-of select="$sQtyInvoiced"/>
 			</xsl:if>
 			<!-- UnitOfMeasure is not given, but present in internal XPath /Invoice/InvoiceDetail/InvoiceLine/Measure/TotalMeasureIndicator -->
 			<xsl:if test="string($sTotalMeasureIndicator) != '' ">
@@ -82,9 +80,16 @@ N Emsen		|	20/11/2006	|	Case 559: changes to UOM mapping raised
 						<xsl:with-param name="vsGivenValue" select="$sTotalMeasureIndicator"/>
 					</xsl:call-template>
 				</xsl:attribute>
-				<!-- actual QTY Invoiced value -->
-				<xsl:value-of select="$sTotalMeasure"/>
-			</xsl:if>			
+			</xsl:if>		
+			<!-- INV QTY -->
+			<xsl:choose>
+				<xsl:when test="string($sQtyInvoiced) != '' and string($sQtyInvoiced) != '0' ">
+					<xsl:value-of select="$sQtyInvoiced"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="$sTotalMeasure"/>
+				</xsl:otherwise>
+			</xsl:choose>		
 		</InvoicedQuantity>
 	</xsl:template>
 		
