@@ -60,24 +60,29 @@ N Emsen		|	20/11/2006	|	Case 559: changes to UOM mapping raised
 		
 	<!-- Check if invoice QTY is given, if not use measured quantity taking the value from @UnitOfMeasure. Also we need to ensure this attribute is stripped to avoid a validation error later on. -->
 	<xsl:template match="//InvoicedQuantity" >
+		<!-- Get values for conditional checking -->
 		<xsl:variable name="sUnitOfMeasure" select="translate(@UnitOfMeasure,' ','')"/>
 		<xsl:variable name="sTotalMeasureIndicator" select="translate(../Measure/TotalMeasureIndicator,' ','')"/>
-		<xsl:variable name="sQtyInvoiced3DP" select="format-number(. div 1000,'0.000')"/>
+		<xsl:variable name="sQtyInvoiced3DP" select="format-number(../Measure/TotalMeasure div 1000,'0.000')"/>
 		<xsl:variable name="sQtyInvoiced" select="."/>
 		<InvoicedQuantity>
 			<!-- UnitOfMeasure UOM given-->
-			<xsl:if test="string($sUnitOfMeasure) != '' and string($sTotalMeasureIndicator) = '' ">
-				<xsl:attribute name="UnitOfMeasure">
-					<xsl:call-template name="sConvertUOMForInternal">
-						<xsl:with-param name="vsGivenValue" select="$sUnitOfMeasure"/>
-					</xsl:call-template>
-				</xsl:attribute>
+			<xsl:if test="string($sTotalMeasureIndicator) = '' ">
+				<!-- UnitOfMeasure -->
+				<xsl:if test="string($sUnitOfMeasure) !='' ">
+					<xsl:attribute name="UnitOfMeasure">
+						<xsl:call-template name="sConvertUOMForInternal">
+							<xsl:with-param name="vsGivenValue" select="$sUnitOfMeasure"/>
+						</xsl:call-template>
+					</xsl:attribute>
+				</xsl:if>
 				<!-- INV QTY -->
 				<xsl:value-of select="$sQtyInvoiced"/>
 			</xsl:if>
 			<!-- If internal XPath /Invoice/InvoiceDetail/InvoiceLine/Measure/TotalMeasureIndicator is present, then this represents a
 					weighted item and the ../Measure/TotalMeasureIndicator and Invoiced QTY to 3DP needs to be used.  -->
-			<xsl:if test="string($sTotalMeasureIndicator) != ''">
+			<xsl:if test="string($sTotalMeasureIndicator) != '' ">
+				<!-- UnitOfMeasure -->
 				<xsl:attribute name="UnitOfMeasure">
 					<xsl:call-template name="sConvertUOMForInternal">
 						<xsl:with-param name="vsGivenValue" select="$sTotalMeasureIndicator"/>
