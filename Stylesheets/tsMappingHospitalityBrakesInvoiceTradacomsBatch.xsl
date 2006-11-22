@@ -62,34 +62,30 @@ N Emsen		|	20/11/2006	|	Case 559: changes to UOM mapping raised
 	<xsl:template match="//InvoicedQuantity" >
 		<xsl:variable name="sUnitOfMeasure" select="translate(@UnitOfMeasure,' ','')"/>
 		<xsl:variable name="sTotalMeasureIndicator" select="translate(../Measure/TotalMeasureIndicator,' ','')"/>
-		<xsl:variable name="sTotalMeasure" select="translate(../Measure/TotalMeasure,' ','')"/>
+		<xsl:variable name="sQtyInvoiced3DP" select="format-number(. div 1000,'0.000')"/>
 		<xsl:variable name="sQtyInvoiced" select="."/>
 		<InvoicedQuantity>
 			<!-- UnitOfMeasure UOM given-->
-			<xsl:if test="string($sUnitOfMeasure) != '' and string($sTotalMeasureIndicator) ='' ">
+			<xsl:if test="string($sUnitOfMeasure) != '' and string($sTotalMeasureIndicator) = '' ">
 				<xsl:attribute name="UnitOfMeasure">
 					<xsl:call-template name="sConvertUOMForInternal">
 						<xsl:with-param name="vsGivenValue" select="$sUnitOfMeasure"/>
 					</xsl:call-template>
 				</xsl:attribute>
+				<!-- INV QTY -->
+				<xsl:value-of select="$sQtyInvoiced"/>
 			</xsl:if>
-			<!-- UnitOfMeasure is not given, but present in internal XPath /Invoice/InvoiceDetail/InvoiceLine/Measure/TotalMeasureIndicator -->
-			<xsl:if test="string($sTotalMeasureIndicator) != '' ">
+			<!-- If internal XPath /Invoice/InvoiceDetail/InvoiceLine/Measure/TotalMeasureIndicator is present, then this represents a
+					weighted item and the ../Measure/TotalMeasureIndicator and Invoiced QTY to 3DP needs to be used.  -->
+			<xsl:if test="string($sTotalMeasureIndicator) != ''">
 				<xsl:attribute name="UnitOfMeasure">
 					<xsl:call-template name="sConvertUOMForInternal">
 						<xsl:with-param name="vsGivenValue" select="$sTotalMeasureIndicator"/>
 					</xsl:call-template>
 				</xsl:attribute>
+				<!-- INV QTY -->
+				<xsl:value-of select="$sQtyInvoiced3DP"/>
 			</xsl:if>		
-			<!-- INV QTY -->
-			<xsl:choose>
-				<xsl:when test="string($sQtyInvoiced) != '' and string($sQtyInvoiced) != '0' ">
-					<xsl:value-of select="$sQtyInvoiced"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="$sTotalMeasure"/>
-				</xsl:otherwise>
-			</xsl:choose>		
 		</InvoicedQuantity>
 	</xsl:template>
 		
@@ -112,18 +108,6 @@ N Emsen		|	20/11/2006	|	Case 559: changes to UOM mapping raised
 	
 	<!-- SIMPLE CONVERSION IMPLICIT TO EXPLICIT 2 D.P -->
 	<!-- Add any XPath whose text node needs to be converted from implicit to explicit 2 D.P. -->
-	<!-- xsl:template match="BatchHeader/DocumentTotalExclVAT |
-						BatchHeader/SettlementTotalExclVAT |
-						BatchHeader/VATAmount |
-						BatchHeader/DocumentTotalInclVAT |
-						BatchHeader/SettlementTotalInclVAT |
-						VATSubTotal/* |
-						InvoiceTrailer/DocumentTotalExclVAT |
-						InvoiceTrailer/SettlementDiscount |
-						InvoiceTrailer/SettlementTotalExclVAT |
-						InvoiceTrailer/VATAmount |
-						InvoiceTrailer/DocumentTotalInclVAT |
-						InvoiceTrailer/SettlementTotalInclVAT" -->
 		<xsl:template match="BatchHeader/DocumentTotalExclVAT |
 						BatchHeader/SettlementTotalExclVAT |
 						BatchHeader/VATAmount |
@@ -140,9 +124,7 @@ N Emsen		|	20/11/2006	|	Case 559: changes to UOM mapping raised
 	</xsl:template>	
 	<!-- SIMPLE CONVERSION IMPLICIT TO EXPLICIT 3 D.P -->
 	<!-- Add any XPath whose text node needs to be converted from implicit to explicit 3 D.P. -->
-	<xsl:template match="OrderingMeasure | 
-						TotalMeasure | 
-						InvoiceLine/VATRate">
+	<xsl:template match="OrderingMeasure | InvoiceLine/VATRate">
 		<xsl:call-template name="copyCurrentNodeExplicit3DP"/>
 	</xsl:template>
 	<!--Add any attribute XPath whose value needs to be converted from implicit 3 D.P to explicit 2 D.P. -->
