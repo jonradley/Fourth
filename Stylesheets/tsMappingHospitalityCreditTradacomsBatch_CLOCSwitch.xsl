@@ -69,9 +69,13 @@ R Cambridge| 27/10/2006	| 466 Set SCR to be value from CLOC2 (buyer's unit code)
 		<BuyersLocationID>
 			<SuppliersCode>
 				<xsl:choose>
-					<xsl:when test="string(../../../TradeSimpleHeader/RecipientsAddress/AddressLine1) != ''">
+					<xsl:when test="string(../../../TradeSimpleHeader/RecipientsAddress/AddressLine1) != '' and string(SuppliersCode) !=''">
 						<!-- CLOC(2) was populated, for backwards compatibility use the value from CDT-CIDN(1) (the buyer's ANA) -->
 						<xsl:value-of select="SuppliersCode"/>
+					</xsl:when>
+					<xsl:when test="string(../../../TradeSimpleHeader/RecipientsAddress/AddressLine1) != ''">					
+						<!-- CLOC(2) was populated, but only CDT-CIDN(2) is populated so use that -->
+						<xsl:value-of select="BuyersCode"/>
 					</xsl:when>
 					<xsl:otherwise>
 						<!-- CLOC(3) populates SCR, this is the sematically correct code so use the correct code for the buyer too (CDT-CIDN(2))-->

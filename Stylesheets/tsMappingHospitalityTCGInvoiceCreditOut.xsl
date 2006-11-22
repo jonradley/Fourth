@@ -38,7 +38,14 @@
 		</xsl:for-each>
 		<xsl:text>|</xsl:text>
 		
-		<xsl:value-of select="/*/TradeSimpleHeader/RecipientsCodeForSender"/>
+		<xsl:choose>
+			<xsl:when test="contains(/*/TradeSimpleHeader/RecipientsCodeForSender,'/')">
+				<xsl:value-of select="substring-before(/*/TradeSimpleHeader/RecipientsCodeForSender,'/')"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="/*/TradeSimpleHeader/RecipientsCodeForSender"/>
+			</xsl:otherwise>
+		</xsl:choose>
 		<xsl:text>|</xsl:text>
 		
 		<xsl:value-of select="(/Invoice/InvoiceHeader/InvoiceReferences/InvoiceReference | /CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteReference)"/>
@@ -48,7 +55,7 @@
 		<xsl:text>PO</xsl:text>
 		<xsl:value-of select="substring(concat('00000000',$sPOReference), string-length($sPOReference)+1)"/>
 		<xsl:text>,</xsl:text>
-		<xsl:value-of select="(/Invoice/InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode | /CreditNote/CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode)"/>
+		<xsl:value-of select="(/Invoice/TradeSimpleHeader/RecipientsBranchReference | /CreditNote/TradeSimpleHeader/RecipientsBranchReference)"/>
 		<xsl:text>|</xsl:text>
 		
 		<!-- ???? -->
@@ -101,7 +108,7 @@
 				<!-- ???? -->
 				<xsl:text>|</xsl:text>
 				
-				<xsl:value-of select="(/Invoice/InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode | /CreditNote/CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode)"/>	
+				<xsl:value-of select="(/Invoice/TradeSimpleHeader/RecipientsBranchReference | /CreditNote/TradeSimpleHeader/RecipientsBranchReference)"/>	
 				<xsl:text>|</xsl:text>
 				
 				<xsl:value-of select="LineExtraData/AccountCode"/>
