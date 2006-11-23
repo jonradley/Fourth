@@ -51,7 +51,18 @@
 		<xsl:value-of select="(/Invoice/InvoiceHeader/InvoiceReferences/InvoiceReference | /CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteReference)"/>
 		<xsl:text>|</xsl:text>
 		
-		<xsl:variable name="sPOReference" select="(/Invoice/InvoiceDetail/InvoiceLine/PurchaseOrderReferences/PurchaseOrderReference | /CreditNote/CreditNoteDetail/CreditNoteLine/PurchaseOrderReferences/PurchaseOrderReference)[1]"/>
+		<!--xsl:variable name="sPOReference" select="(/Invoice/InvoiceDetail/InvoiceLine/PurchaseOrderReferences/PurchaseOrderReference | /CreditNote/CreditNoteDetail/CreditNoteLine/PurchaseOrderReferences/PurchaseOrderReference)[1]"/-->
+
+		<xsl:variable name="sPOReference">
+			<xsl:for-each select="(/Invoice/InvoiceDetail/InvoiceLine/PurchaseOrderReferences/PurchaseOrderReference | /CreditNote/CreditNoteDetail/CreditNoteLine/PurchaseOrderReferences/PurchaseOrderReference)[1]">
+				<xsl:choose>
+					<xsl:when test="contains(.,'-')"><xsl:value-of select="substring-after(.,'-')"/></xsl:when>
+					<xsl:otherwise>><xsl:value-of select="."/></xsl:otherwise>
+				</xsl:choose>
+			</xsl:for-each>
+		</xsl:variable>
+		
+		
 		<xsl:text>PO</xsl:text>
 		<xsl:value-of select="substring(concat('00000000',$sPOReference), string-length($sPOReference)+1)"/>
 		<xsl:text>,</xsl:text>
