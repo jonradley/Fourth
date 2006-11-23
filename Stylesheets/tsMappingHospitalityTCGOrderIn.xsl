@@ -36,7 +36,7 @@
 					
 					<PurchaseOrderReferences>
 					
-						<PurchaseOrderReference><xsl:value-of select="@UserReference"/></PurchaseOrderReference>
+						<PurchaseOrderReference><xsl:value-of select="@LocationCode"/>-<xsl:value-of select="@UserReference"/></PurchaseOrderReference>
 						<PurchaseOrderDate><xsl:value-of select="@DateEntered"/></PurchaseOrderDate>
 	
 					</PurchaseOrderReferences>
