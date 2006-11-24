@@ -135,7 +135,7 @@ N Emsen		| 09/11/2006	|	Case 229: Copied for use with Zenith CLO(3)
 							<Buyer>
 								<BuyersLocationID>
 									<!--INVFIL-CDT-CIDN(1)-->
-									<SuppliersCode RecordPos="CDT=" LPos="1" SFPos="1"/>
+									<SuppliersCode RecordPos="CDT=" LPos="1" SFPos="2"/>
 								</BuyersLocationID>
 								<!-- OPTIONAL Buyer Name, MANDATORY, INVFIL – CDT – CNAM, NB: To make this a legal invoice, you must provide this field. The “invoice to” name -->
 								<BuyersName RecordPos="CDT=" LPos="2"/>
@@ -167,7 +167,7 @@ N Emsen		| 09/11/2006	|	Case 229: Copied for use with Zenith CLO(3)
 							<ShipTo>
 								<ShipToLocationID>
 									<!--INVFIL-CLO-(1)2)-->
-									<SuppliersCode RecordPos="CLO=" LPos="1" SFPos="2"/>
+									<SuppliersCode RecordPos="CLO=" LPos="1" SFPos="3"/>
 								</ShipToLocationID>
 								<!-- OPTIONAL Delivery Location Name, DERIVE, INVOIC – CLO – CNAM, The “ship-to” name -->
 								<ShipToName RecordPos="CLO=" LPos="2"/>
