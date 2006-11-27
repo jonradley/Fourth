@@ -57,7 +57,7 @@
 			<xsl:for-each select="(/Invoice/InvoiceDetail/InvoiceLine/PurchaseOrderReferences/PurchaseOrderReference | /CreditNote/CreditNoteDetail/CreditNoteLine/PurchaseOrderReferences/PurchaseOrderReference)[1]">
 				<xsl:choose>
 					<xsl:when test="contains(.,'-')"><xsl:value-of select="substring-after(.,'-')"/></xsl:when>
-					<xsl:otherwise>><xsl:value-of select="."/></xsl:otherwise>
+					<xsl:otherwise><xsl:value-of select="."/></xsl:otherwise>
 				</xsl:choose>
 			</xsl:for-each>
 		</xsl:variable>
