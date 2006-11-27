@@ -126,7 +126,19 @@
 			<xsl:choose>
 				<!-- '/' IS present -->
 				<xsl:when test="string(substring-before(/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode,'/')) != '' ">
-					<xsl:value-of select="substring-before(/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode,'/')"/>
+					<!-- the trading relationship value before the divider. This needs to be checked for the value Aramark remapping flag. -->
+					<xsl:variable name="sTradingRelationshipValue" select="substring-before(/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode,'/')"/>
+					<!-- check value -->
+					<xsl:choose>
+						<!-- spotting for Aramark -->
+						<xsl:when test="contains($sTradingRelationshipValue,'ARAM') ">
+							<xsl:text>ARAMARK</xsl:text>
+						</xsl:when>
+						<!-- Any other value -->
+						<xsl:otherwise>
+							<xsl:value-of select="$sTradingRelationshipValue"/>
+						</xsl:otherwise>
+					</xsl:choose>
 				</xsl:when>
 				<!-- '/' IS NOT present -->
 				<xsl:otherwise>
