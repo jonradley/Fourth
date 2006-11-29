@@ -18,7 +18,7 @@
 	20/10/2006 	| Nigel Emsen  	|	created from standard mapper and CLO(2) activated.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	15/11/2006	|	Nigel Emsen		|	Case: 476 - changes for interagtion with PL 
-						|							|	and none PL Accounts.
+						|							|	and none PL Accounts. and 3dp mapping changes.
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -36,6 +36,14 @@
 			<!--<xsl:text>&#13;&#10;</xsl:text>-->
 			<xsl:text></xsl:text>
 		</xsl:variable>
+		
+		<xsl:variable name="sSpeakMarks">
+			<xsl:text>"</xsl:text>
+			<!--<xsl:text>&#13;&#10;</xsl:text>-->
+			<xsl:text></xsl:text>
+		</xsl:variable>
+		
+
 		
 		<xsl:variable name="sFileGenerationDate" select="vb:msFileGenerationDate()"/>
 	
@@ -266,17 +274,16 @@
 				<xsl:text>:</xsl:text>
 				<xsl:value-of select="translate(format-number(OrderedQuantity,'#.000'),'.','')"/>
 				<xsl:text>+</xsl:text>
-				<xsl:value-of select="translate(format-number(UnitValueExclVAT,'#.00'),'.','')"/><xsl:text>00</xsl:text>
+				<xsl:value-of select="translate(format-number(UnitValueExclVAT,'#.0000'),'.','')"/>
 				<xsl:text>+</xsl:text>
 				<xsl:text>+</xsl:text>
 				<xsl:text>+</xsl:text>
 				<!-- truncate to 40 TDES = 9030 = AN..40-->
+				<xsl:variable name="sProductDescription" select="ProductDescription"/>
 				<xsl:call-template name="msCheckField">
-					<xsl:with-param name="vobjNode" select="ProductDescription"/>
+					<xsl:with-param name="vobjNode" select="$sProductDescription"/>
 					<xsl:with-param name="vnLength" select="40"/>
 				</xsl:call-template>
-				
-				
 			<xsl:value-of select="$sRecordSep"/>
 			
 			<!--
@@ -544,7 +551,6 @@ function msEscape(vsField){
 	return vsField.replace(/([?+=:'])/g, "?$1");
 	
 }
-
 
    
 ]]></msxsl:script>
