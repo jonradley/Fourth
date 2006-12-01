@@ -283,10 +283,12 @@
 				<xsl:text>+</xsl:text>
 				<!-- truncate to 40 TDES = 9030 = AN..40-->
 				<xsl:variable name="sProductDescription" select="substring(ProductDescription,1,39)"/>
+				<!--
 				<xsl:call-template name="msCheckField">
 					<xsl:with-param name="vobjNode" select="$sProductDescription"/>
 					<xsl:with-param name="vnLength" select="40"/>
 				</xsl:call-template>
+				-->
 			<xsl:value-of select="$sRecordSep"/>
 			
 			<!--
