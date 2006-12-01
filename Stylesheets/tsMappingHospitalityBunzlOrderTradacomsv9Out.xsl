@@ -19,6 +19,9 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	15/11/2006	|	Nigel Emsen		|	Case: 476 - changes for interagtion with PL 
 						|							|	and none PL Accounts. and 3dp mapping changes.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	01/12/2006	|	Nigel Emsen		|	Case: 476 - redelivery due to product description
+						|							|	being greater than 40 chars.
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -279,7 +282,7 @@
 				<xsl:text>+</xsl:text>
 				<xsl:text>+</xsl:text>
 				<!-- truncate to 40 TDES = 9030 = AN..40-->
-				<xsl:variable name="sProductDescription" select="ProductDescription"/>
+				<xsl:variable name="sProductDescription" select="substring(ProductDescription,1,39)"/>
 				<xsl:call-template name="msCheckField">
 					<xsl:with-param name="vobjNode" select="$sProductDescription"/>
 					<xsl:with-param name="vnLength" select="40"/>
