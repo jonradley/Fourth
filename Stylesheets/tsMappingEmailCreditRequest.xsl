@@ -1,6 +1,5 @@
 <!--
 ******************************************************************************************
- $Header: $
  Overview
 
  This XSL file is used to transform XML for a Hospitality Credit Request into an HTML page
@@ -16,6 +15,10 @@
  13/01/2005 | A Sheppard | H298. Display line status to user
 ****************************************************************************************** 
  18/01/2006 | A Sheppard | H548. Change Buyer to Buyer/Invoice To
+****************************************************************************************** 
+ 06/12/2006 | Lee Boyton | 595. The unit value, line value and total are now optional.
+****************************************************************************************** 
+            |            |
 ******************************************************************************************
 -->
 
@@ -418,8 +421,8 @@
 											<xsl:if test="/CreditRequest/CreditRequestDetail/CreditRequestLine/PackSize">
 												<td><xsl:value-of select="PackSize"/>&#xa0;</td>
 											</xsl:if>								
-											<td align="right"><xsl:value-of select="UnitValueExclVAT"/></td>
-											<td align="right"><xsl:value-of select="LineValueExclVAT"/></td>
+											<td align="right"><xsl:value-of select="UnitValueExclVAT"/>&#xa0;</td>
+											<td align="right"><xsl:value-of select="LineValueExclVAT"/>&#xa0;</td>
 										</tr>
 										<xsl:if test="Narrative">
 											<tr>
@@ -453,7 +456,7 @@
 									</tr>					
 									<tr>
 										<th width="50%">Total Excl VAT</th>
-										<td align="right"><xsl:value-of select="/CreditRequest/CreditRequestTrailer/TotalExclVAT"/></td>
+										<td align="right"><xsl:value-of select="/CreditRequest/CreditRequestTrailer/TotalExclVAT"/>&#xa0;</td>
 									</tr>
 								</table>
 							</td>
@@ -511,8 +514,8 @@
 											<xsl:if test="/CreditRequest/CreditRequestDetail/CreditRequestLine/PackSize">
 												<td><xsl:value-of select="PackSize"/>&#xa0;</td>
 											</xsl:if>							
-											<td align="right"><xsl:value-of select="UnitValueExclVAT"/></td>
-											<td align="right"><xsl:value-of select="LineValueExclVAT"/></td>
+											<td align="right"><xsl:value-of select="UnitValueExclVAT"/>&#xa0;</td>
+											<td align="right"><xsl:value-of select="LineValueExclVAT"/>&#xa0;</td>
 										</tr>
 										<xsl:if test="Narrative">
 											<tr>
@@ -569,10 +572,10 @@
 										<td align="right">
 											<xsl:choose>
 												<xsl:when test="/CreditRequest/CreditRequestDetail/CreditRequestLine[not(NotAuthorised) or NotAuthorised='0']">
-													<xsl:value-of select="/CreditRequest/CreditRequestTrailer/UnauthorisedLines/TotalExclVAT"/>
+													<xsl:value-of select="/CreditRequest/CreditRequestTrailer/UnauthorisedLines/TotalExclVAT"/>&#xa0;
 												</xsl:when>
 												<xsl:otherwise>
-													<xsl:value-of select="/CreditRequest/CreditRequestTrailer/TotalExclVAT"/>
+													<xsl:value-of select="/CreditRequest/CreditRequestTrailer/TotalExclVAT"/>&#xa0;
 												</xsl:otherwise>
 											</xsl:choose>
 										</td>
