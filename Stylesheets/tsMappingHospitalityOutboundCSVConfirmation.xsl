@@ -27,7 +27,7 @@
 	
 	
 		<xsl:text>H,</xsl:text>
-		<xsl:call-template name="msCSV"><xsl:with-param name="vs" select="/PurchaseOrderConfirmation/TradeSimpleHeader/SendersCodeForRecipient"/></xsl:call-template>
+		<xsl:call-template name="msCSV"><xsl:with-param name="vs" select="/PurchaseOrderConfirmation/TradeSimpleHeader/RecipientsCodeForSender"/></xsl:call-template>
 		<xsl:text>,</xsl:text>
 		<xsl:choose>
 			<xsl:when test="translate(/PurchaseOrderConfirmation/TradeSimpleHeader/TestFlag,'TRUE','true') = 'true'">Y</xsl:when>
@@ -37,15 +37,15 @@
 		<xsl:text>,</xsl:text>
 		<xsl:call-template name="msCSV"><xsl:with-param name="vs" select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/PurchaseOrderReferences/PurchaseOrderReference"/></xsl:call-template>
 		<xsl:text>,</xsl:text>
-		<xsl:call-template name="msCSV"><xsl:with-param name="vs" select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/PurchaseOrderReferences/PurchaseOrderDate"/></xsl:call-template>
+		<xsl:call-template name="msCSV"><xsl:with-param name="vs" select="Replace(/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/PurchaseOrderReferences/PurchaseOrderDate,'-','')"/></xsl:call-template>
 		<xsl:text>,</xsl:text>
-		<xsl:call-template name="msCSV"><xsl:with-param name="vs" select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/OrderedDeliveryDetails/DeliveryDate"/></xsl:call-template>
+		<xsl:call-template name="msCSV"><xsl:with-param name="vs" select="Replace(/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/OrderedDeliveryDetails/DeliveryDate,'-','')"/></xsl:call-template>
 		<xsl:text>,</xsl:text>
-		<xsl:call-template name="msCSV"><xsl:with-param name="vs" select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/ConfirmedDeliveryDetails/DeliveryDate"/></xsl:call-template>
+		<xsl:call-template name="msCSV"><xsl:with-param name="vs" select="Replace(/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/ConfirmedDeliveryDetails/DeliveryDate,'-','')"/></xsl:call-template>
 		<xsl:text>,</xsl:text>
-		<xsl:call-template name="msCSV"><xsl:with-param name="vs" select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/ConfirmedDeliveryDetails/DeliverySlot/SlotStart"/></xsl:call-template>
+		<xsl:call-template name="msCSV"><xsl:with-param name="vs" select="Replace(/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/ConfirmedDeliveryDetails/DeliverySlot/SlotStart,':','')"/></xsl:call-template>
 		<xsl:text>,</xsl:text>
-		<xsl:call-template name="msCSV"><xsl:with-param name="vs" select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/ConfirmedDeliveryDetails/DeliverySlot/SlotEnd"/></xsl:call-template>
+		<xsl:call-template name="msCSV"><xsl:with-param name="vs" select="Replace(/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/ConfirmedDeliveryDetails/DeliverySlot/SlotEnd,':','')"/></xsl:call-template>
 		<xsl:text>,</xsl:text>
 		<xsl:call-template name="msCSV"><xsl:with-param name="vs" select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/ShipTo/ContactName"/></xsl:call-template>
 		<xsl:text>,</xsl:text>
