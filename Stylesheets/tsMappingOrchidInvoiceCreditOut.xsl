@@ -20,14 +20,16 @@
 ******************************************************************************************
  06/10/2006 | Lee Boyton | 430. Changes required in the file format produced.
 ******************************************************************************************
-            |            |
+ 11/12/2006 | A Sheppard | 608. ORC003 changes to format
 ******************************************************************************************
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+		   xmlns:user="http://mycompany.com/mynamespace"
                 xmlns:msxsl="urn:schemas-microsoft-com:xslt"
                 exclude-result-prefixes="#default xsl msxsl">
 	<xsl:output method="text"/>
+	<xsl:include href="HospitalityInclude.xsl"/>
 	
 	<!-- define keys (think of them a bit like database indexes) to be used for finding distinct line information.
 	     note;  the '::' literal is simply used as a convenient separator for the 2 values that make up the second key. -->
@@ -72,6 +74,18 @@
 			</xsl:choose>
 		</xsl:variable>
 		
+		<!-- store the company code as it is referenced on multiple lines -->		
+		<xsl:variable name="CompanyCode">
+			<xsl:choose>
+				<xsl:when test="/Invoice/InvoiceHeader/HeaderExtraData/CompanyCode">
+					<xsl:value-of select="/Invoice/InvoiceHeader/HeaderExtraData/CompanyCode"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="/CreditNote/CreditNoteHeader/HeaderExtraData/CompanyCode"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		
 		<!-- construct the value for the description field as it is used on multiple lines -->		
 		<xsl:variable name="Description">
 			<xsl:value-of select="$UnitCode"/>
@@ -100,8 +114,8 @@
 
 		<!-- construct the value for the Allocation indicator as it is used on multiple lines -->
 		<xsl:variable name="Allocation">
-			<xsl:if test="/CreditNote or /Invoice/InvoiceTrailer/TrailerExtraData/CreditRequestTotalExclVAT">
-				<xsl:text>W</xsl:text>
+			<xsl:if test="/Invoice/InvoiceTrailer/TrailerExtraData/CreditRequestTotalExclVAT">
+				<xsl:text>R</xsl:text>
 			</xsl:if>
 		</xsl:variable>
 		
@@ -116,8 +130,10 @@
 				<xsl:sort select="VATCode" data-type="text"/>
 				<xsl:variable name="VATCode" select="VATCode"/>
 				
-					<!-- now output a summary line for the current Account Code and VAT Code combination -->					
-					<xsl:text>2;</xsl:text>
+					<!-- now output a summary line for the current Account Code and VAT Code combination -->				
+					<xsl:value-of select="$CompanyCode"/>
+					<xsl:text>,</xsl:text>
+					<xsl:value-of select="user:glGetRowNumber()"/>
 					<xsl:text>,</xsl:text>
 					<xsl:value-of select="$DocumentDate"/>
 					<xsl:text>,</xsl:text>
@@ -138,15 +154,7 @@
 						</xsl:otherwise>
 					</xsl:choose>
 					<xsl:text>,</xsl:text>
-					<xsl:value-of select="//HeaderExtraData/CompanyCode"/>
-					<xsl:text>,</xsl:text>
 					<xsl:value-of select="$UnitCode"/>
-					<xsl:text>,</xsl:text>
-					<xsl:value-of select="//HeaderExtraData/ConceptCode"/>
-					<xsl:text>,</xsl:text>
-					<xsl:value-of select="//HeaderExtraData/AreaManagerCode"/>
-					<xsl:text>,</xsl:text>
-					<xsl:value-of select="//HeaderExtraData/ZoneCode"/>
 					<xsl:text>,</xsl:text>
 					<xsl:value-of select="LineExtraData/BuyersVATCode"/>
 					<xsl:text>,</xsl:text>
@@ -158,7 +166,9 @@
 		
 		<!--Taxes Lines-->
 		<xsl:for-each select="//VATSubTotal[@VATRate != 0.00]">
-			<xsl:text>2;</xsl:text>
+			<xsl:value-of select="$CompanyCode"/>
+			<xsl:text>,</xsl:text>
+			<xsl:value-of select="user:glGetRowNumber()"/>
 			<xsl:text>,</xsl:text>
 			<xsl:value-of select="$DocumentDate"/>
 			<xsl:text>,</xsl:text>
@@ -179,21 +189,17 @@
 				</xsl:otherwise>
 			</xsl:choose>
 			<xsl:text>,</xsl:text>
-			<xsl:value-of select="//HeaderExtraData/CompanyCode"/>			
-			<xsl:text>,</xsl:text>
 			<xsl:value-of select="$UnitCode"/>
 			<xsl:text>,</xsl:text>
-			<xsl:text>,</xsl:text>
-			<xsl:text>,</xsl:text>
-			<xsl:text>,</xsl:text>
 			<xsl:value-of select="VATTrailerExtraData/BuyersVATCode"/>			
-			<xsl:text>,</xsl:text>
-			<xsl:value-of select="$Allocation"/>					
+			<xsl:text>,</xsl:text>			
 			<xsl:value-of select="$NewLine"/>
 		</xsl:for-each>
 		
 		<!--Supplier Line-->
-		<xsl:text>2;</xsl:text>
+		<xsl:value-of select="$CompanyCode"/>
+		<xsl:text>,</xsl:text>
+		<xsl:value-of select="user:glGetRowNumber()"/>
 		<xsl:text>,</xsl:text>
 		<xsl:value-of select="$DocumentDate"/>
 		<xsl:text>,</xsl:text>
@@ -214,17 +220,11 @@
 			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:text>,</xsl:text>
-		<xsl:value-of select="//HeaderExtraData/CompanyCode"/>		
-		<xsl:text>,</xsl:text>
 		<xsl:value-of select="$UnitCode"/>
 		<xsl:text>,</xsl:text>
 		<xsl:text>,</xsl:text>
-		<xsl:text>,</xsl:text>
-		<xsl:text>,</xsl:text>
-		<xsl:text>,</xsl:text>
-		<xsl:value-of select="$Allocation"/>					
 		<xsl:value-of select="$NewLine"/>
-		
+
 	</xsl:template>
 		
 	<!-- translates a date in YYYY-MM-DD format to a date in DD/MM/YYYY format -->
