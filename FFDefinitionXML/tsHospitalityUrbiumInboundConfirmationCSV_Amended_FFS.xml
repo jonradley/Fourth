@@ -91,7 +91,8 @@
 						<AddressLine4 RecordPos="H" LPos="15"/>
 						<PostCode RecordPos="H" LPos="16"/>
 					</ShipToAddress>
-					<ContactName RecordPos="H" LPos="10"/>
+					<!-- disabled to until bug fix in place in processor -->
+					<!--ContactName RecordPos="H" LPos="10"/-->
 				</ShipTo>
 				<PurchaseOrderReferences>
 					<PurchaseOrderReference RecordPos="H" LPos="4" />
