@@ -88,14 +88,12 @@
 		
 		<!-- construct the value for the description field as it is used on multiple lines -->		
 		<xsl:variable name="Description">
-			<xsl:value-of select="$UnitCode"/>
-			<xsl:text> </xsl:text>
 			<xsl:choose>
 				<xsl:when test="/Invoice/InvoiceHeader/Supplier/SuppliersName">
-					<xsl:value-of select="substring(translate(/Invoice/InvoiceHeader/Supplier/SuppliersName,',',''),1,19)"/>
+					<xsl:value-of select="substring(translate(/Invoice/InvoiceHeader/Supplier/SuppliersName,',',''),1,50)"/>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:value-of select="substring(translate(/CreditNote/CreditNoteHeader/Supplier/SuppliersName,',',''),1,19)"/>
+					<xsl:value-of select="substring(translate(/CreditNote/CreditNoteHeader/Supplier/SuppliersName,',',''),1,50)"/>
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
