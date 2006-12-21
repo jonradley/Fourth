@@ -13,7 +13,7 @@ N Emsen		| 14/09/2006		|	Purchase order date stipped if = blank
 N Emsen		|	08/11/2006	|	Case 531: Purchase order reference working.
 **********************************************************************
 -->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:vbscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
 	<!-- NOTE that these string literals are not only enclosed with double quotes, but have single quotes within also-->
 	<xsl:variable name="FileHeaderSegment" select="'INVFIL'"/>
@@ -58,41 +58,6 @@ N Emsen		|	08/11/2006	|	Case 531: Purchase order reference working.
 		</xsl:choose>
 	</xsl:template>
 	
-	<!-- 21/Dec/2006 - NE -	Amended to copy /InvoiceLine/Measure/TotalMeasure and /InvoiceLine/Measure/TotalMeasureIndicator 
-											if InvoiceLine/InvoicedQuantity is blank. -->
-	<xsl:template match="InvoiceLine">
-		<InvoiceLine>
-		<xsl:copy-of select="LineNumber"/>
-		<xsl:copy-of select="DeliveryNoteReferences"/>
-		<xsl:copy-of select="ProductID"/>
-		<xsl:copy-of select="ProductDescription"/>
-		<!-- check if InvoiceLine/InvoicedQuantity is bkank, if so re-map. -->
-		<InvoicedQuantity>
-				<xsl:choose>
-					<xsl:when test="string(Measure/TotalMeasure) != '' ">
-						<xsl:attribute name="UnitOfMeasure">
-							<xsl:call-template name="ConvertUnitOfMeasureToUpperCase">
-								<xsl:with-param name="sValue" select="Measure/TotalMeasureIndicator"/>
-							</xsl:call-template>
-						</xsl:attribute>
-						<xsl:value-of select="Measure/TotalMeasure"/>
-					</xsl:when>	
-					<xsl:otherwise>
-						<xsl:value-of select="InvoicedQuantity"/>
-					</xsl:otherwise>
-				</xsl:choose>		
-		</InvoicedQuantity>
-		<xsl:copy-of select="UnitValueExclVAT"/>
-		<xsl:copy-of select="LineValueExclVAT"/>
-		<xsl:copy-of select="VATCode"/>
-		<xsl:copy-of select="VATRate"/>
-		<xsl:copy-of select="Measure"/>
-		<xsl:copy-of select="LineExtraData"/>
-		</InvoiceLine>
-	</xsl:template>
-	
-	
-
 	<!-- InvoiceLine/ProductID/BuyersProductCode is used as a placeholder for INVOIC-ILD-CRLI and should not be copied over -->
 	<xsl:template match="BuyersProductCode"/>
 	
@@ -106,7 +71,7 @@ N Emsen		|	08/11/2006	|	Case 531: Purchase order reference working.
 	
 	<!-- INVOIC-ILD-QTYI (InvoiceLine/InvoicedQuantity) needs to be multiplied by -1 if (InvoiceLine/ProductID/BuyersProductCode) is NOT blank -->
 	
-	<xsl:template match="InvoiceLine/InvoicedQuantity | InvoiceLine/Measure/TotalMeasureIndicator">
+	<xsl:template match="InvoiceLine/InvoicedQuantity">
 
 		<xsl:choose>
 			<!--Parent of InvoicedQuantity is InvoiceLine-->
@@ -247,7 +212,7 @@ N Emsen		|	08/11/2006	|	Case 531: Purchase order reference working.
 	INVOIC segments, which are only required at document level, under InvoiceHeader, so the following template does not copy those.
 	-->
 	<xsl:template match="BatchHeader/MHDSegment">
-		<xsl:if test="contains(jscript:toUpperCase(string(./MHDHeader)), $FileHeaderSegment)">
+		<xsl:if test="contains(translate(./MHDHeader,'abcdefghijlkmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ'), $FileHeaderSegment)">
 			<!--
 			Only action when this template match occurs on the first useful MHDSegment (which is *probably* the first MHDSegment to be found). 
 			Once this tag is found, all other useful MHDSegment tags should follow as immediate siblings in the output, 
@@ -259,10 +224,10 @@ N Emsen		|	08/11/2006	|	Case 531: Purchase order reference working.
 			<!-- ... and ensure all the other useful MHDSegments follow on immediatley -->
 			<xsl:for-each select="../MHDSegment">
 				<xsl:choose>
-					<xsl:when test="contains(jscript:toUpperCase(string(./MHDHeader)), $FileTrailerSegment)">
+					<xsl:when test="contains(translate(./MHDHeader,'abcdefghijlkmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ'), $FileTrailerSegment)">
 						<xsl:copy-of select="."/>
 					</xsl:when>
-					<xsl:when test="contains(jscript:toUpperCase(string(./MHDHeader)), $VATTrailerSegment)">
+					<xsl:when test="contains(translate(./MHDHeader,'abcdefghijlkmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ'), $VATTrailerSegment)">
 						<xsl:copy-of select="."/>
 					</xsl:when>
 				</xsl:choose>
@@ -275,7 +240,7 @@ N Emsen		|	08/11/2006	|	Case 531: Purchase order reference working.
 		<!-- Get a node list of all the MHDSegment nodes under the BatchHeader tag-->
 		<xsl:variable name="MHDSegmentNodeList" select="/Batch/BatchHeader/MHDSegment"/>
 		<!-- Filter this node list to exclude any which do not have MHDHeader tag set to INVOIC -->
-		<xsl:variable name="DocumentSegmentNodeList" select="$MHDSegmentNodeList[contains(jscript:toUpperCase(string(MHDHeader)), $DocumentSegment)]"/>
+		<xsl:variable name="DocumentSegmentNodeList" select="$MHDSegmentNodeList[contains(translate(./MHDHeader,'abcdefghijlkmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ'), $DocumentSegment)]"/>
 		<xsl:copy>
 			<!-- Copy the Nth instance of an INVOIC MHDSegment tag to this, the Nth Invoice header tag-->
 			<xsl:copy-of select="$DocumentSegmentNodeList[$BatchDocumentIndex]"/>
@@ -300,11 +265,54 @@ N Emsen		|	08/11/2006	|	Case 531: Purchase order reference working.
 		</xsl:if>
 	</xsl:template>	
 	
-	<msxsl:script language="JScript" implements-prefix="jscript"><![CDATA[ 
-		function toUpperCase(vs) {
-			return vs.toUpperCase();
-			//return vs;
-		}
+	<!-- 21/Dec/2006 - NE -	Amended to copy /InvoiceLine/Measure/TotalMeasure and /InvoiceLine/Measure/TotalMeasureIndicator 
+											if InvoiceLine/InvoicedQuantity is blank. -->
+	<xsl:template match="InvoiceLine">
+		<InvoiceLine>
+		<xsl:copy-of select="LineNumber"/>
+		<xsl:copy-of select="DeliveryNoteReferences"/>
+		<xsl:copy-of select="ProductID"/>
+		<xsl:copy-of select="ProductDescription"/>
+		<!-- check if InvoiceLine/InvoicedQuantity is bkank, if so re-map. -->
+		<InvoicedQuantity>
+				<xsl:choose>
+					<xsl:when test="string(Measure/TotalMeasure) != '' ">
+						<xsl:attribute name="UnitOfMeasure">
+							<xsl:call-template name="ConvertUnitOfMeasureToUpperCase">
+								<xsl:with-param name="sValue" select="Measure/TotalMeasureIndicator"/>
+							</xsl:call-template>
+						</xsl:attribute>
+						<xsl:value-of select="format-number(Measure/TotalMeasure div 1000,'0.000')"/>
+					</xsl:when>	
+					<xsl:otherwise>
+						<xsl:value-of select="InvoicedQuantity"/>
+					</xsl:otherwise>
+				</xsl:choose>		
+		</InvoicedQuantity>
+		<UnitValueExclVAT><xsl:value-of select="vbscript:dConvertToDPValue(UnitValueExclVAT)"/></UnitValueExclVAT>
+		<LineValueExclVAT><xsl:value-of select="format-number(LineValueExclVAT div 100,'0.00')"/></LineValueExclVAT>
+		<xsl:copy-of select="VATCode"/>
+		<VATRate><xsl:value-of select="format-number(VATRate div 1000,'0.000')"/></VATRate>
+		<xsl:copy-of select="Measure"/>
+		<xsl:copy-of select="LineExtraData"/>
+		</InvoiceLine>
+	</xsl:template>
+	
+	
+	<msxsl:script language="VBScript" implements-prefix="vbscript"><![CDATA[ 
+
+		Function dConvertToDPValue (vsValue)
+			Dim sValue
+		
+			sValue=CLng(vsValue)
+		
+			dConvertToDPValue=sValue
+		
+		End Function
+	
 	]]></msxsl:script>
+	
+
+	
 	
 </xsl:stylesheet>
