@@ -44,6 +44,54 @@ N Emsen		|	08/11/2006	|	Case 531: Purchase order reference working.
 		<xsl:copy/>
 	</xsl:template>
 	<!-- END of GENERIC HANDLERS -->
+	
+	<!-- 21/12/2006 - NE - Template convert total measure to tradeSimple values -->
+	<xsl:template name="ConvertUnitOfMeasureToUpperCase">
+		<xsl:param name="sValue" select="sValue"/>
+		<xsl:variable name="sUpperValue" select="translate(translate($sValue,'abcdefghijlkmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ'),' ','')"/>
+		<xsl:choose>
+			<xsl:when test="$sUpperValue = 'KG' "><xsl:text>KGM</xsl:text></xsl:when>
+			<!-- if no match found, return given value as upper case -->
+			<xsl:otherwise>
+				<xsl:value-of select="$sUpperValue"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	
+	<!-- 21/Dec/2006 - NE -	Amended to copy /InvoiceLine/Measure/TotalMeasure and /InvoiceLine/Measure/TotalMeasureIndicator 
+											if InvoiceLine/InvoicedQuantity is blank. -->
+	<xsl:template match="InvoiceLine">
+		<InvoiceLine>
+		<xsl:copy-of select="LineNumber"/>
+		<xsl:copy-of select="DeliveryNoteReferences"/>
+		<xsl:copy-of select="ProductID"/>
+		<xsl:copy-of select="ProductDescription"/>
+		<!-- check if InvoiceLine/InvoicedQuantity is bkank, if so re-map. -->
+		<InvoicedQuantity>
+				<xsl:choose>
+					<xsl:when test="string(Measure/TotalMeasure) != '' ">
+						<xsl:attribute name="UnitOfMeasure">
+							<xsl:call-template name="ConvertUnitOfMeasureToUpperCase">
+								<xsl:with-param name="sValue" select="Measure/TotalMeasureIndicator"/>
+							</xsl:call-template>
+						</xsl:attribute>
+						<xsl:value-of select="Measure/TotalMeasure"/>
+					</xsl:when>	
+					<xsl:otherwise>
+						<xsl:value-of select="InvoicedQuantity"/>
+					</xsl:otherwise>
+				</xsl:choose>		
+		</InvoicedQuantity>
+		<xsl:copy-of select="UnitValueExclVAT"/>
+		<xsl:copy-of select="LineValueExclVAT"/>
+		<xsl:copy-of select="VATCode"/>
+		<xsl:copy-of select="VATRate"/>
+		<xsl:copy-of select="Measure"/>
+		<xsl:copy-of select="LineExtraData"/>
+		</InvoiceLine>
+	</xsl:template>
+	
+	
 
 	<!-- InvoiceLine/ProductID/BuyersProductCode is used as a placeholder for INVOIC-ILD-CRLI and should not be copied over -->
 	<xsl:template match="BuyersProductCode"/>
@@ -55,8 +103,11 @@ N Emsen		|	08/11/2006	|	Case 531: Purchase order reference working.
 		</xsl:copy>
 	</xsl:template>
 	
+	
 	<!-- INVOIC-ILD-QTYI (InvoiceLine/InvoicedQuantity) needs to be multiplied by -1 if (InvoiceLine/ProductID/BuyersProductCode) is NOT blank -->
-	<xsl:template match="InvoiceLine/InvoicedQuantity">
+	
+	<xsl:template match="InvoiceLine/InvoicedQuantity | InvoiceLine/Measure/TotalMeasureIndicator">
+
 		<xsl:choose>
 			<!--Parent of InvoicedQuantity is InvoiceLine-->
 			<xsl:when test="string-length(../ProductID/BuyersProductCode) &gt; 0" >
