@@ -16,6 +16,8 @@
 ==========================================================================================
  07/12/2006	| R Cambridge			| 602 Use tax point date instead of invoice date 
 ==========================================================================================
+ 02/01/2007	| R Cambridge			| 662 Roll back 602 (Scottish and Newcastle have adjusted their mapping)
+==========================================================================================
            	|                 	|
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -35,7 +37,7 @@
 		</xsl:choose>		
 		<xsl:text>|</xsl:text>
 		
-		<xsl:for-each select="(/Invoice/InvoiceHeader/InvoiceReferences/TaxPointDate | /CreditNote/CreditNoteHeader/CreditNoteReferences/TaxPointDate)[1]">
+		<xsl:for-each select="(/Invoice/InvoiceHeader/InvoiceReferences/InvoiceDate | /CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteDate)[1]">
 			<xsl:value-of select="concat(substring(.,9,2),'/',substring(.,6,2),'/',substring(.,1,4))"/>
 		</xsl:for-each>
 		<xsl:text>|</xsl:text>
