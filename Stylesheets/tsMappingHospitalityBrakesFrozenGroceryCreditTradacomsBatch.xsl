@@ -6,8 +6,8 @@ Alterations
 Name		| Date				| Change
 **********************************************************************
 N Emsen	| 14/09/2006		| Not tested against any Brakes credit notes
-**********************************************************************
 N Emsen	|	27/09/2006	|	Case 393 - Delivery to live.
+N Emsen	|	04/01/2007	|	Case 661 - CLO3
 **********************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
