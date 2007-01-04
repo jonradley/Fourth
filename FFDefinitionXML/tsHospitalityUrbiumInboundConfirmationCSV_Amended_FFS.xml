@@ -4,6 +4,7 @@
 <!-- 30/11/2006 - NE - Created from orginal urbium confirmation csv mapper,
 									 so that the trailer information reflects the latest
 									 version of the HOSP CSV Specification. -->
+<!-- 04/07/2007 - NE - Case 577: Underwood adoption. -->
 <!-- *********************************************************************** -->
 <ffsFlatFileSchema>
 	<ffsSettings>
