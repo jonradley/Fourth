@@ -90,7 +90,7 @@
 		<xsl:text>SDT=</xsl:text>
 			<xsl:text>5028615000005</xsl:text>
 			<xsl:text>:</xsl:text>
-			<xsl:value-of select="/TradeSimpleHeader/SendersCodeForRecipient"/>
+			<xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/>
 			<xsl:text>+</xsl:text>
 			<!-- truncate to 40 SNAM = 3060 = AN..40-->
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersName),40)"/>
@@ -112,10 +112,10 @@
 		
 		<xsl:text>CDT=</xsl:text>
 			<!-- CIDN (1) -->
-			<xsl:value-of select="TradeSimpleHeader/RecipientsCodeForSender"/>
+			<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
 			<xsl:text>:</xsl:text>
 			<!-- CIDN (2) -->
-			<xsl:value-of select="TradeSimpleHeader/RecipientsCodeForSender"/>
+			<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
 				<xsl:text>+</xsl:text>
 			<!-- truncate to 40 CNAM = 3060 = AN..40-->
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Buyer/BuyersName),40)"/>
