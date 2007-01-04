@@ -84,7 +84,7 @@
 		<xsl:text>TYP=</xsl:text>	
 			<xsl:text>0430</xsl:text>
 			<xsl:text>+</xsl:text>
-			<xsl:text></xsl:text>
+			<xsl:text>ORDERS</xsl:text>
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:text>SDT=</xsl:text>
@@ -226,10 +226,20 @@
 				<xsl:text>+</xsl:text>
 				<xsl:text>+</xsl:text>
 				<xsl:text>:</xsl:text>
-				<xsl:call-template name="msCheckField">
-					<xsl:with-param name="vobjNode" select="ProductID/BuyersProductCode"/>
-					<xsl:with-param name="vnLength" select="30"/>
-				</xsl:call-template>
+				<xsl:choose>
+					<xsl:when test="ProductID/BuyersProductCode != ''">
+						<xsl:call-template name="msCheckField">
+							<xsl:with-param name="vobjNode" select="ProductID/BuyersProductCode"/>
+							<xsl:with-param name="vnLength" select="30"/>
+						</xsl:call-template>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:call-template name="msCheckField">
+							<xsl:with-param name="vobjNode" select="ProductID/SuppliersProductCode"/>
+							<xsl:with-param name="vnLength" select="30"/>
+						</xsl:call-template>
+					</xsl:otherwise>
+				</xsl:choose>
 				<xsl:text>+::</xsl:text>
 				<xsl:value-of select="OrderedQuantity/@UnitOfMeasure"/>
 				<xsl:text>+</xsl:text>
