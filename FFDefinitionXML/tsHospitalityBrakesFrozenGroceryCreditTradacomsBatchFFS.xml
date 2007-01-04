@@ -5,10 +5,10 @@ Alterations
 **********************************************************************
 Name		| Date			| Change
 **********************************************************************
-S Jefford	| 22/08/2005	| GTIN field now sourced from CLD/SPRO(1).
-			|				| CLD/DRLI now stored in BuyersProductCode
+S Jefford	| 22/08/2005		| GTIN field now sourced from CLD/SPRO(1).
+				|						| CLD/DRLI now stored in BuyersProductCode
 **********************************************************************
-			|				|
+N Emsen		|	04/01/2007	|	Case 661 - CLO3
 **********************************************************************
 -->
 <ffsFlatFileSchema>
