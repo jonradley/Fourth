@@ -11,12 +11,24 @@ R Cambridge	| 04/12/2006	| 585 Created, based on tsHospitalityInboundDeliveryNot
 <ffsFlatFileSchema>
 	<ffsSettings>
 		<ffsRecordPositionType>named</ffsRecordPositionType>
-		<ffsRecordSeparator>chr(13)chr(10)</ffsRecordSeparator>
+		<ffsRecordSeparator>chr(10)</ffsRecordSeparator>
+		<ffsEscapeChars>
+			<ffsEscapeChar>
+				<ffsNative>chr(13)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>chr(10)</ffsNative>
+				<ffsTradesimple>chr(10)</ffsTradesimple>
+				<ffsLiteral>chr(10)</ffsLiteral>
+			</ffsEscapeChar>
+		</ffsEscapeChars>
 		<ffsFieldSeparators>
 			<ffsFieldSeparator>,</ffsFieldSeparator>
 		</ffsFieldSeparators>
-	</ffsSettings>
-	<ffsSplitBatchRecord RecordPos="H"/>
+		<ffsSplitBatchRecord RecordPos="H"/>
+	</ffsSettings>	
 	<ffsRoot>
 		<BatchDocuments>
 			<BatchDocument>
