@@ -9,6 +9,8 @@ S Jefford	| 22/08/2005		| GTIN field now sourced from CLD/SPRO(1).
 				|						| CLD/DRLI now stored in BuyersProductCode
 **********************************************************************
 N Emsen		|	27/09/2006	|	Case 393: Delivery to live.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+N Emsen		|	12/01/2007	|	Case 691: Aramark adoption.
 **********************************************************************
 -->
 <ffsFlatFileSchema>
@@ -165,7 +167,7 @@ N Emsen		|	27/09/2006	|	Case 393: Delivery to live.
 							<ShipTo>
 								<ShipToLocationID>
 									<!--CREHDR-CLO-(1)2)-->
-									<SuppliersCode RecordPos="CLO=" LPos="1" SFPos="2"/>
+									<SuppliersCode RecordPos="CLO=" LPos="3" SFPos="1"/>
 								</ShipToLocationID>
 								<!-- OPTIONAL Delivery Location Name, OPTIONAL, CREDIT – CLO – CNAM -->
 								<ShipToName RecordPos="CLO=" LPos="2"/>
