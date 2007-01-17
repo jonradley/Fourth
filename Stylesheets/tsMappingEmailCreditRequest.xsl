@@ -18,6 +18,8 @@
 ****************************************************************************************** 
  06/12/2006 | Lee Boyton | 595. The unit value, line value and total are now optional.
 ****************************************************************************************** 
+ 15/01/2007 | Lee Boyton | 696. Support for quality issue credit request.
+****************************************************************************************** 
             |            |
 ******************************************************************************************
 -->
@@ -113,7 +115,12 @@
 						<td align="center" colspan="2">
 							<table width="100%">
 								<tr>
-									<th align="center">Request For Credit</th>
+									<th align="center">
+										<xsl:text>Request For Credit</xsl:text>
+										<xsl:if test="/CreditRequest/CreditRequestHeader/QualityCreditRequest = 'true' or /CreditRequest/CreditRequestHeader/QualityCreditRequest = '1'">
+											<xsl:text> (Product Complaint Form)</xsl:text>
+										</xsl:if>
+									</th>
 								</tr>
 							</table>
 						</td>
@@ -409,6 +416,7 @@
 													<xsl:when test="@LineStatus = 'PriceChanged'">Price Change</xsl:when>
 													<xsl:when test="@LineStatus = 'QuantityChanged'">Quantity Change</xsl:when>
 													<xsl:when test="@LineStatus = 'Rejected'">Reject</xsl:when>
+													<xsl:when test="@LineStatus = 'QualityIssue'">Quality Issue</xsl:when>
 													<xsl:otherwise><xsl:value-of select="@LineStatus"/></xsl:otherwise>
 												</xsl:choose>
 											</td>
@@ -425,6 +433,25 @@
 											<td align="right"><xsl:value-of select="LineValueExclVAT"/>&#xa0;</td>
 										</tr>
 										<xsl:if test="Narrative">
+											<xsl:if test="BestBeforeDate or BatchCode">
+												<tr>
+													<xsl:attribute name="class">
+														<xsl:value-of select="$LineClass"/>
+													</xsl:attribute>	
+													<td colspan="8">
+														<xsl:choose>
+															<xsl:when test="BestBeforeDate">
+																<xsl:text>Best before date: </xsl:text>
+																<xsl:value-of select="user:gsFormatDate(BestBeforeDate)"/>
+															</xsl:when>
+															<xsl:when test="BatchCode">
+																<xsl:text>Batch code: </xsl:text>
+																<xsl:value-of select="BatchCode"/>
+															</xsl:when>
+														</xsl:choose>
+													</td>
+												</tr>
+											</xsl:if>
 											<tr>
 												<xsl:attribute name="class">
 													<xsl:value-of select="$LineClass"/>
@@ -502,6 +529,7 @@
 													<xsl:when test="@LineStatus = 'PriceChanged'">Price Change</xsl:when>
 													<xsl:when test="@LineStatus = 'QuantityChanged'">Quantity Change</xsl:when>
 													<xsl:when test="@LineStatus = 'Rejected'">Reject</xsl:when>
+													<xsl:when test="@LineStatus = 'QualityIssue'">Quality Issue</xsl:when>
 													<xsl:otherwise><xsl:value-of select="@LineStatus"/></xsl:otherwise>
 												</xsl:choose>
 											</td>
@@ -518,10 +546,29 @@
 											<td align="right"><xsl:value-of select="LineValueExclVAT"/>&#xa0;</td>
 										</tr>
 										<xsl:if test="Narrative">
+											<xsl:if test="BestBeforeDate or BatchCode">
+												<tr>
+													<xsl:attribute name="class">
+														<xsl:value-of select="$LineClass"/>
+													</xsl:attribute>	
+													<td colspan="8">
+														<xsl:choose>
+															<xsl:when test="BestBeforeDate">
+																<xsl:text>Best before date: </xsl:text>
+																<xsl:value-of select="user:gsFormatDate(BestBeforeDate)"/>
+															</xsl:when>
+															<xsl:when test="BatchCode">
+																<xsl:text>Batch code: </xsl:text>
+																<xsl:value-of select="BatchCode"/>
+															</xsl:when>
+														</xsl:choose>
+													</td>
+												</tr>
+											</xsl:if>
 											<tr>
 												<xsl:attribute name="class">
 													<xsl:value-of select="$LineClass"/>
-												</xsl:attribute>	
+												</xsl:attribute>
 												<td colspan="8">
 													<xsl:if test="Narrative/@Code"><xsl:value-of select="Narrative/@Code"/>: </xsl:if><xsl:value-of select="Narrative"/>
 												</td>
