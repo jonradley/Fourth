@@ -14,7 +14,9 @@
 ******************************************************************************************
  04/10/2006 | Lee Boyton | Created module.
 ******************************************************************************************
-            |            |
+18/01/2007  | Natalie Dry  | Translate the PL account code to remove letters
+******************************************************************************************
+	|	| 
 ******************************************************************************************
 -->
 <xsl:stylesheet version="1.0"
@@ -47,8 +49,10 @@
 			</xsl:choose>
 		</xsl:variable>
 		
+		<!-- Remove any letters from the Aramark PL Account Code - these may be present for some suppliers who have more than one account relating to each PL account, 
+			such as M&J with their depots or Bunzl with their Chemicals accounts -->
 		<xsl:variable name="PLAccountCode">
-			<xsl:value-of select="TradeSimpleHeader/RecipientsCodeForSender"/>
+			<xsl:value-of select="translate(TradeSimpleHeader/RecipientsCodeForSender, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', '')"/>
 		</xsl:variable>
 
 		<xsl:variable name="PLAccountName">
