@@ -44,6 +44,12 @@ AUTHOR:
 			<Description>Novus Leisure.</Description>
 			<boolean>NOT</boolean>
 		</record>
+		<record>
+			<value>HARRSC</value>
+			<Description>HARRISON CATERING SCHOOLS.</Description>
+			<boolean>NOT</boolean>
+		</record>
+		
 	</table>
 	<!-- end of table -->
 </xsl:variable>
