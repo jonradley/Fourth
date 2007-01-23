@@ -11,6 +11,7 @@ S Jefford	| 22/08/2005		| GTIN field now sourced from ILD/SPRO(1).
 N Emsen		|	27/09/2006	|	Case 393: Delivery to live.
 N Emsen		|	06/10/2006	|	Case 434: recommit.
 N Emsen		|	02/11/2006	|	Case 454
+N Emsen		|	23/01/2007	|	Case 744: change to MJ CDT mapping following Analysis by Mark Sayeers 
 **********************************************************************
 -->
 <ffsFlatFileSchema>
@@ -137,7 +138,7 @@ N Emsen		|	02/11/2006	|	Case 454
 							<Buyer>
 								<BuyersLocationID>
 									<!--INVFIL-CDT-CIDN(1)-->
-									<SuppliersCode RecordPos="CDT=" LPos="1" SFPos="1"/>
+									<SuppliersCode RecordPos="CDT=" LPos="1" SFPos="2"/>
 								</BuyersLocationID>
 								<!-- OPTIONAL Buyer Name, MANDATORY, INVFIL – CDT – CNAM, NB: To make this a legal invoice, you must provide this field. The “invoice to” name -->
 								<BuyersName RecordPos="CDT=" LPos="2"/>
