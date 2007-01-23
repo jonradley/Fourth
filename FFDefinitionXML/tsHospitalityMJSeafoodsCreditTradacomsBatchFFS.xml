@@ -5,11 +5,12 @@ Alterations
 **********************************************************************
 Name		| Date			| Change
 **********************************************************************
-S Jefford	| 22/08/2005	| GTIN field now sourced from CLD/SPRO(1).
-			|				| CLD/DRLI now stored in BuyersProductCode
+S Jefford	| 22/08/2005		| GTIN field now sourced from CLD/SPRO(1).
+				|						| CLD/DRLI now stored in BuyersProductCode
 **********************************************************************
-N Emsen	|	06/10/2006	|	Case 434: recommit.
+N Emsen		|	06/10/2006	|	Case 434: recommit.
 N Emsen		|	02/11/2006	|	Case 454
+N Emsen		|	23/01/2007	|	Case 744: change to MJ CDT mapping following Analysis by Mark Sayeers 
 **********************************************************************
 -->
 <ffsFlatFileSchema>
@@ -134,7 +135,7 @@ N Emsen		|	02/11/2006	|	Case 454
 							<Buyer>
 								<BuyersLocationID>
 									<!--CREHDR-CDT-CIDN(1)-->
-									<SuppliersCode RecordPos="CDT=" LPos="1" SFPos="1"/>
+									<SuppliersCode RecordPos="CDT=" LPos="1" SFPos="2"/>
 								</BuyersLocationID>
 								<!-- OPTIONAL Buyer Name, LEGAL MANDATORY, CREHDR – CDT - CNAM, The “invoice to” name -->
 								<BuyersName RecordPos="CDT=" LPos="2"/>
