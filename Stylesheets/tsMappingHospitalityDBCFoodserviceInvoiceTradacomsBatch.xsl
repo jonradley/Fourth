@@ -63,7 +63,20 @@ N Emsen		|	08/11/2006	|	Case 531: Purchase order reference working.
 	<xsl:template match="InvoiceLine">
 		<InvoiceLine>
 		<xsl:copy-of select="LineNumber"/>
-		<xsl:copy-of select="DeliveryNoteReferences"/>
+		
+		<!-- DeliveryNoteReferences -->
+		<DeliveryNoteReferences>
+			<DeliveryNoteReference>
+				<xsl:value-of select="DeliveryNoteReferences/DeliveryNoteReference"/>
+			</DeliveryNoteReference>
+			<DeliveryNoteDate>
+				<xsl:value-of select="concat('20', substring(DeliveryNoteReferences/DeliveryNoteDate, 1, 2), '-', substring(DeliveryNoteReferences/DeliveryNoteDate, 3, 2), '-', substring(DeliveryNoteReferences/DeliveryNoteDate, 5, 2))"/>
+			</DeliveryNoteDate>
+			<DespatchDate>
+				<xsl:value-of select="concat('20', substring(DeliveryNoteReferences/DespatchDate, 1, 2), '-', substring(DeliveryNoteReferences/DespatchDate, 3, 2), '-', substring(DeliveryNoteReferences/DespatchDate, 5, 2))"/>
+			</DespatchDate>
+		</DeliveryNoteReferences>
+		
 		<xsl:copy-of select="ProductID"/>
 		<xsl:copy-of select="ProductDescription"/>
 		<!-- check if InvoiceLine/InvoicedQuantity is bkank, if so re-map. -->
@@ -179,15 +192,15 @@ N Emsen		|	08/11/2006	|	Case 531: Purchase order reference working.
 	
 	<!-- DATE CONVERSION YYMMDD to xsd:date -->
 	<xsl:template match="PurchaseOrderReferences/PurchaseOrderDate | 
-						DeliveryNoteReferences/DeliveryNoteDate |
-						DeliveryNoteReferences/DespatchDate |
 						BatchInformation/FileCreationDate |
+						DeliveryNoteReferences/DeliveryNoteDate |
 						InvoiceReferences/InvoiceDate |
 						InvoiceReferences/TaxPointDate">
 		<xsl:copy>
 			<xsl:value-of select="concat('20', substring(., 1, 2), '-', substring(., 3, 2), '-', substring(., 5, 2))"/>
 		</xsl:copy>
 	</xsl:template>
+	
 	<!-- DATE CONVERSION YYMMDD:[HHMMSS] to xsd:dateTime CCYY-MM-DDTHH:MM:SS+00:00 -->
 	<xsl:template match="BatchInformation/SendersTransmissionDate">
 		<xsl:copy>
