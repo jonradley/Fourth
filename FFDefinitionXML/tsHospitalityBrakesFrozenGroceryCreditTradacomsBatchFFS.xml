@@ -9,6 +9,8 @@ S Jefford	| 22/08/2005		| GTIN field now sourced from CLD/SPRO(1).
 				|						| CLD/DRLI now stored in BuyersProductCode
 **********************************************************************
 N Emsen		|	04/01/2007	|	Case 661 - CLO3
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+N Emsen		|	24/01/2007	|	Case 750:   Brakes frozen CLO mapping change
 **********************************************************************
 -->
 <ffsFlatFileSchema>
@@ -165,7 +167,8 @@ N Emsen		|	04/01/2007	|	Case 661 - CLO3
 							<ShipTo>
 								<ShipToLocationID>
 									<!--CREHDR-CLO-(1)2)-->
-									<SuppliersCode RecordPos="CLO=" LPos="1" SFPos="2"/>
+									<!-- N Emsen		|	24/01/2007	|	Case 750:   Brakes frozen CLO mapping change --> 
+									<SuppliersCode RecordPos="CLO=" LPos="1" SFPos="3"/>
 								</ShipToLocationID>
 								<!-- OPTIONAL Delivery Location Name, OPTIONAL, CREDIT – CLO – CNAM -->
 								<ShipToName RecordPos="CLO=" LPos="2"/>
