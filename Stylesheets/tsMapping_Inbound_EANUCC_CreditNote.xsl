@@ -69,6 +69,13 @@
 						</xsl:choose>
 					</SendersCodeForRecipient>
 					
+					<!-- SBR used to pick out the PL Account code to be used in the trading relationship set up. This could be Buyer or Supplier value. -->
+					<xsl:if test="string(/Invoice/TradeAgreementReference/ContractReferenceNumber) != '' ">
+						<SendersBranchReference>
+							<xsl:value-of select="/Invoice/TradeAgreementReference/ContractReferenceNumber"/>
+						</SendersBranchReference>
+					</xsl:if>
+							
 					<!-- SendersName, Address1 - 4 and PostCode will be populated by subsequent processors  -->
 		
 					<!-- Recipients Code for Sender, Recipients Branch Reference, Name, Address1 - 4, PostCode will be populated by subsequent 	processors -->
