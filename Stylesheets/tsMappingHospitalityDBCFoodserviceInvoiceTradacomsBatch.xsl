@@ -13,7 +13,6 @@ N Emsen		| 14/09/2006		|	Purchase order date stipped if = blank
 N Emsen		|	08/11/2006	|	Case 531: Purchase order reference working.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 N Emsen		|	24/01/2007	|	Case 751
-
 **********************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
@@ -80,34 +79,34 @@ N Emsen		|	24/01/2007	|	Case 751
 			</DespatchDate>
 		</DeliveryNoteReferences>
 		
-		<xsl:copy-of select="ProductID"/>
+		<xsl:apply-templates select="ProductID"/>
 		<xsl:copy-of select="ProductDescription"/>
 		<!-- check if InvoiceLine/InvoicedQuantity is bkank, if so re-map. -->
 		<InvoicedQuantity>
 				<xsl:choose>
+					<!-- IS at weighted item -->
 					<xsl:when test="string(Measure/TotalMeasure) != '' ">
 						<xsl:attribute name="UnitOfMeasure">
 							<xsl:call-template name="ConvertUnitOfMeasureToUpperCase">
 								<xsl:with-param name="sValue" select="Measure/TotalMeasureIndicator"/>
 							</xsl:call-template>
 						</xsl:attribute>
-						<xsl:value-of select="Measure/TotalMeasure"/>
-					</xsl:when>	
+						<xsl:value-of select="format-number((Measure/TotalMeasure * 1.0) div 1000.0, '0.00#')"/>
+					</xsl:when>
+					<!-- NOT a weighted item -->	
 					<xsl:otherwise>
 						<xsl:value-of select="InvoicedQuantity"/>
 					</xsl:otherwise>
 				</xsl:choose>		
 		</InvoicedQuantity>
-		<xsl:copy-of select="UnitValueExclVAT"/>
-		<xsl:copy-of select="LineValueExclVAT"/>
-		<xsl:copy-of select="VATCode"/>
-		<xsl:copy-of select="VATRate"/>
-		<xsl:copy-of select="Measure"/>
-		<xsl:copy-of select="LineExtraData"/>
+		<xsl:apply-templates select="UnitValueExclVAT"/>
+		<xsl:apply-templates  select="LineValueExclVAT"/>
+		<xsl:apply-templates  select="VATCode"/>
+		<xsl:apply-templates  select="VATRate"/>
+		<xsl:apply-templates  select="Measure"/>
+		<xsl:apply-templates  select="LineExtraData"/>
 		</InvoiceLine>
 	</xsl:template>
-	
-	
 
 	<!-- InvoiceLine/ProductID/BuyersProductCode is used as a placeholder for INVOIC-ILD-CRLI and should not be copied over -->
 	<xsl:template match="BuyersProductCode"/>
@@ -117,25 +116,6 @@ N Emsen		|	24/01/2007	|	Case 751
 		<xsl:copy>
 			<xsl:value-of select="format-number(., '#0.##')"/>
 		</xsl:copy>
-	</xsl:template>
-	
-	
-	<!-- INVOIC-ILD-QTYI (InvoiceLine/InvoicedQuantity) needs to be multiplied by -1 if (InvoiceLine/ProductID/BuyersProductCode) is NOT blank -->
-	
-	<xsl:template match="InvoiceLine/InvoicedQuantity | InvoiceLine/Measure/TotalMeasureIndicator">
-
-		<xsl:choose>
-			<!--Parent of InvoicedQuantity is InvoiceLine-->
-			<xsl:when test="string-length(../ProductID/BuyersProductCode) &gt; 0" >
-				<!--INVOIC-ILD-CRLI is not blank, multiply by -1-->
-				<xsl:call-template name="copyCurrentNodeDPUnchanged">
-					<xsl:with-param name="lMultiplier" select="-1.0"/>
-				</xsl:call-template>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:call-template name="copyCurrentNodeDPUnchanged"/>
-			</xsl:otherwise>
-		</xsl:choose>
 	</xsl:template>
 	
 	<!-- INVOIC-ILD-LEXC(InvoiceLine/LineValueExclVAT) need to be multiplied by -1 if (InvoiceLine/ProductID/BuyersProductCode) is NOT blank -->
@@ -162,6 +142,7 @@ N Emsen		|	24/01/2007	|	Case 751
 						BatchHeader/VATAmount |
 						BatchHeader/DocumentTotalInclVAT |
 						BatchHeader/SettlementTotalInclVAT |
+						BatchHeader/VATSubTotals/VATSubTotal/@VATRate |
 						VATSubTotal/* |
 						InvoiceTrailer/DocumentTotalExclVAT |
 						InvoiceTrailer/SettlementDiscount |
@@ -180,11 +161,11 @@ N Emsen		|	24/01/2007	|	Case 751
 	</xsl:template>
 	
 	<!--Add any attribute XPath whose value needs to be converted from implicit 3 D.P to explicit 2 D.P. -->
-	<!--xsl:template match="VATSubTotal/@VATRate">
+	<xsl:template match="VATSubTotal/@VATRate">
 		<xsl:attribute name="{name()}">
 			<xsl:value-of select="format-number(. div 1000.0, '0.00')"/>
 		</xsl:attribute>
-	</xsl:template -->
+	</xsl:template>
 	
 	<!-- SIMPLE CONVERSION IMPLICIT TO EXPLICIT 4 D.P -->
 	<!-- Add any XPath whose text node needs to be converted from implicit to explicit 4 D.P. -->
@@ -302,7 +283,7 @@ N Emsen		|	24/01/2007	|	Case 751
 	</xsl:template>
 	<!-- END of MHDSegment HANDLER -->
 	
-	<!-- Check for pairing of Purchase Order Date & Purchase Order Reference -->
+	<!-- NE - Check for pairing of Purchase Order Date & Purchase Order Reference -->
 	<xsl:template match="//PurchaseOrderReferences">
 		<xsl:variable name="sPORefDate" select="translate(PurchaseOrderDate,' ','')"/>
 		<xsl:variable name="sPORefReference" select="translate(PurchaseOrderReference,' ','')"/>
