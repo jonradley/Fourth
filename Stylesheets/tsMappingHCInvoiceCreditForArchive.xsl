@@ -14,6 +14,8 @@
 ******************************************************************************************
  12/01/2007 | A Sheppard 	| Created module.
 ******************************************************************************************
+ 25/01/2007 | A Sheppard	| 755. Post-live format changes
+******************************************************************************************
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -28,13 +30,22 @@
 		<xsl:variable name="NewLine">
 			<xsl:text>&#13;&#10;</xsl:text>
 		</xsl:variable>
-	
+
 		<!--Header Line-->
 		<xsl:text>"H"</xsl:text>
 		<xsl:text>,</xsl:text>
 		<xsl:choose><xsl:when test="Invoice"><xsl:text>"Invoice"</xsl:text></xsl:when><xsl:otherwise>"Credit"</xsl:otherwise></xsl:choose>
 		<xsl:text>,</xsl:text>
-		<xsl:call-template name="convertForCSV"><xsl:with-param name="stringToConvert" select="//TradeSimpleHeader/RecipientsCodeForSender"/></xsl:call-template>
+		<xsl:choose>
+			<xsl:when test="substring-after(//TradeSimpleHeader/RecipientsCodeForSender,'#') = ''">
+				<xsl:call-template name="convertForCSV"><xsl:with-param name="stringToConvert" select="//TradeSimpleHeader/RecipientsCodeForSender"/></xsl:call-template>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:call-template name="convertForCSV"><xsl:with-param name="stringToConvert" select="substring-after(//TradeSimpleHeader/RecipientsCodeForSender,'#')"/></xsl:call-template>
+			</xsl:otherwise>
+		</xsl:choose>
+		<xsl:text>,</xsl:text>
+		<xsl:call-template name="convertForCSV"><xsl:with-param name="stringToConvert" select="//CreditNoteHeader/CreditNoteReferences/CreditNoteReference | //InvoiceHeader/InvoiceReferences/InvoiceReference"/></xsl:call-template>
 		<xsl:text>,</xsl:text>
 		<xsl:call-template name="convertForCSV"><xsl:with-param name="stringToConvert" select="//DocumentStatus"/></xsl:call-template>
 		<xsl:text>,</xsl:text>
@@ -109,6 +120,19 @@
 			<xsl:value-of select="$NewLine"/>
 			<xsl:text>"L"</xsl:text>
 			<xsl:text>,</xsl:text>
+			<xsl:choose><xsl:when test="//Invoice"><xsl:text>"Invoice"</xsl:text></xsl:when><xsl:otherwise>"Credit"</xsl:otherwise></xsl:choose>
+			<xsl:text>,</xsl:text>
+			<xsl:choose>
+				<xsl:when test="substring-after(//TradeSimpleHeader/RecipientsCodeForSender,'#') = ''">
+					<xsl:call-template name="convertForCSV"><xsl:with-param name="stringToConvert" select="//TradeSimpleHeader/RecipientsCodeForSender"/></xsl:call-template>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:call-template name="convertForCSV"><xsl:with-param name="stringToConvert" select="substring-after(//TradeSimpleHeader/RecipientsCodeForSender,'#')"/></xsl:call-template>
+				</xsl:otherwise>
+			</xsl:choose>
+			<xsl:text>,</xsl:text>
+			<xsl:call-template name="convertForCSV"><xsl:with-param name="stringToConvert" select="//CreditNoteHeader/CreditNoteReferences/CreditNoteReference | //InvoiceHeader/InvoiceReferences/InvoiceReference"/></xsl:call-template>
+			<xsl:text>,</xsl:text>
 			<xsl:call-template name="convertForCSV"><xsl:with-param name="stringToConvert" select="LineNumber"/></xsl:call-template>
 			<xsl:text>,</xsl:text>
 			<xsl:call-template name="convertForCSV"><xsl:with-param name="stringToConvert" select="CreditRequestReferences/CreditRequestReference"/></xsl:call-template>
@@ -149,6 +173,19 @@
 			<xsl:value-of select="$NewLine"/>
 			<xsl:text>"V"</xsl:text>
 			<xsl:text>,</xsl:text>
+			<xsl:choose><xsl:when test="//Invoice"><xsl:text>"Invoice"</xsl:text></xsl:when><xsl:otherwise>"Credit"</xsl:otherwise></xsl:choose>
+			<xsl:text>,</xsl:text>
+			<xsl:choose>
+				<xsl:when test="substring-after(//TradeSimpleHeader/RecipientsCodeForSender,'#') = ''">
+					<xsl:call-template name="convertForCSV"><xsl:with-param name="stringToConvert" select="//TradeSimpleHeader/RecipientsCodeForSender"/></xsl:call-template>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:call-template name="convertForCSV"><xsl:with-param name="stringToConvert" select="substring-after(//TradeSimpleHeader/RecipientsCodeForSender,'#')"/></xsl:call-template>
+				</xsl:otherwise>
+			</xsl:choose>
+			<xsl:text>,</xsl:text>
+			<xsl:call-template name="convertForCSV"><xsl:with-param name="stringToConvert" select="//CreditNoteHeader/CreditNoteReferences/CreditNoteReference | //InvoiceHeader/InvoiceReferences/InvoiceReference"/></xsl:call-template>
+			<xsl:text>,</xsl:text>
 			<xsl:call-template name="convertForCSV"><xsl:with-param name="stringToConvert" select="@VATCode"/></xsl:call-template>
 			<xsl:text>,</xsl:text>
 			<xsl:call-template name="convertForCSV"><xsl:with-param name="stringToConvert" select="@VATRate"/></xsl:call-template>
@@ -177,6 +214,19 @@
 		<!--Trailer Line-->
 		<xsl:value-of select="$NewLine"/>
 		<xsl:text>"T"</xsl:text>
+		<xsl:text>,</xsl:text>
+		<xsl:choose><xsl:when test="//Invoice"><xsl:text>"Invoice"</xsl:text></xsl:when><xsl:otherwise>"Credit"</xsl:otherwise></xsl:choose>
+		<xsl:text>,</xsl:text>
+		<xsl:choose>
+			<xsl:when test="substring-after(//TradeSimpleHeader/RecipientsCodeForSender,'#') = ''">
+				<xsl:call-template name="convertForCSV"><xsl:with-param name="stringToConvert" select="//TradeSimpleHeader/RecipientsCodeForSender"/></xsl:call-template>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:call-template name="convertForCSV"><xsl:with-param name="stringToConvert" select="substring-after(//TradeSimpleHeader/RecipientsCodeForSender,'#')"/></xsl:call-template>
+			</xsl:otherwise>
+		</xsl:choose>
+		<xsl:text>,</xsl:text>
+		<xsl:call-template name="convertForCSV"><xsl:with-param name="stringToConvert" select="//CreditNoteHeader/CreditNoteReferences/CreditNoteReference | //InvoiceHeader/InvoiceReferences/InvoiceReference"/></xsl:call-template>
 		<xsl:text>,</xsl:text>
 		<xsl:call-template name="convertForCSV"><xsl:with-param name="stringToConvert" select="//NumberOfLines"/></xsl:call-template>
 		<xsl:text>,</xsl:text>
