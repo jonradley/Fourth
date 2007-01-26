@@ -27,6 +27,8 @@
 ' 20/04/2005  | Steven Hewitt | Created
 '******************************************************************************************
 ' 26/07/2005  | A Sheppard    | 2344. Bug fix.
+'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+'	26/01/2007	|	Nigel Emsen	|	Case 710: Fairfax Adoption for Aramark. XPaths adjusted.
 '******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" 
@@ -60,8 +62,8 @@
 					<!-- SCR comes from Sellers code for buyer if there, else it comes from Buyer GLN -->
 					<SendersCodeForRecipient>
 						<xsl:choose>
-							<xsl:when test="/CreditNote/Buyer/SellerAssigned">
-								<xsl:value-of select="/CreditNote/Buyer/SellerAssigned"/>
+							<xsl:when test="string(/CreditNote/ShipTo/SellerAssigned)">
+								<xsl:value-of select="/CreditNote/ShipTo/SellerAssigned"/>
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:value-of select="/CreditNote/Buyer/BuyerGLN"/>
@@ -70,9 +72,9 @@
 					</SendersCodeForRecipient>
 					
 					<!-- SBR used to pick out the PL Account code to be used in the trading relationship set up. This could be Buyer or Supplier value. -->
-					<xsl:if test="string(/Invoice/TradeAgreementReference/ContractReferenceNumber) != '' ">
+					<xsl:if test="string(/CreditNote/TradeAgreementReference/ContractReferenceNumber) != '' ">
 						<SendersBranchReference>
-							<xsl:value-of select="/Invoice/TradeAgreementReference/ContractReferenceNumber"/>
+							<xsl:value-of select="/CreditNote/TradeAgreementReference/ContractReferenceNumber"/>
 						</SendersBranchReference>
 					</xsl:if>
 							
@@ -96,17 +98,20 @@
 					
 					<Buyer>
 						<BuyersLocationID>
-							<GLN>
-								<xsl:value-of select="/CreditNote/Buyer/BuyerGLN"/>
-							</GLN>
+						
+							<xsl:if test="string(/CreditNote/Buyer/BuyerGLN) !='' ">
+								<GLN>
+									<xsl:value-of select="/CreditNote/Buyer/BuyerGLN"/>
+								</GLN>
+							</xsl:if>
 							
-							<xsl:if test="/CreditNote/Buyer/BuyerAssigned">
+							<xsl:if test="string(/CreditNote/Buyer/BuyerAssigned)">
 								<BuyersCode>
 									<xsl:value-of select="/CreditNote/Buyer/BuyerAssigned"/>
 								</BuyersCode>
 							</xsl:if>
 							
-							<xsl:if test="/CreditNote/Buyer/SellerAssigned">	
+							<xsl:if test="string(/CreditNote/Buyer/SellerAssigned)">	
 								<SuppliersCode>
 									<xsl:value-of select="/CreditNote/Buyer/SellerAssigned"/>
 								</SuppliersCode>
@@ -118,17 +123,20 @@
 					
 					<Supplier>
 						<SuppliersLocationID>
-							<GLN>
-								<xsl:value-of select="/CreditNote/Seller/SellerGLN"/>
-							</GLN>
+						
+							<xsl:if test="string(/CreditNote/Seller/SellerGLN)">
+								<GLN>
+									<xsl:value-of select="/CreditNote/Seller/SellerGLN"/>
+								</GLN>
+							</xsl:if>
 	
-							<xsl:if test="/CreditNote/Seller/BuyerAssigned">
+							<xsl:if test="string(/CreditNote/Seller/BuyerAssigned)">
 								<BuyersCode>
 									<xsl:value-of select="/CreditNote/Seller/BuyerAssigned"/>
 								</BuyersCode>
 							</xsl:if>						
 							
-							<xsl:if test="/CreditNote/Seller/SellerAssigned">
+							<xsl:if test="string(/CreditNote/Seller/SellerAssigned)">
 								<SuppliersCode>
 									<xsl:value-of select="/CreditNote/Seller/SellerAssigned"/>
 								</SuppliersCode>
@@ -141,21 +149,25 @@
 					
 					<ShipTo>
 						<ShipToLocationID>
-							<GLN>
-								<xsl:value-of select="/CreditNote/ShipTo/ShipToGLN"/>
-							</GLN>
+						
+							<xsl:if test="string(/CreditNote/ShipTo/ShipToGLN)">
+								<GLN>
+									<xsl:value-of select="/CreditNote/ShipTo/ShipToGLN"/>
+								</GLN>				
+							</xsl:if>
 							
-							<xsl:if test="/CreditNote/ShipTo/BuyerAssigned">
+							<xsl:if test="string(/CreditNote/ShipTo/BuyerAssigned)">
 								<BuyersCode>
 									<xsl:value-of select="/CreditNote/ShipTo/BuyerAssigned"/>
 								</BuyersCode>
 							</xsl:if>
 							
-							<xsl:if test="/CreditNote/ShipTo/SellerAssigned">
+							<xsl:if test="string(/CreditNote/ShipTo/SellerAssigned)">
 								<SuppliersCode>
 									<xsl:value-of select="/CreditNote/ShipTo/SellerAssigned"/>
 								</SuppliersCode>
 							</xsl:if>
+							
 						</ShipToLocationID>		
 						
 						<!-- ShipTo name and address will be populated by subsequent processors -->
@@ -164,25 +176,25 @@
 					<xsl:if test="/CreditNote/InvoiceReference or /CreditNote/TaxPointDateTime or /CreditNote/Seller/VATRegisterationNumber">
 						<InvoiceReferences>
 						
-							<xsl:if test="/CreditNote/InvoiceReference/InvoiceDocumentNumber">
+							<xsl:if test="string(/CreditNote/InvoiceReference/InvoiceDocumentNumber)">
 								<InvoiceReference>
 									<xsl:value-of select="/CreditNote/InvoiceReference/InvoiceDocumentNumber"/>
 								</InvoiceReference>
 							</xsl:if>
 						
-							<xsl:if test="/CreditNote/InvoiceReference/InvoiceDocumentDate">
+							<xsl:if test="string(/CreditNote/InvoiceReference/InvoiceDocumentDate)">
 								<InvoiceDate>
 									<xsl:value-of select="substring-before(/CreditNote/InvoiceReference/InvoiceDocumentDate, 'T')"/>
 								</InvoiceDate>
 							</xsl:if>
 							
-							<xsl:if test="/CreditNote/TaxPointDateTime">
+							<xsl:if test="string(/CreditNote/TaxPointDateTime)">
 								<TaxPointDate>
 									<xsl:value-of select="substring-before(/CreditNote/TaxPointDateTime, 'T')"/>
 								</TaxPointDate>
 							</xsl:if>
 
-							<xsl:if test="/CreditNote/Seller/VATRegisterationNumber">
+							<xsl:if test="string(/CreditNote/Seller/VATRegisterationNumber)">
 								<VATRegNo>
 									<xsl:value-of select="/CreditNote/Seller/VATRegisterationNumber"/>
 								</VATRegNo>
@@ -203,7 +215,7 @@
 							<xsl:value-of select="substring-before(/CreditNote/TaxPointDateTime, 'T')"/>
 						</TaxPointDate>			
 						
-						<xsl:if test="/CreditNote/Seller/VATRegisterationNumber">
+						<xsl:if test="string(/CreditNote/Seller/VATRegisterationNumber)">
 							<VATRegNo>
 								<xsl:value-of select="/CreditNote/Seller/VATRegisterationNumber"/>
 							</VATRegNo>

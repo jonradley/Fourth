@@ -25,6 +25,8 @@
 ' 25/04/2005  | Steven Hewitt | Created
 '******************************************************************************************
 ' 26/07/2005  | A Sheppard    | 2344. Bug fix.
+'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+'	26/01/2007	|	Nigel Emsen	|	Case 710: Fairfax Adoption for Aramark. XPaths adjusted.
 '******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" 
@@ -61,8 +63,8 @@
 					<!-- SCR comes from Sellers code for buyer if there, else it comes from Buyer GLN -->
 					<SendersCodeForRecipient>
 						<xsl:choose>
-							<xsl:when test="/Invoice/Buyer/SellerAssigned">
-								<xsl:value-of select="/Invoice/Buyer/SellerAssigned"/>
+							<xsl:when test="string(/Invoice/ShipTo/SellerAssigned)">
+								<xsl:value-of select="/Invoice/ShipTo/SellerAssigned"/>
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:value-of select="/Invoice/Buyer/BuyerGLN"/>
@@ -97,17 +99,20 @@
 					
 					<Buyer>
 						<BuyersLocationID>
-							<GLN>
-								<xsl:value-of select="/Invoice/Buyer/BuyerGLN"/>
-							</GLN>
+						
+							<xsl:if test="string(/Invoice/Buyer/BuyerGLN) != '' ">
+								<GLN>
+									<xsl:value-of select="/Invoice/Buyer/BuyerGLN"/>
+								</GLN>
+							</xsl:if>
 							
-							<xsl:if test="/Invoice/Buyer/BuyerAssigned">
+							<xsl:if test="string(/Invoice/Buyer/BuyerAssigned)">
 								<BuyersCode>
 									<xsl:value-of select="/Invoice/Buyer/BuyerAssigned"/>
 								</BuyersCode>
 							</xsl:if>
 							
-							<xsl:if test="/Invoice/Buyer/SellerAssigned">	
+							<xsl:if test="string(/Invoice/Buyer/SellerAssigned)">	
 								<SuppliersCode>
 									<xsl:value-of select="/Invoice/Buyer/SellerAssigned"/>
 								</SuppliersCode>
@@ -135,7 +140,7 @@
 								<xsl:text>GB</xsl:text>
 							</AddressLine4>
 							
-							<xsl:if test="/Invoice/Buyer/Address/PostCode">
+							<xsl:if test="string(/Invoice/Buyer/Address/PostCode)">
 								<PostCode>
 									<xsl:value-of select="/Invoice/Buyer/Address/PostCode"/>
 								</PostCode>
@@ -144,18 +149,22 @@
 					</Buyer>
 					
 					<Supplier>
+			
 						<SuppliersLocationID>
-							<GLN>
-								<xsl:value-of select="/Invoice/Seller/SellerGLN"/>
-							</GLN>
+						
+							<xsl:if test="string(/Invoice/Seller/SellerGLN)">
+								<GLN>
+									<xsl:value-of select="/Invoice/Seller/SellerGLN"/>
+								</GLN>
+							</xsl:if>
 	
-							<xsl:if test="/Invoice/Seller/BuyerAssigned">
+							<xsl:if test="string(/Invoice/Seller/BuyerAssigned)">
 								<BuyersCode>
 									<xsl:value-of select="/Invoice/Seller/BuyerAssigned"/>
 								</BuyersCode>
 							</xsl:if>						
 							
-							<xsl:if test="/Invoice/Seller/SellerAssigned">
+							<xsl:if test="string(/Invoice/Seller/SellerAssigned)">
 								<SuppliersCode>
 									<xsl:value-of select="/Invoice/Seller/SellerAssigned"/>
 								</SuppliersCode>
@@ -167,13 +176,13 @@
 								<xsl:value-of select="/Invoice/Seller/Address/BuildingIdentifier"/>
 							</AddressLine1>
 							
-							<xsl:if test="/Invoice/Seller/Address/StreetName">
+							<xsl:if test="string(/Invoice/Seller/Address/StreetName)">
 								<AddressLine2>
 									<xsl:value-of select="/Invoice/Seller/Address/StreetName"/>
 								</AddressLine2>
 							</xsl:if>
 	
-							<xsl:if test="/Invoice/Seller/Address/City">
+							<xsl:if test="string(/Invoice/Seller/Address/City)">
 								<AddressLine3>
 									<xsl:value-of select="/Invoice/Seller/Address/City"/>
 								</AddressLine3>
@@ -183,7 +192,7 @@
 								<xsl:text>GB</xsl:text>
 							</AddressLine4>						
 	
-							<xsl:if test="/Invoice/Seller/Address/PostCode">
+							<xsl:if test="string(/Invoice/Seller/Address/PostCode)">
 								<PostCode>
 									<xsl:value-of select="/Invoice/Seller/Address/PostCode"/>
 								</PostCode>
@@ -193,17 +202,20 @@
 					
 					<ShipTo>
 						<ShipToLocationID>
-							<GLN>
-								<xsl:value-of select="/Invoice/ShipTo/ShipToGLN"/>
-							</GLN>
+						
+							<xsl:if test="string(/Invoice/ShipTo/ShipToGLN)">
+								<GLN>
+									<xsl:value-of select="/Invoice/ShipTo/ShipToGLN"/>
+								</GLN>
+							</xsl:if>
 							
-							<xsl:if test="/Invoice/ShipTo/BuyerAssigned">
+							<xsl:if test="string(/Invoice/ShipTo/BuyerAssigned)">
 								<BuyersCode>
 									<xsl:value-of select="/Invoice/ShipTo/BuyerAssigned"/>
 								</BuyersCode>
 							</xsl:if>
 							
-							<xsl:if test="/Invoice/ShipTo/SellerAssigned">
+							<xsl:if test="string(/Invoice/ShipTo/SellerAssigned)">
 								<SuppliersCode>
 									<xsl:value-of select="/Invoice/ShipTo/SellerAssigned"/>
 								</SuppliersCode>
@@ -226,7 +238,7 @@
 							<xsl:value-of select="substring-before(/Invoice/TaxPointDateTime, 'T')"/>
 						</TaxPointDate>				
 						
-						<xsl:if test="/Invoice/Seller/VATRegisterationNumber">
+						<xsl:if test="string(/Invoice/Seller/VATRegisterationNumber)">
 							<VATRegNo>
 								<xsl:value-of select="/Invoice/Seller/VATRegisterationNumber"/>
 							</VATRegNo>
