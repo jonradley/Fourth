@@ -74,9 +74,9 @@ ALLISON RISEBRO
 								<SendersTransmissionDate RecordPos="C" LPos="8"/>
 							</BatchInformation>
 							<Buyer>
-								<!--<BuyersLocationID>
-									<SuppliersCode RecordPos="" LPos=""/>
-								</BuyersLocationID>-->
+								<BuyersLocationID>
+									<SuppliersCode RecordPos="C" LPos="2"/>
+								</BuyersLocationID>
 								<BuyersName RecordPos="H" LPos="10"/>
 								<BuyersAddress>
 									<AddressLine1 RecordPos="H" LPos="11"/>
