@@ -264,12 +264,19 @@
 										</xsl:if>
 										<ProductID>
 											<GTIN>
-												<xsl:value-of select="ItemIdentifier/GTIN"/>
+												<xsl:choose>
+													<xsl:when test="string(ItemIdentifier/GTIN) != '' ">
+														<xsl:value-of select="ItemIdentifier/GTIN"/>
+													</xsl:when>
+													<xsl:otherwise>
+														<xsl:text>55555555555555</xsl:text>
+													</xsl:otherwise>
+												</xsl:choose>
 											</GTIN>
 											<xsl:if test="ItemIdentifier/AlternateCode">
-												<BuyersProductCode>
+												<SuppliersProductCode>
 													<xsl:value-of select="ItemIdentifier/AlternateCode"/>
-												</BuyersProductCode>
+												</SuppliersProductCode>
 											</xsl:if>
 										</ProductID>
 										<!-- Product Description is populated by subsequent processors -->
