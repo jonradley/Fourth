@@ -27,6 +27,8 @@
 ' 26/07/2005  | A Sheppard    | 2344. Bug fix.
 '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 '	26/01/2007	|	Nigel Emsen	|	Case 710: Fairfax Adoption for Aramark. XPaths adjusted.
+'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+'	31/01/2007	| Lee Boyton   |	Case 767: Cater for an empty ContractReferenceNumber element.
 '******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
@@ -214,7 +216,7 @@
 										<LineNumber>
 											<xsl:value-of select="LineItemNumber"/>
 										</LineNumber>
-										<xsl:if test="/Invoice/OrderReference or /Invoice/TradeAgreementReference">
+										<xsl:if test="/Invoice/OrderReference or /Invoice/TradeAgreementReference/ContractReferenceNumber != ''">
 											<PurchaseOrderReferences>
 												<xsl:if test="/Invoice/OrderReference/PurchaseOrderNumber">
 													<PurchaseOrderReference>
@@ -229,7 +231,7 @@
 														<xsl:value-of select="substring-after(/Invoice/OrderReference/PurchaseOrderDate,'T')"/>
 													</PurchaseOrderTime>
 												</xsl:if>
-												<xsl:if test="/Invoice/TradeAgreementReference">
+												<xsl:if test="/Invoice/TradeAgreementReference/ContractReferenceNumber != ''">
 													<TradeAgreement>
 														<ContractReference>
 															<xsl:value-of select="/Invoice/TradeAgreementReference/ContractReferenceNumber"/>
