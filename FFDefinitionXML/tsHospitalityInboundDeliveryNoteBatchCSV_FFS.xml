@@ -6,6 +6,8 @@ Name			| Date			| Change
 **********************************************************************
 R Cambridge	| 04/12/2006	| 585 Created, based on tsHospitalityInboundDeliveryNoteCSV_FFS.xml
 **********************************************************************
+R Cambridge	| 01/02/2007	| 770 added quantity UoMs
+**********************************************************************
 				|					|
 *******************************************************************-->
 <ffsFlatFileSchema>
@@ -28,7 +30,7 @@ R Cambridge	| 04/12/2006	| 585 Created, based on tsHospitalityInboundDeliveryNot
 			<ffsFieldSeparator>,</ffsFieldSeparator>
 		</ffsFieldSeparators>
 		<ffsSplitBatchRecord RecordPos="H"/>
-	</ffsSettings>	
+	</ffsSettings>
 	<ffsRoot>
 		<BatchDocuments>
 			<BatchDocument>
@@ -77,9 +79,15 @@ R Cambridge	| 04/12/2006	| 585 Created, based on tsHospitalityInboundDeliveryNot
 								<SuppliersProductCode RecordPos="D" LPos="2"/>
 							</ProductID>
 							<ProductDescription RecordPos="D" LPos="3"/>
-							<OrderedQuantity RecordPos="D" LPos="5"/>
-							<ConfirmedQuantity RecordPos="D" LPos="6"/>
-							<DespatchedQuantity RecordPos="D" LPos="7"/>
+							<OrderedQuantity RecordPos="D" LPos="5">
+								<ffsAttribute1 name="UnitOfMeasure" RecordPos="D" LPos="10"/>
+							</OrderedQuantity>
+							<ConfirmedQuantity RecordPos="D" LPos="6">
+								<ffsAttribute1 name="UnitOfMeasure" RecordPos="D" LPos="11"/>
+							</ConfirmedQuantity>
+							<DespatchedQuantity RecordPos="D" LPos="7">
+								<ffsAttribute1 name="UnitOfMeasure" RecordPos="D" LPos="12"/>
+							</DespatchedQuantity>
 							<PackSize RecordPos="D" LPos="4"/>
 							<ExpiryDate RecordPos="D" LPos="8"/>
 							<SellByDate RecordPos="D" LPos="9"/>
