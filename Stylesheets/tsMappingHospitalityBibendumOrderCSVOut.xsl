@@ -21,34 +21,70 @@
 
 	<xsl:template match="/">
 	
+		<!-- 1. RECID -->
 		<xsl:text>ORDERHEAD,</xsl:text>
-		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/><xsl:text>,</xsl:text>
-		<xsl:value-of select="translate(/PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderDate,'-','')"/><xsl:text>,</xsl:text>		
-		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderTime"/><xsl:text>,</xsl:text>
+		<!-- 2. DOCNUM -->
+		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
 		<xsl:text>,</xsl:text>
-		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/><xsl:text>,</xsl:text>
+		<!-- 3. DOCDATE -->
+		<xsl:value-of select="translate(/PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderDate,'-','')"/>
+		<xsl:text>,</xsl:text>
+		<!-- 4. DOCTIME -->
+		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderTime"/>
+		<xsl:text>,</xsl:text>
+		<!-- 5. TOTPID -->
+		<xsl:text>,</xsl:text>
+		<!-- 6. FROMTPID -->
+		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
+		<xsl:text>,</xsl:text>
+		<!-- 7. ORDERTYPE -->
 		<xsl:text>220,</xsl:text>
+		<!-- 8. ORDERDESC -->
 		<xsl:text>,</xsl:text>
-		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/FileGenerationNumber"/><xsl:text>,</xsl:text>
+		<!-- 9. FLGN -->
+		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/FileGenerationNumber"/>
+		<xsl:text>,</xsl:text>
+		<!-- 10. FLVN -->
 		<xsl:text>1,</xsl:text>
-		<xsl:value-of select="vbscript:msGetDate()"/><xsl:text>,</xsl:text>		
-		<xsl:value-of select="vbscript:msGetTime()"/><xsl:text>,</xsl:text>		
+		<!-- 11. FLDATE -->
+		<xsl:value-of select="vbscript:msGetDate()"/>
+		<xsl:text>,</xsl:text>	
+		<!-- 12. FLTIME	-->
+		<xsl:value-of select="vbscript:msGetTime()"/>
+		<xsl:text>,</xsl:text>		
+		<!-- 13.MSGN -->
 		<xsl:text>,</xsl:text>
+		<!-- 14. MSGFNDESC -->
 		<xsl:text>SALES ORDER,</xsl:text>
+		<!-- 15. REF1 -->
 		<xsl:text>,</xsl:text>
+		<!-- 16. REF2 -->
 		<xsl:text>,</xsl:text>
+		<!-- 17. CURRENCY -->
 		<xsl:text>,</xsl:text>
+		<!-- 18. INTCHGREF -->
 		<xsl:text>,</xsl:text>
+		<!-- 19. AUDREF -->
 		<xsl:text>,</xsl:text>
+		<!-- 20. AUDSEQ -->
 		<xsl:text>,</xsl:text>
+		<!-- 21. INTDOCNUM -->
 		<xsl:text>,</xsl:text>
+		<!-- 22. USER1 -->
 		<xsl:text>,</xsl:text>
+		<!-- 23. USER2 -->
 		<xsl:text>,</xsl:text>
+		<!-- 24. USER3 -->
 		<xsl:text>,</xsl:text>
+		<!-- 25. USER4 -->
+		<xsl:text>MPTEST,</xsl:text>
+		<!-- 26. USER5 -->
 		<xsl:text>,</xsl:text>
+		<!-- 27. USER6 -->
 		<xsl:text>,</xsl:text>
+		<!-- 28. USER7 -->
 		<xsl:text>,</xsl:text>
-		<xsl:text>,</xsl:text>
+		<!-- 29. USER8 -->
 		<xsl:text>&#13;&#10;</xsl:text>
 		
 		
