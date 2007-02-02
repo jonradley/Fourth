@@ -3,7 +3,7 @@
 **********************************************************************
 Alterations
 **********************************************************************
-Name		| Date			| Change
+Name			| Date				| Change
 **********************************************************************
 S Jefford	| 22/08/2005		| GTIN field now sourced from CLD/SPRO(1).
 				|						| CLD/DRLI now stored in BuyersProductCode
@@ -13,6 +13,12 @@ N Emsen		| 06/10/2006		| 	Case 434: recommit.
 N Emsen		|	02/11/2006	|	Case 454.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 N Emsen		|	06/11/2006	|	Case 527.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+N Emsen		|	02/02/2006	|	Case 777:   Changes to MJ mappers to cater 
+				|						|	for Harrison spiecialised remapping. 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
 **********************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
@@ -298,7 +304,26 @@ N Emsen		|	06/11/2006	|	Case 527.
 	</xsl:template>
 	
 
-	
+	<!-- CASE 777: Remap 'H0003' as 'H0002' for Harrison Catering Invoices and Credit Notes. -->
+	<xsl:template match="//Buyer/BuyersLocationID/SuppliersCode">
+		<!-- Current value given in the document -->
+		<xsl:variable name="sCurValue" select="."/>
+		<!-- Remap value if condition is found to be true. -->
+		<xsl:variable name="sH0002"><xsl:text>H0002</xsl:text></xsl:variable>
+		<!-- Element check value -->
+		<xsl:variable name="sCheckValueH0003" ><xsl:text>H0003</xsl:text></xsl:variable>
+		<!-- TEST for value = 'H0003' and company match. -->
+		<xsl:choose>
+			<xsl:when test="translate($sCurValue,' ','') = $sCheckValueH0003">
+				<xsl:value-of select="$sH0002"/>
+			</xsl:when>
+			<!-- NOT: Leave as given -->
+			<xsl:otherwise>
+				<xsl:value-of select="$sCurValue"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
 	
 	
 	
