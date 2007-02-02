@@ -301,8 +301,7 @@ N Emsen		|	02/02/2006	|	Case 777:   Changes to MJ mappers to cater
 				</PurchaseOrderDate>
 			</PurchaseOrderReferences>
 		</xsl:if>
-	</xsl:template>
-	
+	</xsl:template>	
 
 	<!-- CASE 777: Remap 'H0003' as 'H0002' for Harrison Catering Invoices and Credit Notes. -->
 	<xsl:template match="//Buyer/BuyersLocationID/SuppliersCode">
@@ -315,17 +314,18 @@ N Emsen		|	02/02/2006	|	Case 777:   Changes to MJ mappers to cater
 		<!-- TEST for value = 'H0003' and company match. -->
 		<xsl:choose>
 			<xsl:when test="translate($sCurValue,' ','') = $sCheckValueH0003">
-				<xsl:value-of select="$sH0002"/>
+				<SuppliersCode>
+					<xsl:value-of select="$sH0002"/>
+				</SuppliersCode>
 			</xsl:when>
 			<!-- NOT: Leave as given -->
 			<xsl:otherwise>
-				<xsl:value-of select="$sCurValue"/>
+				<SuppliersCode>
+					<xsl:value-of select="$sCurValue"/>
+				</SuppliersCode>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-
-	
-	
 	
 	<msxsl:script language="JScript" implements-prefix="jscript"><![CDATA[ 
 		function toUpperCase(vs) {
