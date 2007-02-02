@@ -14,6 +14,9 @@ N Emsen		|	06/10/2006	|	Case 434 - Recommit to subversion.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 N Emsen		|	02/11/2006	|	Case 454.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+N Emsen		|	02/02/2006	|	Case 777:   Changes to MJ mappers to cater 
+				|						|	for Harrison spiecialised remapping. 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 **********************************************************************
 -->
@@ -342,6 +345,26 @@ N Emsen		|	02/11/2006	|	Case 454.
 				</PurchaseOrderDate>
 			</PurchaseOrderReferences>
 		</xsl:if>
+	</xsl:template>
+	
+	<!-- CASE 777: Remap 'H0003' as 'H0002' for Harrison Catering Invoices and Credit Notes. -->
+	<xsl:template match="//Buyer/BuyersLocationID/SuppliersCode">
+		<!-- Current value given in the document -->
+		<xsl:variable name="sCurValue" select="."/>
+		<!-- Remap value if condition is found to be true. -->
+		<xsl:variable name="sH0002"><xsl:text>H0002</xsl:text></xsl:variable>
+		<!-- Element check value -->
+		<xsl:variable name="sCheckValueH0003" ><xsl:text>H0003</xsl:text></xsl:variable>
+		<!-- TEST for value = 'H0003' and company match. -->
+		<xsl:choose>
+			<xsl:when test="translate($sCurValue,' ','') = $sCheckValueH0003">
+				<xsl:value-of select="$sH0002"/>
+			</xsl:when>
+			<!-- NOT: Leave as given -->
+			<xsl:otherwise>
+				<xsl:value-of select="$sCurValue"/>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 	
 	<!-- VBScript Functions -->
