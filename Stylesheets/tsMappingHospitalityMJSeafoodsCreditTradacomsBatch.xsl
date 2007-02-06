@@ -17,7 +17,8 @@ N Emsen		|	06/11/2006	|	Case 527.
 N Emsen		|	02/02/2006	|	Case 777:   Changes to MJ mappers to cater 
 				|						|	for Harrison spiecialised remapping. 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+N Emsen		|	06/02/2006	|	Case 781:   Mj Credit notes, changes to FFS
+				|						|	for picking out the PL Account.
 
 **********************************************************************
 -->
@@ -147,7 +148,7 @@ N Emsen		|	02/02/2006	|	Case 777:   Changes to MJ mappers to cater
 	</xsl:template>
 	<!-- SIMPLE CONVERSION IMPLICIT TO EXPLICIT 4 D.P -->
 	<!-- Add any XPath whose text node needs to be converted from implicit to explicit 4 D.P. -->
-	<xsl:template match="CreditNoteLine/UnitValueExclVAT">
+	<xsl:template match="//CreditNoteLine/UnitValueExclVAT">
 		<xsl:call-template name="copyCurrentNodeExplicit4DP"/>
 	</xsl:template>
 	<!-- END of SIMPLE CONVERSIONS-->
@@ -264,7 +265,7 @@ N Emsen		|	02/02/2006	|	Case 777:   Changes to MJ mappers to cater
 	<!-- strips SendersBranchReference to first char. MJ Seafood depots are coded to the first character of the Suppliers Account Code. Therefore we can identify the depot from account code. -->
 	<xsl:template match="//SendersBranchReference">
 		<xsl:variable name="sSBRValue" select="translate(.,' ','')"/>
-		<xsl:variable name="sPLAccountCode" select="//InvoiceLine[1]/PurchaseOrderReferences/TradeAgreement/ContractReference"/>
+		<xsl:variable name="sPLAccountCode" select="//CreditNote/CreditNoteDetail/CreditNoteLine/PurchaseOrderReferences/TradeAgreement/ContractReference"/>
 		<SendersBranchReference>
 			<!-- check if not a PL account user -->
 			<xsl:variable name="sPLAccountCodeReturn">
