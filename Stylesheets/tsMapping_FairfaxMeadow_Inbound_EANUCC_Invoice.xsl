@@ -20,15 +20,19 @@
 '******************************************************************************************
 ' Module History
 '******************************************************************************************
-' Date             | Name              | Description of modification
+' Date         | Name					|	Description of modification
 '******************************************************************************************
-' 25/04/2005  | Steven Hewitt | Created
+' 25/04/2005  	| Steven Hewitt	|	Created
 '******************************************************************************************
-' 26/07/2005  | A Sheppard    | 2344. Bug fix.
+' 26/07/2005  	| A Sheppard			|	2344. Bug fix.
 '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-'	26/01/2007	|	Nigel Emsen	|	Case 710: Fairfax Adoption for Aramark. XPaths adjusted.
+'	26/01/2007	|	Nigel Emsen		|	Case 710: Fairfax Adoption for Aramark. XPaths adjusted.
 '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-'	31/01/2007	| Lee Boyton   |	Case 767: Cater for an empty ContractReferenceNumber element.
+'	31/01/2007	| Lee Boyton			|	Case 767: Cater for an empty ContractReferenceNumber element.
+'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+' 20/02/2007		|	Nigel Emsen		|	Case 828:	changes for Harrsion Catering,
+'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 '******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
@@ -87,11 +91,11 @@
 								</DocumentStatus>
 								<Buyer>
 									<BuyersLocationID>
-										<xsl:if test="string(/Invoice/Buyer/BuyerGLN) != '' ">
+										<!-- Case 828: xsl:if test="string(/Invoice/Buyer/BuyerGLN) != '' ">
 											<GLN>
 												<xsl:value-of select="/Invoice/Buyer/BuyerGLN"/>
 											</GLN>
-										</xsl:if>
+										</xsl:if -->
 										<xsl:if test="string(/Invoice/Buyer/BuyerAssigned)">
 											<BuyersCode>
 												<xsl:value-of select="/Invoice/Buyer/BuyerAssigned"/>
@@ -99,7 +103,8 @@
 										</xsl:if>
 										<xsl:if test="string(/Invoice/Buyer/SellerAssigned)">
 											<SuppliersCode>
-												<xsl:value-of select="/Invoice/Buyer/SellerAssigned"/>
+												<!-- Case 828: xsl:value-of select="/Invoice/Buyer/SellerAssigned"/ -->
+												<xsl:value-of select="//TradeAgreementReference/ContractReferenceNumber"/>
 											</SuppliersCode>
 										</xsl:if>
 									</BuyersLocationID>
