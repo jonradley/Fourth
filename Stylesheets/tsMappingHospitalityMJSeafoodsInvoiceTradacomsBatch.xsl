@@ -17,6 +17,8 @@ N Emsen		|	02/11/2006	|	Case 454.
 N Emsen		|	02/02/2006	|	Case 777:   Changes to MJ mappers to cater 
 				|						|	for Harrison spiecialised remapping. 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+N Emsen		|	20/02/2007	|	Case 829:		
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 **********************************************************************
 -->
@@ -388,7 +390,9 @@ N Emsen		|	02/02/2006	|	Case 777:   Changes to MJ mappers to cater
 			Dim sValue
 			sValue=LCase(vsValue)
 			' Set default to be given value and amend by comparision.
-			sConvertPackSize=sValue	
+			' Case 829: Harrsion Catering change requested by Mark S.
+			' This is to be defaulted to EA (each).
+			sConvertPackSize="EA"	
 				If InStrRev(sValue,"kg")>0 Then sConvertPackSize="KGM"					
 				If InStrRev(sValue,"cs")>0 Then sConvertPackSize="CS"
 				If InStrRev(sValue,"pkt")>0 Then sConvertPackSize="CS"
