@@ -101,14 +101,15 @@
 												<xsl:value-of select="/Invoice/Buyer/BuyerAssigned"/>
 											</BuyersCode>
 										</xsl:if>
-										<xsl:if test="string(/Invoice/Buyer/SellerAssigned)">
+										<xsl:if test="string(//TradeAgreementReference/ContractReferenceNumber)">
 											<SuppliersCode>
 												<!-- Case 828: xsl:value-of select="/Invoice/Buyer/SellerAssigned"/ -->
 												<xsl:value-of select="//TradeAgreementReference/ContractReferenceNumber"/>
 											</SuppliersCode>
 										</xsl:if>
 									</BuyersLocationID>
-									<BuyersAddress>
+									<!-- Case: 828: -  stripped so that infiller populates correctly. -->
+									<!--BuyersAddress>
 										<AddressLine1>
 											<xsl:value-of select="/Invoice/Buyer/Address/BuildingIdentifier"/>
 										</AddressLine1>
@@ -130,7 +131,7 @@
 												<xsl:value-of select="/Invoice/Buyer/Address/PostCode"/>
 											</PostCode>
 										</xsl:if>
-									</BuyersAddress>
+									</BuyersAddress-->
 								</Buyer>
 								<Supplier>
 									<SuppliersLocationID>
