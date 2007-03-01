@@ -15,6 +15,8 @@ N Emsen		|	08/11/2006		| Case 531: Purchase order reference working.
 R Cambridge	| 26/02/2007		| 706 remove sender's branch reference
 												make 10 digit SCR 9 digits by removing leading zero
 **********************************************************************
+R Cambridge	| 01/03/2007		| 706 GTIN is also suppliers product code
+**********************************************************************
            	|            		| 
 *******************************************************************-->
 
@@ -84,7 +86,12 @@ R Cambridge	| 26/02/2007		| 706 remove sender's branch reference
 		</SuppliersCode>	
 	</xsl:template>
 	
-	
+	<!-- InvoiceLine/ProductID/SuppliersProductCode is used as a placeholder for INVOIC-ILD-CRLI and should not be copied over -->
+	<xsl:template match="SuppliersProductCode">
+		<SuppliersProductCode>
+			<xsl:value-of select="../GTIN"/>
+		</SuppliersProductCode>
+	</xsl:template>	
 
 	<!-- InvoiceLine/ProductID/BuyersProductCode is used as a placeholder for INVOIC-ILD-CRLI and should not be copied over -->
 	<xsl:template match="BuyersProductCode"/>	
