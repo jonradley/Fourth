@@ -128,7 +128,9 @@
 							<Buyer>
 								<BuyersLocationID>
 									<!--INVFIL-CDT-CIDN(1)-->
-									<SuppliersCode RecordPos="CDT=" LPos="1" SFPos="1"/>
+									<!-- 06/03/2007 - NE - As per FB 872 requested by Mark Sayers -->
+									<!-- SuppliersCode RecordPos="CDT=" LPos="1" SFPos="1"/ -->
+									<SuppliersCode RecordPos="STX=" LPos="3" SFPos="1"/>
 								</BuyersLocationID>
 								<!-- OPTIONAL Buyer Name, MANDATORY, INVFIL – CDT – CNAM, NB: To make this a legal invoice, you must provide this field. The “invoice to” name -->
 								<BuyersName RecordPos="CDT=" LPos="2"/>
