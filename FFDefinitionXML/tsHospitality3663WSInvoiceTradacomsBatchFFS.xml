@@ -5,6 +5,8 @@
 25 April 05 - Andy T - Updates to reflect 3663 specific requirement in Appendix A of ELI010 - Integration Proposal For 3663 v1 DRAFT 2.doc - search for '3663'
 17 May 05 - Andy T - Updated to accept SendersCodeForRecipient in CLOC(3) not 2
 27th May05 - Andy T - Updated to use ILD-UNOR(3) to fill PackSize tag unlike current standard Tradacoms
+
+12 Mar 07 - NE - Case 890: 3663 Mapping of Buyers/BuyersLocationID/SuppliersCode to be from the STX.
 -->
 <ffsFlatFileSchema>
 	<ffsSettings>
@@ -128,7 +130,9 @@
 							<Buyer>
 								<BuyersLocationID>
 									<!--INVFIL-CDT-CIDN(1)-->
-									<SuppliersCode RecordPos="CDT=" LPos="1" SFPos="1"/>
+									<!-- 12/03/2007 - NE - Case 890: 3663 Mapping of Buyers/BuyersLocationID/SuppliersCode to be from the STX, requested by Mark Sayers -->
+									<!-- SuppliersCode RecordPos="CDT=" LPos="1" SFPos="1"/ -->
+									<SuppliersCode RecordPos="STX=" LPos="3" SFPos="1"/>
 								</BuyersLocationID>
 								<!-- OPTIONAL Buyer Name, MANDATORY, INVFIL – CDT – CNAM, NB: To make this a legal invoice, you must provide this field. The “invoice to” name -->
 								<BuyersName RecordPos="CDT=" LPos="2"/>
