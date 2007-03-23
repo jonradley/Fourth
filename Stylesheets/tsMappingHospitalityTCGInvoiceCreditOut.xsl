@@ -20,9 +20,11 @@
 ==========================================================================================
  05/03/2007	| R Cambridge			| 864 TCG invoice/credit mapper to infer missing expense codes 
 ==========================================================================================
+ 21/03/2007	| R Cambridge			| 864 infer missing more expense codes 
+==========================================================================================
            	|                 	|
 =======================================================================================-->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 <xsl:output method="text" encoding="utf-8"/>
 
 	<xsl:template 	match="/Invoice | /CreditNote">
@@ -111,53 +113,62 @@
 		
 		<xsl:text>&#13;&#10;</xsl:text>
 		
-
-		<xsl:for-each select="(/Invoice/InvoiceDetail/InvoiceLine | /CreditNote/CreditNoteDetail/CreditNoteLine)">
-			
-			<!-- pre 864 logic (ie the correct way) -->
-			<!--====================================================================================================================================-->
-			
-			<!-- xsl:sort select="concat(VATCode,'_',LineExtraData/AccountCode)"/>
 		
-			<xsl:variable name="sCurrentKey" select="concat(VATCode,'_',LineExtraData/AccountCode)"/>
-			
-			<xsl:if test="not(preceding-sibling::*[concat(VATCode,'_',LineExtraData/AccountCode) = $sCurrentKey])">
-			
-				<xsl:text>N</xsl:text>		
-				<xsl:text>|</xsl:text>
-				
-				<! ???? >
-				<xsl:text>|</xsl:text>
-				
-				<xsl:value-of select="(/Invoice/TradeSimpleHeader/RecipientsBranchReference | /CreditNote/TradeSimpleHeader/RecipientsBranchReference)"/>	
-				<xsl:text>|</xsl:text>
-				
-				<xsl:value-of select="LineExtraData/AccountCode"/>
-				<xsl:text>|</xsl:text>
-				
-				<xsl:if test="/CreditNote">-</xsl:if>
-				<xsl:value-of select="format-number(sum(../*[concat(VATCode,'_',LineExtraData/AccountCode)=$sCurrentKey]/LineValueExclVAT), '0.00')"/>
-				<xsl:text>|</xsl:text>
-				
-				<xsl:choose>
-					<xsl:when test="VATCode='S'">S</xsl:when>
-					<xsl:when test="VATCode='E'">E</xsl:when>
-					<xsl:when test="VATCode='Z'">Z</xsl:when>
-					<xsl:when test="VATCode='L'">5</xsl:when>
-					<xsl:otherwise>?</xsl:otherwise>
-				</xsl:choose>
 		
-				<xsl:text>&#13;&#10;</xsl:text>
+		<xsl:variable name="objLines">
 		
-			</xsl:if-->
+			<xsl:for-each select="(/Invoice/InvoiceDetail/InvoiceLine | /CreditNote/CreditNoteDetail/CreditNoteLine)">
 			
-			<!--====================================================================================================================================-->
+				<LineCopy>
+				
+					<!-- The expense code for this product, guessed if need be -->
+					<xsl:variable name="sAccountCode">
+						<xsl:choose>
+							<!-- The value looked up from the catalogue -->
+							<xsl:when test="LineExtraData/AccountCode != ''"><xsl:value-of select="LineExtraData/AccountCode"/></xsl:when>
+							<xsl:otherwise>							
+								<!-- Guess based on supplier code -->
+								<xsl:choose>
+									<xsl:when test="string(LineExtraData/AccountCode)='' and substring(/*/TradeSimpleHeader/RecipientsCodeForSender,1,3) = 'SCO'">2000-</xsl:when>
+									<xsl:when test="string(LineExtraData/AccountCode)='' and substring(/*/TradeSimpleHeader/RecipientsCodeForSender,1,3) = 'BRA'">2300-</xsl:when>
+									<xsl:when test="string(LineExtraData/AccountCode)='' and substring(/*/TradeSimpleHeader/RecipientsCodeForSender,1,3) = 'BUN'">3300-</xsl:when>
+								</xsl:choose>							
+							</xsl:otherwise>
+						</xsl:choose>					
+					</xsl:variable>
+					
+					<!-- Record the expense code -->
+					<xsl:attribute name="AccountCode">
+						<xsl:value-of select="$sAccountCode"/>
+					</xsl:attribute>
+					
+					<!-- Lines will be agregated based on VAT code and expense code -->
+					<xsl:attribute name="AccountGroup">
+						<xsl:value-of select="./VATCode"/>
+						<xsl:text>_</xsl:text>
+						<xsl:value-of select="$sAccountCode"/>
+					</xsl:attribute>
+									
+					<xsl:copy-of select="."/>
+				
+				</LineCopy>							
 			
-			<xsl:sort select="concat(VATCode,'_')"/>
+			</xsl:for-each>
 			
-			<xsl:variable name="sCurrentKey" select="concat(VATCode,'_')"/>
+							
+		</xsl:variable>
+		
+		
+		<xsl:variable name="objDoc" select="/*"/>
+		
+		<xsl:for-each select="msxsl:node-set($objLines)/*">
+			<xsl:sort select="@AccountGroup"/>
 			
-			<xsl:if test="not(preceding-sibling::*[concat(VATCode,'_') = $sCurrentKey])">
+			<xsl:variable name="sCurrentKey" select="@AccountGroup"/>
+			
+			
+			<!-- Dothis once for each combination of VAT and expense code -->
+			<xsl:if test="not(preceding-sibling::*[@AccountGroup = $sCurrentKey])">
 			
 				<xsl:text>N</xsl:text>		
 				<xsl:text>|</xsl:text>
@@ -165,34 +176,31 @@
 				<!-- ???? -->
 				<xsl:text>|</xsl:text>
 				
-				<xsl:value-of select="(/Invoice/TradeSimpleHeader/RecipientsBranchReference | /CreditNote/TradeSimpleHeader/RecipientsBranchReference)"/>	
+				<xsl:value-of select="$objDoc/TradeSimpleHeader/RecipientsBranchReference"/>	
 				<xsl:text>|</xsl:text>
 				
-				<!--xsl:value-of select="LineExtraData/AccountCode"/-->
-				<xsl:choose>
-					<xsl:when test="string(LineExtraData/AccountCode)='' and substring(/*/TradeSimpleHeader/RecipientsCodeForSender,1,3) = 'SCO'">2000-</xsl:when>
-					<xsl:when test="string(LineExtraData/AccountCode)='' and substring(/*/TradeSimpleHeader/RecipientsCodeForSender,1,3) = 'BRA'">2300-</xsl:when>
-					<xsl:otherwise><xsl:value-of select="LineExtraData/AccountCode"/></xsl:otherwise>
-				</xsl:choose>
+				<xsl:value-of select="@AccountCode"/>
 				<xsl:text>|</xsl:text>
 				
 				<xsl:if test="/CreditNote">-</xsl:if>
-				<xsl:value-of select="format-number(sum(../*[concat(VATCode,'_')=$sCurrentKey]/LineValueExclVAT), '0.00')"/>
+				<xsl:value-of select="format-number(sum(../*[@AccountGroup=$sCurrentKey]/*/LineValueExclVAT), '0.00')"/>
 				<xsl:text>|</xsl:text>
 				
 				<xsl:choose>
-					<xsl:when test="VATCode='S'">S</xsl:when>
-					<xsl:when test="VATCode='E'">E</xsl:when>
-					<xsl:when test="VATCode='Z'">Z</xsl:when>
-					<xsl:when test="VATCode='L'">5</xsl:when>
+					<xsl:when test="*/VATCode='S'">S</xsl:when>
+					<xsl:when test="*/VATCode='E'">E</xsl:when>
+					<xsl:when test="*/VATCode='Z'">Z</xsl:when>
+					<xsl:when test="*/VATCode='L'">5</xsl:when>
 					<xsl:otherwise>?</xsl:otherwise>
 				</xsl:choose>
 		
 				<xsl:text>&#13;&#10;</xsl:text>
 		
 			</xsl:if>
+		
+		</xsl:for-each>	
 
-		</xsl:for-each>
+		
 	
 	</xsl:template>
 
