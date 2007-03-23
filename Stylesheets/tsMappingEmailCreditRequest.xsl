@@ -20,6 +20,8 @@
 ****************************************************************************************** 
  15/01/2007 | Lee Boyton | 696. Support for quality issue credit request.
 ****************************************************************************************** 
+ 23/03/2007 | Lee Boyton | 934. Display both the batch code and best before date if specified.
+****************************************************************************************** 
             |            |
 ******************************************************************************************
 -->
@@ -433,21 +435,38 @@
 											<td align="right"><xsl:value-of select="LineValueExclVAT"/>&#xa0;</td>
 										</tr>
 										<xsl:if test="Narrative">
-											<xsl:if test="BestBeforeDate or BatchCode">
+											<xsl:if test="BatchCode">
+												<tr>
+													<xsl:attribute name="class">
+														<xsl:value-of select="$LineClass"/>
+													</xsl:attribute>
+													<td>
+														<xsl:attribute name="colspan">
+															<xsl:value-of select="$myColspan"/>
+														</xsl:attribute>			
+														<xsl:text>Batch code: </xsl:text>
+														<xsl:value-of select="BatchCode"/>
+													</td>
+												</tr>
+											</xsl:if>
+											<xsl:if test="BestBeforeDate">
 												<tr>
 													<xsl:attribute name="class">
 														<xsl:value-of select="$LineClass"/>
 													</xsl:attribute>	
-													<td colspan="8">
+													<td>
+														<xsl:attribute name="colspan">
+															<xsl:value-of select="$myColspan"/>
+														</xsl:attribute>
+														<xsl:text>Best before date: </xsl:text>
+														<!-- switch to handle old corrupt data that was not formatted correctly in the xml -->
 														<xsl:choose>
-															<xsl:when test="BestBeforeDate">
-																<xsl:text>Best before date: </xsl:text>
+															<xsl:when test="contains(BestBeforeDate,'-')">
 																<xsl:value-of select="user:gsFormatDate(BestBeforeDate)"/>
 															</xsl:when>
-															<xsl:when test="BatchCode">
-																<xsl:text>Batch code: </xsl:text>
-																<xsl:value-of select="BatchCode"/>
-															</xsl:when>
+															<xsl:otherwise>
+																<xsl:value-of select="BestBeforeDate"/>
+															</xsl:otherwise>
 														</xsl:choose>
 													</td>
 												</tr>
@@ -546,21 +565,38 @@
 											<td align="right"><xsl:value-of select="LineValueExclVAT"/>&#xa0;</td>
 										</tr>
 										<xsl:if test="Narrative">
-											<xsl:if test="BestBeforeDate or BatchCode">
+											<xsl:if test="BatchCode">
+												<tr>
+													<xsl:attribute name="class">
+														<xsl:value-of select="$LineClass"/>
+													</xsl:attribute>
+													<td>
+														<xsl:attribute name="colspan">
+															<xsl:value-of select="$myColspan"/>
+														</xsl:attribute>			
+														<xsl:text>Batch code: </xsl:text>
+														<xsl:value-of select="BatchCode"/>
+													</td>
+												</tr>
+											</xsl:if>
+											<xsl:if test="BestBeforeDate">
 												<tr>
 													<xsl:attribute name="class">
 														<xsl:value-of select="$LineClass"/>
 													</xsl:attribute>	
-													<td colspan="8">
+													<td>
+														<xsl:attribute name="colspan">
+															<xsl:value-of select="$myColspan"/>
+														</xsl:attribute>
+														<xsl:text>Best before date: </xsl:text>
+														<!-- switch to handle old corrupt data that was not formatted correctly in the xml -->
 														<xsl:choose>
-															<xsl:when test="BestBeforeDate">
-																<xsl:text>Best before date: </xsl:text>
+															<xsl:when test="contains(BestBeforeDate,'-')">
 																<xsl:value-of select="user:gsFormatDate(BestBeforeDate)"/>
 															</xsl:when>
-															<xsl:when test="BatchCode">
-																<xsl:text>Batch code: </xsl:text>
-																<xsl:value-of select="BatchCode"/>
-															</xsl:when>
+															<xsl:otherwise>
+																<xsl:value-of select="BestBeforeDate"/>
+															</xsl:otherwise>
 														</xsl:choose>
 													</td>
 												</tr>
