@@ -22,6 +22,8 @@
 ****************************************************************************************** 
  23/03/2007 | Lee Boyton | 934. Display both the batch code and best before date if specified.
 ****************************************************************************************** 
+ 27/03/2007 | Lee Boyton | 934. Fixed invalid colspan references.
+****************************************************************************************** 
             |            |
 ******************************************************************************************
 -->
@@ -440,10 +442,7 @@
 													<xsl:attribute name="class">
 														<xsl:value-of select="$LineClass"/>
 													</xsl:attribute>
-													<td>
-														<xsl:attribute name="colspan">
-															<xsl:value-of select="$myColspan"/>
-														</xsl:attribute>			
+													<td colspan="8">
 														<xsl:text>Batch code: </xsl:text>
 														<xsl:value-of select="BatchCode"/>
 													</td>
@@ -454,10 +453,7 @@
 													<xsl:attribute name="class">
 														<xsl:value-of select="$LineClass"/>
 													</xsl:attribute>	
-													<td>
-														<xsl:attribute name="colspan">
-															<xsl:value-of select="$myColspan"/>
-														</xsl:attribute>
+													<td colspan="8">
 														<xsl:text>Best before date: </xsl:text>
 														<!-- switch to handle old corrupt data that was not formatted correctly in the xml -->
 														<xsl:choose>
@@ -570,10 +566,7 @@
 													<xsl:attribute name="class">
 														<xsl:value-of select="$LineClass"/>
 													</xsl:attribute>
-													<td>
-														<xsl:attribute name="colspan">
-															<xsl:value-of select="$myColspan"/>
-														</xsl:attribute>			
+													<td colspan="8">
 														<xsl:text>Batch code: </xsl:text>
 														<xsl:value-of select="BatchCode"/>
 													</td>
@@ -584,10 +577,7 @@
 													<xsl:attribute name="class">
 														<xsl:value-of select="$LineClass"/>
 													</xsl:attribute>	
-													<td>
-														<xsl:attribute name="colspan">
-															<xsl:value-of select="$myColspan"/>
-														</xsl:attribute>
+													<td colspan="8">
 														<xsl:text>Best before date: </xsl:text>
 														<!-- switch to handle old corrupt data that was not formatted correctly in the xml -->
 														<xsl:choose>
