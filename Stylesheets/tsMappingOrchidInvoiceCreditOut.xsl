@@ -22,6 +22,8 @@
 ******************************************************************************************
  11/12/2006 | A Sheppard | 608. ORC003 changes to format
 ******************************************************************************************
+ 28/03/2007 | Lee Boyton | 906. Raise an error if the unit code (RCS) is missing.
+******************************************************************************************
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -37,6 +39,11 @@
 	<xsl:key name="keyLinesByAccountAndVAT" match="InvoiceLine | CreditNoteLine" use="concat(LineExtraData/AccountCode,'::',VATCode)"/>
 	
 	<xsl:template match="/Invoice | /CreditNote">
+	
+		<!--Check for missing fields-->
+		<xsl:if test="not(TradeSimpleHeader/RecipientsBranchReference)">
+			<xsl:value-of select="user:mRaiseErrorAsMissingFields()"/>
+		</xsl:if>
 
 		<xsl:variable name="NewLine">
 			<xsl:text>&#13;&#10;</xsl:text>
@@ -236,5 +243,9 @@
 		<xsl:value-of select="substring($xmlDate,1,4)"/>
 		
 	</xsl:template>
-	
+
+	<msxsl:script language="JScript" implements-prefix="user"><![CDATA[ 
+		function mRaiseErrorAsMissingFields()
+		{}
+	]]></msxsl:script>	
 </xsl:stylesheet>
