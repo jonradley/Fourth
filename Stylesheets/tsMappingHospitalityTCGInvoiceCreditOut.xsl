@@ -22,6 +22,8 @@
 ==========================================================================================
  21/03/2007	| R Cambridge			| 864 infer missing more expense codes 
 ==========================================================================================
+ 29/03/2007	| R Cambridge			| 864 re-instate minus in credit 
+==========================================================================================
            	|                 	|
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
@@ -182,7 +184,7 @@
 				<xsl:value-of select="@AccountCode"/>
 				<xsl:text>|</xsl:text>
 				
-				<xsl:if test="/CreditNote">-</xsl:if>
+				<xsl:if test="$objDoc/CreditNoteHeader">-</xsl:if>
 				<xsl:value-of select="format-number(sum(../*[@AccountGroup=$sCurrentKey]/*/LineValueExclVAT), '0.00')"/>
 				<xsl:text>|</xsl:text>
 				
