@@ -192,6 +192,7 @@ R cambridge	| 04/01/2007	| 664 Adapted for Woodwoods from
 
 	<!-- DATE CONVERSION YYMMDD to xsd:date -->
 	<xsl:template match="PurchaseOrderReferences/PurchaseOrderDate | 
+						DeliveryNoteReferences/DeliveryNoteDate |
 						CreditNoteReferences/CreditNoteDate |
 						BatchInformation/FileCreationDate |
 						InvoiceReferences/InvoiceDate |
