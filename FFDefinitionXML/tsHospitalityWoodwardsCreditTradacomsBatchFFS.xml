@@ -11,6 +11,11 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from CLD/SPRO(1).
 R Cambridge	| 04/01/2007	| 664 Adapted for Woodwards from 
 											tsHospitalityCreditTradacomsBatchFFS.xml
 **********************************************************************
+R Cambridge	| 03/01/2007	| 664 Populate delivery note reference and date 
+											 with BCP sales order number and PO date 
+											 (used as DN ref on invoice although not 
+											 provided on paper copy)
+**********************************************************************
 				|					|
 **********************************************************************
 -->
@@ -205,12 +210,10 @@ R Cambridge	| 04/01/2007	| 664 Adapted for Woodwards from
 						<CreditNoteDetail>
 							<CreditNoteLine>
 								<LineNumber RecordPos="CLD=" LPos="1"/>
-								<PurchaseOrderReferences>
-									<!-- OIR LPos 5 OPTIONAL Purchase Order Reference, OPTIONAL, CREDIT – OIR – ORNO(1), Should be set to the customer’s order reference.  If the order has been generated without a customer reference then the seller’s order reference may be used -->
-									<PurchaseOrderReference RecordPos="CLD=" LPos="23" SFPos="1"/>
-									<!-- OIR LPos 5 OPTIONAL Purchase Order Date, OPTIONAL, CREDIT – OIR – ORNO(3), YYMMDD, Must be valid date, and should be set to the order date associated with the reference above -->
-									<PurchaseOrderDate RecordPos="CLD=" LPos="23" SFPos="3"/>
-								</PurchaseOrderReferences>
+								<DeliveryNoteReferences>
+									<DeliveryNoteReference RecordPos="CLD=" LPos="23" SFPos="2"/>
+									<DeliveryNoteDate RecordPos="CLD=" LPos="23" SFPos="3"/>
+								</DeliveryNoteReferences>
 								<ProductID>
 									<!-- MANDATORY GTIN, INVOIC - CLD - SPRO(1) -->
 									<GTIN RecordPos="CLD=" LPos="2" SFPos="1"/>
@@ -221,12 +224,10 @@ R Cambridge	| 04/01/2007	| 664 Adapted for Woodwards from
 								</ProductID>
 								<!-- MANDATORY Product Description, OPTIONAL, CREDIT – CLD – TDES(1), While not strictly mandatory, this is a very useful textual piece of information.  This will always contain something but may be set to ‘Not Provided’ -->
 								<ProductDescription RecordPos="CLD=" LPos="14" SFPos="1"/>
-								
 								<!-- BOTCH catch weight products have their invoiced quantity in a different sub field, this will be move if necessary in the translator-->
 								<OrderedQuantity RecordPos="CLD=" LPos="6" SFPos="2">
 									<ffsAttribute1 name="UnitOfMeasure" RecordPos="CLD=" LPos="6" SFPos="3"/>
 								</OrderedQuantity>
-								
 								<!-- MANDATORY Quantity Credited, OPTIONAL, CREDIT – CLD – QTYC(1), If CREDIT – CLD – DRLI <> {blank} then multiply by –1	Must be greater or equal to zero if provided -->
 								<CreditedQuantity RecordPos="CLD=" LPos="6" SFPos="1"/>
 								<!-- MANDATORY Unit Credit Value Ex VAT, OPTIONAL, CREDIT – CLD – UCRV(1), 4 d.p. implied, If provided, must be numeric (it may be either positive or negative) and must have only two places of decimal -->
