@@ -41,6 +41,16 @@
 		</xsl:for-each>
 	</xsl:template>
 	
+	<xsl:template match="TradeSimpleHeader">
+		<xsl:element name="TradeSimpleHeader">
+			<xsl:copy-of select="SendersCodeForRecipient"/>
+			<xsl:if test="SendersCodeForRecipient != SendersBranchReference">
+				<xsl:copy-of select="SendersBranchReference"/>
+			</xsl:if>
+		</xsl:element>
+	</xsl:template>
+	
+	
 	<!-- sort all the dates in the file -->
 	<xsl:template match="InvoiceHeader/BatchInformation/FileCreationDate">
 		<xsl:if test=". != ''">
@@ -313,6 +323,8 @@
 		<xsl:param name="sVATCode"/>
 		<xsl:choose>
 			<xsl:when test="$sVATCode = 'STD'">S</xsl:when>
+			<xsl:when test="$sVATCode = 'EXEMPT'">E</xsl:when>
+			<xsl:otherwise> </xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
 
