@@ -221,7 +221,8 @@ if PurchaseOrderReference AND PurchaseOrderDate are not BOTH present with non-ze
 						CreditNoteReferences/CreditNoteDate |
 						BatchInformation/FileCreationDate |
 						InvoiceReferences/InvoiceDate |
-						CreditNoteReferences/TaxPointDate">
+						CreditNoteReferences/TaxPointDate |
+						InvoiceReferences/TaxPointDate">
 		<xsl:copy>
 			<xsl:value-of select="concat('20', substring(., 1, 2), '-', substring(., 3, 2), '-', substring(., 5, 2))"/>
 		</xsl:copy>
