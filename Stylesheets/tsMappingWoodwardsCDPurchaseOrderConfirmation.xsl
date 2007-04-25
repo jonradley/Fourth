@@ -7,8 +7,8 @@ Overview
    Indbound message will contain Seller/SellerAssigned to keep them in line with confs 
    from Woodwards Frozen and Ambient (this is the senders branch reference on tradesimple)
    
-   As Woodwards CD message will be sent directly to/from the CD sub-member (at least 
-   initially) this field needs to be removed
+   Woodwards CD messages will be sent directly to/from the CD sub-member (at least 
+   initially) so this field needs to be removed while that's the case
    
       
 	
@@ -46,6 +46,18 @@ Overview
 	<!-- Remove what would have been the sender's branch reference -->
 	<xsl:template match="OrderConfirmation/Seller/SellerAssigned"/>
 
+	<xsl:template match="OrderConfirmation/ShipTo/SellerAssigned">
+		<xsl:copy>
+			<xsl:choose>
+				<xsl:when test="string(number(.)) = 'NaN'">
+					<xsl:value-of select="."/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="number(.)"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:copy>
+	</xsl:template>
 
 	
 </xsl:stylesheet>
