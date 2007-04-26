@@ -88,8 +88,8 @@
 				<BatchDocument>
 					<Invoice>
 						<TradeSimpleHeader>
-							<SendersCodeForRecipient RecordPos="MAGINUSINV" LPos="2"/>
-							<SendersBranchReference RecordPos="CUSTOMER" LPos="2"/>
+							<SendersCodeForRecipient RecordPos="CUSTOMER" LPos="2"/>
+							<SendersBranchReference RecordPos="SUPPLIER" LPos="2"/>
 						</TradeSimpleHeader>
 						<InvoiceHeader>
 							<BatchInformation>
@@ -128,7 +128,7 @@
 							</Supplier>
 							<ShipTo>
 								<ShipToLocationID>
-									<SuppliersCode RecordPos="MAGINUSINV" LPos="2"/>
+									<SuppliersCode RecordPos="CUSTOMER" LPos="2"/>
 								</ShipToLocationID>
 								<ShipToName RecordPos="INVHDR" LPos="3"/>
 								<ShipToAddress>
@@ -143,9 +143,9 @@
 								<InvoiceReference RecordPos="INVHDR" LPos="11"/>
 								<InvoiceDate RecordPos="INVHDR" LPos="12"/>
 								<TaxPointDate RecordPos="INVHDR" LPos="13"/>
-								<VATRegNo RecordPos="SUPPLIER" LPos="11"/>
+								<VATRegNo RecordPos="SUPPLIER" LPos="12"/>
 							</InvoiceReferences>
-							<Currency RecordPos="SUPPLIER" LPos="13"/>
+							<Currency RecordPos="SUPPLIER" LPos="11"/>
 						</InvoiceHeader>
 						<InvoiceDetail>
 							<InvoiceLine>
