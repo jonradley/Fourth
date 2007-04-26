@@ -47,7 +47,7 @@
 	<xsl:template match="BuyersLocationID">
 		<xsl:element name="BuyersLocationID">
 			<xsl:element name="GLN">5555555555555</xsl:element>
-			<xsl:copy-of select="./*"/>
+			<xsl:copy-of select="BuyersCode"/>
 		</xsl:element>
 	</xsl:template>
 	
@@ -55,7 +55,7 @@
 	<xsl:template match="SuppliersLocationID">
 		<xsl:element name="SuppliersLocationID">
 			<xsl:element name="GLN">5555555555555</xsl:element>
-			<xsl:copy-of select="./*"/>
+			<xsl:copy-of select="BuyersCode"/>
 		</xsl:element>
 	</xsl:template>
 	
@@ -63,7 +63,7 @@
 	<xsl:template match="ShipToLocationID">
 		<xsl:element name="ShipToLocationID">
 			<xsl:element name="GLN">5555555555555</xsl:element>
-			<xsl:copy-of select="./*"/>
+			<xsl:copy-of select="BuyersCode"/>
 		</xsl:element>
 	</xsl:template>
 	
@@ -83,6 +83,7 @@
 	<xsl:template match="ProductID">
 		<xsl:element name="ProductID">
 			<xsl:element name="GTIN">55555555555555</xsl:element>
+			<xsl:copy-of select="./*"/>
 		</xsl:element>
 	</xsl:template>
 
