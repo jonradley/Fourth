@@ -195,11 +195,20 @@
 					</BuyerAssigned>
 				</xsl:if>	
 
-				<xsl:if test="$vobjRoot/PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode">
+
 					<SellerAssigned scheme="OTHER">
-						<xsl:value-of select="$vobjRoot/PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
+						<xsl:choose>
+							<xsl:when test="$vobjRoot/PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode">
+								<xsl:value-of select="$vobjRoot/PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="$vobjRoot/TradeSimpleHeader/RecipientsCodeForSender"/>
+							</xsl:otherwise>
+						</xsl:choose>
 					</SellerAssigned>			
-				</xsl:if>
+
+				
+				
 			</ShipTo>
 
 			<!-- ~~~~~~~~~~~~~~~~~~~~~~~
