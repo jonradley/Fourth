@@ -23,9 +23,7 @@ Nigel Emsen  | 22/04/2007 | Amended for Bunzl
 		<BatchRoot>
 			<Batch>
 				<BatchDocuments>
-					<BatchDocument>
-						<xsl:apply-templates select="@*|node()"/>
-					</BatchDocument>
+					<xsl:apply-templates select="@*|node()"/>
 				</BatchDocuments>
 			</Batch>
 		</BatchRoot>
