@@ -86,7 +86,7 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from CLD/SPRO(1).
 							<xsl:call-template name="copyCurrentNodeExplicit3DP"/>
 						</xsl:for-each>
 					</xsl:when>
-					<xsl:otherwise><xsl:value-of select="InvoicedQuantity"/></xsl:otherwise>
+					<xsl:otherwise><xsl:value-of select="CreditedQuantity"/></xsl:otherwise>
 				</xsl:choose>		
 			</xsl:variable>
 			
@@ -126,6 +126,24 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from CLD/SPRO(1).
 		</CreditNoteLine>
 		
 	</xsl:template>
+	
+	
+	<xsl:template match="PurchaseOrderReferences">
+	
+		<xsl:choose>
+		
+			<xsl:when test="count(*) != 2"/>
+			
+			<xsl:otherwise>
+				<xsl:copy>
+					<xsl:apply-templates select="*"/>
+				</xsl:copy>			
+			</xsl:otherwise>
+			
+		</xsl:choose>
+	
+	</xsl:template>
+	
 	
 	<!-- CLD-EXLV (CreditNoteLine/LineValueExclVAT) need to be multiplied by -1 if (CreditNoteLine/ProductID/BuyersProductCode) is NOT blank -->
 	<xsl:template match="CreditNoteLine/LineValueExclVAT">
