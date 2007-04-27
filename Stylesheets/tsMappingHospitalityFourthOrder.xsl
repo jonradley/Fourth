@@ -75,6 +75,10 @@
 		</xsl:element>
 	</xsl:template>
 	
+	<!-- Remove Customer Order REf -->
+	<xsl:template match="CustomerPurchaseOrderReference">
+	</xsl:template>
+	
 	<!-- Remove OrderID -->
 	<xsl:template match="OrderID">
 	</xsl:template>
