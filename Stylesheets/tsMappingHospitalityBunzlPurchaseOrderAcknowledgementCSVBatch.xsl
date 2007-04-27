@@ -18,10 +18,18 @@ Nigel Emsen  | 22/04/2007 | Amended for Bunzl
 	<xsl:output method="xml"/>
 	
 	<xsl:template match="/">
+	
 		<!-- create the BatchRoot element required by the Inbound XSL Transform processor -->
 		<BatchRoot>
-			<xsl:apply-templates select="@*|node()"/>
+			<Batch>
+				<BatchDocuments>
+					<BatchDocument>
+						<xsl:apply-templates select="@*|node()"/>
+					</BatchDocument>
+				</BatchDocuments>
+			</Batch>
 		</BatchRoot>
+		
 	</xsl:template>
 	
 	<!-- add the DocumentTypeNo attribute to each BatchDocument element -->
@@ -34,7 +42,7 @@ Nigel Emsen  | 22/04/2007 | Amended for Bunzl
 		</xsl:copy>
 	</xsl:template>
 	
-	<!-- translate the date from [d]d/[m]m/[yy]yy format to yyyy-mm-dd -->
+	<!-- translate the date from [yyyymmdd] format to [yyyy-mm-dd] -->
 	<xsl:template match="PurchaseOrderDate">
 		<xsl:variable name="dayPart">
 			<xsl:value-of select="substring(.,7,2)"/>
@@ -47,7 +55,7 @@ Nigel Emsen  | 22/04/2007 | Amended for Bunzl
 		</xsl:variable>
 		<!-- construct the final xml formatted date -->
 		<PurchaseOrderDate>
-			<xsl:value-of select="concat($yearPart,'-',$monthPart,'-',format-number(number($dayPart),'00'))"/>
+			<xsl:value-of select="concat($yearPart,'-',$monthPart,'-',$dayPart)"/>
 		</PurchaseOrderDate>
 	</xsl:template>
 	
