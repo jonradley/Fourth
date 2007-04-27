@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--******************************************************************
-Purchase Order Acknowledgement translation following CSV flat file mapping
+<!--
+*******************************************************************
+Purchase Order Acknowledgement translation following CSV 
+flat file mapping for BUNZL on HOSP.
 
-**********************************************************************
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Name         | Date       | Change
-*********************************************************************
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Lee Boyton   | 22/09/2006 | Created
-**********************************************************************
-             |            |
-*******************************************************************-->
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Nigel Emsen  | 22/04/2007 | Amended for Bunzl
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+*******************************************************************
+-->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 	<xsl:output method="xml"/>
 	
@@ -23,7 +28,7 @@ Lee Boyton   | 22/09/2006 | Created
 	<xsl:template match="BatchDocument">
 		<xsl:copy>
 			<xsl:attribute name="DocumentTypeNo">
-				<xsl:text>84</xsl:text>
+				<xsl:text>139</xsl:text>
 			</xsl:attribute>
 			<xsl:apply-templates select="@*|node()"/>
 		</xsl:copy>
@@ -32,29 +37,17 @@ Lee Boyton   | 22/09/2006 | Created
 	<!-- translate the date from [d]d/[m]m/[yy]yy format to yyyy-mm-dd -->
 	<xsl:template match="PurchaseOrderDate">
 		<xsl:variable name="dayPart">
-			<xsl:value-of select="substring-before(.,'/')"/>
+			<xsl:value-of select="substring(.,7,2)"/>
 		</xsl:variable>
 		<xsl:variable name="monthPart">
-			<xsl:value-of select="substring-before(substring-after(.,'/'),'/')"/>
+			<xsl:value-of select="substring(.,5,2)"/>
 		</xsl:variable>
 		<xsl:variable name="yearPart">
-			<xsl:value-of select="substring-after(substring-after(.,'/'),'/')"/>
-		</xsl:variable>
-		<!-- translate a 2 digit year to a 4 digit year -->
-		<xsl:variable name="fullYearPart">
-			<xsl:choose>
-				<xsl:when test="string-length($yearPart) = 2">
-					<xsl:text>20</xsl:text>
-					<xsl:value-of select="$yearPart"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="$yearPart"/>
-				</xsl:otherwise>
-			</xsl:choose>
+			<xsl:value-of select="substring(.,1,4)"/>
 		</xsl:variable>
 		<!-- construct the final xml formatted date -->
 		<PurchaseOrderDate>
-			<xsl:value-of select="concat($fullYearPart,'-',format-number(number($monthPart),'00'),'-',format-number(number($dayPart),'00'))"/>
+			<xsl:value-of select="concat($yearPart,'-',$monthPart,'-',format-number(number($dayPart),'00'))"/>
 		</PurchaseOrderDate>
 	</xsl:template>
 	
