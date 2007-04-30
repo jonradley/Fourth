@@ -31,12 +31,18 @@ Lee Boyton   | 10/11/2006 | Our CSV format now seems to be PSV.
 					<PurchaseOrderAcknowledgement>
 						<TradeSimpleHeader>
 							<SendersCodeForRecipient RecordLength="*" RecordPos="*" LPos="1"/>
+							<SendersBranchReference RecordLength="*" RecordPos="*" LPos="4"/>
 						</TradeSimpleHeader>
 						<PurchaseOrderAcknowledgementHeader>
 							<PurchaseOrderReferences>
 								<PurchaseOrderReference RecordLength="*" RecordPos="*" LPos="2"/>
 								<PurchaseOrderDate RecordLength="*" RecordPos="*" LPos="3"/>
 							</PurchaseOrderReferences>
+							<ShipTo>
+								<ShipToLocationID>
+									<SuppliersCode RecordLength="*" RecordPos="*" LPos="1"/>						
+								</ShipToLocationID>
+							</ShipTo>
 						</PurchaseOrderAcknowledgementHeader>
 					</PurchaseOrderAcknowledgement>
 				</BatchDocument>
