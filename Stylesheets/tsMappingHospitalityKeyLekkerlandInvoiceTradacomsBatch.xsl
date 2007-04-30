@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-**********************************************************************
+<!--******************************************************************
 Alterations
 **********************************************************************
 Name			| Date				| Change
@@ -8,11 +7,15 @@ Name			| Date				| Change
 S Jefford	| 22/08/2005		| GTIN field now sourced from ILD/SPRO(1).
 				|						| ILD/CRLI now stored in BuyersProductCode
 **********************************************************************
-N Emsen		| 14/09/2006		|	Purchase order date stipped if = blank
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-N Emsen		|	08/11/2006	|	Case 531: Purchase order reference working.
+N Emsen		| 14/09/2006		| Purchase order date stipped if = blank
 **********************************************************************
--->
+N Emsen		|	08/11/2006		| Case 531: Purchase order reference working.
+**********************************************************************
+R cambridge	| 30/04/2007		| 1047 branched for Key Lekkerland (2 implied dpl in VAT rates, 
+												 credit indicator is '-' after unit value )	
+**********************************************************************
+           	|           		|
+*******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
 	<!-- NOTE that these string literals are not only enclosed with double quotes, but have single quotes within also-->
@@ -56,11 +59,9 @@ N Emsen		|	08/11/2006	|	Case 531: Purchase order reference working.
 	</xsl:template>
 	
 	<!-- INVOIC-ILD-QTYI (InvoiceLine/InvoicedQuantity) needs to be multiplied by -1 if (InvoiceLine/ProductID/BuyersProductCode) is NOT blank -->
-	<xsl:template match="InvoiceLine/InvoicedQuantity">
+	<!--xsl:template match="InvoiceLine/InvoicedQuantity">
 		<xsl:choose>
-			<!--Parent of InvoicedQuantity is InvoiceLine-->
-			<xsl:when test="string-length(../ProductID/BuyersProductCode) &gt; 0" >
-				<!--INVOIC-ILD-CRLI is not blank, multiply by -1-->
+			<xsl:when test="substring-before(../UnitValueExclVAT,'-') != ''" >
 				<xsl:call-template name="copyCurrentNodeDPUnchanged">
 					<xsl:with-param name="lMultiplier" select="-1.0"/>
 				</xsl:call-template>
@@ -69,14 +70,14 @@ N Emsen		|	08/11/2006	|	Case 531: Purchase order reference working.
 				<xsl:call-template name="copyCurrentNodeDPUnchanged"/>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template>
+	</xsl:template-->
 	
 	<!-- INVOIC-ILD-LEXC(InvoiceLine/LineValueExclVAT) need to be multiplied by -1 if (InvoiceLine/ProductID/BuyersProductCode) is NOT blank -->
-	<xsl:template match="InvoiceLine/LineValueExclVAT">
-		<!-- Implicit 4DP conversion required regardless of BuyersProductCode -->
+	<xsl:template match="InvoiceLine/LineValueExclVAT | InvoiceLine/UnitValueExclVAT">
+		<!-- Implicit 4DP conversion required regardless of credit indicator -->
 		<xsl:choose>
 			<!--Parent of LineValueExclVAT is InvoiceLine -->
-			<xsl:when test="string-length(../ProductID/BuyersProductCode) &gt; 0" >
+			<xsl:when test="substring-before(../UnitValueExclVAT,'-') != ''" >
 				<!--INVOIC-ILD-CRLI is not blank, multiply by -1-->
 				<xsl:call-template name="copyCurrentNodeExplicit4DP">
 					<xsl:with-param name="lMultiplier" select="-1.0"/>
@@ -114,14 +115,14 @@ N Emsen		|	08/11/2006	|	Case 531: Purchase order reference working.
 	<!--Add any attribute XPath whose value needs to be converted from implicit 3 D.P to explicit 2 D.P. -->
 	<xsl:template match="VATSubTotal/@VATRate">
 		<xsl:attribute name="{name()}">
-			<xsl:value-of select="format-number(. div 1000.0, '0.00')"/>
+			<xsl:value-of select="format-number(. div 100.0, '0.00')"/>
 		</xsl:attribute>
 	</xsl:template>
 	<!-- SIMPLE CONVERSION IMPLICIT TO EXPLICIT 4 D.P -->
 	<!-- Add any XPath whose text node needs to be converted from implicit to explicit 4 D.P. -->
-	<xsl:template match="InvoiceLine/UnitValueExclVAT">
+	<!--xsl:template match="InvoiceLine/UnitValueExclVAT">
 		<xsl:call-template name="copyCurrentNodeExplicit4DP"/>
-	</xsl:template>
+	</xsl:template-->
 	<!-- END of SIMPLE CONVERSIONS-->
 	
 	<!-- DATE CONVERSION YYMMDD to xsd:date -->
@@ -182,9 +183,10 @@ N Emsen		|	08/11/2006	|	Case 531: Purchase order reference working.
 	<!-- Produces copy of node without content if content was NaN, otherwise copy of node and content adjusted to explicit 4 D.P. -->
 	<xsl:template name="copyCurrentNodeExplicit4DP">
 		<xsl:param name="lMultiplier" select="1.0"/>
+		<xsl:variable name="sValue" select="substring-before(concat(.,'-'),'-')"/>
 		<xsl:copy>
-			<xsl:if test="string(number(.)) != 'NaN'">
-				<xsl:value-of select="format-number((. * $lMultiplier) div 10000.0, '0.00##')"/>
+			<xsl:if test="string(number($sValue)) != 'NaN'">
+				<xsl:value-of select="format-number(($sValue * $lMultiplier) div 10000.0, '0.00##')"/>
 			</xsl:if>
 		</xsl:copy>
 	</xsl:template>
