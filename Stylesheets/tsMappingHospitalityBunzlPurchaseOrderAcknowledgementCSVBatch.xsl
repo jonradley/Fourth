@@ -34,7 +34,7 @@ Nigel Emsen  | 22/04/2007 | Amended for Bunzl
 	<xsl:template match="BatchDocument">
 		<xsl:copy>
 			<xsl:attribute name="DocumentTypeNo">
-				<xsl:text>139</xsl:text>
+				<xsl:text>84</xsl:text>
 			</xsl:attribute>
 			<xsl:apply-templates select="@*|node()"/>
 		</xsl:copy>
@@ -62,6 +62,75 @@ Nigel Emsen  | 22/04/2007 | Amended for Bunzl
 		<xsl:copy>
 			<xsl:apply-templates select="@*|node()"/>
 		</xsl:copy>
+	</xsl:template>
+	
+	<!-- For Bunzl they use PL Accounts which need the PL Account mapping into SBR. but we need to detect
+			if it is a PL Account customer. Therefore we will use the following protocol.
+			<bunzl unit code>+<bunzl PL account code>. Splitting on the "+"
+	-->
+	<xsl:template match="TradeSimpleHeader">
+	
+		<TradeSimpleHeader>
+		
+			<!-- Split out values on the "+" flag. -->
+			<xsl:variable name="sSCFR" select="translate(substring-before(SendersCodeForRecipient,'+'),' ','')"/>
+			<xsl:variable name="sSBR" select="translate(substring-after(SendersCodeForRecipient,'+'),' ','')"/>
+			
+			<!-- SendersCodeForRecipient -->
+			<SendersCodeForRecipient>
+			
+				<xsl:choose>
+				
+					<xsl:when test="string($sSCFR) != '' ">
+						<xsl:value-of select="$sSCFR"/>
+					</xsl:when>
+					
+					<!-- cover off no "+" in the value -->
+					<xsl:otherwise>
+						<xsl:value-of select="SendersCodeForRecipient"/>
+					</xsl:otherwise>
+					
+				</xsl:choose>
+				
+			</SendersCodeForRecipient>
+			
+			<!-- SendersBranchReference -->
+			<!--xsl:if test="string($sSBR) != '' "-->
+				<SendersBranchReference>
+					<xsl:value-of select="$sSBR"/>
+				</SendersBranchReference>
+			<!-- /xsl:if -->
+			
+		</TradeSimpleHeader>
+	
+	</xsl:template>
+	
+	<!-- For Bunzl they use PL Accounts which need the PL Account mapping into SBR. but we need to detect
+			if it is a PL Account customer. Therefore we will use the following protocol.
+			<bunzl unit code>+<bunzl PL account code>. Splitting on the "+"
+	-->
+	<xsl:template match="//PurchaseOrderAcknowledgementHeader/ShipTo/ShipToLocationID/SuppliersCode">
+	
+		<!-- Split out values on the "+" flag. -->
+		<xsl:variable name="sSupCode" select="translate(substring-before(.,'+'),' ','')"/>
+		
+		<SuppliersCode>
+				
+			<xsl:choose>
+				
+				<xsl:when test="string($sSupCode) != '' ">
+					<xsl:value-of select="$sSupCode"/>
+				</xsl:when>
+					
+				<!-- cover off no "+" in the value -->
+				<xsl:otherwise>
+					<xsl:value-of select="."/>
+				</xsl:otherwise>
+					
+				</xsl:choose>
+					
+		</SuppliersCode>
+	
 	</xsl:template>
 	
 </xsl:stylesheet>
