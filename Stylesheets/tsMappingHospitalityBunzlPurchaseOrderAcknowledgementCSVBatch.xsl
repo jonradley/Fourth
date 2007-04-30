@@ -95,11 +95,11 @@ Nigel Emsen  | 22/04/2007 | Amended for Bunzl
 			</SendersCodeForRecipient>
 			
 			<!-- SendersBranchReference -->
-			<!--xsl:if test="string($sSBR) != '' "-->
+			<xsl:if test="string($sSBR) != '' ">
 				<SendersBranchReference>
 					<xsl:value-of select="$sSBR"/>
 				</SendersBranchReference>
-			<!-- /xsl:if -->
+			</xsl:if>
 			
 		</TradeSimpleHeader>
 	
