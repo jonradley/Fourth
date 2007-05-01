@@ -21,11 +21,7 @@ Nigel Emsen  | 22/04/2007 | Amended for Bunzl
 	
 		<!-- create the BatchRoot element required by the Inbound XSL Transform processor -->
 		<BatchRoot>
-			<Batch>
-				<BatchDocuments>
-					<xsl:apply-templates select="@*|node()"/>
-				</BatchDocuments>
-			</Batch>
+			<xsl:apply-templates select="@*|node()"/>
 		</BatchRoot>
 		
 	</xsl:template>
