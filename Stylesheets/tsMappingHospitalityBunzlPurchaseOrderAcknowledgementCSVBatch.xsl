@@ -34,7 +34,7 @@ Nigel Emsen  | 22/04/2007 | Amended for Bunzl
 	<xsl:template match="BatchDocument">
 		<xsl:copy>
 			<xsl:attribute name="DocumentTypeNo">
-				<xsl:text>84</xsl:text>
+				<xsl:text>163</xsl:text>
 			</xsl:attribute>
 			<xsl:apply-templates select="@*|node()"/>
 		</xsl:copy>
@@ -71,33 +71,16 @@ Nigel Emsen  | 22/04/2007 | Amended for Bunzl
 	<xsl:template match="TradeSimpleHeader">
 	
 		<TradeSimpleHeader>
-		
-			<!-- Split out values on the "+" flag. -->
-			<xsl:variable name="sSCFR" select="translate(substring-before(SendersCodeForRecipient,'+'),' ','')"/>
-			<xsl:variable name="sSBR" select="translate(substring-after(SendersCodeForRecipient,'+'),' ','')"/>
-			
+
 			<!-- SendersCodeForRecipient -->
 			<SendersCodeForRecipient>
-			
-				<xsl:choose>
-				
-					<xsl:when test="string($sSCFR) != '' ">
-						<xsl:value-of select="$sSCFR"/>
-					</xsl:when>
-					
-					<!-- cover off no "+" in the value -->
-					<xsl:otherwise>
-						<xsl:value-of select="SendersCodeForRecipient"/>
-					</xsl:otherwise>
-					
-				</xsl:choose>
-				
+				<xsl:value-of select="translate(SendersCodeForRecipient,' ','')"/>
 			</SendersCodeForRecipient>
 			
 			<!-- SendersBranchReference -->
-			<xsl:if test="string($sSBR) != '' ">
+			<xsl:if test="string(translate(SendersBranchReference,' ','')) != '' ">
 				<SendersBranchReference>
-					<xsl:value-of select="$sSBR"/>
+					<xsl:value-of select="translate(SendersBranchReference,' ','')"/>
 				</SendersBranchReference>
 			</xsl:if>
 			
