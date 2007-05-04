@@ -5,9 +5,10 @@ Alterations
 **********************************************************************
 Name		| Date				| Change
 **********************************************************************
-N Emsen	| 14/09/2006		| Not tested against any Brakes credit notes
-N Emsen	|	27/09/2006	|	Case 393 - Delivery to live.
-N Emsen	|	04/01/2007	|	Case 661 - CLO3
+N Emsen	| 14/09/2006		|	Not tested against any Brakes credit notes
+N Emsen	|	27/09/2006	|	Case 393	- Delivery to live.
+N Emsen	|	04/01/2007	|	Case 661	- CLO3.
+N Emsen	|	03/05/2007	|	Case 1065	- Check for invoice references.
 **********************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
@@ -274,6 +275,39 @@ N Emsen	|	04/01/2007	|	Case 661 - CLO3
 		</xsl:if>
 	</xsl:template>
 	
+	<!-- check for presence of Invoice date and reference -->
+	<xsl:template match="InvoiceReferences">
+	
+		<xsl:variable name="sInvRef" select="translate(InvoiceReference ,' ','')"/>
+		<xsl:variable name="sInvDate" select="translate(InvoiceDate ,' ','')"/>
+		<xsl:variable name="sTaxDate" select="translate(InvoiceDate ,' ','')"/>
+		<xsl:variable name="sVatReg" select="translate(VATRegNo ,' ','')"/>
+		
+		<xsl:if test="string($sInvRef) != '' and string($sInvDate) != '' and string($sTaxDate) != '' and string($sVatReg) != '' ">
+		
+			<InvoiceReferences>
+				
+				<InvoiceReference>
+					<xsl:value-of select="$sInvRef"/>
+				</InvoiceReference>
+				
+				<InvoiceDate>		
+					<xsl:value-of select="$sInvDate"/>
+				</InvoiceDate>
+				
+				<TaxPointDate>
+					<xsl:value-of select="$sTaxDate"/>
+				</TaxPointDate>
+				
+				<VATRegNo>
+					<xsl:value-of select="$sVatReg"/>
+				</VATRegNo>
+			
+			</InvoiceReferences>
+		
+		</xsl:if>
+	
+	</xsl:template>
 	
 	<msxsl:script language="JScript" implements-prefix="jscript"><![CDATA[ 
 		function toUpperCase(vs) {
