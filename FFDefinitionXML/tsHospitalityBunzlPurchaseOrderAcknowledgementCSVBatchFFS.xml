@@ -22,7 +22,7 @@ Lee Boyton   | 10/11/2006 | Our CSV format now seems to be PSV.
 		<ffsFieldSeparators>
 			<ffsFieldSeparator>,</ffsFieldSeparator>
 		</ffsFieldSeparators>
-		<ffsSplitBatchRecord RecordLength="3" RecordPos="*"/>
+		<ffsSplitBatchRecord RecordLength="4" RecordPos="*"/>
 	</ffsSettings>
 	<ffsRoot>
 		<Batch>
