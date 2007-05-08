@@ -54,6 +54,8 @@
  10/07/2006		| Lee Boyton	| 192. Cater for Invoices where the ANA number is in the GLN element (H620 for invoices.)
 =========================================================================================
  24/01/2007		| Lee Boyton	| 705. Food supplier lines should be negative for credit notes.
+=========================================================================================
+ 08/05/2007   | Lee Boyton  | 1072. Cater for the Buyers code for Ship-to being blank.
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -106,6 +108,9 @@
 					<xsl:when test="/*/*/ShipTo/ShipToLocationID/BuyersCode">
 						<xsl:value-of select="/*/*/ShipTo/ShipToLocationID/BuyersCode"/>
 					</xsl:when>
+					<xsl:when test="/GoodsReceivedNote/TradeSimpleHeader/RecipientsBranchReference">
+						<xsl:value-of select="/GoodsReceivedNote/TradeSimpleHeader/RecipientsBranchReference"/>
+					</xsl:when>					
 					<xsl:otherwise>
 						<xsl:value-of select="/*/*/ShipTo/ShipToLocationID/SuppliersCode"/>
 					</xsl:otherwise>

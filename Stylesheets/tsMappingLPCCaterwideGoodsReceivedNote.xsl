@@ -14,6 +14,8 @@
 ==========================================================================================
  10/04/2007   | Lee Boyton  | Created module
 ==========================================================================================
+ 08/05/2007   | Lee Boyton  | 1072. Cater for the Buyers code for Ship-to being blank.
+==========================================================================================
               |             |
 =======================================================================================-->
 
@@ -66,7 +68,7 @@
 					<xsl:value-of select="/GoodsReceivedNote/GoodsReceivedNoteHeader/ShipTo/ShipToLocationID/BuyersCode"/>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:value-of select="/GoodsReceivedNote/GoodsReceivedNoteHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
+					<xsl:value-of select="/GoodsReceivedNote/TradeSimpleHeader/RecipientsBranchReference"/>
 				</xsl:otherwise>
 			</xsl:choose>															
 			<xsl:text>,</xsl:text>
