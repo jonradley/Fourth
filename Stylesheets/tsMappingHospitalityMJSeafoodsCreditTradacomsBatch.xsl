@@ -19,6 +19,8 @@ N Emsen		|	02/02/2006	|	Case 777:   Changes to MJ mappers to cater
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 N Emsen		|	06/02/2006	|	Case 781:   Mj Credit notes, changes to FFS
 				|						|	for picking out the PL Account.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+N Emsen		|	10/05/2007	|	Case 1086: MJ / Aramark changes to SBR.				
 
 **********************************************************************
 -->
@@ -266,6 +268,7 @@ N Emsen		|	06/02/2006	|	Case 781:   Mj Credit notes, changes to FFS
 	<xsl:template match="//SendersBranchReference">
 		<xsl:variable name="sSBRValue" select="translate(.,' ','')"/>
 		<xsl:variable name="sPLAccountCode" select="//CreditNote/CreditNoteDetail/CreditNoteLine/PurchaseOrderReferences/TradeAgreement/ContractReference"/>
+		<xsl:variable name="sAramarkTestForValue" select="substring(translate(//Buyer/BuyersAddress/AddressLine1,' ',''),1,7)"/>
 		<SendersBranchReference>
 			<!-- check if not a PL account user -->
 			<xsl:variable name="sPLAccountCodeReturn">
@@ -274,12 +277,16 @@ N Emsen		|	06/02/2006	|	Case 781:   Mj Credit notes, changes to FFS
 				</xsl:call-template>
 			</xsl:variable>
 			<!-- compare -->
-			<xsl:choose>
+<xsl:choose>
 				<!-- IS not PL Account user -->
 				<xsl:when test="string($sPLAccountCodeReturn) = 'NOT' ">
 					<xsl:value-of select="substring($sSBRValue,1,1)"/>
 				</xsl:when>
-				<!-- Is a PL user -->				
+				<!-- Is a PL user and IS ARAMARK -->
+				<xsl:when test="string($sAramarkTestForValue) = 'ARAMARK' ">
+					<xsl:value-of select="$sPLAccountCode"/>
+				</xsl:when>
+				<!-- Is a PL user and not ARAMARK -->				
 				<xsl:otherwise>
 					<!-- we need to concat the together the Branch single code from MJ's account code and the PL account code to create a valid branch reference. -->
 					<xsl:value-of select="concat(substring($sSBRValue,1,1),$sPLAccountCode)"/>			
