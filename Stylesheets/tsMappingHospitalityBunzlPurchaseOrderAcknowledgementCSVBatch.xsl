@@ -21,7 +21,11 @@ Nigel Emsen  | 22/04/2007 | Amended for Bunzl
 	
 		<!-- create the BatchRoot element required by the Inbound XSL Transform processor -->
 		<BatchRoot>
-			<xsl:apply-templates select="@*|node()"/>
+			<!-- Batch -->
+				<!-- BatchDocuments-->
+					<xsl:apply-templates select="@*|node()"/>
+				<!--/BatchDocuments-->
+			<!--/Batch-->
 		</BatchRoot>
 		
 	</xsl:template>
@@ -30,7 +34,7 @@ Nigel Emsen  | 22/04/2007 | Amended for Bunzl
 	<xsl:template match="BatchDocument">
 		<xsl:copy>
 			<xsl:attribute name="DocumentTypeNo">
-				<xsl:text>163</xsl:text>
+				<xsl:text>84</xsl:text>
 			</xsl:attribute>
 			<xsl:apply-templates select="@*|node()"/>
 		</xsl:copy>
@@ -64,25 +68,41 @@ Nigel Emsen  | 22/04/2007 | Amended for Bunzl
 			if it is a PL Account customer. Therefore we will use the following protocol.
 			<bunzl unit code>+<bunzl PL account code>. Splitting on the "+"
 	-->
-	<xsl:template match="TradeSimpleHeader">
+	<!-- xsl:template match="TradeSimpleHeader"-->
 	
-		<TradeSimpleHeader>
+		<!--TradeSimpleHeader-->
+		
+			<!-- Split out values -->
+			<!--xsl:variable name="sSCFR" select="translate(SendersCodeForRecipient,' ','')"/-->
 
 			<!-- SendersCodeForRecipient -->
-			<SendersCodeForRecipient>
-				<xsl:value-of select="translate(SendersCodeForRecipient,' ','')"/>
-			</SendersCodeForRecipient>
+			<!--SendersCodeForRecipient>
+			
+				<xsl:choose>
+				
+					<xsl:when test="string($sSCFR) != '' ">
+						<xsl:value-of select="$sSCFR"/>
+					</xsl:when-->
+					
+					<!-- cover off no "+" in the value -->
+					<!--xsl:otherwise>
+						<xsl:value-of select="SendersCodeForRecipient"/>
+					</xsl:otherwise>
+					
+				</xsl:choose>
+				
+			</SendersCodeForRecipient-->
 			
 			<!-- SendersBranchReference -->
-			<xsl:if test="string(translate(SendersBranchReference,' ','')) != '' ">
+			<!--xsl:if test="string(SendersBranchReference) != '' ">
 				<SendersBranchReference>
-					<xsl:value-of select="translate(SendersBranchReference,' ','')"/>
+					<xsl:value-of select="SendersBranchReference"/>
 				</SendersBranchReference>
 			</xsl:if>
 			
 		</TradeSimpleHeader>
 	
-	</xsl:template>
+	</xsl:template-->
 	
 	<!-- For Bunzl they use PL Accounts which need the PL Account mapping into SBR. but we need to detect
 			if it is a PL Account customer. Therefore we will use the following protocol.
