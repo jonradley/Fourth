@@ -16,6 +16,9 @@ N Emsen		|	20/11/2006	|	Case 559: changes to UOM mapping raised
 				|						|	by Orchid testing.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 N Emsen		|	04/01/2007	|	Case 661 - CLO3
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+N Emsen		|	11/05/2007	|	Case 1092  - Date Conversion.
+
 **********************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
@@ -146,7 +149,9 @@ N Emsen		|	04/01/2007	|	Case 661 - CLO3
 						DeliveryNoteReferences/DespatchDate |
 						BatchInformation/FileCreationDate |
 						InvoiceReferences/InvoiceDate |
-						InvoiceReferences/TaxPointDate">
+						InvoiceReferences/TaxPointDate | 
+						CreditNoteReferences/CreditNoteDate |
+						CreditNoteReferences/TaxPointDate">
 		<xsl:copy>
 			<xsl:value-of select="concat('20', substring(., 1, 2), '-', substring(., 3, 2), '-', substring(., 5, 2))"/>
 		</xsl:copy>
