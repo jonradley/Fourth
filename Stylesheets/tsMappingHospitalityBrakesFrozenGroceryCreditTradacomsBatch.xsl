@@ -9,6 +9,8 @@ N Emsen	| 14/09/2006		|	Not tested against any Brakes credit notes
 N Emsen	|	27/09/2006	|	Case 393	- Delivery to live.
 N Emsen	|	04/01/2007	|	Case 661	- CLO3.
 N Emsen	|	03/05/2007	|	Case 1065	- Check for invoice references.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+N Emsen		|	11/05/2007	|	Case 1092  - Date Conversion.
 **********************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
@@ -284,7 +286,7 @@ N Emsen	|	03/05/2007	|	Case 1065	- Check for invoice references.
 		<xsl:variable name="sVatReg" select="translate(VATRegNo ,' ','')"/>
 		
 		<xsl:if test="string($sInvRef) != '' and string($sInvDate) != '' and string($sTaxDate) != '' and string($sVatReg) != '' ">
-		
+
 			<InvoiceReferences>
 				
 				<InvoiceReference>
@@ -292,11 +294,11 @@ N Emsen	|	03/05/2007	|	Case 1065	- Check for invoice references.
 				</InvoiceReference>
 				
 				<InvoiceDate>		
-					<xsl:value-of select="$sInvDate"/>
+					<xsl:value-of select="concat('20', substring($sInvDate, 1, 2), '-', substring($sInvDate, 3, 2), '-', substring($sInvDate, 5, 2))"/>
 				</InvoiceDate>
 				
 				<TaxPointDate>
-					<xsl:value-of select="$sTaxDate"/>
+					<xsl:value-of select="concat('20', substring($sTaxDate, 1, 2), '-', substring($sTaxDate, 3, 2), '-', substring($sTaxDate, 5, 2))"/>
 				</TaxPointDate>
 				
 				<VATRegNo>
