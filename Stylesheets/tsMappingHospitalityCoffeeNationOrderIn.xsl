@@ -2,7 +2,7 @@
 <!--======================================================================================
  Overview
 
- © Alternative Business Solutions Ltd, 2006.
+ © Alternative Business Solutions Ltd, 2007.
 ==========================================================================================
  Module History
 ==========================================================================================
@@ -10,7 +10,7 @@
 ==========================================================================================
  	Date      	| Name 				| Description of modification
 ==========================================================================================
-	13/02/2006	| R Cambridge		| Created module
+	13/02/2007	| R Cambridge		| 950 Created module
 ==========================================================================================
 	          	|            		| 
 =======================================================================================-->
@@ -51,8 +51,8 @@
 									<ShipTo>
 										<ShipToLocationID>
 											<!--GLN>23234</GLN-->
-											<!--BuyersCode><xsl:value-of select="POHeader/ST/STLocID/BysCode"/></BuyersCode-->
-											<SuppliersCode><xsl:value-of select="POHeader/ST/STLocID/SupsCode"/></SuppliersCode>
+											<BuyersCode><xsl:value-of select="POHeader/ST/STLocID/BysCode"/></BuyersCode>
+											<SuppliersCode><xsl:value-of select="concat('34',POHeader/ST/STLocID/BysCode)"/></SuppliersCode>
 										</ShipToLocationID>
 										<ShipToName><xsl:value-of select="POHeader/ST/STName"/></ShipToName>
 										<ShipToAddress>
