@@ -286,12 +286,12 @@
 				<xsl:text>+</xsl:text>
 
 					<!-- IS a Promotion line and price is zero -->
-					<xsl:if test="format-number(OrderedQuantity,'0') = 0 ">
+					<xsl:if test="format-number(UnitValueExclVAT,'0') = 0 ">
 						<xsl:text>F</xsl:text>
 					</xsl:if>
 					
 					<!-- IS a Promotion line and price is not zero -->
-					<xsl:if test="format-number(OrderedQuantity,'0') &gt; 0">
+					<xsl:if test="format-number(UnitValueExclVAT,'0') &gt; 0">
 						<xsl:text>P</xsl:text>
 					</xsl:if>
 
