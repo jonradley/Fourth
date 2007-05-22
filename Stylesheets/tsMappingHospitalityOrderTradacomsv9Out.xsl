@@ -9,13 +9,13 @@
 ==========================================================================================
  Version		| 
 ==========================================================================================
- Date      	| Name 					| Description of modification
+ Date      	| Name 						|	Description of modification
 ==========================================================================================
- 13/02/2006	| R Cambridge			| Created module
+ 13/02/2006	| R Cambridge			|	Created module
 ==========================================================================================
- 13/03/2006	| Lee Boyton      	| H574. Turned into Tradacoms version 9.
+ 13/03/2006	| Lee Boyton      	|	H574. Turned into Tradacoms version 9.
 ==========================================================================================
-           	|                 	|
+ 23/05/2007 	|	Nigel Emsen			|	FB 972: Amendments to handle Marstons promotions.
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -254,6 +254,58 @@
 			-->
 			
 		</xsl:for-each>
+		
+		<!-- FogBuz 972 - Marstons Promotions, NE, May 2007 -->
+		<!-- Check if Promotions element present -->
+		<xsl:for-each select="/PurchaseOrder/PromotionsDetail/PurchaseOrderLine">
+							
+			<xsl:text>OLD=</xsl:text>
+				<!--xsl:value-of select="HelperObj:GetNextCounterValue('OrderLineDetails')"/-->
+				<xsl:value-of select="count(preceding-sibling::* | self::*)"/>
+				<xsl:text>+</xsl:text>
+				<xsl:text>:</xsl:text>
+				<xsl:call-template name="msCheckField">
+					<xsl:with-param name="vobjNode" select="ProductID/SuppliersProductCode"/>
+					<xsl:with-param name="vnLength" select="30"/>
+				</xsl:call-template>
+				<xsl:text>+</xsl:text>
+				<xsl:text>+</xsl:text>
+				<xsl:text>:</xsl:text>
+				<xsl:call-template name="msCheckField">
+					<xsl:with-param name="vobjNode" select="ProductID/BuyersProductCode"/>
+					<xsl:with-param name="vnLength" select="30"/>
+				</xsl:call-template>
+				<xsl:text>+::</xsl:text>
+				<xsl:value-of select="OrderedQuantity/@UnitOfMeasure"/>
+				<xsl:text>+</xsl:text>
+				<xsl:value-of select="format-number(OrderedQuantity,'0')"/>
+				<xsl:text>:</xsl:text>
+				<xsl:value-of select="translate(format-number(OrderedQuantity,'#.000'),'.','')"/>
+				<xsl:text>+</xsl:text>
+				<xsl:value-of select="translate(format-number(UnitValueExclVAT,'#.00'),'.','')"/><xsl:text>00</xsl:text>
+				<xsl:text>+</xsl:text>
+
+					<!-- IS a Promotion line and price is zero -->
+					<xsl:if test="format-number(OrderedQuantity,'0') = 0 ">
+						<xsl:text>F</xsl:text>
+					</xsl:if>
+					
+					<!-- IS a Promotion line and price is not zero -->
+					<xsl:if test="format-number(OrderedQuantity,'0') &gt; 0">
+						<xsl:text>P</xsl:text>
+					</xsl:if>
+
+				<xsl:text>+</xsl:text>
+				<xsl:text>+</xsl:text>
+				<!-- truncate to 40 TDES = 9030 = AN..40-->
+				<xsl:call-template name="msCheckField">
+					<xsl:with-param name="vobjNode" select="ProductDescription"/>
+					<xsl:with-param name="vnLength" select="40"/>
+				</xsl:call-template>
+							
+			<xsl:value-of select="$sRecordSep"/>
+					
+		</xsl:for-each>		
 		
 		<xsl:text>OTR=</xsl:text>	
 			<xsl:value-of select="PurchaseOrderTrailer/NumberOfLines"/>
