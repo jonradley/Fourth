@@ -308,7 +308,9 @@
 		</xsl:for-each>		
 		
 		<xsl:text>OTR=</xsl:text>	
-			<xsl:value-of select="PurchaseOrderTrailer/NumberOfLines"/>
+			<!-- 24 May 2007, FB: 972 - NE - Order count to include promotional lines -->
+			<xsl:value-of select="count(//PurchaseOrderLine)"/>
+			
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:text>MTR=</xsl:text>
