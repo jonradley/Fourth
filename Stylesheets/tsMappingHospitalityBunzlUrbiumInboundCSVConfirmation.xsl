@@ -252,23 +252,17 @@
 					</xsl:for-each>
 				</PurchaseOrderConfirmationDetail>
 				
-				<xsl:if test="PurchaseOrderConfirmationTrailer/NumberOfLines != '' or PurchaseOrderConfirmationTrailer/TotalExclVAT != ''">
-					<PurchaseOrderConfirmationTrailer>
+				<PurchaseOrderConfirmationTrailer>
 						
-						<xsl:if test="PurchaseOrderConfirmationTrailer/NumberOfLines != ''">
-							<NumberOfLines>
-								<xsl:value-of select="PurchaseOrderConfirmationTrailer/NumberOfLines"/>
-							</NumberOfLines>	
-						</xsl:if>
+					<NumberOfLines>
+						<xsl:value-of select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationTrailer/NumberOfLines"/>
+					</NumberOfLines>	
 						
-						<xsl:if test="PurchaseOrderConfirmationTrailer/TotalExclVAT != ''">
-							<TotalExclVAT>
-								<xsl:value-of select="PurchaseOrderConfirmationTrailer/TotalExclVAT"/>
-							</TotalExclVAT>
-						</xsl:if>
+					<TotalExclVAT>
+						<xsl:value-of select="PurchaseOrderConfirmationTrailer/TotalExclVAT"/>
+					</TotalExclVAT>
 				
-					</PurchaseOrderConfirmationTrailer>
-				</xsl:if>
+				</PurchaseOrderConfirmationTrailer>
 			
 			</PurchaseOrderConfirmation>
 			
