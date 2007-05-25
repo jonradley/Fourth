@@ -23,6 +23,9 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 	<xsl:template match="PurchaseOrderConfirmation">
 		<BatchRoot>
+		
+		<Batch><BatchDocuments><BatchDocument>
+		
 			<PurchaseOrderConfirmation>
 				<TradeSimpleHeader>
 				
@@ -109,7 +112,7 @@
 								<xsl:value-of select="PurchaseOrderConfirmationHeader/PurchaseOrderReferences/PurchaseOrderDate"/>
 							</xsl:variable>
 							<PurchaseOrderDate>
-								<xsl:value-of select="concat(substring($dtPODate,1,4),'-',substring($dtPODate,5,2),'-',substring($dtPODate,7,2))"/>
+								<xsl:value-of select="concat('20', substring($dtPODate,1,2),'-', substring($dtPODate,3,2),'-',substring($dtPODate,5,2))"/>
 							</PurchaseOrderDate>
 						</xsl:if>
 					</PurchaseOrderReferences>
@@ -120,7 +123,7 @@
 								<xsl:value-of select="PurchaseOrderConfirmationHeader/OrderedDeliveryDetails/DeliveryDate"/>
 							</xsl:variable>
 							<DeliveryDate>
-								<xsl:value-of select="concat(substring($dtOrdDelDate,1,4),'-',substring($dtOrdDelDate,5,2),'-',substring($dtOrdDelDate,7,2))"/>
+								<xsl:value-of select="concat('20',substring($dtOrdDelDate,1,2),'-',substring($dtOrdDelDate,3,2),'-',substring($dtOrdDelDate,5,2))"/>
 							</DeliveryDate>
 						</OrderedDeliveryDetails>
 					</xsl:if>
@@ -132,7 +135,7 @@
 									<xsl:value-of select="PurchaseOrderConfirmationHeader/ConfirmedDeliveryDetails/DeliveryDate"/>
 								</xsl:variable>
 								<DeliveryDate>
-									<xsl:value-of select="concat(substring($dtConfDelDate,1,4),'-',substring($dtConfDelDate,5,2),'-',substring($dtConfDelDate,7,2))"/>
+									<xsl:value-of select="concat('20',substring($dtConfDelDate,1,2),'-',substring($dtConfDelDate,3,2),'-',substring($dtConfDelDate,5,2))"/>
 								</DeliveryDate>
 							</xsl:if>
 							<xsl:if test="PurchaseOrderConfirmationHeader/ConfirmedDeliveryDetails/DeliverySlot/SlotStart != '' or PurchaseOrderConfirmationHeader/ConfirmedDeliveryDetails/DeliverySlot/SlotEnd != ''">
@@ -268,6 +271,9 @@
 				</xsl:if>
 			
 			</PurchaseOrderConfirmation>
+			
+			</BatchDocument></BatchDocuments></Batch>
+			
 		</BatchRoot>			
 	</xsl:template>
 </xsl:stylesheet>
