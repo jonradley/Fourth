@@ -20,8 +20,8 @@
 ' 08/05/2007  | Nigel Emsen  | Copied for Bunzl. FB: 791.
 '******************************************************************************************
 -->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
-	<xsl:template match="PurchaseOrderConfirmation">
+<xsl:stylesheet  version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt"  xmlns:vbscript="http://abs-Ltd.com">
+	<xsl:template match="Document" >
 		<BatchRoot>
 		
 		<Batch><BatchDocuments><BatchDocument>
@@ -30,13 +30,13 @@
 				<TradeSimpleHeader>
 				
 					<SendersCodeForRecipient>
-						<xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/>
+						<xsl:value-of select="H/L2[2]"/>
 					</SendersCodeForRecipient>
 					
 					<!-- added for Bunzl as Aramark use PL Accounts, but not present for Orchid. -->
-					<xsl:if test="string(//SendersBranchReference) !='' ">
+					<xsl:if test="string(H/L2[20]) !='' ">
 						<SendersBranchReference>
-							<xsl:value-of select="//SendersBranchReference"/>
+							<xsl:value-of select="H/L2[20]"/>
 						</SendersBranchReference>
 					</xsl:if>
 					
@@ -57,137 +57,146 @@
 				
 				<PurchaseOrderConfirmationHeader>
 				
-					<xsl:if test="PurchaseOrderConfirmationHeader/ShipTo/ShipToName != '' or PurchaseOrderConfirmationHeader/ShipTo/ShipToAddress/AddressLine1 != '' or PurchaseOrderConfirmationHeader/ShipTo/ShipToAddress/AddressLine2 != '' or PurchaseOrderConfirmationHeader/ShipTo/ShipToAddress/AddressLine3 != '' or PurchaseOrderConfirmationHeader/ShipTo/ShipToAddress/AddressLine4 != '' or PurchaseOrderConfirmationHeader/ShipTo/ShipToAddress/PostCode != '' or PurchaseOrderConfirmationHeader/ShipTo/ContactName != ''">
 						<ShipTo>
-							<xsl:if test="PurchaseOrderConfirmationHeader/ShipTo/ShipToName != ''">
+	
 								<ShipToName>
-									<xsl:value-of select="PurchaseOrderConfirmationHeader/ShipTo/ShipToName"/>
+									<xsl:value-of select="H/L2[11]"/>
 								</ShipToName>
-							</xsl:if>
-							<xsl:if test="PurchaseOrderConfirmationHeader/ShipTo/ShipToAddress/AddressLine1 != '' or PurchaseOrderConfirmationHeader/ShipTo/ShipToAddress/AddressLine2 != '' or PurchaseOrderConfirmationHeader/ShipTo/ShipToAddress/AddressLine3 != '' or PurchaseOrderConfirmationHeader/ShipTo/ShipToAddress/AddressLine4 != '' or PurchaseOrderConfirmationHeader/ShipTo/ShipToAddress/PostCode != ''">
+
 								<ShipToAddress>
-									<xsl:if test="PurchaseOrderConfirmationHeader/ShipTo/ShipToAddress/AddressLine1 != ''">
-										<AddressLine1>
-											<xsl:value-of select="PurchaseOrderConfirmationHeader/ShipTo/ShipToAddress/AddressLine1"/>
-										</AddressLine1>
-									</xsl:if>
-									<xsl:if test="PurchaseOrderConfirmationHeader/ShipTo/ShipToAddress/AddressLine2 != ''">
+
+									<AddressLine1>
+										<xsl:value-of select="H/L2[12]"/>
+									</AddressLine1>
+
+									<xsl:if test="H/L2[13] != ''">
 										<AddressLine2>
-											<xsl:value-of select="PurchaseOrderConfirmationHeader/ShipTo/ShipToAddress/AddressLine2"/>
+											<xsl:value-of select="H/L2[13]"/>
 										</AddressLine2>
 									</xsl:if>
-									<xsl:if test="PurchaseOrderConfirmationHeader/ShipTo/ShipToAddress/AddressLine3 != ''">
+									
+									<xsl:if test="H/L2[14] != ''">
 										<AddressLine3>
-											<xsl:value-of select="PurchaseOrderConfirmationHeader/ShipTo/ShipToAddress/AddressLine3"/>
+											<xsl:value-of select="H/L2[14]"/>
 										</AddressLine3>
 									</xsl:if>
-									<xsl:if test="PurchaseOrderConfirmationHeader/ShipTo/ShipToAddress/AddressLine4 != ''">
+									
+									<xsl:if test="H/L2[15] != ''">
 										<AddressLine4>
-											<xsl:value-of select="PurchaseOrderConfirmationHeader/ShipTo/ShipToAddress/AddressLine4"/>
+											<xsl:value-of select="H/L2[15]"/>
 										</AddressLine4>
 									</xsl:if>
-									<xsl:if test="PurchaseOrderConfirmationHeader/ShipTo/ShipToAddress/PostCode != ''">
+									
+									<xsl:if test="H/L2[16] != ''">
 										<PostCode>
-											<xsl:value-of select="PurchaseOrderConfirmationHeader/ShipTo/ShipToAddress/PostCode"/>
+											<xsl:value-of select="H/L2[16]"/>
 										</PostCode>
 									</xsl:if>
+									
 								</ShipToAddress>
-							</xsl:if>
-							<xsl:if test="PurchaseOrderConfirmationHeader/ShipTo/ContactName != ''">
+
+							<xsl:if test="H/L2[10] != ''">
 								<ContactName>
-									<xsl:value-of select="PurchaseOrderConfirmationHeader/ShipTo/ContactName"/>
+									<xsl:value-of select="H/L2[10]"/>
 								</ContactName>
 							</xsl:if>
 						</ShipTo>
-					</xsl:if>
-				
+			
 					<PurchaseOrderReferences>
 					
 						<PurchaseOrderReference>
-							<xsl:value-of select="PurchaseOrderConfirmationHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
+							<xsl:value-of select="H/L2[4]"/>
 						</PurchaseOrderReference>
 	
-						<xsl:if test="PurchaseOrderConfirmationHeader/PurchaseOrderReferences/PurchaseOrderDate != ''">
-							<xsl:variable name="dtPODate">
-								<xsl:value-of select="PurchaseOrderConfirmationHeader/PurchaseOrderReferences/PurchaseOrderDate"/>
-							</xsl:variable>
-							<PurchaseOrderDate>
-								<xsl:value-of select="concat('20', substring($dtPODate,1,2),'-', substring($dtPODate,3,2),'-',substring($dtPODate,5,2))"/>
-							</PurchaseOrderDate>
-						</xsl:if>
+						<xsl:variable name="dtPODate" select="H/L2[5]"/>
+						<PurchaseOrderDate>
+							<xsl:value-of select="concat('20', substring($dtPODate,1,2),'-', substring($dtPODate,3,2),'-',substring($dtPODate,5,2))"/>
+						</PurchaseOrderDate>
+
 					</PurchaseOrderReferences>
 					
-					<xsl:if test="PurchaseOrderConfirmationHeader/OrderedDeliveryDetails/DeliveryDate != ''">
-						<OrderedDeliveryDetails>
-							<xsl:variable name="dtOrdDelDate">
-								<xsl:value-of select="PurchaseOrderConfirmationHeader/OrderedDeliveryDetails/DeliveryDate"/>
-							</xsl:variable>
-							<DeliveryDate>
-								<xsl:value-of select="concat('20',substring($dtOrdDelDate,1,2),'-',substring($dtOrdDelDate,3,2),'-',substring($dtOrdDelDate,5,2))"/>
-							</DeliveryDate>
-						</OrderedDeliveryDetails>
-					</xsl:if>
+					<PurchaseOrderConfirmationReferences>
 					
-					<xsl:if test="PurchaseOrderConfirmationHeader/ConfirmedDeliveryDetails/DeliveryDate != '' or PurchaseOrderConfirmationHeader/ConfirmedDeliveryDetails/DeliverySlot/SlotStart != '' or PurchaseOrderConfirmationHeader/ConfirmedDeliveryDetails/DeliverySlot/SlotEnd != ''">
-						<ConfirmedDeliveryDetails>
-							<xsl:if test="PurchaseOrderConfirmationHeader/ConfirmedDeliveryDetails/DeliveryDate">
-								<xsl:variable name="dtConfDelDate">
-									<xsl:value-of select="PurchaseOrderConfirmationHeader/ConfirmedDeliveryDetails/DeliveryDate"/>
-								</xsl:variable>
+						<PurchaseOrderConfirmationReference>
+							<xsl:value-of select="H/L2[4]"/>
+						</PurchaseOrderConfirmationReference>
+						
+						<PurchaseOrderConfirmationDate>
+							<xsl:value-of select="vbscript:sGetTodaysDate()"/>
+						</PurchaseOrderConfirmationDate>	
+					
+					</PurchaseOrderConfirmationReferences>
+					
+					<OrderedDeliveryDetails>
+					
+						<xsl:variable name="dtOrdDelDate" select="H/L2[6]"/>
+						<DeliveryDate>
+								<xsl:value-of select="concat('20',substring($dtOrdDelDate,1,2),'-',substring($dtOrdDelDate,3,2),'-',substring($dtOrdDelDate,5,2))"/>
+						</DeliveryDate>
+						
+					</OrderedDeliveryDetails>
+					
+					<xsl:variable name="sConDelDate" select="H/L2[7]"/>
+					<xsl:variable name="sConSlotStart" select="H/L2[8]"/>
+					<xsl:variable name="sConSlotEnd" select="H/L2[9]"/>	
+
+					<ConfirmedDeliveryDetails>
+
 								<DeliveryDate>
-									<xsl:value-of select="concat('20',substring($dtConfDelDate,1,2),'-',substring($dtConfDelDate,3,2),'-',substring($dtConfDelDate,5,2))"/>
+									<xsl:value-of select="concat('20',substring($sConDelDate,1,2),'-',substring($sConDelDate,3,2),'-',substring($sConDelDate,5,2))"/>
 								</DeliveryDate>
-							</xsl:if>
-							<xsl:if test="PurchaseOrderConfirmationHeader/ConfirmedDeliveryDetails/DeliverySlot/SlotStart != '' or PurchaseOrderConfirmationHeader/ConfirmedDeliveryDetails/DeliverySlot/SlotEnd != ''">
+
+							<xsl:if test="$sConSlotStart != '' and $sConSlotEnd != ''">
+							
 								<DeliverySlot>
-									<xsl:if test="PurchaseOrderConfirmationHeader/ConfirmedDeliveryDetails/DeliverySlot/SlotStart != ''">
-										<xsl:variable name="tmSlotStart">
-											<xsl:value-of select="PurchaseOrderConfirmationHeader/ConfirmedDeliveryDetails/DeliverySlot/SlotStart"/>
-										</xsl:variable>
+								
+									<xsl:if test="$sConSlotStart != ''">
+										<xsl:variable name="tmSlotStart" select="$sConSlotStart"/>
 										<SlotStart>
 											<xsl:value-of select="concat(substring($tmSlotStart,1,2),':',substring($tmSlotStart,3,2))"/>
 										</SlotStart>
 									</xsl:if>
-									<xsl:if test="PurchaseOrderConfirmationHeader/ConfirmedDeliveryDetails/DeliverySlot/SlotEnd">
-										<xsl:variable name="tmSlotEnd">
-											<xsl:value-of select="PurchaseOrderConfirmationHeader/ConfirmedDeliveryDetails/DeliverySlot/SlotEnd"/>
-										</xsl:variable>
+									
+									<xsl:if test="$sConSlotEnd != '' ">
+										<xsl:variable name="tmSlotEnd" select="$sConSlotEnd"/>
 										<SlotEnd>
 											<xsl:value-of select="concat(substring($tmSlotEnd,1,2),':',substring($tmSlotEnd,3,2))"/>
 										</SlotEnd>
 									</xsl:if>
+									
 								</DeliverySlot>
+								
 							</xsl:if>
+							
 						</ConfirmedDeliveryDetails>
-					</xsl:if>
 					
 				</PurchaseOrderConfirmationHeader>
 				
 				<PurchaseOrderConfirmationDetail>
-					<xsl:for-each select="PurchaseOrderConfirmationDetail/PurchaseOrderConfirmationLine">
+					<xsl:for-each select="D">
 					
 						<PurchaseOrderConfirmationLine>
 						
 							<!-- translate the inbound line status -->
-							<xsl:if test="@LineStatus != ''">
+							<xsl:if test="D[position()]/L2[2] != ''">
 								<xsl:attribute name="LineStatus">
 									<xsl:choose>
-										<xsl:when test="@LineStatus = 'A'">
+										<xsl:when test="D[position()]/L2[2] = 'A'">
 											<xsl:text>Accepted</xsl:text>
 										</xsl:when>
-										<xsl:when test="@LineStatus = 'C'">
+										<xsl:when test="D[position()]/L2[2] = 'C'">
 											<xsl:text>Changed</xsl:text>
 										</xsl:when>
-										<xsl:when test="@LineStatus = 'R'">
+										<xsl:when test="D[position()]/L2[2] = 'R'">
 											<xsl:text>Rejected</xsl:text>
 										</xsl:when>
-										<xsl:when test="@LineStatus = 'S'">
+										<xsl:when test="D[position()]/L2[2] = 'S'">
 											<xsl:text>Added</xsl:text>
 										</xsl:when>
 										<!-- if the line status is not recognised then pass through the inbound value
 										     so the document fails at the xsd validation stage -->
 										<xsl:otherwise>
-											<xsl:value-of select="@LineStatus"/>
+											<xsl:value-of select="D[position()]/L2[2]"/>
 										</xsl:otherwise>
 									</xsl:choose>
 								</xsl:attribute>
@@ -195,55 +204,57 @@
 							
 							<ProductID>
 								<SuppliersProductCode>
-									<xsl:value-of select="ProductID/SuppliersProductCode"/>
+									<xsl:value-of select="L2[3]"/>
 								</SuppliersProductCode>
 							</ProductID>
 	
-							<xsl:if test="SubsitutedProductID/SuppliersProductCode != ''">
+							<xsl:if test="L2[4] != ''">
 								<SubstitutedProductID>
 									<SuppliersProductCode>
-										<xsl:value-of select="SubsitutedProductID/SuppliersProductCode"/>
+										<xsl:value-of select="L2[4]"/>
 									</SuppliersProductCode>
 								</SubstitutedProductID>
 							</xsl:if>
 							
-							<xsl:if test="ProductDescription != ''">
+							<xsl:if test="L2[5] != ''">
 								<ProductDescription>
-									<xsl:value-of select="ProductDescription"/>
+									<xsl:value-of select="L2[5]"/>
 								</ProductDescription>
 							</xsl:if>
 							
-							<xsl:if test="OrderedQuantity != ''">
+							<xsl:if test="L2[7] != ''">
 								<OrderedQuantity>
-									<xsl:value-of select="OrderedQuantity"/>
+									<xsl:value-of select="L2[7]"/>
 								</OrderedQuantity>
 							</xsl:if>
 							
-							<ConfirmedQuantity>
-								<xsl:value-of select="ConfirmedQuantity"/>
-							</ConfirmedQuantity>
+							<xsl:if test="L2[8] != ''">
+								<ConfirmedQuantity>
+									<xsl:value-of select="L2[8]"/>
+								</ConfirmedQuantity>
+							</xsl:if>
 	
-							<xsl:if test="PackSize != ''">
+							<xsl:if test="L2[6] != ''">
 								<PackSize>
-									<xsl:value-of select="PackSize"/>
+									<xsl:value-of select="L2[6]"/>
 								</PackSize>
 							</xsl:if>
 							
-							<xsl:if test="UnitValueExclVAT != ''">
+							<xsl:if test="L2[9] != ''">
 								<UnitValueExclVAT>
-									<xsl:value-of select="UnitValueExclVAT"/>
+									<xsl:value-of select="L2[9]"/>
 								</UnitValueExclVAT>
 							</xsl:if>
 							
-							<xsl:if test="LineValueExclVAT">
+							<xsl:if test="L2[10] !=''">
 								<LineValueExclVAT>
-									<xsl:value-of select="LineValueExclVAT"/>
+									<xsl:value-of select="L2[10]"/>
 								</LineValueExclVAT>
 							</xsl:if>
 							
-							<xsl:if test="Narrative != ''">
+							<xsl:if test="L2[11] != ''">
 								<Narrative>
-									<xsl:value-of select="Narrative"/>
+									<xsl:value-of select="L2[11]"/>
 								</Narrative>
 							</xsl:if>
 						
@@ -255,11 +266,11 @@
 				<PurchaseOrderConfirmationTrailer>
 						
 					<NumberOfLines>
-						<xsl:value-of select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationTrailer/NumberOfLines"/>
+						<xsl:value-of select="H/L2[17]"/>
 					</NumberOfLines>	
 						
 					<TotalExclVAT>
-						<xsl:value-of select="PurchaseOrderConfirmationTrailer/TotalExclVAT"/>
+						<xsl:value-of select="H/L2[19]"/>
 					</TotalExclVAT>
 				
 				</PurchaseOrderConfirmationTrailer>
@@ -270,4 +281,33 @@
 			
 		</BatchRoot>			
 	</xsl:template>
+	
+	<!-- VBScript Functions -->
+	<msxsl:script language="VBScript" implements-prefix="vbscript"><![CDATA[ 
+
+		'	------------------------------------------------------------------
+		' FUNCTION:	To return the SystemDate in Internal XML format.
+		'					Nigel Emsen, May 2007
+		'	------------------------------------------------------------------
+		Function sGetTodaysDate()
+		
+			Dim dToday
+			Dim sDay, sMonth, sYear
+			
+			dToday=date
+			
+			sDay=Day(dToday)
+			if CInt(sDay)<10 then sDay="0" & sDay
+			
+			sMonth=Month(dToday)
+			if CInt(sMonth)<10 then sMonth="0" & sMonth
+			
+			sYear=Year(dToday)
+			
+			sGetTodaysDate=sYear & "-" & sMonth & "-" & sDay
+
+		End Function
+
+	]]></msxsl:script>
+
 </xsl:stylesheet>
