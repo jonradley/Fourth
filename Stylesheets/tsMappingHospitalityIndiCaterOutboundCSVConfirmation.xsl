@@ -29,7 +29,18 @@
 	
 	
 		<xsl:text>H,</xsl:text>
-		<xsl:call-template name="msCSV"><xsl:with-param name="vs" select="/PurchaseOrderConfirmation/TradeSimpleHeader/RecipientsCodeForSender"/></xsl:call-template>
+		<xsl:call-template name="msCSV">
+			<xsl:with-param name="vs">
+				<xsl:choose>
+					<xsl:when test="contains(/PurchaseOrderConfirmation/TradeSimpleHeader/RecipientsCodeForSender,'#')">
+						<xsl:value-of select="substring-before(/PurchaseOrderConfirmation/TradeSimpleHeader/RecipientsCodeForSender,'#')"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="/PurchaseOrderConfirmation/TradeSimpleHeader/RecipientsCodeForSender"/>
+					</xsl:otherwise>
+				</xsl:choose>				
+			</xsl:with-param>
+		</xsl:call-template>
 		<xsl:text>,</xsl:text>
 		<xsl:call-template name="msCSV"><xsl:with-param name="vs" select="/PurchaseOrderConfirmation/TradeSimpleHeader/RecipientsBranchReference"/></xsl:call-template>
 		<xsl:text>,</xsl:text>
@@ -144,7 +155,6 @@
   Alterations    : (none)
  =======================================================================================-->
 	<xsl:template name="msCSV">
-		<xsl:param name="vs"/>
 		<xsl:param name="vs"/>
 		<xsl:if test="contains($vs,',') or contains($vs,'&quot;')">
 			<xsl:text>"</xsl:text>	
