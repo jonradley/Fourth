@@ -22,6 +22,7 @@
 -->
 <xsl:stylesheet  version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt"  xmlns:vbscript="http://abs-Ltd.com">
 	<xsl:template match="Document" >
+	
 		<BatchRoot>
 		
 		<Batch><BatchDocuments><BatchDocument>
@@ -40,24 +41,33 @@
 						</SendersBranchReference>
 					</xsl:if>
 					
-					<xsl:if test="TradeSimpleHeader/TestFlag != ''">
-						<TestFlag>
-							<xsl:choose>
-								<xsl:when test="TradeSimpleHeader/TestFlag = 'false'">false</xsl:when>
-								<xsl:when test="TradeSimpleHeader/TestFlag = 'False'">false</xsl:when>
-								<xsl:when test="TradeSimpleHeader/TestFlag = 'FALSE'">false</xsl:when>
-								<xsl:when test="TradeSimpleHeader/TestFlag = '0'">false</xsl:when>
-								<xsl:when test="TradeSimpleHeader/TestFlag = 'N'">false</xsl:when>
-								<xsl:when test="TradeSimpleHeader/TestFlag = 'n'">false</xsl:when>
-								<xsl:otherwise>true</xsl:otherwise>
-							</xsl:choose>
-						</TestFlag>
-					</xsl:if>
+					<TestFlag>
+						<xsl:choose>
+							<xsl:when test="H/L2[3] = 'false'">false</xsl:when>
+							<xsl:when test="H/L2[3] = 'False'">false</xsl:when>
+							<xsl:when test="H/L2[3] = 'FALSE'">false</xsl:when>
+							<xsl:when test="H/L2[3] = '0'">false</xsl:when>
+							<xsl:when test="H/L2[3] = 'N'">false</xsl:when>
+							<xsl:when test="H/L2[3] = 'n'">false</xsl:when>
+							<xsl:otherwise>true</xsl:otherwise>
+						</xsl:choose>
+					</TestFlag>
+
 				</TradeSimpleHeader>
 				
 				<PurchaseOrderConfirmationHeader>
 				
+						<!-- expected: DocumentStatus-->
+				
 						<ShipTo>
+						
+								<ShipToLocationID>
+									
+									<SuppliersCode>
+										<xsl:value-of select="H/L2[2]"/>
+									</SuppliersCode>
+								
+								</ShipToLocationID>
 	
 								<ShipToName>
 									<xsl:value-of select="H/L2[11]"/>
@@ -100,6 +110,7 @@
 									<xsl:value-of select="H/L2[10]"/>
 								</ContactName>
 							</xsl:if>
+							
 						</ShipTo>
 			
 					<PurchaseOrderReferences>
@@ -266,12 +277,21 @@
 				<PurchaseOrderConfirmationTrailer>
 						
 					<NumberOfLines>
-						<xsl:value-of select="H/L2[17]"/>
-					</NumberOfLines>	
+						<xsl:choose>
+							<xsl:when test="string(H/L2[17]) !='' and H/L2[17] !='0'">
+								<xsl:value-of select="H/L2[17]"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="count(D/L2)"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</NumberOfLines>
 						
-					<TotalExclVAT>
-						<xsl:value-of select="H/L2[19]"/>
-					</TotalExclVAT>
+					<xsl:if test="string(H/L2[19]) !=''">
+						<TotalExclVAT>
+							<xsl:value-of select="H/L2[19]"/>
+						</TotalExclVAT>
+					</xsl:if>
 				
 				</PurchaseOrderConfirmationTrailer>
 			
@@ -279,7 +299,8 @@
 			
 			</BatchDocument></BatchDocuments></Batch>
 			
-		</BatchRoot>			
+		</BatchRoot>	
+				
 	</xsl:template>
 	
 	<!-- VBScript Functions -->
