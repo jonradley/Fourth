@@ -32,7 +32,9 @@
 '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ' 20/02/2007		|	Nigel Emsen		|	Case 828:	changes for Harrsion Catering,
 '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+' 31/05/2007		|	Nigel Emsen		|	Case 1157:	Despatch Date XPath change.
+'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+'
 '******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
@@ -271,11 +273,13 @@
 													</DeliveryNoteReference>
 												</xsl:if>
 												<xsl:if test="/Invoice/DespatchReference/DespatchDocumentDate">
+													<!-- XPath changed on request from Darren Gardiner, May 2007 -->
 													<DeliveryNoteDate>
-														<xsl:value-of select="substring-before(/Invoice/DespatchReference/DespatchDocumentDate, 'T')"/>
+														<xsl:value-of select="substring-before(/Invoice/InvoiceDocumentDetails/InvoiceDocumentDate, 'T')"/>
 													</DeliveryNoteDate>
+													<!-- XPath changed on request from Darren Gardiner, May 2007 -->
 													<DespatchDate>
-														<xsl:value-of select="substring-before(/Invoice/DespatchReference/DespatchDocumentDate, 'T')"/>
+														<xsl:value-of select="substring-before(/Invoice/InvoiceDocumentDetails/InvoiceDocumentDate, 'T')"/>
 													</DespatchDate>
 												</xsl:if>
 											</DeliveryNoteReferences>
