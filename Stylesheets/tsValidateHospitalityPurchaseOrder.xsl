@@ -22,7 +22,7 @@ Alterations	: A Sheppard, 17/12/2004. Add tolerances
 
 	<!--This template will check that all values of LineValueExclVAT = Quantity*UnitValueExclVat for all lines that include prices-->
 	<xsl:template name="tempLineValueExclVAT">
-		<xsl:for-each select="//PurchaseOrderLine">
+		<xsl:for-each select="/PurchaseOrder/PurchaseOrderDetail/PurchaseOrderLine">
 			<xsl:if test="UnitValueExclVAT">
 				<xsl:if test="(format-number(number(OrderedQuantity) * number(UnitValueExclVAT), '#.00') &gt; format-number(number(LineValueExclVAT) + 0.01, '#.00')) or (format-number(number(OrderedQuantity) * number(UnitValueExclVAT), '#.00') &lt; format-number(number(LineValueExclVAT) - 0.01, '#.00'))">
 					<xsl:element name="Error">
@@ -37,7 +37,7 @@ Alterations	: A Sheppard, 17/12/2004. Add tolerances
 
 	<!--This template will check that the number of lines in the document matches the value found at the trailer level-->
 	<xsl:template name="tempNumberOfLines">
-		<xsl:if test="not(format-number(count(//PurchaseOrderLine), '#') = format-number(//NumberOfLines, '#'))">
+		<xsl:if test="not(format-number(count(/PurchaseOrder/PurchaseOrderDetail/PurchaseOrderLine), '#') = format-number(//NumberOfLines, '#'))">
 			<xsl:element name="Error">
 				<xsl:text>The line count given in this document does not match the number of lines present.</xsl:text>
 			</xsl:element>
