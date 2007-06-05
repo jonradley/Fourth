@@ -22,6 +22,9 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	01/12/2006	|	Nigel Emsen		|	Case: 476 - redelivery due to product description
 						|							|	being greater than 40 chars.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	06/05/2007	|	Nigel Emsen		|	Case: 1164 - handle zero priced items. detects if
+						|							|	unitvalue is present. if not present zero.
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -277,7 +280,14 @@
 				<xsl:text>:</xsl:text>
 				<xsl:value-of select="translate(format-number(OrderedQuantity,'#.000'),'.','')"/>
 				<xsl:text>+</xsl:text>
-				<xsl:value-of select="translate(format-number(UnitValueExclVAT,'#.0000'),'.','')"/>
+				<xsl:choose>
+					<xsl:when test="string(UnitValueExclVAT) !='' ">
+						<xsl:value-of select="translate(format-number(UnitValueExclVAT,'#.0000'),'.','')"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>00000</xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>
 				<xsl:text>+</xsl:text>
 				<xsl:text>+</xsl:text>
 				<xsl:text>+</xsl:text>
