@@ -17,6 +17,8 @@ R Cambridge	| 26/02/2007		| 706 remove sender's branch reference
 **********************************************************************
 R Cambridge	| 01/03/2007		| 706 GTIN is also suppliers product code
 **********************************************************************
+R Cambridge	| 08/06/2007 		| 1189 Ensure FGN is unique by appending Cadbury's code for ship to
+**********************************************************************
            	|            		| 
 *******************************************************************-->
 
@@ -52,6 +54,16 @@ R Cambridge	| 01/03/2007		| 706 GTIN is also suppliers product code
 	</xsl:template>
 	<!-- END of GENERIC HANDLERS -->
 	
+	
+	<!-- 1189 Invoice/InvoiceHeader/BatchInformation/FileGenerationNo add suppliers code for unit (Cadbuy's sequences may not be unique across an estate) -->
+	<xsl:template match="Invoice/InvoiceHeader/BatchInformation/FileGenerationNo">
+		<xsl:copy>
+			<xsl:value-of select="."/>
+			<xsl:text> (</xsl:text>
+			<xsl:value-of select="../../ShipTo/ShipToLocationID/SuppliersCode"/>
+			<xsl:text>)</xsl:text>
+		</xsl:copy>
+	</xsl:template>	
 	
 	
 	<!-- /Batch/BatchDocuments/BatchDocument/Invoice/TradeSimpleHeader/SendersCodeForRecipient: ensure code is 9 digits -->
