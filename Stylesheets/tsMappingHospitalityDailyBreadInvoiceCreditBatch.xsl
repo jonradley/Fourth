@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--******************************************************************
+Alterations
+**********************************************************************
+Name			| Date				| Change
+**********************************************************************
+R cambridge	| 11/06/2007		| Created module
+**********************************************************************
+           	|           		|
+*******************************************************************-->
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+	<xsl:output method="xml" encoding="UTF-8"/>
+	
+	<!-- Start point - ensure required outer BatchRoot tag is applied -->
+	<xsl:template match="/">
+		<xsl:apply-templates/>
+	</xsl:template>
+	
+	<!-- GENERIC HANDLER to copy unchanged nodes, will be overridden by any node-specific templates below -->
+	<xsl:template match="*">
+		<!-- Copy the node unchanged -->
+		<xsl:copy>
+			<!--Then let attributes be copied/not copied/modified by other more specific templates -->
+			<xsl:apply-templates select="@*"/>
+			<!-- Then within this node, continue processing children -->
+			<xsl:apply-templates/>
+		</xsl:copy>
+	</xsl:template>
+	<!-- GENERIC ATTRIBUTE HANDLER to copy unchanged attributes, will be overridden by any attribute-specific templates below-->
+	<xsl:template match="@*">
+		<!--Copy the attribute unchanged-->
+		<xsl:copy/>
+	</xsl:template>
+	<!-- END of GENERIC HANDLERS -->
+
+	<xsl:template match="//PurchaseOrderReferences">
+	
+		<xsl:choose>
+		
+			<xsl:when test="PurchaseOrderReference != '' and PurchaseOrderDate != ''">
+			
+				<PurchaseOrderReferences>
+					<PurchaseOrderReference><xsl:value-of select="PurchaseOrderReference"/></PurchaseOrderReference>
+					<PurchaseOrderDate><xsl:value-of select="PurchaseOrderDate"/></PurchaseOrderDate>
+					<xsl:if test="CustomerPurchaseOrderReference != ''">
+						<CustomerPurchaseOrderReference><xsl:value-of select="CustomerPurchaseOrderReference"/></CustomerPurchaseOrderReference>
+					</xsl:if>
+				</PurchaseOrderReferences>
+				
+			</xsl:when>
+			
+			<xsl:otherwise/>
+			
+		</xsl:choose>
+	
+	</xsl:template>
+	
+</xsl:stylesheet>
