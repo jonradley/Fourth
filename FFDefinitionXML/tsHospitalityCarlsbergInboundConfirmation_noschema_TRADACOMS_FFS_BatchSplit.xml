@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+'******************************************************************************************
+' Overview
+'		
+' Flat file mapping definition for EDIFACT messages with the following delimiters
+'
+' Segment '
+' Element +
+' Item    :
+' 
+' © Alternative Business Solutions Ltd., 2000,2001,2002,2003.
+'******************************************************************************************
+' Module History
+'******************************************************************************************
+' Date       | Name            | Description of modification
+'******************************************************************************************
+' 18/06/2007 | Nigel Emsen     | FB: - Created from DMSC Tradacomms flat file map.
+'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+'
+'******************************************************************************************
+-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>noschema</ffsRecordPositionType>
+		<ffsEscapeChars>
+			<ffsEscapeChar>
+				<ffsNative>?=</ffsNative>
+				<ffsTradesimple>¬E</ffsTradesimple>
+				<ffsLiteral>=</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?+</ffsNative>
+				<ffsTradesimple>¬P</ffsTradesimple>
+				<ffsLiteral>+</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?:</ffsNative>
+				<ffsTradesimple>¬C</ffsTradesimple>
+				<ffsLiteral>:</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?'</ffsNative>
+				<ffsTradesimple>¬A</ffsTradesimple>
+				<ffsLiteral>'</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>??</ffsNative>
+				<ffsTradesimple>¬Q</ffsTradesimple>
+				<ffsLiteral>?</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>chr(13)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>chr(10)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+		</ffsEscapeChars>
+		<ffsBatchHeader>
+			<ffsHeaderRecord RecordPos="STX="/>
+			<ffsHeaderRecord RecordPos="MHD="/>
+			<ffsHeaderRecord RecordPos="AOR="/>
+			<ffsHeaderRecord RecordPos="DNA="/>
+			<ffsHeaderRecord RecordPos="CLO="/>
+		</ffsBatchHeader>
+		<ffsSplitBatchRecord RecordPos="MHD="/>
+	</ffsSettings>
+	<ffsRoot>
+		<L1>
+			<Delim>'</Delim>
+			<ElementName Start="1" Length="4"/>
+			<L2>
+				<Delim>+</Delim>
+				<L3>
+					<Delim>:</Delim>
+				</L3>
+			</L2>
+		</L1>
+	</ffsRoot>
+</ffsFlatFileSchema>
