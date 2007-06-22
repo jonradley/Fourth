@@ -112,8 +112,9 @@
 								<!--PurchaseOrderConfirmationReferences-->
 								<PurchaseOrderConfirmationReferences>
 									<!--PurchaseOrderConfirmationReference-->
+									<!--We will use the Carlsberg UK PO Reference -->
 									<PurchaseOrderConfirmationReference>
-										<xsl:value-of select="AOR=/L2[1]/L3[1]"/>
+										<xsl:value-of select="AOR=/L2[1]/L3[2]"/>
 									</PurchaseOrderConfirmationReference>
 									<!--PurchaseOrderConfirmationDate-->
 									<PurchaseOrderConfirmationDate>
@@ -121,21 +122,25 @@
 									</PurchaseOrderConfirmationDate>
 								</PurchaseOrderConfirmationReferences>
 								<!--OrderedDeliveryDetails-->
-								<OrderedDeliveryDetails>
-									<!--DeliveryDate-->
-									<xsl:variable name="dtOrdDelDate" select="AOR=/L2[1]/L3[4]"/>
-									<DeliveryDate>
-										<xsl:value-of select="concat('20',substring($dtOrdDelDate,1,2),'-',substring($dtOrdDelDate,3,2),'-',substring($dtOrdDelDate,5,2))"/>
-									</DeliveryDate>
-								</OrderedDeliveryDetails>
+								<!--DeliveryDate AQD:XDAT-->
+								<xsl:variable name="dtOrdDelDate" select="AQD=/L2[5]/L3[1]"/>
+								<xsl:if test="string($dtOrdDelDate) != '' ">
+									<OrderedDeliveryDetails>
+										<DeliveryDate>
+											<xsl:value-of select="concat('20',substring($dtOrdDelDate,1,2),'-',substring($dtOrdDelDate,3,2),'-',substring($dtOrdDelDate,5,2))"/>
+										</DeliveryDate>
+									</OrderedDeliveryDetails>
+								</xsl:if>
 								<!--ConfirmedDeliveryDetails-->
-								<xsl:variable name="sConDelDate" select="AOR=/L2[1]/L3[4]"/>
-								<ConfirmedDeliveryDetails>
-									<!--DeliveryDate-->
-									<DeliveryDate>
-										<xsl:value-of select="concat('20',substring($sConDelDate,1,2),'-',substring($sConDelDate,3,2),'-',substring($sConDelDate,5,2))"/>
-									</DeliveryDate>
-								</ConfirmedDeliveryDetails>
+								<xsl:variable name="sConDelDate" select="$dtOrdDelDate"/>
+								<xsl:if test="string(sConDelDate) != '' ">
+									<ConfirmedDeliveryDetails>
+										<!--DeliveryDate-->
+										<DeliveryDate>
+											<xsl:value-of select="concat('20',substring($sConDelDate,1,2),'-',substring($sConDelDate,3,2),'-',substring($sConDelDate,5,2))"/>
+										</DeliveryDate>
+									</ConfirmedDeliveryDetails>
+								</xsl:if>
 							</PurchaseOrderConfirmationHeader>
 							<!--PurchaseOrderConfirmationDetail-->
 							<PurchaseOrderConfirmationDetail>
@@ -147,8 +152,30 @@
 										<!-- Carlsberg produces a number of reject codes. These are presented in a DNB following the line affected. Also
 										they provide a line number so matching is reliable. We will detect for this code and apply as appriopiate.
 										If no DNB is provided therefore the line is assumed to be accepted.
-								-->
-										<xsl:attribute name="LineStatus"><xsl:for-each select="//DNB="><!-- Current Rejection line --><xsl:variable name="lCurDNBLine" select="position()"/><!-- Match to current ALD Line --><xsl:if test="$lCurDNBLine = $lCurALDLine"><xsl:choose><!-- Current REJECT code --><xsl:variable name="lCurDNBRejectCode" select="L2[4]/L3[1]"/><!-- Current REJECT narrative --><xsl:variable name="lCurDNBNarative" select="L2[4]/L3[2]"/><!-- Map --><xsl:when test="string($lCurDNBRejectCode) !='' "><xsl:text>Rejected</xsl:text></xsl:when><!-- No code therefore mark as accepted --><xsl:otherwise><xsl:text>Accepted</xsl:text></xsl:otherwise></xsl:choose></xsl:if></xsl:for-each></xsl:attribute>
+										-->
+										<xsl:attribute name="LineStatus">
+											<xsl:for-each select="//DNB=">
+												<!-- Current Rejection line -->
+												<xsl:variable name="lCurDNBLine" select="position()"/>
+												<!-- Match to current ALD Line -->
+												<xsl:if test="$lCurDNBLine = $lCurALDLine">
+													<xsl:choose>
+														<!-- Current REJECT code -->
+														<xsl:variable name="lCurDNBRejectCode" select="L2[4]/L3[1]"/>
+														<!-- Current REJECT narrative -->
+														<xsl:variable name="lCurDNBNarative" select="L2[4]/L3[2]"/>
+														<!-- Map -->
+														<xsl:when test="string($lCurDNBRejectCode) !='' ">
+															<xsl:text>Rejected</xsl:text>
+														</xsl:when>
+														<!-- No code therefore mark as accepted -->
+														<xsl:otherwise>
+															<xsl:text>Accepted</xsl:text>
+														</xsl:otherwise>
+													</xsl:choose>
+												</xsl:if>
+											</xsl:for-each>
+										</xsl:attribute>
 										<!--ProductID-->
 										<ProductID>
 											<xsl:variable name="sCurGTIN" select="L2[2]/L3[1]"/>
@@ -177,30 +204,32 @@
 										</ProductDescription>
 										<!--OrderedQuantity-->
 										<OrderedQuantity>
-											<xsl:value-of select="L2[7]"/>
+											<xsl:value-of select="L2[6]/L3[1]"/>
 										</OrderedQuantity>
 										<!--ConfirmedQuantity-->
 										<ConfirmedQuantity>
-											<xsl:value-of select="L2[6]/L3[1]"/>
+											<xsl:value-of select="vbscript:sGetConfirmedQty(L2[6]/L3[1],L2[6]/L3[2])"/>
 										</ConfirmedQuantity>
 										<!--PackSize-->
-										<xsl:if test="L2[5] != ''">
+										<xsl:if test="L2[5]/L3[1] != ''">
 											<PackSize>
-												<xsl:value-of select="L2[5]"/>
+												<xsl:value-of select="L2[5]/L3[1]"/>
 											</PackSize>
 										</xsl:if>
 										<!--UnitValueExclVAT-->
-										<xsl:if test="L2[6]/L3[2] != ''">
+										<!--NOTE: Carlsberg do not provide pricing on confirmations -->
+										<!--xsl:if test="L2[6]/L3[2] != ''">
 											<UnitValueExclVAT>
 												<xsl:value-of select="format-number(L2[6]/L3[1] div 10000,'#.0000')"/>
 											</UnitValueExclVAT>
-										</xsl:if>
+										</xsl:if-->
 										<!--LineValueExclVAT-->
-										<xsl:if test="L2[10] !=''">
+										<!--NOTE: Carlsberg do not provide pricing on confirmations -->
+										<!--xsl:if test="L2[10] !=''">
 											<LineValueExclVAT>
 												<xsl:value-of select="format-number(L2[10],'0.00')"/>
 											</LineValueExclVAT>
-										</xsl:if>
+										</xsl:if-->
 										<!--Narrative-->
 										<xsl:for-each select="//DNB=">
 											<!-- Current Rejection line -->
@@ -236,11 +265,12 @@
 									</xsl:choose>
 								</NumberOfLines>
 								<!--TotalExclVAT-->
-								<xsl:if test="string(KTR=/L2[2]) !=''">
+								<!--NOTE: Carlsberg do not provide pricing on confirmations -->
+								<!--xsl:if test="string(KTR=/L2[2]) !=''">
 									<TotalExclVAT>
 										<xsl:value-of select="KTR=/L2[2]"/>
 									</TotalExclVAT>
-								</xsl:if>
+								</xsl:if-->
 							</PurchaseOrderConfirmationTrailer>
 						</PurchaseOrderConfirmation>
 					</BatchDocument>
@@ -272,6 +302,33 @@
 			sGetTodaysDate=sYear & "-" & sMonth & "-" & sDay
 
 		End Function
+		
+		'	------------------------------------------------------------------
+		' FUNCTION:	To rreturn the confirmed qty by calculating from the 
+		'					ALD:OQTY and the ALD:OUBA.
+		'					Nigel Emsen, June 2007
+		'	------------------------------------------------------------------
+		Function sGetConfirmedQty(vsOQTY,vsOUBA)
+		
+			Dim sResult
+			Dim lOQTY
+			Dim lOUBA
+			Dim lResult
+			
+			if vsOQTY="" Then vsOQTY="0"
+			lOQTY=CLng(vsOQTY)
+
+			if vsOUBA="" then vsOUBA="0"
+			lOUBA=CLng(vsOUBA)
+
+			lResult=lOQTY-lOUBA
+			sResult=CStr(lResult)
+
+			sGetConfirmedQty=sResult
+			
+		End Function
+		
+		
 
 	]]></msxsl:script>
 </xsl:stylesheet>
