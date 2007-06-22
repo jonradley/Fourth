@@ -78,16 +78,29 @@ NE 06 June 2007.
 				</MHDSegment>
 				<VATSubTotals>
 					<VATSubTotal>
-						<!-- MANDATORY VATTLR - VRS - VSDE (File sub-total amount excluding discount) -->
-						<DocumentTotalExclVATAtRate RecordPos="VRS=" LPos="4"/>
-						<!-- MANDATORY VATTLR - VRS - VSDI (File sub total amount including discount) -->
+						<!-- DiscountedLinesTotalExclVATAtRate RecordPos="VRS=" LPos="5"/>
+						<DocumentDiscountAtRate RecordPos="VRS=" LPos="7"/>
+						<DocumentTotalExclVATAtRate RecordPos="VRS=" LPos="10"/>
 						<SettlementTotalExclVATAtRate RecordPos="VRS=" LPos="5"/>
-						<!-- MANDATORY VATTLR - VRS - VVAT (File VAT sub-total)-->
 						<VATAmountAtRate RecordPos="VRS=" LPos="6"/>
-						<!-- MANDATORY VATTLR - VRS - VPSE (File sub-total payable excluding discount) [ unless blank, then use VPSI ]-->
 						<DocumentTotalInclVATAtRate RecordPos="VRS=" LPos="7"/>
-						<!-- MANDATORY VATTLR - VRS - VPSI (File sub-total payable including discount) -->
-						<SettlementTotalInclVATAtRate RecordPos="VRS=" LPos="8"/>
+						<SettlementTotalInclVATAtRate RecordPos="VRS=" LPos="11"/>
+						<ffsAttribute1 name="VATCode" RecordPos="VRS=" LPos="2"/>
+						<ffsAttribute1 name="VATRate" RecordPos="VRS=" LPos="3"/-->
+						<DiscountedLinesTotalExclVATAtRate RecordPos="VRS=" LPos="5"/>
+						<DocumentDiscountAtRate RecordPos="VRS=" LPos="7"/>
+						<!-- MANDATORY Line Total Ex VAT at rate, DERIVE, INVOIC – STL – EVLA, 2 d.p. implied, The total value of the all lines at this VAT rate -->
+						<DocumentTotalExclVATAtRate RecordPos="VRS=" LPos="10"/>
+						<!-- MANDATORY Settlement Discount at rate, OPTIONAL, INVOIC – STL – SEDA, 2 d.p. implied, The value of any settlement discount applicable to the lines at this VAT rate -->
+						<SettlementDiscountAtRate RecordPos="VRS=" LPos="11"/>
+						<!-- MANDATORY Taxable Amount at rate, DERIVE, INVOIC – STL – ASDA, 2 d.p. implied, The total value of the all lines at this VAT rate plus settlement discount -->
+						<SettlementTotalExclVATAtRate RecordPos="VRS=" LPos="12"/>
+						<!-- MANDATORY VAT Amount at rate, DERIVE, INVOIC – STL – VATA, 2 d.p. implied, The total amount of VAT payable at this VAT rate -->
+						<VATAmountAtRate RecordPos="VRS=" LPos="13"/>
+						<!-- MANDATORY Total Payable Ex Settlement Discount at rate, DERIVE, INVOIC – STL – APSE, 2 d.p. implied - (use APSI if not provided), The total which is payable at this VAT rate, excluding settlement discount -->
+						<DocumentTotalInclVATAtRate RecordPos="VRS=" LPos="14"/>
+						<!-- MANDATORY Total Payable Inc Settlement Discount at rate, DERIVE, INVOIC – STL – APSI, 2 d.p. implied, The total which is payable at this VAT rate, including settlement discount -->
+						<SettlementTotalInclVATAtRate RecordPos="VRS=" LPos="15"/>
 						<ffsAttribute1 name="VATCode" RecordPos="VRS=" LPos="2"/>
 						<ffsAttribute1 name="VATRate" RecordPos="VRS=" LPos="3"/>
 					</VATSubTotal>
@@ -131,7 +144,6 @@ NE 06 June 2007.
 									<!-- 06/03/2007 - NE - As per FB 872 requested by Mark Sayers -->
 									<!-- SuppliersCode RecordPos="CDT=" LPos="1" SFPos="1"/ -->
 									<SuppliersCode RecordPos="STX=" LPos="3" SFPos="1"/>
-
 								</BuyersLocationID>
 								<!-- OPTIONAL Buyer Name, LEGAL MANDATORY, CREHDR – CDT - CNAM, The “invoice to” name -->
 								<BuyersName RecordPos="CDT=" LPos="2"/>
@@ -252,28 +264,24 @@ NE 06 June 2007.
 						<CreditNoteTrailer>
 							<VATSubTotals>
 								<VATSubTotal>
-									<!-- MANDATORY Line Total Ex VAT at rate, DERIVE, CREDIT – CST – EVLA, 2 d.p. implied, The total value of the all lines at this VAT rate -->
+								
 									<DocumentTotalExclVATAtRate RecordPos="CST=" LPos="8"/>
-									<!-- MANDATORY Settlement Discount at rate, OPTIONAL, CREDIT – CST – SEDA, 2 d.p. implied, The value of any settlement discount applicable to the lines at this VAT rate -->
 									<SettlementDiscountAtRate RecordPos="CST=" LPos="7"/>
-									<!-- MANDATORY Taxable Amount (at rate), DERIVE, CREDIT – CST – ASDA, 2 d.p. implied, The total value of the all lines at this VAT rate plus settlement discount -->
-									<SettlementTotalExclVATAtRate RecordPos="CST=" LPos="10"/>
-									<!-- MANDATORY VAT Amount at rate, DERIVE, CREDIT – CST – VATA, 2 d.p. implied, The total amount of VAT payable at this VAT rate -->
+									<!--SettlementTotalExclVATAtRate RecordPos="CST=" LPos="10"/-->
 									<VATAmountAtRate RecordPos="CST=" LPos="11"/>
-									<!-- MANDATORY Total Payable at rate Ex Settlement Discount, DERIVE, CREDIT – CST – APSE, 2 d.p. implied - (use APSI if not provided) The total which is payable at this VAT rate, excluding settlement discount -->
 									<DocumentTotalInclVATAtRate RecordPos="CST=" LPos="12"/>
-									<!-- MANDATORY Total Payable at rate Inc Settlement Discount, DERIVE, CREDIT – CST – APSI, 2 d.p. implied, The total which is payable at this VAT rate, including settlement discount -->
 									<SettlementTotalInclVATAtRate RecordPos="CST=" LPos="13"/>
 									<ffsAttribute1 name="VATCode" RecordPos="CST=" LPos="2"/>
-									<ffsAttribute1 name="VATRate" RecordPos="CST=" LPos="3"/>
+									<ffsAttribute1 name="VATRate" RecordPos="CST=" LPos="3"/>		
+		
 								</VATSubTotal>
 							</VATSubTotals>
 							<!-- MANDATORY Lines Total Ex VAT, DERIVE, CREDIT – CTR – EVLT, 2 d.p. implied, The total value of the all lines, before VAT and settlement discount -->
 							<DocumentTotalExclVAT RecordPos="CTR=" LPos="5"/>
 							<!-- MANDATORY Settlement Discount Total, OPTIONAL, CREDIT – CTR – SEDT, 2 d.p. implied, The total value of any settlement discount -->
-							<SettlementDiscount RecordPos="CTR=" LPos="6"/>
+							<SettlementDiscount RecordPos="CTR=" LPos="4"/>
 							<!-- MANDATORY Taxable Amount, DERIVE, CREDIT – CTR – ASDT, 2 d.p. implied, The total value of the all lines plus settlement discount -->
-							<SettlementTotalExclVAT RecordPos="CTR=" LPos="7"/>
+							<!--SettlementTotalExclVAT RecordPos="CTR=" LPos="10"/-->
 							<!-- MANDATORY VAT Amount Total, DERIVE, CREDIT – CTR – TVAT, 2 d.p. implied, The total amount of VAT payable -->
 							<VATAmount RecordPos="CTR=" LPos="8"/>
 							<!-- MANDATORY Total Payable Ex Settlement Discount, DERIVE, CREDIT – CTR – TPSE, 2 d.p. implied - (use TPSI if not provided) The document total which is payable, excluding settlement discount -->
