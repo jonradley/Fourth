@@ -317,6 +317,13 @@ NE, June 2007.
 	</xsl:template>
 	<!-- END of MHDSegment HANDLER -->
 	
+	<!-- we need to check for the presence of a settlement discount and recalculate totals if present. 3663 provide a the information
+			needed to do this, but not the actual values. This stops a successful straight FFS mapper change.
+	-->
+	<xsl:template match="">
+	
+	</xsl:template>
+	
 	<msxsl:script language="JScript" implements-prefix="jscript"><![CDATA[ 
 		function toUpperCase(vs) {
 			return vs.toUpperCase();
