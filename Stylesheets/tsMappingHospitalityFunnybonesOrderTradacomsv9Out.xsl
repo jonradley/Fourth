@@ -112,11 +112,21 @@
 		
 		<xsl:text>CDT=</xsl:text>
 			<!-- CIDN (1) -->
-			<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
+			<xsl:choose>
+				<xsl:when test="contains('M6897~P0950~C3205~P0795~M3981~M6824~M9188~M6686~P0579~M6560~S9736~M6767~M6437~S1783~M2414~M2418',PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode)">O511/S</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
+				</xsl:otherwise>
+			</xsl:choose>
 			<xsl:text>:</xsl:text>
 			<!-- CIDN (2) -->
-			<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
-				<xsl:text>+</xsl:text>
+			<xsl:choose>
+				<xsl:when test="contains('M6897~P0950~C3205~P0795~M3981~M6824~M9188~M6686~P0579~M6560~S9736~M6767~M6437~S1783~M2414~M2418',PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode)">O511/S</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
+				</xsl:otherwise>
+			</xsl:choose>
+			<xsl:text>+</xsl:text>
 			<!-- truncate to 40 CNAM = 3060 = AN..40-->
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Buyer/BuyersName),40)"/>
 			<xsl:text>+</xsl:text> 

@@ -43,6 +43,13 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from CLD/SPRO(1).
 	</xsl:template>
 	<!-- END of GENERIC HANDLERS -->
 	
+	<!-- Temporary Fix To Handle Bar Room Bar -->
+	<xsl:template match="SendersBranchReference[. = 'O511/S']">
+		<SendersBranchReference>O509/S</SendersBranchReference>
+	</xsl:template>
+
+
+
 	<!-- InvoiceLine/ProductID/BuyersProductCode is used as a placeholder for INVOIC-ILD-CRLI and should not be copied over -->
 	<xsl:template match="BuyersProductCode"/>
 	
