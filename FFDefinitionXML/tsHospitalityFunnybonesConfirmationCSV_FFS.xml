@@ -19,7 +19,7 @@
 		<PurchaseOrderConfirmation>
 			<TradeSimpleHeader>
 				<SendersCodeForRecipient RecordPos="H" LPos="2"/>
-				<!--SendersBranchReference RecordPos="" LPos="" /-->
+				<SendersBranchReference RecordPos="H" LPos="20"/>
 				<!--SendersName RecordPos="" LPos="" UPos="" SFPos=""/-->
 				<!--SendersAddress>
 					<AddressLine1 RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
