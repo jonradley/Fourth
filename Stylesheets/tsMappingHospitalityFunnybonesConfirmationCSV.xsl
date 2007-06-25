@@ -28,6 +28,15 @@
 					<SendersCodeForRecipient>
 						<xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/>
 					</SendersCodeForRecipient>
+					<!-- NOTE: Hardcoded to allow the Orchid pubs to work pending change at funnybones to handle multiple accounts -->
+					<SendersBranchReference>
+						<xsl:choose>
+							<xsl:when test="TradeSimpleHeader/SendersBranchReference = 'O511/S'">O509/S</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="TradeSimpleHeader/SendersBranchReference"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</SendersBranchReference>
 					
 					<xsl:if test="TradeSimpleHeader/TestFlag != ''">
 						<TestFlag>
