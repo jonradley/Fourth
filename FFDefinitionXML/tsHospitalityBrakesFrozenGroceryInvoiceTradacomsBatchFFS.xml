@@ -134,6 +134,8 @@ N Emsen		|	24/01/2007	|	Case 750:   Brakes frozen CLO mapping change
 							</BatchInformation>
 							<Buyer>
 								<BuyersLocationID>
+									
+									
 									<!--INVFIL-CDT-CIDN(1)-->
 									<SuppliersCode RecordPos="CDT=" LPos="1" SFPos="1"/>
 								</BuyersLocationID>
@@ -166,6 +168,8 @@ N Emsen		|	24/01/2007	|	Case 750:   Brakes frozen CLO mapping change
 							</Supplier>
 							<ShipTo>
 								<ShipToLocationID>
+									<!-- added to assist with SSP, Stylesheet cross mapping of CLO(2) -->
+									<BuyersCode RecordPos="CLO=" LPos="1" SFPos="2"/>
 									<!--INVFIL-CLO-(1)2)-->
 									<!-- N Emsen		|	24/01/2007	|	Case 750:   Brakes frozen CLO mapping change -->
 									<SuppliersCode RecordPos="CLO=" LPos="1" SFPos="3"/>
