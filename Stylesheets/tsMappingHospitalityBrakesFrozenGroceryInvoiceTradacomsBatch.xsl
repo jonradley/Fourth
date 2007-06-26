@@ -53,6 +53,31 @@ N Emsen		|	11/05/2007	|	Case 1092  - Date Conversion.
 	</xsl:template>
 	<!-- END of GENERIC HANDLERS -->
 
+	<!-- SSP amendment - to remap SCFR using CLO(3) IF SSP. -->
+	<xsl:template match="//TradeSimpleHeader/SendersCodeForRecipient">
+	
+		<SendersCodeForRecipient>
+		
+			<xsl:variable name="sCurValue" select="."/>
+			<xsl:variable name="sCLO3Value" select="//InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode"/>
+			<xsl:variable name="sCheckString" select="translate(//Invoice/InvoiceHeader/Buyer/BuyersName,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"/>
+			<xsl:variable name="sCheckValue1"><xsl:text>ssp</xsl:text></xsl:variable>
+			<xsl:variable name="sCheckValue2"><xsl:text>select service partner</xsl:text></xsl:variable>
+			
+			<xsl:choose>
+				<!-- Check is an invoice for SSP -->
+				<xsl:when test="contains($sCheckString,sCheckValue1) or contains($sCheckString,sCheckValue2)">
+					<xsl:value-of select="$sCLO3Value"/>
+				</xsl:when>
+				<!-- IS NOT an invoice for SSP -->
+				<xsl:otherwise>
+					<xsl:value-of select="$sCurValue"/>
+				</xsl:otherwise>
+			</xsl:choose>
+			
+		</SendersCodeForRecipient>
+		
+	</xsl:template>
 	<!-- InvoiceLine/ProductID/BuyersProductCode is used as a placeholder for INVOIC-ILD-CRLI and should not be copied over -->
 	<xsl:template match="BuyersProductCode"/>
 	
