@@ -60,7 +60,6 @@
 									<xsl:variable name="sCheckString" select="/Invoice/Buyer/BuyerGLN"/>
 								<SendersCodeForRecipient>		
 									<!-- Detect if a SSP invoice -->
-
 									<xsl:choose>
 										<!-- Is a SSP invoice -->
 										<xsl:when test="contains($sCheckString,$sCheckValueSSP)">
@@ -83,7 +82,7 @@
 								</SendersCodeForRecipient>
 								<!-- SBR used to pick out the PL Account code to be used in the trading relationship set up. This could be Buyer or Supplier value. -->
 								<!-- Detect if a SSP invoice -->
-								<xsl:if test="string(/Invoice/TradeAgreementReference/ContractReferenceNumber) != '' and NOT(contains($sCheckString,$sCheckValueSSP)) ">
+								<xsl:if test="string(/Invoice/TradeAgreementReference/ContractReferenceNumber) != '' and not(contains($sCheckString,$sCheckValueSSP)) ">
 									<SendersBranchReference>
 										<xsl:value-of select="/Invoice/TradeAgreementReference/ContractReferenceNumber"/>
 									</SendersBranchReference>
