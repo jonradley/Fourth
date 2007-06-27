@@ -54,12 +54,13 @@
 							     ~~~~~~~~~~~~~~~~~~~~~~~ -->
 							<TradeSimpleHeader>
 								<!-- SCR comes from Sellers code for buyer if there, else it comes from Buyer GLN -->
-								<SendersCodeForRecipient>		
-									<!-- Detect if a SSP invoice -->
-									<!-- Check Value, We will use he GLN as this is unique. Before golive we will need to 
-											check that the quoted compass GLN is infacts SSPs. -->
+								<!-- Check Value, We will use he GLN as this is unique. Before golive we will need to 
+										check that the quoted compass GLN is infacts SSPs. -->
 									<xsl:variable name="sCheckValueSSP"><xsl:text>5013546085276</xsl:text></xsl:variable>
 									<xsl:variable name="sCheckString" select="/Invoice/Buyer/BuyerGLN"/>
+								<SendersCodeForRecipient>		
+									<!-- Detect if a SSP invoice -->
+
 									<xsl:choose>
 										<!-- Is a SSP invoice -->
 										<xsl:when test="contains($sCheckString,$sCheckValueSSP)">
@@ -81,7 +82,8 @@
 									</xsl:choose>
 								</SendersCodeForRecipient>
 								<!-- SBR used to pick out the PL Account code to be used in the trading relationship set up. This could be Buyer or Supplier value. -->
-								<xsl:if test="string(/Invoice/TradeAgreementReference/ContractReferenceNumber) != '' ">
+								<!-- Detect if a SSP invoice -->
+								<xsl:if test="string(/Invoice/TradeAgreementReference/ContractReferenceNumber) != '' and NOT(contains($sCheckString,$sCheckValueSSP)) ">
 									<SendersBranchReference>
 										<xsl:value-of select="/Invoice/TradeAgreementReference/ContractReferenceNumber"/>
 									</SendersBranchReference>
