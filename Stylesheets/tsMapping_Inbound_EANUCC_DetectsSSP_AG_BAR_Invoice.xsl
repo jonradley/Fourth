@@ -56,11 +56,11 @@
 								<!-- SCR comes from Sellers code for buyer if there, else it comes from Buyer GLN -->
 								<SendersCodeForRecipient>		
 									<!-- Detect if a SSP invoice -->
+									<!-- Check Value, We will use he GLN as this is unique. Before golive we will need to 
+											check that the quoted compass GLN is infacts SSPs. -->
+									<xsl:variable name="sCheckValueSSP"><xsl:text>5013546085276</xsl:text></xsl:variable>
+									<xsl:variable name="sCheckString" select="/Invoice/Buyer/BuyerGLN"/>
 									<xsl:choose>
-										<!-- Check Value, We will use he GLN as this is unique. Before golive we will need to 
-												check that the quoted compass GLN is infacts SSPs. -->
-										<xsl:variable name="sCheckValueSSP"><xsl:text>5013546085276</xsl:text></xsl:variable>
-										<xsl:variable name="sCheckString" select="/Invoice/Buyer/BuyerGLN"/>
 										<!-- Is a SSP invoice -->
 										<xsl:when test="contains($sCheckString,$sCheckValueSSP)">
 											<xsl:value-of select="/Invoice/ShipTo/BuyerAssigned"/>
