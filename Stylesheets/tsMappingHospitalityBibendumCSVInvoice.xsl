@@ -248,12 +248,26 @@
 	</xsl:template>
 	<xsl:template match="InvoicedQuantity">
 		<xsl:element name="InvoicedQuantity">
-			<xsl:value-of select="format-number(.,'0')"/>
+			<xsl:choose>
+				<xsl:when test="following-sibling::PackSize = 'BOTTLE'">
+					<xsl:value-of select="format-number(.,'0')"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="format-number(. * following-sibling::Measure/UnitsInPack,'0')"/>
+				</xsl:otherwise>
+			</xsl:choose>
 		</xsl:element>
 	</xsl:template>
 	<xsl:template match="UnitValueExclVAT">
 		<xsl:element name="UnitValueExclVAT">
-			<xsl:value-of select="format-number(. div 10000,'0.0000')"/>
+			<xsl:choose>
+				<xsl:when test="following-sibling::PackSize = 'BOTTLE'">
+					<xsl:value-of select="format-number(. div 10000,'0.0000')"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="format-number((. div following-sibling::Measure/UnitsInPack) div 10000,'0.0000')"/>
+				</xsl:otherwise>
+			</xsl:choose>
 		</xsl:element>
 	</xsl:template>
 	<xsl:template match="LineValueExclVAT">
@@ -309,8 +323,15 @@
 		</xsl:attribute>
 	</xsl:template>
 
+	<!-- Set all the PackSizes to Bottle -->
+	<xsl:template match="PackSize">
+		<PackSize>BOTTLE</PackSize>
+	</xsl:template>
 
-
+	<!-- Set all the Units in pack to 1 -->
+	<xsl:template match="UnitsInPack">
+		<UnitsInPack>1</UnitsInPack>
+	</xsl:template>
 	
 	<!--  Format a YYMMDD as YYYY-MM-DD -->
 	<xsl:template name="fixDate">
