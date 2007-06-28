@@ -48,6 +48,8 @@ The sum of the individual daily values will equal the content of the QTYI:1 (for
 
 03/11/2006 NE	Case 524: Delivery to live
 
+28/06/2007 R Cambridge 1252 Suppress DeliveryReferences when there's no ref or no date
+
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:vbscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
@@ -195,7 +197,32 @@ The sum of the individual daily values will equal the content of the QTYI:1 (for
 			<xsl:when test="not($DNDataNodeList)">
 				<!-- Invoice template did not find any multiple delivery note data for this invoice, so use default and just copy the invoice line once-->
 				<xsl:copy>
-					<xsl:apply-templates/>
+					<xsl:apply-templates select="LineNumber"/>
+					<xsl:apply-templates select="PurchaseOrderReferences"/>
+					<xsl:apply-templates select="PurchaseOrderConfirmationReferences"/>
+					<xsl:choose>
+						<xsl:when test="string(DeliveryNoteReferences/DeliveryNoteReference) = '' or string(DeliveryNoteReferences/DeliveryNoteDate) = ''"/>
+						<xsl:otherwise>
+							<xsl:apply-templates select="DeliveryNoteReferences/*"/>
+						</xsl:otherwise>
+					</xsl:choose>
+					<xsl:apply-templates select="GoodsReceivedNoteReferences"/>
+					<xsl:apply-templates select="ProductID"/>
+					<xsl:apply-templates select="ProductDescription"/>
+					<xsl:apply-templates select="OrderedQuantity"/>
+					<xsl:apply-templates select="ConfirmedQuantity"/>
+					<xsl:apply-templates select="DeliveredQuantity"/>
+					<xsl:apply-templates select="InvoicedQuantity"/>
+					<xsl:apply-templates select="PackSize"/>
+					<xsl:apply-templates select="UnitValueExclVAT"/>
+					<xsl:apply-templates select="LineValueExclVAT"/>
+					<xsl:apply-templates select="LineDiscountRate"/>
+					<xsl:apply-templates select="LineDiscountValue"/>
+					<xsl:apply-templates select="VATCode"/>
+					<xsl:apply-templates select="VATRate"/>
+					<xsl:apply-templates select="NetPriceFlag"/>
+					<xsl:apply-templates select="Measure"/>
+					<xsl:apply-templates select="LineExtraData"/>
 				</xsl:copy>
 			</xsl:when>
 			<xsl:otherwise>
