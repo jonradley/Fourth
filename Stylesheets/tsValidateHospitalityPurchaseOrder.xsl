@@ -47,7 +47,7 @@ Alterations	: A Sheppard, 17/12/2004. Add tolerances
 	<!--This template will check that the total of all line values excl VAT in the document matches the total value excl VAT if there is a total value-->
 	<xsl:template name="tempTotalExclVAT">
 		<xsl:if test="//TotalExclVAT">
-			<xsl:if test="(format-number(sum(//LineValueExclVAT), '#.00') &gt; format-number(number(//TotalExclVAT) + (0.01 * count(//PurchaseOrderLine)), '#.00')) or (format-number(sum(//LineValueExclVAT), '#.00') &lt; format-number(number(//TotalExclVAT) - (0.01 * count(//PurchaseOrderLine)), '#.00'))">
+			<xsl:if test="(format-number(sum(/PurchaseOrder/PurchaseOrderDetail/PurchaseOrderLine/LineValueExclVAT), '#.00') &gt; format-number(number(//TotalExclVAT) + (0.01 * count(//PurchaseOrderLine)), '#.00')) or (format-number(sum(/PurchaseOrder/PurchaseOrderDetail/PurchaseOrderLine/LineValueExclVAT), '#.00') &lt; format-number(number(//TotalExclVAT) - (0.01 * count(/PurchaseOrder/PurchaseOrderDetail/PurchaseOrderLine)), '#.00'))">
 				<xsl:element name="Error">
 					<xsl:text>The value excl VAT of the lines in this document does not add up to the total value excl VAT</xsl:text>
 				</xsl:element>
