@@ -64,7 +64,7 @@ AUTHOR:
 		<xsl:choose>
 			<!-- True, found passed GLN. -->
 			<xsl:when test="$sFlag ='1' ">
-				<xsl:value-of select="$sRef"/>
+				<xsl:value-of select="$sFlag"/>
 			</xsl:when>
 			<!-- False, not found passed GLN. -->
 			<xsl:otherwise>
