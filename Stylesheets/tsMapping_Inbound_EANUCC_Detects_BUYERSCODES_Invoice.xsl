@@ -71,7 +71,7 @@
 									<xsl:choose>
 										<!-- Buyers Code to be used. -->
 										<xsl:when test="$sCheckFlag !='1' ">
-											[<xsl:value-of select="/Invoice/ShipTo/BuyerAssigned"/>]
+											[<xsl:value-of select="/Invoice/ShipTo/BuyerAssigned"/>
 										</xsl:when>
 										<!-- Sellers code to be used if present. -->
 										<xsl:otherwise>
