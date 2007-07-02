@@ -22,14 +22,18 @@
 '******************************************************************************************
 ' Date         | Name         | Description of modification
 '******************************************************************************************
-'	26/01/2007	|	Nigel Emsen	|	FB: - Created from standard mapper and modified to detect
+'	26/01/2007	|	Nigel Emsen	|	FB: 1244 - Created from standard mapper and modified to 
+'						|						|	detect if to use BuyersCodes by use of the Buyers ANA. e.g.
 '						|						|	SSP invoice and use SSP unit code for SCFR.
+'						|						|	Xpath used in internal document: /Invoice/Buyer/BuyerGLN.
 '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 '
 '******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	<xsl:output method="xml"/>
+	<!-- Buyers Code detection function and lookup table -->
+	<xsl:include href="tsMapping_LookupBuyersANA_Table.xsl"/>
 	<!-- we use constants for default values -->
 	<xsl:variable name="defaultTaxCategory" select="'S'"/>
 	<xsl:variable name="defaultTaxRate" select="'17.5'"/>
@@ -55,17 +59,21 @@
 							<TradeSimpleHeader>
 								<!-- SCR comes from Sellers code for buyer if there, else it comes from Buyer GLN -->
 								<!-- Check Value, We will use he GLN as this is unique. Before golive we will need to 
-										check that the quoted compass GLN is infacts SSPs. -->
-									<xsl:variable name="sCheckValueSSP"><xsl:text>5013546085276</xsl:text></xsl:variable>
-									<xsl:variable name="sCheckString" select="/Invoice/Buyer/BuyerGLN"/>
+										check that the quoted compass GLN is in facts SSPs. -->
+									<xsl:variable name="sBuyersGLN" select="/Invoice/Buyer/BuyerGLN"/>
+									<xsl:variable name="sCheckFlag">
+										<xsl:call-template name="msDetectBuyersANA">
+											<xsl:param name="sANA" select="$sBuyersGLN"/>
+										</xsl:call-template>
+									</xsl:variable> 
 								<SendersCodeForRecipient>		
 									<!-- Detect if a SSP invoice -->
 									<xsl:choose>
-										<!-- Is a SSP invoice -->
-										<xsl:when test="contains($sCheckString,$sCheckValueSSP)">
+										<!-- Buyers Code to be used. -->
+										<xsl:when test="$sCheckFlag !='1' ">
 											<xsl:value-of select="/Invoice/ShipTo/BuyerAssigned"/>
 										</xsl:when>
-										<!-- IS NOT a SSP Invoice -->
+										<!-- Sellers code to be used if present. -->
 										<xsl:otherwise>
 											<xsl:choose>
 												<xsl:when test="string(/Invoice/ShipTo/SellerAssigned)">
