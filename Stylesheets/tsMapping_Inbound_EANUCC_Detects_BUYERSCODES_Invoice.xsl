@@ -70,7 +70,7 @@
 									<!-- Detect if a SSP invoice -->
 									<xsl:choose>
 										<!-- Buyers Code to be used. -->
-										<xsl:when test="$sCheckFlag !='1' ">
+										<xsl:when test="$sCheckFlag !='' ">
 											<xsl:value-of select="/Invoice/ShipTo/BuyerAssigned"/>
 										</xsl:when>
 										<!-- Sellers code to be used if present. -->
