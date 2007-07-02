@@ -63,7 +63,7 @@
 									<xsl:variable name="sBuyersGLN" select="/Invoice/Buyer/BuyerGLN"/>
 									<xsl:variable name="sCheckFlag">
 										<xsl:call-template name="msDetectBuyersANA">
-											<xsl:param name="sANA" select="$sBuyersGLN"/>
+											<xsl:with-param name="sANA" select="$sBuyersGLN"/>
 										</xsl:call-template>
 									</xsl:variable> 
 								<SendersCodeForRecipient>		
@@ -71,7 +71,7 @@
 									<xsl:choose>
 										<!-- Buyers Code to be used. -->
 										<xsl:when test="$sCheckFlag !='1' ">
-											<xsl:value-of select="/Invoice/ShipTo/BuyerAssigned"/>
+											[<xsl:value-of select="/Invoice/ShipTo/BuyerAssigned"/>]
 										</xsl:when>
 										<!-- Sellers code to be used if present. -->
 										<xsl:otherwise>
@@ -90,7 +90,7 @@
 								</SendersCodeForRecipient>
 								<!-- SBR used to pick out the PL Account code to be used in the trading relationship set up. This could be Buyer or Supplier value. -->
 								<!-- Detect if a SSP invoice -->
-								<xsl:if test="string(/Invoice/TradeAgreementReference/ContractReferenceNumber) != '' and not(contains($sCheckString,$sCheckValueSSP)) ">
+								<xsl:if test="string(/Invoice/TradeAgreementReference/ContractReferenceNumber) != '' ">
 									<SendersBranchReference>
 										<xsl:value-of select="/Invoice/TradeAgreementReference/ContractReferenceNumber"/>
 									</SendersBranchReference>
