@@ -25,6 +25,7 @@
 		<xsl:copy/>
 	</xsl:template>
 	<!-- END of GENERIC HANDLERS -->
+
 	
 	<!-- Change TradeSimpleHeaderSent to TradeSimpleHeader -->
 	<xsl:template match="TradeSimpleHeaderSent">
@@ -42,6 +43,8 @@
 			<!--xsl:copy-of select="./*"/-->
 		</xsl:element>
 	</xsl:template>
+
+
 
 	<!-- Buyer GLN -->
 	<xsl:template match="BuyersLocationID">
@@ -71,10 +74,18 @@
 	<xsl:template match="OrderedDeliveryDetails">
 		<xsl:element name="OrderedDeliveryDetails">
 			<xsl:element name="DeliveryType">Delivery</xsl:element>
-			<xsl:copy-of select="./*"/>
+			<!--xsl:copy-of select="./*"/-->
+			<xsl:apply-templates select="./*"/>
 		</xsl:element>
 	</xsl:template>
 	
+	<!-- remove any weird characters from text fields -->
+	<xsl:template match="SpecialDeliveryInstructions | BuyersName | AddressLine1 | AddressLine2 | AddressLine3 | AddressLine4 | PostCode | SuppliersName | ShipToName | ContactName |  ProductDescription | OrderedDeliveryDetailsLineLevel">
+		<xsl:element name="{name()}">
+			<xsl:value-of select="normalize-space(.)"/>
+		</xsl:element>
+	</xsl:template>
+
 	<!-- Remove Customer Order REf -->
 	<xsl:template match="CustomerPurchaseOrderReference">
 	</xsl:template>
