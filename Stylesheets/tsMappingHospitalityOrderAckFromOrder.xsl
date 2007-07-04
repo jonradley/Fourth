@@ -26,61 +26,65 @@
 
 	<xsl:template match="/PurchaseOrder">
 	
-		<PurchaseOrderAcknowledgement>
+		<BatchRoot>
 		
-			<xsl:for-each select="TradeSimpleHeader">
-		
-				<TradeSimpleHeader>
-					
-					<xsl:call-template  name="swapSRC-RCS">
-						<xsl:with-param name="objNodeList" select="RecipientsCodeForSender | RecipientsBranchReference | RecipientsName | RecipientsAddress"/>
-						<xsl:with-param name="sOldName" select="'Recipient'"/>
-						<xsl:with-param name="sNewName" select="'Sender'"/>
-					</xsl:call-template>
-				
-					<xsl:call-template  name="swapSRC-RCS">
-						<xsl:with-param name="objNodeList" select="SendersCodeForRecipient | SendersBranchReference | SendersName | SendersAddress"/>
-						<xsl:with-param name="sOldName" select="'Sender'"/>
-						<xsl:with-param name="sNewName" select="'Recipient'"/>
-					</xsl:call-template>
-					
-					<xsl:apply-templates select="TestFlag"/>
-					
-				</TradeSimpleHeader>
-				
-			</xsl:for-each>	
-				
-			<xsl:for-each select="PurchaseOrderHeader">
+			<PurchaseOrderAcknowledgement>
 			
-				<PurchaseOrderAcknowledgementHeader>
-							
-					<xsl:apply-templates select="DocumentStatus | Buyer | Supplier | ShipTo | PurchaseOrderReferences"/>
+				<xsl:for-each select="TradeSimpleHeader">
+			
+					<TradeSimpleHeader>
+						
+						<xsl:call-template  name="swapSRC-RCS">
+							<xsl:with-param name="objNodeList" select="RecipientsCodeForSender | RecipientsBranchReference | RecipientsName | RecipientsAddress"/>
+							<xsl:with-param name="sOldName" select="'Recipient'"/>
+							<xsl:with-param name="sNewName" select="'Sender'"/>
+						</xsl:call-template>
 					
-					<PurchaseOrderAcknowledgementReferences>
-						<PurchaseOrderAcknowledgementReference>
-							<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderReference"/>
-						</PurchaseOrderAcknowledgementReference>
-						<PurchaseOrderAcknowledgementDate>
-							<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderDate"/>
-						</PurchaseOrderAcknowledgementDate>
-					</PurchaseOrderAcknowledgementReferences>
+						<xsl:call-template  name="swapSRC-RCS">
+							<xsl:with-param name="objNodeList" select="SendersCodeForRecipient | SendersBranchReference | SendersName | SendersAddress"/>
+							<xsl:with-param name="sOldName" select="'Sender'"/>
+							<xsl:with-param name="sNewName" select="'Recipient'"/>
+						</xsl:call-template>
+						
+						<xsl:apply-templates select="TestFlag"/>
+						
+					</TradeSimpleHeader>
+					
+				</xsl:for-each>	
+					
+				<xsl:for-each select="PurchaseOrderHeader">
+				
+					<PurchaseOrderAcknowledgementHeader>
+								
+						<xsl:apply-templates select="DocumentStatus | Buyer | Supplier | ShipTo | PurchaseOrderReferences"/>
+						
+						<PurchaseOrderAcknowledgementReferences>
+							<PurchaseOrderAcknowledgementReference>
+								<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderReference"/>
+							</PurchaseOrderAcknowledgementReference>
+							<PurchaseOrderAcknowledgementDate>
+								<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderDate"/>
+							</PurchaseOrderAcknowledgementDate>
+						</PurchaseOrderAcknowledgementReferences>
+		
+						<xsl:apply-templates select="OrderedDeliveryDetails"/>					
+						
+					</PurchaseOrderAcknowledgementHeader>
+					
+				</xsl:for-each>
+				
+				
+				<xsl:for-each select="PurchaseOrderTrailer">
 	
-					<xsl:apply-templates select="OrderedDeliveryDetails"/>					
+					<PurchaseOrderAcknowledgementTrailer>
+						<xsl:apply-templates select="NumberOfLines | TotalExclVAT"/>
+					</PurchaseOrderAcknowledgementTrailer>
 					
-				</PurchaseOrderAcknowledgementHeader>
+				</xsl:for-each>
 				
-			</xsl:for-each>
+			</PurchaseOrderAcknowledgement>
 			
-			
-			<xsl:for-each select="PurchaseOrderTrailer">
-
-				<PurchaseOrderAcknowledgementTrailer>
-					<xsl:apply-templates select="NumberOfLines | TotalExclVAT"/>
-				</PurchaseOrderAcknowledgementTrailer>
-				
-			</xsl:for-each>
-			
-		</PurchaseOrderAcknowledgement>
+		</BatchRoot>
 		
 	</xsl:template>
 
