@@ -98,7 +98,7 @@
 								<!-- Detect if a SSP invoice -->
 								<xsl:if test="string($sCheckFlag) ='1' ">
 									<SendersBranchReference>
-										<xsl:value-of select="/Invoice/Buyer/SellerAssigned"/>
+										<xsl:value-of select="/Invoice/Seller/BuyerAssigned"/>
 									</SendersBranchReference>
 								</xsl:if>							
 								
