@@ -92,14 +92,14 @@
 							<SendersBranchReference RecordPos="SUPPLIER" LPos="2"/>
 						</TradeSimpleHeader>
 						<InvoiceHeader>
-							<BatchInformation>
+							<!--BatchInformation>
 								<FileGenerationNo RecordPos="FILEDETS" LPos="2"/>
 								<FileVersionNo RecordPos="FILEDETS" LPos="3"/>
-								<FileCreationDate RecordPos="FILEDETS" LPos="4"/>
+								<FileCreationDate RecordPos="FILEDETS" LPos="4"/-->
 								<!-- TBC -->
 								<!--SendersTransmissionReference RecordPos="I" LPos="7"/>
 								<SendersTransmissionDate RecordPos="I" LPos="8"/-->
-							</BatchInformation>
+							<!--/BatchInformation-->
 							<Buyer>
 								<BuyersLocationID>
 									<SuppliersCode RecordPos="CUSTOMER" LPos="2"/>
