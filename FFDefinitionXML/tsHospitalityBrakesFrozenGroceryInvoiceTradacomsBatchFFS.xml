@@ -134,10 +134,9 @@ N Emsen		|	24/01/2007	|	Case 750:   Brakes frozen CLO mapping change
 							</BatchInformation>
 							<Buyer>
 								<BuyersLocationID>
-									
-									
+									<BuyersCode RecordPos="CDT=" LPos="1" SFPos="1"/>
 									<!--INVFIL-CDT-CIDN(1)-->
-									<SuppliersCode RecordPos="CDT=" LPos="1" SFPos="1"/>
+									<SuppliersCode RecordPos="CDT=" LPos="1" SFPos="2"/>
 								</BuyersLocationID>
 								<!-- OPTIONAL Buyer Name, MANDATORY, INVFIL – CDT – CNAM, NB: To make this a legal invoice, you must provide this field. The “invoice to” name -->
 								<BuyersName RecordPos="CDT=" LPos="2"/>
