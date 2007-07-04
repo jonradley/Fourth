@@ -89,12 +89,19 @@
 									</xsl:choose>
 								</SendersCodeForRecipient>
 								<!-- SBR used to pick out the PL Account code to be used in the trading relationship set up. This could be Buyer or Supplier value. -->
-								<!-- Detect if a SSP invoice -->
+								<!-- Detect if not a SSP invoice and there is a contract reference number -->
 								<xsl:if test="string(/Invoice/TradeAgreementReference/ContractReferenceNumber) != '' and string($sCheckFlag) !='1' ">
 									<SendersBranchReference>
 										<xsl:value-of select="/Invoice/TradeAgreementReference/ContractReferenceNumber"/>
 									</SendersBranchReference>
 								</xsl:if>
+								<!-- Detect if a SSP invoice -->
+								<xsl:if test="string($sCheckFlag) ='1' ">
+									<SendersBranchReference>
+										<xsl:value-of select="/Invoice/Buyer/SellerAssigned"/>
+									</SendersBranchReference>
+								</xsl:if>							
+								
 								<!-- SendersName, Address1 - 4 and PostCode will be populated by subsequent processors  -->
 								<!-- Recipients Code for Sender, Recipients Branch Reference, Name, Address1 - 4, PostCode will be populated by subsequent 	processors -->
 								<!-- the TestFlag will be populated by subsequent processors -->
