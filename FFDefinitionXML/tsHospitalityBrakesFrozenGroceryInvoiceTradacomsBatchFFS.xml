@@ -153,7 +153,7 @@ N Emsen		|	24/01/2007	|	Case 750:   Brakes frozen CLO mapping change
 							<Supplier>
 								<SuppliersLocationID>
 									<!--INVFIL-SDT-SIDN(2)-->
-									<SuppliersCode RecordPos="SDT=" LPos="1" SFPos="2"/>
+									<BuyersCode RecordPos="SDT=" LPos="1" SFPos="2"/>
 									<!--INVFIL-SDT-SIDN(1)-->
 									<SuppliersCode RecordPos="SDT=" LPos="1" SFPos="1"/>
 								</SuppliersLocationID>
