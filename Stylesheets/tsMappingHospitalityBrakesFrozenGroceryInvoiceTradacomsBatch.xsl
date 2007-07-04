@@ -41,6 +41,8 @@ N Emsen		|	02/07/2007	|	FB: 1238 - Detect SSP invoices.
 		</BatchRoot>
 	</xsl:template>
 	
+	
+	
 	<!-- GENERIC HANDLER to copy unchanged nodes, will be overridden by any node-specific templates below -->
 	<xsl:template match="*">
 		<!-- Copy the node unchanged -->
@@ -64,7 +66,7 @@ N Emsen		|	02/07/2007	|	FB: 1238 - Detect SSP invoices.
 		<SendersCodeForRecipient>
 		
 			<xsl:variable name="sCurValue" select="."/>
-			<xsl:variable name="sCLO3Value" select="//InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode"/>
+			<xsl:variable name="sCLO2Value" select="//InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode"/>
 			<xsl:variable name="sBuyersGLN" select="/Invoice/Buyer/BuyerGLN"/>
 			<xsl:variable name="sCheckFlag">
 				<xsl:call-template name="msDetectBuyersANA">
@@ -75,7 +77,7 @@ N Emsen		|	02/07/2007	|	FB: 1238 - Detect SSP invoices.
 			<xsl:choose>
 				<!-- Check is an invoice for SSP -->
 				<xsl:when test="$sCheckFlag !='1' ">
-					<xsl:value-of select="$sCLO3Value"/>
+					<xsl:value-of select="$sCLO2Value"/>
 				</xsl:when>
 				<!-- IS NOT an invoice for SSP -->
 				<xsl:otherwise>
@@ -86,6 +88,38 @@ N Emsen		|	02/07/2007	|	FB: 1238 - Detect SSP invoices.
 		</SendersCodeForRecipient>
 		
 	</xsl:template>
+	
+	<!-- SSP amendment - to remap SBR using SDT(2) IF SSP. -->
+	<xsl:template match="//TradeSimpleHeader/SendersBranchReference">
+	
+		<SendersBranchReference>
+		
+			<xsl:variable name="sCurValue" select="."/>
+			<xsl:variable name="sScanRefValue" select="substring(//Invoice/InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode,2,5)"/>
+			<xsl:variable name="sBuyersGLN" select="/Invoice/Buyer/BuyerGLN"/>
+			<xsl:variable name="sCheckFlag">
+				<xsl:call-template name="msDetectBuyersANA">
+					<xsl:param name="sANA" select="$sBuyersGLN"/>
+				</xsl:call-template>
+			</xsl:variable>
+			
+			<xsl:choose>
+				<!-- Check is an invoice for SSP -->
+				<xsl:when test="$sCheckFlag ='1' ">
+					<xsl:value-of select="$sScanRefValue"/>
+				</xsl:when>
+				<!-- IS NOT an invoice for SSP -->
+				<xsl:otherwise>
+					<xsl:value-of select="$sCurValue"/>
+				</xsl:otherwise>
+			</xsl:choose>
+			
+		</SendersBranchReference>
+		
+	</xsl:template>
+
+	
+	
 	<!-- InvoiceLine/ProductID/BuyersProductCode is used as a placeholder for INVOIC-ILD-CRLI and should not be copied over -->
 	<xsl:template match="BuyersProductCode"/>
 	
