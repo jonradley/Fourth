@@ -56,9 +56,9 @@ R Cambridge	| 14/05/2007	| 1096 Created FSS
 								<VATCode RecordLength="15" RecordPos="*" LPos="13"/>
 							</InvoiceLine>
 						</InvoiceDetail>
-						<InvoiceTrailer>
+						<!--InvoiceTrailer>
 							<DocumentTotalInclVAT RecordLength="15" RecordPos="*" LPos="7"/>
-						</InvoiceTrailer>
+						</InvoiceTrailer-->
 					</Invoice>
 				</BatchDocument>
 			</BatchDocuments>
