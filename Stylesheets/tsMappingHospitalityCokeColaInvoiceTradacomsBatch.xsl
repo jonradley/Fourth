@@ -50,6 +50,9 @@ The sum of the individual daily values will equal the content of the QTYI:1 (for
 
 28/06/2007 R Cambridge 1252 Suppress DeliveryReferences when there's no ref or no date
 
+05/07/2007 R Cambridge 1252 Second attempt
+
+
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:vbscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
@@ -203,7 +206,7 @@ The sum of the individual daily values will equal the content of the QTYI:1 (for
 					<xsl:choose>
 						<xsl:when test="string(DeliveryNoteReferences/DeliveryNoteReference) = '' or string(DeliveryNoteReferences/DeliveryNoteDate) = ''"/>
 						<xsl:otherwise>
-							<xsl:apply-templates select="DeliveryNoteReferences/*"/>
+							<xsl:apply-templates select="DeliveryNoteReferences"/>
 						</xsl:otherwise>
 					</xsl:choose>
 					<xsl:apply-templates select="GoodsReceivedNoteReferences"/>
