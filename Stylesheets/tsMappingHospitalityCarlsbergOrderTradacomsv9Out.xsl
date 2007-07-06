@@ -219,9 +219,7 @@
 			<xsl:text>+</xsl:text>
 			<xsl:value-of select="format-number(OrderedQuantity,'0')"/>
 			<xsl:text>:</xsl:text>
-			<xsl:value-of select="translate(format-number(OrderedQuantity,'#.000'),'.','')"/>
 			<xsl:text>:</xsl:text>
-			<xsl:value-of select="PackSize"/>
 			<xsl:text>+</xsl:text>
 			<xsl:choose>
 				<xsl:when test="string(UnitValueExclVAT) !='' ">
