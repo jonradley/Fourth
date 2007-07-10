@@ -87,19 +87,19 @@
 		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
 		<xsl:text>+</xsl:text>
 		<!-- truncate to 40 SNAM = 3060 = AN..40-->
-		<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersName),40)"/>
+		<xsl:value-of select="js:msSafeText(string(PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersName),40)"/>
 		<xsl:text>+</xsl:text>
 		<!-- truncate to 35 SADD 1-4 = 3062 = AN..35-->
-		<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersAddress/AddressLine1),35)"/>
+		<xsl:value-of select="js:msSafeText(string(PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersAddress/AddressLine1),35)"/>
 		<xsl:text>:</xsl:text>
-		<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersAddress/AddressLine2),35)"/>
+		<xsl:value-of select="js:msSafeText(string(PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersAddress/AddressLine2),35)"/>
 		<xsl:text>:</xsl:text>
-		<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersAddress/AddressLine3),35)"/>
+		<xsl:value-of select="js:msSafeText(string(PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersAddress/AddressLine3),35)"/>
 		<xsl:text>:</xsl:text>
-		<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersAddress/AddressLine4),35)"/>
+		<xsl:value-of select="js:msSafeText(string(PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersAddress/AddressLine4),35)"/>
 		<xsl:text>:</xsl:text>
 		<!-- truncate to 8 (just in case) SADD 5 = 3063 = AN..8-->
-		<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersAddress/PostCode),8)"/>
+		<xsl:value-of select="js:msSafeText(string(PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersAddress/PostCode),8)"/>
 		<xsl:value-of select="$sRecordSep"/>
 		<xsl:text>CDT=</xsl:text>
 		<!-- CIDN (1) Customer EAN -->
@@ -124,22 +124,22 @@
 		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
 		<xsl:text>+</xsl:text>
 		<!-- truncate to 40 CNAM = 3060 = AN..40-->
-		<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Buyer/BuyersName),40)"/>
+		<xsl:value-of select="js:msSafeText(string(PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersName),40)"/>
 		<xsl:text>+</xsl:text>
 		<!-- truncate to 35 CADD 1-4 = 3032 = AN..35-->
-		<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine1),35)"/>
+		<xsl:value-of select="js:msSafeText(string(PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine1),35)"/>
 		<xsl:text>:</xsl:text>
-		<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine2),35)"/>
+		<xsl:value-of select="js:msSafeText(string(PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine2),35)"/>
 		<xsl:text>:</xsl:text>
-		<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine3),35)"/>
+		<xsl:value-of select="js:msSafeText(string(PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine3),35)"/>
 		<xsl:text>:</xsl:text>
-		<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine4),35)"/>
+		<xsl:value-of select="js:msSafeText(string(PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine4),35)"/>
 		<xsl:text>:</xsl:text>
 		<!-- truncate to 8 (just in case) CADD 5 = 3033 = AN..8-->
-		<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Buyer/SendersAddress/PostCode),8)"/>
+		<xsl:value-of select="js:msSafeText(string(PurchaseOrder/PurchaseOrderHeader/Buyer/SendersAddress/PostCode),8)"/>
 		<xsl:value-of select="$sRecordSep"/>
 		<xsl:text>FIL=</xsl:text>
-		<xsl:value-of select="PurchaseOrderHeader/FileGenerationNumber"/>
+		<xsl:value-of select="PurchaseOrder/PurchaseOrderHeader/FileGenerationNumber"/>
 		<xsl:text>+</xsl:text>
 		<xsl:text>1+</xsl:text>
 		<xsl:value-of select="$sFileGenerationDate"/>
