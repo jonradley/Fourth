@@ -16,7 +16,9 @@
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript" xmlns:vb="http://www.abs-ltd.com/dummynamespaces/vbscript" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	<xsl:output method="text" encoding="utf-8"/>
-	<xsl:template match="/PurchaseOrder">
+	
+	<xsl:template match="/BatchRoot[PurchaseOrder]">
+	
 		<xsl:variable name="sRecordSep">
 			<xsl:text>'</xsl:text>
 			<!--<xsl:text>&#13;&#10;</xsl:text>-->
