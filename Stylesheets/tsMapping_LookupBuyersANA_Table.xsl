@@ -1,4 +1,4 @@
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="xsl msxsl" xmlns:vbscript="http://abs-Ltd.com">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="xsl msxsl" xmlns:vbscript="http://abs-Ltd.com" xmlns:data="blah">
 	<!--
 ==========================================================================================================
 
@@ -8,10 +8,8 @@
 -->
 	<!--
 ===========================================================================================================
-USE:
-		cross reference table for Nippon DE as they are only able to return the ILN of the delivery
-		location. 
-		This document aviods changes to the mapper if more delivery locations are added by Nippon.
+USE: 
+		This document aviods changes to the mapper if more delivery locations are added by Buyer.
 		
 STRUCTURE:
 
@@ -26,34 +24,22 @@ STRUCTURE:
 	
 AUTHOR:
 
-	Nigel Emsen, 2nd July 2007.
+	Nigel Emsen, 2nd July 2007. 
 		
 ==========================================================================================================
 -->
-	<xsl:variable name="LookupTable">
-		<table>
-			<record>
-				<ANA>5013546085276</ANA>
-				<ReturnValue>1</ReturnValue>
-				<Description>Compass's GLN number.</Description>
-			</record>
-		</table>
-	</xsl:variable>
-	
-	<!--
-==========================================================================================================
+	<data:table>
+		<data:record>
+			<data:ANA>5013546085276</data:ANA>
+			<data:ReturnValue>1</data:ReturnValue>
+			<data:Description>Compass's GLN number.</data:Description>
+		</data:record>
+	</data:table>	
 
-											Functions to extract data from the lookup table.
-
-==========================================================================================================
--->
-	<xsl:template name="msDetectBuyersANA" >
-		<xsl:param name="sANA" select="sANA"/>
-		<xsl:for-each select="msxsl:node-set($LookupTable)/table/record">
-			<xsl:variable name="sCurValue" select="ANA"/>
-				<xsl:if test="contains($sANA,$sCurValue)">
-					<xsl:value-of select="ReturnValue"/>
-				</xsl:if>
-		</xsl:for-each>
+<!-- ========== Function to check for presence in data:table of a given ANA passed ======================== -->
+	<xsl:template name="msDetectBuyersANA" match="/" >
+		<xsl:param name="sANA"/>
+		<xsl:value-of select="document('')/*/data:table/data:record[normalize-space(data:ANA)=normalize-space($sANA)]/data:ReturnValue"/>
 	</xsl:template>
+	
 </xsl:stylesheet>
