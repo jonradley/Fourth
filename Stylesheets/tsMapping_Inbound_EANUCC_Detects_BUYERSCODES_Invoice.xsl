@@ -30,7 +30,7 @@
 '
 '******************************************************************************************
 -->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:data="blah" >
 	<xsl:output method="xml"/>
 	<!-- Buyers Code detection function and lookup table -->
 	<xsl:include href="tsMapping_LookupBuyersANA_Table.xsl"/>
@@ -70,7 +70,7 @@
 									<!-- Detect if a SSP invoice -->
 									<xsl:choose>
 										<!-- Buyers Code to be used. -->
-										<xsl:when test="$sCheckFlag !='' ">
+										<xsl:when test="$sCheckFlag ='1' ">
 											<xsl:value-of select="/Invoice/ShipTo/BuyerAssigned"/>
 										</xsl:when>
 										<!-- Sellers code to be used if present. -->
