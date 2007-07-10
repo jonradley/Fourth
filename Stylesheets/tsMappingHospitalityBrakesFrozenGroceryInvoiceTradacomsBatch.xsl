@@ -67,10 +67,10 @@ N Emsen		|	02/07/2007	|	FB: 1238 - Detect SSP invoices.
 		
 			<xsl:variable name="sCurValue" select="."/>
 			<xsl:variable name="sCLO2Value" select="//InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode"/>
-			<xsl:variable name="sBuyersGLN" select="/Invoice/Buyer/BuyerGLN"/>
+			<xsl:variable name="sBuyersGLN" select="//Invoice/InvoiceHeader/Buyer/BuyersLocationID/BuyersCode"/>
 			<xsl:variable name="sCheckFlag">
 				<xsl:call-template name="msDetectBuyersANA">
-					<xsl:param name="sANA" select="$sBuyersGLN"/>
+					<xsl:with-param  name="sANA" select="$sBuyersGLN"/>
 				</xsl:call-template>
 			</xsl:variable>
 			
@@ -96,16 +96,25 @@ N Emsen		|	02/07/2007	|	FB: 1238 - Detect SSP invoices.
 		
 			<xsl:variable name="sCurValue" select="."/>
 			<xsl:variable name="sScanRefValue" select="substring(//Invoice/InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode,2,5)"/>
-			<xsl:variable name="sBuyersGLN" select="/Invoice/Buyer/BuyerGLN"/>
+			<xsl:variable name="sBuyersGLN">
+				<xsl:choose>
+					<xsl:when test="string(/Invoice/Buyer/BuyerGLN) != '' ">
+						<xsl:value-of select="/Invoice/Buyer/BuyerGLN"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="//Buyer/BuyersLocationID/SuppliersCode"/>
+					</xsl:otherwise>
+				</xsl:choose>	
+			</xsl:variable>
 			<xsl:variable name="sCheckFlag">
 				<xsl:call-template name="msDetectBuyersANA">
-					<xsl:param name="sANA" select="$sBuyersGLN"/>
+					<xsl:with-param name="sANA" select="$sBuyersGLN"/>
 				</xsl:call-template>
 			</xsl:variable>
 			
 			<xsl:choose>
 				<!-- Check is an invoice for SSP -->
-				<xsl:when test="$sCheckFlag ='1' ">
+				<xsl:when test="$sCheckFlag =1 ">
 					<xsl:value-of select="$sScanRefValue"/>
 				</xsl:when>
 				<!-- IS NOT an invoice for SSP -->
