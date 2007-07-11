@@ -29,7 +29,7 @@
 			<!--<xsl:text>&#13;&#10;</xsl:text>-->
 			<xsl:text/>
 		</xsl:variable>
-		<xsl:variable name="sSCFR" select="translate(/PurchaseOrder/TradeSimpleHeader/SendersCodeForRecipient,' ','')"/>
+		<xsl:variable name="sSCFR" select="translate(PurchaseOrder/TradeSimpleHeader/SendersCodeForRecipient,' ','')"/>
 		<xsl:variable name="sOPOCode">
 			<xsl:text>CCAR010</xsl:text>
 		</xsl:variable>
@@ -49,22 +49,22 @@
 			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:text>:</xsl:text>
-		<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Buyer/BuyersName), 35)"/>
+		<xsl:value-of select="js:msSafeText(string(PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersName), 35)"/>
 		<xsl:text>+</xsl:text>
 		<!--Carlsberg mailbox ANA reference-->
 		<xsl:text>5013546040435</xsl:text>
 		<xsl:text>:</xsl:text>
-		<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersName), 35)"/>
+		<xsl:value-of select="js:msSafeText(string(PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersName), 35)"/>
 		<xsl:text>+</xsl:text>
 		<xsl:value-of select="$sFileGenerationDate"/>
 		<xsl:text>:</xsl:text>
 		<xsl:value-of select="vb:msFileGenerationTime()"/>
 		<xsl:text>+</xsl:text>
-		<xsl:value-of select="PurchaseOrderHeader/FileGenerationNumber"/>
+		<xsl:value-of select="PurchaseOrder/PurchaseOrderHeader/FileGenerationNumber"/>
 		<xsl:text>+</xsl:text>
 		<xsl:text>+</xsl:text>
 		<xsl:choose>
-			<xsl:when test="TradeSimpleHeader/TestFlag = 'false' or TradeSimpleHeader/TestFlag = '0'">
+			<xsl:when test="PurchaseOrder/TradeSimpleHeader/TestFlag = 'false' or PurchaseOrder/TradeSimpleHeader/TestFlag = '0'">
 				<xsl:text>ORDHDR</xsl:text>
 			</xsl:when>
 			<xsl:otherwise>
@@ -84,7 +84,7 @@
 		<xsl:text>5013546040435</xsl:text>
 		<xsl:text>:</xsl:text>
 		<!-- Buyers ANA known to the Carlsberg -->
-		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
+		<xsl:value-of select="PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
 		<xsl:text>+</xsl:text>
 		<!-- truncate to 40 SNAM = 3060 = AN..40-->
 		<xsl:value-of select="js:msSafeText(string(PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersName),40)"/>
@@ -116,12 +116,12 @@
 			</xsl:when>
 			<!-- all other cases -->
 			<xsl:otherwise>
-				<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/>
+				<xsl:value-of select="PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/>
 			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:text>:</xsl:text>
 		<!-- CIDN (2) -->
-		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
+		<xsl:value-of select="PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
 		<xsl:text>+</xsl:text>
 		<!-- truncate to 40 CNAM = 3060 = AN..40-->
 		<xsl:value-of select="js:msSafeText(string(PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersName),40)"/>
