@@ -131,6 +131,7 @@
 	<!--  End of this 3663 specific block -->
 	
 	<!-- INVOIC-ILD-QTYI (InvoiceLine/InvoicedQuantity) needs to be multiplied by -1 if (InvoiceLine/ProductID/GTIN) is NOT blank -->
+	<!-- NE, 11th JUly 2007 - Change to map in weighted item details -->
 	<xsl:template match="InvoiceLine/InvoicedQuantity">
 		<xsl:choose>
 			<!--Parent of InvoicedQuantity is InvoiceLine-->
@@ -139,6 +140,12 @@
 				<xsl:call-template name="copyCurrentNodeDPUnchanged">
 					<xsl:with-param name="lMultiplier" select="-1.0"/>
 				</xsl:call-template>
+			</xsl:when>
+			<!-- Check and map from wt'd item segments -->
+			<xsl:when test="string(../Measure/TotalMeasure) !='' ">
+				<InvoicedQuantity>
+					<xsl:value-of select="format-number(../Measure/TotalMeasure,'0.000#')"/>
+				</InvoicedQuantity>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:call-template name="copyCurrentNodeDPUnchanged"/>
