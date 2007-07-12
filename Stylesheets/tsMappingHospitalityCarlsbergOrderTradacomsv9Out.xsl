@@ -10,12 +10,16 @@
 ==========================================================================================
  	Date      	| Name 					| Description of modification
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	13/02/2006	| Nigel Emsen		| Created from Bunzl Tradacoms mapper. FB: 1214.
+	12/07/2007	| Nigel Emsen		| Created from Bunzl Tradacoms mapper. FB: 1214.
+						|							| Dependant on FB: 1298.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript" xmlns:vb="http://www.abs-ltd.com/dummynamespaces/vbscript" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	<xsl:output method="text" encoding="utf-8"/>
+	
+	<!-- This is a place holder for the batching out processor to complete. -->
+	<xsl:param name="nBatchID">Not Provided</xsl:param>
 	
 	<xsl:template match="/BatchRoot[PurchaseOrder]">
 	
@@ -60,7 +64,7 @@
 		<xsl:text>:</xsl:text>
 		<xsl:value-of select="vb:msFileGenerationTime()"/>
 		<xsl:text>+</xsl:text>
-		<xsl:value-of select="PurchaseOrder/PurchaseOrderHeader/FileGenerationNumber"/>
+		<xsl:value-of select="$nBatchID"/>
 		<xsl:text>+</xsl:text>
 		<xsl:text>+</xsl:text>
 		<xsl:choose>
@@ -139,7 +143,7 @@
 		<xsl:value-of select="js:msSafeText(string(PurchaseOrder/PurchaseOrderHeader/Buyer/SendersAddress/PostCode),8)"/>
 		<xsl:value-of select="$sRecordSep"/>
 		<xsl:text>FIL=</xsl:text>
-		<xsl:value-of select="PurchaseOrder/PurchaseOrderHeader/FileGenerationNumber"/>
+		<xsl:value-of select="$nBatchID"/>
 		<xsl:text>+</xsl:text>
 		<xsl:text>1+</xsl:text>
 		<xsl:value-of select="$sFileGenerationDate"/>
