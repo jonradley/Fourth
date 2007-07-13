@@ -34,6 +34,11 @@ AUTHOR:
 			<data:ReturnValue>1</data:ReturnValue>
 			<data:Description>Compass's GLN number.</data:Description>
 		</data:record>
+		<data:record>
+			<data:ANA>5027615900022</data:ANA>
+			<data:ReturnValue>1</data:ReturnValue>
+			<data:Description>SSP and MOTO GLN number provided by Makella for staging testing.</data:Description>
+		</data:record>
 	</data:table>	
 
 <!-- ========== Function to check for presence in data:table of a given ANA passed ======================== -->
