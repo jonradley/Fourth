@@ -18,11 +18,7 @@ Generic inbound flat file for Chuanglee (Orchid)
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
-	<Batch>
 
-
-	<BatchDocuments>
-		<BatchDocument>
 			<Invoice>
 				<TradeSimpleHeader>
 					<SendersCodeForRecipient><xsl:value-of select="enter xpath"/></SendersCodeForRecipient>
@@ -257,6 +253,4 @@ Generic inbound flat file for Chuanglee (Orchid)
 					<TrailerExtraData/>
 				</InvoiceTrailer>
 			</Invoice>
-		</BatchDocument>
-	</BatchDocuments>
-</Batch>
+
