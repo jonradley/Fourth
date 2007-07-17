@@ -34,7 +34,7 @@
 			<xsl:text>,</xsl:text>
 			<xsl:value-of select="script:msFormatForCSVAndTruncate(/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/ShipTo/ContactName, 30)"/>
 			<xsl:text>,</xsl:text>
-			<xsl:value-of select="script:msFormatForCSV(/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/ShipTo/ShipToLocationID/BuyersCode)"/>
+			<xsl:value-of select="script:msFormatForCSV(/PurchaseOrderConfirmation/TradeSimpleHeader/RecipientsBranchReference)"/>
 			<xsl:text>,</xsl:text>
 			<xsl:value-of select="script:msFormatDate(/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/ConfirmedDeliveryDetails/DeliveryDate)"/>
 			<xsl:for-each select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationDetail/PurchaseOrderConfirmationLine">

@@ -30,7 +30,7 @@
 			<xsl:text>,</xsl:text>
 			<xsl:value-of select="script:msFormatDate(/PurchaseOrderAcknowledgement/PurchaseOrderAcknowledgementHeader/PurchaseOrderReferences/PurchaseOrderDate)"/>
 			<xsl:text>,</xsl:text>
-			<xsl:value-of select="script:msFormatForCSV(/PurchaseOrderAcknowledgement/PurchaseOrderAcknowledgementHeader/ShipTo/ShipToLocationID/BuyersCode)"/>
+			<xsl:value-of select="script:msFormatForCSV(/PurchaseOrderAcknowledgement/TradeSimpleHeader/RecipientsBranchReference)"/>
 			<xsl:text>,</xsl:text>
 			<xsl:text>"A"</xsl:text>
 	</xsl:template>
