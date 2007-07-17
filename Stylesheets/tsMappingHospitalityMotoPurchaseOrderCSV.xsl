@@ -17,16 +17,18 @@ A Sheppard	| 16/07/2007	| Created Module
 	
 		<!-- create the BatchRoot element required by the Inbound XSL Transform processor -->
 		<BatchRoot>
-			<!-- Batch -->
-				<!-- BatchDocuments-->
-					<xsl:apply-templates select="@*|node()"/>
-				<!--/BatchDocuments-->
-			<!--/Batch-->
+			<Batch>
+				<BatchDocuments>
+					<BatchDocument DocumentType="2">
+						<xsl:apply-templates select="@*|node()"/>
+					</BatchDocument>
+				</BatchDocuments>
+			</Batch>
 		</BatchRoot>
 		
 	</xsl:template>
 		
-	<!-- translate the date from [dd-mm-yyyy] format to [yyyy-mm-dd] -->
+	<!-- translate the date from [dd/mm/yyyy] format to [yyyy-mm-dd] -->
 	<xsl:template match="PurchaseOrderDate">
 		<xsl:variable name="dayPart">
 			<xsl:value-of select="substring(.,1,2)"/>
@@ -41,6 +43,31 @@ A Sheppard	| 16/07/2007	| Created Module
 		<PurchaseOrderDate>
 			<xsl:value-of select="concat($yearPart,'-',$monthPart,'-',$dayPart)"/>
 		</PurchaseOrderDate>
+	</xsl:template>
+	
+	<!-- translate the date from [dd/mm/yyyy] format to [yyyy-mm-dd] -->
+	<xsl:template match="DeliveryDate">
+		<xsl:variable name="dayPart">
+			<xsl:value-of select="substring(.,1,2)"/>
+		</xsl:variable>
+		<xsl:variable name="monthPart">
+			<xsl:value-of select="substring(.,4,2)"/>
+		</xsl:variable>
+		<xsl:variable name="yearPart">
+			<xsl:value-of select="substring(.,7,4)"/>
+		</xsl:variable>
+		<!-- construct the final xml formatted date -->
+		<DeliveryDate>
+			<xsl:value-of select="concat($yearPart,'-',$monthPart,'-',$dayPart)"/>
+		</DeliveryDate>
+	</xsl:template>
+	
+	<xsl:template match="OrderedQuantity">
+		<xsl:copy>
+			<xsl:apply-templates select="@*|node()"/>
+		</xsl:copy>
+		<UnitValueExclVAT>0.00</UnitValueExclVAT>
+		<LineValueExclVAT>0.00</LineValueExclVAT>
 	</xsl:template>
 	
 	<!--identity transformation -->

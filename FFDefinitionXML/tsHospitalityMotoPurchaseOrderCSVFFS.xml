@@ -13,36 +13,35 @@ A Sheppard	| 16/07/2007 	| Created
 		<ffsFieldSeparators>
 			<ffsFieldSeparator>,</ffsFieldSeparator>
 		</ffsFieldSeparators>
-		<ffsSplitBatchRecord RecordPos="H"/>
 	</ffsSettings>
 	<ffsRoot>
 		<PurchaseOrder>
 			<TradeSimpleHeader>
-				<SendersCodeForRecipient RecordPos="H" LPos="1"/>
-				<SendersBranchReference RecordPos="H" LPos="7"/>
+				<SendersCodeForRecipient RecordPos="&quot;H&quot;" LPos="2"/>
+				<SendersBranchReference RecordPos="&quot;H&quot;" LPos="8"/>
 			</TradeSimpleHeader>
 			<PurchaseOrderHeader>
 				<ShipTo>
-					<ContactName RecordPos="H" LPos="6"/>
+					<ContactName RecordPos="&quot;H&quot;" LPos="7"/>
 				</ShipTo>
 				<PurchaseOrderReferences>
-					<PurchaseOrderReference RecordPos="H" LPos="5"/>
-					<PurchaseOrderDate RecordPos="H" LPos="3"/>
+					<PurchaseOrderReference RecordPos="&quot;H&quot;" LPos="6"/>
+					<PurchaseOrderDate RecordPos="&quot;H&quot;" LPos="4"/>
 				</PurchaseOrderReferences>
 				<OrderedDeliveryDetails>
-					<DeliveryDate RecordPos="H" LPos="4"/>
+					<DeliveryDate RecordPos="&quot;H&quot;" LPos="5"/>
 				</OrderedDeliveryDetails>
 			</PurchaseOrderHeader>
 			<PurchaseOrderDetail>
 				<PurchaseOrderLine>
-					<LineNumber RecordPos="D" LPos="4"/>
+					<LineNumber RecordPos="&quot;D&quot;" LPos="5"/>
 					<ProductID>
-						<SuppliersProductCode RecordPos="D" LPos="2"/>
-						<BuyersProductCode RecordPos="D" LPos="1"/>
+						<SuppliersProductCode RecordPos="&quot;D&quot;" LPos="3"/>
+						<BuyersProductCode RecordPos="&quot;D&quot;" LPos="2"/>
 					</ProductID>
-					<ProductDescription RecordPos="D" LPos="3"/>
-					<OrderedQuantity RecordPos="D" LPos="5">
-						<ffsAttribute1 name="UnitOfMeasure" RecordPos="D" LPos="6"/>
+					<ProductDescription RecordPos="&quot;D&quot;" LPos="4"/>
+					<OrderedQuantity RecordPos="&quot;D&quot;" LPos="6">
+						<ffsAttribute1 name="UnitOfMeasure" RecordPos="&quot;D&quot;" LPos="7"/>
 					</OrderedQuantity>
 				</PurchaseOrderLine>
 			</PurchaseOrderDetail>
