@@ -46,8 +46,12 @@ N Emsen		|	08/11/2006	|	Case 531: Purchase order reference working.
 	<!-- END of GENERIC HANDLERS -->
 
 	<!-- Temporary Fix To Handle Bar Room Bar -->
-	<xsl:template match="SendersBranchReference[. = 'O511/S']">
-		<SendersBranchReference>O509/S</SendersBranchReference>
+	<xsl:template match="SendersBranchReference">
+		<xsl:if test="contains('O509/S~O510/S',.">
+			<SendersBranchReference>
+				<xsl:value-of select="."/>
+			</SendersBranchReference>
+		</xsl:if>
 	</xsl:template>
 
 	<!-- InvoiceLine/ProductID/BuyersProductCode is used as a placeholder for INVOIC-ILD-CRLI and should not be copied over -->

@@ -29,14 +29,20 @@
 						<xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/>
 					</SendersCodeForRecipient>
 					<!-- NOTE: Hardcoded to allow the Orchid pubs to work pending change at funnybones to handle multiple accounts -->
-					<SendersBranchReference>
-						<xsl:choose>
-							<xsl:when test="TradeSimpleHeader/SendersBranchReference = 'O511/S'">O509/S</xsl:when>
-							<xsl:otherwise>
+					<!--xsl:if test="contains('O509/S~O510/S',TradeSimpleHeader/SendersBranchReference)">
+						<SendersBranchReference>
+							<xsl:value-of select="TradeSimpleHeader/SendersBranchReference"/>
+						</SendersBranchReference>
+					</xsl:if-->
+					<xsl:choose>
+						<xsl:when test="contains(B592~B4041~C775~H4050~H598~M5024~P4024~S5033~B4043~B596~B597~B594~B582~B4042~B598~W526,TradeSimpleHeader/SendersCodeForRecipient)">
+						</xsl:when>
+						<xsl:otherwise>
+							<SendersBranchReference>
 								<xsl:value-of select="TradeSimpleHeader/SendersBranchReference"/>
-							</xsl:otherwise>
-						</xsl:choose>
-					</SendersBranchReference>
+							</SendersBranchReference>
+						</xsl:otherwise>
+					</xsl:choose>
 					
 					<xsl:if test="TradeSimpleHeader/TestFlag != ''">
 						<TestFlag>
