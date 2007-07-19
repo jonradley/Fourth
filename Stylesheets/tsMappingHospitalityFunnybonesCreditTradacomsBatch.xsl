@@ -44,9 +44,15 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from CLD/SPRO(1).
 	<!-- END of GENERIC HANDLERS -->
 	
 	<!-- Temporary Fix To Handle Bar Room Bar -->
-	<xsl:template match="SendersBranchReference[. = 'O511/S']">
-		<SendersBranchReference>O509/S</SendersBranchReference>
+	<xsl:template match="SendersBranchReference">
+		<xsl:if test="contains('O509/S~O510/S',.">
+			<SendersBranchReference>
+				<xsl:value-of select="."/>
+			</SendersBranchReference>
+		</xsl:if>
 	</xsl:template>
+
+
 
 
 
