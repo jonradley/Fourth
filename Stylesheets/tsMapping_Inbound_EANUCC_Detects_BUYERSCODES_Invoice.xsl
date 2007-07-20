@@ -60,7 +60,7 @@
 								<!-- SCR comes from Sellers code for buyer if there, else it comes from Buyer GLN -->
 								<!-- Check Value, We will use he GLN as this is unique. Before golive we will need to 
 										check that the quoted compass GLN is in facts SSPs. -->
-									<xsl:variable name="sBuyersGLN" select="/Invoice/Buyer/BuyerGLN"/>
+									<xsl:variable name="sBuyersGLN" select="normalize-space(/Invoice/Buyer/BuyerGLN)"/>
 									<xsl:variable name="sCheckFlag">
 										<xsl:call-template name="msDetectBuyersANA">
 											<xsl:with-param name="sANA" select="$sBuyersGLN"/>
@@ -77,10 +77,10 @@
 										<xsl:otherwise>
 											<xsl:choose>
 												<xsl:when test="string(/Invoice/ShipTo/SellerAssigned)">
-													<xsl:value-of select="/Invoice/ShipTo/SellerAssigned"/>
+													<xsl:value-of select="normalize-space(/Invoice/ShipTo/SellerAssigned)"/>
 												</xsl:when>
 												<xsl:otherwise>
-													<xsl:value-of select="/Invoice/Buyer/BuyerGLN"/>
+													<xsl:value-of select="normalize-space(/Invoice/Buyer/BuyerGLN)"/>
 												</xsl:otherwise>
 											</xsl:choose>
 										<!--End of IS NOT a SSP Invoice -->
@@ -92,13 +92,13 @@
 								<!-- Detect if not a SSP invoice and there is a contract reference number -->
 								<xsl:if test="string(/Invoice/TradeAgreementReference/ContractReferenceNumber) != '' and string($sCheckFlag) !='1' ">
 									<SendersBranchReference>
-										<xsl:value-of select="/Invoice/TradeAgreementReference/ContractReferenceNumber"/>
+										<xsl:value-of select="normalize-space(/Invoice/TradeAgreementReference/ContractReferenceNumber)"/>
 									</SendersBranchReference>
 								</xsl:if>
 								<!-- Detect if a SSP invoice -->
 								<xsl:if test="string($sCheckFlag) ='1' ">
 									<SendersBranchReference>
-										<xsl:value-of select="/Invoice/Seller/BuyerAssigned"/>
+										<xsl:value-of select="normalize-space(/Invoice/Seller/BuyerAssigned)"/>
 									</SendersBranchReference>
 								</xsl:if>							
 								
