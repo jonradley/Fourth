@@ -118,17 +118,17 @@
 									<BuyersLocationID>
 										<xsl:if test="string(/Invoice/Buyer/BuyerGLN) != '' ">
 											<GLN>
-												<xsl:value-of select="/Invoice/Buyer/BuyerGLN"/>
+												<xsl:value-of select="normalize-space(/Invoice/Buyer/BuyerGLN)"/>
 											</GLN>
 										</xsl:if>
 										<xsl:if test="string(/Invoice/Buyer/BuyerAssigned)">
 											<BuyersCode>
-												<xsl:value-of select="/Invoice/Buyer/BuyerAssigned"/>
+												<xsl:value-of select="normalize-space(/Invoice/Buyer/BuyerAssigned)"/>
 											</BuyersCode>
 										</xsl:if>
 										<xsl:if test="string(/Invoice/Buyer/SellerAssigned)">
 											<SuppliersCode>
-												<xsl:value-of select="/Invoice/Buyer/SellerAssigned"/>
+												<xsl:value-of select="normalize-space(/Invoice/Buyer/SellerAssigned)"/>
 											</SuppliersCode>
 										</xsl:if>
 									</BuyersLocationID>
@@ -160,17 +160,17 @@
 									<SuppliersLocationID>
 										<xsl:if test="string(/Invoice/Seller/SellerGLN)">
 											<GLN>
-												<xsl:value-of select="/Invoice/Seller/SellerGLN"/>
+												<xsl:value-of select="normalize-space(/Invoice/Seller/SellerGLN)"/>
 											</GLN>
 										</xsl:if>
 										<xsl:if test="string(/Invoice/Seller/BuyerAssigned)">
 											<BuyersCode>
-												<xsl:value-of select="/Invoice/Seller/BuyerAssigned"/>
+												<xsl:value-of select="normalize-space(/Invoice/Seller/BuyerAssigned)"/>
 											</BuyersCode>
 										</xsl:if>
 										<xsl:if test="string(/Invoice/Seller/SellerAssigned)">
 											<SuppliersCode>
-												<xsl:value-of select="/Invoice/Seller/SellerAssigned"/>
+												<xsl:value-of select="normalize-space(/Invoice/Seller/SellerAssigned)"/>
 											</SuppliersCode>
 										</xsl:if>
 									</SuppliersLocationID>
@@ -202,17 +202,17 @@
 									<ShipToLocationID>
 										<xsl:if test="string(/Invoice/ShipTo/ShipToGLN)">
 											<GLN>
-												<xsl:value-of select="/Invoice/ShipTo/ShipToGLN"/>
+												<xsl:value-of select="normalize-space(/Invoice/ShipTo/ShipToGLN)"/>
 											</GLN>
 										</xsl:if>
 										<xsl:if test="string(/Invoice/ShipTo/BuyerAssigned)">
 											<BuyersCode>
-												<xsl:value-of select="/Invoice/ShipTo/BuyerAssigned"/>
+												<xsl:value-of select="normalize-space(/Invoice/ShipTo/BuyerAssigned)"/>
 											</BuyersCode>
 										</xsl:if>
 										<xsl:if test="string(/Invoice/ShipTo/SellerAssigned)">
 											<SuppliersCode>
-												<xsl:value-of select="/Invoice/ShipTo/SellerAssigned"/>
+												<xsl:value-of select="normalize-space(/Invoice/ShipTo/SellerAssigned)"/>
 											</SuppliersCode>
 										</xsl:if>
 									</ShipToLocationID>
