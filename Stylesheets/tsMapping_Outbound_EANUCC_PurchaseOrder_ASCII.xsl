@@ -21,7 +21,7 @@ Overview
 	xmlns:script="http://mycompany.com/mynamespace" 
 	xmlns:msxsl="urn:schemas-microsoft-com:xslt" 
 	exclude-result-prefixes="xsl fo script msxsl">
-	<xsl:output method="xml" encoding="ascii"/>
+	<xsl:output method="xml" encoding="utf-8"/>
 	
 	<xsl:template match="/">
 		<Order>
@@ -158,9 +158,9 @@ Overview
 
 			<!-- ~~~~~~~~~~~~~~~~~~~~~~~
 			    TRADE AGREEMENT REFERENCE
-			      ~~~~~~~~~~~~~~~~~~~~~~~-->		
-			<!-- if TradeAgreement exists then TradeAgreement/ContractReference must also exist -->
-			<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/TradeAgreement">	
+			      ~~~~~~~~~~~~~~~~~~~~~~~-->					
+			<!-- if RBR or TradeAgreement exists then TradeAgreement/ContractReference must also exist -->
+			<xsl:for-each select="(/PurchaseOrder/TradeSimpleHeader/RecipientsBranchReference | /PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/TradeAgreement)[1]">	
 				<TradeAgreementReference>
 				
 					<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/TradeAgreement/ContractDate">	
@@ -171,10 +171,12 @@ Overview
 					</xsl:if>
 					
 					<ContractReferenceNumber scheme="OTHER">
-						<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/TradeAgreement/ContractReference"/>
+						<xsl:value-of select="."/>
 					</ContractReferenceNumber>
+										
 				</TradeAgreementReference>
-			</xsl:if>
+			</xsl:for-each>
+			
 			
 			<!-- ~~~~~~~~~~~~~~~~~~~~~~~
 			    ORDER DETAILS
