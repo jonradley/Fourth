@@ -35,7 +35,7 @@
 						</SendersBranchReference>
 					</xsl:if-->
 					<xsl:choose>
-						<xsl:when test="contains(B592~B4041~C775~H4050~H598~M5024~P4024~S5033~B4043~B596~B597~B594~B582~B4042~B598~W526,TradeSimpleHeader/SendersCodeForRecipient)">
+						<xsl:when test="contains('B592~B4041~C775~H4050~H598~M5024~P4024~S5033~B4043~B596~B597~B594~B582~B4042~B598~W526',TradeSimpleHeader/SendersCodeForRecipient)">
 						</xsl:when>
 						<xsl:otherwise>
 							<SendersBranchReference>

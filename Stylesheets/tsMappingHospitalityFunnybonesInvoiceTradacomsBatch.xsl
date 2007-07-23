@@ -47,7 +47,7 @@ N Emsen		|	08/11/2006	|	Case 531: Purchase order reference working.
 
 	<!-- Temporary Fix To Handle Bar Room Bar -->
 	<xsl:template match="SendersBranchReference">
-		<xsl:if test="contains('O509/S~O510/S',.">
+		<xsl:if test="contains('O509/S~O510/S',.)">
 			<SendersBranchReference>
 				<xsl:value-of select="."/>
 			</SendersBranchReference>
