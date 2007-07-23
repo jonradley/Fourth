@@ -1,4 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--***************************************************************************************
+Overview
+
+ MWFS invoice translator
+ 
+ © Alternative Business Solutions Ltd., 2007.
+******************************************************************************************
+ Module History
+******************************************************************************************
+ Date 			| Name           | Description of modification
+******************************************************************************************
+ 01/06/2007		| R Cambridge    | 1109 Created Module
+******************************************************************************************
+ 23/07/2007		| R Cambridge		| 1317 Ensure invoice reference is always 10 digits (pad with 0s on the LHS)
+******************************************************************************************
+			  		|                |
+***************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:vbscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
 
@@ -43,6 +60,12 @@
 		<xsl:variable name="dummyVar" select="vbscript:resetLineNumber()"/>
 		<xsl:copy>
 			<xsl:apply-templates/>
+		</xsl:copy>
+	</xsl:template>
+	
+	<xsl:template match="InvoiceReferences/InvoiceReference">
+		<xsl:copy>
+			<xsl:value-of select="substring(concat('0000000000',.),10 - (9 - string-length(.)))"/>
 		</xsl:copy>
 	</xsl:template>
 	
