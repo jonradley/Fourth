@@ -34,7 +34,6 @@
 
 		<!--Detail Lines-->
 		<xsl:for-each select="//InvoiceLine | //CreditNoteLine">
-			<xsl:sort select="LineNumber"/>
 			<xsl:value-of select="//RecipientsCodeForSender"/>
 			<xsl:value-of select="$Tab"/>
 			<xsl:value-of select="//SuppliersName"/>
