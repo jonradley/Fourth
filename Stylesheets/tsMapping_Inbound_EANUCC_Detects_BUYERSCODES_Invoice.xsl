@@ -47,6 +47,7 @@
 	<xsl:variable name="defaultSettlementDiscountValue" select="'0'"/>
 	<xsl:variable name="creditLineIndicator" select="'2'"/>
 	<xsl:variable name="invoiceLineIndicator" select="'1'"/>
+	
 	<xsl:template match="/">
 		<BatchRoot>
 			<Batch>
@@ -346,24 +347,24 @@
 										<xsl:if test="CreditQuantity">
 											<CreditedQuantity>
 												<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="normalize-space(CreditQuantity/@unitCode)"/></xsl:attribute>
-												<xsl:value-of select="format-number(normalize-space(CreditQuantity), '0.000')"/>
+												<xsl:value-of select="format-number(CreditQuantity, '0.000')"/>
 											</CreditedQuantity>
 										</xsl:if>
 										<!-- Pack Size is populated by subsequent processors -->
 										<UnitValueExclVAT>
-											<xsl:value-of select="format-number(normalize-space(UnitPrice), '0.00')"/>
+											<xsl:value-of select="format-number(UnitPrice, '0.00')"/>
 										</UnitValueExclVAT>
 										<LineValueExclVAT>
-											<xsl:value-of select="format-number(normalize-space(LineItemPrice), '0.00')"/>
+											<xsl:value-of select="format-number(LineItemPrice, '0.00')"/>
 										</LineValueExclVAT>
 										<xsl:if test="LineItemDiscount/DiscountRate">
 											<LineDiscountRate>
-												<xsl:value-of select="format-number(normalize-space(LineItemDiscount/DiscountRate), '0.00')"/>
+												<xsl:value-of select="format-number(LineItemDiscount/DiscountRate, '0.00')"/>
 											</LineDiscountRate>
 										</xsl:if>
 										<xsl:if test="LineItemDiscount/DiscountValue">
 											<LineDiscountValue>
-												<xsl:value-of select="format-number(normalize-space(LineItemDiscount/DiscountValue), '0.00')"/>
+												<xsl:value-of select="format-number(LineItemDiscount/DiscountValue, '0.00')"/>
 											</LineDiscountValue>
 										</xsl:if>
 										<!-- we default VATCode and Rate if not found in the EAN.UCC document -->
@@ -380,7 +381,7 @@
 										<VATRate>
 											<xsl:choose>
 												<xsl:when test="VATDetails/TaxRate">
-													<xsl:value-of select="format-number(normalize-space(VATDetails/TaxRate), '0.00')"/>
+													<xsl:value-of select="format-number(VATDetails/TaxRate, '0.00')"/>
 												</xsl:when>
 												<xsl:otherwise>
 													<xsl:value-of select="format-number($defaultTaxRate, '0.00')"/>
@@ -395,10 +396,10 @@
 				      ~~~~~~~~~~~~~~~~~~~~~~~ -->
 							<InvoiceTrailer>
 								<NumberOfLines>
-									<xsl:value-of select="count(normalize-space((//InvoiceItem))"/>
+									<xsl:value-of select="count(//InvoiceItem)"/>
 								</NumberOfLines>
 								<NumberOfItems>
-									<xsl:value-of select="sum(normalize-space(//InvoiceItem/InvoiceQuantity))"/>
+									<xsl:value-of select="sum(//InvoiceItem/InvoiceQuantity)"/>
 								</NumberOfItems>
 								<!-- EAN.UCC only allows for one delivery per Invoice -->
 								<NumberOfDeliveries>
@@ -407,7 +408,7 @@
 								<DocumentDiscountRate>
 									<xsl:choose>
 										<xsl:when test="/Invoice/InvoiceTotals/DocumentDiscountRate">
-											<xsl:value-of select="format-number(normalize-space(/Invoice/InvoiceTotals/DocumentDiscountRate), '0.00')"/>
+											<xsl:value-of select="format-number(/Invoice/InvoiceTotals/DocumentDiscountRate, '0.00')"/>
 										</xsl:when>
 										<xsl:otherwise>
 											<xsl:value-of select="format-number($defaultDocumentDiscountRate, '0.00')"/>
@@ -417,7 +418,7 @@
 								<SettlementDiscountRate>
 									<xsl:choose>
 										<xsl:when test="/Invoice/InvoiceTotals/SettlementDiscountRate">
-											<xsl:value-of select="format-number(normalize-space(/Invoice/InvoiceTotals/SettlementDiscountRate), '0.00')"/>
+											<xsl:value-of select="format-number(/Invoice/InvoiceTotals/SettlementDiscountRate, '0.00')"/>
 										</xsl:when>
 										<xsl:otherwise>
 											<xsl:value-of select="format-number($defaultSettlementDiscountRate, '0.00')"/>
@@ -488,31 +489,31 @@
 											</NumberOfItemsAtRate>
 											<xsl:if test="DiscountedLineTotals">
 												<DiscountedLinesTotalExclVATAtRate>
-													<xsl:value-of select="format-number(normalize-space(DiscountedLineTotals) , '0.00')"/>
+													<xsl:value-of select="format-number(DiscountedLineTotals , '0.00')"/>
 												</DiscountedLinesTotalExclVATAtRate>
 											</xsl:if>
 											<xsl:if test="DocumentDiscountValue">
 												<DocumentDiscountAtRate>
-													<xsl:value-of select="format-number(normalize-space(DocumentDiscountValue), '0.00')"/>
+													<xsl:value-of select="format-number(DocumentDiscountValue, '0.00')"/>
 												</DocumentDiscountAtRate>
 											</xsl:if>
 											<!-- EAN.UCC also doesn't sum the values at a specific rate so we have to work it out. Code and Rate must be the same -->
 											<DocumentTotalExclVATAtRate>
-												<xsl:value-of select="format-number(normalize-space(DiscountedLineTotals) - normalize-space(( DocumentDiscountValue),'0.00')"/>
+												<xsl:value-of select="format-number(DiscountedLineTotals - DocumentDiscountValue,'0.00')"/>
 											</DocumentTotalExclVATAtRate>
 											<xsl:if test="SettlementDiscountValue">
 												<SettlementDiscountAtRate>
-													<xsl:value-of select="format-number(normalize-space(SettlementDiscountValue), '0.00')"/>
+													<xsl:value-of select="format-number(SettlementDiscountValue, '0.00')"/>
 												</SettlementDiscountAtRate>
 											</xsl:if>
 											<xsl:if test="TaxableAmount">
 												<SettlementTotalExclVATAtRate>
-													<xsl:value-of select="format-number(normalize-space(TaxableAmount), '0.00')"/>
+													<xsl:value-of select="format-number(TaxableAmount, '0.00')"/>
 												</SettlementTotalExclVATAtRate>
 											</xsl:if>
 											<xsl:if test="VATPayable">
 												<VATAmountAtRate>
-													<xsl:value-of select="format-number(normalize-space(VATPayable), '0.00')"/>
+													<xsl:value-of select="format-number(VATPayable, '0.00')"/>
 												</VATAmountAtRate>
 											</xsl:if>
 											<xsl:if test="DiscountedLineTotals and VATPayable">
