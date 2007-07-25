@@ -170,12 +170,13 @@ Nigel Emsen	|	25th July 2007	|	Created from
 					<PurchaseOrderConfirmationReference RecordPos="AOR=" LPos="2"/>
 					<PurchaseOrderConfirmationDate RecordPos="AOR=" LPos="4"/>
 				</PurchaseOrderConfirmationReferences>
-				<!-- Carlsberg do not provide delivery date information, they consider it optional -->
+				<!-- Carlsberg do not provide order requested delivery date information, they consider it optional -->
 				<!--OrderedDeliveryDetails-->
-				<OrderedDeliveryDetails>
-					<!--DeliveryType>Delivery</DeliveryType-->
-					<DeliveryDate RecordPos="AQD=" LPos="1" SFPos="5"/>
-				</OrderedDeliveryDetails>
+				<!--OrderedDeliveryDetails-->
+				<!--DeliveryType>Delivery</DeliveryType-->
+				<!--DeliveryDate RecordPos="AQD=" LPos="1" SFPos="5"/>
+				</OrderedDeliveryDetails-->
+				<!-- Carlsberg only provide the estimated confirmed delivery date -->
 				<!--ConfirmedDeliveryDetails-->
 				<ConfirmedDeliveryDetails>
 					<!--DeliveryType RecordPos="AQD=" LPos="1" SFPos="2"/-->
