@@ -80,7 +80,7 @@ Nigel Emsen	|	25th July 2007	|	Created from
 		<ffsSplitBatchRecord RecordPos="CLO="/>
 	</ffsSettings>
 	<ffsRoot>
-		<BatchRoot>
+	
 		<PurchaseOrderConfirmation>
 			<TradeSimpleHeader>
 				<!-- MANDATORY Sender’s code for recipient, MANDATORY, INVOIC – CLO – CLOC(2), You must provide this code.  It is your internal identifier for the company that is to receive the document.  It must match the code that you have entered on the trading relationship you have with the other company-->
@@ -207,5 +207,5 @@ Nigel Emsen	|	25th July 2007	|	Created from
 			</PurchaseOrderConfirmationTrailer>
 		</PurchaseOrderConfirmation>
 		<ffsAttribute1 name="DocumentTypeNo" RecordPos="TYP=" LPos="1"/>
-	</BatchRoot>	</ffsRoot>
+		</ffsRoot>
 </ffsFlatFileSchema>
