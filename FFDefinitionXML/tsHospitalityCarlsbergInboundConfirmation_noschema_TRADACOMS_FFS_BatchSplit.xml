@@ -179,7 +179,7 @@ Nigel Emsen	|	25th July 2007	|	Created from
 			<PurchaseOrderConfirmationDetail>
 				<!--PurchaseOrderConfirmationLine-->
 				<PurchaseOrderConfirmationLine>
-					<LineNumber RecordPos="ALD=" LPos="2"/>
+					<LineNumber RecordPos="ALD=" LPos="1"  SFPos="1"/>
 					<ProductID>
 						<!-- MANDATORY GTIN, INVOIC - ILD - SPRO(1) -->
 						<GTIN RecordPos="ALD=" LPos="2" SFPos="1"/>
