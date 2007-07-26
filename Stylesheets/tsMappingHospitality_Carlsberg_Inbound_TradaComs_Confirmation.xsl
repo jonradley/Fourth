@@ -83,9 +83,13 @@
 			<SendersCodeForRecipient>
 				<xsl:value-of select="SendersCodeForRecipient"/>
 			</SendersCodeForRecipient>
-			<SendersBranchReference>
-				<xsl:value-of select="SendersBranchReference"/>
-			</SendersBranchReference>
+			<!-- detect for Orchid account with the ANA, if orchid do not create -->
+			<xsl:if test="string(SendersBranchReference) !='5999998145710' and string(SendersBranchReference) !='5999999145710' ">
+				<SendersBranchReference>
+					<xsl:value-of select="SendersBranchReference"/>
+				</SendersBranchReference>
+			</xsl:if>
+			
 		</TradeSimpleHeader>
 	</xsl:template>
 
