@@ -30,7 +30,7 @@
 '
 '******************************************************************************************
 -->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:data="blah" >
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:data="blah">
 	<xsl:output method="xml"/>
 	<!-- Buyers Code detection function and lookup table -->
 	<xsl:include href="tsMapping_LookupBuyersANA_Table.xsl"/>
@@ -47,7 +47,6 @@
 	<xsl:variable name="defaultSettlementDiscountValue" select="'0'"/>
 	<xsl:variable name="creditLineIndicator" select="'2'"/>
 	<xsl:variable name="invoiceLineIndicator" select="'1'"/>
-	
 	<xsl:template match="/">
 		<BatchRoot>
 			<Batch>
@@ -61,13 +60,13 @@
 								<!-- SCR comes from Sellers code for buyer if there, else it comes from Buyer GLN -->
 								<!-- Check Value, We will use he GLN as this is unique. Before golive we will need to 
 										check that the quoted compass GLN is in facts SSPs. -->
-									<xsl:variable name="sBuyersGLN" select="normalize-space(/Invoice/Buyer/BuyerGLN)"/>
-									<xsl:variable name="sCheckFlag">
-										<xsl:call-template name="msDetectBuyersANA">
-											<xsl:with-param name="sANA" select="$sBuyersGLN"/>
-										</xsl:call-template>
-									</xsl:variable> 
-								<SendersCodeForRecipient>		
+								<xsl:variable name="sBuyersGLN" select="normalize-space(/Invoice/Buyer/BuyerGLN)"/>
+								<xsl:variable name="sCheckFlag">
+									<xsl:call-template name="msDetectBuyersANA">
+										<xsl:with-param name="sANA" select="$sBuyersGLN"/>
+									</xsl:call-template>
+								</xsl:variable>
+								<SendersCodeForRecipient>
 									<!-- Detect if a SSP invoice -->
 									<xsl:choose>
 										<!-- Buyers Code to be used. -->
@@ -84,9 +83,9 @@
 													<xsl:value-of select="normalize-space(/Invoice/Buyer/BuyerGLN)"/>
 												</xsl:otherwise>
 											</xsl:choose>
-										<!--End of IS NOT a SSP Invoice -->
+											<!--End of IS NOT a SSP Invoice -->
 										</xsl:otherwise>
-									<!-- End of Detect if a SSP invoice -->
+										<!-- End of Detect if a SSP invoice -->
 									</xsl:choose>
 								</SendersCodeForRecipient>
 								<!-- SBR used to pick out the PL Account code to be used in the trading relationship set up. This could be Buyer or Supplier value. -->
@@ -101,8 +100,7 @@
 									<SendersBranchReference>
 										<xsl:value-of select="normalize-space(/Invoice/Seller/BuyerAssigned)"/>
 									</SendersBranchReference>
-								</xsl:if>							
-								
+								</xsl:if>
 								<!-- SendersName, Address1 - 4 and PostCode will be populated by subsequent processors  -->
 								<!-- Recipients Code for Sender, Recipients Branch Reference, Name, Address1 - 4, PostCode will be populated by subsequent 	processors -->
 								<!-- the TestFlag will be populated by subsequent processors -->
@@ -247,15 +245,15 @@
 											<xsl:value-of select="normalize-space(LineItemNumber)"/>
 										</LineNumber>
 										<xsl:if test="/Invoice/OrderReference or /Invoice/TradeAgreementReference/ContractReferenceNumber != ''">
+											<xsl:variable name="sPORef" select="normalize-space(/Invoice/OrderReference/PurchaseOrderNumber)"/>
+											<xsl:variable name="sPODate" select="normalize-space(substring-before(/Invoice/OrderReference/PurchaseOrderDate,'T'))"/>
 											<PurchaseOrderReferences>
-												<xsl:if test="/Invoice/OrderReference/PurchaseOrderNumber">
+												<xsl:if test="$sPORef !='' and $sPODate !='' ">
 													<PurchaseOrderReference>
-														<xsl:value-of select="normalize-space(/Invoice/OrderReference/PurchaseOrderNumber)"/>
+														<xsl:value-of select="$sPORef"/>
 													</PurchaseOrderReference>
-												</xsl:if>
-												<xsl:if test="/Invoice/OrderReference/PurchaseOrderNumber">
 													<PurchaseOrderDate>
-														<xsl:value-of select="normalize-space(substring-before(/Invoice/OrderReference/PurchaseOrderDate,'T'))"/>
+														<xsl:value-of select="$sPODate"/>
 													</PurchaseOrderDate>
 													<PurchaseOrderTime>
 														<xsl:value-of select="normalize-space(substring-after(/Invoice/OrderReference/PurchaseOrderDate,'T'))"/>
@@ -275,45 +273,37 @@
 												</xsl:if>
 											</PurchaseOrderReferences>
 										</xsl:if>
-										<xsl:if test="/Invoice/OrderConfirmationReference">
+										<xsl:if test="/Invoice/OrderConfirmationReference and /Invoice/OrderConfirmationReference/PurchaseOrderConfirmationDate">
 											<PurchaseOrderConfirmationReferences>
 												<PurchaseOrderConfirmationReference>
 													<xsl:value-of select="normalize-space(/Invoice/OrderConfirmationReference/PurchaseOrderConfirmationNumber)"/>
 												</PurchaseOrderConfirmationReference>
-												<xsl:if test="/Invoice/OrderConfirmationReference/PurchaseOrderConfirmationDate">
-													<PurchaseOrderConfirmationDate>
-														<xsl:value-of select="normalize-space(substring-before(/Invoice/OrderConfirmationReference/PurchaseOrderConfirmationDate, 'T'))"/>
-													</PurchaseOrderConfirmationDate>
-												</xsl:if>
+												<PurchaseOrderConfirmationDate>
+													<xsl:value-of select="normalize-space(substring-before(/Invoice/OrderConfirmationReference/PurchaseOrderConfirmationDate, 'T'))"/>
+												</PurchaseOrderConfirmationDate>
 											</PurchaseOrderConfirmationReferences>
 										</xsl:if>
-										<xsl:if test="/Invoice/DespatchReference">
+										<xsl:if test="/Invoice/DespatchReference and /Invoice/DespatchReference/DespatchDocumentDate">
 											<DeliveryNoteReferences>
-												<xsl:if test="/Invoice/DespatchReference/DespatchDocumentNumber">
-													<DeliveryNoteReference>
-														<xsl:value-of select="normalize-space(/Invoice/DespatchReference/DespatchDocumentNumber)"/>
-													</DeliveryNoteReference>
-												</xsl:if>
-												<xsl:if test="/Invoice/DespatchReference/DespatchDocumentDate">
-													<DeliveryNoteDate>
-														<xsl:value-of select="normalize-space(substring-before(/Invoice/DespatchReference/DespatchDocumentDate, 'T'))"/>
-													</DeliveryNoteDate>
-													<DespatchDate>
-														<xsl:value-of select="normalize-space(substring-before(/Invoice/DespatchReference/DespatchDocumentDate, 'T'))"/>
-													</DespatchDate>
-												</xsl:if>
+												<DeliveryNoteReference>
+													<xsl:value-of select="normalize-space(/Invoice/DespatchReference/DespatchDocumentNumber)"/>
+												</DeliveryNoteReference>
+												<DeliveryNoteDate>
+													<xsl:value-of select="normalize-space(substring-before(/Invoice/DespatchReference/DespatchDocumentDate, 'T'))"/>
+												</DeliveryNoteDate>
+												<DespatchDate>
+													<xsl:value-of select="normalize-space(substring-before(/Invoice/DespatchReference/DespatchDocumentDate, 'T'))"/>
+												</DespatchDate>
 											</DeliveryNoteReferences>
 										</xsl:if>
-										<xsl:if test="/Invoice/ReceiptAdviceReference">
+										<xsl:if test="/Invoice/ReceiptAdviceReference and /Invoice/ReceiptAdviceReference/ReceiptAdviceDocumentDate">
 											<GoodsReceivedNoteReferences>
 												<GoodsReceivedNoteReference>
 													<xsl:value-of select="normalize-space(/Invoice/ReceiptAdviceReference/ReceiptAdviceDocumentNumber)"/>
 												</GoodsReceivedNoteReference>
-												<xsl:if test="/Invoice/ReceiptAdviceReference/ReceiptAdviceDocumentDate">
-													<GoodsReceivedNoteDate>
-														<xsl:value-of select="normalize-space(substring-before(/Invoice/ReceiptAdviceReference/ReceiptAdviceDocumentDate, 'T'))"/>
-													</GoodsReceivedNoteDate>
-												</xsl:if>
+												<GoodsReceivedNoteDate>
+													<xsl:value-of select="normalize-space(substring-before(/Invoice/ReceiptAdviceReference/ReceiptAdviceDocumentDate, 'T'))"/>
+												</GoodsReceivedNoteDate>
 											</GoodsReceivedNoteReferences>
 										</xsl:if>
 										<ProductID>
@@ -454,8 +444,8 @@
 											<xsl:attribute name="VATCode"><xsl:value-of select="$currentVATCode"/></xsl:attribute>
 											<xsl:attribute name="VATRate"><xsl:value-of select="format-number($currentVATRate,'0.00')"/></xsl:attribute>
 											<!-- EAN.UCC does not count the lines at a specific rate so we have to work it out. Code and Rate must be the same -->
-											<NumberOfLinesAtRate>
-												<xsl:choose>
+											<!--NumberOfLinesAtRate-->
+											<!--xsl:choose>
 													<xsl:when test="VATDetails/TaxCategory and VATDetails/TaxRate">
 														<xsl:value-of select="count(//InvoiceItem[VATDetails/TaxCategory = $currentVATCode and format-number(VATDetails/TaxRate, '0.00') = format-number($currentVATRate, '0.00')])"/>
 													</xsl:when>
@@ -468,10 +458,11 @@
 													<xsl:when test="not(VATDetails/TaxCategory) and not(VATDetails/TaxRate)">
 														<xsl:value-of select="count(//InvoiceItem[not(VATDetails/TaxCategory) and not(VATDetails/TaxRate)])"/>
 													</xsl:when>
-												</xsl:choose>
-											</NumberOfLinesAtRate>
+												</xsl:choose-->
+											<!--xsl:value-of select="count(//InvoiceItem[VATDetails/TaxCategory=$currentVATCode])"/-->
+											<!--/NumberOfLinesAtRate-->
 											<!-- EAN.UCC also doesn't sum the quantities at a specific rate so we have to work it out. Code and Rate must be the same -->
-											<NumberOfItemsAtRate>
+											<!--NumberOfItemsAtRate>
 												<xsl:choose>
 													<xsl:when test="VATDetails/TaxCategory and VATDetails/TaxRate">
 														<xsl:value-of select="format-number(sum(//InvoiceItem[VATDetails/TaxCategory = $currentVATCode and format-number(VATDetails/TaxRate, '0.00') = format-number($currentVATRate, '0.00')]/InvoiceQuantity) + ($defaultInvoiceQuantity * count(//InvoiceItem[VATDetails/TaxCategory = $currentVATCode and format-number(VATDetails/TaxRate, '0.00') = format-number($currentVATRate, '0.00') and not(InvoiceQuantity)])), '0.000')"/>
@@ -486,7 +477,7 @@
 														<xsl:value-of select="format-number(sum(//InvoiceItem[not(VATDetails/TaxCategory) and not(VATDetails/TaxRate)]/InvoiceQuantity) + ($defaultInvoiceQuantity * count(//InvoiceItem[not(VATDetails/TaxCategory) and not(VATDetails/TaxRate) and not(InvoiceQuantity)])), '0.000')"/>
 													</xsl:when>
 												</xsl:choose>
-											</NumberOfItemsAtRate>
+											</NumberOfItemsAtRate-->
 											<xsl:if test="DiscountedLineTotals">
 												<DiscountedLinesTotalExclVATAtRate>
 													<xsl:value-of select="format-number(DiscountedLineTotals , '0.00')"/>
