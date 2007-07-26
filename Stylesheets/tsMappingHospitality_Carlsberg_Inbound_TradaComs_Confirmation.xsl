@@ -94,9 +94,13 @@
 	</xsl:template>
 
 	<!-- date reformating -->
-	<xsl:template match="PurchaseOrderDate | DeliveryDate">
+	<xsl:template match="PurchaseOrderDate | DeliveryDate | GoodsRecieveNoteDate | PurchaseOrderConfirmationDate">
 		<xsl:variable name="sDate" select="translate(.,' ','')"/>
-		<xsl:value-of select="concat('20',substring($sDate,1,2),'-',substring($sDate,3,2),'-',substring($sDate,5,2))"/>
+		
+			<xsl:copy>
+				<xsl:value-of select="concat('20',substring($sDate,1,2),'-',substring($sDate,3,2),'-',substring($sDate,5,2))"/>
+			</xsl:copy>
+			
 	</xsl:template>
 
 	<msxsl:script language="VBScript" implements-prefix="vbscript"><![CDATA[ 
