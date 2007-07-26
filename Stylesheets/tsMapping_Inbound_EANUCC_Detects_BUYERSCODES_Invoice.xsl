@@ -227,7 +227,7 @@
 									<TaxPointDate>
 										<xsl:value-of select="normalize-space(substring-before(/Invoice/TaxPointDateTime, 'T'))"/>
 									</TaxPointDate>
-									<xsl:if test="string(/Invoice/Seller/VATRegisterationNumber)">
+									<xsl:if test="string(/Invoice/Seller/VATRegisterationNumber) !=''">
 										<VATRegNo>
 											<xsl:value-of select="normalize-space(/Invoice/Seller/VATRegisterationNumber)"/>
 										</VATRegNo>
