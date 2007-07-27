@@ -45,7 +45,7 @@
 		<xsl:text>ANA:1+</xsl:text>
 		<!--Our mailbox reference-->
 		<xsl:choose>
-			<xsl:when test="TradeSimpleHeader/TestFlag = 'false' or TradeSimpleHeader/TestFlag = '0'">
+			<xsl:when test="PurchaseOrder/TradeSimpleHeader/TestFlag = 'false' or PurchaseOrder/TradeSimpleHeader/TestFlag = '0'">
 				<xsl:text>5013546145710</xsl:text>
 			</xsl:when>
 			<xsl:otherwise>
