@@ -26,34 +26,35 @@
 	</xsl:template>
 
 	<!-- apply detection logic -->
-	<xsl:template match="/PurchaseOrderConfirmation">
+	<xsl:template match="BatchDocument">
  
-			<xsl:variable name="sDNA" select="translate(TradeSimpleHeader/TestFlag,' ','')"/>
+			<xsl:variable name="sDNA" select="translate(PurchaseOrderConfirmation/TradeSimpleHeader/TestFlag,' ','')"/>
 
 			<xsl:choose>
 			
 				<xsl:when test="$sDNA='ZOR' or $sDNA='EOR' ">
-					<Document>
-						<xsl:attribute name="TypePrefix">
-							<xsl:text>ORC</xsl:text>
+					<BatchDocument>
+						<xsl:attribute name="DocumentTypeNo">
+							<xsl:text>3</xsl:text>
 						</xsl:attribute>
 						
 						<PurchaseOrderConfirmation>
 							<xsl:apply-templates/>
 						</PurchaseOrderConfirmation>
-					</Document>
+					</BatchDocument>
 				</xsl:when>	
 
 				<xsl:otherwise>
-					<Document>
-						<xsl:attribute name="TypePrefix">
-							<xsl:text>RTC</xsl:text>
+					<BatchDocument>
+						<xsl:attribute name="DocumentTypeNo">
+							<xsl:text>10000</xsl:text>
 						</xsl:attribute>
 						
 						<PurchaseOrderConfirmation>
-						<xsl:apply-templates/>
+							<xsl:apply-templates/>
 						</PurchaseOrderConfirmation>
-					</Document>
+					</BatchDocument>	
+				
 				</xsl:otherwise>
 				
 			</xsl:choose>
