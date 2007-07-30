@@ -53,12 +53,8 @@
 				<BatchDocuments>
 					<BatchDocument>
 						<Invoice>
-							<!-- ~~~~~~~~~~~~~~~~~~~~~~~
-				      				TRADESIMPLE HEADER
-							     ~~~~~~~~~~~~~~~~~~~~~~~ -->
-							<TradeSimpleHeader>
-								<!-- SCR comes from Sellers code for buyer if there, else it comes from Buyer GLN -->
-								<!-- Check Value, We will use he GLN as this is unique. Before golive we will need to 
+						
+						<!-- Check Value, We will use he GLN as this is unique. Before golive we will need to 
 										check that the quoted compass GLN is in facts SSPs. -->
 								<xsl:variable name="sBuyersGLN" select="normalize-space(/Invoice/Buyer/BuyerGLN)"/>
 								<xsl:variable name="sCheckFlag">
@@ -66,6 +62,13 @@
 										<xsl:with-param name="sANA" select="$sBuyersGLN"/>
 									</xsl:call-template>
 								</xsl:variable>
+						
+							<!-- ~~~~~~~~~~~~~~~~~~~~~~~
+				      				TRADESIMPLE HEADER
+							     ~~~~~~~~~~~~~~~~~~~~~~~ -->
+							<TradeSimpleHeader>
+								<!-- SCR comes from Sellers code for buyer if there, else it comes from Buyer GLN -->
+								
 								<SendersCodeForRecipient>
 									<!-- Detect if a SSP invoice -->
 									<xsl:choose>
@@ -211,7 +214,26 @@
 										</xsl:if>
 										<xsl:if test="string(/Invoice/ShipTo/SellerAssigned)">
 											<SuppliersCode>
-												<xsl:value-of select="normalize-space(/Invoice/ShipTo/SellerAssigned)"/>
+												<!-- Detect if a SSP invoice -->
+												<xsl:choose>
+													<!-- Buyers Code to be used. -->
+													<xsl:when test="$sCheckFlag ='1' ">
+														<xsl:value-of select="normalize-space(/Invoice/ShipTo/BuyerAssigned)"/>
+													</xsl:when>
+													<!-- Sellers code to be used if present. -->
+													<xsl:otherwise>
+														<xsl:choose>
+															<xsl:when test="string(/Invoice/ShipTo/SellerAssigned)">
+																<xsl:value-of select="normalize-space(/Invoice/ShipTo/SellerAssigned)"/>
+															</xsl:when>
+															<xsl:otherwise>
+																<xsl:value-of select="normalize-space(/Invoice/Buyer/BuyerGLN)"/>
+															</xsl:otherwise>
+														</xsl:choose>
+														<!--End of IS NOT a SSP Invoice -->
+													</xsl:otherwise>
+													<!-- End of Detect if a SSP invoice -->
+												</xsl:choose>
 											</SuppliersCode>
 										</xsl:if>
 									</ShipToLocationID>
