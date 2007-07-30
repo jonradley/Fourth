@@ -55,7 +55,7 @@
 				<xsl:text>,</xsl:text>
 				<xsl:value-of select="script:msGetLineAction(@LineStatus)"/>
 				<xsl:text>,</xsl:text>
-				<xsl:value-of select="script:msFormatForCSV(SubstitutedProductID/BuyersProductCode)"/>
+				<xsl:value-of select="script:msFormatForCSV(SubstitutedProductID/SuppliersProductCode)"/>
 				<xsl:text>,</xsl:text>
 				<xsl:value-of select="script:msFormatForCSVAndTruncate(Narrative, 100)"/>
 			</xsl:for-each>
