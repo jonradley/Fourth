@@ -103,6 +103,44 @@
 			</xsl:copy>
 			
 	</xsl:template>
+	
+	<!-- Line mapping to detect line changes -->
+	<xsl:template match="PurchaseOrderConfirmationLine">
+	
+		<!-- PurchaseOrderConfirmationLine -->
+		<PurchaseOrderConfirmationLine>
+		
+			<!-- LineStatus -->
+			
+			<!-- As Carlsberg only provide rejected line numbers we need to test for the presence of element
+					first otherwise we will get a NOT A NUMBER error in the stylesheet processing.
+			-->		
+			<xsl:if test="LineStatus">
+				<xsl:if test="number(LineStatus) &gt; 5 and number(LineStatus) &lt; 100">
+					<LineStatus>
+						<xsl:text>Rejected</xsl:text>
+					</LineStatus>
+				</xsl:if>
+			</xsl:if>
+		
+			<!-- Line Number -->
+			<xsl:copy-of select="LineNumber"/>
+
+			<!-- ProductID -->
+			<xsl:copy-of select="ProductID"/>
+
+			<!-- ProductDescription -->
+			<xsl:copy-of select="ProductDescription"/>
+
+			<!-- ConfirmedQuantity -->
+			<xsl:copy-of select="ConfirmedQuantity"/>
+			
+			<!-- Narrative -->
+			<xsl:copy-of select="Narrative"/>
+		
+		</PurchaseOrderConfirmationLine>
+	
+	</xsl:template>
 
 	<msxsl:script language="VBScript" implements-prefix="vbscript"><![CDATA[ 
 
