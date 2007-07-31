@@ -38,14 +38,15 @@
 							<xsl:text>3</xsl:text>
 						</xsl:attribute>
 						
-						<PurchaseOrderConfirmation>
 							<xsl:apply-templates/>
-						</PurchaseOrderConfirmation>
+						
 					</BatchDocument>
 				</xsl:when>	
 
 				<xsl:otherwise>
+				
 					<BatchDocument>
+					
 						<xsl:attribute name="DocumentTypeNo">
 							<xsl:text>10000</xsl:text>
 						</xsl:attribute>
@@ -53,6 +54,7 @@
 						<PurchaseOrderConfirmation>
 							<xsl:apply-templates/>
 						</PurchaseOrderConfirmation>
+						
 					</BatchDocument>	
 				
 				</xsl:otherwise>
@@ -122,6 +124,19 @@
 					</LineStatus>
 				</xsl:if>
 			</xsl:if>
+			
+			<!-- reject code if provided from PackSize -->
+			<xsl:variable name="nRejectCode" select="number(../PurchaseOrderConfirmationLine[UnitValueExclVAT=current()/LineNumber]/PackSize)"/>
+			
+			<!-- Get Narative from Narrative. This is bunched up by the Flat File Mapper and we need to sort out to the right line -->
+			<xsl:variable name="sRejectText" select="../PurchaseOrderConfirmationLine[UnitValueExclVAT=current()/LineNumber]/Narrative"/>
+			
+			<!-- test if it is in the range of 6-99. -->
+			<xsl:if test="$nRejectCode &gt; 5 and $nRejectCode &lt; 100">
+				<xsl:attribute name="LineStatus">
+					<xsl:text>Rejected</xsl:text>
+				</xsl:attribute>
+			</xsl:if>
 		
 			<!-- Line Number -->
 			<xsl:copy-of select="LineNumber"/>
@@ -136,7 +151,12 @@
 			<xsl:copy-of select="ConfirmedQuantity"/>
 			
 			<!-- Narrative -->
-			<xsl:copy-of select="Narrative"/>
+			<!-- test if it is in the range of 6-99. -->
+			<xsl:if test="$nRejectCode &gt; 5 and $nRejectCode &lt; 100">
+				<Narrative>
+					<xsl:value-of select="$sRejectText"/>
+				</Narrative>
+			</xsl:if>
 		
 		</PurchaseOrderConfirmationLine>
 	
