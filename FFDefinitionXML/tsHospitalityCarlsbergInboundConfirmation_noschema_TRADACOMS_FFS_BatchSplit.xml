@@ -74,7 +74,7 @@ Nigel Emsen	|	25th July 2007	|	Created from
 				<!--References below which mean RecordPos ODD= with LPos 1 would be coded as ALD= and LPos 26 (25+1)-->
 				<ffsGroupRecord RecordPos="ALD=" FieldTotal="9"/>
 				<ffsSubGroupRecord RecordPos="DNB=" FieldTotal="3"/>
-				<ffsSubGroupRecord RecordPos="AQD=" FieldTotal="5"/>
+				<!--ffsSubGroupRecord RecordPos="AQD=" FieldTotal="5"/-->
 			</ffsGroup>
 		</ffsGroups>
 		<ffsSplitBatchRecord RecordPos="CLO="/>
@@ -157,7 +157,7 @@ Nigel Emsen	|	25th July 2007	|	Created from
 							<!--PurchaseOrderReferences-->
 							<PurchaseOrderReferences>
 								<PurchaseOrderReference RecordPos="AOR=" LPos="1" SFPos="1"/>
-								<PurchaseOrderDate RecordPos="AOR=" LPos="1" SFPos="3"/>
+								<PurchaseOrderDate RecordPos="AOR=" LPos="1" SFPos="4"/>
 							</PurchaseOrderReferences>
 							<!--PurchaseOrderConfirmationReferences-->
 							<PurchaseOrderConfirmationReferences>
@@ -181,7 +181,6 @@ Nigel Emsen	|	25th July 2007	|	Created from
 						<PurchaseOrderConfirmationDetail>
 							<!--PurchaseOrderConfirmationLine-->
 							<PurchaseOrderConfirmationLine>
-								<LineStatus RecordPos="DNB=" LPos="4" SFPos="1"/>
 								<LineNumber RecordPos="ALD=" LPos="1" SFPos="1"/>
 								<ProductID>
 									<!-- MANDATORY GTIN, INVOIC - ILD - SPRO(1) -->
@@ -194,9 +193,13 @@ Nigel Emsen	|	25th July 2007	|	Created from
 								<!-- MANDATORY Quantity PurchaseOrderConfirmationd, MANDATORY, INVOIC – ILD – QTYI(1), If INVOIC – ILD – CRLI <> {blank} then multiply by –1 Must be greater or equal to zero -->
 								<!--OrderedQuantity RecordPos="ALD=" LPos="5" SFPos="1"/-->
 								<ConfirmedQuantity RecordPos="ALD=" LPos="6" SFPos="1"/>
-								<PackSize RecordPos="ALD=" LPos="5" SFPos="1"/>
-								<!-- Carlsberg do not provide pricing information -->
-								<!--UnitValueExclVAT RecordPos="ALD=" LPos="8" SFPos="1"/-->
+								<!-- This is being used to transport the Carlsberg code of the error because the 
+										The grouping does not match the ALD & DNB segments properly -->
+								<PackSize RecordPos="DNB=" LPos="4" SFPos="1"/>
+								<!-- Carlsberg do not provide pricing information 
+										This is being used to transport the Line Number of the error because the 
+										The grouping does not match the ALD & DNB segments properly -->
+								<UnitValueExclVAT RecordPos="DNB=" LPos="1" SFPos="1"/>
 								<!-- Carlsberg do not provide pricing information -->
 								<!--LineValueExclVAT RecordPos="ALD=" LPos="8" SFPos="1"/-->
 								<Narrative RecordPos="DNB=" LPos="4" SFPos="2"/>
@@ -204,7 +207,7 @@ Nigel Emsen	|	25th July 2007	|	Created from
 						</PurchaseOrderConfirmationDetail>
 						<!-- PurchaseOrderConfirmationTrailer -->
 						<PurchaseOrderConfirmationTrailer>
-							<NumberOfLines RecordPos="KTR=" LPos="1" SFPos="1"/>
+							<!--NumberOfLines RecordPos="KTR=" LPos="1" SFPos="1"/-->
 							<!-- Carlsberg do not provide pricing information -->
 							<!--TotalExclVAT RecordPos="ALD=" LPos="6" SFPos="1"/-->
 						</PurchaseOrderConfirmationTrailer>
