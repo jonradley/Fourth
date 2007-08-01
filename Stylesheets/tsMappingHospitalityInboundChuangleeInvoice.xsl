@@ -74,7 +74,7 @@
 							
 							<InvoiceDetail>
 							
-								<xsl:for-each select="L1[@Name='H']">
+								<xsl:for-each select="L1[@Name='D']">
 									<InvoiceLine>
 									
 										<LineNumber>
@@ -161,7 +161,7 @@
 		<xsl:variable name="sDate2" select="translate($sDate,' ','')"/>
 		
 			<xsl:copy>
-				<xsl:value-of select="concat('20',substring($sDate2,1,2),'-',substring($sDate2,3,2),'-',substring($sDate2,5,2))"/>
+				<xsl:value-of select="concat(substring($sDate2,7,4),'-',substring($sDate2,4,2),'-',substring($sDate2,1,2))"/>
 			</xsl:copy>
 			
 	</xsl:template>
