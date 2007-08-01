@@ -19,76 +19,149 @@
 
 
 	<!-- Start point - ensure required outer BatchRoot tag is applied -->
-	<xsl:template match="/">
+	<xsl:template match="/Document">
 		<BatchRoot>
-			<xsl:apply-templates/>
+			<BatchDocuments>
+				<BatchDocument DocumentTypeNo="4">
+				
+					<xsl:for-each select="L1[@Name='H']">
+				
+						<Invoice>
+						
+							<TradeSimpleHeader>
+								<SendersCodeForRecipient>
+									<xsl:value-of select="L2[2]"/>
+								</SendersCodeForRecipient>
+							</TradeSimpleHeader>
+							
+							<InvoiceHeader>
+
+								<ShipTo>
+									<ShipToLocationID>
+									
+										<SuppliersCode>
+											<xsl:value-of select="L2[2]"/>
+										</SuppliersCode>
+										
+									</ShipToLocationID>
+
+								</ShipTo>
+								
+								<InvoiceReferences>
+								
+									<InvoiceReference>
+										<xsl:value-of select="L2[3]"/>
+									</InvoiceReference>
+									
+									<InvoiceDate>
+									
+										<xsl:call-template name="sdRemapDate">
+											<xsl:with-param name="sDate" select="L2[4]"/>
+										</xsl:call-template>
+										
+									</InvoiceDate>
+									
+									<TaxPointDate>
+										
+										<xsl:call-template name="sdRemapDate">
+											<xsl:with-param name="sDate" select="L2[5]"/>
+										</xsl:call-template>
+																			
+									</TaxPointDate>
+									
+								</InvoiceReferences>
+							</InvoiceHeader>
+							
+							<InvoiceDetail>
+							
+								<xsl:for-each select="L1[@Name='H']">
+									<InvoiceLine>
+									
+										<LineNumber>
+											<xsl:value-of select="position()"/>
+										</LineNumber>
+										
+										<PurchaseOrderReferences>
+										
+											<PurchaseOrderReferemce>
+											</PurchaseOrderReferemce>
+											
+											<PurchaseOrderDate>
+											
+											</PurchaseOrderDate>
+										
+										</PurchaseOrderReferences>
+										
+										<ProductID>
+											<SuppliersCode>
+											</SuppliersCode>
+										</ProductID>
+										
+										<ProductDescription>
+											<xsl:text>Not Provided</xsl:text>
+										</ProductDescription>
+										
+										<InvoicedQuantity UnitOfMeasure="Text">3.14159</InvoicedQuantity>
+										
+										<UnitValueExclVAT>3.14159</UnitValueExclVAT>
+										
+										<LineValueExclVAT>3.14159</LineValueExclVAT>
+										
+										<VATCode>S</VATCode>
+										
+										<VATRate>xx</VATRate>
+										
+									</InvoiceLine>
+									
+								</xsl:for-each>
+							</InvoiceDetail>
+							<InvoiceTrailer>
+								<NumberOfLines>2</NumberOfLines>
+								<NumberOfItems>3.14159</NumberOfItems>
+								<NumberOfDeliveries>0</NumberOfDeliveries>
+								<DocumentDiscountRate>xx</DocumentDiscountRate>
+								<SettlementDiscountRate SettlementDiscountDays="2">3.14159</SettlementDiscountRate>
+								<VATSubTotals>
+									<VATSubTotal VATCode="Text" VATRate="Text">
+										<NumberOfLinesAtRate>2</NumberOfLinesAtRate>
+										<NumberOfItemsAtRate>3.14159</NumberOfItemsAtRate>
+										<DiscountedLinesTotalExclVATAtRate>3.14159</DiscountedLinesTotalExclVATAtRate>
+										<DocumentDiscountAtRate>3.14159</DocumentDiscountAtRate>
+										<DocumentTotalExclVATAtRate>3.14159</DocumentTotalExclVATAtRate>
+										<SettlementDiscountAtRate>3.14159</SettlementDiscountAtRate>
+										<SettlementTotalExclVATAtRate>3.14159</SettlementTotalExclVATAtRate>
+										<VATAmountAtRate>3.14159</VATAmountAtRate>
+										<DocumentTotalInclVATAtRate>3.14159</DocumentTotalInclVATAtRate>
+										<SettlementTotalInclVATAtRate>3.14159</SettlementTotalInclVATAtRate>
+									</VATSubTotal>
+								</VATSubTotals>
+								<DiscountedLinesTotalExclVAT>3.14159</DiscountedLinesTotalExclVAT>
+								<DocumentDiscount>3.14159</DocumentDiscount>
+								<DocumentTotalExclVAT>3.14159</DocumentTotalExclVAT>
+								<SettlementDiscount>3.14159</SettlementDiscount>
+								<SettlementTotalExclVAT>3.14159</SettlementTotalExclVAT>
+								<VATAmount>3.14159</VATAmount>
+								<DocumentTotalInclVAT>3.14159</DocumentTotalInclVAT>
+								<SettlementTotalInclVAT>3.14159</SettlementTotalInclVAT>
+							</InvoiceTrailer>
+						</Invoice>
+					
+					</xsl:for-each>
+					
+				</BatchDocument>
+			</BatchDocuments>
 		</BatchRoot>
-	</xsl:template>
-
-	<!-- transposing detail lines -->
-	<xsl:template match="InvoiceLine">
-	
-		<InvoiceLine>
 		
-				<PurchaseOrderReferences>
-					<xsl:copy />
-				</PurchaseOrderReferences>
-				
-				<ProductID>
-					<xsl:copy/>
-				</ProductID>
-				
-				<ProductDescription>
-					<xsl:text>Not Provided</xsl:text>
-				</ProductDescription>
-				
-				<InvoicedQuantity>
-					<xsl:copy />
-				</InvoicedQuantity>
-				
-				<UnitValueExclVAT>
-					<xsl:copy />
-				</UnitValueExclVAT>
-
-				<LineValueExclVAT>
-					<xsl:copy />
-				</LineValueExclVAT>
-				
-				<VATCode>
-					<xsl:copy />
-				</VATCode>
-				
-				<!-- to be used to get the line vat amount for transposing in the stylesheet. -->
-				<!--VATRate RecordPos="D" LPos="6"/-->
-				
-			</InvoiceLine>
-			
 	</xsl:template>
 
-	<!-- GENERIC HANDLER to copy unchanged nodes, will be overridden by any node-specific templates below -->
-	<xsl:template match="*">
-		<!-- Copy the node unchanged -->
-		<xsl:copy>
-			<!--Then let attributes be copied/not copied/modified by other more specific templates -->
-			<xsl:apply-templates select="@*"/>
-			<!-- Then within this node, continue processing children -->
-			<xsl:apply-templates/>
-		</xsl:copy>
-	</xsl:template>
-	
-	<!-- GENERIC ATTRIBUTE HANDLER to copy unchanged attributes, will be overridden by any attribute-specific templates below-->
-	<xsl:template match="@*">
-		<!--Copy the attribute unchanged-->
-		<xsl:copy/>
-	</xsl:template>
-	<!-- END of GENERIC HANDLERS -->
-	
 	<!-- date reformating -->
-	<xsl:template match="PurchaseOrderDate | InvoiceDate">
-		<xsl:variable name="sDate" select="translate(.,' ','')"/>
+	<xsl:template name="sdRemapDate">
+	
+		<xsl:param name="sDate" select="sDate"/>
+		<xsl:variable name="sDate2" select="translate($sDate,' ','')"/>
 		
 			<xsl:copy>
-				<xsl:value-of select="concat('20',substring($sDate,1,2),'-',substring($sDate,3,2),'-',substring($sDate,5,2))"/>
+				<xsl:value-of select="concat('20',substring($sDate2,1,2),'-',substring($sDate2,3,2),'-',substring($sDate2,5,2))"/>
 			</xsl:copy>
 			
 	</xsl:template>
