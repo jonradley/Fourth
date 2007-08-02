@@ -51,9 +51,7 @@
 							<xsl:text>10000</xsl:text>
 						</xsl:attribute>
 						
-						<PurchaseOrderConfirmation>
-							<xsl:apply-templates/>
-						</PurchaseOrderConfirmation>
+						<xsl:apply-templates/>
 						
 					</BatchDocument>	
 				
