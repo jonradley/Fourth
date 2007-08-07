@@ -25,6 +25,8 @@
  27/03/2007 | Lee Boyton | 934. Fixed invalid colspan references.
 ****************************************************************************************** 
  07/08/2007 | A Sheppard | 1351. Added return type
+****************************************************************************************** 
+ 07/08/2007 | A Sheppard | 1351. Create branch for Blakemore with Supplier alert
 ******************************************************************************************
 -->
 
@@ -121,9 +123,16 @@
 								<tr>
 									<th align="center">
 										<xsl:text>Request For Credit</xsl:text>
-										<xsl:if test="/CreditRequest/CreditRequestHeader/QualityCreditRequest = 'true' or /CreditRequest/CreditRequestHeader/QualityCreditRequest = '1'">
-											<xsl:text> (Product Complaint Form)</xsl:text>
-										</xsl:if>
+										<xsl:choose>
+											<xsl:when test="/CreditRequest/CreditRequestHeader/CreditRequestReferences/SuppliersName and not(/CreditRequest/CreditRequestDetail/CreditRequestLine[Narrative='Incorrect number of boxes - for information'])">
+												<xsl:text> (To be actioned by </xsl:text>
+												<xsl:value-of select="/CreditRequest/CreditRequestHeader/CreditRequestReferences/SuppliersName"/>
+												<xsl:text>)</xsl:text>
+											</xsl:when>
+											<xsl:when test="/CreditRequest/CreditRequestHeader/QualityCreditRequest = 'true' or /CreditRequest/CreditRequestHeader/QualityCreditRequest = '1'">
+												<xsl:text> (Product Complaint Form)</xsl:text>
+											</xsl:when>
+										</xsl:choose>
 									</th>
 								</tr>
 							</table>
