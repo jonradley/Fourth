@@ -53,7 +53,16 @@ R Cambridge		| 02/08/2007		| 1348 SBR should be SSP's scan ref
 	
 		<SendersBranchReference>
 		
-			<xsl:value-of select="substring(//Invoice/InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode,2,5)"/>
+			<xsl:variable name="sBuyersCode" select="../../InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode"/>
+			
+			<xsl:choose>
+				<xsl:when test="substring($sBuyersCode,1,1)='0'">
+					<xsl:value-of select="substring($sBuyersCode,2,5)"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="substring($sBuyersCode,1,6)"/>
+				</xsl:otherwise>
+			</xsl:choose>
 			
 		</SendersBranchReference>
 		
