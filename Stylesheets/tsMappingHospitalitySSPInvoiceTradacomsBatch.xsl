@@ -67,6 +67,20 @@ R Cambridge		| 02/08/2007		| 1348 SBR should be SSP's scan ref
 		</SendersBranchReference>
 		
 	</xsl:template>
+	
+	<!-- SSP amendment - ensure leading '8' in 8 character codes should be removed -->
+	<xsl:template match="SendersCodeForRecipient">
+		<SendersCodeForRecipient>
+			<xsl:value-of select="substring(.,string-length(.)-6)"/>
+		</SendersCodeForRecipient>	
+	</xsl:template>
+	<xsl:template match="ShipTo/ShipToLocationID/BuyersCode">
+		<BuyersCode>
+			<xsl:value-of select="substring(.,string-length(.)-6)"/>
+		</BuyersCode>	
+	</xsl:template>
+	
+	
 
 
 	<!-- InvoiceLine/ProductID/BuyersProductCode is used as a placeholder for INVOIC-ILD-CRLI and should not be copied over -->
