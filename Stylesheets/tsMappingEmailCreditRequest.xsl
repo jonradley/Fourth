@@ -388,12 +388,6 @@
 										<td><xsl:value-of select="/CreditRequest/CreditRequestHeader/CreditRequestReferences/ContactName"/></td>
 									</tr>
 								</xsl:if>
-								<xsl:if test="/CreditRequest/CreditRequestHeader/ReturnType">
-									<tr>
-										<th width="50%">Return Type</th>
-										<td><xsl:value-of select="/CreditRequest/CreditRequestHeader/ReturnType"/></td>
-									</tr>
-								</xsl:if>
 							</table>
 						</td>
 						<td valign="top" width="50%"><br/></td>
@@ -407,7 +401,7 @@
 								<!--Authorised Credit Request Lines-->
 								<table class="DocumentLines" cellpadding="1" cellspacing="1">			
 									<tr>
-										<th colspan="8">
+										<th colspan="9">
 											Credit Request Lines
 										</th>
 									</tr>
@@ -424,6 +418,11 @@
 										</xsl:if>							
 										<th>Price</th>
 										<th>Line Value</th>
+										<xsl:if test="/CreditRequest/CreditRequestDetail/CreditRequestLine/ReturnType">
+											<tr>
+												<th>Return Type</th>
+											</tr>
+										</xsl:if>
 									</tr>
 									<xsl:for-each select="/CreditRequest/CreditRequestDetail/CreditRequestLine[not(NotAuthorised) or NotAuthorised='0']">
 										<xsl:variable name="LineClass">
@@ -453,6 +452,11 @@
 											</xsl:if>								
 											<td align="right"><xsl:value-of select="UnitValueExclVAT"/>&#xa0;</td>
 											<td align="right"><xsl:value-of select="LineValueExclVAT"/>&#xa0;</td>
+											<xsl:if test="/CreditRequest/CreditRequestDetail/CreditRequestLine/ReturnType">
+												<tr>
+													<td align="right"><xsl:value-of select="ReturnType"/>&#xa0;</td>
+												</tr>
+											</xsl:if>
 										</tr>
 										<xsl:if test="Narrative">
 											<xsl:if test="BatchCode">
@@ -460,7 +464,7 @@
 													<xsl:attribute name="class">
 														<xsl:value-of select="$LineClass"/>
 													</xsl:attribute>
-													<td colspan="8">
+													<td colspan="9">
 														<xsl:text>Batch code: </xsl:text>
 														<xsl:value-of select="BatchCode"/>
 													</td>
@@ -471,7 +475,7 @@
 													<xsl:attribute name="class">
 														<xsl:value-of select="$LineClass"/>
 													</xsl:attribute>	
-													<td colspan="8">
+													<td colspan="9">
 														<xsl:text>Best before date: </xsl:text>
 														<!-- switch to handle old corrupt data that was not formatted correctly in the xml -->
 														<xsl:choose>
@@ -489,7 +493,7 @@
 												<xsl:attribute name="class">
 													<xsl:value-of select="$LineClass"/>
 												</xsl:attribute>	
-												<td colspan="8">
+												<td colspan="9">
 													<xsl:if test="Narrative/@Code"><xsl:value-of select="Narrative/@Code"/>: </xsl:if><xsl:value-of select="Narrative"/>
 												</td>
 											</tr>
