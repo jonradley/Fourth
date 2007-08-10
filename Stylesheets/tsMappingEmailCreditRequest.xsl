@@ -25,6 +25,8 @@
  27/03/2007 | Lee Boyton | 934. Fixed invalid colspan references.
 ****************************************************************************************** 
  07/08/2007 | A Sheppard | 1351. Added return type
+****************************************************************************************** 
+ 10/08/2007 | Lee Boyton | 1183. Display invoice reference and date if available.
 ******************************************************************************************
 -->
 
@@ -303,6 +305,16 @@
 									<th width="50%">Credit Request Date</th>
 									<td><xsl:value-of select="user:gsFormatDate(/CreditRequest/CreditRequestHeader/CreditRequestReferences/CreditRequestDate)"/></td>
 								</tr>
+								<xsl:if test="/CreditRequest/CreditRequestHeader/InvoiceReferences">
+									<tr>
+										<th width="50%">Invoice Reference</th>
+										<td><xsl:value-of select="/CreditRequest/CreditRequestHeader/InvoiceReferences/InvoiceReference"/></td>
+									</tr>
+									<tr>
+										<th width="50%">Invoice Date</th>
+										<td><xsl:value-of select="user:gsFormatDate(/CreditRequest/CreditRequestHeader/InvoiceReferences/InvoiceDate)"/></td>
+									</tr>
+								</xsl:if>								
 								<tr>
 									<th width="50%">Delivery Note Reference</th>
 									<td><xsl:value-of select="/CreditRequest/CreditRequestHeader/DeliveryNoteReferences/DeliveryNoteReference"/></td>
