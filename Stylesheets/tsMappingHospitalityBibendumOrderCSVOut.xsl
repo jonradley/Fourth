@@ -35,7 +35,7 @@
 		<!-- 5. TOTPID -->
 		<xsl:text>,</xsl:text>
 		<!-- 6. FROMTPID -->
-		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
+		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
 		<xsl:text>,</xsl:text>
 		<!-- 7. ORDERTYPE -->
 		<xsl:text>220,</xsl:text>
@@ -57,7 +57,7 @@
 		<!-- 14. MSGFNDESC -->
 		<xsl:text>SALES ORDER,</xsl:text>
 		<!-- 15. REF1 -->
-		<xsl:text>,</xsl:text>
+		<xsl:text>EDI,</xsl:text>
 		<!-- 16. REF2 -->
 		<xsl:text>,</xsl:text>
 		<!-- 17. CURRENCY -->
@@ -89,20 +89,29 @@
 		
 		
 		<xsl:text>SUPPLIER,</xsl:text>
-		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/><xsl:text>,</xsl:text>
+		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
+		<xsl:text>,</xsl:text>
 		<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN != '5555555555555' and /PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN != '55555555555555'">
 			<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN"/>
 		</xsl:if>
 		<xsl:text>,</xsl:text>
-		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/BuyersCode"/><xsl:text>,</xsl:text>
-		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/SuppliersCode"/><xsl:text>,</xsl:text>
-		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersName"/><xsl:text>,</xsl:text>
-		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersAddress/AddressLine1"/><xsl:text>,</xsl:text>
-		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersAddress/AddressLine2"/><xsl:text>,</xsl:text>
-		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersAddress/AddressLine3"/><xsl:text>,</xsl:text>
-		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersAddress/AddressLine4"/><xsl:text>,</xsl:text>
+		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/BuyersCode"/>
 		<xsl:text>,</xsl:text>
-		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersAddress/PostCode"/><xsl:text>,</xsl:text>
+		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/SuppliersCode"/>
+		<xsl:text>,</xsl:text>
+		<!--xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersName"/-->
+		<xsl:text>,</xsl:text>
+		<!--xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersAddress/AddressLine1"/-->
+		<xsl:text>,</xsl:text>
+		<!--xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersAddress/AddressLine2"/-->
+		<xsl:text>,</xsl:text>
+		<!--xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersAddress/AddressLine3"/-->
+		<xsl:text>,</xsl:text>
+		<!--xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersAddress/AddressLine4"/-->
+		<xsl:text>,</xsl:text>
+		<xsl:text>,</xsl:text>
+		<!--xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersAddress/PostCode"/-->
+		<xsl:text>,</xsl:text>
 		<xsl:text>,</xsl:text>
 		<xsl:text>,</xsl:text>
 		<xsl:text>,</xsl:text>
@@ -122,20 +131,29 @@
 		
 		
 		<xsl:text>BUYER,</xsl:text>
-		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/><xsl:text>,</xsl:text>
+		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
+		<xsl:text>,</xsl:text>
 		<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN != '5555555555555' and /PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN != '55555555555555'">
 			<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/>
 		</xsl:if>
 		<xsl:text>,</xsl:text>
-		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/BuyersCode"/><xsl:text>,</xsl:text>
-		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/><xsl:text>,</xsl:text>
-		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersName"/><xsl:text>,</xsl:text>
-		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine1"/><xsl:text>,</xsl:text>
-		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine2"/><xsl:text>,</xsl:text>
-		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine3"/><xsl:text>,</xsl:text>
-		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine4"/><xsl:text>,</xsl:text>
+		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/BuyersCode"/>
 		<xsl:text>,</xsl:text>
-		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersAddress/PostCode"/><xsl:text>,</xsl:text>
+		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
+		<xsl:text>,</xsl:text>
+		<!--xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersName"/-->
+		<xsl:text>,</xsl:text>
+		<!--xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine1"/-->
+		<xsl:text>,</xsl:text>
+		<!--xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine2"/-->
+		<xsl:text>,</xsl:text>
+		<!--xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine3"/-->
+		<xsl:text>,</xsl:text>
+		<!--xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine4"/-->
+		<xsl:text>,</xsl:text>
+		<xsl:text>,</xsl:text>
+		<!--xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersAddress/PostCode"/-->
+		<xsl:text>,</xsl:text>
 		<xsl:text>,</xsl:text>
 		<xsl:text>,</xsl:text>
 		<xsl:text>,</xsl:text>
@@ -155,23 +173,33 @@
 		
 		
 		<xsl:text>DELIVERY,</xsl:text>
-		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/><xsl:text>,</xsl:text>
+		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
+		<xsl:text>,</xsl:text>
 		<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/GLN != '5555555555555' and /PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/GLN != '55555555555555'">
 			<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/GLN"/>
 		</xsl:if>
 		<xsl:text>,</xsl:text>
-		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode"/><xsl:text>,</xsl:text>
-		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/><xsl:text>,</xsl:text>
-		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToName"/><xsl:text>,</xsl:text>
-		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine1"/><xsl:text>,</xsl:text>
-		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine2"/><xsl:text>,</xsl:text>
-		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine3"/><xsl:text>,</xsl:text>
-		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine4"/><xsl:text>,</xsl:text>
+		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode"/>
 		<xsl:text>,</xsl:text>
-		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToAddress/PostCode"/><xsl:text>,</xsl:text>
+		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
+		<xsl:text>,</xsl:text>
+		<!--xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToName"/-->
+		<xsl:text>,</xsl:text>
+		<!--xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine1"/-->
+		<xsl:text>,</xsl:text>
+		<!--xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine2"/-->
+		<xsl:text>,</xsl:text>
+		<!--xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine3"/-->
+		<xsl:text>,</xsl:text>
+		<!--xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine4"/-->
 		<xsl:text>,</xsl:text>
 		<xsl:text>,</xsl:text>
-		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ContactName"/><xsl:text>,</xsl:text>
+		<!--xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToAddress/PostCode"/-->
+		<xsl:text>,</xsl:text>
+		<xsl:text>,</xsl:text>
+		<xsl:text>,</xsl:text>
+		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ContactName"/>
+		<xsl:text>,</xsl:text>
 		<xsl:text>,</xsl:text>
 		<xsl:text>,</xsl:text>
 		<xsl:text>,</xsl:text>
@@ -185,6 +213,59 @@
 		<xsl:text>,</xsl:text>
 		<xsl:text>,</xsl:text>
 		<xsl:text>&#13;&#10;</xsl:text>
+		
+		<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions != ''">
+			<!-- 1 -->
+			<xsl:text>NARRATIVE</xsl:text>
+			<xsl:text>,</xsl:text>
+			<!-- 2 -->
+			<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
+			<xsl:text>,</xsl:text>
+			<!-- 3 -->
+			<xsl:text>DES</xsl:text>		
+			<xsl:text>,</xsl:text>
+			<!-- 4 -->
+			<xsl:text>,</xsl:text>
+			<!-- 5 -->
+			<xsl:value-of select="substring(/PurchaseOrder/PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions,1,70)"/>
+			<xsl:text>,</xsl:text>
+			<!-- 6 -->
+			<xsl:if test="string-length(/PurchaseOrder/PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions) &gt; 70">
+				<xsl:value-of select="substring(/PurchaseOrder/PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions,71,70)"/>
+			</xsl:if>
+			<xsl:text>,</xsl:text>
+			<!-- 7 -->
+			<xsl:text>,</xsl:text>
+			<!-- 8  -->
+			<xsl:text>,</xsl:text>
+			<!-- 9 -->
+			<xsl:text>,</xsl:text>
+			<!-- 10 -->
+			<xsl:text>,</xsl:text>
+			<!-- 11 -->
+			<xsl:text>,</xsl:text>
+			<!-- 12 -->
+			<xsl:text>,</xsl:text>
+			<!-- 13 -->
+			<xsl:text>,</xsl:text>
+			<!-- 14 -->
+			<xsl:text>,</xsl:text>
+			<!-- 15 -->
+			<xsl:text>,</xsl:text>
+			<!-- 16 -->
+			<xsl:text>,</xsl:text>
+			<!-- 17 -->
+			<xsl:text>,</xsl:text>
+			<!-- 18 -->
+			<xsl:text>,</xsl:text>
+			<!-- 19 -->
+			<xsl:text>,</xsl:text>
+			<!-- 20 -->
+			<xsl:text>&#13;&#10;</xsl:text>
+
+		</xsl:if>
+		
+
 		
 		<xsl:for-each select="/PurchaseOrder/PurchaseOrderDetail/PurchaseOrderLine">
 		
@@ -225,7 +306,8 @@
 			<xsl:text>,</xsl:text>
 			
 			<!-- does rounding requirement apply to UnitValueExclVAT before this expression? -->
-			<xsl:value-of select="translate(format-number(UnitValueExclVAT,'#.0000'),'.','')"/><xsl:text>,</xsl:text>
+			<!--xsl:value-of select="translate(format-number(UnitValueExclVAT,'#.0000'),'.','')"/-->
+			<xsl:text>,</xsl:text>
 			<xsl:text>,</xsl:text>
 			<xsl:text>,</xsl:text>
 			
