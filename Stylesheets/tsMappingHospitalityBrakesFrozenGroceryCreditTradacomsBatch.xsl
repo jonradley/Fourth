@@ -11,6 +11,8 @@ N Emsen	|	04/01/2007	|	Case 661	- CLO3.
 N Emsen	|	03/05/2007	|	Case 1065	- Check for invoice references.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 N Emsen		|	11/05/2007	|	Case 1092  - Date Conversion.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Lee Boyton | 13/08/2007 | FB1379 - Handle catch weight product lines.
 **********************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
@@ -62,22 +64,46 @@ N Emsen		|	11/05/2007	|	Case 1092  - Date Conversion.
 		</xsl:copy>
 	</xsl:template>
 	
+	<!-- CLD-QTYC(2) (CreditNoteLine/Measure/TotalMeasure) needs to be used if (CreditNoteLine/Measure/TotalMeasureIndicator) is NOT blank - i.e. weighted item -->
 	<!-- CLD-QTYC(1) (CreditNoteLine/CreditedQuantity) needs to be multiplied by -1 if (CreditNoteLine/ProductID/BuyersProductCode) is NOT blank -->
 	<xsl:template match="CreditNoteLine/CreditedQuantity">
-		<xsl:choose>
-			<!--Parent of CreditedQuantity is CreditNoteLine-->
-			<xsl:when test="string-length(../ProductID/BuyersProductCode) &gt; 0" >
-				<!--CLD-DRLI is not blank, multiply by -1-->
-				<xsl:call-template name="copyCurrentNodeDPUnchanged">
-					<xsl:with-param name="lMultiplier" select="-1.0"/>
-				</xsl:call-template>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:call-template name="copyCurrentNodeDPUnchanged"/>
-			</xsl:otherwise>
-		</xsl:choose>
+		<xsl:variable name="sTotalMeasureIndicator" select="translate(../Measure/TotalMeasureIndicator,' ','')"/>
+		<CreditedQuantity>
+			<xsl:if test="string($sTotalMeasureIndicator) != ''">
+				<xsl:attribute name="UnitOfMeasure">
+					<xsl:call-template name="sConvertUOMForInternal">
+						<xsl:with-param name="vsGivenValue" select="$sTotalMeasureIndicator"/>
+					</xsl:call-template>
+				</xsl:attribute>
+			</xsl:if>		
+		
+			<xsl:variable name="sQuantity">
+				<xsl:choose>
+					<xsl:when test="string($sTotalMeasureIndicator) != ''">
+						<xsl:value-of select="format-number(../Measure/TotalMeasure div 1000,'0.000')"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="string(.)"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:variable>
+			
+			<xsl:choose>
+				<xsl:when test="string-length(../ProductID/BuyersProductCode) &gt; 0" >
+					<!--CLD-DRLI is not blank, multiply by -1-->
+					<xsl:if test="$sQuantity != 'NaN'">
+						<xsl:value-of select="number($sQuantity) * -1.0"/>
+					</xsl:if>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:if test="$sQuantity != 'NaN'">
+						<xsl:value-of select="$sQuantity"/>
+					</xsl:if>
+				</xsl:otherwise>
+			</xsl:choose>
+		</CreditedQuantity>
 	</xsl:template>
-	
+				
 	<!-- CLD-EXLV (CreditNoteLine/LineValueExclVAT) need to be multiplied by -1 if (CreditNoteLine/ProductID/BuyersProductCode) is NOT blank -->
 	<xsl:template match="CreditNoteLine/LineValueExclVAT">
 		<!-- Implicit 4DP conversion required regardless of BuyersProductCode -->
@@ -309,6 +335,56 @@ N Emsen		|	11/05/2007	|	Case 1092  - Date Conversion.
 		
 		</xsl:if>
 	
+	</xsl:template>
+
+	<!-- 
+		Template to convert UOM's into internal values
+		
+		Values from Schema
+		
+			<xsd:enumeration value="CS"/>
+			<xsd:enumeration value="GRM"/>
+			<xsd:enumeration value="KGM"/>
+			<xsd:enumeration value="PND"/>
+			<xsd:enumeration value="ONZ"/>
+			<xsd:enumeration value="GLI"/>
+			<xsd:enumeration value="LTR"/>
+			<xsd:enumeration value="OZI"/>
+			<xsd:enumeration value="PTI"/>
+			<xsd:enumeration value="PTN"/>
+			<xsd:enumeration value="001"/>
+			<xsd:enumeration value="DZN"/>
+			<xsd:enumeration value="EA"/>
+			<xsd:enumeration value="PF"/>
+			<xsd:enumeration value="PR"/>
+			<xsd:enumeration value="HUR"/>
+	-->
+
+	<xsl:template name="sConvertUOMForInternal">
+		<xsl:param name="vsGivenValue" select="vsGivenValue"/>
+		<xsl:variable name="vsLowerCaseGivenValue" select="translate($vsGivenValue,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"/>
+		<xsl:choose>
+			<xsl:when test="contains($vsLowerCaseGivenValue,'kg') "><xsl:text>KGM</xsl:text></xsl:when>
+			<xsl:when test="contains($vsLowerCaseGivenValue,'bx') "><xsl:text>CS</xsl:text></xsl:when>
+			<xsl:when test="contains($vsLowerCaseGivenValue,'cs') "><xsl:text>CS</xsl:text></xsl:when>
+			<xsl:when test="contains($vsLowerCaseGivenValue,'grm') "><xsl:text>GRM</xsl:text></xsl:when>
+			<xsl:when test="contains($vsLowerCaseGivenValue,'pnd') "><xsl:text>PND</xsl:text></xsl:when>
+			<xsl:when test="contains($vsLowerCaseGivenValue,'onz') "><xsl:text>ONZ</xsl:text></xsl:when>
+			<xsl:when test="contains($vsLowerCaseGivenValue,'gli') "><xsl:text>GLI</xsl:text></xsl:when>
+			<xsl:when test="contains($vsLowerCaseGivenValue,'ltr') "><xsl:text>LTR</xsl:text></xsl:when>
+			<xsl:when test="contains($vsLowerCaseGivenValue,'ozi') "><xsl:text>OZI</xsl:text></xsl:when>
+			<xsl:when test="contains($vsLowerCaseGivenValue,'pti') "><xsl:text>PTI</xsl:text></xsl:when>
+			<xsl:when test="contains($vsLowerCaseGivenValue,'ptn') "><xsl:text>PTN</xsl:text></xsl:when>
+			<xsl:when test="contains($vsLowerCaseGivenValue,'001') "><xsl:text>001</xsl:text></xsl:when>
+			<xsl:when test="contains($vsLowerCaseGivenValue,'dzn') "><xsl:text>DZN</xsl:text></xsl:when>
+			<xsl:when test="contains($vsLowerCaseGivenValue,'ea') "><xsl:text>EA</xsl:text></xsl:when>
+			<xsl:when test="contains($vsLowerCaseGivenValue,'pf') "><xsl:text>PF</xsl:text></xsl:when>
+			<xsl:when test="contains($vsLowerCaseGivenValue,'pr') "><xsl:text>PR</xsl:text></xsl:when>
+			<xsl:when test="contains($vsLowerCaseGivenValue,'hur') "><xsl:text>HUR</xsl:text></xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$vsGivenValue"/>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 	
 	<msxsl:script language="JScript" implements-prefix="jscript"><![CDATA[ 
