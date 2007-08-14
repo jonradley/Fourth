@@ -7,6 +7,8 @@ Name				| Date				| Change
 **********************************************************************
 R Cambridge		| 02/08/2007		| 1348 SBR should be SSP's scan ref
 **********************************************************************
+R Cambridge		| 14/08/2007		| 1348 Added catchweight handling
+**********************************************************************
 
 **********************************************************************
 -->
@@ -93,21 +95,66 @@ R Cambridge		| 02/08/2007		| 1348 SBR should be SSP's scan ref
 		</xsl:copy>
 	</xsl:template>
 	
-	<!-- INVOIC-ILD-QTYI (InvoiceLine/InvoicedQuantity) needs to be multiplied by -1 if (InvoiceLine/ProductID/BuyersProductCode) is NOT blank -->
-	<xsl:template match="InvoiceLine/InvoicedQuantity">
-		<xsl:choose>
-			<!--Parent of InvoicedQuantity is InvoiceLine-->
-			<xsl:when test="string-length(../ProductID/BuyersProductCode) &gt; 0" >
-				<!--INVOIC-ILD-CRLI is not blank, multiply by -1-->
-				<xsl:call-template name="copyCurrentNodeDPUnchanged">
-					<xsl:with-param name="lMultiplier" select="-1.0"/>
-				</xsl:call-template>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:call-template name="copyCurrentNodeDPUnchanged"/>
-			</xsl:otherwise>
-		</xsl:choose>
+	<!-- read catchweight values if present -->
+	<xsl:template match="InvoiceLine">
+	
+		<InvoiceLine>
+	
+			<xsl:apply-templates select="LineNumber"/>
+			<xsl:apply-templates select="PurchaseOrderReferences"/>
+			<xsl:apply-templates select="PurchaseOrderConfirmationReferences"/>
+			<xsl:apply-templates select="DeliveryNoteReferences"/>
+			<xsl:apply-templates select="GoodsReceivedNoteReferences"/>
+			<xsl:apply-templates select="ProductID"/>
+			<xsl:apply-templates select="ProductDescription"/>
+			<xsl:apply-templates select="OrderedQuantity"/>
+			<xsl:apply-templates select="ConfirmedQuantity"/>
+			<xsl:apply-templates select="DeliveredQuantity"/>
+			
+			<xsl:variable name="sQuantity">
+				<xsl:choose>
+					<xsl:when test="string(./*[TotalMeasureIndicator]/TotalMeasure) != ''">
+						<xsl:for-each select="./Measure/TotalMeasure[1]">
+							<xsl:call-template name="copyCurrentNodeExplicit3DP"/>
+						</xsl:for-each>
+					</xsl:when>
+					<xsl:otherwise><xsl:value-of select="InvoicedQuantity"/></xsl:otherwise>
+				</xsl:choose>		
+			</xsl:variable>
+			
+			<xsl:variable name="sUoM">
+				<xsl:choose>
+					<xsl:when test="string(./Measure/TotalMeasureIndicator) = 'KG' or string(./Measure/TotalMeasureIndicator) = 'KGM' ">KGM</xsl:when>
+					<xsl:otherwise><xsl:value-of select="@UoM"/></xsl:otherwise>
+				</xsl:choose>		
+			</xsl:variable>
+	
+			
+			<InvoicedQuantity>
+				<xsl:if test="string-length($sUoM) &gt; 0">
+					<xsl:attribute name="UnitOfMeasure">
+						<xsl:value-of select="$sUoM"/>
+					</xsl:attribute>
+				</xsl:if>
+				<xsl:if test="string-length(./ProductID/BuyersProductCode) &gt; 0">-</xsl:if>
+				<xsl:value-of select="$sQuantity"/>			
+			</InvoicedQuantity>
+			
+			<xsl:apply-templates select="PackSize"/>
+			<xsl:apply-templates select="UnitValueExclVAT"/>
+			<xsl:apply-templates select="LineValueExclVAT"/>
+			<xsl:apply-templates select="LineDiscountRate"/>
+			<xsl:apply-templates select="LineDiscountValue"/>
+			<xsl:apply-templates select="VATCode"/>
+			<xsl:apply-templates select="VATRate"/>
+			<xsl:apply-templates select="NetPriceFlag"/>
+			<xsl:apply-templates select="Measure"/>
+			<xsl:apply-templates select="LineExtraData"/>
+			
+		</InvoiceLine>
+
 	</xsl:template>
+	
 	
 	<!-- INVOIC-ILD-LEXC(InvoiceLine/LineValueExclVAT) need to be multiplied by -1 if (InvoiceLine/ProductID/BuyersProductCode) is NOT blank -->
 	<xsl:template match="InvoiceLine/LineValueExclVAT">
