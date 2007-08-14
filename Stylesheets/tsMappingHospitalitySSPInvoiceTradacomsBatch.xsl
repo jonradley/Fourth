@@ -124,7 +124,7 @@ R Cambridge		| 14/08/2007		| 1348 Added catchweight handling
 			
 			<xsl:variable name="sUoM">
 				<xsl:choose>
-					<xsl:when test="string(./Measure/TotalMeasureIndicator) = 'KG' or string(./Measure/TotalMeasureIndicator) = 'KGM' ">KGM</xsl:when>
+					<xsl:when test="string(./Measure/TotalMeasureIndicator) = 'KG' or string(./Measure/TotalMeasureIndicator) = 'KGM'  or string(./Measure/TotalMeasureIndicator) = 'KILOS' ">KGM</xsl:when>
 					<xsl:otherwise><xsl:value-of select="@UoM"/></xsl:otherwise>
 				</xsl:choose>		
 			</xsl:variable>
