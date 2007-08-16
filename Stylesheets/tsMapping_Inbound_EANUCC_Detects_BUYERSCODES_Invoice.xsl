@@ -133,6 +133,22 @@
 												<xsl:value-of select="normalize-space(/Invoice/Buyer/SellerAssigned)"/>
 											</SuppliersCode>
 										</xsl:if>
+										
+										<xsl:if test="string(/Invoice/Buyer/SellerAssigned) != '' or string(/Invoice/Buyer/BuyerGLN != '')">
+											<SuppliersCode>
+												<xsl:choose>
+													<xsl:when test="string(/Invoice/Buyer/SellerAssigned) != ''">
+														<xsl:value-of select="normalize-space(/Invoice/Buyer/SellerAssigned)"/>
+													</xsl:when>
+													<xsl:otherwise>
+														<xsl:value-of select="normalize-space(/Invoice/Buyer/BuyerGLN)"/>
+													</xsl:otherwise>
+												</xsl:choose>
+												
+											</SuppliersCode>
+										</xsl:if>
+
+										
 									</BuyersLocationID>
 									<BuyersAddress>
 										<AddressLine1>
