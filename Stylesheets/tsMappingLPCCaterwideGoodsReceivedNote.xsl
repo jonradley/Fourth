@@ -16,6 +16,8 @@
 ==========================================================================================
  08/05/2007   | Lee Boyton  | 1072. Cater for the Buyers code for Ship-to being blank.
 ==========================================================================================
+ 17/08/2007   | Lee Boyton  | 1383. Strip commas from reference fields as it is the field separator.
+=========================================================================================
               |             |
 =======================================================================================-->
 
@@ -76,7 +78,7 @@
 			<xsl:value-of select="substring(translate(/GoodsReceivedNote/GoodsReceivedNoteHeader/ShipTo/ShipToName,',',''), 1, 30)"/>
 			<xsl:text>,</xsl:text>
 			
-			<xsl:value-of select="/GoodsReceivedNote/GoodsReceivedNoteHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
+			<xsl:value-of select="translate(/GoodsReceivedNote/GoodsReceivedNoteHeader/PurchaseOrderReferences/PurchaseOrderReference,',','')"/>
 			<xsl:text>,</xsl:text>
 			
 			<xsl:if test="/GoodsReceivedNote/GoodsReceivedNoteHeader/PurchaseOrderReferences/PurchaseOrderDate">
@@ -87,7 +89,7 @@
 			<xsl:text>,</xsl:text>
 			
 			<xsl:call-template name="msStripLeadingZeros">
-				<xsl:with-param name="vsDNRef" select="/GoodsReceivedNote/GoodsReceivedNoteHeader/DeliveryNoteReferences/DeliveryNoteReference"/>
+				<xsl:with-param name="vsDNRef" select="translate(/GoodsReceivedNote/GoodsReceivedNoteHeader/DeliveryNoteReferences/DeliveryNoteReference,',','')"/>
 			</xsl:call-template>
 			<xsl:text>,</xsl:text>
 			
@@ -140,7 +142,7 @@
 					
 				<xsl:text>2,</xsl:text>
 								
-				<xsl:value-of select="/GoodsReceivedNote/GoodsReceivedNoteHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
+				<xsl:value-of select="translate(/GoodsReceivedNote/GoodsReceivedNoteHeader/PurchaseOrderReferences/PurchaseOrderReference,',','')"/>
 				<xsl:text>,</xsl:text>
 				
 				<xsl:text>WFOOD</xsl:text>
@@ -171,16 +173,16 @@
 			
 				<xsl:text>2,</xsl:text>
 								
-				<xsl:value-of select="/GoodsReceivedNote/GoodsReceivedNoteHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
+				<xsl:value-of select="translate(/GoodsReceivedNote/GoodsReceivedNoteHeader/PurchaseOrderReferences/PurchaseOrderReference,',','')"/>
 				<xsl:text>,</xsl:text>
 				
 				<!-- Cater for old documents that do not have a Buyers code, by using the Suppliers code instead -->
 				<xsl:choose>
 					<xsl:when test="ProductID/BuyersProductCode">
-						<xsl:value-of select="ProductID/BuyersProductCode"/>
+						<xsl:value-of select="translate(ProductID/BuyersProductCode,',','')"/>
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:value-of select="ProductID/SuppliersProductCode"/>
+						<xsl:value-of select="translate(ProductID/SuppliersProductCode,',','')"/>
 					</xsl:otherwise>
 				</xsl:choose>															
 				<xsl:text>,</xsl:text>
