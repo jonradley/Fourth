@@ -56,6 +56,8 @@
  24/01/2007		| Lee Boyton	| 705. Food supplier lines should be negative for credit notes.
 =========================================================================================
  08/05/2007   | Lee Boyton  | 1072. Cater for the Buyers code for Ship-to being blank.
+=========================================================================================
+ 17/08/2007   | Lee Boyton  | 1383. Strip commas from reference fields as it is the field separator.
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -120,7 +122,7 @@
 				<xsl:value-of select="substring(translate(/*/*/ShipTo/ShipToName,',',''), 1, 30)"/>
 				<xsl:text>,</xsl:text>
 				
-				<xsl:value-of select="(/*/*/InvoiceLine | /*/*/CreditNoteLine | /*/*/DebitNoteLine | /GoodsReceivedNote/GoodsReceivedNoteHeader)/PurchaseOrderReferences/PurchaseOrderReference"/>
+				<xsl:value-of select="translate((/*/*/InvoiceLine | /*/*/CreditNoteLine | /*/*/DebitNoteLine | /GoodsReceivedNote/GoodsReceivedNoteHeader)/PurchaseOrderReferences/PurchaseOrderReference,',','')"/>
 				<xsl:text>,</xsl:text>
 				
 				<xsl:if test="(/*/*/InvoiceLine | /*/*/CreditNoteLine | /*/*/DebitNoteLine | /GoodsReceivedNote/GoodsReceivedNoteHeader)/PurchaseOrderReferences/PurchaseOrderDate">
@@ -131,7 +133,7 @@
 				<xsl:text>,</xsl:text>
 				
 				<xsl:call-template name="msStripLeadingZeros">
-					<xsl:with-param name="vsDNRef" select="(/*/*/InvoiceLine | /*/*/CreditNoteLine | /*/*/DebitNoteLine | /DeliveryNote/DeliveryNoteHeader | /GoodsReceivedNote/GoodsReceivedNoteHeader)/DeliveryNoteReferences/DeliveryNoteReference"/>
+					<xsl:with-param name="vsDNRef" select="translate((/*/*/InvoiceLine | /*/*/CreditNoteLine | /*/*/DebitNoteLine | /DeliveryNote/DeliveryNoteHeader | /GoodsReceivedNote/GoodsReceivedNoteHeader)/DeliveryNoteReferences/DeliveryNoteReference,',','')"/>
 				</xsl:call-template>
 				<xsl:text>,</xsl:text>
 				
@@ -167,7 +169,7 @@
 						
 							<xsl:text>2,</xsl:text>
 											
-							<xsl:value-of select="//PurchaseOrderReferences[1]/PurchaseOrderReference"/>
+							<xsl:value-of select="translate(//PurchaseOrderReferences[1]/PurchaseOrderReference,',','')"/>
 							<xsl:text>,</xsl:text>
 							
 							<xsl:text>WFOOD</xsl:text>
@@ -221,16 +223,16 @@
 						
 							<xsl:text>2,</xsl:text>
 											
-							<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderReference"/>
+							<xsl:value-of select="translate(PurchaseOrderReferences/PurchaseOrderReference,',','')"/>
 							<xsl:text>,</xsl:text>
 							
 							<!-- Cater for old documents that do not have a Buyers code, by using the Suppliers code instead -->
 							<xsl:choose>
 								<xsl:when test="ProductID/BuyersProductCode">
-									<xsl:value-of select="ProductID/BuyersProductCode"/>
+									<xsl:value-of select="translate(ProductID/BuyersProductCode,',','')"/>
 								</xsl:when>
 								<xsl:otherwise>
-									<xsl:value-of select="ProductID/SuppliersProductCode"/>
+									<xsl:value-of select="translate(ProductID/SuppliersProductCode,',','')"/>
 								</xsl:otherwise>
 							</xsl:choose>															
 							<xsl:text>,</xsl:text>
@@ -272,7 +274,7 @@
 				<xsl:value-of select="substring(translate(/*/*/ShipTo/ShipToName,',',''), 1, 30)"/>
 				<xsl:text>,</xsl:text>
 				
-				<xsl:value-of select="(/*/*/InvoiceLine | /*/*/CreditNoteLine)/PurchaseOrderReferences/PurchaseOrderReference"/>
+				<xsl:value-of select="translate((/*/*/InvoiceLine | /*/*/CreditNoteLine)/PurchaseOrderReferences/PurchaseOrderReference,',','')"/>
 				<xsl:text>,</xsl:text>
 				
 				<xsl:if test="(/*/*/InvoiceLine | /*/*/CreditNoteLine)/PurchaseOrderReferences/PurchaseOrderDate">
@@ -283,7 +285,7 @@
 				<xsl:text>,</xsl:text>
 				
 				<xsl:call-template name="msStripLeadingZeros">
-					<xsl:with-param name="vsDNRef" select="(/*/*/InvoiceLine | /*/*/CreditNoteLine | /DeliveryNote/DeliveryNoteHeader)/DeliveryNoteReferences/DeliveryNoteReference"/>
+					<xsl:with-param name="vsDNRef" select="translate((/*/*/InvoiceLine | /*/*/CreditNoteLine | /DeliveryNote/DeliveryNoteHeader)/DeliveryNoteReferences/DeliveryNoteReference,',','')"/>
 				</xsl:call-template>
 				<xsl:text>,</xsl:text>
 				
@@ -315,16 +317,16 @@
 				
 					<xsl:text>2,</xsl:text>
 									
-					<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderReference"/>
+					<xsl:value-of select="translate(PurchaseOrderReferences/PurchaseOrderReference,',','')"/>
 					<xsl:text>,</xsl:text>
 					
 					<!-- Cater for old documents that do not have a Buyers code, by using the Suppliers code instead -->
 					<xsl:choose>
 						<xsl:when test="ProductID/BuyersProductCode">
-							<xsl:value-of select="ProductID/BuyersProductCode"/>
+							<xsl:value-of select="translate(ProductID/BuyersProductCode,',','')"/>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:value-of select="ProductID/SuppliersProductCode"/>
+							<xsl:value-of select="translate(ProductID/SuppliersProductCode,',','')"/>
 						</xsl:otherwise>
 					</xsl:choose>															
 					<xsl:text>,</xsl:text>
