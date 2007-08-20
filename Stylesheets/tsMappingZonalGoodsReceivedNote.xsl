@@ -16,11 +16,13 @@
 ' 02/09/2005  | Lee Boyton   | H488. Cater for the SiteRef for Urbium messages being in the
 '                            | recipient's branch reference field.
 '******************************************************************************************
+' 20/08/2007  | Lee Boyton   | 1390. Cater for extended characters.
+'******************************************************************************************
 '             |              | 
 '******************************************************************************************
 -->
 <xsl:stylesheet 	version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-<xsl:output method="xml"/>
+<xsl:output method="xml" encoding="ISO-8859-1"/>
 	<!-- store the Aztec Compressed Output product code in a local variable
 	     this is an optional field and if non-blank will result in only a single product line being output -->
 	<xsl:variable name="CompressedOutput">
