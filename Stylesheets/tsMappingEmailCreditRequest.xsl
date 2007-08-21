@@ -419,9 +419,7 @@
 										<th>Price</th>
 										<th>Line Value</th>
 										<xsl:if test="/CreditRequest/CreditRequestDetail/CreditRequestLine/ReturnType">
-											<tr>
-												<th>Return Type</th>
-											</tr>
+											<th>Return Type</th>
 										</xsl:if>
 									</tr>
 									<xsl:for-each select="/CreditRequest/CreditRequestDetail/CreditRequestLine[not(NotAuthorised) or NotAuthorised='0']">
@@ -453,9 +451,7 @@
 											<td align="right"><xsl:value-of select="UnitValueExclVAT"/>&#xa0;</td>
 											<td align="right"><xsl:value-of select="LineValueExclVAT"/>&#xa0;</td>
 											<xsl:if test="/CreditRequest/CreditRequestDetail/CreditRequestLine/ReturnType">
-												<tr>
-													<td align="right"><xsl:value-of select="ReturnType"/>&#xa0;</td>
-												</tr>
+												<td align="right"><xsl:value-of select="ReturnType"/>&#xa0;</td>
 											</xsl:if>
 										</tr>
 										<xsl:if test="Narrative">
