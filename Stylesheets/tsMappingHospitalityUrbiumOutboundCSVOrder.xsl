@@ -1,24 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-/******************************************************************************************
-' $Header: $ $NoKeywords: $
-' Overview 
-'  XSL Purchase Order mapper
-'  Hospitality iXML to Urbium CSV Outbound format.
-'
-' © ABS Ltd., 2005.
-'******************************************************************************************
-' Module History
-'******************************************************************************************
-' Date        	| Name         | Description of modification
-'******************************************************************************************
-' 13/09/2005  	| Calum Scott  | Created
-'******************************************************************************************
-' 10/10/2005  	| Lee Boyton   | Corrected delivery date element name.
-'******************************************************************************************
-' 22/03/2007		| Nigel Emsen	| FogBuzz: 933 Correct Address line output.
-'******************************************************************************************
--->
+<!--***************************************************************************************
+ $Header: $ $NoKeywords: $
+ Overview 
+  XSL Purchase Order mapper
+  Hospitality iXML to Urbium CSV Outbound format.
+
+ © ABS Ltd., 2005.
+******************************************************************************************
+ Module History
+******************************************************************************************
+ Date        	| Name         | Description of modification
+******************************************************************************************
+ 13/09/2005  	| Calum Scott  | Created
+******************************************************************************************
+ 10/10/2005  	| Lee Boyton   | Corrected delivery date element name.
+******************************************************************************************
+ 22/03/2007		| Nigel Emsen	| FogBuzz: 933 Correct Address line output.
+******************************************************************************************
+ 22/08/2007  	| R Cambridge 	| 1331 Added recipients branch reference
+******************************************************************************************
+        			|             	| 
+******************************************************************************************
+        			|             	| 
+***************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
                               xmlns:fo="http://www.w3.org/1999/XSL/Format"
                               xmlns:msxsl="urn:schemas-microsoft-com:xslt" 
@@ -163,6 +167,13 @@
 		
 		<!-- Order Total Ex VAT -->
 		<xsl:value-of select="PurchaseOrderTrailer/TotalExclVAT"/>
+		
+		<!-- Recipient's Branch Reference -->
+		<xsl:if test="string(TradeSimpleHeader/RecipientsBranchReference) != ''">	
+			<xsl:text>,</xsl:text>	
+			<xsl:value-of select="TradeSimpleHeader/RecipientsBranchReference"/>
+		</xsl:if>
+		
 		<xsl:text>&#13;&#10;</xsl:text>
 		
 		<xsl:for-each select="PurchaseOrderDetail/PurchaseOrderLine">
