@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-**********************************************************************
+<!--******************************************************************
 Alterations
 **********************************************************************
 Name				| Date				| Change
@@ -10,8 +9,7 @@ R Cambridge		| 02/08/2007		| 1348 SBR should be SSP's scan ref
 R Cambridge		| 14/08/2007		| 1348 Added catchweight handling
 **********************************************************************
 
-**********************************************************************
--->
+*******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
 	

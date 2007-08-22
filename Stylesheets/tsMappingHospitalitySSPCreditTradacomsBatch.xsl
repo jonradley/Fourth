@@ -51,7 +51,7 @@ R Cambridge		| 14/08/2007		| 1348 Created module
 	
 		<SendersBranchReference>
 		
-			<xsl:variable name="sBuyersCode" select="../../InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode"/>
+			<xsl:variable name="sBuyersCode" select="../../CreditNoteHeader/Supplier/SuppliersLocationID/BuyersCode"/>
 			
 			<xsl:choose>
 				<xsl:when test="substring($sBuyersCode,1,1)='0'">
