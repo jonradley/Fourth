@@ -3,7 +3,7 @@
 '******************************************************************************************
 ' Overview
 '
-' Maps King internal Purchase Orders into the EAN UCC format (OFSCI)
+' Maps Hospitality internal Purchase Orders into the EAN UCC format (OFSCI)
 ' 
 ' © Alternative Business Solutions Ltd., 2005.
 '******************************************************************************************
@@ -13,7 +13,7 @@
 '******************************************************************************************
 ' 12/04/2005  | Steven Hewitt | Created
 '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-'			  |                         |
+' 29/08/2007  | Lee Boyton    | Added output encoding to produce ascii text files.
 '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 '			  |                         |
 '******************************************************************************************
@@ -23,7 +23,7 @@
 				xmlns:fo="http://www.w3.org/1999/XSL/Format" 
 				xmlns:script="http://mycompany.com/mynamespace" 
 				xmlns:msxsl="urn:schemas-microsoft-com:xslt">
-	<xsl:output method="xml"/>
+	<xsl:output method="xml" encoding="ISO-8859-1"/>
 	
 	<xsl:template match="/">
 		<Order>
