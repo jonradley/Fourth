@@ -302,7 +302,7 @@
 														<ContractReference>
 															<xsl:value-of select="normalize-space(/Invoice/TradeAgreementReference/ContractReferenceNumber)"/>
 														</ContractReference>
-														<xsl:if test="/Invoice/TradeAgreementReference/ContractReferenceDate">
+														<xsl:if test="/Invoice/TradeAgreementReference/ContractReferenceDate != ''">
 															<ContractDate>
 																<xsl:value-of select="normalize-space(substring-before(/Invoice/TradeAgreementReference/ContractReferenceDate, 'T'))"/>
 															</ContractDate>
