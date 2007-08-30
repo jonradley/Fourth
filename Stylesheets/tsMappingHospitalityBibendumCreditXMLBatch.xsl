@@ -65,16 +65,6 @@
 			</xsl:choose>
 		</xsl:element>
 	</xsl:template>
-	<xsl:template match="SendersBranchReference">
-		<xsl:element name="SendersBranchReference">
-			<xsl:choose>
-				<xsl:when test=". = 'SSP25T'">MIL14T</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="."/>
-				</xsl:otherwise>
-			</xsl:choose>
-		</xsl:element>
-	</xsl:template>
 	<xsl:template match="SendersTransmissionReference">
 		<xsl:element name="SendersTransmissionReference">
 			<xsl:choose>
