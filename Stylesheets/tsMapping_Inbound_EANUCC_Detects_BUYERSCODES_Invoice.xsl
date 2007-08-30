@@ -127,13 +127,7 @@
 											<BuyersCode>
 												<xsl:value-of select="normalize-space(/Invoice/Buyer/BuyerAssigned)"/>
 											</BuyersCode>
-										</xsl:if>
-										<xsl:if test="string(/Invoice/Buyer/SellerAssigned)">
-											<SuppliersCode>
-												<xsl:value-of select="normalize-space(/Invoice/Buyer/SellerAssigned)"/>
-											</SuppliersCode>
-										</xsl:if>
-										
+										</xsl:if>										
 										<xsl:if test="string(/Invoice/Buyer/SellerAssigned) != '' or string(/Invoice/Buyer/BuyerGLN != '')">
 											<SuppliersCode>
 												<xsl:choose>
