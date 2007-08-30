@@ -41,17 +41,6 @@
 		</xsl:for-each>
 	</xsl:template>
 	
-	<!-- Merge account SSP25T into MIL14T -->
-	<xsl:template match="SendersCodeForRecipient">
-		<xsl:element name="SendersCodeForRecipient">
-			<xsl:choose>
-				<xsl:when test=". = 'SSP25T'">MIL14T</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="."/>
-				</xsl:otherwise>
-			</xsl:choose>
-		</xsl:element>
-	</xsl:template>
 	<xsl:template match="SendersBranchReference">
 		<xsl:element name="SendersBranchReference">
 			<xsl:choose>
