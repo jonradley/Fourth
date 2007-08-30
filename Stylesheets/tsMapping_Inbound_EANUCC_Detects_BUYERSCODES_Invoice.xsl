@@ -285,8 +285,8 @@
 										<xsl:if test="/Invoice/OrderReference or /Invoice/TradeAgreementReference/ContractReferenceNumber != ''">
 											<xsl:variable name="sPORef" select="normalize-space(/Invoice/OrderReference/PurchaseOrderNumber)"/>
 											<xsl:variable name="sPODate" select="normalize-space(substring-before(/Invoice/OrderReference/PurchaseOrderDate,'T'))"/>
-											<PurchaseOrderReferences>
-												<xsl:if test="$sPORef !='' and $sPODate !='' ">
+											<xsl:if test="$sPORef !='' and $sPODate !='' ">
+												<PurchaseOrderReferences>
 													<PurchaseOrderReference>
 														<xsl:value-of select="$sPORef"/>
 													</PurchaseOrderReference>
@@ -296,7 +296,7 @@
 													<PurchaseOrderTime>
 														<xsl:value-of select="normalize-space(substring-after(/Invoice/OrderReference/PurchaseOrderDate,'T'))"/>
 													</PurchaseOrderTime>
-												</xsl:if>
+												
 												<xsl:if test="/Invoice/TradeAgreementReference/ContractReferenceNumber != ''">
 													<TradeAgreement>
 														<ContractReference>
@@ -309,7 +309,8 @@
 														</xsl:if>
 													</TradeAgreement>
 												</xsl:if>
-											</PurchaseOrderReferences>
+												</PurchaseOrderReferences>
+											</xsl:if>
 										</xsl:if>
 										<xsl:if test="/Invoice/OrderConfirmationReference and /Invoice/OrderConfirmationReference/PurchaseOrderConfirmationDate">
 											<PurchaseOrderConfirmationReferences>
