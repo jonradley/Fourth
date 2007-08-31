@@ -114,7 +114,7 @@ R Cambridge	| 02/08/2007	| 1348 SSP specific version
 							<!-- MANDATORY Sender’s code for recipient, MANDATORY, INVOIC – CLO – CLOC(2), You must provide this code.  It is your internal identifier for the company that is to receive the document.  It must match the code that you have entered on the trading relationship you have with the other company-->
 							<SendersCodeForRecipient RecordPos="CLO=" LPos="1" SFPos="2"/>
 							<!-- OPTIONAL Sender’s Branch Reference, MANDATORY, INVFIL – CDT – CIDN(2), Depending on your particular relationship with the company, you must provide this code.  It is your internal identifier for the “contract” that the receiving company belongs to.  It must match the code that you have provided to ABS on set-up -->
-							<SendersBranchReference RecordPos="CDT=" LPos="1" SFPos="2"/>
+							<SendersBranchReference RecordPos="SDT=" LPos="1" SFPos="2"/>
 						</TradeSimpleHeader>
 						<InvoiceHeader>
 							<BatchInformation>
