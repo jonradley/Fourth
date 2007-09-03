@@ -55,7 +55,7 @@
 						
 						<!-- Check Value, We will use he GLN as this is unique. Before golive we will need to 
 								check that the quoted compass GLN is in facts SSPs. -->
-						<xsl:variable name="sBuyersGLN" select="normalize-space(/Invoice/Buyer/BuyerGLN)"/>
+						<xsl:variable name="sBuyersGLN" select="normalize-space(/CreditNote/Buyer/BuyerGLN)"/>
 						<xsl:variable name="sCheckFlag">
 							<xsl:call-template name="msDetectBuyersANA">
 								<xsl:with-param name="sANA" select="$sBuyersGLN"/>
@@ -77,7 +77,7 @@
 										<!-- Sellers code to be used if present. -->
 										<xsl:otherwise>
 											<xsl:choose>
-												<xsl:when test="string(/Invoice/ShipTo/SellerAssigned)">
+												<xsl:when test="string(/CreditNote/ShipTo/SellerAssigned)">
 													<xsl:value-of select="normalize-space(/CreditNote/ShipTo/SellerAssigned)"/>
 												</xsl:when>
 												<xsl:otherwise>
@@ -350,7 +350,7 @@
 
 											<PurchaseOrderConfirmationReferences>
 												<PurchaseOrderConfirmationReference>
-													<xsl:value-of select="normalize-space(/CreditNote/OrderConfirmationReference/PurchaseOrderConfirmationNumber))"/>
+													<xsl:value-of select="normalize-space(/CreditNote/OrderConfirmationReference/PurchaseOrderConfirmationNumber)"/>
 												</PurchaseOrderConfirmationReference>
 												<xsl:if test="/CreditNote/OrderConfirmationReference/PurchaseOrderConfirmationDate">
 													<PurchaseOrderConfirmationDate>
