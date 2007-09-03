@@ -76,11 +76,17 @@
 			<xsl:text>,</xsl:text>
 
 			<!-- PurchaseOrderRef, -->
-			<xsl:value-of select="$sOrderReference"/>
+			<!--xsl:value-of select="$sOrderReference"/-->
+			<xsl:call-template name="escapeForCSV">
+				<xsl:with-param name="value" select="$sOrderReference"/>
+			</xsl:call-template>
 			<xsl:text>,</xsl:text>
 			
 			<!-- SupplierProductCode, -->
-			<xsl:value-of select="ProductID/SuppliersProductCode"/>
+			<!--xsl:value-of select="ProductID/SuppliersProductCode"/-->
+			<xsl:call-template name="escapeForCSV">
+				<xsl:with-param name="value" select="ProductID/SuppliersProductCode"/>
+			</xsl:call-template>
 			<xsl:text>,</xsl:text>
 			
 			<!-- ProductDescription, -->
