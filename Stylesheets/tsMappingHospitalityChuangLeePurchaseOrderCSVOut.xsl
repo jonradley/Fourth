@@ -12,6 +12,8 @@
 ==========================================================================================
  28/11/2006	| Lee Boyton        | Created module
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 03/09/2007	| R Cambridge			| 1422 remove column headers
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 				| 							|
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:vbscript="http://abs-ltd.com/blah">
@@ -56,11 +58,11 @@
 			<xsl:value-of select="concat($sDay,'/',$sMonth,'/',$sYear)"/>
 		</xsl:variable>
 		
-		<!-- write out header line -->
+		<!-- write out header line >
 		<xsl:text>AccountCodeForDeliveryLocation,PurchaseOrderDate(DD/MM/YYYY),PurchaseOrderRef,SupplierProductCode,ProductDescription,PackSize,QtyRequired,NetUnitValue,RequestedDeliveryDate(DD/MM/YYYY)</xsl:text>
 
-		<!-- end of record flag -->	
-		<xsl:value-of select="$sEOR"/>
+		< end of record flag >	
+		<xsl:value-of select="$sEOR"/-->
 
 		<!-- write out each order line -->
 		<xsl:for-each select="/PurchaseOrder/PurchaseOrderDetail/PurchaseOrderLine">
