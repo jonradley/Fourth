@@ -84,7 +84,10 @@
 			<xsl:text>,</xsl:text>
 			
 			<!-- ProductDescription, -->
-			<xsl:text>"</xsl:text><xsl:value-of select="ProductDescription"/><xsl:text>"</xsl:text>
+			<!--xsl:text>"</xsl:text><xsl:value-of select="ProductDescription"/><xsl:text>"</xsl:text-->
+			<xsl:call-template name="escapeForCSV">
+				<xsl:with-param name="value" select="ProductDescription"/>
+			</xsl:call-template>
 			<xsl:text>,</xsl:text>
 			
 			<!-- PackSize, -->
@@ -107,6 +110,57 @@
 			
 		</xsl:for-each>
 		
+	</xsl:template>
+	
+	
+	<xsl:template name="escapeForCSV">
+		<xsl:param name="value"/>
+		
+		
+		<xsl:choose>
+			
+			<xsl:when test="contains($value,',') or contains($value,'&quot;')">
+				<xsl:text>"</xsl:text>
+				<xsl:call-template name="replaceDoubleQuotes">
+					<xsl:with-param name="value" select="$value"/>
+				</xsl:call-template>	
+				<xsl:text>"</xsl:text>
+			</xsl:when>
+			
+			<xsl:otherwise>
+				<xsl:value-of select="$value"/>
+			</xsl:otherwise>
+			
+		</xsl:choose>
+			
+	</xsl:template>
+	
+	<xsl:template name="replaceDoubleQuotes">
+		<xsl:param name="value"/>
+		
+		<xsl:variable name="firstChar" select="substring($value,1,1)"/>
+		
+		<xsl:choose>
+		
+			<xsl:when test="$value=''"/>
+			
+			<xsl:when test="$firstChar = '&quot;'">
+				<xsl:text>""</xsl:text>	
+				<xsl:call-template name="replaceDoubleQuotes">
+					<xsl:with-param name="value" select="substring-after($value,$firstChar)"/>
+				</xsl:call-template>			
+			</xsl:when>
+			
+			<xsl:otherwise>
+				<xsl:value-of select="$firstChar"/>
+				<xsl:call-template name="replaceDoubleQuotes">
+					<xsl:with-param name="value" select="substring-after($value,$firstChar)"/>
+				</xsl:call-template>
+			</xsl:otherwise>			
+		</xsl:choose>
+		
+		
+	
 	</xsl:template>
 	
 </xsl:stylesheet>
