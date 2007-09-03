@@ -89,12 +89,11 @@
 			</xsl:call-template>
 			<xsl:text>,</xsl:text>
 			
-			<!-- ProductDescription, -->
-			<!--xsl:text>"</xsl:text><xsl:value-of select="ProductDescription"/><xsl:text>"</xsl:text-->
+			<!-- ProductDescription, >
 			<xsl:call-template name="escapeForCSV">
 				<xsl:with-param name="value" select="ProductDescription"/>
 			</xsl:call-template>
-			<xsl:text>,</xsl:text>
+			<xsl:text>,</xsl:text-->
 			
 			<!-- PackSize, -->
 			<xsl:value-of select="PackSize"/>
