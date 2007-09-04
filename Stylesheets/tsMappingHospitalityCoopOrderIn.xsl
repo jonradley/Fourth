@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 
 	<xsl:template match="Document">
 
@@ -15,6 +15,35 @@
 						</SendersCodeForRecipient>
 					</TradeSimpleHeader>
 					<PurchaseOrderHeader>
+						<ShipTo>
+							<ShipToAddress>
+								<xsl:variable name="addlines">
+									<addline>
+										<xsl:value-of select="CLO/L2[2]/L3[1]/L4[2]"/>
+									</addline>
+									<addline>
+										<xsl:value-of select="CLO/L2[2]/L3[3]/L4[1]"/>
+									</addline>
+									<addline>
+										<xsl:value-of select="CLO/L2[2]/L3[3]/L4[2]"/>
+									</addline>
+									<addline>
+										<xsl:value-of select="CLO/L2[2]/L3[3]/L4[3]"/>
+									</addline>
+									<addline>
+										<xsl:value-of select="CLO/L2[2]/L3[3]/L4[5]"/>
+									</addline>
+								</xsl:variable>
+								
+								<AddressLine1>
+									<xsl:value-of select="msxsl:node-set($addlines)/addline[. != ''][1]"/>
+								</AddressLine1>
+								<AddressLine2>.</AddressLine2>
+								<AddressLine3>Manchester</AddressLine3>
+								<AddressLine4>.</AddressLine4>
+								<PostCode>M60 4ES</PostCode>
+							</ShipToAddress>
+						</ShipTo>
 						<PurchaseOrderReferences>
 							<PurchaseOrderReference>
 								<xsl:value-of select="ORD/L2[2]/L3/L4[1]"/>
@@ -37,7 +66,14 @@
 								</LineNumber>
 								<ProductID>
 									<SuppliersProductCode>
-										<xsl:value-of select="L2[2]/L3[2]/L4[3]"/>
+										<xsl:choose>
+											<xsl:when test="L2[2]/L3[2]/L4[3] != ''">
+												<xsl:value-of select="L2[2]/L3[2]/L4[3]"/>
+											</xsl:when>
+											<xsl:otherwise>
+												<xsl:value-of select="L2[2]/L3[2]/L4[1]"/>
+											</xsl:otherwise>
+										</xsl:choose>
 									</SuppliersProductCode>
 									<BuyersProductCode>
 										<xsl:value-of select="L2[2]/L3[4]/L4[2]"/>
