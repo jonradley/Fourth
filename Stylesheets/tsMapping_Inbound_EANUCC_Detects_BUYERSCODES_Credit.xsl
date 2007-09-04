@@ -323,7 +323,7 @@
 														<xsl:value-of select="normalize-space(/CreditNote/OrderReference/PurchaseOrderNumber)"/>
 													</PurchaseOrderReference>
 												</xsl:if>
-												<xsl:if test="/CreditNote/OrderReference/PurchaseOrderNumber">
+												<xsl:if test="/CreditNote/OrderReference/PurchaseOrderDate">
 													<PurchaseOrderDate>
 														<xsl:value-of select="normalize-space(substring-before(/CreditNote/OrderReference/PurchaseOrderDate,'T'))"/>
 													</PurchaseOrderDate>
