@@ -268,13 +268,22 @@
 										</xsl:if>
 										<xsl:if test="string(/CreditNote/InvoiceReference/InvoiceDocumentDate)">
 											<InvoiceDate>
-												<xsl:value-of select="normalize-space(substring-before(/CreditNote/InvoiceReference/InvoiceDocumentDate, 'T'))"/>
+												<!--xsl:value-of select="normalize-space(substring-before(/CreditNote/InvoiceReference/InvoiceDocumentDate, 'T'))"/-->
+												<xsl:call-template name="formatDate">
+													<xsl:with-param name="value" select="normalize-space(substring-before(/CreditNote/InvoiceReference/InvoiceDocumentDate, 'T'))"/>
+												</xsl:call-template>
+
 											</InvoiceDate>
 										</xsl:if>
 										<xsl:if test="string(/CreditNote/TaxPointDateTime)">
 											<TaxPointDate>
-												<xsl:value-of select="normalize-space(substring-before(/CreditNote/TaxPointDateTime, 'T'))"/>
+												<!--xsl:value-of select="normalize-space(substring-before(/CreditNote/TaxPointDateTime, 'T'))"/-->
+												<xsl:call-template name="formatDate">
+													<xsl:with-param name="value" select="normalize-space(substring-before(/CreditNote/TaxPointDateTime, 'T'))"/>
+												</xsl:call-template>
+
 											</TaxPointDate>
+											
 										</xsl:if>
 										<xsl:if test="string(/CreditNote/Seller/VATRegisterationNumber)">
 											<VATRegNo>
@@ -290,10 +299,19 @@
 										<xsl:value-of select="normalize-space(/CreditNote/CreditNoteDocumentDetails/CreditNoteDocumentNumber)"/>
 									</CreditNoteReference>
 									<CreditNoteDate>
-										<xsl:value-of select="normalize-space(substring-before(/CreditNote/CreditNoteDocumentDetails/CreditNoteDocumentDate, 'T'))"/>
+										<!--xsl:value-of select="normalize-space(substring-before(/CreditNote/CreditNoteDocumentDetails/CreditNoteDocumentDate, 'T'))"/-->
+										
+										<xsl:call-template name="formatDate">
+											<xsl:with-param name="value" select="normalize-space(substring-before(/CreditNote/CreditNoteDocumentDetails/CreditNoteDocumentDate, 'T'))"/>
+										</xsl:call-template>
+										
 									</CreditNoteDate>
 									<TaxPointDate>
-										<xsl:value-of select="normalize-space(substring-before(/CreditNote/TaxPointDateTime, 'T'))"/>
+										<!--xsl:value-of select="normalize-space(substring-before(/CreditNote/TaxPointDateTime, 'T'))"/-->
+										<xsl:call-template name="formatDate">
+											<xsl:with-param name="value" select="normalize-space(substring-before(/CreditNote/TaxPointDateTime, 'T'))"/>
+										</xsl:call-template>
+
 									</TaxPointDate>
 									<xsl:if test="string(/CreditNote/Seller/VATRegisterationNumber)">
 										<VATRegNo>
@@ -709,4 +727,34 @@
 			</Batch>
 		</BatchRoot>
 	</xsl:template>
+	
+	<xsl:template name="formatDate">
+		<xsl:param name="value"/>
+		<xsl:param name="format" select="'0000'"/>
+		<xsl:param name="seperator" select="''"/>
+		
+		<xsl:choose>
+		
+			<xsl:when test="string-length($value) = 0"/>
+			
+			<xsl:otherwise>
+			
+				<xsl:value-of select="$seperator"/>
+				<xsl:value-of select="format-number(substring-before(concat($value,'-'),'-'),$format)"/>
+				
+				<xsl:call-template name="formatDate">
+					<xsl:with-param name="value" select="substring-after($value,'-')"/>
+					<xsl:with-param name="format" select="'00'"/>
+					<xsl:with-param name="seperator" select="'-'"/>
+				</xsl:call-template>
+				
+			</xsl:otherwise>
+			
+		</xsl:choose>
+	
+		
+	
+	</xsl:template>
+	
+	
 </xsl:stylesheet>
