@@ -451,7 +451,7 @@
 								<!-- VATRateTotals are not mandatory in EAN.UCC but we have to assume at least some details will exist
 					       to stand any chance at all of filling in any of our mandatory details -->
 								<VATSubTotals>
-									<xsl:for-each select="/Invoice/InvoiceTotals/VATRateTotals">
+									<xsl:for-each select="/Invoice/InvoiceTotals/VATRateTotals[TaxableAmount != 0]">
 										<VATSubTotal>
 											<!-- store the VATRate and VATCode in variables as we use them more than once below -->
 											<xsl:variable name="currentVATCode">
