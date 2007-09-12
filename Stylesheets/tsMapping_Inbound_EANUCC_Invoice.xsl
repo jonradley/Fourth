@@ -30,6 +30,11 @@
 '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 '	31/01/2007	| Lee Boyton   |	Case 767: Cater for an empty ContractReferenceNumber element.
 '******************************************************************************************
+'	12/09/2007	| R Cambridge  |	Case 1444: Don't create buyers address lines that would blank
+'******************************************************************************************
+'	          	|              |	                                                            
+'******************************************************************************************
+
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	<xsl:output method="xml"/>
@@ -107,12 +112,12 @@
 										<AddressLine1>
 											<xsl:value-of select="/Invoice/Buyer/Address/BuildingIdentifier"/>
 										</AddressLine1>
-										<xsl:if test="/Invoice/Buyer/Address/StreetName">
+										<xsl:if test="string(/Invoice/Buyer/Address/StreetName)">
 											<AddressLine2>
 												<xsl:value-of select="/Invoice/Buyer/Address/StreetName"/>
 											</AddressLine2>
 										</xsl:if>
-										<xsl:if test="/Invoice/Buyer/Address/City">
+										<xsl:if test="string(/Invoice/Buyer/Address/City)">
 											<AddressLine3>
 												<xsl:value-of select="/Invoice/Buyer/Address/City"/>
 											</AddressLine3>
