@@ -1,28 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-**********************************************************************
+<!--******************************************************************
 Alterations
 **********************************************************************
 Name			| Date				| Change
 **********************************************************************
-S Jefford	| 22/08/2005		| GTIN field now sourced from ILD/SPRO(1).
-				|						| ILD/CRLI now stored in BuyersProductCode
+R Cambridge | 13/09/2007		| 1439 branched from tsMappingHospitalityBrakesFrozenGroceryInvoiceTradacomsBatch.xsl
 **********************************************************************
-N Emsen		|	27/09/2006	|	Case 393 - Delivery to live.
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-N Emsen		|	12/10/2006	|	Case 456: SubTotalValues to 2dp.
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-N Emsen		|	20/11/2006	|	Case 559: changes to UOM mapping raised
-				|						|	by Orchid testing.
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-N Emsen		|	04/01/2007	|	Case 661 - CLO3
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-N Emsen		|	11/05/2007	|	Case 1092  - Date Conversion.
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-N Emsen		|	02/07/2007	|	FB: 1238 - Detect SSP invoices.
-
+            |           		| 
 **********************************************************************
--->
+            |           		| 
+*******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<!-- Buyers Code detection function and lookup table -->
 	<xsl:include href="tsMapping_LookupBuyersANA_Table.xsl"/>
@@ -388,6 +375,7 @@ N Emsen		|	02/07/2007	|	FB: 1238 - Detect SSP invoices.
 		<xsl:choose>
 			<xsl:when test="contains($vsLowerCaseGivenValue,'case') "><xsl:text>CS</xsl:text></xsl:when>
 			<xsl:when test="contains($vsLowerCaseGivenValue,'each') "><xsl:text>EA</xsl:text></xsl:when>
+			<xsl:when test="contains($vsLowerCaseGivenValue,'kilos') "><xsl:text>KGM</xsl:text></xsl:when>
 			
 			<xsl:when test="contains($vsLowerCaseGivenValue,'kg') "><xsl:text>KGM</xsl:text></xsl:when>
 			<xsl:when test="contains($vsLowerCaseGivenValue,'bx') "><xsl:text>CS</xsl:text></xsl:when>
