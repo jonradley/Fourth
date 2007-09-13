@@ -18,7 +18,7 @@
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-	<xsl:template 	match="/OrderHeader">
+	<xsl:template 	match="/Order">
 	
 		<BatchRoot>
 	
@@ -30,8 +30,8 @@
 					
 					<SendersBranchReference>						
 						<xsl:choose>
-							<xsl:when test="substring-before(substring-after(@LocationCode,'/'),'/') != ''">
-								<xsl:value-of select="substring-before(substring-after(@LocationCode,'/'),'/')"/>
+							<xsl:when test="substring-before(substring-after(@LocationCode,'RG'),'/') != ''">
+								<xsl:value-of select="substring-before(substring-after(@LocationCode,'RG'),'/')"/>
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:value-of select="@LocationCode"/>
@@ -68,7 +68,7 @@
 				
 				<PurchaseOrderDetail>
 				
-					<xsl:for-each select="/OrderHeader/OrderItem">
+					<xsl:for-each select="/Order/OrderItem">
 				
 						<PurchaseOrderLine>
 							
