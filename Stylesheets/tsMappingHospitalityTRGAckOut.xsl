@@ -34,6 +34,7 @@
 			<xsl:apply-templates/>
 		</xsl:copy>
 	</xsl:template>
+	
 	<!-- GENERIC ATTRIBUTE HANDLER to copy unchanged attributes, will be overridden by any attribute-specific templates below-->
 	<xsl:template match="@*">
 		<!--Copy the attribute unchanged-->
@@ -43,9 +44,9 @@
 	
 	<!-- Change TradeSimpleHeaderSent to TradeSimpleHeader -->
 	<xsl:template match="@Type">
-		<xsl:copy>
+		<xsl:attribute name="Type">
 			<xsl:text>Acknowledgment</xsl:text>
-		</xsl:copy>
+		</xsl:attribute>
 	</xsl:template>
 	
 </xsl:stylesheet>

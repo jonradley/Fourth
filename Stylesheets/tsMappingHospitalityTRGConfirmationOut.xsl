@@ -41,12 +41,15 @@
 			
 			<xsl:attribute name="DateEntered">
 				<xsl:value-of select="PurchaseOrderConfirmationHeader/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationDate"/>
+				<xsl:text>T00:00:00</xsl:text>
 			</xsl:attribute>
 			<xsl:attribute name="DateChanged">
 				<xsl:value-of select="PurchaseOrderConfirmationHeader/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationDate"/>
+				<xsl:text>T00:00:00</xsl:text>
 			</xsl:attribute>
 			<xsl:attribute name="TargetDeliveryDate">
 				<xsl:value-of select="PurchaseOrderConfirmationHeader/ConfirmedDeliveryDetails/DeliveryDate"/>
+				<xsl:text>T00:00:00</xsl:text>
 			</xsl:attribute>
 			
 			<xsl:attribute name="SupplierId">
@@ -60,7 +63,7 @@
 				<xsl:value-of select="'0'"/>
 			</xsl:attribute>
 			<xsl:attribute name="LocationCode">
-				<xsl:value-of select="concat('RG/',TradeSimpleHeader/RecipientsBranchReference,'/4')"/>
+				<xsl:value-of select="concat('RG',TradeSimpleHeader/RecipientsBranchReference,'/4')"/>
 			</xsl:attribute>
 			
 			<xsl:attribute name="OrderDateTime">
