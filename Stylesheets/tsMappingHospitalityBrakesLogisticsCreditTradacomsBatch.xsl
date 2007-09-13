@@ -1,20 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-**********************************************************************
+<!--******************************************************************
 Alterations
 **********************************************************************
-Name		| Date				| Change
+Name			| Date				| Change
 **********************************************************************
-N Emsen	| 14/09/2006		|	Not tested against any Brakes credit notes
-N Emsen	|	27/09/2006	|	Case 393	- Delivery to live.
-N Emsen	|	04/01/2007	|	Case 661	- CLO3.
-N Emsen	|	03/05/2007	|	Case 1065	- Check for invoice references.
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-N Emsen		|	11/05/2007	|	Case 1092  - Date Conversion.
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Lee Boyton | 13/08/2007 | FB1379 - Handle catch weight product lines.
+R Cambridge | 13/09/2007		| 1439 branched from tsMappingHospitalityBrakesFrozenGroceryInvoiceTradacomsBatch.xsl
 **********************************************************************
--->
+            |           		| 
+**********************************************************************
+            |           		| 
+*******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
 	<!-- NOTE that these string literals are not only enclosed with double quotes, but have single quotes within also-->
@@ -352,6 +347,7 @@ Lee Boyton | 13/08/2007 | FB1379 - Handle catch weight product lines.
 		<xsl:choose>
 			<xsl:when test="contains($vsLowerCaseGivenValue,'case') "><xsl:text>CS</xsl:text></xsl:when>
 			<xsl:when test="contains($vsLowerCaseGivenValue,'each') "><xsl:text>EA</xsl:text></xsl:when>
+			<xsl:when test="contains($vsLowerCaseGivenValue,'kilos') "><xsl:text>KGM</xsl:text></xsl:when>
 			
 			<xsl:when test="contains($vsLowerCaseGivenValue,'kg') "><xsl:text>KGM</xsl:text></xsl:when>
 			<xsl:when test="contains($vsLowerCaseGivenValue,'bx') "><xsl:text>CS</xsl:text></xsl:when>
