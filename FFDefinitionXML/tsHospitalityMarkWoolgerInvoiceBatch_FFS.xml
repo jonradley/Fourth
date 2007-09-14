@@ -25,39 +25,39 @@ R Cambridge	| 14/05/2007	| 1096 Created FSS
 				<BatchDocument>
 					<Invoice>
 						<TradeSimpleHeader>
-							<SendersCodeForRecipient RecordLength="15" RecordPos="*" LPos="3"/>
+							<SendersCodeForRecipient RecordLength="14" RecordPos="*" LPos="3"/>
 						</TradeSimpleHeader>
 						<InvoiceHeader>
 							<Buyer>
 								<BuyersLocationID>
-									<SuppliersCode RecordLength="15" RecordPos="*" LPos="2"/>
+									<SuppliersCode RecordLength="14" RecordPos="*" LPos="2"/>
 								</BuyersLocationID>
 							</Buyer>
 							<ShipTo>
 								<ShipToLocationID>
-									<SuppliersCode RecordLength="15" RecordPos="*" LPos="3"/>
+									<SuppliersCode RecordLength="14" RecordPos="*" LPos="3"/>
 								</ShipToLocationID>
-								<ShipToName RecordLength="15" RecordPos="*" LPos="4"/>
+								<ShipToName RecordLength="14" RecordPos="*" LPos="4"/>
 							</ShipTo>
 							<InvoiceReferences>
-								<InvoiceReference RecordLength="15" RecordPos="*" LPos="5"/>
-								<InvoiceDate RecordLength="15" RecordPos="*" LPos="14"/>
-								<TaxPointDate RecordLength="15" RecordPos="*" LPos="14"/>
+								<InvoiceReference RecordLength="14" RecordPos="*" LPos="5"/>
+								<InvoiceDate RecordLength="14" RecordPos="*" LPos="14"/>
+								<TaxPointDate RecordLength="14" RecordPos="*" LPos="14"/>
 							</InvoiceReferences>
 						</InvoiceHeader>
 						<InvoiceDetail>
 							<InvoiceLine>
 								<ProductID>
-									<SuppliersProductCode RecordLength="15" RecordPos="*" LPos="8"/>
+									<SuppliersProductCode RecordLength="14" RecordPos="*" LPos="8"/>
 								</ProductID>
-								<ProductDescription RecordLength="15" RecordPos="*" LPos="9"/>
-								<InvoicedQuantity RecordLength="15" RecordPos="*" LPos="10"/>
-								<LineValueExclVAT RecordLength="15" RecordPos="*" LPos="12"/>
-								<VATCode RecordLength="15" RecordPos="*" LPos="13"/>
+								<ProductDescription RecordLength="14" RecordPos="*" LPos="9"/>
+								<InvoicedQuantity RecordLength="14" RecordPos="*" LPos="10"/>
+								<LineValueExclVAT RecordLength="14" RecordPos="*" LPos="12"/>
+								<VATCode RecordLength="14" RecordPos="*" LPos="13"/>
 							</InvoiceLine>
 						</InvoiceDetail>
 						<!--InvoiceTrailer>
-							<DocumentTotalInclVAT RecordLength="15" RecordPos="*" LPos="7"/>
+							<DocumentTotalInclVAT RecordLength="14" RecordPos="*" LPos="7"/>
 						</InvoiceTrailer-->
 					</Invoice>
 				</BatchDocument>
