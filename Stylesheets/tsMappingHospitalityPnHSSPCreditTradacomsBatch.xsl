@@ -151,7 +151,17 @@ R Cambridge		| 14/08/2007		| 1348 Created module
 			<xsl:apply-templates select="LineValueExclVAT"/>
 			<xsl:apply-templates select="LineDiscountRate"/>
 			<xsl:apply-templates select="LineDiscountValue"/>
-			<xsl:apply-templates select="VATCode"/>
+			
+			<!--looks for VATCode 'M' and replaces with 'L' -->
+			<VATCode>
+				<xsl:choose>
+					<xsl:when test="VATCode = 'M'">L</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="VATCode"/>
+					</xsl:otherwise>
+				</xsl:choose>		
+			</VATCode>
+			
 			<xsl:apply-templates select="VATRate"/>
 			<xsl:apply-templates select="Narrative"/>
 			<xsl:apply-templates select="NetPriceFlag"/>
