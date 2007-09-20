@@ -363,6 +363,11 @@ R Cambridge		| 14/08/2007		| 1348 Created module
 	</xsl:template>
 	<!-- END of MHDSegment HANDLER -->
 	
+	<xsl:template match="@VATCode[. = 'M']">
+		<xsl:attribute name="VATCode">L</xsl:attribute>
+	</xsl:template>
+	
+	
 	<msxsl:script language="JScript" implements-prefix="jscript"><![CDATA[ 
 		function toUpperCase(vs) {
 			return vs.toUpperCase();
