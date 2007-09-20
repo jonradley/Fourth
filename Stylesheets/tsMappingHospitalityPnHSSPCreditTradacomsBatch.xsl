@@ -363,6 +363,7 @@ R Cambridge		| 14/08/2007		| 1348 Created module
 	</xsl:template>
 	<!-- END of MHDSegment HANDLER -->
 	
+	<!--changes all VATCodes 'M' to 'L', leaving the rate at 5.00-->
 	<xsl:template match="@VATCode[. = 'M']">
 		<xsl:attribute name="VATCode">L</xsl:attribute>
 	</xsl:template>
