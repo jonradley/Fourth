@@ -29,6 +29,11 @@ AUTHOR:
 ==========================================================================================================
 -->
 	<data:table>
+	<data:record>
+			<data:ANA>5013546200266</data:ANA>
+			<data:ReturnValue>1</data:ReturnValue>
+			<data:Description>Compass's GLN number.</data:Description>
+		</data:record>
 		<data:record>
 			<data:ANA>5013546085276</data:ANA>
 			<data:ReturnValue>1</data:ReturnValue>
