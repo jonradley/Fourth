@@ -79,9 +79,16 @@
 							<!--ProductDescription><xsl:value-of select="@SupplierPackageDescription"/></ProductDescription-->
 													
 							<OrderedQuantity>
-								<xsl:attribute name="UnitOfMeasure">CS</xsl:attribute>									
-								<xsl:value-of select="@Quantity"/>
-								
+								<xsl:choose>
+									<xsl:when test="@MaxSplits = '1'">
+										<xsl:attribute name="UnitOfMeasure">CS</xsl:attribute>									
+										<xsl:value-of select="@Quantity"/>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:attribute name="UnitOfMeasure">EA</xsl:attribute>									
+										<xsl:value-of select="format-number(number(@Quantity) * number(@MaxSplits),'0.0000')"/>
+									</xsl:otherwise>
+								</xsl:choose>
 							</OrderedQuantity>
 													
 							<PackSize>Pack</PackSize>
