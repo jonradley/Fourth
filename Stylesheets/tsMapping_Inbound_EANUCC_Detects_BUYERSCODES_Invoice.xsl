@@ -370,14 +370,25 @@
 										<xsl:if test="CreditQuantity">
 											<CreditedQuantity>
 												<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="normalize-space(CreditQuantity/@unitCode)"/></xsl:attribute>
-												<xsl:value-of select="format-number(CreditQuantity, '0.000')"/>
+												<xsl:choose>
+													<xsl:when test="CreditQuantity">
+														<!--if CreditLineIndicator is '2', make the CreditQuantity a negative number-->
+														<xsl:if test="CreditLineIndicator = '2'"><xsl:text>-</xsl:text></xsl:if>
+														<xsl:value-of select="format-number(CreditQuantity, '0.000')"/>
+													</xsl:when>
+													<xsl:otherwise>
+														<xsl:value-of select="format-number($defaultCreditQuantity, '0.000')"/>
+													</xsl:otherwise>
+												</xsl:choose> 
 											</CreditedQuantity>
 										</xsl:if>
 										<!-- Pack Size is populated by subsequent processors -->
 										<UnitValueExclVAT>
 											<xsl:value-of select="format-number(UnitPrice, '0.00')"/>
 										</UnitValueExclVAT>
+										<!--if CreditLineIndicator is '2', make the lineitemprice a negative number-->
 										<LineValueExclVAT>
+											<xsl:if test="CreditLineIndicator = '2'"><xsl:text>-</xsl:text></xsl:if>
 											<xsl:value-of select="format-number(LineItemPrice, '0.00')"/>
 										</LineValueExclVAT>
 										<xsl:if test="LineItemDiscount/DiscountRate">
@@ -422,7 +433,7 @@
 									<xsl:value-of select="count(//InvoiceItem)"/>
 								</NumberOfLines>
 								<NumberOfItems>
-									<xsl:value-of select="sum(//InvoiceItem/InvoiceQuantity)"/>
+									<xsl:value-of select="sum(//InvoiceItem[CreditLineIndicator ='1']/InvoiceQuantity) - sum(//InvoiceItem[CreditLineIndicator ='2']/InvoiceQuantity)"/>
 								</NumberOfItems>
 								<!-- EAN.UCC only allows for one delivery per Invoice -->
 								<NumberOfDeliveries>
