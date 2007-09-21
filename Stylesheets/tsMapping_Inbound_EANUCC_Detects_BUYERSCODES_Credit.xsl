@@ -438,6 +438,8 @@
 											<xsl:attribute name="UnitOfMeasure"><xsl:choose><xsl:when test="CreditQuantity"><xsl:value-of select="normalize-space(CreditQuantity/@unitCode)"/></xsl:when><xsl:otherwise><xsl:value-of select="$defaultUnitOfMeasure"/></xsl:otherwise></xsl:choose></xsl:attribute>
 											<xsl:choose>
 												<xsl:when test="CreditQuantity">
+													<!--if CreditLineIndicator is '1', make the CreditQuantity a negative number-->
+													<xsl:if test="CreditLineIndicator = '1'"><xsl:text>-</xsl:text></xsl:if>
 													<xsl:value-of select="format-number(CreditQuantity, '0.000')"/>
 												</xsl:when>
 												<xsl:otherwise>
@@ -451,7 +453,9 @@
 											<xsl:value-of select="format-number(UnitPrice, '0.00')"/>
 										</UnitValueExclVAT>
 										
+										<!--if CreditLineIndicator is '1', make the lineitemprice a negative number-->
 										<LineValueExclVAT>
+											<xsl:if test="CreditLineIndicator = '1'"><xsl:text>-</xsl:text></xsl:if>
 											<xsl:value-of select="format-number(LineItemPrice, '0.00')"/>
 										</LineValueExclVAT>
 										
