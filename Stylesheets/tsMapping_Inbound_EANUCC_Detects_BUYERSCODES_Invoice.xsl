@@ -363,24 +363,20 @@
 												<xsl:value-of select="format-number(OrderedQuantity, '0.000')"/>
 											</OrderedQuantity>
 										</xsl:if>
+										<xsl:if test="InvoiceQuantity">
 										<InvoicedQuantity>
 											<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="normalize-space(InvoiceQuantity/@unitCode)"/></xsl:attribute>
-											<xsl:value-of select="format-number(InvoiceQuantity, '0.000')"/>
+											<xsl:choose>
+												<xsl:when test="InvoiceQuantity">
+													<!--if CreditLineIndicator is '2', make the InvoiceQuantity a negative number-->
+													<xsl:if test="CreditLineIndicator = '2'"><xsl:text>-</xsl:text></xsl:if>
+													<xsl:value-of select="format-number(InvoiceQuantity, '0.000')"/>
+												</xsl:when>
+												<xsl:otherwise>
+													<xsl:value-of select="format-number($defaultInvoiceQuantity, '0.000')"/>
+												</xsl:otherwise>
+											</xsl:choose> 
 										</InvoicedQuantity>
-										<xsl:if test="CreditQuantity">
-											<CreditedQuantity>
-												<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="normalize-space(CreditQuantity/@unitCode)"/></xsl:attribute>
-												<xsl:choose>
-													<xsl:when test="CreditQuantity">
-														<!--if CreditLineIndicator is '2', make the CreditQuantity a negative number-->
-														<xsl:if test="CreditLineIndicator = '2'"><xsl:text>-</xsl:text></xsl:if>
-														<xsl:value-of select="format-number(CreditQuantity, '0.000')"/>
-													</xsl:when>
-													<xsl:otherwise>
-														<xsl:value-of select="format-number($defaultCreditQuantity, '0.000')"/>
-													</xsl:otherwise>
-												</xsl:choose> 
-											</CreditedQuantity>
 										</xsl:if>
 										<!-- Pack Size is populated by subsequent processors -->
 										<UnitValueExclVAT>
