@@ -6,7 +6,7 @@ Name			| Date				| Change
 **********************************************************************
 R Cambridge | 13/09/2007		| 1439 branched from tsMappingHospitalityBrakesFrozenGroceryInvoiceTradacomsBatch.xsl
 **********************************************************************
-            |           		| 
+Lee Boyton  | 21/09/2007 		| Cater for the UoM being unrecognised by defaulting to each.
 **********************************************************************
             |           		| 
 *******************************************************************-->
@@ -367,7 +367,7 @@ R Cambridge | 13/09/2007		| 1439 branched from tsMappingHospitalityBrakesFrozenG
 			<xsl:when test="contains($vsLowerCaseGivenValue,'pr') "><xsl:text>PR</xsl:text></xsl:when>
 			<xsl:when test="contains($vsLowerCaseGivenValue,'hur') "><xsl:text>HUR</xsl:text></xsl:when>
 			<xsl:otherwise>
-				<xsl:value-of select="$vsGivenValue"/>
+				<xsl:text>EA</xsl:text>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
