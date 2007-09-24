@@ -6,7 +6,7 @@ Name			| Date				| Change
 **********************************************************************
 R Cambridge	| 2007-07-26		| 1332 Created Modele
 **********************************************************************
-				|						|
+Lee Boyton	| 19/07/2007     | 1332 Changes following acceptance testing.
 **********************************************************************
 				|						|
 **********************************************************************
@@ -70,9 +70,7 @@ R Cambridge	| 2007-07-26		| 1332 Created Modele
 							<additionalPartyIdentificationValue>
 								<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersName"/>
 							</additionalPartyIdentificationValue>
-							<additionalPartyIdentificationType>
-								<xsl:value-of select="BUYER_ASSIGNED_IDENTIFIER_FOR_A_PARTY"/>
-							</additionalPartyIdentificationType>
+							<additionalPartyIdentificationType>BUYER_ASSIGNED_IDENTIFIER_FOR_A_PARTY</additionalPartyIdentificationType>
 						</additionalPartyIdentification>
 					</contentOwner>
 				</entityIdentification>
@@ -178,7 +176,12 @@ R Cambridge	| 2007-07-26		| 1332 Created Modele
 							<tradeAgreement>
 								<!-- DG Trading Price Level -->
 								<tradeAgreementReferenceNumber>
-									<xsl:value-of select="PurchaseOrderHeader/PurchaseOrderReferences/TradeAgreement/ContractReference"/>
+									<xsl:choose>
+										<xsl:when test="PurchaseOrderHeader/PurchaseOrderReferences/TradeAgreement/ContractReference">
+											<xsl:value-of select="PurchaseOrderHeader/PurchaseOrderReferences/TradeAgreement/ContractReference"/>
+										</xsl:when>
+										<xsl:otherwise>1</xsl:otherwise>
+									</xsl:choose>
 								</tradeAgreementReferenceNumber>
 							</tradeAgreement>
 							
@@ -205,12 +208,6 @@ R Cambridge	| 2007-07-26		| 1332 Created Modele
 										
 										<unitOfMeasure>
 											<measurementUnitCodeValue>
-												<xsl:for-each select="OrderedQuantity/@UnitOfMeasure">
-													<xsl:choose>
-														<xsl:when test=".='KG'">KG</xsl:when>
-														<xsl:otherwise>UN</xsl:otherwise>
-													</xsl:choose>													
-												</xsl:for-each>											
 												<xsl:value-of select="OrderedQuantity/@UnitOfMeasure"/>
 											</measurementUnitCodeValue>
 										</unitOfMeasure>
