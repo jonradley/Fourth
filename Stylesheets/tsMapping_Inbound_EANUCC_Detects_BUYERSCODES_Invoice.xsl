@@ -131,7 +131,8 @@
 										<xsl:if test="string(/Invoice/Buyer/SellerAssigned) != '' or string(/Invoice/Buyer/BuyerGLN != '')">
 											<SuppliersCode>
 												<xsl:choose>
-													<xsl:when test="string(/Invoice/Buyer/SellerAssigned) != ''">
+													<!-- Only use suppliers code for buyer if it is definitely a GLN -->
+													<xsl:when test="string(/Invoice/Buyer/SellerAssigned) != '' and (string-length(/Invoice/Buyer/SellerAssigned)=14 and translate(/Invoice/Buyer/SellerAssigned ,'1234567890','')='')" >
 														<xsl:value-of select="normalize-space(/Invoice/Buyer/SellerAssigned)"/>
 													</xsl:when>
 													<xsl:otherwise>
@@ -399,7 +400,7 @@
 										</xsl:if>
 										<!-- we default VATCode and Rate if not found in the EAN.UCC document -->
 										<VATCode>
-											<xsl:choose>
+											<xsl:choose> 
 												<xsl:when test="VATDetails/TaxCategory">
 													<xsl:value-of select="normalize-space(VATDetails/TaxCategory)"/>
 												</xsl:when>
@@ -413,7 +414,7 @@
 												<xsl:when test="VATDetails/TaxRate">
 													<xsl:value-of select="format-number(VATDetails/TaxRate, '0.00')"/>
 												</xsl:when>
-												<xsl:otherwise>
+												<xsl:otherwise> 
 													<xsl:value-of select="format-number($defaultTaxRate, '0.00')"/>
 												</xsl:otherwise>
 											</xsl:choose>

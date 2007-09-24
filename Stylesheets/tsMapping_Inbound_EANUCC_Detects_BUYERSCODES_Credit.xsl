@@ -131,7 +131,8 @@
 										<xsl:if test="string(/CreditNote/Buyer/SellerAssigned) != '' or string(/CreditNote/Buyer/BuyerGLN != '')">
 											<SuppliersCode>
 												<xsl:choose>
-													<xsl:when test="string(/CreditNote/Buyer/SellerAssigned) != ''">
+													<!-- Only use suppliers code for buyer if it is definitely a GLN -->
+													<xsl:when test="string(/CreditNote/Buyer/SellerAssigned) != '' and (string-length(/CreditNote/Buyer/SellerAssigned)=14 and translate(/CreditNote/Buyer/SellerAssigned ,'1234567890','')='')" >
 														<xsl:value-of select="normalize-space(/CreditNote/Buyer/SellerAssigned)"/>
 													</xsl:when>
 													<xsl:otherwise>
