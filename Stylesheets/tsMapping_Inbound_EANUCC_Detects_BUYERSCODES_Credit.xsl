@@ -518,7 +518,7 @@
 								</NumberOfLines>
 								
 								<NumberOfItems>
-									<xsl:value-of select="sum(//CreditItem[CreditLineIndicator ='2']/CreditQuantity) - sum(//CreditItem[CreditLineIndicator ='1']/CreditQuantity)"/>
+									<xsl:value-of select="sum(//CreditItem[normalize-space(CreditLineIndicator) ='2']/CreditQuantity) - sum(//CreditItem[normalize-space(CreditLineIndicator) ='1']/CreditQuantity)"/>
 								</NumberOfItems>
 								
 								<!-- EAN.UCC only allows for one delivery per credit -->

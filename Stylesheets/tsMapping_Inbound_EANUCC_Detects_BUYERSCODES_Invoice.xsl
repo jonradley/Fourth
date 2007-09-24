@@ -429,7 +429,7 @@
 									<xsl:value-of select="count(//InvoiceItem)"/>
 								</NumberOfLines>
 								<NumberOfItems>
-									<xsl:value-of select="sum(//InvoiceItem[CreditLineIndicator ='1']/InvoiceQuantity) - sum(//InvoiceItem[CreditLineIndicator ='2']/InvoiceQuantity)"/>
+									<xsl:value-of select="sum(//InvoiceItem[normalize-space(CreditLineIndicator) ='1']/InvoiceQuantity) - sum(//InvoiceItem[normalize-space(CreditLineIndicator) ='2']/InvoiceQuantity)"/>
 								</NumberOfItems>
 								<!-- EAN.UCC only allows for one delivery per Invoice -->
 								<NumberOfDeliveries>
