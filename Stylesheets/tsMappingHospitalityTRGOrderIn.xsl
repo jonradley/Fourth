@@ -93,7 +93,17 @@
 													
 							<PackSize>Pack</PackSize>
 													
-							<UnitValueExclVAT><xsl:value-of select="@MajorUnitPrice"/></UnitValueExclVAT>
+							<UnitValueExclVAT>
+								<xsl:choose>
+									<xsl:when test="@MaxSplits = '1'">
+										
+									</xsl:when>
+									<xsl:otherwise>							
+										<xsl:value-of select="format-number(number(@MajorUnitPrice) / number(@MaxSplits),'0.00')"/>
+									</xsl:otherwise>
+								</xsl:choose>
+							</UnitValueExclVAT>
+							
 							
 						</PurchaseOrderLine>
 						
