@@ -28,61 +28,70 @@
 	
 		<BatchRoot>
 		
-			<PurchaseOrderAcknowledgement>
-			
-				<xsl:for-each select="TradeSimpleHeader">
-			
-					<TradeSimpleHeader>
+			<Batch>
+				<BatchDocuments>
+					<BatchDocument>					
+						<xsl:attribute name="DocumentTypeNo">84</xsl:attribute>
+
+						<PurchaseOrderAcknowledgement>
 						
-						<xsl:call-template  name="swapSRC-RCS">
-							<xsl:with-param name="objNodeList" select="RecipientsCodeForSender | RecipientsBranchReference | RecipientsName | RecipientsAddress"/>
-							<xsl:with-param name="sOldName" select="'Recipient'"/>
-							<xsl:with-param name="sNewName" select="'Sender'"/>
-						</xsl:call-template>
-					
-						<xsl:call-template  name="swapSRC-RCS">
-							<xsl:with-param name="objNodeList" select="SendersCodeForRecipient | SendersBranchReference | SendersName | SendersAddress"/>
-							<xsl:with-param name="sOldName" select="'Sender'"/>
-							<xsl:with-param name="sNewName" select="'Recipient'"/>
-						</xsl:call-template>
+							<xsl:for-each select="TradeSimpleHeader">
 						
-						<xsl:apply-templates select="TestFlag"/>
-						
-					</TradeSimpleHeader>
-					
-				</xsl:for-each>	
-					
-				<xsl:for-each select="PurchaseOrderHeader">
-				
-					<PurchaseOrderAcknowledgementHeader>
+								<TradeSimpleHeader>
+									
+									<xsl:call-template  name="swapSRC-RCS">
+										<xsl:with-param name="objNodeList" select="RecipientsCodeForSender | RecipientsBranchReference | RecipientsName | RecipientsAddress"/>
+										<xsl:with-param name="sOldName" select="'Recipient'"/>
+										<xsl:with-param name="sNewName" select="'Sender'"/>
+									</xsl:call-template>
 								
-						<xsl:apply-templates select="DocumentStatus | Buyer | Supplier | ShipTo | PurchaseOrderReferences"/>
-						
-						<PurchaseOrderAcknowledgementReferences>
-							<PurchaseOrderAcknowledgementReference>
-								<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderReference"/>
-							</PurchaseOrderAcknowledgementReference>
-							<PurchaseOrderAcknowledgementDate>
-								<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderDate"/>
-							</PurchaseOrderAcknowledgementDate>
-						</PurchaseOrderAcknowledgementReferences>
-		
-						<xsl:apply-templates select="OrderedDeliveryDetails"/>					
-						
-					</PurchaseOrderAcknowledgementHeader>
+									<xsl:call-template  name="swapSRC-RCS">
+										<xsl:with-param name="objNodeList" select="SendersCodeForRecipient | SendersBranchReference | SendersName | SendersAddress"/>
+										<xsl:with-param name="sOldName" select="'Sender'"/>
+										<xsl:with-param name="sNewName" select="'Recipient'"/>
+									</xsl:call-template>
+									
+									<xsl:apply-templates select="TestFlag"/>
+									
+								</TradeSimpleHeader>
+								
+							</xsl:for-each>	
+								
+							<xsl:for-each select="PurchaseOrderHeader">
+							
+								<PurchaseOrderAcknowledgementHeader>
+											
+									<xsl:apply-templates select="DocumentStatus | Buyer | Supplier | ShipTo | PurchaseOrderReferences"/>
+									
+									<PurchaseOrderAcknowledgementReferences>
+										<PurchaseOrderAcknowledgementReference>
+											<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderReference"/>
+										</PurchaseOrderAcknowledgementReference>
+										<PurchaseOrderAcknowledgementDate>
+											<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderDate"/>
+										</PurchaseOrderAcknowledgementDate>
+									</PurchaseOrderAcknowledgementReferences>
 					
-				</xsl:for-each>
+									<xsl:apply-templates select="OrderedDeliveryDetails"/>					
+									
+								</PurchaseOrderAcknowledgementHeader>
+								
+							</xsl:for-each>
+							
+							
+							<xsl:for-each select="PurchaseOrderTrailer">
 				
-				
-				<xsl:for-each select="PurchaseOrderTrailer">
-	
-					<PurchaseOrderAcknowledgementTrailer>
-						<xsl:apply-templates select="NumberOfLines | TotalExclVAT"/>
-					</PurchaseOrderAcknowledgementTrailer>
-					
-				</xsl:for-each>
-				
-			</PurchaseOrderAcknowledgement>
+								<PurchaseOrderAcknowledgementTrailer>
+									<xsl:apply-templates select="NumberOfLines | TotalExclVAT"/>
+								</PurchaseOrderAcknowledgementTrailer>
+								
+							</xsl:for-each>
+							
+						</PurchaseOrderAcknowledgement>
+						
+					</BatchDocument>	
+				</BatchDocuments>
+			</Batch>
 			
 		</BatchRoot>
 		
