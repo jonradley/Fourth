@@ -18,6 +18,7 @@
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:template match="/Order">
+		<xsl:variable name="sDateTimeSeperator" select="substring(@OrderDateTime,11,1)"/>
 		<BatchRoot>
 			<PurchaseOrder>
 				<TradeSimpleHeader>
@@ -40,7 +41,6 @@
 						<PurchaseOrderReference>
 							<xsl:value-of select="@OrderID"/>
 						</PurchaseOrderReference>
-						<xsl:variable name="sDateTimeSeperator" select="substring(@OrderDateTime,11,1)"/>
 						<PurchaseOrderDate>
 							<xsl:value-of select="substring-before(@OrderDateTime,$sDateTimeSeperator)"/>
 						</PurchaseOrderDate>
@@ -50,7 +50,7 @@
 					</PurchaseOrderReferences>
 					<OrderedDeliveryDetails>
 						<DeliveryDate>
-							<xsl:value-of select="/@TargetDeliveryDate"/>
+							<xsl:value-of select="substring-before(@TargetDeliveryDate,$sDateTimeSeperator)"/>
 						</DeliveryDate>
 						<xsl:for-each select="@Notes[.!='']">
 							<SpecialDeliveryInstructions>
