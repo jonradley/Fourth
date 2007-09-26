@@ -347,6 +347,19 @@ R Cambridge		| 14/08/2007		| 1348 Added catchweight handling
 		<xsl:attribute name="VATCode">L</xsl:attribute>
 	</xsl:template>
 	
+	<!--Find and replace P&H sap vendor number (10447) to that of SSP's preference (71503)-->
+	<xsl:template match="SendersBranchReference[. ='10447']">
+		<xsl:element name="SendersBranchReference">
+			<xsl:text>71503</xsl:text>
+		</xsl:element>
+	</xsl:template>
+	
+	<xsl:template match="BuyersCode[.='10447']">
+		<xsl:element name="BuyersCode">
+			<xsl:text>71503</xsl:text>
+		</xsl:element>
+	</xsl:template>
+	
 	<msxsl:script language="JScript" implements-prefix="jscript"><![CDATA[ 
 		function toUpperCase(vs) {
 			return vs.toUpperCase();
