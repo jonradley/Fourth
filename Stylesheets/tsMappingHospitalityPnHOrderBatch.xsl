@@ -48,7 +48,20 @@
 		<xsl:text>,</xsl:text>
 		
 		<!-- 1.09 - SSP Vendor No -->
-		<xsl:value-of select="TradeSimpleHeader/RecipientsBranchReference"/>
+		<xsl:choose>
+			<xsl:when test="TradeSimpleHeader/RecipientsBranchReference = '71504'">
+				<xsl:text>504353</xsl:text>
+			</xsl:when>
+			<xsl:when test="TradeSimpleHeader/RecipientsBranchReference = '71502'">
+				<xsl:text>504351</xsl:text>
+			</xsl:when>
+			<xsl:when test="TradeSimpleHeader/RecipientsBranchReference = '71503'">
+				<xsl:text>504352</xsl:text>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="TradeSimpleHeader/RecipientsBranchReference"/>
+			</xsl:otherwise>
+		</xsl:choose>
 		<xsl:text>&#13;&#10;</xsl:text>
 
 		<xsl:for-each select="PurchaseOrderDetail/PurchaseOrderLine">
