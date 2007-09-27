@@ -54,8 +54,21 @@
 		</xsl:element>
 	</xsl:template>
 	
-	<!-- Merge account SSP25T into MIL14T -->
 	<xsl:template match="SendersCodeForRecipient">
+		<xsl:element name="SendersCodeForRecipient">
+		<xsl:choose>
+			<xsl:when test=". = 'SSP25T'">
+				<xsl:value-of select="../../CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="."/>
+			</xsl:otherwise>
+		</xsl:choose>
+		</xsl:element>
+	</xsl:template>	
+	
+	<!-- Merge account SSP25T into MIL14T -->
+	<!--xsl:template match="SendersCodeForRecipient">
 		<xsl:element name="SendersCodeForRecipient">
 			<xsl:choose>
 				<xsl:when test=". = 'SSP25T'">MIL14T</xsl:when>
@@ -84,7 +97,7 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:element>
-	</xsl:template>
+	</xsl:template-->
 
 
 </xsl:stylesheet>
