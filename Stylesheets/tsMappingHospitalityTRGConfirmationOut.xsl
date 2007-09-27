@@ -112,7 +112,7 @@
 			<xsl:value-of select="ProductID/SuppliersProductCode"/>
 		</xsl:attribute>	
 		<xsl:attribute name="Quantity">
-			<xsl:value-of select="format-number(ConfirmedQuantity,'0.000')"/>
+			<xsl:value-of select="format-number(ConfirmedQuantity div MaxSplits,'0.00000000000000')"/>
 		</xsl:attribute>
 		<xsl:attribute name="MajorUnitPrice">
 			<xsl:value-of select="format-number(UnitValueExclVAT,'0.00')"/>
@@ -120,7 +120,9 @@
 		<xsl:attribute name="SupplierPackageGuid">
 			<xsl:value-of select="'{00000000-0000-0000-0000-000000000000}'"/>
 		</xsl:attribute>	
-	
+		<xsl:attribute name="MaxSplits">
+			<xsl:value-of select="MaxSplits"/>
+		</xsl:attribute>	
 	</xsl:template>
 	
 </xsl:stylesheet>
