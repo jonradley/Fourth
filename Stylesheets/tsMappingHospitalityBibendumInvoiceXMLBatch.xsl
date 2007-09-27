@@ -41,7 +41,20 @@
 		</xsl:for-each>
 	</xsl:template>
 	
-	<xsl:template match="SendersBranchReference">
+	<xsl:template match="SendersCodeForRecipient">
+		<xsl:element name="SendersCodeForRecipient">
+		<xsl:choose>
+			<xsl:when test=". = 'SSP25T'">
+				<xsl:value-of select="../../InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="."/>
+			</xsl:otherwise>
+		</xsl:choose>
+		</xsl:element>
+	</xsl:template>
+	
+	<!--xsl:template match="SendersBranchReference">
 		<xsl:element name="SendersBranchReference">
 			<xsl:choose>
 				<xsl:when test=". = 'SSP25T'">MIL14T</xsl:when>
@@ -70,7 +83,7 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:element>
-	</xsl:template>
+	</xsl:template-->
 	
 	<!--Translate UOM based on the Units In Pack value-->
 	<xsl:template match="InvoiceLine/InvoicedQuantity">
