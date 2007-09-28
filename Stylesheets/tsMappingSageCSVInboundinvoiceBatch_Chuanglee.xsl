@@ -3,7 +3,7 @@
 '******************************************************************************************
 ' Overview
 '		
-Generic inbound flat file for Chuanglee (Orchid)
+' Translation of inbound flat file invoice batch for Chuanglee
 ' 
 ' © Alternative Business Solutions Ltd., 2000,2001,2002,2003.
 '******************************************************************************************
@@ -12,6 +12,9 @@ Generic inbound flat file for Chuanglee (Orchid)
 ' Date       | Name            | Description of modification
 '******************************************************************************************
 ' 16/07/2007 | Moty Dimant     | FB: - Created 
+'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+' 28/09/2007 | Lee Boyton      | FB1424. Cope with more than 1 document in the batch.
+'                              |         Corrected VAT sub total translation for standard rate.
 '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 '
 '******************************************************************************************
@@ -27,10 +30,10 @@ Generic inbound flat file for Chuanglee (Orchid)
 			<Batch>
 			
 				<BatchDocuments>
-				
-					<BatchDocument>
-					
+									
 						<xsl:for-each select="/Batch/BatchDocuments/BatchDocument/Invoice">
+
+							<BatchDocument>
 		
 							<Invoice>
 								<TradeSimpleHeader>
@@ -114,6 +117,12 @@ Generic inbound flat file for Chuanglee (Orchid)
 								<InvoiceTrailer>
 								
 									<VATSubTotals>
+
+										<!-- The following fields populated from the flat file mapper are used as place holders and contain values as below  -->
+										<!-- NumberOfLinesAtRate = VAT AMOUNT Z -->
+										<!-- NumberOfItemsAtRate = GOODS AMOUNT Z -->
+										<!-- DocumentTotalExclVATAtRate = VAT AMOUNT S -->
+										<!-- SettlementDiscountAtRate = GOODS AMOUNT S -->
 									
 										<xsl:if test="InvoiceDetail/InvoiceLine/VATCode[.='2']">
 									
@@ -130,9 +139,9 @@ Generic inbound flat file for Chuanglee (Orchid)
 									
 											<VATSubTotal>
 												<xsl:attribute name="VATCode">S</xsl:attribute>
-											<xsl:attribute name="VATRate">17.5</xsl:attribute>
-												<DocumentTotalExclVATAtRate><xsl:value-of select="InvoiceTrailer/VATSubTotals/VATSubTotal/DocumentTotalExclVATAtRate"/></DocumentTotalExclVATAtRate>
-												<VATAmountAtRate><xsl:value-of select="InvoiceTrailer/VATSubTotals/VATSubTotal/SettlementDiscountAtRate"/></VATAmountAtRate>
+												<xsl:attribute name="VATRate">17.5</xsl:attribute>
+												<DocumentTotalExclVATAtRate><xsl:value-of select="InvoiceTrailer/VATSubTotals/VATSubTotal/SettlementDiscountAtRate"/></DocumentTotalExclVATAtRate>
+												<VATAmountAtRate><xsl:value-of select="InvoiceTrailer/VATSubTotals/VATSubTotal/DocumentTotalExclVATAtRate"/></VATAmountAtRate>
 											</VATSubTotal>
 											
 										</xsl:if>
@@ -142,11 +151,11 @@ Generic inbound flat file for Chuanglee (Orchid)
 								</InvoiceTrailer>
 								
 							</Invoice>
+
+							</BatchDocument>
 	
 						</xsl:for-each>
-	
-					</BatchDocument>
-		
+			
 				</BatchDocuments>
 				
 			</Batch>
