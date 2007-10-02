@@ -24,6 +24,8 @@
 ******************************************************************************************
  28/03/2007 | Lee Boyton | 906. Raise an error if the unit code (RCS) is missing.
 ******************************************************************************************
+ 02/10/2007 | Lee Boyton | 1489. Cater for settlement discount.
+******************************************************************************************
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -217,11 +219,11 @@
 		<xsl:value-of select="$Description"/>
 		<xsl:text>,</xsl:text>
 		<xsl:choose>
-			<xsl:when test="/Invoice/InvoiceTrailer/DocumentTotalInclVAT">
-				<xsl:value-of select="format-number(-1 * /Invoice/InvoiceTrailer/DocumentTotalInclVAT,'0.00')"/>
+			<xsl:when test="/Invoice/InvoiceTrailer/SettlementTotalInclVAT">
+				<xsl:value-of select="format-number(-1 * /Invoice/InvoiceTrailer/SettlementTotalInclVAT,'0.00')"/>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:value-of select="format-number(/CreditNote/CreditNoteTrailer/DocumentTotalInclVAT,'0.00')"/>
+				<xsl:value-of select="format-number(/CreditNote/CreditNoteTrailer/SettlementTotalInclVAT,'0.00')"/>
 			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:text>,</xsl:text>
