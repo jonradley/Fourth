@@ -27,6 +27,8 @@
 '						|						|	SSP invoice and use SSP unit code for SCFR.
 '						|						|	Xpath used in internal document: /Invoice/Buyer/BuyerGLN.
 '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+' 02/10/2007   | Lee Boyton   | SSP Amendment. Strip leading digit from 8-digit codes in Buyers Code for ShipTo
+'******************************************************************************************
 '
 '******************************************************************************************
 -->
@@ -74,7 +76,8 @@
 									<xsl:choose>
 										<!-- Buyers Code to be used. -->
 										<xsl:when test="$sCheckFlag ='1' ">
-											<xsl:value-of select="normalize-space(/Invoice/ShipTo/BuyerAssigned)"/>
+											<!-- SSP amendment - ensure leading country code (usually '8') in 8 character codes are removed -->
+											<xsl:value-of select="substring(normalize-space(/Invoice/ShipTo/BuyerAssigned),string-length(normalize-space(/Invoice/ShipTo/BuyerAssigned))-6)"/>
 										</xsl:when>
 										<!-- Sellers code to be used if present. -->
 										<xsl:otherwise>
@@ -104,6 +107,7 @@
 										<xsl:value-of select="normalize-space(/Invoice/Seller/BuyerAssigned)"/>
 									</SendersBranchReference>
 								</xsl:if>
+								
 								<!-- SendersName, Address1 - 4 and PostCode will be populated by subsequent processors  -->
 								<!-- Recipients Code for Sender, Recipients Branch Reference, Name, Address1 - 4, PostCode will be populated by subsequent 	processors -->
 								<!-- the TestFlag will be populated by subsequent processors -->
@@ -218,9 +222,18 @@
 												<xsl:value-of select="normalize-space(/Invoice/ShipTo/ShipToGLN)"/>
 											</GLN>
 										</xsl:if>
-										<xsl:if test="string(/Invoice/ShipTo/BuyerAssigned)">
+										<xsl:if test="string(/Invoice/ShipTo/BuyerAssigned)">										
 											<BuyersCode>
-												<xsl:value-of select="normalize-space(/Invoice/ShipTo/BuyerAssigned)"/>
+												<!-- Detect if a SSP invoice -->
+												<xsl:choose>
+													<xsl:when test="$sCheckFlag ='1' ">
+														<!-- SSP amendment - ensure leading country code (usually '8') in 8 character codes are removed -->
+														<xsl:value-of select="substring(normalize-space(/Invoice/ShipTo/BuyerAssigned),string-length(normalize-space(/Invoice/ShipTo/BuyerAssigned))-6)"/>
+													</xsl:when>
+													<xsl:otherwise>
+														<xsl:value-of select="normalize-space(/Invoice/ShipTo/BuyerAssigned)"/>
+													</xsl:otherwise>
+												</xsl:choose>
 											</BuyersCode>
 										</xsl:if>
 										<xsl:if test="string(/Invoice/ShipTo/SellerAssigned)">
