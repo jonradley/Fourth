@@ -93,7 +93,14 @@
 						<xsl:element name="IdDesc">Suppliers Scan Ref</xsl:element>
 						
 						<xsl:element name="IdCode">
-							<xsl:value-of select="/LynxGoodsReceivedNote/LynxGoodsReceivedNoteHeader/LynxSupplierReferences/ScanRef"/>
+							<xsl:choose>
+								<xsl:when test="/LynxGoodsReceivedNote/LynxGoodsReceivedNoteHeader/Supplier/SuppliersLocationID/SuppliersCode">
+									<xsl:value-of select="/LynxGoodsReceivedNote/LynxGoodsReceivedNoteHeader/Supplier/SuppliersLocationID/SuppliersCode"/>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="/LynxGoodsReceivedNote/LynxGoodsReceivedNoteHeader/LynxSupplierReferences/ScanRef"/>
+								</xsl:otherwise>
+							</xsl:choose>
 						</xsl:element>
 					</xsl:element>
 				</xsl:element>		
