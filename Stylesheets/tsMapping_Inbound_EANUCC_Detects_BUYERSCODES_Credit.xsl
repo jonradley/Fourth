@@ -28,6 +28,8 @@
 														based on changes already made to 
 														tsMapping_Inbound_EANUCC_Detects_BUYERSCODES_Invoice.xsl
 '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+' 02/10/2007  | Lee Boyton   | SSP Amendment. Strip leading digit from 8-digit codes in Buyers Code for ShipTo
+'******************************************************************************************
 '	           |              |	
 '******************************************************************************************
 -->
@@ -72,7 +74,8 @@
 									<xsl:choose>
 										<!-- Buyers Code to be used. -->
 										<xsl:when test="$sCheckFlag ='1' ">
-											<xsl:value-of select="normalize-space(/CreditNote/ShipTo/BuyerAssigned)"/>
+											<!-- SSP amendment - ensure leading country code (usually '8') in 8 character codes are removed -->
+											<xsl:value-of select="substring(normalize-space(/CreditNote/ShipTo/BuyerAssigned),string-length(normalize-space(/CreditNote/ShipTo/BuyerAssigned))-6)"/>										
 										</xsl:when>
 										<!-- Sellers code to be used if present. -->
 										<xsl:otherwise>
@@ -226,7 +229,16 @@
 										</xsl:if>
 										<xsl:if test="string(/CreditNote/ShipTo/BuyerAssigned)">
 											<BuyersCode>
-												<xsl:value-of select="normalize-space(/CreditNote/ShipTo/BuyerAssigned)"/>
+												<!-- Detect if a SSP invoice -->
+												<xsl:choose>
+													<xsl:when test="$sCheckFlag ='1' ">
+														<!-- SSP amendment - ensure leading country code (usually '8') in 8 character codes are removed -->
+														<xsl:value-of select="substring(normalize-space(/CreditNote/ShipTo/BuyerAssigned),string-length(normalize-space(/CreditNote/ShipTo/BuyerAssigned))-6)"/>
+													</xsl:when>
+													<xsl:otherwise>
+														<xsl:value-of select="normalize-space(/CreditNote/ShipTo/BuyerAssigned)"/>
+													</xsl:otherwise>
+												</xsl:choose>
 											</BuyersCode>
 										</xsl:if>
 										<xsl:if test="string(/CreditNote/ShipTo/SellerAssigned)">
