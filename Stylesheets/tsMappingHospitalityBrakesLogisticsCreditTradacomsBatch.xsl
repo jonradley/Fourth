@@ -8,6 +8,11 @@ R Cambridge | 13/09/2007		| 1439 branched from tsMappingHospitalityBrakesFrozenG
 **********************************************************************
 Lee Boyton  | 21/09/2007 		| Cater for the UoM being unrecognised by defaulting to each.
 **********************************************************************
+Lee Boyton  | 02/10/2007     | Cater for zero credited quantity fields.
+                             | Quantity is optional in a credit note and
+                             | should be removed if zero so that the line
+                             | total check succeeds.
+**********************************************************************
             |           		| 
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
@@ -68,21 +73,30 @@ Lee Boyton  | 21/09/2007 		| Cater for the UoM being unrecognised by defaulting 
 			</xsl:call-template>
 		</xsl:variable>
 		
-		<CreditedQuantity>
-			<xsl:attribute name="UnitOfMeasure">
-				<xsl:value-of select="$UoM"/>
-			</xsl:attribute>
-					
-			<xsl:choose>
-				<xsl:when test="$UoM = 'CS' or $UoM = 'EA'">
-					<xsl:value-of select="."/>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="format-number(../Measure/TotalMeasure div 1000,'0.000')"/>
-				</xsl:otherwise>
-			</xsl:choose>
-					
-		</CreditedQuantity>
+		<!-- Only include a CreditedQuantity field if the value is non-zero -->
+		<xsl:choose>
+			<xsl:when test="$UoM = 'CS' or $UoM = 'EA'">				
+				<xsl:if test="number(.) != 0">
+					<CreditedQuantity>
+						<xsl:attribute name="UnitOfMeasure">
+							<xsl:value-of select="$UoM"/>
+						</xsl:attribute>			
+						<xsl:value-of select="."/>
+					</CreditedQuantity>
+				</xsl:if>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:if test="number(../Measure/TotalMeasure) != 0">
+					<CreditedQuantity>
+						<xsl:attribute name="UnitOfMeasure">
+							<xsl:value-of select="$UoM"/>
+						</xsl:attribute>			
+						<xsl:value-of select="format-number(../Measure/TotalMeasure div 1000,'0.000')"/>
+					</CreditedQuantity>
+				</xsl:if>
+			</xsl:otherwise>
+		</xsl:choose>
+		
 	</xsl:template>
 				
 	<!-- CLD-EXLV (CreditNoteLine/LineValueExclVAT) need to be multiplied by -1 if (CreditNoteLine/ProductID/BuyersProductCode) is NOT blank -->
