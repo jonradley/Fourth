@@ -29,6 +29,8 @@
 '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ' 02/10/2007   | Lee Boyton   | SSP Amendment. Strip leading digit from 8-digit codes in Buyers Code for ShipTo
 '******************************************************************************************
+' 05/10/2007   | Lee Boyton   | 1497. SSP Amendment. Strip leading digit from 8-digit codes in Suppliers Code for ShipTo too.
+'******************************************************************************************
 '
 '******************************************************************************************
 -->
@@ -242,7 +244,8 @@
 												<xsl:choose>
 													<!-- Buyers Code to be used. -->
 													<xsl:when test="$sCheckFlag ='1' ">
-														<xsl:value-of select="normalize-space(/Invoice/ShipTo/BuyerAssigned)"/>
+														<!-- SSP amendment - ensure leading country code (usually '8') in 8 character codes are removed -->
+														<xsl:value-of select="substring(normalize-space(/Invoice/ShipTo/BuyerAssigned),string-length(normalize-space(/Invoice/ShipTo/BuyerAssigned))-6)"/>
 													</xsl:when>
 													<!-- Sellers code to be used if present. -->
 													<xsl:otherwise>

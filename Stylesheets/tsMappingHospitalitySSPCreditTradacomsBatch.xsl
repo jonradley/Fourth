@@ -6,7 +6,7 @@ Name				| Date				| Change
 **********************************************************************
 R Cambridge		| 14/08/2007		| 1348 Created module
 **********************************************************************
-         		|           		| 
+Lee Boyton		| 05/10/2007		| 1497. Strip leading digit from 8-digit codes in Suppliers Code for ShipTo.
 **********************************************************************
 
 *******************************************************************-->
@@ -77,7 +77,11 @@ R Cambridge		| 14/08/2007		| 1348 Created module
 			<xsl:value-of select="substring(.,string-length(.)-6)"/>
 		</BuyersCode>	
 	</xsl:template>	
-	
+	<xsl:template match="ShipTo/ShipToLocationID/SuppliersCode">
+		<SuppliersCode>
+			<xsl:value-of select="substring(.,string-length(.)-6)"/>
+		</SuppliersCode>	
+	</xsl:template>	
 	
 	<!-- InvoiceLine/ProductID/BuyersProductCode is used as a placeholder for INVOIC-ILD-CRLI and should not be copied over -->
 	<xsl:template match="BuyersProductCode"/>
