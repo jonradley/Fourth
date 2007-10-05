@@ -40,9 +40,8 @@ A Sheppard	| 16/07/2007 	| Created
 						<BuyersProductCode RecordPos="&quot;D&quot;" LPos="2"/>
 					</ProductID>
 					<ProductDescription RecordPos="&quot;D&quot;" LPos="4"/>
-					<OrderedQuantity RecordPos="&quot;D&quot;" LPos="6">
-						<ffsAttribute1 name="UnitOfMeasure" RecordPos="&quot;D&quot;" LPos="7"/>
-					</OrderedQuantity>
+					<OrderedQuantity RecordPos="&quot;D&quot;" LPos="6"/>
+					<ProductDescription RecordPos="&quot;D&quot;" LPos="7"/>
 				</PurchaseOrderLine>
 			</PurchaseOrderDetail>
 		</PurchaseOrder>
