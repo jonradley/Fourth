@@ -8,7 +8,7 @@ R Cambridge		| 02/08/2007		| 1348 SBR should be SSP's scan ref
 **********************************************************************
 R Cambridge		| 14/08/2007		| 1348 Added catchweight handling
 **********************************************************************
-
+Lee Boyton		| 05/10/2007		| 1497. Strip leading digit from 8-digit codes in Suppliers Code for ShipTo.
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
@@ -79,9 +79,11 @@ R Cambridge		| 14/08/2007		| 1348 Added catchweight handling
 			<xsl:value-of select="substring(.,string-length(.)-6)"/>
 		</BuyersCode>	
 	</xsl:template>
-	
-	
-
+	<xsl:template match="ShipTo/ShipToLocationID/SuppliersCode">
+		<SuppliersCode>
+			<xsl:value-of select="substring(.,string-length(.)-6)"/>
+		</SuppliersCode>	
+	</xsl:template>
 
 	<!-- InvoiceLine/ProductID/BuyersProductCode is used as a placeholder for INVOIC-ILD-CRLI and should not be copied over -->
 	<xsl:template match="BuyersProductCode"/>
