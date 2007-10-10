@@ -66,6 +66,30 @@
 		</xsl:choose>
 		</xsl:element>
 	</xsl:template>	
+
+	<!-- SSP specific change to append the unit of measure onto the product code -->
+	<xsl:template match="ProductID/SuppliersProductCode">
+		<xsl:copy>
+			<xsl:choose>
+				<xsl:when test="../../../../TradeSimpleHeader/SendersCodeForRecipient = 'SSP25T'">
+
+					<!-- translate the Units In Pack value and then append this to the product code -->
+					<xsl:variable name="UOM">
+						<xsl:choose>
+							<xsl:when test="substring(../../Measure/UnitsInPack, 1, 4) = 'CASE'">CS</xsl:when>
+							<xsl:otherwise>EA</xsl:otherwise>
+						</xsl:choose>
+					</xsl:variable>
+				
+					<xsl:value-of select="concat(.,'~',$UOM)"/>
+										
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="."/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:copy>
+	</xsl:template>
 	
 	<!-- Merge account SSP25T into MIL14T -->
 	<!--xsl:template match="SendersCodeForRecipient">
