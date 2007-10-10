@@ -45,7 +45,7 @@
 							<xsl:value-of select="substring-before(@OrderDateTime,$sDateTimeSeperator)"/>
 						</PurchaseOrderDate>
 						<PurchaseOrderTime>
-							<xsl:value-of select="substring-after(@OrderDateTime,$sDateTimeSeperator)"/>
+							<xsl:value-of select="substring-before(substring-after(@OrderDateTime,$sDateTimeSeperator),'.')"/>
 						</PurchaseOrderTime>
 					</PurchaseOrderReferences>
 					<OrderedDeliveryDetails>
