@@ -10,8 +10,6 @@ Lee Boyton		| 05/10/2007		| 1497. Strip leading digit from 8-digit codes in Supp
 **********************************************************************
 **********************************************************************
 Lee Boyton		| 10/10/2007		| 1500. Add branch reference to start of FGN to ensure they are unique.
-**********************************************************************
-R Cambridge		| 11/10/2007		| 1501. Remove batch vat sub totals if no documents have sub-totals at that rate
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
@@ -48,20 +46,6 @@ R Cambridge		| 11/10/2007		| 1501. Remove batch vat sub totals if no documents h
 		<xsl:copy/>
 	</xsl:template>
 	<!-- END of GENERIC HANDLERS -->
-
-
-
-	<!-- 1501 sub sub-totals may be redundent -->
-	<xsl:template match="/Batch/BatchHeader/VATSubTotals/VATSubTotal">
-	
-		<!-- Only create this sub-total if it has corresponding doc-level sub-totals   -->
-		<xsl:if test="/Batch/BatchDocuments/BatchDocument/CreditNote/CreditNoteTrailer/VATSubTotals/VATSubTotal[@VATCode = current()/@VATCode]">
-		
-			<xsl:copy-of select="."/>
-		
-		</xsl:if>
-	
-	</xsl:template>
 
 	<!-- SSP amendment - extract scan ref -->
 	<xsl:template match="//TradeSimpleHeader/SendersBranchReference">
