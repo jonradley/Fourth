@@ -57,7 +57,9 @@ R Cambridge		| 11/10/2007		| 1501. Remove batch vat sub totals if no documents h
 		<!-- Only create this sub-total if it has corresponding doc-level sub-totals   -->
 		<xsl:if test="/Batch/BatchDocuments/BatchDocument/CreditNote/CreditNoteTrailer/VATSubTotals/VATSubTotal[@VATCode = current()/@VATCode]">
 		
-			<xsl:copy-of select="."/>
+			<xsl:copy>
+				<xsl:apply-templates select="* | @*"/>			
+			</xsl:copy>
 		
 		</xsl:if>
 	
