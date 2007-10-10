@@ -47,8 +47,7 @@
 					
 						<PurchaseOrderReference><xsl:value-of select="@OrderID"/></PurchaseOrderReference>
 						<PurchaseOrderDate><xsl:value-of select="substring-before(@OrderDateTime,'T')"/></PurchaseOrderDate>
-						<PurchaseOrderTime><xsl:value-of select="substring-before(substring-after(@OrderDateTime,'T'),'.')"/></PurchaseOrderTime>
-	
+							
 					</PurchaseOrderReferences>
 					
 					
