@@ -10,7 +10,9 @@
 ==========================================================================================
  Date      	| Name 					| Description of modification
 ==========================================================================================
- 06/07/2006	| R Cambridge			| Created module
+ 06/07/2007	| R Cambridge			| Created module
+==========================================================================================
+ 10/11/2007	| R Cambridge			| 1503 Added customer product code
 ==========================================================================================
            	|                 	|
 =======================================================================================-->
@@ -49,6 +51,10 @@
 						<xsl:attribute name="EffectiveDate"><xsl:value-of select="substring(ListOfPrice/Price[1]/EndDate,7,4)"/>-<xsl:value-of select="substring(ListOfPrice/Price[1]/EndDate,4,2)"/>-<xsl:value-of select="substring(ListOfPrice/Price[1]/EndDate,1,2)"/></xsl:attribute>
 						<xsl:attribute name="NewPrice"><xsl:value-of select="ListOfPrice/Price[2]/UnitPrice"/></xsl:attribute>
 					</xsl:if>
+					
+					<xsl:if test="ListOfKeyVal/KeyVal[@Keyword='CustomerProductCode']">
+						<xsl:attribute name="CustomerProductCode"><xsl:value-of select="ListOfKeyVal/KeyVal[@Keyword='CustomerProductCode']"/></xsl:attribute>
+					</xsl:if>					
 					
 				</NewPrice>
 				
