@@ -205,7 +205,7 @@ Overview
 					<ItemIdentification>
 						<GTIN scheme="GTIN">
 							<xsl:choose>
-								<xsl:when test="ProductID/GTIN != '5555555555555'">
+								<xsl:when test="ProductID/GTIN != '55555555555555' and ProductID/GTIN != '5555555555555'">
 									<xsl:value-of select="ProductID/GTIN"/>
 								</xsl:when>
 								<xsl:otherwise>
