@@ -221,14 +221,14 @@
 										<LineNumber>
 											<xsl:value-of select="LineItemNumber"/>
 										</LineNumber>
-										<xsl:if test="/Invoice/OrderReference or /Invoice/TradeAgreementReference/ContractReferenceNumber != ''">
+										<xsl:if test="(/Invoice/OrderReference and  and /Invoice/OrderReference/PurchaseOrderNumber != '') or /Invoice/TradeAgreementReference/ContractReferenceNumber != ''">
 											<PurchaseOrderReferences>
-												<xsl:if test="/Invoice/OrderReference/PurchaseOrderNumber">
+												<xsl:if test="/Invoice/OrderReference/PurchaseOrderNumber and /Invoice/OrderReference/PurchaseOrderNumber != ''">
 													<PurchaseOrderReference>
 														<xsl:value-of select="/Invoice/OrderReference/PurchaseOrderNumber"/>
 													</PurchaseOrderReference>
 												</xsl:if>
-												<xsl:if test="/Invoice/OrderReference/PurchaseOrderNumber">
+												<xsl:if test="/Invoice/OrderReference/PurchaseOrderNumber and /Invoice/OrderReference/PurchaseOrderNumber != ''">
 													<PurchaseOrderDate>
 														<xsl:value-of select="substring-before(/Invoice/OrderReference/PurchaseOrderDate,'T')"/>
 													</PurchaseOrderDate>
