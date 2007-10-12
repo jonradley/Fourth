@@ -30,19 +30,24 @@
 		</BatchRoot>
 	</xsl:template>
 
-	<!-- copy the trade agreement reference to the Seller/SellerAssigned element -->
+	<!-- copy the trade agreement reference to the Seller/SellerAssigned element if it exists
+	     otherwise remove the Seller/SellerAssigned element if not -->
 	<xsl:template match="Seller[not(SellerAssigned)]">
 		<SellerGLN scheme="GLN">
 			<xsl:value-of select="SellerGLN"/>
 		</SellerGLN>
-		<SellerAssigned scheme="OTHER">
-			<xsl:value-of select="//TradeAgreementReference/ContractReferenceNumber"/>
-		</SellerAssigned>
+		<xsl:if test="//TradeAgreementReference/ContractReferenceNumber != ''">
+			<SellerAssigned scheme="OTHER">
+				<xsl:value-of select="//TradeAgreementReference/ContractReferenceNumber"/>
+			</SellerAssigned>
+		</xsl:if>
 	</xsl:template>
 	<xsl:template match="Seller/SellerAssigned">
-		<SellerAssigned scheme="OTHER">
-			<xsl:value-of select="//TradeAgreementReference/ContractReferenceNumber"/>
-		</SellerAssigned>
+		<xsl:if test="//TradeAgreementReference/ContractReferenceNumber != ''">
+			<SellerAssigned scheme="OTHER">
+				<xsl:value-of select="//TradeAgreementReference/ContractReferenceNumber"/>
+			</SellerAssigned>
+		</xsl:if>
 	</xsl:template>
 	
 	<!-- copy the GTIN to the AlternateCode element (removing any leading zeros if present) -->	
