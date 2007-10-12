@@ -4,14 +4,9 @@ Alterations
 **********************************************************************
 Name				| Date				| Change
 **********************************************************************
-R Cambridge		| 02/08/2007		| 1348 SBR should be SSP's scan ref
+Moty Dimant		| 12/10/2007		| 1506 Branched from tsMappingHospitalitySSPInvoiceTradacomsBatch.xsl
 **********************************************************************
-R Cambridge		| 14/08/2007		| 1348 Added catchweight handling
-**********************************************************************
-Lee Boyton		| 05/10/2007		| 1497. Strip leading digit from 8-digit codes in Suppliers Code for ShipTo.
-**********************************************************************
-Lee Boyton		| 10/10/2007		| 1500. Add branch reference to start of FGN to ensure they are unique.
-*******************************************************************-->
+-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
 	
@@ -48,27 +43,11 @@ Lee Boyton		| 10/10/2007		| 1500. Add branch reference to start of FGN to ensure
 	</xsl:template>
 	<!-- END of GENERIC HANDLERS -->
 
-	
-
-	<!-- SSP amendment - extract scan ref -->
+	<!--SSP want only one vendor number for O'Kane. Expecting any of 7 O'Kane SAP# (56893,66072,53752,57107,66152,56894,56892) but output only one (53752)-->
 	<xsl:template match="//TradeSimpleHeader/SendersBranchReference">
-	
-		<SendersBranchReference>
-		
-			<xsl:variable name="sBuyersCode" select="../../InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode"/>
-			
-			<xsl:choose>
-				<xsl:when test="substring($sBuyersCode,1,1)='0'">
-					<xsl:value-of select="substring($sBuyersCode,2,5)"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="substring($sBuyersCode,1,6)"/>
-				</xsl:otherwise>
-			</xsl:choose>
-			
-		</SendersBranchReference>
-		
+		<SendersBranchReference>53752</SendersBranchReference>
 	</xsl:template>
+	
 	
 	<!-- SSP amendment - ensure leading '8' in 8 character codes should be removed -->
 	<xsl:template match="SendersCodeForRecipient">
