@@ -91,6 +91,26 @@
 		</xsl:copy>
 	</xsl:template>
 	
+	<xsl:template match="NumberOfDeliveries">
+		<xsl:element name="NumberOfDeliveries">
+		<xsl:variable name="sCNoteRef">
+			<xsl:value-of select="../../CreditNoteHeader/CreditNoteReferences/CreditNoteReference"/>
+		</xsl:variable>
+		<xsl:variable name="nsDelNoteRefs">
+				<xsl:copy-of select="*"/>
+				<xsl:for-each select="//CreditNote[CreditNoteHeader/CreditNoteReferences/CreditNoteReference = $sCNoteRef]/CreditNoteDetail/CreditNoteLine">
+					<xsl:sort select="DeliveryNoteReferences/DeliveryNoteReference"/>
+					<Line>
+						<DNRef>
+							<xsl:value-of select="DeliveryNoteReferences/DeliveryNoteReference"/>
+						</DNRef>
+					</Line>
+				</xsl:for-each>
+			</xsl:variable>
+		<xsl:value-of select="count(msxsl:node-set($nsDelNoteRefs)/Line[position() = 1 or ./DNRef != preceding-sibling::*[1]/DNRef])"/>
+		</xsl:element>
+	</xsl:template>
+	
 	<!-- Merge account SSP25T into MIL14T -->
 	<!--xsl:template match="SendersCodeForRecipient">
 		<xsl:element name="SendersCodeForRecipient">
