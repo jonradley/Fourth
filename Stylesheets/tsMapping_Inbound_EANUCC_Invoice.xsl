@@ -99,7 +99,7 @@
 										</xsl:if>
 										<xsl:if test="string(/Invoice/Buyer/BuyerAssigned)">
 											<BuyersCode>
-												<xsl:value-of select="/Invoice/Buyer/BuyerAssigned"/>
+												<xsl:value-of select="normalize-space(/Invoice/Buyer/BuyerAssigned)"/>
 											</BuyersCode>
 										</xsl:if>
 										<xsl:if test="string(/Invoice/Buyer/SellerAssigned)">
@@ -152,7 +152,7 @@
 									</SuppliersLocationID>
 									<SuppliersAddress>
 										<AddressLine1>
-											<xsl:value-of select="/Invoice/Seller/Address/BuildingIdentifier"/>
+											<xsl:value-of select="normalize-space(/Invoice/Seller/Address/BuildingIdentifier)"/>
 										</AddressLine1>
 										<xsl:if test="string(/Invoice/Seller/Address/StreetName)">
 											<AddressLine2>
@@ -221,11 +221,11 @@
 										<LineNumber>
 											<xsl:value-of select="LineItemNumber"/>
 										</LineNumber>
-										<xsl:if test="(/Invoice/OrderReference and  and /Invoice/OrderReference/PurchaseOrderNumber != '') or /Invoice/TradeAgreementReference/ContractReferenceNumber != ''">
+										<xsl:if test="(/Invoice/OrderReference and /Invoice/OrderReference/PurchaseOrderNumber != '') or /Invoice/TradeAgreementReference/ContractReferenceNumber != ''">
 											<PurchaseOrderReferences>
 												<xsl:if test="/Invoice/OrderReference/PurchaseOrderNumber and /Invoice/OrderReference/PurchaseOrderNumber != ''">
 													<PurchaseOrderReference>
-														<xsl:value-of select="/Invoice/OrderReference/PurchaseOrderNumber"/>
+														<xsl:value-of select="normalize-space(/Invoice/OrderReference/PurchaseOrderNumber)"/>
 													</PurchaseOrderReference>
 												</xsl:if>
 												<xsl:if test="/Invoice/OrderReference/PurchaseOrderNumber and /Invoice/OrderReference/PurchaseOrderNumber != ''">
@@ -304,7 +304,7 @@
 											</GTIN>
 											<xsl:if test="ItemIdentifier/AlternateCode">
 												<SuppliersProductCode>
-													<xsl:value-of select="ItemIdentifier/AlternateCode"/>
+													<xsl:value-of select="normalize-space(ItemIdentifier/AlternateCode)"/>
 												</SuppliersProductCode>
 											</xsl:if>
 										</ProductID>
