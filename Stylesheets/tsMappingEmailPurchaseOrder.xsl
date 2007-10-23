@@ -17,6 +17,8 @@
 ****************************************************************************************** 
  18/01/2006 | A Sheppard | H548. Change Buyer to Buyer/Invoice To
 ******************************************************************************************
+ 23/10/2007 | Lee Boyton | FB1542. Added contact name
+****************************************************************************************** 
             |            |
 ******************************************************************************************
 -->
@@ -254,6 +256,12 @@
 										<td><xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/></td>
 									</tr>
 								</xsl:if>
+								<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ContactName">
+									<tr>
+										<th width="50%">Contact Name</th>
+										<td><xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ContactName"/></td>
+									</tr>
+								</xsl:if>								
 								<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToName">
 									<tr>
 										<th width="50%">Name</th>
