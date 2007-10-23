@@ -30,187 +30,219 @@ R Cambridge	| 2007-07-26		| 1332 Created Modele
 	<xsl:template match="/sh:StandardBusinessDocument/eanucc:message/order:orderResponse">
 	
 		<xsl:variable name="sResponseType" select="string(@responseStatusType)"/>
+		
+		<BatchRoot>
 	
-		<PurchaseOrderConfirmation>
-			<TradeSimpleHeader>
-				<SendersCodeForRecipient/>
-			</TradeSimpleHeader>
-			<PurchaseOrderConfirmationHeader>
-				<Buyer>
-					<BuyersLocationID>
-						<GLN><xsl:value-of select="buyer/gln"/></GLN>
-						<BuyersCode/>
-						<!-- is this correct as following additionalPartyIdentificationType says "BUYER_ASSIGNED_IDENTIFIER_FOR_A_PARTY" -->
-						<SuppliersCode><xsl:value-of select="buyer/additionalPartyIdentification/additionalPartyIdentificationType"/></SuppliersCode>
-					</BuyersLocationID>
-					<!--BuyersName/>
-					<BuyersAddress>
-						<AddressLine1/>
-						<AddressLine2/>
-						<AddressLine3/>
-						<AddressLine4/>
-						<PostCode/>
-					</BuyersAddress-->
-				</Buyer>
-				<Supplier>
-					<SuppliersLocationID>
-						<GLN><xsl:value-of select="seller/gln"/></GLN>
-						<BuyersCode><xsl:value-of select="seller/additionalPartyIdentification/additionalPartyIdentificationValue"/></BuyersCode>
-						<SuppliersCode/>
-					</SuppliersLocationID>
-					<!--SuppliersName/>
-					<SuppliersAddress>
-						<AddressLine1/>
-						<AddressLine2/>
-						<AddressLine3/>
-						<AddressLine4/>
-						<PostCode/>
-					</SuppliersAddress-->
-				</Supplier>
-				<ShipTo>
-					<ShipToLocationID>
-						<GLN/>
-						<BuyersCode/>
-						<SuppliersCode/>
-					</ShipToLocationID>
-					<ShipToName/>
-					<ShipToAddress>
-						<AddressLine1/>
-						<AddressLine2/>
-						<AddressLine3/>
-						<AddressLine4/>
-						<PostCode/>
-					</ShipToAddress>
-					<ContactName/>
-				</ShipTo>
-				<PurchaseOrderReferences>
-					<PurchaseOrderReference><xsl:value-of select="responseToOriginalDocument/@referenceIdentification"/></PurchaseOrderReference>
-					<PurchaseOrderDate><xsl:value-of select="substring-before(responseToOriginalDocument/@referenceDateTime,'T')"/></PurchaseOrderDate>
-					<PurchaseOrderTime><xsl:value-of select="substring-after(responseToOriginalDocument/@referenceDateTime,'T')"/></PurchaseOrderTime>
-					<!--TradeAgreement>
-						<ContractReference/>
-						<ContractDate/>
-					</TradeAgreement>
-					<CustomerPurchaseOrderReference/>
-					<JobNumber/-->
-				</PurchaseOrderReferences>
-				<PurchaseOrderConfirmationReferences>
-					<PurchaseOrderConfirmationReference><xsl:value-of select="responseToOriginalDocument/@referenceIdentification"/></PurchaseOrderConfirmationReference>
-					<PurchaseOrderConfirmationDate><xsl:value-of select="substring-before(responseToOriginalDocument/@referenceDateTime,'T')"/></PurchaseOrderConfirmationDate>
-				</PurchaseOrderConfirmationReferences>
-				<!--OrderedDeliveryDetails>
-					<DeliveryType/>
-					<DeliveryDate/>
-					<DeliverySlot>
-						<SlotStart/>
-						<SlotEnd/>
-					</DeliverySlot>
-					<DeliveryCutOffDate/>
-					<DeliveryCutOffTime/>
-					<SpecialDeliveryInstructions/>
-				</OrderedDeliveryDetails-->
+			<PurchaseOrderConfirmation>
 				
-				<xsl:for-each select="orderModification/amendedDateTimeValue/requestedDeliveryDate[1]">
+				<TradeSimpleHeader>
+					<SendersCodeForRecipient>
+						<xsl:value-of select="buyer/additionalPartyIdentification[additionalPartyIdentificationType='SELLER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue[1]"/>
+					</SendersCodeForRecipient>
+				</TradeSimpleHeader>
+				
+				<PurchaseOrderConfirmationHeader>
 					
-					<ConfirmedDeliveryDetails>
-						<DeliveryType><xsl:value-of select="date"/></DeliveryType>
-						<DeliveryDate><xsl:value-of select="time"/></DeliveryDate>
-					</ConfirmedDeliveryDetails>
+					<Buyer>
+						<BuyersLocationID>
+							<xsl:for-each select="buyer/gln[1]">
+								<GLN><xsl:value-of select="."/></GLN>
+							</xsl:for-each>
+							<xsl:for-each select="buyer/additionalPartyIdentification[additionalPartyIdentificationType='BUYER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue[1]">
+								<BuyersCode><xsl:value-of select="."/></BuyersCode>
+							</xsl:for-each>
+							<xsl:for-each select="buyer/additionalPartyIdentification[additionalPartyIdentificationType='SELLER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue[1]">
+								<SuppliersCode><xsl:value-of select="."/></SuppliersCode>
+							</xsl:for-each>
+						</BuyersLocationID>
+					</Buyer>
+					
+					<Supplier>
+						<SuppliersLocationID>
+							<xsl:for-each select="seller/gln[1]">
+								<GLN><xsl:value-of select="."/></GLN>
+							</xsl:for-each>
+							<xsl:for-each select="seller/additionalPartyIdentification[additionalPartyIdentificationType='BUYER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue[1]">
+								<BuyersCode><xsl:value-of select="."/></BuyersCode>
+							</xsl:for-each>
+							<SuppliersCode/>
+						</SuppliersLocationID>
+					</Supplier>
+					
+					<ShipTo>
+						<ShipToLocationID>
+							<xsl:for-each select="buyer/additionalPartyIdentification[additionalPartyIdentificationType='BUYER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue[1]">
+								<BuyersCode><xsl:value-of select="."/></BuyersCode>
+							</xsl:for-each>
+							<xsl:for-each select="buyer/additionalPartyIdentification[additionalPartyIdentificationType='SELLER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue[1]">
+								<SuppliersCode><xsl:value-of select="."/></SuppliersCode>
+							</xsl:for-each>
+						</ShipToLocationID>
+					</ShipTo>
+					
+					<PurchaseOrderReferences>
+						<PurchaseOrderReference><xsl:value-of select="responseToOriginalDocument/@referenceIdentification"/></PurchaseOrderReference>
+						<PurchaseOrderDate><xsl:value-of select="substring-before(responseToOriginalDocument/@referenceDateTime,'T')"/></PurchaseOrderDate>
+						<PurchaseOrderTime><xsl:value-of select="substring-after(responseToOriginalDocument/@referenceDateTime,'T')"/></PurchaseOrderTime>
+					</PurchaseOrderReferences>
+					
+					<PurchaseOrderConfirmationReferences>
+						<PurchaseOrderConfirmationReference><xsl:value-of select="responseToOriginalDocument/@referenceIdentification"/></PurchaseOrderConfirmationReference>
+						<PurchaseOrderConfirmationDate><xsl:value-of select="substring-before(responseToOriginalDocument/@referenceDateTime,'T')"/></PurchaseOrderConfirmationDate>
+					</PurchaseOrderConfirmationReferences>
+					
+					<xsl:for-each select="orderModification/amendedDateTimeValue/requestedDeliveryDate[1]">
+						
+						<ConfirmedDeliveryDetails>
+							<DeliveryDate><xsl:value-of select="date"/></DeliveryDate>
+							<!--DeliveryTime><xsl:value-of select="time"/></DeliveryTime-->
+						</ConfirmedDeliveryDetails>
+					
+					</xsl:for-each>
+					
+					<!--SequenceNumber/-->
+					
+					<HeaderExtraData>
+					
+						<xsl:choose>
+							
+							<xsl:when test="$sResponseType = 'ACCEPTED'">
+								<ImplicitLinesStatus>						
+									<xsl:attribute name="LineNarrative"/>
+									<xsl:text>Accepted</xsl:text>
+								</ImplicitLinesStatus>
+							</xsl:when>
+							
+							<xsl:when test="$sResponseType = 'REJECTED'">
+								<ImplicitLinesStatus>
+									<xsl:attribute name="LineNarrative"><xsl:value-of select="orderResponseReasonCode"/></xsl:attribute>
+									<xsl:text>Rejected</xsl:text>
+								</ImplicitLinesStatus>						
+							</xsl:when>
+							
+							<xsl:when test="$sResponseType = 'MODIFIED'">
+								<ImplicitLinesStatus>
+									<xsl:attribute name="LineNarrative"><xsl:value-of select="orderResponseReasonCode"/></xsl:attribute>
+									<xsl:text>Accepted</xsl:text>
+								</ImplicitLinesStatus>						
+							</xsl:when>
+							
+							<xsl:otherwise>
+								<ImplicitLinesStatus>
+									<xsl:attribute name="LineNarrative"><xsl:value-of select="orderResponseReasonCode"/></xsl:attribute>
+									<xsl:text>Unrecognised lines status code recieved from Brake Bros system</xsl:text>
+								</ImplicitLinesStatus>
+							</xsl:otherwise>
+		
+						</xsl:choose>
+	
+					
+					</HeaderExtraData>
+					
+				</PurchaseOrderConfirmationHeader>
 				
-				</xsl:for-each>
+				<PurchaseOrderConfirmationDetail>
 				
-				<SequenceNumber/>
-				<HeaderExtraData>
+					
 				
 					<xsl:choose>
 						
 						<xsl:when test="$sResponseType = 'ACCEPTED'">
-							<ImplicitLinesStatus>						
-								<xsl:attribute name="LineNarrative"/>
-								<xsl:text>Accepted</xsl:text>
-							</ImplicitLinesStatus>
+							<!-- HeaderExtraData/ImplicitLinesStatus will cause tsProcessorHospInFiller to add order lines omitted as 'Accepted' -->
 						</xsl:when>
 						
 						<xsl:when test="$sResponseType = 'REJECTED'">
-							<ImplicitLinesStatus>
-								<xsl:attribute name="LineNarrative"><xsl:value-of select="orderResponseReasonCode"/></xsl:attribute>
-								<xsl:text>Rejected</xsl:text>
-							</ImplicitLinesStatus>						
+							<!-- HeaderExtraData/ImplicitLinesStatus will cause tsProcessorHospInFiller to add order lines omitted as 'Rejected' -->					
 						</xsl:when>
+						
+						<xsl:otherwise>
+						
+							<xsl:for-each select="orderModification/orderModificationLineItemLevel">
+							
+								<PurchaseOrderConfirmationLine>
+									<xsl:attribute name="LineStatus">
+										<xsl:choose>
+											<xsl:when test="number(modifiedOrderInformation/requestedQuantity/value) = 0">Rejected</xsl:when>
+											<xsl:otherwise>Changed</xsl:otherwise>
+										</xsl:choose>
+									</xsl:attribute>
+								
+									<xsl:choose>
+									
+										<xsl:when test="substituteItemIdentification">
+										
+											<ProductID>
+												<GTIN><xsl:value-of select="modifiedOrderInformation/tradeItemIdentification/gtin"/></GTIN>
+												<SuppliersProductCode><xsl:value-of select="modifiedOrderInformation/tradeItemIdentification/additionalTradeItemIdentification[additionalTradeItemIdentificationType='SUPPLIER_ASSIGNED']/additionalTradeItemIdentificationValue"/></SuppliersProductCode>
+												<BuyersProductCode><xsl:value-of select="modifiedOrderInformation/tradeItemIdentification/additionalTradeItemIdentification[additionalTradeItemIdentificationType='BUYER_ASSIGNED']/additionalTradeItemIdentificationValue"/></BuyersProductCode>
+											</ProductID>
+											
+											<SubstitutedProductID>
+												<GTIN><xsl:value-of select="substituteItemIdentification/gtin"/></GTIN>
+												<SuppliersProductCode><xsl:value-of select="substituteItemIdentification/additionalTradeItemIdentification[additionalTradeItemIdentificationType='SUPPLIER_ASSIGNED']/additionalTradeItemIdentificationValue"/></SuppliersProductCode>
+												<BuyersProductCode><xsl:value-of select="substituteItemIdentification/additionalTradeItemIdentification[additionalTradeItemIdentificationType='BUYER_ASSIGNED']/additionalTradeItemIdentificationValue"/></BuyersProductCode>
+											</SubstitutedProductID>
+										
+										</xsl:when>
+										
+										<xsl:otherwise>
+										
+											<ProductID>
+												<GTIN><xsl:value-of select="modifiedOrderInformation/tradeItemIdentification/gtin"/></GTIN>
+												<SuppliersProductCode><xsl:value-of select="modifiedOrderInformation/tradeItemIdentification/additionalTradeItemIdentification[additionalTradeItemIdentificationType='SUPPLIER_ASSIGNED']/additionalTradeItemIdentificationValue"/></SuppliersProductCode>
+												<BuyersProductCode><xsl:value-of select="modifiedOrderInformation/tradeItemIdentification/additionalTradeItemIdentification[additionalTradeItemIdentificationType='BUYER_ASSIGNED']/additionalTradeItemIdentificationValue"/></BuyersProductCode>
+											</ProductID>
+										
+										</xsl:otherwise>									
+									
+									</xsl:choose>								
+								
+									<!--ProductDescription/-->
+									<!--OrderedQuantity><xsl:value-of select="modifiedOrderInformation/requestedQuantity/value"/></OrderedQuantity-->
+									
+									<ConfirmedQuantity>
+									
+										<xsl:attribute name="UnitOfMeasure">										
+											<xsl:call-template name="transUoM">
+												<xsl:with-param name="brakesUoM" select="modifiedOrderInformation/requestedQuantity/unitOfMeasure/measurementUnitCodeValue"/>
+											</xsl:call-template>
+										</xsl:attribute>
+										
+										<xsl:value-of select="modifiedOrderInformation/requestedQuantity/value"/>
+										
+									</ConfirmedQuantity>
+									<!--PackSize/>
+									<UnitValueExclVAT/>
+									<LineValueExclVAT/>
+									<Narrative Code=""/>
+									<LineExtraData/-->
+									
+								</PurchaseOrderConfirmationLine>
+
+							</xsl:for-each>
+	
+						</xsl:otherwise>
 	
 					</xsl:choose>
-
 				
-				</HeaderExtraData>
 				
-			</PurchaseOrderConfirmationHeader>
-			
-			<PurchaseOrderConfirmationDetail>
-			
+				</PurchaseOrderConfirmationDetail>
 				
-			
-				<xsl:choose>
-					
-					<xsl:when test="$sResponseType = 'ACCEPTED'">
-						<!-- HeaderExtraData/ImplicitLinesStatus will cause tsProcessorHospInFiller to add order lines omitted as 'Accepted' -->
-					</xsl:when>
-					
-					<xsl:when test="$sResponseType = 'REJECTED'">
-						<!-- HeaderExtraData/ImplicitLinesStatus will cause tsProcessorHospInFiller to add order lines omitted as 'Rejected' -->					
-					</xsl:when>
+			</PurchaseOrderConfirmation>	
 
-					<xsl:otherwise>
-					
-						<PurchaseOrderConfirmationLine LineStatus="">
-							<LineNumber/>
-							<ProductID>
-								<GTIN/>
-								<SuppliersProductCode/>
-								<BuyersProductCode/>
-							</ProductID>
-							<SubstitutedProductID>
-								<GTIN/>
-								<SuppliersProductCode/>
-								<BuyersProductCode/>
-							</SubstitutedProductID>
-							<ProductDescription/>
-							<OrderedQuantity UnitOfMeasure=""/>
-							<ConfirmedQuantity UnitOfMeasure=""/>
-							<PackSize/>
-							<UnitValueExclVAT/>
-							<LineValueExclVAT/>
-							<!--OrderedDeliveryDetailsLineLevel>
-								<DeliveryDate/>
-								<DeliverySlot>
-									<SlotStart/>
-									<SlotEnd/>
-								</DeliverySlot>
-							</OrderedDeliveryDetailsLineLevel>
-							<ConfirmedDeliveryDetailsLineLevel>
-								<DeliveryDate/>
-								<DeliverySlot>
-									<SlotStart/>
-									<SlotEnd/>
-								</DeliverySlot>
-							</ConfirmedDeliveryDetailsLineLevel-->
-							<Narrative Code=""/>
-							<LineExtraData/>
-						</PurchaseOrderConfirmationLine>
+		</BatchRoot>
+	
+	</xsl:template>
 
-					</xsl:otherwise>
-
-				</xsl:choose>
-			
-			
-			</PurchaseOrderConfirmationDetail>
-			
-			<!--PurchaseOrderConfirmationTrailer>
-				<NumberOfLines/>
-				<TotalExclVAT/>
-				<TrailerExtraData/>
-			</PurchaseOrderConfirmationTrailer-->
-			
-		</PurchaseOrderConfirmation>	
+	<xsl:template name="transUoM">
+		<xsl:param name="brakesUoM"/>
+	
+		<xsl:choose>
+			<xsl:when test="$brakesUoM = 'EA'">EA</xsl:when>
+			<xsl:when test="$brakesUoM = 'UN'">CS</xsl:when>
+			<xsl:when test="$brakesUoM = 'KG'">KGM</xsl:when>
+			<xsl:otherwise>EA</xsl:otherwise>
+		</xsl:choose>
 	
 	</xsl:template>
 
