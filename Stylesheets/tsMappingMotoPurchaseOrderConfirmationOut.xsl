@@ -51,7 +51,7 @@
 				<xsl:text>,</xsl:text>
 				<xsl:value-of select="script:msFormatForCSV(ConfirmedQuantity)"/>
 				<xsl:text>,</xsl:text>
-				<xsl:value-of select="script:msFormatForCSV(ConfirmedQuantity/@UnitOfMeasure)"/>
+				<xsl:value-of select="script:msFormatForCSV(PackSize)"/>
 				<xsl:text>,</xsl:text>
 				<xsl:value-of select="script:msGetLineAction(@LineStatus)"/>
 				<xsl:text>,</xsl:text>
