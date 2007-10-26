@@ -52,9 +52,7 @@
 						<xsl:attribute name="NewPrice"><xsl:value-of select="ListOfPrice/Price[2]/UnitPrice"/></xsl:attribute>
 					</xsl:if>
 					
-					<xsl:if test="ListOfKeyVal/KeyVal[@Keyword='CustomerProductCode']">
-						<xsl:attribute name="CustomerProductCode"><xsl:value-of select="ListOfKeyVal/KeyVal[@Keyword='CustomerProductCode']"/></xsl:attribute>
-					</xsl:if>					
+					<xsl:attribute name="CustomerProductCode"><xsl:value-of select="ListOfKeyVal/KeyVal[@Keyword='CustomerProductCode']"/></xsl:attribute>				
 					
 				</NewPrice>
 				
