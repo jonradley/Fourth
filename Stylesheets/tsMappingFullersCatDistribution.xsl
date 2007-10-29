@@ -61,9 +61,9 @@
           </thead>
           <tbody>
             <tr>
-              <td>Supplier Name:</td>
+              <td>Catalogue Description:</td>
               <td>
-
+			<xsl:value-of select="/PriceCatalog/PriceCatHeader/ListOfDescription/Description"/>
               </td>
             </tr>
             <tr>
