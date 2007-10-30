@@ -14,6 +14,8 @@ Overview
  01/06/2007		| R Cambridge    | 1160 copy of tsMapping_Outbound_EANUCC_PurchaseOrder.xsl 
  													 to force encoding to ASCII (even UTF-8 wouldn't do)
 ******************************************************************************************
+ 22/10/2007		| Lee Boyton		| 1160 Non-OFSCI compliant change to add the Product Description.
+******************************************************************************************
 			  		|                |
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" 
@@ -214,7 +216,13 @@ Overview
 							</xsl:choose>
 						</GTIN>
 					</ItemIdentification>
-				</OrderDetails>			
+					
+					<!-- Coca Cola specific change to add the product description (this is not a valid element in the OFSCI schema.) -->
+					<ProductDescription>
+						<xsl:value-of select="ProductDescription"/>
+					</ProductDescription>
+					
+				</OrderDetails>
 			</xsl:for-each>
 
 			<!-- ~~~~~~~~~~~~~~~~~~~~~~~
