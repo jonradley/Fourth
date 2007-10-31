@@ -41,16 +41,6 @@
 		</xsl:for-each>
 	</xsl:template>
 	
-	<xsl:template match="TradeSimpleHeader">
-		<xsl:element name="TradeSimpleHeader">
-			<xsl:copy-of select="SendersCodeForRecipient"/>
-			<xsl:if test="SendersCodeForRecipient != SendersBranchReference">
-				<xsl:copy-of select="SendersBranchReference"/>
-			</xsl:if>
-		</xsl:element>
-	</xsl:template>
-	
-	
 	<!-- sort all the dates in the file -->
 	<xsl:template match="InvoiceHeader/BatchInformation/FileCreationDate">
 		<xsl:if test=". != ''">
@@ -246,28 +236,9 @@
 			<xsl:value-of select="format-number(. div 100,'0.00')"/>
 		</xsl:element>
 	</xsl:template>
-	<xsl:template match="InvoicedQuantity">
-		<xsl:element name="InvoicedQuantity">
-			<xsl:choose>
-				<xsl:when test="following-sibling::PackSize = 'BOTTLE'">
-					<xsl:value-of select="format-number(.,'0')"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="format-number(. * following-sibling::Measure/UnitsInPack,'0')"/>
-				</xsl:otherwise>
-			</xsl:choose>
-		</xsl:element>
-	</xsl:template>
 	<xsl:template match="UnitValueExclVAT">
 		<xsl:element name="UnitValueExclVAT">
-			<xsl:choose>
-				<xsl:when test="following-sibling::PackSize = 'BOTTLE'">
-					<xsl:value-of select="format-number(. div 10000,'0.0000')"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="format-number((. div following-sibling::Measure/UnitsInPack) div 10000,'0.0000')"/>
-				</xsl:otherwise>
-			</xsl:choose>
+			<xsl:value-of select="format-number(. div 10000,'0.0000')"/>
 		</xsl:element>
 	</xsl:template>
 	<xsl:template match="LineValueExclVAT">
@@ -307,6 +278,23 @@
 	</xsl:template>
 
 
+	<!-- Decode Bibendum's PackSizes -->
+	<xsl:template match="InvoicedQuantity">
+		<xsl:element name="InvoicedQuantity">
+			<xsl:choose>
+				<xsl:when test="contains(following-sibling::PackSize,'CASE')">
+					<xsl:attribute name="UnitOfMeasure">CS</xsl:attribute>
+				</xsl:when>
+				<xsl:when test="following-sibling::PackSize = 'BOTTLE'">
+					<xsl:attribute name="UnitOfMeasure">EA</xsl:attribute>
+				</xsl:when>
+			</xsl:choose>
+			<xsl:value-of select="format-number(.,'0')"/>
+		</xsl:element>
+	</xsl:template>
+
+
+
 	<!-- Sort VATCodes -->
 	<xsl:template match="VATCode">
 		<xsl:element name="VATCode">
@@ -323,15 +311,6 @@
 		</xsl:attribute>
 	</xsl:template>
 
-	<!-- Set all the PackSizes to Bottle -->
-	<xsl:template match="PackSize">
-		<PackSize>BOTTLE</PackSize>
-	</xsl:template>
-
-	<!-- Set all the Units in pack to 1 -->
-	<xsl:template match="UnitsInPack">
-		<UnitsInPack>1</UnitsInPack>
-	</xsl:template>
 	
 	<!--  Format a YYMMDD as YYYY-MM-DD -->
 	<xsl:template name="fixDate">
