@@ -221,9 +221,9 @@
 										<LineNumber>
 											<xsl:value-of select="LineItemNumber"/>
 										</LineNumber>
-										<xsl:if test="(/Invoice/OrderReference and /Invoice/OrderReference/PurchaseOrderNumber != '') or /Invoice/TradeAgreementReference/ContractReferenceNumber != ''">
+										<xsl:if test="(/Invoice/OrderReference and normalize-space(/Invoice/OrderReference/PurchaseOrderNumber) != '') or /Invoice/TradeAgreementReference/ContractReferenceNumber != ''">
 											<PurchaseOrderReferences>
-												<xsl:if test="/Invoice/OrderReference/PurchaseOrderNumber and /Invoice/OrderReference/PurchaseOrderNumber != ''">
+												<xsl:if test="/Invoice/OrderReference/PurchaseOrderNumber and normalize-space(/Invoice/OrderReference/PurchaseOrderNumber) != ''">
 													<PurchaseOrderReference>
 														<xsl:value-of select="normalize-space(/Invoice/OrderReference/PurchaseOrderNumber)"/>
 													</PurchaseOrderReference>
