@@ -30,11 +30,7 @@ R Cambridge	| 30/10/2007	| 1558 Created FSS
 						</TradeSimpleHeader>
 						
 						<InvoiceHeader>
-							<Buyer>
-								<BuyersLocationID>
-									<SuppliersCode RecordLength="16" RecordPos="*" LPos="2"/>
-								</BuyersLocationID>
-							</Buyer>
+							
 							<ShipTo>
 								<ShipToLocationID>
 									<SuppliersCode RecordLength="16" RecordPos="*" LPos="2"/>
@@ -42,11 +38,13 @@ R Cambridge	| 30/10/2007	| 1558 Created FSS
 								<ShipToName RecordLength="16" RecordPos="*" LPos="3"/>
 
 							</ShipTo>
+							
 							<InvoiceReferences>
 								<InvoiceReference RecordLength="16" RecordPos="*" LPos="15"/>
 								<InvoiceDate RecordLength="16" RecordPos="*" LPos="16"/>
 								<TaxPointDate RecordLength="16" RecordPos="*" LPos="16"/>
 							</InvoiceReferences>
+							
 						</InvoiceHeader>
 						
 						<InvoiceDetail>
@@ -77,8 +75,6 @@ R Cambridge	| 30/10/2007	| 1558 Created FSS
 								
 								<LineValueExclVAT RecordLength="16" RecordPos="*" LPos="10"/>
 								
-								<VATCode RecordLength="16" RecordPos="*" LPos="13"/>
-			
 								<VATRate RecordLength="16" RecordPos="*" LPos="11"/>
 								
 							</InvoiceLine>
