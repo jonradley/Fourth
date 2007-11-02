@@ -41,7 +41,7 @@ A Sheppard	| 16/07/2007 	| Created
 					</ProductID>
 					<ProductDescription RecordPos="&quot;D&quot;" LPos="4"/>
 					<OrderedQuantity RecordPos="&quot;D&quot;" LPos="6"/>
-					<ProductDescription RecordPos="&quot;D&quot;" LPos="7"/>
+					<PackSize RecordPos="&quot;D&quot;" LPos="7"/>
 				</PurchaseOrderLine>
 			</PurchaseOrderDetail>
 		</PurchaseOrder>
