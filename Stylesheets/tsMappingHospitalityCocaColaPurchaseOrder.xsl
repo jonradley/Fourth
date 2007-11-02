@@ -16,6 +16,8 @@ Overview
 ******************************************************************************************
  22/10/2007		| Lee Boyton		| 1160 Non-OFSCI compliant change to add the Product Description.
 ******************************************************************************************
+ 30/10/2007 	| Lee Boyton     | 1160 Copy SellerAssigned for ShipTo to the BuyerAssigned for ShipTo
+******************************************************************************************
 			  		|                |
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" 
@@ -146,9 +148,9 @@ Overview
 					<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/GLN"/>
 				</ShipToGLN>
 			
-				<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode">			
+				<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode">
 					<BuyerAssigned scheme="OTHER">
-						<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode"/>
+						<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
 					</BuyerAssigned>
 				</xsl:if>	
 
