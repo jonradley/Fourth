@@ -131,6 +131,13 @@ Lee Boyton	| 19/07/2007     | 1332 Changes following acceptance testing.
 									<gln>
 										<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/>
 									</gln>
+									<!--Brakes Outlet code -->
+									<additionalPartyIdentification>
+										<additionalPartyIdentificationValue>
+											<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
+										</additionalPartyIdentificationValue>
+										<additionalPartyIdentificationType>SELLER_ASSIGNED_IDENTIFIER_FOR_A_PARTY</additionalPartyIdentificationType>
+									</additionalPartyIdentification>
 								</buyer>
 							</orderPartyInformation>
 							
@@ -140,13 +147,6 @@ Lee Boyton	| 19/07/2007     | 1332 Changes following acceptance testing.
 										<gln>
 											<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/GLN"/>
 										</gln>
-										<!--Brakes Outlet code -->
-										<additionalPartyIdentification>
-											<additionalPartyIdentificationValue>
-												<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
-											</additionalPartyIdentificationValue>
-											<additionalPartyIdentificationType>SELLER_ASSIGNED_IDENTIFIER_FOR_A_PARTY</additionalPartyIdentificationType>
-										</additionalPartyIdentification>
 										<!--DG Trading Outlet code -->
 										<additionalPartyIdentification>
 											<additionalPartyIdentificationValue>
