@@ -55,9 +55,11 @@
 =========================================================================================
  24/01/2007		| Lee Boyton	| 705. Food supplier lines should be negative for credit notes.
 =========================================================================================
- 08/05/2007   | Lee Boyton  | 1072. Cater for the Buyers code for Ship-to being blank.
+ 08/05/2007   	| Lee Boyton  	| 1072. Cater for the Buyers code for Ship-to being blank.
 =========================================================================================
- 17/08/2007   | Lee Boyton  | 1383. Strip commas from reference fields as it is the field separator.
+ 17/08/2007   	| Lee Boyton  	| 1383. Strip commas from reference fields as it is the field separator.
+=========================================================================================
+ 05/11/2007 	| A Sheppard	| 1571. Use product group not hard-coded WFOOD
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -171,8 +173,11 @@
 											
 							<xsl:value-of select="translate(//PurchaseOrderReferences[1]/PurchaseOrderReference,',','')"/>
 							<xsl:text>,</xsl:text>
+							<xsl:choose>
+								<xsl:when test="//ProductGroup"><xsl:value-of select="//ProductGroup[1]"/></xsl:when>
+								<xsl:otherwise><xsl:text>WFOOD</xsl:text></xsl:otherwise>
+							</xsl:choose>
 							
-							<xsl:text>WFOOD</xsl:text>
 							<xsl:text>,</xsl:text>
 							
 							<xsl:text>DRY RECIPE COSTING</xsl:text>
