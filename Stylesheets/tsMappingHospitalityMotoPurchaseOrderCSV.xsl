@@ -62,7 +62,7 @@ A Sheppard	| 16/07/2007	| Created Module
 		</DeliveryDate>
 	</xsl:template>
 	
-	<xsl:template match="OrderedQuantity">
+	<xsl:template match="PackSize">
 		<xsl:copy>
 			<xsl:apply-templates select="@*|node()"/>
 		</xsl:copy>
