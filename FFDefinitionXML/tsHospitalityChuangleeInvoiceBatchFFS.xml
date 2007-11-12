@@ -71,7 +71,6 @@
 							<ShipTo>
 								<ShipToLocationID>
 									<SuppliersCode RecordPos="H" LPos="12" UPos="19"/>
-
 								</ShipToLocationID>>
 								<!--ShipToName RecordPos="H" LPos="12" UPos="8"/>
 								<ShipToAddress>
@@ -118,14 +117,18 @@
 							<VATSubTotals>
 								<VATSubTotal>
 									<!-- These fields are just used to carry data to the translator, true semantics described below  -->
-									<!-- VAT AMOUNT Z -->
-									<NumberOfLinesAtRate RecordPos="H" LPos="75" UPos="84"/>
-									<!-- GOODS AMOUNT Z -->
-									<NumberOfItemsAtRate RecordPos="H" LPos="85" UPos="94"/>
-									<!-- VAT AMOUNT S -->
-									<DocumentTotalExclVATAtRate RecordPos="H" LPos="95" UPos="104"/>
-									<!-- GOODS AMOUNT S -->
-									<SettlementDiscountAtRate RecordPos="H" LPos="105" UPos="114"/>
+									<!--VAT CODE IN FIRST COLUMN-->
+									<NumberOfLines RecordPos="H" LPos="57" UPos="60"/>
+									<!-- VAT AMOUNT IN FIRST COLUMN -->
+									<NumberOfLinesAtRate RecordPos="H" LPos="61" UPos="68"/>
+									<!-- GOODS AMOUNT IN FIRST COLUMN -->
+									<NumberOfItemsAtRate RecordPos="H" LPos="69" UPos="75"/>
+									<!--VAT CODE IN SECOND COLUMN-->
+									<NumberOfItems RecordPos="H" LPos="76" UPos="82"/>
+									<!-- VAT AMOUNT IN SECOND COLUMN -->
+									<DocumentTotalExclVATAtRate RecordPos="H" LPos="83" UPos="88"/>
+									<!-- GOODS AMOUNT IN SECOND COLUMN -->
+									<SettlementDiscountAtRate RecordPos="H" LPos="89" UPos="98"/>
 								</VATSubTotal>
 							</VATSubTotals>
 						</InvoiceTrailer>
