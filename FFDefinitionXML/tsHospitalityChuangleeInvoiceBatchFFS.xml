@@ -118,13 +118,13 @@
 								<VATSubTotal>
 									<!-- These fields are just used to carry data to the translator, true semantics described below  -->
 									<!--VAT CODE IN FIRST COLUMN-->
-									<NumberOfLines RecordPos="H" LPos="57" UPos="60"/>
+									<DocumentDiscountAtRate RecordPos="H" LPos="57" UPos="60"/>
 									<!-- VAT AMOUNT IN FIRST COLUMN -->
 									<NumberOfLinesAtRate RecordPos="H" LPos="61" UPos="68"/>
 									<!-- GOODS AMOUNT IN FIRST COLUMN -->
 									<NumberOfItemsAtRate RecordPos="H" LPos="69" UPos="75"/>
 									<!--VAT CODE IN SECOND COLUMN-->
-									<NumberOfItems RecordPos="H" LPos="76" UPos="82"/>
+									<VATAmountAtRate RecordPos="H" LPos="76" UPos="82"/>
 									<!-- VAT AMOUNT IN SECOND COLUMN -->
 									<DocumentTotalExclVATAtRate RecordPos="H" LPos="83" UPos="88"/>
 									<!-- GOODS AMOUNT IN SECOND COLUMN -->
