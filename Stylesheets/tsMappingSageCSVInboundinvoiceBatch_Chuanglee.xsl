@@ -124,28 +124,47 @@
 										<!-- DocumentTotalExclVATAtRate = VAT AMOUNT S -->
 										<!-- SettlementDiscountAtRate = GOODS AMOUNT S -->
 									
-										<xsl:if test="InvoiceDetail/InvoiceLine/VATCode[.='2']">
-									
+								
+										<!--COLUMN ONE-->
+										<xsl:if test="InvoiceTrailer/VATSubTotals/VATSubTotal/DocumentDiscountAtRate[.='2'] and InvoiceTrailer/VATSubTotals/VATSubTotal/NumberOfLinesAtRate[.!=0]">									
 											<VATSubTotal>
 												<xsl:attribute name="VATCode">Z</xsl:attribute>
 												<xsl:attribute name="VATRate">0</xsl:attribute>
-												<DocumentTotalExclVATAtRate><xsl:value-of select="InvoiceTrailer/VATSubTotals/VATSubTotal/NumberOfItemsAtRate"/></DocumentTotalExclVATAtRate>
-												<VATAmountAtRate><xsl:value-of select="InvoiceTrailer/VATSubTotals/VATSubTotal/NumberOfLinesAtRate"/></VATAmountAtRate>
-											</VATSubTotal>
-											
+												<DocumentTotalExclVATAtRate><xsl:value-of select="InvoiceTrailer/VATSubTotals/VATSubTotal/NumberOfLinesAtRate"/></DocumentTotalExclVATAtRate>
+												<VATAmountAtRate><xsl:value-of select="InvoiceTrailer/VATSubTotals/VATSubTotal/NumberOfItemsAtRate"/></VATAmountAtRate>
+											</VATSubTotal>					
 										</xsl:if>
 										
-										<xsl:if test="InvoiceDetail/InvoiceLine/VATCode[.='1']">
-									
+										<xsl:if test="InvoiceTrailer/VATSubTotals/VATSubTotal/DocumentDiscountAtRate[.='1'] and InvoiceTrailer/VATSubTotals/VATSubTotal/NumberOfLinesAtRate[.!=0]">
 											<VATSubTotal>
 												<xsl:attribute name="VATCode">S</xsl:attribute>
 												<xsl:attribute name="VATRate">17.5</xsl:attribute>
-												<DocumentTotalExclVATAtRate><xsl:value-of select="InvoiceTrailer/VATSubTotals/VATSubTotal/SettlementDiscountAtRate"/></DocumentTotalExclVATAtRate>
-												<VATAmountAtRate><xsl:value-of select="InvoiceTrailer/VATSubTotals/VATSubTotal/DocumentTotalExclVATAtRate"/></VATAmountAtRate>
-											</VATSubTotal>
-											
+												<DocumentTotalExclVATAtRate><xsl:value-of select="InvoiceTrailer/VATSubTotals/VATSubTotal/NumberOfLinesAtRate"/></DocumentTotalExclVATAtRate>
+												<VATAmountAtRate><xsl:value-of select="InvoiceTrailer/VATSubTotals/VATSubTotal/NumberOfItemsAtRate"/></VATAmountAtRate>
+											</VATSubTotal>	
+										</xsl:if>	
+										
+										<!--COLUMN TWO-->
+										<xsl:if test="InvoiceTrailer/VATSubTotals/VATSubTotal/VATAmountAtRate[.='2'] and InvoiceTrailer/VATSubTotals/VATSubTotal/DocumentTotalExclVATAtRate[.!=0]">									
+											<VATSubTotal>
+												<xsl:attribute name="VATCode">Z</xsl:attribute>
+												<xsl:attribute name="VATRate">0</xsl:attribute>
+												<DocumentTotalExclVATAtRate><xsl:value-of select="InvoiceTrailer/VATSubTotals/VATSubTotal/DocumentTotalExclVATAtRate"/></DocumentTotalExclVATAtRate>
+												<VATAmountAtRate><xsl:value-of select="InvoiceTrailer/VATSubTotals/VATSubTotal/SettlementDiscountAtRate"/></VATAmountAtRate>
+											</VATSubTotal>					
 										</xsl:if>
 										
+										<xsl:if test="InvoiceTrailer/VATSubTotals/VATSubTotal/VATAmountAtRate[.='1'] and InvoiceTrailer/VATSubTotals/VATSubTotal/DocumentTotalExclVATAtRate[.!=0]">
+											<VATSubTotal>
+												<xsl:attribute name="VATCode">S</xsl:attribute>
+												<xsl:attribute name="VATRate">17.5</xsl:attribute>
+												<DocumentTotalExclVATAtRate><xsl:value-of select="InvoiceTrailer/VATSubTotals/VATSubTotal/DocumentTotalExclVATAtRate"/></DocumentTotalExclVATAtRate>
+												<VATAmountAtRate><xsl:value-of select="InvoiceTrailer/VATSubTotals/VATSubTotal/SettlementDiscountAtRate"/></VATAmountAtRate>
+											</VATSubTotal>	
+										</xsl:if>											
+
+
+												
 									</VATSubTotals>
 									
 								</InvoiceTrailer>
