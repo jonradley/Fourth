@@ -247,6 +247,7 @@ R Cambridge	| 2007-11-13		| 1332 no info to populate Buyer tag
 			<xsl:when test="$brakesUoM = 'EA'">EA</xsl:when>
 			<xsl:when test="$brakesUoM = 'UN'">CS</xsl:when>
 			<xsl:when test="$brakesUoM = 'KG'">KGM</xsl:when>
+			<xsl:when test="$brakesUoM = 'KGM'">KGM</xsl:when>
 			<xsl:otherwise>EA</xsl:otherwise>
 		</xsl:choose>
 	
