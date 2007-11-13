@@ -93,7 +93,7 @@
 							<InvoiceLine>
 								<!--<LineNumber RecordPos="" LPos=""/>-->
 								<PurchaseOrderReferences>
-									<PurchaseOrderReference RecordPos="H" LPos="46" UPos="60"/>
+									<PurchaseOrderReference RecordPos="H" LPos="43" UPos="56"/>
 									<PurchaseOrderDate RecordPos="H" LPos="36" UPos="45"/>
 								</PurchaseOrderReferences>
 								<!--DeliveryNoteReferences>
