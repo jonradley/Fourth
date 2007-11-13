@@ -6,7 +6,7 @@ Name			| Date				| Change
 **********************************************************************
 R Cambridge	| 2007-10-17		| 1332 Created Modele
 **********************************************************************
-				|						|
+R Cambridge	| 2007-11-13		| 1332 no info to populate Buyer tag
 **********************************************************************
 				|						|
 **********************************************************************
@@ -51,20 +51,7 @@ R Cambridge	| 2007-10-17		| 1332 Created Modele
 							
 							<DeliveryNoteHeader>
 								
-								<Buyer>
-									<BuyersLocationID>
-										<xsl:for-each select="receiver/gln[1]">
-											<GLN><xsl:value-of select="."/></GLN>
-										</xsl:for-each>
-										<xsl:for-each select="receiver/additionalPartyIdentification[additionalPartyIdentificationType='BUYER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue[1]">
-											<BuyersCode><xsl:value-of select="."/></BuyersCode>
-										</xsl:for-each>
-										<xsl:for-each select="receiver/additionalPartyIdentification[additionalPartyIdentificationType='SELLER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue[1]">
-											<SuppliersCode><xsl:value-of select="."/></SuppliersCode>
-										</xsl:for-each>
-									</BuyersLocationID>
-								</Buyer>
-								
+
 								<Supplier>
 									<SuppliersLocationID>
 										<xsl:for-each select="shipper/gln">
@@ -100,7 +87,7 @@ R Cambridge	| 2007-10-17		| 1332 Created Modele
 								</DeliveryNoteReferences>
 								
 								<DeliveredDeliveryDetails>
-									<DeliveryDate><xsl:value-of select="substring-before(deliveryNote/referenceDateTime,'T')"/></DeliveryDate>
+									<DeliveryDate><xsl:value-of select="substring-before(estimatedDelivery/estimatedDeliveryDateTime,'T')"/></DeliveryDate>
 								</DeliveredDeliveryDetails>
 								
 							</DeliveryNoteHeader>
@@ -128,7 +115,7 @@ R Cambridge	| 2007-10-17		| 1332 Created Modele
 										
 											<xsl:attribute name="UnitOfMeasure">
 												<xsl:call-template name="transUoM">
-													<xsl:with-param name="brakesUoM"/>
+													<xsl:with-param name="brakesUoM" select="tradeItemUnit/itemContained/quantityContained/measurementValue/@unitOfMeasure"/>
 												</xsl:call-template>
 											</xsl:attribute>
 											
@@ -161,6 +148,7 @@ R Cambridge	| 2007-10-17		| 1332 Created Modele
 			<xsl:when test="$brakesUoM = 'EA'">EA</xsl:when>
 			<xsl:when test="$brakesUoM = 'UN'">CS</xsl:when>
 			<xsl:when test="$brakesUoM = 'KG'">KGM</xsl:when>
+			<xsl:when test="$brakesUoM = 'KGM'">KGM</xsl:when>
 			<xsl:otherwise>EA</xsl:otherwise>
 		</xsl:choose>
 	
