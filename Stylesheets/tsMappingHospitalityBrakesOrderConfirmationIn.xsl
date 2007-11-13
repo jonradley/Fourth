@@ -6,7 +6,7 @@ Name			| Date				| Change
 **********************************************************************
 R Cambridge	| 2007-07-26		| 1332 Created Modele
 **********************************************************************
-				|						|
+R Cambridge	| 2007-11-13		| 1332 no info to populate Buyer tag
 **********************************************************************
 				|						|
 **********************************************************************
@@ -43,7 +43,7 @@ R Cambridge	| 2007-07-26		| 1332 Created Modele
 				
 				<PurchaseOrderConfirmationHeader>
 					
-					<Buyer>
+					<!--Buyer>
 						<BuyersLocationID>
 							<xsl:for-each select="buyer/gln[1]">
 								<GLN><xsl:value-of select="."/></GLN>
@@ -55,7 +55,7 @@ R Cambridge	| 2007-07-26		| 1332 Created Modele
 								<SuppliersCode><xsl:value-of select="."/></SuppliersCode>
 							</xsl:for-each>
 						</BuyersLocationID>
-					</Buyer>
+					</Buyer-->
 					
 					<Supplier>
 						<SuppliersLocationID>
@@ -174,13 +174,17 @@ R Cambridge	| 2007-07-26		| 1332 Created Modele
 											<ProductID>
 												<GTIN><xsl:value-of select="modifiedOrderInformation/tradeItemIdentification/gtin"/></GTIN>
 												<SuppliersProductCode><xsl:value-of select="modifiedOrderInformation/tradeItemIdentification/additionalTradeItemIdentification[additionalTradeItemIdentificationType='SUPPLIER_ASSIGNED']/additionalTradeItemIdentificationValue"/></SuppliersProductCode>
-												<BuyersProductCode><xsl:value-of select="modifiedOrderInformation/tradeItemIdentification/additionalTradeItemIdentification[additionalTradeItemIdentificationType='BUYER_ASSIGNED']/additionalTradeItemIdentificationValue"/></BuyersProductCode>
+												<xsl:for-each select="modifiedOrderInformation/tradeItemIdentification/additionalTradeItemIdentification[additionalTradeItemIdentificationType='BUYER_ASSIGNED']/additionalTradeItemIdentificationValue">
+													<BuyersProductCode><xsl:value-of select="."/></BuyersProductCode>
+												</xsl:for-each>
 											</ProductID>
 											
 											<SubstitutedProductID>
 												<GTIN><xsl:value-of select="substituteItemIdentification/gtin"/></GTIN>
 												<SuppliersProductCode><xsl:value-of select="substituteItemIdentification/additionalTradeItemIdentification[additionalTradeItemIdentificationType='SUPPLIER_ASSIGNED']/additionalTradeItemIdentificationValue"/></SuppliersProductCode>
-												<BuyersProductCode><xsl:value-of select="substituteItemIdentification/additionalTradeItemIdentification[additionalTradeItemIdentificationType='BUYER_ASSIGNED']/additionalTradeItemIdentificationValue"/></BuyersProductCode>
+												<xsl:for-each select="substituteItemIdentification/additionalTradeItemIdentification[additionalTradeItemIdentificationType='BUYER_ASSIGNED']/additionalTradeItemIdentificationValue">
+													<BuyersProductCode><xsl:value-of select="."/></BuyersProductCode>
+												</xsl:for-each>
 											</SubstitutedProductID>
 										
 										</xsl:when>
@@ -190,7 +194,9 @@ R Cambridge	| 2007-07-26		| 1332 Created Modele
 											<ProductID>
 												<GTIN><xsl:value-of select="modifiedOrderInformation/tradeItemIdentification/gtin"/></GTIN>
 												<SuppliersProductCode><xsl:value-of select="modifiedOrderInformation/tradeItemIdentification/additionalTradeItemIdentification[additionalTradeItemIdentificationType='SUPPLIER_ASSIGNED']/additionalTradeItemIdentificationValue"/></SuppliersProductCode>
-												<BuyersProductCode><xsl:value-of select="modifiedOrderInformation/tradeItemIdentification/additionalTradeItemIdentification[additionalTradeItemIdentificationType='BUYER_ASSIGNED']/additionalTradeItemIdentificationValue"/></BuyersProductCode>
+												<xsl:for-each select="modifiedOrderInformation/tradeItemIdentification/additionalTradeItemIdentification[additionalTradeItemIdentificationType='BUYER_ASSIGNED']/additionalTradeItemIdentificationValue">
+													<BuyersProductCode><xsl:value-of select="."/></BuyersProductCode>
+												</xsl:for-each>
 											</ProductID>
 										
 										</xsl:otherwise>									
