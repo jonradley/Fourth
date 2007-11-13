@@ -231,7 +231,7 @@ Lee Boyton	| 19/07/2007     | 1332 Changes following acceptance testing.
 										<additionalTradeItemIdentification>
 											<!-- Text Description of Material -->
 											<additionalTradeItemIdentificationValue>
-												<xsl:value-of select="ProductDescription"/>
+												<xsl:value-of select="substring(ProductDescription,1,35)"/>
 											</additionalTradeItemIdentificationValue>
 											<additionalTradeItemIdentificationType>BUYER_ASSIGNED</additionalTradeItemIdentificationType>
 										</additionalTradeItemIdentification>
