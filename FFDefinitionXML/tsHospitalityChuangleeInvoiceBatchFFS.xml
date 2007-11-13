@@ -39,7 +39,7 @@
 				<BatchDocument>
 					<Invoice>
 						<TradeSimpleHeader>
-							<SendersCodeForRecipient RecordPos="H" LPos="12" UPos="19"/>
+							<SendersCodeForRecipient RecordPos="H" LPos="3" UPos="7"/>
 						</TradeSimpleHeader>
 						<InvoiceHeader>
 							<Buyer>
@@ -70,7 +70,7 @@
 							</Supplier>
 							<ShipTo>
 								<ShipToLocationID>
-									<SuppliersCode RecordPos="H" LPos="12" UPos="19"/>
+									<SuppliersCode RecordPos="H" LPos="3" UPos="7"/>
 								</ShipToLocationID>>
 								<!--ShipToName RecordPos="H" LPos="12" UPos="8"/>
 								<ShipToAddress>
@@ -82,9 +82,9 @@
 								</ShipToAddress-->
 							</ShipTo>
 							<InvoiceReferences>
-								<InvoiceReference RecordPos="H" LPos="20" UPos="29"/>
-								<InvoiceDate RecordPos="H" LPos="30" UPos="39"/>
-								<TaxPointDate RecordPos="H" LPos="40" UPos="49"/>
+								<InvoiceReference RecordPos="H" LPos="16" UPos="25"/>
+								<InvoiceDate RecordPos="H" LPos="26" UPos="35"/>
+								<TaxPointDate RecordPos="H" LPos="36" UPos="45"/>
 								<!--VATRegNo RecordPos="H" LPos="" UPos=""/-->
 							</InvoiceReferences>
 							<!--Currency RecordPos="H" LPos="" UPos=""/-->
@@ -93,8 +93,8 @@
 							<InvoiceLine>
 								<!--<LineNumber RecordPos="" LPos=""/>-->
 								<PurchaseOrderReferences>
-									<PurchaseOrderReference RecordPos="H" LPos="50" UPos="64"/>
-									<PurchaseOrderDate RecordPos="H" LPos="65" UPos="74"/>
+									<PurchaseOrderReference RecordPos="H" LPos="46" UPos="60"/>
+									<PurchaseOrderDate RecordPos="H" LPos="36" UPos="45"/>
 								</PurchaseOrderReferences>
 								<!--DeliveryNoteReferences>
 									<DeliveryNoteReference RecordPos="D" LPos="" UPos=""/>
@@ -102,14 +102,14 @@
 									<DespatchDate RecordPos="" LPos=""/>
 								</DeliveryNoteReferences-->
 								<ProductID>
-									<SuppliersProductCode RecordPos="D" LPos="12" UPos="21"/>
+									<SuppliersProductCode RecordPos="D" LPos="2" UPos="6"/>
 								</ProductID>
 								<!--ProductDescription RecordPos="D" LPos="" UPos=""/-->
-								<InvoicedQuantity RecordPos="D" LPos="22" UPos="31"/>
+								<InvoicedQuantity RecordPos="D" LPos="8" UPos="16"/>
 								<!--PackSize RecordPos="D" LPos="" UPos=""/-->
-								<UnitValueExclVAT RecordPos="D" LPos="32" UPos="41"/>
-								<LineValueExclVAT RecordPos="D" LPos="42" UPos="51"/>
-								<VATCode RecordPos="D" LPos="52" UPos="57"/>
+								<UnitValueExclVAT RecordPos="D" LPos="18" UPos="26"/>
+								<LineValueExclVAT RecordPos="D" LPos="28" UPos="36"/>
+								<VATCode RecordPos="D" LPos="37" UPos="39"/>
 								<!--VATRate RecordPos="D" LPos="" UPos=""/-->
 							</InvoiceLine>
 						</InvoiceDetail>
