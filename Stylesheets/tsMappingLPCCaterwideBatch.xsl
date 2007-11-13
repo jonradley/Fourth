@@ -60,6 +60,8 @@
  17/08/2007   	| Lee Boyton  	| 1383. Strip commas from reference fields as it is the field separator.
 =========================================================================================
  05/11/2007 	| A Sheppard	| 1571. Use product group not hard-coded WFOOD
+=========================================================================================
+ 13/11/2007		| A Sheppard	| Removed extra line for delivery notes
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -266,94 +268,6 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:if>
-		
-		<!--This CDC bit happens for all delivery notes only-->
-		<xsl:if test="/DeliveryNote">
-			<xsl:variable name="sHeader">
-						
-				<xsl:text>1,</xsl:text>
-							
-				<xsl:text>9000</xsl:text>
-				<xsl:text>,</xsl:text>
-				
-				<xsl:value-of select="substring(translate(/*/*/ShipTo/ShipToName,',',''), 1, 30)"/>
-				<xsl:text>,</xsl:text>
-				
-				<xsl:value-of select="translate((/*/*/InvoiceLine | /*/*/CreditNoteLine)/PurchaseOrderReferences/PurchaseOrderReference,',','')"/>
-				<xsl:text>,</xsl:text>
-				
-				<xsl:if test="(/*/*/InvoiceLine | /*/*/CreditNoteLine)/PurchaseOrderReferences/PurchaseOrderDate">
-					<xsl:call-template name="msFormatDate">
-						<xsl:with-param name="vsDate" select="(/*/*/InvoiceLine | /*/*/CreditNoteLine)/PurchaseOrderReferences/PurchaseOrderDate"/>
-					</xsl:call-template>
-				</xsl:if>
-				<xsl:text>,</xsl:text>
-				
-				<xsl:call-template name="msStripLeadingZeros">
-					<xsl:with-param name="vsDNRef" select="translate((/*/*/InvoiceLine | /*/*/CreditNoteLine | /DeliveryNote/DeliveryNoteHeader)/DeliveryNoteReferences/DeliveryNoteReference,',','')"/>
-				</xsl:call-template>
-				<xsl:text>,</xsl:text>
-				
-				<xsl:call-template name="msFormatDate">
-					<xsl:with-param name="vsDate" select="(/Invoice/InvoiceDetail/InvoiceLine/DeliveryNoteReferences/DeliveryNoteDate | /CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteDate | /DeliveryNote/DeliveryNoteHeader/DeliveryNoteReferences/DeliveryNoteDate)"/>
-				</xsl:call-template>
-				<xsl:text>,</xsl:text>
-	
-				<xsl:value-of select="/*/*/Supplier/SuppliersLocationID/SuppliersCode"/>
-				<xsl:text>,</xsl:text>
-				
-				<xsl:text>,</xsl:text>
-				
-				<xsl:text>,</xsl:text>
-				
-			</xsl:variable>
-		
-			<xsl:if test="/*/*/HeaderExtraData[StockSystemIdentifier='CW']">
-				<xsl:text>&#13;&#10;</xsl:text>
-			</xsl:if>
-		
-			<xsl:call-template name="msPad">
-				<xsl:with-param name="vsText" select="$sHeader"/>
-			</xsl:call-template>
-	
-			<xsl:for-each select="/DeliveryNote/DeliveryNoteDetail/DeliveryNoteLine[LineExtraData/IsStockProduct[.='true' or .='1']]">
-							
-				<xsl:variable name="sLine">
-				
-					<xsl:text>2,</xsl:text>
-									
-					<xsl:value-of select="translate(PurchaseOrderReferences/PurchaseOrderReference,',','')"/>
-					<xsl:text>,</xsl:text>
-					
-					<!-- Cater for old documents that do not have a Buyers code, by using the Suppliers code instead -->
-					<xsl:choose>
-						<xsl:when test="ProductID/BuyersProductCode">
-							<xsl:value-of select="translate(ProductID/BuyersProductCode,',','')"/>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="translate(ProductID/SuppliersProductCode,',','')"/>
-						</xsl:otherwise>
-					</xsl:choose>															
-					<xsl:text>,</xsl:text>
-					
-					<xsl:value-of select="translate(ProductDescription,',','')"/>
-					<xsl:text>,</xsl:text>
-					
-					<xsl:text>,</xsl:text>
-					
-					<xsl:value-of select="format-number(-1 * number(DespatchedQuantity), '0')"/>
-								
-				</xsl:variable>
-				
-				<xsl:text>&#13;&#10;</xsl:text>
-				
-				<xsl:call-template name="msPad">
-					<xsl:with-param name="vsText" select="$sLine"/>
-				</xsl:call-template>
-			
-			</xsl:for-each>
-		</xsl:if>
-	
 	</xsl:template>
 
 	<xsl:template match="/*" priority="-9">
