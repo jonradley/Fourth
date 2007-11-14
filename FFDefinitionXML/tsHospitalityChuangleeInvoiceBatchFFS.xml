@@ -39,7 +39,7 @@
 				<BatchDocument>
 					<Invoice>
 						<TradeSimpleHeader>
-							<SendersCodeForRecipient RecordPos="H" LPos="3" UPos="7"/>
+							<SendersCodeForRecipient RecordPos="H" LPos="3" UPos="8"/>
 						</TradeSimpleHeader>
 						<InvoiceHeader>
 							<Buyer>
@@ -70,7 +70,7 @@
 							</Supplier>
 							<ShipTo>
 								<ShipToLocationID>
-									<SuppliersCode RecordPos="H" LPos="3" UPos="7"/>
+									<SuppliersCode RecordPos="H" LPos="3" UPos="8"/>
 								</ShipToLocationID>>
 								<!--ShipToName RecordPos="H" LPos="12" UPos="8"/>
 								<ShipToAddress>
@@ -82,9 +82,9 @@
 								</ShipToAddress-->
 							</ShipTo>
 							<InvoiceReferences>
-								<InvoiceReference RecordPos="H" LPos="16" UPos="25"/>
-								<InvoiceDate RecordPos="H" LPos="26" UPos="35"/>
-								<TaxPointDate RecordPos="H" LPos="36" UPos="45"/>
+								<InvoiceReference RecordPos="H" LPos="14" UPos="23"/>
+								<InvoiceDate RecordPos="H" LPos="24" UPos="33"/>
+								<TaxPointDate RecordPos="H" LPos="34" UPos="43"/>
 								<!--VATRegNo RecordPos="H" LPos="" UPos=""/-->
 							</InvoiceReferences>
 							<!--Currency RecordPos="H" LPos="" UPos=""/-->
@@ -93,14 +93,14 @@
 							<InvoiceLine>
 								<!--<LineNumber RecordPos="" LPos=""/>-->
 								<PurchaseOrderReferences>
-									<PurchaseOrderReference RecordPos="H" LPos="43" UPos="56"/>
-									<PurchaseOrderDate RecordPos="H" LPos="36" UPos="45"/>
+									<PurchaseOrderReference RecordPos="H" LPos="44" UPos="56"/>
+									<PurchaseOrderDate RecordPos="H" LPos="34" UPos="43"/>
 								</PurchaseOrderReferences>
-								<!--DeliveryNoteReferences>
-									<DeliveryNoteReference RecordPos="D" LPos="" UPos=""/>
-									<DeliveryNoteDate RecordPos="D" LPos="" UPos=""/>
-									<DespatchDate RecordPos="" LPos=""/>
-								</DeliveryNoteReferences-->
+								<DeliveryNoteReferences>
+									<DeliveryNoteReference RecordPos="H" LPos="44" UPos="56"/>
+									<DeliveryNoteDate RecordPos="H" LPos="34" UPos="43"/>
+									<DespatchDate RecordPos="H" LPos="34" UPos="43"/>
+								</DeliveryNoteReferences>
 								<ProductID>
 									<SuppliersProductCode RecordPos="D" LPos="2" UPos="6"/>
 								</ProductID>
