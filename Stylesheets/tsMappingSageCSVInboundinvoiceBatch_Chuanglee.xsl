@@ -69,10 +69,10 @@
 								<InvoiceDetail>
 								
 								
-									<xsl:variable name="sPORef" select="string(../../../InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderReference)"/>
+									<xsl:variable name="sPORef" select="string(InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderReference)"/>
 									<xsl:variable name="sPODate">
 										<xsl:call-template name="sFormatDate">
-											<xsl:with-param name="vsDDoMMoYYYY" select="../../../InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderDate"/>
+											<xsl:with-param name="vsDDoMMoYYYY" select="InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderDate"/>
 										</xsl:call-template>
 									</xsl:variable>
 								
@@ -85,9 +85,23 @@
 												<PurchaseOrderReferences>
 													<PurchaseOrderReference><xsl:value-of select="$sPORef"/></PurchaseOrderReference>
 													<PurchaseOrderDate><xsl:value-of select="$sPODate"/></PurchaseOrderDate>
-												</PurchaseOrderReferences>
-												
+												</PurchaseOrderReferences>												
+																
 											</xsl:if>
+											
+											<DeliveryNoteReferences>
+												<DeliveryNoteReference><xsl:value-of select="../InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteReference"/></DeliveryNoteReference>
+												<DeliveryNoteDate>
+													<xsl:call-template name="sFormatDate">
+														<xsl:with-param name="vsDDoMMoYYYY" select="../InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteDate"/>
+													</xsl:call-template>
+												</DeliveryNoteDate>
+												<DespatchDate>
+													<xsl:call-template name="sFormatDate">
+														<xsl:with-param name="vsDDoMMoYYYY" select="../InvoiceLine[1]/DeliveryNoteReferences/DespatchDate"/>
+													</xsl:call-template>
+												</DespatchDate> 
+											</DeliveryNoteReferences>
 											
 											<ProductID>
 												<SuppliersProductCode><xsl:value-of select="ProductID/SuppliersProductCode"/></SuppliersProductCode>
