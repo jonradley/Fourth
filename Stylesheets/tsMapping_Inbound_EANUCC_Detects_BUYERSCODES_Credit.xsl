@@ -538,9 +538,11 @@
 								</NumberOfItems>
 								
 								<!-- EAN.UCC only allows for one delivery per credit -->
-								<NumberOfDeliveries>
-									<xsl:text>1</xsl:text>
-								</NumberOfDeliveries>
+								<xsl:if test="/CreditNote/DespatchReference and /CreditNote/DespatchReference/DespatchDocumentDate">
+									<NumberOfDeliveries>
+										<xsl:text>1</xsl:text>
+									</NumberOfDeliveries>
+								</xsl:if>
 								
 								<DocumentDiscountRate>
 									<xsl:choose>
