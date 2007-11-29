@@ -115,21 +115,33 @@ R Cambridge	| 2007-11-13		| 1332 no info to populate Buyer tag
 							
 							<xsl:when test="$sResponseType = 'REJECTED'">
 								<ImplicitLinesStatus>
-									<xsl:attribute name="LineNarrative"><xsl:value-of select="orderResponseReasonCode"/></xsl:attribute>
+									<xsl:attribute name="LineNarrative">
+										<xsl:call-template name="transReasonCode">
+											<xsl:with-param name="brakesReasonCode" select="orderResponseReasonCode"/>
+										</xsl:call-template>
+									</xsl:attribute>
 									<xsl:text>Rejected</xsl:text>
 								</ImplicitLinesStatus>						
 							</xsl:when>
 							
 							<xsl:when test="$sResponseType = 'MODIFIED'">
 								<ImplicitLinesStatus>
-									<xsl:attribute name="LineNarrative"><xsl:value-of select="orderResponseReasonCode"/></xsl:attribute>
+									<xsl:attribute name="LineNarrative">
+										<xsl:call-template name="transReasonCode">
+											<xsl:with-param name="brakesReasonCode" select="orderResponseReasonCode"/>
+										</xsl:call-template>
+									</xsl:attribute>
 									<xsl:text>Accepted</xsl:text>
 								</ImplicitLinesStatus>						
 							</xsl:when>
 							
 							<xsl:otherwise>
 								<ImplicitLinesStatus>
-									<xsl:attribute name="LineNarrative"><xsl:value-of select="orderResponseReasonCode"/></xsl:attribute>
+									<xsl:attribute name="LineNarrative">
+										<xsl:call-template name="transReasonCode">
+											<xsl:with-param name="brakesReasonCode" select="orderResponseReasonCode"/>
+										</xsl:call-template>
+									</xsl:attribute>
 									<xsl:text>Unrecognised lines status code recieved from Brake Bros system</xsl:text>
 								</ImplicitLinesStatus>
 							</xsl:otherwise>
@@ -217,11 +229,26 @@ R Cambridge	| 2007-11-13		| 1332 no info to populate Buyer tag
 										<xsl:value-of select="modifiedOrderInformation/requestedQuantity/value"/>
 										
 									</ConfirmedQuantity>
+									
 									<!--PackSize/>
 									<UnitValueExclVAT/>
-									<LineValueExclVAT/>
-									<Narrative Code=""/>
-									<LineExtraData/-->
+									<LineValueExclVAT/-->
+									
+									<xsl:variable name="reasonCode">
+										<xsl:call-template name="transReasonCode">
+											<xsl:with-param name="brakesReasonCode" select="orderResponseReasonCode"/>
+										</xsl:call-template>									
+									</xsl:variable>
+									
+									<xsl:if test="$reasonCode != ''">
+									
+										<Narrative>
+											<xsl:value-of select="$reasonCode"/>
+										</Narrative>
+										
+									</xsl:if>
+									
+									<!--LineExtraData/-->
 									
 								</PurchaseOrderConfirmationLine>
 
@@ -252,5 +279,31 @@ R Cambridge	| 2007-11-13		| 1332 no info to populate Buyer tag
 		</xsl:choose>
 	
 	</xsl:template>
+	
+	<xsl:template name="transReasonCode">
+		<xsl:param name="brakesReasonCode"/>
+	
+		<xsl:choose>
+			<xsl:when test="$brakesReasonCode = 'INVALID_BUYER_IDENTIFICATION'">Invalid\wrong Customer account number</xsl:when>
+			<xsl:when test="$brakesReasonCode = 'BUSINESS_SCOPE_BLOCK'">Customer account number on stop</xsl:when>
+			<xsl:when test="$brakesReasonCode = 'CUSTOMER_IDENTIFICATION_NUMBER_DOES_NOT_EXIST'">Customer account number DNU'd</xsl:when>
+			<xsl:when test="$brakesReasonCode = 'DELIVERY_SLOT_NOT_VALID_FOR_LOCATION'">Invalid delivery day is requested</xsl:when>
+			<xsl:when test="$brakesReasonCode = 'RECEIVED_AFTER_CUTOFF_DATE_OR_TIME'">Request delivery cut-off time is missed</xsl:when>
+			<xsl:when test="$brakesReasonCode = 'MISSING_MESSAGE_REFERENCE_NUMBER'">Purchase Order number is missing\invalid</xsl:when>
+			<xsl:when test="$brakesReasonCode = 'MISSING_DATA'">Purchase Card number is missing\invalid</xsl:when>
+			<xsl:when test="$brakesReasonCode = 'BUSINESS_SCOPE_BLOCK'">Minimum Order Level Not Reached</xsl:when>
+			<xsl:when test="$brakesReasonCode = 'INVALID_PRODUCT_OR_ITEM_IDENTIFICATION'">Invalid product code</xsl:when>
+			<xsl:when test="$brakesReasonCode = 'ITEM_NOT_AUTHORIZED'">Product not on ABL</xsl:when>
+			<xsl:when test="$brakesReasonCode = 'PRODUCT_NOT_VALID_FOR_LOCATION'">Product not valid on servicing depot</xsl:when>
+			<xsl:when test="$brakesReasonCode = 'DISCONTINUED_LINE'">Product discontinued\not on sale</xsl:when>
+			<xsl:when test="$brakesReasonCode = 'PRODUCT_OUT_OF_STOCK'">Product out of stock and no sub set up</xsl:when>
+			<xsl:when test="$brakesReasonCode = 'PRODUCT_OUT_OF_STOCK'">Insufficient stock and no sub set up</xsl:when>
+			<xsl:when test="$brakesReasonCode = 'RECEIVED_AFTER_CUTOFF_DATE_OR_TIME'">Product past product cut-off time</xsl:when>
+			<xsl:when test="$brakesReasonCode = 'MISSING_DATA'">Quantity greater than 99</xsl:when>
+			<xsl:otherwise>''</xsl:otherwise>
+		</xsl:choose>
+	
+	</xsl:template>
+
 
 </xsl:stylesheet>
