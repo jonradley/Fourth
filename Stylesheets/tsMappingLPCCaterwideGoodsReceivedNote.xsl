@@ -18,6 +18,8 @@
 ==========================================================================================
  17/08/2007   | Lee Boyton  | 1383. Strip commas from reference fields as it is the field separator.
 =========================================================================================
+ 02/12/2007   | Lee Boyton  | 1571. Use product group not hard-coded WFOOD
+=========================================================================================
               |             |
 =======================================================================================-->
 
@@ -145,7 +147,10 @@
 				<xsl:value-of select="translate(/GoodsReceivedNote/GoodsReceivedNoteHeader/PurchaseOrderReferences/PurchaseOrderReference,',','')"/>
 				<xsl:text>,</xsl:text>
 				
-				<xsl:text>WFOOD</xsl:text>
+				<xsl:choose>
+					<xsl:when test="//ProductGroup"><xsl:value-of select="//ProductGroup[1]"/></xsl:when>
+					<xsl:otherwise><xsl:text>WFOOD</xsl:text></xsl:otherwise>
+				</xsl:choose>
 				<xsl:text>,</xsl:text>
 				
 				<xsl:text>DRY RECIPE COSTING</xsl:text>
