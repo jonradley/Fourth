@@ -13,6 +13,23 @@ R Cambridge	| 2007-11-28		| FB1626
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="xml" encoding="UTF-8" />	
 	
+	
+	<xsl:template match="/">
+		<BatchRoot>
+			<xsl:apply-templates select="@* | node()"/>
+		</BatchRoot>
+	</xsl:template>
+	
+	<xsl:template match="BuyersLocationID">
+	
+		<xsl:copy>
+			<GLN><xsl:value-of select="GLN"/></GLN>
+			<SuppliersCode><xsl:value-of select="GLN"/></SuppliersCode>
+		</xsl:copy>
+	
+	</xsl:template>
+	
+	
 	<xsl:template match="PurchaseOrderDate | PurchaseOrderAcknowledgementDate | DeliveryDate">
 	
 		<xsl:copy>
@@ -39,7 +56,7 @@ R Cambridge	| 2007-11-28		| FB1626
 	
 	</xsl:template>
 	
-	<xsl:template match="/ | @* | node()">
+	<xsl:template match="@* | node()">
 		<xsl:copy>
 			<xsl:apply-templates select="@* | node()"/>
 		</xsl:copy>

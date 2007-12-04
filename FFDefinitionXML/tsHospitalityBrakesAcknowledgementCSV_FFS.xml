@@ -32,7 +32,6 @@ R Cambridge	| 28/11/2007	| 1626 Brakes Logistics will send acknowledgments to La
 						<TradeSimpleHeader>
 							<SendersCodeForRecipient RecordPos="1" LPos="2"/>
 							<SendersBranchReference RecordPos="1" LPos="4"/>
-							<TestFlag RecordPos="0" LPos="2"/>
 						</TradeSimpleHeader>
 						<PurchaseOrderAcknowledgementHeader>
 							<Buyer>
