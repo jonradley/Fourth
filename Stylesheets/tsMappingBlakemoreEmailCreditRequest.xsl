@@ -124,9 +124,9 @@
 									<th align="center">
 										<xsl:text>Request For Credit</xsl:text>
 										<xsl:choose>
-											<xsl:when test="/CreditRequest/CreditRequestHeader/CreditRequestReferences/SuppliersName and not(/CreditRequest/CreditRequestDetail/CreditRequestLine[Narrative='Incorrect number of boxes - for information'])">
+											<xsl:when test="/CreditRequest/CreditRequestHeader/Supplier/SuppliersName and not(/CreditRequest/CreditRequestDetail/CreditRequestLine[Narrative='Incorrect number of boxes - for information'])">
 												<xsl:text> (To be actioned by </xsl:text>
-												<xsl:value-of select="/CreditRequest/CreditRequestHeader/CreditRequestReferences/SuppliersName"/>
+												<xsl:value-of select="/CreditRequest/CreditRequestHeader/Supplier/SuppliersName"/>
 												<xsl:text>)</xsl:text>
 											</xsl:when>
 											<xsl:when test="/CreditRequest/CreditRequestHeader/QualityCreditRequest = 'true' or /CreditRequest/CreditRequestHeader/QualityCreditRequest = '1'">
