@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-**********************************************************************
+<!--******************************************************************
 Alterations
 **********************************************************************
-Name		| Date			| Change
+Name			| Date			| Change
 **********************************************************************
-S Jefford	| 22/08/2005	| GTIN field now sourced from CLD/SPRO(1).
-			|				| CLD/DRLI now stored in BuyersProductCode
+     ?   	|       ?    	|
 **********************************************************************
-			|				|
+R Cambridge	| 11/12/2007	| 1541 Format credit note date
 **********************************************************************
--->
+				|					|
+**********************************************************************
+				|					|
+*******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
 	<!-- NOTE that these string literals are not only enclosed with double quotes, but have single quotes within also-->
@@ -212,6 +213,7 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from CLD/SPRO(1).
 						CreditNoteReferences/CreditNoteDate |
 						BatchInformation/FileCreationDate |
 						InvoiceReferences/InvoiceDate |
+						InvoiceReferences/TaxPointDate |
 						CreditNoteReferences/TaxPointDate">
 		<xsl:copy>
 			<xsl:value-of select="concat('20', substring(., 1, 2), '-', substring(., 3, 2), '-', substring(., 5, 2))"/>
