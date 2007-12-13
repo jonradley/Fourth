@@ -68,8 +68,10 @@ internal XML.
 						</xsl:element>
 						<xsl:copy-of select="ProductDescription"/>
 						<xsl:element name="CreditedQuantity">
+							<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="PackSize"/></xsl:attribute>
 							<xsl:value-of select="CreditedQuantity"/>
 						</xsl:element>
+						<xsl:copy-of select="PackSize"/>
 						<xsl:copy-of select="UnitValueExclVAT"/>
 						<xsl:copy-of select="LineValueExclVAT"/>
 						<xsl:copy-of select="VATCode"/>
