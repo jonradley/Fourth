@@ -109,36 +109,68 @@
 						</PurchaseOrderReference>
 	
 						<xsl:if test="PurchaseOrderConfirmationHeader/PurchaseOrderReferences/PurchaseOrderDate != ''">
+							
 							<xsl:variable name="dtPODate">
 								<xsl:value-of select="PurchaseOrderConfirmationHeader/PurchaseOrderReferences/PurchaseOrderDate"/>
 							</xsl:variable>
-							<PurchaseOrderDate>
-								<xsl:value-of select="concat('20', substring($dtPODate,1,2),'-', substring($dtPODate,3,2),'-',substring($dtPODate,5,2))"/>
+							
+							<PurchaseOrderDate>							
+								<xsl:choose>
+									<xsl:when test="string-length($dtPODate) = 6">
+										<xsl:value-of select="concat('20', substring($dtPODate,1,2),'-', substring($dtPODate,3,2),'-',substring($dtPODate,5,2))"/>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:value-of select="concat(substring($dtPODate,1,4),'-', substring($dtPODate,5,2),'-',substring($dtPODate,7,2))"/>
+									</xsl:otherwise>
+								</xsl:choose>
 							</PurchaseOrderDate>
+							
 						</xsl:if>
 					</PurchaseOrderReferences>
 					
 					<xsl:if test="PurchaseOrderConfirmationHeader/OrderedDeliveryDetails/DeliveryDate != ''">
 						<OrderedDeliveryDetails>
+							
 							<xsl:variable name="dtOrdDelDate">
 								<xsl:value-of select="PurchaseOrderConfirmationHeader/OrderedDeliveryDetails/DeliveryDate"/>
 							</xsl:variable>
-							<DeliveryDate>
-								<xsl:value-of select="concat('20',substring($dtOrdDelDate,1,2),'-',substring($dtOrdDelDate,3,2),'-',substring($dtOrdDelDate,5,2))"/>
+							
+							<DeliveryDate>								
+								<xsl:choose>
+									<xsl:when test="string-length($dtOrdDelDate) = 6">
+										<xsl:value-of select="concat('20',substring($dtOrdDelDate,1,2),'-',substring($dtOrdDelDate,3,2),'-',substring($dtOrdDelDate,5,2))"/>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:value-of select="concat(substring($dtOrdDelDate,1,4),'-',substring($dtOrdDelDate,5,2),'-',substring($dtOrdDelDate,7,2))"/>
+									</xsl:otherwise>
+								</xsl:choose>
 							</DeliveryDate>
+							
 						</OrderedDeliveryDetails>
 					</xsl:if>
 					
 					<xsl:if test="PurchaseOrderConfirmationHeader/ConfirmedDeliveryDetails/DeliveryDate != '' or PurchaseOrderConfirmationHeader/ConfirmedDeliveryDetails/DeliverySlot/SlotStart != '' or PurchaseOrderConfirmationHeader/ConfirmedDeliveryDetails/DeliverySlot/SlotEnd != ''">
 						<ConfirmedDeliveryDetails>
+							
 							<xsl:if test="PurchaseOrderConfirmationHeader/ConfirmedDeliveryDetails/DeliveryDate">
+								
 								<xsl:variable name="sConfDelDate">
 									<xsl:value-of select="PurchaseOrderConfirmationHeader/ConfirmedDeliveryDetails/DeliveryDate"/>
 								</xsl:variable>
+								
 								<DeliveryDate>
-									<xsl:value-of select="concat('20',substring($sConfDelDate,1,2),'-',substring($sConfDelDate,3,2),'-',substring($sConfDelDate,5,2))"/>
+									<xsl:choose>
+										<xsl:when test="string-length($sConfDelDate) = 6">
+											<xsl:value-of select="concat('20',substring($sConfDelDate,1,2),'-',substring($sConfDelDate,3,2),'-',substring($sConfDelDate,5,2))"/>
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:value-of select="concat(substring($sConfDelDate,1,4),'-',substring($sConfDelDate,5,2),'-',substring($sConfDelDate,7,2))"/>
+										</xsl:otherwise>
+									</xsl:choose>	
 								</DeliveryDate>
+								
 							</xsl:if>
+							
 							<xsl:if test="PurchaseOrderConfirmationHeader/ConfirmedDeliveryDetails/DeliverySlot/SlotStart != '' or PurchaseOrderConfirmationHeader/ConfirmedDeliveryDetails/DeliverySlot/SlotEnd != ''">
 								<DeliverySlot>
 									<xsl:if test="PurchaseOrderConfirmationHeader/ConfirmedDeliveryDetails/DeliverySlot/SlotStart != ''">
