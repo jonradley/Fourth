@@ -300,7 +300,7 @@ R Cambridge	| 2007-11-13		| 1332 no info to populate Buyer tag
 			<xsl:when test="$brakesReasonCode = 'PRODUCT_OUT_OF_STOCK'">Insufficient stock and no sub set up</xsl:when>
 			<xsl:when test="$brakesReasonCode = 'RECEIVED_AFTER_CUTOFF_DATE_OR_TIME'">Product past product cut-off time</xsl:when>
 			<xsl:when test="$brakesReasonCode = 'MISSING_DATA'">Quantity greater than 99</xsl:when>
-			<xsl:otherwise>''</xsl:otherwise>
+			<xsl:otherwise></xsl:otherwise>
 		</xsl:choose>
 	
 	</xsl:template>
