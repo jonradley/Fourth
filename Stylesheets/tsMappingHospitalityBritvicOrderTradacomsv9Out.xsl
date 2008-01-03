@@ -20,6 +20,8 @@
  08/09/2006	|	Nigel Emsen		| Case 341: Addin Spiecal delivery instructions.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  29/09/2006	|	Nigel Emsen		|	Case 398: spiceal delivery address
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 03/01/2008	|	R Cambridge		|	1687 move from SKU in OLD/SPRO to EAN in SACU
 ==========================================================================================
 -->
 
@@ -272,15 +274,23 @@
 			
 				<!-- ITEM  SEQA   { First level sequence number             } -->
 				<xsl:value-of select="count(preceding-sibling::* | self::*)"/>
-				<xsl:text>+:</xsl:text>
+				<xsl:text>+</xsl:text>
 				
 				<!-- ITEM  SPRO   { Supplier's product number               } -->
+				<!--xsl:call-template name="msCheckField">
+					<xsl:with-param name="vobjNode" select="ProductID/SuppliersProductCode"/>
+					<xsl:with-param name="vnLength" select="30"/>
+				</xsl:call-template-->
+				
+				
+				<!-- ITEM  SACU   { Supplier's EAN number               } -->
+				<xsl:text>+</xsl:text>
 				<xsl:call-template name="msCheckField">
 					<xsl:with-param name="vobjNode" select="ProductID/SuppliersProductCode"/>
 					<xsl:with-param name="vnLength" select="30"/>
 				</xsl:call-template>
 				
-				<xsl:text>+++::</xsl:text>
+				<xsl:text>++::</xsl:text>
 				<xsl:value-of select="js:msSafeText(string(OrderedQuantity/@UnitOfMeasure),6)"/>
 				<xsl:text>+</xsl:text>
 				
