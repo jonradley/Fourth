@@ -18,6 +18,8 @@ Overview
 ******************************************************************************************
  30/10/2007 	| Lee Boyton     | 1160 Copy SellerAssigned for ShipTo to the BuyerAssigned for ShipTo
 ******************************************************************************************
+ 03/01/2007 	| Lee Boyton     | 1678 Truncate the product description field to 40 characters.
+******************************************************************************************
 			  		|                |
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" 
@@ -26,7 +28,7 @@ Overview
 	xmlns:script="http://mycompany.com/mynamespace" 
 	xmlns:msxsl="urn:schemas-microsoft-com:xslt" 
 	exclude-result-prefixes="xsl fo script msxsl">
-	<xsl:output method="xml" encoding="utf-8"/>
+	<xsl:output method="xml" encoding="ISO-8859-1"/>
 	
 	<xsl:template match="/">
 		<Order>
@@ -221,7 +223,7 @@ Overview
 					
 					<!-- Coca Cola specific change to add the product description (this is not a valid element in the OFSCI schema.) -->
 					<ProductDescription>
-						<xsl:value-of select="ProductDescription"/>
+						<xsl:value-of select="substring(ProductDescription,1,40)"/>
 					</ProductDescription>
 					
 				</OrderDetails>
