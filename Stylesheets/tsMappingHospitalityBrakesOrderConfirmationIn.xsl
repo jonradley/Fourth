@@ -8,6 +8,8 @@ R Cambridge	| 2007-07-26		| 1332 Created Modele
 **********************************************************************
 R Cambridge	| 2007-11-13		| 1332 no info to populate Buyer tag
 **********************************************************************
+R Cambridge	| 2008-01-03		| 1686 revised rejection codes
+**********************************************************************
 				|						|
 **********************************************************************
 				|						|				
@@ -284,11 +286,13 @@ R Cambridge	| 2007-11-13		| 1332 no info to populate Buyer tag
 		<xsl:param name="brakesReasonCode"/>
 	
 		<xsl:choose>
+			
+			<!-- translations, as specified by Kewill to Brakes -->
 			<xsl:when test="$brakesReasonCode = 'INVALID_BUYER_IDENTIFICATION'">Invalid\wrong Customer account number</xsl:when>
 			<xsl:when test="$brakesReasonCode = 'BUSINESS_SCOPE_BLOCK'">Customer account number on stop</xsl:when>
 			<xsl:when test="$brakesReasonCode = 'CUSTOMER_IDENTIFICATION_NUMBER_DOES_NOT_EXIST'">Customer account number DNU'd</xsl:when>
 			<xsl:when test="$brakesReasonCode = 'DELIVERY_SLOT_NOT_VALID_FOR_LOCATION'">Invalid delivery day is requested</xsl:when>
-			<xsl:when test="$brakesReasonCode = 'RECEIVED_AFTER_CUTOFF_DATE_OR_TIME'">Request delivery cut-off time is missed</xsl:when>
+			<xsl:when test="$brakesReasonCode = 'DELIVERY_SLOT_MISSED'">Request delivery cut-off time is missed</xsl:when>
 			<xsl:when test="$brakesReasonCode = 'MISSING_MESSAGE_REFERENCE_NUMBER'">Purchase Order number is missing\invalid</xsl:when>
 			<xsl:when test="$brakesReasonCode = 'MISSING_DATA'">Purchase Card number is missing\invalid</xsl:when>
 			<xsl:when test="$brakesReasonCode = 'BUSINESS_SCOPE_BLOCK'">Minimum Order Level Not Reached</xsl:when>
@@ -299,8 +303,11 @@ R Cambridge	| 2007-11-13		| 1332 no info to populate Buyer tag
 			<xsl:when test="$brakesReasonCode = 'PRODUCT_OUT_OF_STOCK'">Product out of stock and no sub set up</xsl:when>
 			<xsl:when test="$brakesReasonCode = 'PRODUCT_OUT_OF_STOCK'">Insufficient stock and no sub set up</xsl:when>
 			<xsl:when test="$brakesReasonCode = 'RECEIVED_AFTER_CUTOFF_DATE_OR_TIME'">Product past product cut-off time</xsl:when>
-			<xsl:when test="$brakesReasonCode = 'MISSING_DATA'">Quantity greater than 99</xsl:when>
+			<xsl:when test="$brakesReasonCode = 'UNAUTHORIZED_BUSINESS_PROCESS_STATE'">Quantity greater than 99</xsl:when>
+			
+			<!-- default -->
 			<xsl:otherwise></xsl:otherwise>
+			
 		</xsl:choose>
 	
 	</xsl:template>
