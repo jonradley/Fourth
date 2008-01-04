@@ -223,9 +223,13 @@
 								<xsl:for-each select="/Invoice/InvoiceItem">
 									<xsl:sort select="LineItemNumber"/>
 									<InvoiceLine>
-										<LineNumber>
-											<xsl:value-of select="LineItemNumber"/>
-										</LineNumber>
+										
+										<xsl:if test="LineItemNumber!=0">										
+											<LineNumber>
+												<xsl:value-of select="LineItemNumber"/>
+											</LineNumber>
+										</xsl:if>
+											
 										<xsl:if test="/Invoice/OrderReference or /Invoice/TradeAgreementReference/ContractReferenceNumber != ''">
 											<PurchaseOrderReferences>
 												<xsl:if test="/Invoice/OrderReference/PurchaseOrderNumber">
@@ -284,7 +288,9 @@
 												</xsl:if>
 											</DeliveryNoteReferences>
 										</xsl:if>
-										<xsl:if test="/Invoice/ReceiptAdviceReference">
+										
+										<xsl:if test="/Invoice/ReceiptAdviceReference[translate(ReceiptAdviceDocumentNumber,' ','')!='' and string(/Invoice/ReceiptAdviceReference/ReceiptAdviceDocumentDate)!='']">
+											
 											<GoodsReceivedNoteReferences>
 												<GoodsReceivedNoteReference>
 													<xsl:value-of select="/Invoice/ReceiptAdviceReference/ReceiptAdviceDocumentNumber"/>
@@ -295,6 +301,7 @@
 													</GoodsReceivedNoteDate>
 												</xsl:if>
 											</GoodsReceivedNoteReferences>
+			
 										</xsl:if>
 										<ProductID>
 											<GTIN>
