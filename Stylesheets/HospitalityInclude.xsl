@@ -276,5 +276,45 @@ function gdGetTotal()
 {
 	return mdTotal;
 }
+
+/*=========================================================================================
+' Routine       	 : gsFormatFixedWidth
+' Description 	 : Formats the string to a fixed width
+' Inputs          	 : String
+' Outputs       	 : None
+' Returns       	 : String of the correct length
+' Author       		 : A Sheppard, 07/01/2008
+' Alterations   	 : 
+'========================================================================================*/
+function gsFormatFixedWidth(vsString, vlLength)
+{
+	var vTest = vsString + ' ';
+	if(vTest == null)
+	{
+		if(vsString.length > 0)
+		{
+			vsString = vsString(0).text;
+		}
+		else
+		{
+			vsString = ''
+		}
+	}
+
+	if(vsString.length > vlLength)
+	{
+		vsString = vsString.substr(0,vlLength);
+	}
+	else
+	{
+		while(vsString.length < vlLength)
+		{
+			vsString = vsString + ' ';
+		}
+	}
+	
+	return vsString;
+		
+}
 ]]></msxsl:script>
 </xsl:stylesheet>
