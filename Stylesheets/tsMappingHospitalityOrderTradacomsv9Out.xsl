@@ -15,7 +15,9 @@
 ==========================================================================================
  13/03/2006	| Lee Boyton      	|	H574. Turned into Tradacoms version 9.
 ==========================================================================================
- 23/05/2007 	|	Nigel Emsen			|	FB 972: Amendments to handle Marstons promotions.
+ 23/05/2007	|	Nigel Emsen			|	FB 972: Amendments to handle Marstons promotions.
+==========================================================================================
+ 07/01/2008	| R Cambridge			|	1556 don't truncate product description
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -236,10 +238,9 @@
 				<xsl:text>+</xsl:text>
 				<xsl:text>+</xsl:text>
 				<!-- truncate to 40 TDES = 9030 = AN..40-->
-				<xsl:call-template name="msCheckField">
-					<xsl:with-param name="vobjNode" select="ProductDescription"/>
-					<xsl:with-param name="vnLength" select="40"/>
-				</xsl:call-template>
+				<!-- 1556 Just truncate, don't raise an error for values greater than 40 chars -->
+				<xsl:value-of select="js:msSafeText(string(ProductDescription),40)"/>
+
 				
 				
 			<xsl:value-of select="$sRecordSep"/>
