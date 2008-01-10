@@ -24,16 +24,6 @@
 		<!--Line Details-->
 		<xsl:if test="/Report/LineDetails/LineDetail">
 			<xsl:for-each select="/Report/LineDetails/LineDetail">
-				<xsl:if test="script:mbNeedHeader(Columns/Column[@GroupBy = '1' or @GroupBy = 'true'])">
-					<xsl:for-each select="Columns/Column[@GroupBy = '1' or @GroupBy = 'true']">
-						<xsl:variable name="ColumnID"><xsl:value-of select="@ID"/></xsl:variable>
-						<xsl:value-of select="script:msFormatForCSV(/Report/LineDetails/Columns/Column[@ID = $ColumnID])"/><xsl:text>,</xsl:text><xsl:value-of select="script:msFormatForCSV(.)"/><xsl:text>&#xD;</xsl:text>
-					</xsl:for-each>
-					<xsl:for-each select="/Report/LineDetails/Columns/Column[(@GroupBy != '1' and @GroupBy != 'true') or not(@GroupBy)]">
-						<xsl:value-of select="script:msFormatForCSV(.)"/><xsl:text>,</xsl:text>
-					</xsl:for-each>
-					<xsl:text>&#xD;</xsl:text>
-				</xsl:if>
 				<xsl:for-each select="Columns/Column[(@GroupBy != '1' and @GroupBy != 'true') or not(@GroupBy)]">
 					<xsl:value-of select="script:msFormatForCSV(.)"/><xsl:text>,</xsl:text>
 				</xsl:for-each>
