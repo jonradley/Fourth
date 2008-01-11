@@ -66,7 +66,7 @@
 						<!-- MANDATORY VATTLR - VRS - VVAT (File VAT sub-total)-->
 						<VATAmountAtRate RecordPos="VATSUMMARY" LPos="6"/>
 						<!-- MANDATORY VATTLR - VRS - VPSE (File sub-total payable excluding discount) [ unless blank, then use VPSI ]-->
-						<DocumentTotalInclVATAtRate RecordPos="VATSUMMARY" LPos="7"/>
+						<DocumentTotalInclVATAtRate RecordPos="VATSUMMARY" LPos="8"/>
 						<!-- MANDATORY VATTLR - VRS - VPSI (File sub-total payable including discount) -->
 						<SettlementTotalInclVATAtRate RecordPos="VATSUMMARY" LPos="8"/>
 						<ffsAttribute1 name="VATCode" RecordPos="VATSUMMARY" LPos="2"/>
@@ -74,7 +74,7 @@
 					</VATSubTotal>
 				</VATSubTotals>
 				<!-- MANDATORY INVTLR - TOT - FASE (File total amount ex VAT ex discount) -->
-				<DocumentTotalExclVAT RecordPos="INVTOTALS" LPos="2"/>
+				<DocumentTotalExclVAT RecordPos="INVTOTALS" LPos="3"/>
 				<!-- MANDATORY INVTLR - TOT - FASI (File total amount ex VAT inc discount) -->
 				<SettlementTotalExclVAT RecordPos="INVTOTALS" LPos="3"/>
 				<!-- MANDATORY INVTLR - TOT - FVAT (File total VAT) -->
@@ -89,7 +89,7 @@
 					<Invoice>
 						<TradeSimpleHeader>
 							<SendersCodeForRecipient RecordPos="CUSTOMER" LPos="2"/>
-							<SendersBranchReference RecordPos="SUPPLIER" LPos="2"/>
+							<!--SendersBranchReference RecordPos="SUPPLIER" LPos="2"/-->
 						</TradeSimpleHeader>
 						<InvoiceHeader>
 							<!--BatchInformation>
@@ -110,7 +110,7 @@
 									<AddressLine2 RecordPos="CUSTOMER" LPos="5"/>
 									<AddressLine3 RecordPos="CUSTOMER" LPos="6"/>
 									<AddressLine4 RecordPos="CUSTOMER" LPos="7"/>
-									<PostCode RecordPos="CUSTOMER" LPos="8"/>
+									<PostCode RecordPos="CUSTOMER" LPos="10"/>
 								</BuyersAddress>
 							</Buyer>
 							<Supplier>
@@ -136,7 +136,7 @@
 									<AddressLine2 RecordPos="INVHDR" LPos="5"/>
 									<AddressLine3 RecordPos="INVHDR" LPos="6"/>
 									<AddressLine4 RecordPos="INVHDR" LPos="7"/>
-									<PostCode RecordPos="INVHDR" LPos="8"/>
+									<PostCode RecordPos="INVHDR" LPos="10"/>
 								</ShipToAddress>
 							</ShipTo>
 							<InvoiceReferences>
@@ -186,21 +186,21 @@
 								<VATSubTotal>
 									<NumberOfLinesAtRate RecordPos="VATSUBTLR" LPos="4"/>
 									<!--NumberOfItemsAtRate RecordPos="V" LPos="5"/-->
-									<DocumentTotalExclVATAtRate RecordPos="VATSUBTLR" LPos="10"/>
-									<SettlementDiscountAtRate RecordPos="VATSUBTLR" LPos="11"/>
-									<SettlementTotalExclVATAtRate RecordPos="VATSUBTLR" LPos="12"/>
+									<DocumentTotalExclVATAtRate RecordPos="VATSUBTLR" LPos="12"/>
+									<!--SettlementDiscountAtRate RecordPos="VATSUBTLR" LPos="11"/-->
+									<!--SettlementTotalExclVATAtRate RecordPos="VATSUBTLR" LPos="12"/-->
 									<VATAmountAtRate RecordPos="VATSUBTLR" LPos="13"/>
-									<DocumentTotalInclVATAtRate RecordPos="VATSUBTLR" LPos="14"/>
+									<DocumentTotalInclVATAtRate RecordPos="VATSUBTLR" LPos="15"/>
 									<SettlementTotalInclVATAtRate RecordPos="VATSUBTLR" LPos="15"/>
 									<ffsAttribute1 name="VATCode" RecordPos="VATSUBTLR" LPos="2"/>
 									<ffsAttribute1 name="VATRate" RecordPos="VATSUBTLR" LPos="3"/>
 								</VATSubTotal>
 							</VATSubTotals>
-							<DocumentTotalExclVAT RecordPos="INVTLR" LPos="8"/>
-							<SettlementDiscount RecordPos="INVTLR" LPos="9"/>
+							<DocumentTotalExclVAT RecordPos="INVTLR" LPos="10"/>
+							<!--SettlementDiscount RecordPos="INVTLR" LPos="9"/-->
 							<SettlementTotalExclVAT RecordPos="INVTLR" LPos="10"/>
 							<VATAmount RecordPos="INVTLR" LPos="11"/>
-							<DocumentTotalInclVAT RecordPos="INVTLR" LPos="12"/>
+							<DocumentTotalInclVAT RecordPos="INVTLR" LPos="13"/>
 							<SettlementTotalInclVAT RecordPos="INVTLR" LPos="13"/>
 						</InvoiceTrailer>
 					</Invoice>
