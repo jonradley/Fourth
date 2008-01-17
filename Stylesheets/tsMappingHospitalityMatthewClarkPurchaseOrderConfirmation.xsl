@@ -27,14 +27,16 @@
 	<!-- copy the trade agreement reference to the Seller/SellerAssigned element if it exists
 	     otherwise remove the Seller/SellerAssigned element if not -->
 	<xsl:template match="Seller[not(SellerAssigned)]">
-		<SellerGLN scheme="GLN">
-			<xsl:value-of select="SellerGLN"/>
-		</SellerGLN>
-		<xsl:if test="//TradeAgreementReference/ContractReferenceNumber != ''">
-			<SellerAssigned scheme="OTHER">
-				<xsl:value-of select="//TradeAgreementReference/ContractReferenceNumber"/>
-			</SellerAssigned>
-		</xsl:if>
+		<xsl:copy>
+			<SellerGLN scheme="GLN">
+				<xsl:value-of select="SellerGLN"/>
+			</SellerGLN>
+			<xsl:if test="//TradeAgreementReference/ContractReferenceNumber != ''">
+				<SellerAssigned scheme="OTHER">
+					<xsl:value-of select="//TradeAgreementReference/ContractReferenceNumber"/>
+				</SellerAssigned>
+			</xsl:if>
+		</xsl:copy>
 	</xsl:template>
 	<xsl:template match="Seller/SellerAssigned">
 		<xsl:if test="//TradeAgreementReference/ContractReferenceNumber != ''">
