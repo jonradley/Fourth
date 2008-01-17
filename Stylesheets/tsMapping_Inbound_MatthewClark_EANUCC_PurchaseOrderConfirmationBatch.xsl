@@ -12,7 +12,7 @@
 ******************************************************************************************
  11/12/2007  	| R Cambridge   	| 1657 temporary logic for Aramark SBR requirements
 ******************************************************************************************
-             	|               	|          
+ 11/12/2007  	| R Cambridge   	| 1657 SBR read from contract ref
 ******************************************************************************************
              	|               	|        
 ***************************************************************************************-->
@@ -58,15 +58,15 @@
 								
 								
 								<xsl:choose>
-									<xsl:when test="/OrderConfirmation/Seller/SellerAssigned != '' ">
+									<xsl:when test="/OrderConfirmation/TradeAgreementReference/ContractReferenceNumber  != '' ">
 										<SendersBranchReference>
-											<xsl:value-of select="/OrderConfirmation/Seller/SellerAssigned"/>
+											<xsl:value-of select="/OrderConfirmation/TradeAgreementReference/ContractReferenceNumber"/>
 										</SendersBranchReference>
 									</xsl:when>
 									
-									<xsl:when test="/OrderConfirmation/ShipTo/SellerAssigned = '50377314' or /OrderConfirmation/ShipTo/SellerAssigned = '50205796'">
+									<!--xsl:when test="/OrderConfirmation/ShipTo/SellerAssigned = '50377314' or /OrderConfirmation/ShipTo/SellerAssigned = '50205796'">
 										<SendersBranchReference>1AA</SendersBranchReference>
-									</xsl:when>
+									</xsl:when-->
 									
 									<xsl:otherwise/>
 									

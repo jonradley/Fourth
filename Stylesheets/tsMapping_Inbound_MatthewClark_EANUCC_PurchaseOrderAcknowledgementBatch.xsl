@@ -57,15 +57,15 @@
 								
 								
 								<xsl:choose>
-									<xsl:when test="/OrderAcknowledgement/Seller/SellerAssigned != '' ">
+									<xsl:when test="/OrderAcknowledgement/TradeAgreementReference/ContractReferenceNumber != '' ">
 										<SendersBranchReference>
-											<xsl:value-of select="/OrderAcknowledgement/Seller/SellerAssigned"/>
+											<xsl:value-of select="/OrderAcknowledgement/TradeAgreementReference/ContractReferenceNumber"/>
 										</SendersBranchReference>
 									</xsl:when>
 									
-									<xsl:when test="/OrderAcknowledgement/ShipTo/SellerAssigned = '50377314' or /OrderAcknowledgement/ShipTo/SellerAssigned = '50205796'">
+									<!--xsl:when test="/OrderAcknowledgement/ShipTo/SellerAssigned = '50377314' or /OrderAcknowledgement/ShipTo/SellerAssigned = '50205796'">
 										<SendersBranchReference>1AA</SendersBranchReference>
-									</xsl:when>
+									</xsl:when-->
 									
 									<xsl:otherwise/>
 									
