@@ -177,7 +177,7 @@
 										</PurchaseOrderTime>	
 									</xsl:if>			
 									
-									<xsl:if test="/OrderAcknowledgement/TradeAgreementReference">
+									<xsl:if test="string(/OrderAcknowledgement/TradeAgreementReference/ContractReferenceNumber) != ''">
 										<TradeAgreement>
 											<ContractReference>
 												<xsl:value-of select="/OrderAcknowledgement/TradeAgreementReference/ContractReferenceNumber"/>
