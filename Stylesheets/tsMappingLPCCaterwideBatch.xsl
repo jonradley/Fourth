@@ -68,6 +68,8 @@
  13/12/2007		| Lee Boyton	| 995. Spec change. No longer need the extra header for the food line.
 =========================================================================================
  19/12/2007		| Lee Boyton	| 995. and back gain. Extra header for the food line required.
+=========================================================================================
+ 17/01/2008		| Lee Boyton	| 1704. /FOOD is too long for Caterwide, needs to be just /FD.
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -146,10 +148,13 @@
 					<xsl:text>,</xsl:text>
 
 					<!-- the consolidated food line has the same header as the individual non-food stock lines except for the delivery note reference
-					     which has /FOOD appended to the end of it -->
-					<xsl:call-template name="msStripLeadingZeros">
-						<xsl:with-param name="vsDNRef" select="concat(translate((/*/*/InvoiceLine | /*/*/CreditNoteLine | /*/*/DebitNoteLine | /DeliveryNote/DeliveryNoteHeader | /GoodsReceivedNote/GoodsReceivedNoteHeader)/DeliveryNoteReferences/DeliveryNoteReference,',',''),'/FOOD')"/>
-					</xsl:call-template>
+					     which has /FD appended to the end of it -->
+					<xsl:variable name="DNRef">
+						<xsl:call-template name="msStripLeadingZeros">
+							<xsl:with-param name="vsDNRef" select="translate((/*/*/InvoiceLine | /*/*/CreditNoteLine | /*/*/DebitNoteLine | /DeliveryNote/DeliveryNoteHeader | /GoodsReceivedNote/GoodsReceivedNoteHeader)/DeliveryNoteReferences/DeliveryNoteReference,',','')"/>
+						</xsl:call-template>
+					</xsl:variable>
+					<xsl:value-of select="concat($DNRef,'/FD')"/>
 					<xsl:text>,</xsl:text>
 					
 					<xsl:call-template name="msFormatDate">
