@@ -72,7 +72,7 @@ R Cambridge	| 29/10/2007	| 1556 Create module
 				<DeliveryNote>
 					<TradeSimpleHeader>
 						<SendersCodeForRecipient RecordPos="CLO=" LPos="1" SFPos="3"/>
-						<SendersBranchReference RecordPos="SDT=" LPos="1" SFPos="2"/>
+						<SendersBranchReference RecordPos="CDT=" LPos="1" SFPos="2"/>
 					</TradeSimpleHeader>
 					<DeliveryNoteHeader>
 						<Buyer>
@@ -84,7 +84,7 @@ R Cambridge	| 29/10/2007	| 1556 Create module
 						<Supplier>
 							<SuppliersLocationID>
 								<GLN RecordPos="SDT=" LPos="1" SFPos="1"/>
-								<SuppliersCode RecordPos="SDT=" LPos="1" SFPos="1"/>
+								<SuppliersCode RecordPos="CDT=" LPos="1" SFPos="1"/>
 							</SuppliersLocationID>
 						</Supplier>
 						<ShipTo>
