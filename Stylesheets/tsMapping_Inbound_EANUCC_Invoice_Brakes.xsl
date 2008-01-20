@@ -32,6 +32,8 @@
 '******************************************************************************************
 '	12/09/2007	| R Cambridge  |	Case 1444: Don't create buyers address lines that would blank
 '******************************************************************************************
+'	20/01/2007	| Lee Boyton   |	Case 1709: Ensure line numbers are unique in mapped document.
+'******************************************************************************************
 '	          	|              |	                                                            
 '******************************************************************************************
 
@@ -221,15 +223,16 @@
 				      ~~~~~~~~~~~~~~~~~~~~~~~ -->
 							<InvoiceDetail>
 								<xsl:for-each select="/Invoice/InvoiceItem">
-									<xsl:sort select="LineItemNumber"/>
+									<xsl:sort select="LineItemNumber" data-type="number"/>
 									<InvoiceLine>
 										
 										<xsl:if test="LineItemNumber!=0">										
 											<LineNumber>
-												<xsl:value-of select="LineItemNumber"/>
+												<!-- Brakes sometimes sends lines with duplicate line numbers. This causes a problem if the document suspends and needs to be edited, so we generate our own unique line number. -->
+												<xsl:value-of select="position()"/>
 											</LineNumber>
 										</xsl:if>
-											
+										
 										<xsl:if test="/Invoice/OrderReference or /Invoice/TradeAgreementReference/ContractReferenceNumber != ''">
 											<PurchaseOrderReferences>
 												<xsl:if test="/Invoice/OrderReference/PurchaseOrderNumber">
