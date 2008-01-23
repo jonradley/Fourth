@@ -166,6 +166,10 @@
 			<xsl:call-template name="convertForCSV"><xsl:with-param name="stringToConvert" select="VATRate"/></xsl:call-template>
 			<xsl:text>,</xsl:text>
 			<xsl:call-template name="convertForCSV"><xsl:with-param name="stringToConvert" select="Narrative"/></xsl:call-template>
+			<xsl:text>,</xsl:text>
+			<xsl:call-template name="convertForCSV"><xsl:with-param name="stringToConvert" select="LineExtraData/CataloguePrice"/></xsl:call-template>
+			<xsl:text>,</xsl:text>
+			<xsl:call-template name="convertForCSV"><xsl:with-param name="stringToConvert" select="LineExtraData/CataloguePackSize"/></xsl:call-template>
 		</xsl:for-each>
 		
 		<!--VAT Subtotal Lines-->
