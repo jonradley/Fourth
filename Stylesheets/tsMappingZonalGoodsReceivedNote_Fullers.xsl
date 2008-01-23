@@ -20,11 +20,6 @@
 '******************************************************************************************
 '             |              | 
 '******************************************************************************************
-
-*** IMPORTANT NOTE ***
-This stylesheet has been branched for Fullers. Any changes made to this
-may have to be merged over to tsMappingZonalGoodsReceivedNote_Fullers.xsl
-**********************
 -->
 <xsl:stylesheet 	version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output method="xml" encoding="ISO-8859-1"/>
@@ -53,7 +48,7 @@ may have to be merged over to tsMappingZonalGoodsReceivedNote_Fullers.xsl
 				</xsl:choose>
 			</xsl:attribute>
 			<xsl:attribute name="Supplier"><xsl:value-of select="/GoodsReceivedNote/TradeSimpleHeader/SendersCodeForRecipient"/></xsl:attribute>
-			<xsl:attribute name="OrderNo"><xsl:value-of select="/GoodsReceivedNote/GoodsReceivedNoteHeader/PurchaseOrderReferences/PurchaseOrderReference"/></xsl:attribute>
+			<xsl:attribute name="OrderNo"><xsl:value-of select="/GoodsReceivedNote/GoodsReceivedNoteHeader/DeliveryNoteReferences/DeliveryNoteReference"/></xsl:attribute>
 			<!-- If the compressed Aztec output product code exists then there will only be a single line -->
 			<xsl:attribute name="Lines">
 				<xsl:choose>
