@@ -42,8 +42,8 @@ Blue Arrow specific OFSCI map (worker name and job description added to product 
 								<!-- SCR comes from Sellers code for buyer if there, else it comes from Buyer GLN -->
 								<SendersCodeForRecipient>
 									<xsl:choose>
-										<xsl:when test="string(/Invoice/ShipTo/SellerAssigned)">
-											<xsl:value-of select="/Invoice/ShipTo/SellerAssigned"/>
+										<xsl:when test="string(/Invoice/ShipTo/BuyerAssigned)">
+											<xsl:value-of select="/Invoice/ShipTo/BuyerAssigned"/>
 										</xsl:when>
 										<xsl:otherwise>
 											<xsl:value-of select="/Invoice/Buyer/BuyerGLN"/>
@@ -80,9 +80,9 @@ Blue Arrow specific OFSCI map (worker name and job description added to product 
 												<xsl:value-of select="/Invoice/Buyer/BuyerAssigned"/>
 											</BuyersCode>
 										</xsl:if>
-										<xsl:if test="string(/Invoice/Buyer/SellerAssigned)">
+										<xsl:if test="string(/Invoice/Buyer/BuyerGLN)">
 											<SuppliersCode>
-												<xsl:value-of select="/Invoice/Buyer/SellerAssigned"/>
+												<xsl:value-of select="/Invoice/Buyer/BuyerGLN"/>
 											</SuppliersCode>
 										</xsl:if>
 									</BuyersLocationID>
