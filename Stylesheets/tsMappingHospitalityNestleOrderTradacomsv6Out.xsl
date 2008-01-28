@@ -142,11 +142,23 @@
 			<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:text>CLO=</xsl:text>
-			<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/GLN"/>
+			<!--xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/GLN"/-->
+			
+			<xsl:choose>
+				<xsl:when test="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode='5013546145710'">5060166760052</xsl:when> 
+				<xsl:when test="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode='0000587738'">5000000050005</xsl:when> 
+				<xsl:when test="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode='0000591260'">5000000010009</xsl:when> 
+				<xsl:when test="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode='0000588080'">5000000030007</xsl:when> 
+				<xsl:when test="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode='0000763461'">5000000041003</xsl:when> 
+				<xsl:when test="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode='0000589659'">5000000020015</xsl:when> 
+				<xsl:otherwise>0000000000000</xsl:otherwise>
+			</xsl:choose>			
+			
 			<xsl:text>:</xsl:text>
 			<!--xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode"/-->
 			<xsl:text>:</xsl:text>
 			<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
+			
 			<xsl:text>+</xsl:text>
 			<!-- truncate to 40 CNAM = 3060 = AN..40-->
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/ShipTo/ShipToName),40)"/>
