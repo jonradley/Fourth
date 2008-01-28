@@ -36,7 +36,9 @@ R Cambridge	| 29/10/2007	| 1556 Create module
 									<Buyer>
 										<BuyersLocationID>
 											<!--GLN><xsl:value-of select="DeliveryNoteHeader/Buyer/BuyersLocationID/GLN"/></GLN-->
-											<SuppliersCode><xsl:value-of select="DeliveryNoteHeader/Buyer/BuyersLocationID/SuppliersCode"/></SuppliersCode>
+											<xsl:for-each select="DeliveryNoteHeader/Buyer/BuyersLocationID/SuppliersCode[1]">
+												<SuppliersCode><xsl:value-of select="."/></SuppliersCode>
+											</xsl:for-each>											
 										</BuyersLocationID>
 									</Buyer>
 									
