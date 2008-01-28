@@ -117,7 +117,7 @@ R Cambridge	| 29/10/2007	| 1556 Create module
 								<SuppliersProductCode RecordPos="DLD=" LPos="3" SFPos="2"/>
 								<BuyersProductCode RecordPos="DLD=" LPos="5" SFPos="2"/>
 							</ProductID>
-							<ProductDescription RecordPos="ILD=" LPos="8" SFPos="1"/>
+							<ProductDescription RecordPos="DLD=" LPos="8" SFPos="1"/>
 							<OrderedQuantity RecordPos="DLD=" LPos="6" SFPos="2">
 								<ffsAttribute1 name="UnitOfMeasure" RecordPos="DLD=" LPos="6" SFPos="3"/>
 							</OrderedQuantity>
