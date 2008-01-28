@@ -39,7 +39,7 @@ R Cambridge	| 2007-11-13		| 1332 no info to populate Buyer tag
 		
 				<BatchDocuments>
 				
-					<BatchDocument>
+					<BatchDocument DocumentTypeNo="7">
 					
 						<DeliveryNote>
 						
