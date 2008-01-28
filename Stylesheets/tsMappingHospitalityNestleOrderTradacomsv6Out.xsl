@@ -14,6 +14,8 @@
 ==========================================================================================
  02/08/2006	| Lee Boyton      	| 194. Quantity should be in OLD OQTY(1)
 ==========================================================================================
+ 28/01/2008	| R Cambridge     	| 1722 Ship to GLNs looked up from Recipients code for Sender
+==========================================================================================
            	|                 	|
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript" xmlns:vb="http://www.abs-ltd.com/dummynamespaces/vbscript" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
