@@ -16,6 +16,8 @@
 ==========================================================================================
  28/01/2008	| R Cambridge     	| 1722 Ship to GLNs looked up from Recipients code for Sender
 ==========================================================================================
+ 30/01/2008	| R Cambridge     	| 1722 CDT CIDN/1 also looked up from RCS (d'oh!)
+==========================================================================================
            	|                 	|
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript" xmlns:vb="http://www.abs-ltd.com/dummynamespaces/vbscript" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
@@ -97,7 +99,12 @@
 			<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:text>CDT=</xsl:text>
-			<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/GLN"/>
+			<!--xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/GLN"/-->
+			
+			<xsl:call-template name="transCodeToANA">
+				<xsl:with-param name="nestleCode" select="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
+			</xsl:call-template>
+			
 			<xsl:text>:</xsl:text>
 			<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
 			<xsl:text>+</xsl:text>
@@ -146,15 +153,9 @@
 		<xsl:text>CLO=</xsl:text>
 			<!--xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/GLN"/-->
 			
-			<xsl:choose>
-				<xsl:when test="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode='5013546145710'">5060166760052</xsl:when> 
-				<xsl:when test="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode='0000587738'">5000000050005</xsl:when> 
-				<xsl:when test="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode='0000591260'">5000000010009</xsl:when> 
-				<xsl:when test="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode='0000588080'">5000000030007</xsl:when> 
-				<xsl:when test="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode='0000763461'">5000000041003</xsl:when> 
-				<xsl:when test="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode='0000589659'">5000000020015</xsl:when> 
-				<xsl:otherwise>0000000000000</xsl:otherwise>
-			</xsl:choose>			
+			<xsl:call-template name="transCodeToANA">
+				<xsl:with-param name="nestleCode" select="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
+			</xsl:call-template>
 			
 			<xsl:text>:</xsl:text>
 			<!--xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode"/-->
@@ -284,6 +285,22 @@
 			<xsl:text>3</xsl:text>
 			<xsl:value-of select="$sRecordSep"/>
 		
+	</xsl:template>
+	
+	
+	<xsl:template name="transCodeToANA">
+		<xsl:param name="nestleCode"/>
+		
+		<xsl:choose>
+			<xsl:when test="string($nestleCode) = '5013546145710'">5060166760052</xsl:when> 
+			<xsl:when test="string($nestleCode) = '0000587738'">5000000050005</xsl:when> 
+			<xsl:when test="string($nestleCode) = '0000591260'">5000000010009</xsl:when> 
+			<xsl:when test="string($nestleCode) = '0000588080'">5000000030007</xsl:when> 
+			<xsl:when test="string($nestleCode) = '0000763461'">5000000041003</xsl:when> 
+			<xsl:when test="string($nestleCode) = '0000589659'">5000000020015</xsl:when> 
+			<xsl:otherwise>0000000000000</xsl:otherwise>
+		</xsl:choose>	
+	
 	</xsl:template>
 	
 	
