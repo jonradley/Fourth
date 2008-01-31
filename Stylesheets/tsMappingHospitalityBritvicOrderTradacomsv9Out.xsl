@@ -284,13 +284,12 @@
 				
 				
 				<!-- ITEM  SACU   { Supplier's EAN number               } -->
-				<xsl:text>+</xsl:text>
 				<xsl:call-template name="msCheckField">
 					<xsl:with-param name="vobjNode" select="ProductID/SuppliersProductCode"/>
 					<xsl:with-param name="vnLength" select="30"/>
 				</xsl:call-template>
 				
-				<xsl:text>++::</xsl:text>
+				<xsl:text>+++::</xsl:text>
 				<xsl:value-of select="js:msSafeText(string(OrderedQuantity/@UnitOfMeasure),6)"/>
 				<xsl:text>+</xsl:text>
 				
