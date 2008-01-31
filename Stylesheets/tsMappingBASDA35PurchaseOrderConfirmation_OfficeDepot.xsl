@@ -3,19 +3,7 @@
 /******************************************************************************************
 ' $Header: $ $NoKeywords: $
 ' Overview 
-'  XSL Purchase Order Confirmation mapper
-'  Old Shared platform (BASDA 2.4) to Hospitality platform iXML format.
 '
-' Please note that this mapper applys the following rules that are required for both
-' Coors and The Astron Grou
-' 1) The original PO Date is set to the Confirmation Date if missing
-' 2) The original Delivery Date is set to the Confirmation Delivery Date if missing
-' 3) The original order quantity is set to the confirmed quantity
-'    (the BASDA2.4 format only has one quantity field)
-'
-' These rules have been applied so that the original order document does not need to be
-' referenced and means that during the switch over from Shared to Hospitality (core) these
-' suppliers can send confirmations for orders that were placed on Shared.
 ' 
 ' © ABS Ltd., 2005.
 '******************************************************************************************
@@ -23,7 +11,7 @@
 '******************************************************************************************
 ' Date        | Name         | Description of modification
 '******************************************************************************************
-' 22/06/2005  | Lee Boyton   | Created        
+' 28/01/2008  | R Cambridge  | Created        
 '******************************************************************************************
 '             |              | 
 '******************************************************************************************
@@ -227,7 +215,10 @@
 										<!-- use the confirmed quantity for the original order quantity (see header notes for explanation) -->										
 										<ConfirmedQuantity UnitOfMeasure="EA">
 											<xsl:attribute name="UnitOfMeasure">
-												<xsl:value-of select="Quantity/@UOMCode"/>
+												<!--xsl:value-of select="Quantity/@UOMCode"/-->
+												<xsl:call-template name="transUoM">
+													<xsl:with-param name="supplierUoM" select="Quantity/@UOMCode"/>
+												</xsl:call-template>
 											</xsl:attribute>
 											<xsl:value-of select="Quantity/Amount"/>
 										</ConfirmedQuantity>
@@ -252,12 +243,12 @@
 								
 							</PurchaseOrderConfirmationDetail>
 							
-							<!-- Document totals -->
+							<!-- Document totals >
 							<PurchaseOrderConfirmationTrailer>
 								<TotalExclVAT>
 									<xsl:value-of select="OrderResponseTotal/GoodsValue"/>						
 								</TotalExclVAT>
-							</PurchaseOrderConfirmationTrailer>
+							</PurchaseOrderConfirmationTrailer-->
 							
 						</PurchaseOrderConfirmation>
 						
@@ -282,6 +273,22 @@
 		<xsl:variable name="day" select="substring-after($temp,'-')"/>
 		<xsl:value-of select="concat($year,'-',format-number($month,'00'),'-',format-number($day,'00'))"/>
 	</xsl:template>
+	
+	
+	<xsl:template name="transUoM">
+		<xsl:param name="supplierUoM"/>
+	
+		<xsl:choose>
+			<xsl:when test="$supplierUoM = 'EA'">EA</xsl:when>
+			<xsl:when test="$supplierUoM = 'KG'">KGM</xsl:when>
+			<xsl:when test="$supplierUoM = 'BOX'">CS</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$supplierUoM"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	
+	</xsl:template>
+	
 	
 	<msxsl:script language="JScript" implements-prefix="user"><![CDATA[ 
 	//Formats the current system date in XML date format yyyy-mm-dd
