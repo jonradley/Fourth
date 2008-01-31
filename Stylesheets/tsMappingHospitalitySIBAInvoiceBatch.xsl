@@ -76,67 +76,69 @@ Overview
 										<InvoiceDetail>
 										
 											<xsl:for-each select="InvoiceDetail/InvoiceLine">
+											
+												<xsl:if test="(LineValueExclVAT) !='0'">
 										
-												<InvoiceLine>
-													<PurchaseOrderReferences>
+													<InvoiceLine>
+														<PurchaseOrderReferences>
 														
-														<PurchaseOrderReference><xsl:value-of select="PurchaseOrderReferences/PurchaseOrderReference"/></PurchaseOrderReference>
+															<PurchaseOrderReference><xsl:value-of select="PurchaseOrderReferences/PurchaseOrderReference"/></PurchaseOrderReference>
 														
-														<PurchaseOrderDate>
-															<xsl:call-template name="formatDate">
-																<xsl:with-param name="input" select="PurchaseOrderReferences/PurchaseOrderDate"/>
-															</xsl:call-template>										
-														</PurchaseOrderDate>
+															<PurchaseOrderDate>
+																<xsl:call-template name="formatDate">
+																	<xsl:with-param name="input" select="PurchaseOrderReferences/PurchaseOrderDate"/>
+																</xsl:call-template>										
+															</PurchaseOrderDate>
 														
-													</PurchaseOrderReferences>
+														</PurchaseOrderReferences>
 													
 													
-													<xsl:if test="string(DeliveryNoteReferences/DeliveryNoteReference) != '' and string(DeliveryNoteReferences/DeliveryNoteDate) != '' and string(DeliveryNoteReferences/DespatchDate) != ''">
+														<xsl:if test="string(DeliveryNoteReferences/DeliveryNoteReference) != '' and string(DeliveryNoteReferences/DeliveryNoteDate) != '' and string(DeliveryNoteReferences/DespatchDate) != ''">
 														
-														<DeliveryNoteReferences>
+															<DeliveryNoteReferences>
 															
-															<DeliveryNoteReference><xsl:value-of select="DeliveryNoteReferences/DeliveryNoteReference"/></DeliveryNoteReference>
+																<DeliveryNoteReference><xsl:value-of select="DeliveryNoteReferences/DeliveryNoteReference"/></DeliveryNoteReference>
 															
-															<DeliveryNoteDate>										
-																<xsl:call-template name="formatDate">
-																	<xsl:with-param name="input" select="DeliveryNoteReferences/DeliveryNoteDate"/>
-																</xsl:call-template>										
-															</DeliveryNoteDate>
+																<DeliveryNoteDate>										
+																	<xsl:call-template name="formatDate">
+																		<xsl:with-param name="input" select="DeliveryNoteReferences/DeliveryNoteDate"/>
+																	</xsl:call-template>										
+																</DeliveryNoteDate>
 															
-															<DespatchDate>
-																<xsl:call-template name="formatDate">
-																	<xsl:with-param name="input" select="DeliveryNoteReferences/DespatchDate"/>
-																</xsl:call-template>										
-															</DespatchDate>
-															
-														</DeliveryNoteReferences>
+																<DespatchDate>
+																	<xsl:call-template name="formatDate">
+																		<xsl:with-param name="input" select="DeliveryNoteReferences/DespatchDate"/>
+																	</xsl:call-template>										
+																</DespatchDate>
+																
+															</DeliveryNoteReferences>
 
-													</xsl:if>
+														</xsl:if>
 													
-													<ProductID>
-														<SuppliersProductCode><xsl:value-of select="ProductID/SuppliersProductCode"/></SuppliersProductCode>
-													</ProductID>
+														<ProductID>
+															<SuppliersProductCode><xsl:value-of select="ProductID/SuppliersProductCode"/></SuppliersProductCode>
+														</ProductID>
 													
-													<ProductDescription><xsl:value-of select="ProductDescription"/></ProductDescription>
-													<DeliveredQuantity><xsl:value-of select="DeliveredQuantity"/></DeliveredQuantity>
-													<InvoicedQuantity><xsl:value-of select="InvoicedQuantity"/></InvoicedQuantity>
-													<UnitValueExclVAT><xsl:value-of select="UnitValueExclVAT"/></UnitValueExclVAT>
-													<LineValueExclVAT><xsl:value-of select="LineValueExclVAT"/></LineValueExclVAT>
+														<ProductDescription><xsl:value-of select="ProductDescription"/></ProductDescription>
+														<DeliveredQuantity><xsl:value-of select="DeliveredQuantity"/></DeliveredQuantity>
+														<InvoicedQuantity><xsl:value-of select="InvoicedQuantity"/></InvoicedQuantity>
+														<UnitValueExclVAT><xsl:value-of select="UnitValueExclVAT"/></UnitValueExclVAT>
+														<LineValueExclVAT><xsl:value-of select="LineValueExclVAT"/></LineValueExclVAT>
 													
-													<xsl:choose>
-														<xsl:when test="VATRate != 0">
-															<VATCode>S</VATCode>
-															<VATRate>17.5</VATRate>														
-														</xsl:when>
-														<xsl:otherwise>
-															<VATCode>Z</VATCode>
-															<VATRate>0</VATRate>
-														</xsl:otherwise>
-													</xsl:choose>
+														<xsl:choose>
+															<xsl:when test="VATRate != 0">
+																<VATCode>S</VATCode>
+																<VATRate>17.5</VATRate>														
+															</xsl:when>
+															<xsl:otherwise>
+																<VATCode>Z</VATCode>
+																<VATRate>0</VATRate>
+															</xsl:otherwise>
+														</xsl:choose>
 													
 												
-												</InvoiceLine>
-												
+													</InvoiceLine>
+												</xsl:if>
 											</xsl:for-each>
 												
 										</InvoiceDetail>
