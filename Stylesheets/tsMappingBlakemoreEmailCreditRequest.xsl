@@ -27,6 +27,8 @@
  07/08/2007 | A Sheppard | 1351. Added return type
 ****************************************************************************************** 
  07/08/2007 | A Sheppard | 1351. Create branch for Blakemore with Supplier alert
+****************************************************************************************** 
+ 06/02/2008 | A Sheppard | 1747. Always display supplier name if present 
 ******************************************************************************************
 -->
 
@@ -124,7 +126,7 @@
 									<th align="center">
 										<xsl:text>Request For Credit</xsl:text>
 										<xsl:choose>
-											<xsl:when test="/CreditRequest/CreditRequestHeader/Supplier/SuppliersName and not(/CreditRequest/CreditRequestDetail/CreditRequestLine[Narrative='Incorrect number of boxes - for information'])">
+											<xsl:when test="/CreditRequest/CreditRequestHeader/Supplier/SuppliersName">
 												<xsl:text> (To be actioned by </xsl:text>
 												<xsl:value-of select="/CreditRequest/CreditRequestHeader/Supplier/SuppliersName"/>
 												<xsl:text>)</xsl:text>
