@@ -279,9 +279,101 @@
 		<xsl:param name="supplierUoM"/>
 	
 		<xsl:choose>
+			
+			<!-- Guesses based on values seen during testing -->
 			<xsl:when test="$supplierUoM = 'EA'">EA</xsl:when>
 			<xsl:when test="$supplierUoM = 'KG'">KGM</xsl:when>
+			
+			<!-- Office Depot's list -->
+			<!-- Bag -->
+			<xsl:when test="$supplierUoM = 'BAG'">EA</xsl:when>
+			<!-- Bottle -->
+			<xsl:when test="$supplierUoM = 'BOT'">EA</xsl:when>
+			<!-- Box -->
 			<xsl:when test="$supplierUoM = 'BOX'">CS</xsl:when>
+			<!-- Can -->
+			<xsl:when test="$supplierUoM = 'CAN'">EA</xsl:when>
+			<!-- Case -->
+			<xsl:when test="$supplierUoM = 'CS'">CS</xsl:when>
+			<!-- Case -->
+			<xsl:when test="$supplierUoM = 'CS1'">CS</xsl:when>
+			<!-- Case -->
+			<xsl:when test="$supplierUoM = 'CSE'">CS</xsl:when>
+			<!-- Degree -->
+			<xsl:when test="$supplierUoM = 'DEG'">EA</xsl:when>
+			<!-- Drum -->
+			<xsl:when test="$supplierUoM = 'DR'">EA</xsl:when>
+			<!-- Dozen -->
+			<xsl:when test="$supplierUoM = 'DZ'">DZN</xsl:when>
+			<!-- Each -->
+			<xsl:when test="$supplierUoM = 'EA'">EA</xsl:when>
+			<!-- Gram Gold -->
+			<xsl:when test="$supplierUoM = 'GAU'">GRM</xsl:when>
+			<!-- Large -->
+			<xsl:when test="$supplierUoM = 'GRO'">EA</xsl:when>
+			<!-- Inner -->
+			<xsl:when test="$supplierUoM = 'INN'">CS</xsl:when>
+			<!-- Item -->
+			<xsl:when test="$supplierUoM = 'ITM'">EA</xsl:when>
+			<!-- Canister -->
+			<xsl:when test="$supplierUoM = 'KAN'">EA</xsl:when>
+			<!-- Carton -->
+			<xsl:when test="$supplierUoM = 'KAR'">CS</xsl:when>
+			<!-- Crate -->
+			<xsl:when test="$supplierUoM = 'KI'">CS</xsl:when>
+			<!-- Crate -->
+			<xsl:when test="$supplierUoM = 'KI1'">CS</xsl:when>
+			<!-- Kit -->
+			<xsl:when test="$supplierUoM = 'KIT'">CS</xsl:when>
+			<!-- Carton -->
+			<xsl:when test="$supplierUoM = 'KT1'">EA</xsl:when>
+			<!-- Perf. unit -->
+			<xsl:when test="$supplierUoM = 'LE'">EA</xsl:when>
+			<!-- Outer -->
+			<xsl:when test="$supplierUoM = 'OUT'">CS</xsl:when>
+			<!-- Pair -->
+			<xsl:when test="$supplierUoM = 'PAA'">CS</xsl:when>
+			<!-- Pack -->
+			<xsl:when test="$supplierUoM = 'PAK'">CS</xsl:when>
+			<!-- Pallet -->
+			<xsl:when test="$supplierUoM = 'PAL'">PF</xsl:when>
+			<!-- Wholesaler -->
+			<xsl:when test="$supplierUoM = 'PER'">CS</xsl:when>
+			<!-- Pack -->
+			<xsl:when test="$supplierUoM = 'PK'">CS</xsl:when>
+			<!-- Pack -->
+			<xsl:when test="$supplierUoM = 'PK1'">CS</xsl:when>
+			<!-- Packet -->
+			<xsl:when test="$supplierUoM = 'PKT'">EA</xsl:when>
+			<!-- Pallet -->
+			<xsl:when test="$supplierUoM = 'PLT'">PF</xsl:when>
+			<!-- Pair -->
+			<xsl:when test="$supplierUoM = 'PR'">CS</xsl:when>
+			<!-- Quire -->
+			<xsl:when test="$supplierUoM = 'QR'">CS</xsl:when>
+			<!-- Roll -->
+			<xsl:when test="$supplierUoM = 'RL'">EA</xsl:when>
+			<!-- Ream -->
+			<xsl:when test="$supplierUoM = 'RM'">EA</xsl:when>
+			<!-- Role -->
+			<xsl:when test="$supplierUoM = 'ROL'">CS</xsl:when>
+			<!-- Set -->
+			<xsl:when test="$supplierUoM = 'SET'">CS</xsl:when>
+			<!-- Sheet -->
+			<xsl:when test="$supplierUoM = 'SHT'">EA</xsl:when>
+			<!-- items -->
+			<xsl:when test="$supplierUoM = 'ST'">CS</xsl:when>
+			<!-- Base -->
+			<xsl:when test="$supplierUoM = 'STK'">CS</xsl:when>
+			<!-- Tube -->
+			<xsl:when test="$supplierUoM = 'TBE'">EA</xsl:when>
+			<!-- Thousand -->
+			<xsl:when test="$supplierUoM = 'TH'">EA</xsl:when>
+			<!-- tube -->
+			<xsl:when test="$supplierUoM = 'TUB'">EA</xsl:when>
+			<!-- Wallet -->
+			<xsl:when test="$supplierUoM = 'WLT'">CS</xsl:when>
+			
 			<xsl:otherwise>
 				<xsl:value-of select="$supplierUoM"/>
 			</xsl:otherwise>
