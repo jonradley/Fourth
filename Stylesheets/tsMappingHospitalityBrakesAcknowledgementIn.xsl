@@ -20,6 +20,14 @@ R Cambridge	| 2007-11-28		| FB1626
 		</BatchRoot>
 	</xsl:template>
 	
+	
+	<xsl:template match="BatchDocument">
+		<xsl:copy>
+			<xsl:attribute name="DocumentTypeNo">84</xsl:attribute>			
+			<xsl:apply-templates select="@* | node()"/>			
+		</xsl:copy>	
+	</xsl:template>
+	
 	<xsl:template match="BuyersLocationID">
 	
 		<xsl:copy>
