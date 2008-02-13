@@ -107,7 +107,7 @@
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:text>CDT=</xsl:text>
-			<!--xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/-->
+			<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/>
 			<xsl:text>:</xsl:text>
 			<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
 			<xsl:text>+</xsl:text>
