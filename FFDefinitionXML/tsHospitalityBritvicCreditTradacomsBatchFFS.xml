@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
 BRITVIC
+
 29th March 05 Andy Trafford Copied from tsHospitalityCreditTradacomsBatchFFS.xml
+
 18th May 05 Andy Trafford updated to take SCR from CLO-CLOC(3) rather than (2)
+
+2008-02-14	R Cambridge		FB1687 Use EAN number as product code
+
  -->
 <ffsFlatFileSchema>
 	<ffsSettings>
@@ -204,7 +209,7 @@ BRITVIC
 									<!-- NOT GTIN, actually CLD - DRLI used by stylesheet to action -1.0 multiplier on QTYC and EXLV -->
 									<GTIN RecordPos="CLD=" LPos="13"/>
 									<!-- OPTIONAL Supplier’s Product Code, MANDATORY, CREDIT – CLD – SPRO(2), Your unique code for this product -->
-									<SuppliersProductCode RecordPos="CLD=" LPos="2" SFPos="2"/>
+									<SuppliersProductCode RecordPos="CLD=" LPos="1" SFPos="2"/>
 								</ProductID>
 								<!-- MANDATORY Product Description, OPTIONAL, CREDIT – CLD – TDES(1), While not strictly mandatory, this is a very useful textual piece of information.  This will always contain something but may be set to ‘Not Provided’ -->
 								<ProductDescription RecordPos="CLD=" LPos="14" SFPos="1"/>
