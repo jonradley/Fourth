@@ -526,7 +526,7 @@
 						</tr>
 						<tr>
 							<td colspan="2" align="center">
-								<xsl:text>Current spend with </xsl:text><xsl:value-of select="//SuppliersName"/><xsl:text> for this period (</xsl:text><xsl:value-of select="substring(//Period,5)"/><xsl:text>/</xsl:text><xsl:value-of select="substring(//Period,1,4)"/><xsl:text>) including this order is £</xsl:text><xsl:value-of select="format-number(/PurchaseOrder/BudgetDetails/SpendValue, '#,##0.00')"/><xsl:text>*.</xsl:text>
+								<xsl:text>Current spend with </xsl:text><xsl:value-of select="//SuppliersName"/><xsl:text> for this period (</xsl:text><xsl:value-of select="substring(//Period,5)"/><xsl:text>/</xsl:text><xsl:value-of select="substring(//Period,1,4)"/><xsl:text>) including this order is £</xsl:text><xsl:value-of select="format-number(//SpendValue, '#,##0.00')"/><xsl:text>*.</xsl:text>
 								<br/><br/>
 								<xsl:text>This is £</xsl:text><xsl:value-of select="format-number(//Overspend, '#,##0.00')"/><xsl:text> more than their budget of £</xsl:text><xsl:value-of select="format-number(//BudgetValue, '#,##0.00')"/><xsl:text>.</xsl:text>
 								<br/><br/>
