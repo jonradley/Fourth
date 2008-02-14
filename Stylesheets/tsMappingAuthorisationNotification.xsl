@@ -115,9 +115,9 @@
 							</xsl:when>
 							<xsl:otherwise>
 								<!-- read POST url added by pre-map out processor -->
-								<xsl:value-of select="/PurchaseOrder/DocBuilder/Url"/>
+								<xsl:value-of select="//PurchaseOrder/DocBuilder/Url"/>
 								<xsl:text>OrderID=</xsl:text>
-								<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/OrderID"/>
+								<xsl:value-of select="//PurchaseOrder/PurchaseOrderHeader/OrderID"/>
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:attribute>
@@ -140,50 +140,50 @@
 									<tr>
 										<th colspan="2">Buyer/Invoice To</th>
 									</tr>
-									<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/BuyersCode">
+									<xsl:if test="//PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/BuyersCode">
 										<tr>
 											<th width="50%">Buyers Code</th>
 											<td>
-												<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/BuyersCode"/>
+												<xsl:value-of select="//PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/BuyersCode"/>
 											</td>
 										</tr>
 									</xsl:if>
-									<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode">
+									<xsl:if test="//PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode">
 										<tr>
 											<th width="50%">Suppliers Code</th>
 											<td>
-												<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
+												<xsl:value-of select="//PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
 											</td>
 										</tr>
 									</xsl:if>
-									<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersName">
+									<xsl:if test="//PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersName">
 										<tr>
 											<th width="50%">Name</th>
 											<td>
-												<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersName"/>
+												<xsl:value-of select="//PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersName"/>
 											</td>
 										</tr>
 									</xsl:if>
-									<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersAddress">
+									<xsl:if test="//PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersAddress">
 										<tr>
 											<th width="50%" valign="top">Address</th>
 											<td>
-												<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine1"/>
-												<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine2">
+												<xsl:value-of select="//PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine1"/>
+												<xsl:if test="//PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine2">
 													<br/>
-													<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine2"/>
+													<xsl:value-of select="//PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine2"/>
 												</xsl:if>
-												<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine3">
+												<xsl:if test="//PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine3">
 													<br/>
-													<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine3"/>
+													<xsl:value-of select="//PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine3"/>
 												</xsl:if>
-												<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine4">
+												<xsl:if test="//PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine4">
 													<br/>
-													<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine4"/>
+													<xsl:value-of select="//PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine4"/>
 												</xsl:if>
-												<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersAddress/PostCode">
+												<xsl:if test="//PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersAddress/PostCode">
 													<br/>
-													<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersAddress/PostCode"/>
+													<xsl:value-of select="//PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersAddress/PostCode"/>
 												</xsl:if>
 											</td>
 										</tr>
@@ -196,50 +196,50 @@
 									<tr>
 										<th colspan="2">Supplier</th>
 									</tr>
-									<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/BuyersCode">
+									<xsl:if test="//PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/BuyersCode">
 										<tr>
 											<th width="50%">Buyers Code</th>
 											<td>
-												<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/BuyersCode"/>
+												<xsl:value-of select="//PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/BuyersCode"/>
 											</td>
 										</tr>
 									</xsl:if>
-									<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/SuppliersCode">
+									<xsl:if test="//PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/SuppliersCode">
 										<tr>
 											<th width="50%">Suppliers Code</th>
 											<td>
-												<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/SuppliersCode"/>
+												<xsl:value-of select="//PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/SuppliersCode"/>
 											</td>
 										</tr>
 									</xsl:if>
-									<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersName">
+									<xsl:if test="//PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersName">
 										<tr>
 											<th width="50%">Name</th>
 											<td>
-												<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersName"/>
+												<xsl:value-of select="//PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersName"/>
 											</td>
 										</tr>
 									</xsl:if>
-									<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersAddress">
+									<xsl:if test="//PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersAddress">
 										<tr>
 											<th width="50%" valign="top">Address</th>
 											<td>
-												<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersAddress/AddressLine1"/>
-												<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersAddress/AddressLine2">
+												<xsl:value-of select="//PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersAddress/AddressLine1"/>
+												<xsl:if test="//PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersAddress/AddressLine2">
 													<br/>
-													<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersAddress/AddressLine2"/>
+													<xsl:value-of select="//PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersAddress/AddressLine2"/>
 												</xsl:if>
-												<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersAddress/AddressLine3">
+												<xsl:if test="//PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersAddress/AddressLine3">
 													<br/>
-													<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersAddress/AddressLine3"/>
+													<xsl:value-of select="//PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersAddress/AddressLine3"/>
 												</xsl:if>
-												<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersAddress/AddressLine4">
+												<xsl:if test="//PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersAddress/AddressLine4">
 													<br/>
-													<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersAddress/AddressLine4"/>
+													<xsl:value-of select="//PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersAddress/AddressLine4"/>
 												</xsl:if>
-												<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersAddress/PostCode">
+												<xsl:if test="//PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersAddress/PostCode">
 													<br/>
-													<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersAddress/PostCode"/>
+													<xsl:value-of select="//PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersAddress/PostCode"/>
 												</xsl:if>
 											</td>
 										</tr>
@@ -259,55 +259,55 @@
 									<tr>
 										<th colspan="2">ShipTo</th>
 									</tr>
-									<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode">
+									<xsl:if test="//PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode">
 										<tr>
 											<th width="50%">Buyers Code</th>
 											<td>
-												<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode"/>
+												<xsl:value-of select="//PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode"/>
 											</td>
 										</tr>
 									</xsl:if>
-									<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode">
+									<xsl:if test="//PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode">
 										<tr>
 											<th width="50%">Suppliers Code</th>
 											<td>
-												<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
+												<xsl:value-of select="//PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
 											</td>
 										</tr>
 									</xsl:if>
-									<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ContactName">
+									<xsl:if test="//PurchaseOrder/PurchaseOrderHeader/ShipTo/ContactName">
 										<tr>
 											<th width="50%">Contact Name</th>
-											<td><xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ContactName"/></td>
+											<td><xsl:value-of select="//PurchaseOrder/PurchaseOrderHeader/ShipTo/ContactName"/></td>
 										</tr>
 									</xsl:if>
-									<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToName">
+									<xsl:if test="//PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToName">
 										<tr>
 											<th width="50%">Name</th>
 											<td>
-												<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToName"/>
+												<xsl:value-of select="//PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToName"/>
 											</td>
 										</tr>
 									</xsl:if>
 									<tr>
 										<th width="50%" valign="top">Address</th>
 										<td>
-											<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine1"/>
-											<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine2">
+											<xsl:value-of select="//PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine1"/>
+											<xsl:if test="//PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine2">
 												<br/>
-												<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine2"/>
+												<xsl:value-of select="//PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine2"/>
 											</xsl:if>
-											<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine3">
+											<xsl:if test="//PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine3">
 												<br/>
-												<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine3"/>
+												<xsl:value-of select="//PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine3"/>
 											</xsl:if>
-											<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine4">
+											<xsl:if test="//PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine4">
 												<br/>
-												<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine4"/>
+												<xsl:value-of select="//PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine4"/>
 											</xsl:if>
-											<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToAddress/PostCode">
+											<xsl:if test="//PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToAddress/PostCode">
 												<br/>
-												<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToAddress/PostCode"/>
+												<xsl:value-of select="//PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToAddress/PostCode"/>
 											</xsl:if>
 										</td>
 									</tr>
@@ -322,34 +322,34 @@
 									<tr>
 										<th width="50%">Del Type</th>
 										<td>
-											<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryType"/>
+											<xsl:value-of select="//PurchaseOrder/PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryType"/>
 										</td>
 									</tr>
 									<tr>
 										<th width="50%">Del Date</th>
 										<td>
-											<xsl:value-of select="user:gsFormatDate(/PurchaseOrder/PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate)"/>
+											<xsl:value-of select="user:gsFormatDate(//PurchaseOrder/PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate)"/>
 										</td>
 									</tr>
-									<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/OrderedDeliveryDetails/DeliverySlot">
+									<xsl:if test="//PurchaseOrder/PurchaseOrderHeader/OrderedDeliveryDetails/DeliverySlot">
 										<tr>
 											<th width="50%">Slot Start</th>
 											<td>
-												<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/OrderedDeliveryDetails/DeliverySlot/SlotStart"/>
+												<xsl:value-of select="//PurchaseOrder/PurchaseOrderHeader/OrderedDeliveryDetails/DeliverySlot/SlotStart"/>
 											</td>
 										</tr>
 										<tr>
 											<th width="50%">Slot End</th>
 											<td>
-												<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/OrderedDeliveryDetails/DeliverySlot/SlotEnd"/>
+												<xsl:value-of select="//PurchaseOrder/PurchaseOrderHeader/OrderedDeliveryDetails/DeliverySlot/SlotEnd"/>
 											</td>
 										</tr>
 									</xsl:if>
-									<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions">
+									<xsl:if test="//PurchaseOrder/PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions">
 										<tr>
 											<th width="50%">Special Del Instructions</th>
 											<td>
-												<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions"/>
+												<xsl:value-of select="//PurchaseOrder/PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions"/>
 											</td>
 										</tr>
 									</xsl:if>
@@ -371,20 +371,20 @@
 									<tr>
 										<th width="50%">PO Ref</th>
 										<td>
-											<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
+											<xsl:value-of select="//PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
 										</td>
 									</tr>
 									<tr>
 										<th width="50%">PO Date</th>
 										<td>
-											<xsl:value-of select="user:gsFormatDate(/PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderDate)"/>
+											<xsl:value-of select="user:gsFormatDate(//PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderDate)"/>
 										</td>
 									</tr>
-									<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/CustomerPurchaseOrderReference">
+									<xsl:if test="//PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/CustomerPurchaseOrderReference">
 										<tr>
 											<th width="50%">Customers PO Ref</th>
 											<td>
-												<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/CustomerPurchaseOrderReference"/>
+												<xsl:value-of select="//PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/CustomerPurchaseOrderReference"/>
 											</td>
 										</tr>
 									</xsl:if>
@@ -393,7 +393,7 @@
 							<td valign="top" width="50%">
 								<!--TradeAgreement-->
 								<xsl:choose>
-									<xsl:when test="/PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/TradeAgreement/ContractReference">
+									<xsl:when test="//PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/TradeAgreement/ContractReference">
 										<table class="DocumentInner" style="height:100%" cellpadding="1" cellspacing="1">
 											<tr>
 												<th colspan="2">Trade Agreement</th>
@@ -401,14 +401,14 @@
 											<tr>
 												<th width="50%">Contract Reference</th>
 												<td>
-													<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/TradeAgreement/ContractReference"/>
+													<xsl:value-of select="//PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/TradeAgreement/ContractReference"/>
 												</td>
 											</tr>
-											<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/TradeAgreement/ContractDate">
+											<xsl:if test="//PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/TradeAgreement/ContractDate">
 												<tr>
 													<th width="50%">Contract Date</th>
 													<td>
-														<xsl:value-of select="user:gsFormatDate(/PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/TradeAgreement/ContractDate)"/>
+														<xsl:value-of select="user:gsFormatDate(//PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/TradeAgreement/ContractDate)"/>
 													</td>
 												</tr>
 											</xsl:if>
@@ -438,7 +438,7 @@
 										<th>Price</th>
 										<th>Line Value</th>
 									</tr>
-									<xsl:for-each select="/PurchaseOrder/PurchaseOrderDetail/PurchaseOrderLine">
+									<xsl:for-each select="//PurchaseOrder/PurchaseOrderDetail/PurchaseOrderLine">
 										<xsl:variable name="lRowNumber">
 											<xsl:value-of select="user:glGetRowNumber()"/>
 										</xsl:variable>
@@ -500,16 +500,16 @@
 									<tr>
 										<th width="50%">Number Of Lines</th>
 										<td align="right">
-											<xsl:value-of select="/PurchaseOrder/PurchaseOrderTrailer/NumberOfLines"/>
+											<xsl:value-of select="//PurchaseOrder/PurchaseOrderTrailer/NumberOfLines"/>
 										</td>
 									</tr>
-									<xsl:if test="/PurchaseOrder/PurchaseOrderTrailer/TotalExclVAT">
+									<xsl:if test="//PurchaseOrder/PurchaseOrderTrailer/TotalExclVAT">
 										<tr>
 											<th width="50%">Total Excl VAT</th>
 											<td align="right">
 												<xsl:choose>
-													<xsl:when test="/PurchaseOrder/PurchaseOrderTrailer/TotalExclVAT">
-														<xsl:value-of select="format-number(/PurchaseOrder/PurchaseOrderTrailer/TotalExclVAT, '0.00')"/>
+													<xsl:when test="//PurchaseOrder/PurchaseOrderTrailer/TotalExclVAT">
+														<xsl:value-of select="format-number(//PurchaseOrder/PurchaseOrderTrailer/TotalExclVAT, '0.00')"/>
 													</xsl:when>
 													<xsl:otherwise>0.00</xsl:otherwise>
 												</xsl:choose>
