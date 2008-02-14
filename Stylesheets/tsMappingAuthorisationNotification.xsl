@@ -18,6 +18,8 @@
 ****************************************************************************************** 
  05/06/2006 | Lee Boyton | H588. Added missing authorisation comment text.
 ******************************************************************************************
+ 14/02/2008 | A Sheppard | Cater for budget data being in header extra data
+******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:user="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl user">
 	<xsl:output method="html"/>
@@ -107,10 +109,17 @@
 			<body>			
 				<form name="frmMain" method="post">
 					<xsl:attribute name="action">
-						<!-- read POST url added by pre-map out processor -->
-						<xsl:value-of select="/PurchaseOrder/DocBuilder/Url"/>
-						<xsl:text>OrderID=</xsl:text>
-						<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/OrderID"/>
+						<xsl:choose>
+							<xsl:when test="//AuthorisationURL">
+								<xsl:value-of select="//AuthorisationURL"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<!-- read POST url added by pre-map out processor -->
+								<xsl:value-of select="/PurchaseOrder/DocBuilder/Url"/>
+								<xsl:text>OrderID=</xsl:text>
+								<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/OrderID"/>
+							</xsl:otherwise>
+						</xsl:choose>
 					</xsl:attribute>
 					<table class="DocumentSurround">
 						<!--Header-->
@@ -517,15 +526,15 @@
 						</tr>
 						<tr>
 							<td colspan="2" align="center">
-								<xsl:text>Current spend with </xsl:text><xsl:value-of select="/PurchaseOrder/BudgetDetails/SupplierName"/><xsl:text> for this period (</xsl:text><xsl:value-of select="substring(/PurchaseOrder/BudgetDetails/Period,5)"/><xsl:text>/</xsl:text><xsl:value-of select="substring(/PurchaseOrder/BudgetDetails/Period,1,4)"/><xsl:text>) including this order is £</xsl:text><xsl:value-of select="format-number(/PurchaseOrder/BudgetDetails/SpendValue, '#,##0.00')"/><xsl:text>*.</xsl:text>
+								<xsl:text>Current spend with </xsl:text><xsl:value-of select="//SuppliersName"/><xsl:text> for this period (</xsl:text><xsl:value-of select="substring(//Period,5)"/><xsl:text>/</xsl:text><xsl:value-of select="substring(//Period,1,4)"/><xsl:text>) including this order is £</xsl:text><xsl:value-of select="format-number(/PurchaseOrder/BudgetDetails/SpendValue, '#,##0.00')"/><xsl:text>*.</xsl:text>
 								<br/><br/>
-								<xsl:text>This is £</xsl:text><xsl:value-of select="format-number(/PurchaseOrder/BudgetDetails/Overspend, '#,##0.00')"/><xsl:text> more than their budget of £</xsl:text><xsl:value-of select="format-number(/PurchaseOrder/BudgetDetails/BudgetValue, '#,##0.00')"/><xsl:text>.</xsl:text>
+								<xsl:text>This is £</xsl:text><xsl:value-of select="format-number(//Overspend, '#,##0.00')"/><xsl:text> more than their budget of £</xsl:text><xsl:value-of select="format-number(//BudgetValue, '#,##0.00')"/><xsl:text>.</xsl:text>
 								<br/><br/>
-								<xsl:text>*Note that this information was correct at the time of sending (</xsl:text><xsl:value-of select="/PurchaseOrder/BudgetDetails/BudgetCalculationTime"/><xsl:text>).</xsl:text>
+								<xsl:text>*Note that this information was correct at the time of sending (</xsl:text><xsl:value-of select="//BudgetCalculationTime"/><xsl:text>).</xsl:text>
 								<br/><br/>
-								<xsl:if test="/PurchaseOrder/BudgetDetails/AuthorisationComments">
+								<xsl:if test="//AuthorisationComments">
 									<xsl:text>Authorisation comment: </xsl:text>
-									<xsl:value-of select="/PurchaseOrder/BudgetDetails/AuthorisationComments"/>
+									<xsl:value-of select="//AuthorisationComments"/>
 									<br/><br/>
 								</xsl:if>
 								<xsl:text>To approve this overspend:</xsl:text>
