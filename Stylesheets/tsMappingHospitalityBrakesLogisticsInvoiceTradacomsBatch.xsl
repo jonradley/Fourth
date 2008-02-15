@@ -8,6 +8,8 @@ R Cambridge | 13/09/2007		| 1439 branched from tsMappingHospitalityBrakesFrozenG
 **********************************************************************
 Lee Boyton  | 21/09/2007 		| Cater for the UoM being unrecognised by defaulting to each.
 **********************************************************************
+R Cambridge | 13/09/2007		| 1626 If there's a PO refence but no date, use the delivery date (request by Mark Sayers)
+**********************************************************************
             |           		| 
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
@@ -331,8 +333,23 @@ Lee Boyton  | 21/09/2007 		| Cater for the UoM being unrecognised by defaulting 
 
 	<!-- Check for pairing of Purchase Order Date & Purchase Order Reference -->
 	<xsl:template match="//PurchaseOrderReferences">
-		<xsl:variable name="sPORefDate" select="translate(PurchaseOrderDate,' ','')"/>
+	
+		<xsl:variable name="sPORefDate">		
+			<xsl:choose>
+				<!-- Use PO date if provided -->
+				<xsl:when test="translate(PurchaseOrderDate,' ','') != ''">
+					<xsl:value-of select="translate(PurchaseOrderDate,' ','')"/>
+				</xsl:when>
+				<!-- Delivery date should be close enough to the real PO date to thread -->
+				<xsl:when test="translate(../DeliveryNoteReferences/DeliveryNoteDate,' ','') != ''">
+					<xsl:value-of select="translate(../DeliveryNoteReferences/DeliveryNoteDate,' ','')"/>
+				</xsl:when>
+				<xsl:otherwise></xsl:otherwise>
+			</xsl:choose>		
+		</xsl:variable>
+		
 		<xsl:variable name="sPORefReference" select="translate(PurchaseOrderReference,' ','')"/>
+		
 		<xsl:if test="string($sPORefDate) !='' and string($sPORefReference) != '' ">
 			<PurchaseOrderReferences>
 				<PurchaseOrderReference>
