@@ -98,7 +98,9 @@
 			<xsl:value-of select="script:gsFormatFixedWidth('', 68)"/>
 			
 		</xsl:for-each>
-	
+	<!--Add a final new line as Fullers require a CR/LF on the last line of the document-->
+		<xsl:value-of select="$NewLine"/>
+		
 	</xsl:template>
 		
 	<!-- translates a date in YYYY-MM-DD format to a date in DDMMYY format -->
