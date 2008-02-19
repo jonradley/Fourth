@@ -96,7 +96,6 @@ R cambridge	| 30/04/2007		| 1047 branched for Key Lekkerland (2 implied dpl in V
 						BatchHeader/VATAmount |
 						BatchHeader/DocumentTotalInclVAT |
 						BatchHeader/SettlementTotalInclVAT |
-						VATSubTotal/* |
 						InvoiceTrailer/DocumentTotalExclVAT |
 						InvoiceTrailer/SettlementDiscount |
 						InvoiceTrailer/SettlementTotalExclVAT |
@@ -105,6 +104,27 @@ R cambridge	| 30/04/2007		| 1047 branched for Key Lekkerland (2 implied dpl in V
 						InvoiceTrailer/SettlementTotalInclVAT">
 		<xsl:call-template name="copyCurrentNodeExplicit2DP"/>
 	</xsl:template>	
+		
+	<!-- SIMPLE CONVERSION IMPLICIT TO EXPLICIT 2 D.P -->
+	<!-- Add any XPath whose text node needs to be converted from implicit to explicit 2 D.P. -->
+	<xsl:template match="VATSubTotal/*">
+		<!--xsl:call-template name="copyCurrentNodeExplicit2DP"/-->
+		
+		<xsl:choose>
+			<!--Parent of LineValueExclVAT is InvoiceLine -->
+			<xsl:when test="substring-before(.,'-') != ''" >
+				<!--INVOIC-ILD-CRLI is not blank, multiply by -1-->
+				<xsl:call-template name="copyCurrentNodeExplicit2DP">
+					<xsl:with-param name="lMultiplier" select="-1.0"/>
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:call-template name="copyCurrentNodeExplicit2DP"/>
+			</xsl:otherwise>
+		</xsl:choose>
+		
+	</xsl:template>	
+	
 	<!-- SIMPLE CONVERSION IMPLICIT TO EXPLICIT 3 D.P -->
 	<!-- Add any XPath whose text node needs to be converted from implicit to explicit 3 D.P. -->
 	<xsl:template match="OrderingMeasure | 
@@ -156,27 +176,30 @@ R cambridge	| 30/04/2007		| 1047 branched for Key Lekkerland (2 implied dpl in V
 	<!-- CURRENT NODE HELPERS -->
 	<xsl:template name="copyCurrentNodeDPUnchanged">
 		<xsl:param name="lMultiplier" select="1.0"/>
+		<xsl:variable name="sValue" select="substring-before(concat(.,'-'),'-')"/>
 		<xsl:copy>
-			<xsl:if test="string(number(.)) != 'NaN'">
-				<xsl:value-of select=". * $lMultiplier"/>
+			<xsl:if test="string(number($sValue)) != 'NaN'">
+				<xsl:value-of select="$sValue * $lMultiplier"/>
 			</xsl:if>
 		</xsl:copy>
 	</xsl:template>
 	<!-- Produces copy of node without content if content was NaN, otherwise copy of node and content adjusted to explicit 2 D.P. -->
 	<xsl:template name="copyCurrentNodeExplicit2DP">
 		<xsl:param name="lMultiplier" select="1.0"/>
+		<xsl:variable name="sValue" select="substring-before(concat(.,'-'),'-')"/>
 		<xsl:copy>
-			<xsl:if test="string(number(.)) != 'NaN'">
-				<xsl:value-of select="format-number((. * $lMultiplier) div 100.0, '0.00')"/>
+			<xsl:if test="string(number($sValue)) != 'NaN'">
+				<xsl:value-of select="format-number(($sValue * $lMultiplier) div 100.0, '0.00')"/>
 			</xsl:if>
 		</xsl:copy>
 	</xsl:template>
 	<!-- Produces copy of node without content if content was NaN, otherwise copy of node and content adjusted to explicit 3 D.P. -->
 	<xsl:template name="copyCurrentNodeExplicit3DP">
 		<xsl:param name="lMultiplier" select="1.0"/>
+		<xsl:variable name="sValue" select="substring-before(concat(.,'-'),'-')"/>
 		<xsl:copy>
-			<xsl:if test="string(number(.)) != 'NaN'">
-				<xsl:value-of select="format-number((. * $lMultiplier) div 1000.0, '0.00#')"/>
+			<xsl:if test="string(number($sValue)) != 'NaN'">
+				<xsl:value-of select="format-number(($sValue * $lMultiplier) div 1000.0, '0.00#')"/>
 			</xsl:if>
 		</xsl:copy>
 	</xsl:template>
