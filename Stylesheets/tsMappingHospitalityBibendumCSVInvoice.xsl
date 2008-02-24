@@ -41,6 +41,28 @@
 		</xsl:for-each>
 	</xsl:template>
 	
+	<!-- Handle the MIL14T and FMC01T Account -->
+	<xsl:template match="TradeSimpleHeader">
+		<TradeSimpleHeader>
+			<SendersCodeForRecipient>
+				<xsl:choose>
+					<xsl:when test="SendersBranchReference = 'MIL14T'">MIL14T</xsl:when>
+					<xsl:when test="SendersBranchReference = 'FMC01T'">FMC01T</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="SendersCodeForRecipient"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</SendersCodeForRecipient>
+			
+			<xsl:if test="SendersBranchReference = 'MIL14T' or SendersBranchReference = 'FMC01T'">
+				<SendersBranchReference>
+					<xsl:value-of select="SendersBranchReference"/>
+				</SendersBranchReference>
+			</xsl:if>
+		</TradeSimpleHeader>
+	</xsl:template>
+	
+	
 	<!-- sort all the dates in the file -->
 	<xsl:template match="InvoiceHeader/BatchInformation/FileCreationDate">
 		<xsl:if test=". != ''">
