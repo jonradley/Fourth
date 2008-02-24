@@ -89,7 +89,7 @@
 					<Invoice>
 						<TradeSimpleHeader>
 							<SendersCodeForRecipient RecordPos="CUSTOMER" LPos="2"/>
-							<!--SendersBranchReference RecordPos="SUPPLIER" LPos="2"/-->
+							<SendersBranchReference RecordPos="MAGINUSINV" LPos="2"/>
 						</TradeSimpleHeader>
 						<InvoiceHeader>
 							<!--BatchInformation>
