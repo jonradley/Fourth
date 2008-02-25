@@ -562,8 +562,8 @@
 						<tr>
 							<td colspan="2" align="center">
 								<input type="hidden" name="txtExtraQueryString" value=""/>
-								<input type="submit" name="btnAction" value="Approve" onclick="document.getElementById('txtExtraQueryString').value = '&amp;Action=Approve'"/>
-								<input type="submit" name="btnAction" value="Reject" onclick="document.getElementById('txtExtraQueryString').value = '&amp;Action=Reject'"/>
+								<input type="submit" name="btnAction" value="Approve" onclick="document.getElementById('txtExtraQueryString').value = '&amp;Action=Approve&amp;Comment=' + document.getElementById('txtRejectionComment').value"/>
+								<input type="submit" name="btnAction" value="Reject" onclick="document.getElementById('txtExtraQueryString').value = '&amp;Action=Reject&amp;Comment=' + document.getElementById('txtRejectionComment').value"/>
 							</td>
 						</tr>
 					</table>					
