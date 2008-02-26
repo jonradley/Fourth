@@ -5,7 +5,7 @@ Overview
  SIBA invoice and confirmation translator
  
  On processing, lines should be grouped by Purchase Order reference.  
- If ALL lines for a Purchase Order Reference have zero quantity and no Invoice number then map as a Confirmation
+ If ALL lines for a Purchase Order Reference have zero Delivered Quantity and no Invoice number then map as a Confirmation
  Otherwise, map as an Invoice
  
  © Alternative Business Solutions Ltd., 2007.
@@ -14,9 +14,9 @@ Overview
 ******************************************************************************************
  Date 			| Name           | Description of modification
 ******************************************************************************************
- 31/10/2007		| R Cambridge    | 1558 Created Module
+ 31/10/2007	| R Cambridge    | 1558 Created Module
 ******************************************************************************************
-			  		|                |
+ 26/02/2008	| M Dimant       | Maps as confirmation when *Delivered* Quantity is zero
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="xml" encoding="UTF-8"/>
@@ -33,7 +33,7 @@ Overview
 					<Batch>
 						<BatchDocuments>				
 				
-							<xsl:for-each select="/Batch/BatchDocuments/BatchDocument/Invoice[string(InvoiceHeader/InvoiceReferences/InvoiceReference) != '' and sum(InvoiceDetail/InvoiceLine/InvoicedQuantity) != 0]">
+							<xsl:for-each select="/Batch/BatchDocuments/BatchDocument/Invoice[string(InvoiceHeader/InvoiceReferences/InvoiceReference) != '' and sum(InvoiceDetail/InvoiceLine/DeliveredQuantity) != 0]">
 									
 								<BatchDocument>
 									<xsl:attribute name="DocumentTypeNo">86</xsl:attribute>
