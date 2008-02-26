@@ -25,7 +25,7 @@ Overview
 	<xsl:template match="/">
 		<BatchRoot>
 			
-			<xsl:if test="/Batch/BatchDocuments/BatchDocument/Invoice[string(InvoiceHeader/InvoiceReferences/InvoiceReference) != '' and sum(InvoiceDetail/InvoiceLine/InvoicedQuantity) != 0]">
+			<xsl:if test="/Batch/BatchDocuments/BatchDocument/Invoice[string(InvoiceHeader/InvoiceReferences/InvoiceReference) != '' and sum(InvoiceDetail/InvoiceLine/DeliveredQuantity) != 0]">
 			
 				<Document>
 					<xsl:attribute name="TypePrefix">INV</xsl:attribute>
@@ -33,7 +33,7 @@ Overview
 					<Batch>
 						<BatchDocuments>				
 				
-							<xsl:for-each select="/Batch/BatchDocuments/BatchDocument/Invoice[string(InvoiceHeader/InvoiceReferences/InvoiceReference) != '' and sum(InvoiceDetail/InvoiceLine/DeliveredQuantity) != 0]">
+							<xsl:for-each select="/Batch/BatchDocuments/BatchDocument/Invoice[string(InvoiceHeader/InvoiceReferences/InvoiceReference) != '' and sum(InvoiceDetail/InvoiceLine/InvoicedQuantity) != 0]">
 									
 								<BatchDocument>
 									<xsl:attribute name="DocumentTypeNo">86</xsl:attribute>
@@ -157,7 +157,8 @@ Overview
 			
 			</xsl:if>
 			
-			<xsl:if test="/Batch/BatchDocuments/BatchDocument/Invoice[string(InvoiceHeader/InvoiceReferences/InvoiceReference) = '' and sum(InvoiceDetail/InvoiceLine/InvoicedQuantity) = 0]">
+			<xsl:if test="/Batch/BatchDocuments/BatchDocument/Invoice[string(InvoiceHeader/InvoiceReferences/InvoiceReference) = '' and sum(InvoiceDetail/InvoiceLine/DeliveredQuantity) = 0]">
+
 			
 				<Document>
 					<xsl:attribute name="TypePrefix">OCB</xsl:attribute>
@@ -167,7 +168,7 @@ Overview
 						<Batch>
 							<BatchDocuments>				
 					
-								<xsl:for-each select="/Batch/BatchDocuments/BatchDocument/Invoice[string(InvoiceHeader/InvoiceReferences/InvoiceReference) = '' and sum(InvoiceDetail/InvoiceLine/InvoicedQuantity) = 0]">										
+								<xsl:for-each select="/Batch/BatchDocuments/BatchDocument/Invoice[string(InvoiceHeader/InvoiceReferences/InvoiceReference) = '' and sum(InvoiceDetail/InvoiceLine/DeliveredQuantity) = 0]">										
 									<BatchDocument>
 										<xsl:attribute name="DocumentTypeNo">3</xsl:attribute>
 										
