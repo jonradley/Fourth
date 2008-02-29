@@ -20,6 +20,8 @@ Overview
 ******************************************************************************************
  03/01/2007 	| Lee Boyton     | 1678 Truncate the product description field to 40 characters.
 ******************************************************************************************
+ 28/02/2008		| Lee Boyton     | 2036 Do not include any special delivery instructions.
+******************************************************************************************
 			  		|                |
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" 
@@ -236,14 +238,6 @@ Overview
 				<xsl:value-of select="count(//PurchaseOrderLine)"/>
 			</DocumentLineItemCount>
 
-			<!-- ~~~~~~~~~~~~~~~~~~~~~~~
-			    SPECIAL DELIVERY REQUIREMENTS
-			      ~~~~~~~~~~~~~~~~~~~~~~~-->			
-			<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions">		
-				<SpecialDeliveryRequirements>
-					<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions"/>
-				</SpecialDeliveryRequirements>
-			</xsl:if>
 		</Order>
 	</xsl:template>
 </xsl:stylesheet>
