@@ -147,17 +147,17 @@
 					<xsl:value-of select="$vobjRoot/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/>
 				</BuyerGLN>
 			
-				<xsl:if test="$vobjRoot/PurchaseOrderHeader/Buyer/BuyersLocationID/BuyersCode">
+				<!--xsl:if test="$vobjRoot/PurchaseOrderHeader/Buyer/BuyersLocationID/BuyersCode"-->
 					<BuyerAssigned scheme="OTHER">
 						<xsl:value-of select="$vobjRoot/PurchaseOrderHeader/Buyer/BuyersLocationID/BuyersCode"/>
 					</BuyerAssigned>
-				</xsl:if>
+				<!--/xsl:if-->
 	
-				<xsl:if test="$vobjRoot/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode">
+				<!--xsl:if test="$vobjRoot/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"-->
 					<SellerAssigned scheme="OTHER">
 						<xsl:value-of select="$vobjRoot/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
 					</SellerAssigned>
-				</xsl:if>
+				<!--/xsl:if-->
 			</Buyer>
 		
 			<!-- ~~~~~~~~~~~~~~~~~~~~~~~
