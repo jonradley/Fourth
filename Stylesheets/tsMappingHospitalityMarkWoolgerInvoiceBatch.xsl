@@ -14,6 +14,8 @@ Overview
 ******************************************************************************************
  23/07/2007		| R Cambridge		| 1317 Ensure invoice reference is always 10 digits (pad with 0s on the LHS)
 ******************************************************************************************
+ 07/03/2008		| R Cambridge		| 2050 Add dummy invoice date when none is given to ensure validation fails
+******************************************************************************************
 			  		|                |
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:vbscript="http://abs-Ltd.com">
@@ -63,10 +65,35 @@ Overview
 		</xsl:copy>
 	</xsl:template>
 	
-	<xsl:template match="InvoiceReferences/InvoiceReference">
+	<!--xsl:template match="InvoiceReferences/InvoiceReference">
 		<xsl:copy>
 			<xsl:value-of select="substring(concat('0000000000',.),10 - (9 - string-length(.)))"/>
 		</xsl:copy>
+	</xsl:template-->
+	
+	<xsl:template match="InvoiceReferences">
+		
+		<InvoiceReferences>
+		
+			<InvoiceReference>
+				<xsl:value-of select="substring(concat('0000000000',.),10 - (9 - string-length(.)))"/>
+			</InvoiceReference>
+			
+			
+			<xsl:variable name="docDate">		
+				<xsl:choose>
+					<xsl:when test="InvoiceDate"><xsl:value-of select="InvoiceDate"/></xsl:when>
+					<!-- no date has been provided, make sure this document fails validation -->
+					<xsl:otherwise>0000-00-00</xsl:otherwise>
+				</xsl:choose>		
+			</xsl:variable>
+			
+			<InvoiceDate><xsl:value-of select="$docDate"/></InvoiceDate>
+			
+			<TaxPointDate><xsl:value-of select="$docDate"/></TaxPointDate>		
+			
+		</InvoiceReferences>
+		
 	</xsl:template>
 	
 	<xsl:template match="InvoiceLine/DeliveryNoteReferences">
