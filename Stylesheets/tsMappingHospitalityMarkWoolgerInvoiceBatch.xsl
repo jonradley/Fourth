@@ -65,15 +65,29 @@ Overview
 		</xsl:copy>
 	</xsl:template>
 	
-	<!--xsl:template match="InvoiceReferences/InvoiceReference">
+	<xsl:template match="InvoiceReferences/InvoiceReference">
 		<xsl:copy>
 			<xsl:value-of select="substring(concat('0000000000',.),10 - (9 - string-length(.)))"/>
 		</xsl:copy>
-	</xsl:template-->
+	</xsl:template>
 	
 	<xsl:template match="InvoiceReferences">
+	
+		<xsl:copy>
+	
+			<xsl:apply-templates select="*"/>
+			
+			<xsl:if test="not(InvoiceDate | TaxPointDate)">
+			
+				<InvoiceDate>0000-00-00</InvoiceDate>
+				
+				<TaxPointDate>0000-00-00</TaxPointDate>	
+			
+			</xsl:if>
+			
+		</xsl:copy>
 		
-		<InvoiceReferences>
+		<!--InvoiceReferences>
 		
 			<InvoiceReference>
 				<xsl:value-of select="substring(concat('0000000000',.),10 - (9 - string-length(.)))"/>
@@ -83,7 +97,7 @@ Overview
 			<xsl:variable name="docDate">		
 				<xsl:choose>
 					<xsl:when test="InvoiceDate"><xsl:value-of select="InvoiceDate"/></xsl:when>
-					<!-- no date has been provided, make sure this document fails validation -->
+					< no date has been provided, make sure this document fails validation >
 					<xsl:otherwise>0000-00-00</xsl:otherwise>
 				</xsl:choose>		
 			</xsl:variable>
@@ -92,7 +106,7 @@ Overview
 			
 			<TaxPointDate><xsl:value-of select="$docDate"/></TaxPointDate>		
 			
-		</InvoiceReferences>
+		</InvoiceReferences-->
 		
 	</xsl:template>
 	
