@@ -87,26 +87,7 @@ Overview
 			
 		</xsl:copy>
 		
-		<!--InvoiceReferences>
-		
-			<InvoiceReference>
-				<xsl:value-of select="substring(concat('0000000000',.),10 - (9 - string-length(.)))"/>
-			</InvoiceReference>
-			
-			
-			<xsl:variable name="docDate">		
-				<xsl:choose>
-					<xsl:when test="InvoiceDate"><xsl:value-of select="InvoiceDate"/></xsl:when>
-					< no date has been provided, make sure this document fails validation >
-					<xsl:otherwise>0000-00-00</xsl:otherwise>
-				</xsl:choose>		
-			</xsl:variable>
-			
-			<InvoiceDate><xsl:value-of select="$docDate"/></InvoiceDate>
-			
-			<TaxPointDate><xsl:value-of select="$docDate"/></TaxPointDate>		
-			
-		</InvoiceReferences-->
+
 		
 	</xsl:template>
 	
