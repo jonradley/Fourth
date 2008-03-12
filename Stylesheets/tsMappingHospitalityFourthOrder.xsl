@@ -102,4 +102,11 @@
 		</xsl:element>
 	</xsl:template>
 
+	<!-- Remove Line Value and Total Value-->
+	<xsl:template match="LineValueExclVAT">
+	</xsl:template>
+	
+	<xsl:template match="PurchaseOrderTrailer">
+	</xsl:template>
+	
 </xsl:stylesheet>
