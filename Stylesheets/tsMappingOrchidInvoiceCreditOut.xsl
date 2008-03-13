@@ -26,6 +26,8 @@
 ******************************************************************************************
  02/10/2007 | Lee Boyton | 1489. Cater for settlement discount.
 ******************************************************************************************
+ 13/03/2008 | Lee Boyton | 2066. Raise an error if any lines are missing an account code.
+******************************************************************************************
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -47,6 +49,11 @@
 			<xsl:value-of select="user:mRaiseErrorAsMissingFields()"/>
 		</xsl:if>
 
+		<!--Check for any lines without an account code. If any are missing then this document will not add up correctly in the journal-->
+		<xsl:if test="InvoiceDetail/InvoiceLine[not(LineExtraData/AccountCode)] | CreditNoteDetail/CreditNoteLine[not(LineExtraData/AccountCode)]">
+			<xsl:value-of select="user:mRaiseErrorAsMissingFields()"/>
+		</xsl:if>
+		
 		<xsl:variable name="NewLine">
 			<xsl:text>&#13;&#10;</xsl:text>
 		</xsl:variable>
