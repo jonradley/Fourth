@@ -45,7 +45,7 @@
 			<ffsGroup>
 				<!--References below which MEAN RecordPos 'H' with LPos 1 would be CODED as 'D' and LPos 14 (13+1)-->
 				<ffsGroupRecord RecordPos="ORDDELREFS" FieldTotal="4"/>
-				<ffsSubGroupRecord RecordPos="INVDETS" FieldTotal="14"/>
+				<ffsSubGroupRecord RecordPos="INVDETS" FieldTotal="15"/>
 			</ffsGroup>
 		</ffsGroups>
 		<ffsSplitBatchRecord RecordPos="INVHDR"/>
@@ -151,9 +151,12 @@
 							<InvoiceLine>
 								<!--<LineNumber RecordPos="" LPos=""/>-->
 								<PurchaseOrderReferences>
-									<PurchaseOrderReference RecordPos="INVDETS" LPos="16"/>
+									<PurchaseOrderReference RecordPos="INVDETS" LPos="17"/>
 									<!-- TBC -->
 									<!--PurchaseOrderDate RecordPos="D" LPos="3"/-->
+									<TradeAgreement>
+										<ContractReference RecordPos="INVDETS" LPos="15"/>
+									</TradeAgreement>
 								</PurchaseOrderReferences>
 								<DeliveryNoteReferences>
 									<DeliveryNoteReference RecordPos="INVDETS" LPos="17"/>
