@@ -32,17 +32,17 @@
 				<InvoiceDocumentNumber scheme="OTHER"><xsl:value-of select="/Invoice/InvoiceHeader/InvoiceReferences/InvoiceReference"/></InvoiceDocumentNumber>
 				<DocumentStatus codeList="EANCOM">
 					<xsl:choose>
-						<xsl:when test="/Invoice/InvoiceHeader/DocumentStatus = 'Original'">7</xsl:when>
-						<xsl:otherwise>9</xsl:otherwise>
+						<xsl:when test="/Invoice/InvoiceHeader/DocumentStatus = 'Original'">9</xsl:when>
+						<xsl:otherwise>7</xsl:otherwise>
 					</xsl:choose>
 				</DocumentStatus>
 			</InvoiceDocumentDetails>
-			<xsl:if test="/Invoice/InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/TradeAgreement/ContractReference">
+			<xsl:if test="/Invoice/InvoiceDetail/InvoiceLine/PurchaseOrderReferences[TradeAgreement/ContractReference != ''][1]/TradeAgreement/ContractReference">
 				<TradeAgreementReference>
 					<xsl:if test="/Invoice/InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/TradeAgreement/ContractDate">
 						<ContractReferenceDate format="YYYY-MM-DDThh:mm:ss:TZD"><xsl:value-of select="/Invoice/InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/TradeAgreement/ContractDate"/>T00:00:00</ContractReferenceDate>
 					</xsl:if>
-					<ContractReferenceNumber scheme="OTHER"><xsl:value-of select="/Invoice/InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/TradeAgreement/ContractReference"/></ContractReferenceNumber>
+					<ContractReferenceNumber scheme="OTHER"><xsl:value-of select="/Invoice/InvoiceDetail/InvoiceLine/PurchaseOrderReferences[TradeAgreement/ContractReference != ''][1]/TradeAgreement/ContractReference"/></ContractReferenceNumber>
 				</TradeAgreementReference>
 			</xsl:if>
 			<xsl:if test="/Invoice/InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderReference">
