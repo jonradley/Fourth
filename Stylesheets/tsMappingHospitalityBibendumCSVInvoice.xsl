@@ -62,6 +62,30 @@
 		</TradeSimpleHeader>
 	</xsl:template>
 	
+	<xsl:template match="ShipToLocationID">
+		<ShipToLocationID>
+			<SuppliersCode>
+				<xsl:value-of select="SuppliersCode"/>
+			</SuppliersCode>
+			<xsl:if test="//TradeSimpleHeader/SendersBranchReference = 'MIL14T' or //TradeSimpleHeader/SendersBranchReference = 'FMC01T'">
+				<BuyersCode>
+					<xsl:value-of select="SuppliersCode"/>
+				</BuyersCode>
+			</xsl:if>
+		</ShipToLocationID>
+	</xsl:template>
+	
+	<xsl:template match="InvoiceHeader/Supplier">
+		<Supplier>
+			<xsl:if test="//TradeSimpleHeader/SendersBranchReference = 'MIL14T' or //TradeSimpleHeader/SendersBranchReference = 'FMC01T'">
+					<SuppliersLocationID>
+					<SuppliersCode>Bibendum</SuppliersCode>
+				</SuppliersLocationID>
+			</xsl:if>
+			<xsl:copy-of select="SuppliersName"/>
+			<xsl:copy-of select="SuppliersAddress"/>
+		</Supplier>
+	</xsl:template>
 	
 	<!-- sort all the dates in the file -->
 	<xsl:template match="InvoiceHeader/BatchInformation/FileCreationDate">
@@ -315,6 +339,15 @@
 		</xsl:element>
 	</xsl:template>
 
+	<xsl:template match="TradeAgreement">
+		<xsl:if test="normalize-space(ContractReference) != 'TRADE'">
+			<TradeAgreement>
+				<ContractReference>
+					<xsl:value-of select="normalize-space(ContractReference)"/>
+				</ContractReference>
+			</TradeAgreement>
+		</xsl:if>
+	</xsl:template>
 
 
 	<!-- Sort VATCodes -->
