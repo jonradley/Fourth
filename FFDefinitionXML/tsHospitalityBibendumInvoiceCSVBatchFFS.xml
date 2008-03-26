@@ -123,7 +123,7 @@
 									<AddressLine2 RecordPos="SUPPLIER" LPos="5"/>
 									<AddressLine3 RecordPos="SUPPLIER" LPos="6"/>
 									<AddressLine4 RecordPos="SUPPLIER" LPos="7"/>
-									<PostCode RecordPos="SUPPLIER" LPos="8"/>
+									<PostCode RecordPos="SUPPLIER" LPos="9"/>
 								</SuppliersAddress>
 							</Supplier>
 							<ShipTo>
