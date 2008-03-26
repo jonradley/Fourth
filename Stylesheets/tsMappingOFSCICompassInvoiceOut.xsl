@@ -53,14 +53,24 @@
 					<PurchaseOrderNumber scheme="OTHER"><xsl:value-of select="/Invoice/InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderReference"/></PurchaseOrderNumber>
 				</OrderReference>
 			</xsl:if>
-			<xsl:if test="/Invoice/InvoiceDetail/InvoiceLine[1]/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationReference">
-				<OrderConfirmationReference>
-					<xsl:if test="/Invoice/InvoiceDetail/InvoiceLine[1]/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationDate">
+			<OrderConfirmationReference>
+				<xsl:choose>
+					<xsl:when test="/Invoice/InvoiceDetail/InvoiceLine[1]/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationDate != ''">
 						<PurchaseOrderConfirmationDate format="YYYY-MM-DDThh:mm:ss:TZD"><xsl:value-of select="/Invoice/InvoiceDetail/InvoiceLine[1]/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationDate"/>T00:00:00</PurchaseOrderConfirmationDate>
-					</xsl:if>
-					<PurchaseOrderConfirmationNumber scheme="OTHER"><xsl:value-of select="/Invoice/InvoiceDetail/InvoiceLine[1]/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationReference"/></PurchaseOrderConfirmationNumber>
-				</OrderConfirmationReference>
-			</xsl:if>
+					</xsl:when>
+					<xsl:otherwise>
+						<PurchaseOrderConfirmationDate format="YYYY-MM-DDThh:mm:ss:TZD"><xsl:value-of select="/Invoice/InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderDate"/>T00:00:00</PurchaseOrderConfirmationDate>
+					</xsl:otherwise>
+				</xsl:choose>
+				<xsl:choose>
+					<xsl:when test="/Invoice/InvoiceDetail/InvoiceLine[1]/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationReference != ''">
+						<PurchaseOrderConfirmationNumber scheme="OTHER"><xsl:value-of select="/Invoice/InvoiceDetail/InvoiceLine[1]/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationReference"/></PurchaseOrderConfirmationNumber>
+					</xsl:when>
+					<xsl:otherwise>
+						<PurchaseOrderConfirmationNumber scheme="OTHER"><xsl:value-of select="/Invoice/InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderReference"/></PurchaseOrderConfirmationNumber>
+					</xsl:otherwise>
+				</xsl:choose>
+			</OrderConfirmationReference>
 			<xsl:if test="/Invoice/InvoiceDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteReference">
 				<DespatchReference>
 					<xsl:if test="/Invoice/InvoiceDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteDate">
@@ -69,14 +79,24 @@
 					<DespatchDocumentNumber scheme="OTHER"><xsl:value-of select="/Invoice/InvoiceDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteReference"/></DespatchDocumentNumber>
 				</DespatchReference>
 			</xsl:if>
-			<xsl:if test="/Invoice/InvoiceDetail/InvoiceLine[1]/GoodsReceivedNoteReferences/GoodsReceivedNoteReference">
-				<ReceiptAdviceReference>
-					<xsl:if test="/Invoice/InvoiceDetail/InvoiceLine[1]/GoodsReceivedNoteReferences/GoodsReceivedNoteDate">
+			<ReceiptAdviceReference>
+				<xsl:choose>
+					<xsl:when test="/Invoice/InvoiceDetail/InvoiceLine[1]/GoodsReceivedNoteReferences/GoodsReceivedNoteDate">
 						<ReceiptAdviceDocumentDate format="YYYY-MM-DDThh:mm:ss:TZD"><xsl:value-of select="/Invoice/InvoiceDetail/InvoiceLine[1]/GoodsReceivedNoteReferences/GoodsReceivedNoteDate"/>T00:00:00</ReceiptAdviceDocumentDate>
-					</xsl:if>
-					<ReceiptAdviceDocumentNumber scheme="OTHER"><xsl:value-of select="/Invoice/InvoiceDetail/InvoiceLine[1]/GoodsReceivedNoteReferences/GoodsReceivedNoteReference"/></ReceiptAdviceDocumentNumber>
-				</ReceiptAdviceReference>
-			</xsl:if>
+					</xsl:when>
+					<xsl:otherwise>
+						<ReceiptAdviceDocumentDate format="YYYY-MM-DDThh:mm:ss:TZD"><xsl:value-of select="/Invoice/InvoiceDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteDate"/>T00:00:00</ReceiptAdviceDocumentDate>
+					</xsl:otherwise>
+				</xsl:choose>
+				<xsl:choose>
+					<xsl:when test="/Invoice/InvoiceDetail/InvoiceLine[1]/GoodsReceivedNoteReferences/GoodsReceivedNoteReference">
+						<ReceiptAdviceDocumentNumber scheme="OTHER"><xsl:value-of select="/Invoice/InvoiceDetail/InvoiceLine[1]/GoodsReceivedNoteReferences/GoodsReceivedNoteReference"/></ReceiptAdviceDocumentNumber>
+					</xsl:when>
+					<xsl:otherwise>
+						<ReceiptAdviceDocumentNumber scheme="OTHER"><xsl:value-of select="/Invoice/InvoiceDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteReference"/></ReceiptAdviceDocumentNumber>
+					</xsl:otherwise>
+				</xsl:choose>
+			</ReceiptAdviceReference>
 			<Buyer>
 				<BuyerGLN scheme="GLN"><xsl:value-of select="/Invoice/InvoiceHeader/Buyer/BuyersLocationID/GLN"/></BuyerGLN>
 				<xsl:if test="/Invoice/InvoiceHeader/Buyer/BuyersLocationID/BuyersCode">
@@ -93,7 +113,7 @@
 					<xsl:if test="/Invoice/InvoiceHeader/Buyer/BuyersAddress/AddressLine3">
 						<City scheme="OTHER"><xsl:value-of select="/Invoice/InvoiceHeader/Buyer/BuyersAddress/AddressLine3"/></City>
 					</xsl:if>
-					<PostCode scheme="OTHER"><xsl:value-of select="/Invoice/InvoiceHeader/Buyer/BuyersAddress/PostCode"/></PostCode>
+					<PostCode scheme="OTHER"><xsl:value-of select="/Invoice/InvoiceHeader/Buyer/BuyersAddress/AddressLine4"/></PostCode>
 					<Country codeList="ISO">GB</Country>
 				</Address>
 			</Buyer>
@@ -116,6 +136,7 @@
 					<PostCode scheme="OTHER"><xsl:value-of select="/Invoice/InvoiceHeader/Supplier/SuppliersAddress/PostCode"/></PostCode>
 					<Country codeList="ISO">GB</Country>
 				</Address>
+				<VATRegisterAtionNumber scheme="OTHER">GB<xsl:value-of select="/Invoice/InvoiceHeader/InvoiceReferences/VATRegNo"/></VATRegisterAtionNumber>
 			</Seller>
 			<ShipTo>
 				<ShipToGLN scheme="GLN"><xsl:value-of select="/Invoice/InvoiceHeader/ShipTo/ShipToLocationID/GLN"/></ShipToGLN>
