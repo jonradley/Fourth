@@ -8,7 +8,8 @@ R Cambridge	| 2007-10-17		| 1332 Created Modele
 **********************************************************************
 R Cambridge	| 2007-11-13		| 1332 no info to populate Buyer tag
 **********************************************************************
-				|						|
+R Cambrdige	| 2008-03-27		| 2099 Logistics delivery reference should be the PO number 
+												 (Because DN ref on electronic copy will never match paper copy)
 **********************************************************************
 				|						|				
 *******************************************************************-->
@@ -81,9 +82,23 @@ R Cambridge	| 2007-11-13		| 1332 no info to populate Buyer tag
 									<PurchaseOrderTime><xsl:value-of select="substring-after(orderIdentification/referenceDateTime,'T')"/></PurchaseOrderTime>
 								</PurchaseOrderReferences>
 								
+								
 								<DeliveryNoteReferences>
-									<DeliveryNoteReference><xsl:value-of select="deliveryNote/referenceIdentification"/></DeliveryNoteReference>
+									
+									<!-- 2099 Logistics delivery reference should be PO ref -->
+									<DeliveryNoteReference>
+										<xsl:choose>
+											<xsl:when test="shipper/gln='5036036000030'">
+												<xsl:value-of select="orderIdentification/referenceIdentification"/>
+											</xsl:when>												
+											<xsl:otherwise>
+												<xsl:value-of select="deliveryNote/referenceIdentification"/>
+											</xsl:otherwise>	
+										</xsl:choose>
+									</DeliveryNoteReference>
+									
 									<DeliveryNoteDate><xsl:value-of select="substring-before(deliveryNote/referenceDateTime,'T')"/></DeliveryNoteDate>
+								
 								</DeliveryNoteReferences>
 								
 								<DeliveredDeliveryDetails>
