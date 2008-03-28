@@ -8,7 +8,9 @@ R Cambridge | 13/09/2007		| 1439 branched from tsMappingHospitalityBrakesFrozenG
 **********************************************************************
 Lee Boyton  | 21/09/2007 		| Cater for the UoM being unrecognised by defaulting to each.
 **********************************************************************
-R Cambridge | 13/09/2007		| 1626 If there's a PO refence but no date, use the delivery date (request by Mark Sayers)
+R Cambridge | 13/02/2008		| 1626 If there's a PO refence but no date, use the delivery date (request by Mark Sayers)
+**********************************************************************
+R Cambridge | 28/03/2008		| 2099 Logic to determine DN ref
 **********************************************************************
             |           		| 
 *******************************************************************-->
@@ -107,6 +109,127 @@ R Cambridge | 13/09/2007		| 1626 If there's a PO refence but no date, use the de
 		</SendersBranchReference>
 		
 	</xsl:template>
+	
+	
+	
+	<xsl:template match="InvoiceLine">
+	
+		<InvoiceLine>
+		
+			<!--  
+			
+			2099
+			
+			Determine DN ref by using the 1st of these values that's present
+			 - Buyer's PO ref
+			 - Supplier's PO ref
+			 - Invoice ref
+			-->
+
+			<xsl:variable name="sDNRefDate">		
+				<xsl:choose>
+					<xsl:when test="translate(DeliveryNoteReferences/DeliveryNoteDate,' ','') != ''">
+						<xsl:variable name="temp" select="translate(DeliveryNoteReferences/DeliveryNoteDate,' ','')"/>
+						<xsl:value-of select="concat('20',substring($temp,1,2),'-',substring($temp,3,2),'-',substring($temp,5,2))"/>
+					</xsl:when>
+					<xsl:otherwise></xsl:otherwise>
+				</xsl:choose>		
+			</xsl:variable>
+			
+			<xsl:variable name="sPORefReference">
+			
+				<!-- //PurchaseOrderReference holds all ORNO sub fields (ie will have the form {BuyerRef}:{SupplierRef}:{BuyerPODate}) -->
+			
+				<xsl:variable name="fieldORNO" select="concat(translate(PurchaseOrderReferences/PurchaseOrderReference,' ',''),':')"/>
+				
+				<xsl:variable name="buyerRef" select="substring-before($fieldORNO,':')"/>
+				
+				<xsl:variable name="supplierRef" select="substring-before(substring-after($fieldORNO,':'),':')"/>
+			
+				<xsl:choose>
+					<xsl:when test="$buyerRef != ''"><xsl:value-of select="$buyerRef"/></xsl:when>
+					<xsl:when test="$supplierRef != ''"><xsl:value-of select="$supplierRef"/></xsl:when>
+					<xsl:otherwise><xsl:value-of select="../../InvoiceHeader/InvoiceReferences/InvoiceReference"/></xsl:otherwise>
+				</xsl:choose>
+			
+			</xsl:variable>
+			
+			<xsl:variable name="sPORefDate">		
+				<xsl:choose>
+					<!-- Use PO date if provided -->
+					<xsl:when test="translate(PurchaseOrderReferences/PurchaseOrderDate,' ','') != ''">
+						<xsl:variable name="temp" select="translate(PurchaseOrderReferences/PurchaseOrderDate,' ','')"/>
+						<xsl:value-of select="concat('20',substring($temp,1,2),'-',substring($temp,3,2),'-',substring($temp,5,2))"/>
+					</xsl:when>
+					<!-- Delivery date should be close enough to the real PO date to thread -->
+					<xsl:when test="$sDNRefDate != ''">
+						<xsl:value-of select="$sDNRefDate"/>
+					</xsl:when>
+					<xsl:otherwise></xsl:otherwise>
+				</xsl:choose>		
+			</xsl:variable>
+			
+		
+	
+			<xsl:apply-templates select="LineNumber"/>
+			
+			<xsl:if test="string($sPORefDate) !='' and string($sPORefReference) != '' ">
+				
+				<PurchaseOrderReferences>
+					
+					<PurchaseOrderReference>
+						<xsl:value-of select="$sPORefReference"/>
+					</PurchaseOrderReference>
+					
+					<PurchaseOrderDate>
+						<xsl:value-of select="$sPORefDate"/>
+					</PurchaseOrderDate>
+					
+				</PurchaseOrderReferences>
+				
+			</xsl:if>
+			
+			<xsl:apply-templates select="PurchaseOrderConfirmationReferences"/>
+			
+			<xsl:if test="string($sDNRefDate) !='' and string($sPORefReference) != '' ">
+				
+				<DeliveryNoteReferences>
+					
+					<DeliveryNoteReference>
+						<xsl:value-of select="$sPORefReference"/>
+					</DeliveryNoteReference>
+					
+					<DeliveryNoteDate>
+						<xsl:value-of select="$sDNRefDate"/>
+					</DeliveryNoteDate>
+					
+					<xsl:apply-templates select="DeliveryNoteReferences/DespatchDate"/>
+	
+				</DeliveryNoteReferences>
+				
+			</xsl:if>
+			
+			<xsl:apply-templates select="GoodsReceivedNoteReferences"/>
+			<xsl:apply-templates select="ProductID"/>
+			<xsl:apply-templates select="ProductDescription"/>
+			<xsl:apply-templates select="OrderedQuantity"/>
+			<xsl:apply-templates select="ConfirmedQuantity"/>
+			<xsl:apply-templates select="DeliveredQuantity"/>			
+			<xsl:apply-templates select="InvoicedQuantity"/>			
+			<xsl:apply-templates select="PackSize"/>
+			<xsl:apply-templates select="UnitValueExclVAT"/>
+			<xsl:apply-templates select="LineValueExclVAT"/>
+			<xsl:apply-templates select="LineDiscountRate"/>
+			<xsl:apply-templates select="LineDiscountValue"/>
+			<xsl:apply-templates select="VATCode"/>
+			<xsl:apply-templates select="VATRate"/>
+			<xsl:apply-templates select="NetPriceFlag"/>
+			<xsl:apply-templates select="Measure"/>
+			<xsl:apply-templates select="LineExtraData"/>
+			
+		</InvoiceLine>
+		
+	</xsl:template>
 
 	
 	
@@ -121,7 +244,7 @@ R Cambridge | 13/09/2007		| 1626 If there's a PO refence but no date, use the de
 	</xsl:template>
 	
 	
-		<!-- Check if invoice QTY is given, if not use measured quantity taking the value from @UnitOfMeasure. Also we need to ensure this attribute is stripped to avoid a validation error later on. -->
+	<!-- Check if invoice QTY is given, if not use measured quantity taking the value from @UnitOfMeasure. Also we need to ensure this attribute is stripped to avoid a validation error later on. -->
 	<xsl:template match="//InvoicedQuantity" >
 		
 		<xsl:variable name="UoM">
@@ -331,16 +454,16 @@ R Cambridge | 13/09/2007		| 1626 If there's a PO refence but no date, use the de
 	<!-- END of Delivery Location Code Converter-->
 	
 
-	<!-- Check for pairing of Purchase Order Date & Purchase Order Reference -->
+	<!-- Check for pairing of Purchase Order Date & Purchase Order Reference >
 	<xsl:template match="//PurchaseOrderReferences">
 	
 		<xsl:variable name="sPORefDate">		
 			<xsl:choose>
-				<!-- Use PO date if provided -->
+				<- Use PO date if provided ->
 				<xsl:when test="translate(PurchaseOrderDate,' ','') != ''">
 					<xsl:value-of select="translate(PurchaseOrderDate,' ','')"/>
 				</xsl:when>
-				<!-- Delivery date should be close enough to the real PO date to thread -->
+				< Delivery date should be close enough to the real PO date to thread >
 				<xsl:when test="translate(../DeliveryNoteReferences/DeliveryNoteDate,' ','') != ''">
 					<xsl:value-of select="translate(../DeliveryNoteReferences/DeliveryNoteDate,' ','')"/>
 				</xsl:when>
@@ -361,7 +484,8 @@ R Cambridge | 13/09/2007		| 1626 If there's a PO refence but no date, use the de
 
 			</PurchaseOrderReferences>
 		</xsl:if>
-	</xsl:template>
+		
+	</xsl:template-->
 	
 	<!-- 
 		Template to convert UOM's into internal values
