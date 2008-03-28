@@ -3,12 +3,14 @@
 **********************************************************************
 Alterations
 **********************************************************************
-Name		| Date			| Change
+Name			| Date			| Change
 **********************************************************************
-S Jefford	| 22/08/2005		| GTIN field now sourced from ILD/SPRO(1).
-				|						| ILD/CRLI now stored in BuyersProductCode
+S Jefford	| 22/08/2005	| GTIN field now sourced from ILD/SPRO(1).
+				|					| ILD/CRLI now stored in BuyersProductCode
 **********************************************************************
 N Emsen		|	04/01/2007	|	Case 661 - CLO3
+**********************************************************************
+R Cambridge	|	2008-03-28	|	2099 Store all ORNO sub fields in //PurchaseOrderReference 
 **********************************************************************
 -->
 <ffsFlatFileSchema>
@@ -194,7 +196,7 @@ N Emsen		|	04/01/2007	|	Case 661 - CLO3
 								<LineNumber RecordPos="ILD=" LPos="2"/>
 								<PurchaseOrderReferences>
 									<!-- LPos 2 OPTIONAL Purchase Order Reference, OPTIONAL, INVOIC – ODD – ORNO(1), Should be set to the customer’s order reference.  If the order has been generated without a customer reference then the seller’s order reference may be used -->
-									<PurchaseOrderReference RecordPos="ILD=" LPos="27" SFPos="1"/>
+									<PurchaseOrderReference RecordPos="ILD=" LPos="27"/>
 									<!-- LPos 2 OPTIONAL Purchase Order Date, OPTIONAL, INVOIC – ODD – ORNO(3), YYMMDD, Must be valid date, and should be set to the order date associated with the reference above -->
 									<PurchaseOrderDate RecordPos="ILD=" LPos="27" SFPos="3"/>
 								</PurchaseOrderReferences>
