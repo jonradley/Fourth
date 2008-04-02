@@ -67,7 +67,14 @@
 			</xsl:attribute>
 			
 			<xsl:attribute name="OrderDateTime">
-				<xsl:value-of select="concat(PurchaseOrderConfirmationHeader/PurchaseOrderReferences/PurchaseOrderDate,'T',PurchaseOrderConfirmationHeader/PurchaseOrderReferences/PurchaseOrderTime)"/>
+				<xsl:choose>
+					<xsl:when test="PurchaseOrderConfirmationHeader/PurchaseOrderReferences/PurchaseOrderTime != ''">
+						<xsl:value-of select="concat(PurchaseOrderConfirmationHeader/PurchaseOrderReferences/PurchaseOrderDate,'T',PurchaseOrderConfirmationHeader/PurchaseOrderReferences/PurchaseOrderTime)"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="concat(PurchaseOrderConfirmationHeader/PurchaseOrderReferences/PurchaseOrderDate,'T00:00:00')"/>
+					</xsl:otherwise>
+				</xsl:choose>
 			</xsl:attribute>
 			
 			<xsl:attribute name="LocationGuid">
