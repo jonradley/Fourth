@@ -70,6 +70,9 @@
  19/12/2007		| Lee Boyton	| 995. and back gain. Extra header for the food line required.
 =========================================================================================
  17/01/2008		| Lee Boyton	| 1704. /FOOD is too long for Caterwide, needs to be just /FD.
+=========================================================================================
+ 04/04/2008		| Lee Boyton	| 2146. Ensure the delivery note reference does not exceed the maximum of 9 characters.
+                             |       Also cater for old Brakes DN references with a text prefix.
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -154,7 +157,8 @@
 							<xsl:with-param name="vsDNRef" select="translate((/*/*/InvoiceLine | /*/*/CreditNoteLine | /*/*/DebitNoteLine | /DeliveryNote/DeliveryNoteHeader | /GoodsReceivedNote/GoodsReceivedNoteHeader)/DeliveryNoteReferences/DeliveryNoteReference,',','')"/>
 						</xsl:call-template>
 					</xsl:variable>
-					<xsl:value-of select="concat($DNRef,'/FD')"/>
+					<!-- trim the delivery reference to a maximum of 6 characters so that adding /FD does not exceed the maximum of 9 characters -->
+					<xsl:value-of select="concat(substring($DNRef,1,6),'/FD')"/>
 					<xsl:text>,</xsl:text>
 					
 					<xsl:call-template name="msFormatDate">
@@ -412,18 +416,31 @@
 	<xsl:template name="msStripLeadingZeros">
 		<xsl:param name="vsDNRef"/>
 		
+		<!-- check for old Brakes delivery note references which have a text prefix -->
+		<xsl:variable name="sNewRef">
+			<xsl:choose>
+				<xsl:when test="substring($vsDNRef,1,3) = 'LAS' or substring($vsDNRef,1,3) = 'LTS'">
+					<xsl:value-of select="substring($vsDNRef,4)"/>				
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="$vsDNRef"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		
 		<!--
-		 convert the input value to a number to strip leading zeros.
 		 if the input value is not a number then it will return the 'NaN' token, hence
 		 the slightly bizarre test below because NaN != NaN.
 		 -->
+		
 		<xsl:choose>
-			<xsl:when test="number($vsDNRef) != number($vsDNRef)">
-				<!-- i.e. not a number -->
-				<xsl:value-of select="substring($vsDNRef, 1, 30)"/>
+			<xsl:when test="number($sNewRef) != number($sNewRef)">
+				<!-- just return the original value trimmed to the maximum length of 9 characters -->
+				<xsl:value-of select="substring($vsDNRef, 1, 9)"/>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:value-of select="substring(number($vsDNRef), 1, 30)"/>
+				<!-- convert the input value to a number to strip leading zeros. -->
+				<xsl:value-of select="substring(number($sNewRef), 1, 9)"/>
 			</xsl:otherwise>
 		</xsl:choose>
 		
