@@ -52,6 +52,11 @@
 			</xsl:element>
 		</xsl:copy>
 	</xsl:template>
+
+	<!-- Remove the invoice references element if an invoice date has been provided without an invoice reference, or
+		an invoice reference has been provided without an invoice date. -->
+	<xsl:template match="InvoiceReferences[(InvoiceDate and not(InvoiceReference)) or (InvoiceReference and not(InvoiceDate))]">
+	</xsl:template>
 	
 	<!-- CONVERT TestFlag from Y / N to 1 / 0 -->
 	<xsl:template match="TradeSimpleHeader/TestFlag">
