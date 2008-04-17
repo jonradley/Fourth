@@ -282,11 +282,11 @@
 			<xsl:value-of select="format-number(. div 100,'0.00')"/>
 		</xsl:element>
 	</xsl:template>
-	<xsl:template match="UnitValueExclVAT">
+	<!--xsl:template match="UnitValueExclVAT">
 		<xsl:element name="UnitValueExclVAT">
 			<xsl:value-of select="format-number(. div 10000,'0.0000')"/>
 		</xsl:element>
-	</xsl:template>
+	</xsl:template-->
 	<xsl:template match="LineValueExclVAT">
 		<xsl:element name="LineValueExclVAT">
 			<xsl:value-of select="format-number(. div 10000,'0.0000')"/>
@@ -327,15 +327,48 @@
 	<!-- Decode Bibendum's PackSizes -->
 	<xsl:template match="InvoicedQuantity">
 		<xsl:element name="InvoicedQuantity">
-			<xsl:choose>
-				<xsl:when test="contains(following-sibling::PackSize,'CASE')">
-					<xsl:attribute name="UnitOfMeasure">CS</xsl:attribute>
-				</xsl:when>
-				<xsl:when test="following-sibling::PackSize = 'BOTTLE'">
-					<xsl:attribute name="UnitOfMeasure">EA</xsl:attribute>
-				</xsl:when>
-			</xsl:choose>
+			<xsl:attribute name="UnitOfMeasure">
+				<xsl:variable name="UoM">
+					<xsl:call-template name="decodePacks">
+						<xsl:with-param name="sBibPack" select="following-sibling::Measure/UnitsInPack"/>
+					</xsl:call-template>
+				</xsl:variable>
+				<xsl:choose>
+					<xsl:when test="$UoM = 1">EA</xsl:when>
+					<xsl:otherwise>CS</xsl:otherwise>
+				</xsl:choose>
+			</xsl:attribute>
 			<xsl:value-of select="format-number(.,'0')"/>
+		</xsl:element>
+	</xsl:template>
+
+	<xsl:template match="UnitValueExclVAT">
+		<xsl:element name="UnitValueExclVAT">
+			<xsl:variable name="UnitsInOrderedPack">
+				<xsl:call-template name="decodePacks">
+					<xsl:with-param name="sBibPack" select="following-sibling::Measure/UnitsInPack"/>
+				</xsl:call-template>
+			</xsl:variable>
+			<xsl:variable name="UnitsInPricedPack">
+				<xsl:value-of select="preceding-sibling::LineNumber"/>
+			</xsl:variable>
+			<xsl:variable name="QtyInvoiced">
+				<xsl:value-of select="preceding-sibling::InvoicedQuantity"/>
+			</xsl:variable>
+			<xsl:variable name="UnitValue">
+				<xsl:value-of select="format-number(. div 10000,'0.0000')"/>
+			</xsl:variable>
+			<xsl:value-of select="format-number($UnitValue div ($UnitsInPricedPack div $UnitsInOrderedPack),'0.00')"/>
+		</xsl:element>
+	</xsl:template>
+	
+	<xsl:template match="Measure">
+		<xsl:element name="Measure">
+			<xsl:element name="UnitsInPack">
+				<xsl:call-template name="decodePacks">
+					<xsl:with-param name="sBibPack" select="UnitsInPack"/>
+				</xsl:call-template>
+			</xsl:element>
 		</xsl:element>
 	</xsl:template>
 
@@ -367,6 +400,9 @@
 	</xsl:template>
 
 	
+	<xsl:template match="LineNumber">
+	</xsl:template>
+	
 	<!--  Format a YYMMDD as YYYY-MM-DD -->
 	<xsl:template name="fixDate">
 		<xsl:param name="sDate"/>
@@ -380,6 +416,16 @@
 			<xsl:when test="$sVATCode = 'STD'">S</xsl:when>
 			<xsl:when test="$sVATCode = 'EXEMPT'">E</xsl:when>
 			<xsl:otherwise> </xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	
+	<xsl:template name="decodePacks">
+		<xsl:param name="sBibPack"/>
+		<xsl:choose>
+			<xsl:when test="normalize-space($sBibPack) = 'EACH' or normalize-space($sBibPack) = 'BOTTLE'">1</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="substring(normalize-space($sBibPack),5)"/>
+			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
 
