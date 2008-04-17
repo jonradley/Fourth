@@ -31,7 +31,7 @@
 			</ffsEscapeChar>
 		</ffsEscapeChars>
 		<ffsFieldSeparators>
-			<ffsFieldSeparator>,</ffsFieldSeparator>
+			<ffsFieldSeparator>|</ffsFieldSeparator>
 		</ffsFieldSeparators>
 		<ffsPadding/>
 		<ffsBatchHeader>
@@ -149,9 +149,10 @@
 						</InvoiceHeader>
 						<InvoiceDetail>
 							<InvoiceLine>
-								<!--<LineNumber RecordPos="" LPos=""/>-->
+								<!-- Hijacked to get more line information -->
+								<LineNumber RecordPos="INVDETS" LPos="14"/>
 								<PurchaseOrderReferences>
-									<PurchaseOrderReference RecordPos="INVDETS" LPos="17"/>
+									<PurchaseOrderReference RecordPos="INVDETS" LPos="18"/>
 									<!-- TBC -->
 									<!--PurchaseOrderDate RecordPos="D" LPos="3"/-->
 									<TradeAgreement>
@@ -159,8 +160,8 @@
 									</TradeAgreement>
 								</PurchaseOrderReferences>
 								<DeliveryNoteReferences>
-									<DeliveryNoteReference RecordPos="INVDETS" LPos="17"/>
-									<DeliveryNoteDate RecordPos="INVDETS" LPos="18"/>
+									<DeliveryNoteReference RecordPos="INVDETS" LPos="19"/>
+									<DeliveryNoteDate RecordPos="INVDETS" LPos="20"/>
 									<!-- TBC -->
 									<!--<DespatchDate RecordPos="" LPos=""/>-->
 								</DeliveryNoteReferences>
@@ -176,7 +177,7 @@
 								<VATRate RecordPos="INVDETS" LPos="8"/>
 								<!-- TBC -->
 								<Measure>
-									<UnitsInPack RecordPos="INVDETS" LPos="14"/>
+									<UnitsInPack RecordPos="INVDETS" LPos="16"/>
 								</Measure>
 							</InvoiceLine>
 						</InvoiceDetail>
