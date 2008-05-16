@@ -83,8 +83,8 @@
 			<xsl:value-of select="script:msPadNumber(/GoodsReceivedNote/GoodsReceivedNoteTrailer/TotalExclVAT, 12, 2)"/>
 			<xsl:value-of select="script:msPad('', 3)"/>
 			<xsl:value-of select="/GoodsReceivedNote/GoodsReceivedNoteHeader/ReceivedDeliveryDetails/DeliveryDate"/>
-			<xsl:value-of select="script:msPad(/GoodsReceivedNote/TradeSimpleHeader/RecipientsCodeForSender, 20)"/>
-			<xsl:value-of select="script:msPad(/GoodsReceivedNote/TradeSimpleHeader/RecipientsCodeForSender, 20)"/>
+			<xsl:value-of select="script:msPad(/GoodsReceivedNote/GoodsReceivedNoteHeader/Supplier/SuppliersLocationID/BuyersCode, 20)"/>
+			<xsl:value-of select="script:msPad(/GoodsReceivedNote/GoodsReceivedNoteHeader/Supplier/SuppliersLocationID/BuyersCode, 20)"/>
 			<xsl:value-of select="script:msPad('', 30)"/>
 			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
 			<xsl:value-of select="script:msPad('', 35)"/>
