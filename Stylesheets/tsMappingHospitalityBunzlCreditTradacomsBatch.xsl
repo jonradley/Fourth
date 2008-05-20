@@ -247,25 +247,6 @@ N Emsen	| 14/09/2006	| Not tested against any Brakes credit notes
 	</xsl:template>
 	<!-- END of MHDSegment HANDLER -->
 	
-	<!--
-	Delivery Location Code Converter
-	If the delivery location code is 6 characters long, add a "1" in as the second character
-	-->
-	<xsl:template match="ShipTo/ShipToLocationID/SuppliersCode">
-		<xsl:choose>
-			<xsl:when test="string-length(.) = 6">
-				<xsl:copy>
-					<xsl:value-of select="substring(.,1,1)"/>1<xsl:value-of select="substring(.,2,5)"/>
-				</xsl:copy>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:copy-of select="."/>
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:template>
-	<!-- END of Delivery Location Code Converter-->
-
-
 	<!-- Check for pairing of Purchase Order Date & Purchase Order Reference -->
 	<xsl:template match="//PurchaseOrderReferences">
 		<xsl:variable name="sPORefDate" select="translate(PurchaseOrderDate,' ','')"/>
