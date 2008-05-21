@@ -51,7 +51,7 @@
 			<xsl:value-of select="script:msPad(LineExtraData/Brand, 40)"/>
 			<xsl:value-of select="script:msPad('', 20)"/>
 		  	<xsl:choose>
-				<xsl:when test="ProductID/GTIN and ProductID/GTIN != '55555555555555'">
+				<xsl:when test="ProductID/GTIN and ProductID/GTIN != '55555555555555' and Product/GTIN != '0000000000000'">
 					<xsl:value-of select="script:msPad(ProductID/GTIN, 15)"/>
 				</xsl:when>
 				<xsl:otherwise>
