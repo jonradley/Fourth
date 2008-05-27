@@ -96,8 +96,8 @@
 								<FileGenerationNo RecordPos="FILEDETS" LPos="2"/>
 								<FileVersionNo RecordPos="FILEDETS" LPos="3"/>
 								<FileCreationDate RecordPos="FILEDETS" LPos="4"/-->
-								<!-- TBC -->
-								<!--SendersTransmissionReference RecordPos="I" LPos="7"/>
+							<!-- TBC -->
+							<!--SendersTransmissionReference RecordPos="I" LPos="7"/>
 								<SendersTransmissionDate RecordPos="I" LPos="8"/-->
 							<!--/BatchInformation-->
 							<Buyer>
@@ -167,6 +167,7 @@
 								</DeliveryNoteReferences>
 								<ProductID>
 									<SuppliersProductCode RecordPos="INVDETS" LPos="2"/>
+									<BuyersProductCode RecordPos="INVDETS" LPos="3"/>
 								</ProductID>
 								<ProductDescription RecordPos="INVDETS" LPos="9"/>
 								<InvoicedQuantity RecordPos="INVDETS" LPos="4"/>
