@@ -372,7 +372,7 @@
 		</xsl:element>
 	</xsl:template>
 
-	<xsl:template match="TradeAgreement">
+	<!--xsl:template match="TradeAgreement">
 		<xsl:if test="normalize-space(ContractReference) != 'TRADE'">
 			<TradeAgreement>
 				<ContractReference>
@@ -380,7 +380,28 @@
 				</ContractReference>
 			</TradeAgreement>
 		</xsl:if>
+	</xsl:template-->
+	
+	<xsl:template match="PurchaseOrderReferences">
+		<PurchaseOrderReferences>
+			<PurchaseOrderReference>
+				<xsl:choose>
+					<xsl:when test="PurchaseOrderReference != ''">
+						<xsl:value-of select="PurchaseOrderReference"/>
+					</xsl:when>
+					<xsl:otherwise>Not Provided</xsl:otherwise>
+				</xsl:choose>
+			</PurchaseOrderReference>
+			<xsl:if test="not(normalize-space(TradeAgreement/ContractReference) = 'TRADE' or normalize-space(TradeAgreement/ContractReference) = '')">
+				<TradeAgreement>
+					<ContractReference>
+						<xsl:value-of select="normalize-space(TradeAgreement/ContractReference)"/>
+					</ContractReference>
+				</TradeAgreement>
+			</xsl:if>
+		</PurchaseOrderReferences>
 	</xsl:template>
+
 
 
 	<!-- Sort VATCodes -->
