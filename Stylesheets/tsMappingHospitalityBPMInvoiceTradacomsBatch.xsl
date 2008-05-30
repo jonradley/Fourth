@@ -45,15 +45,6 @@ N Emsen		|	08/11/2006	|	Case 531: Purchase order reference working.
 	</xsl:template>
 	<!-- END of GENERIC HANDLERS -->
 
-	<!-- Temporary Fix To Handle Bar Room Bar -->
-	<xsl:template match="SendersBranchReference">
-		<xsl:if test="contains('O509/S~O510/S',.)">
-			<SendersBranchReference>
-				<xsl:value-of select="."/>
-			</SendersBranchReference>
-		</xsl:if>
-	</xsl:template>
-
 	<!-- InvoiceLine/ProductID/BuyersProductCode is used as a placeholder for INVOIC-ILD-CRLI and should not be copied over -->
 	<xsl:template match="BuyersProductCode"/>
 	
@@ -64,22 +55,205 @@ N Emsen		|	08/11/2006	|	Case 531: Purchase order reference working.
 		</xsl:copy>
 	</xsl:template>
 	
-	<!-- INVOIC-ILD-QTYI (InvoiceLine/InvoicedQuantity) needs to be multiplied by -1 if (InvoiceLine/ProductID/BuyersProductCode) is NOT blank -->
-	<!--xsl:template match="InvoiceLine/InvoicedQuantity">
-		<xsl:choose-->
-			<!--Parent of InvoicedQuantity is InvoiceLine-->
-			<!--xsl:when test="string-length(../ProductID/BuyersProductCode) &gt; 0" -->
-				<!--INVOIC-ILD-CRLI is not blank, multiply by -1-->
-				<!--xsl:call-template name="copyCurrentNodeDPUnchanged">
-					<xsl:with-param name="lMultiplier" select="-1.0"/>
-				</xsl:call-template>
+	<xsl:template match="SendersBranchReference">
+	</xsl:template>
+	
+	<!-- VAT Codes, BPM use X instead of Z -->
+	<xsl:template match="VATCode">
+		<VATCode>
+			<xsl:choose>
+				<xsl:when test=". = 'X'">Z</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="."/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</VATCode>
+	</xsl:template>
+	<xsl:template match="@VATCode">
+		<xsl:attribute name="VATCode">
+			<xsl:choose>
+				<xsl:when test=". = 'X'">Z</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="."/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:attribute>
+	</xsl:template>
+		
+	<xsl:template match="BatchHeader/VATSubTotals/VATSubTotal">
+		<xsl:choose>
+			<xsl:when test="@VATCode = 'Z' ">
+				<VATSubTotal>
+					<xsl:attribute name="VATCode">
+						<xsl:value-of select="@VATCode"/>
+					</xsl:attribute>
+					<xsl:attribute name="VATRate">
+						<xsl:value-of select="format-number(@VATRate div 100,'0.00')"/>
+					</xsl:attribute>
+					<DocumentTotalExclVATAtRate>
+						<xsl:value-of select="format-number(sum(/Batch/BatchHeader/VATSubTotals/VATSubTotal[@VATCode = 'Z' or @VATCode = 'X']/DocumentTotalExclVATAtRate) div 100,'0.00')"/>
+					</DocumentTotalExclVATAtRate>
+					<SettlementTotalExclVATAtRate>
+						<xsl:value-of select="format-number(sum(/Batch/BatchHeader/VATSubTotals/VATSubTotal[@VATCode = 'Z' or @VATCode = 'X']/SettlementTotalExclVATAtRate) div 100,'0.00')"/>
+					</SettlementTotalExclVATAtRate>
+					<VATAmountAtRate>
+						<xsl:value-of select="format-number(sum(/Batch/BatchHeader/VATSubTotals/VATSubTotal[@VATCode = 'Z' or @VATCode = 'X']/VATAmountAtRate) div 100,'0.00')"/>
+					</VATAmountAtRate>
+					<DocumentTotalInclVATAtRate>
+						<xsl:value-of select="format-number(sum(/Batch/BatchHeader/VATSubTotals/VATSubTotal[@VATCode = 'Z' or @VATCode = 'X']/DocumentTotalInclVATAtRate) div 100,'0.00')"/>
+					</DocumentTotalInclVATAtRate>
+					<SettlementTotalInclVATAtRate>
+						<xsl:value-of select="format-number(sum(/Batch/BatchHeader/VATSubTotals/VATSubTotal[@VATCode = 'Z' or @VATCode = 'X']/SettlementTotalInclVATAtRate) div 100,'0.00')"/>
+					</SettlementTotalInclVATAtRate>
+				</VATSubTotal>
+			</xsl:when>
+			<xsl:when test="@VATCode = 'X' and count(../VATSubTotal[@VATCode = 'Z' != 0])"></xsl:when>
+			<xsl:when test="@VATCode = 'X' and count(../VATSubTotal[@VATCode = 'Z' = 0])">
+				<VATSubTotal>
+					<xsl:attribute name="VATCode">
+						<xsl:text>Z</xsl:text>
+					</xsl:attribute>
+					<xsl:attribute name="VATRate">
+						<xsl:text>0.00</xsl:text>
+					</xsl:attribute>
+					<DocumentTotalExclVATAtRate>
+						<xsl:value-of select="format-number(sum(/Batch/BatchHeader/VATSubTotals/VATSubTotal[@VATCode = 'Z' or @VATCode = 'X']/DocumentTotalExclVATAtRate) div 100,'0.00')"/>
+					</DocumentTotalExclVATAtRate>
+					<SettlementTotalExclVATAtRate>
+						<xsl:value-of select="format-number(sum(/Batch/BatchHeader/VATSubTotals/VATSubTotal[@VATCode = 'Z' or @VATCode = 'X']/SettlementTotalExclVATAtRate) div 100,'0.00')"/>
+					</SettlementTotalExclVATAtRate>
+					<VATAmountAtRate>
+						<xsl:value-of select="format-number(sum(/Batch/BatchHeader/VATSubTotals/VATSubTotal[@VATCode = 'Z' or @VATCode = 'X']/VATAmountAtRate) div 100,'0.00')"/>
+					</VATAmountAtRate>
+					<DocumentTotalInclVATAtRate>
+						<xsl:value-of select="format-number(sum(/Batch/BatchHeader/VATSubTotals/VATSubTotal[@VATCode = 'Z' or @VATCode = 'X']/DocumentTotalInclVATAtRate) div 100,'0.00')"/>
+					</DocumentTotalInclVATAtRate>
+					<SettlementTotalInclVATAtRate>
+						<xsl:value-of select="format-number(sum(/Batch/BatchHeader/VATSubTotals/VATSubTotal[@VATCode = 'Z' or @VATCode = 'X']/SettlementTotalInclVATAtRate) div 100,'0.00')"/>
+					</SettlementTotalInclVATAtRate>
+				</VATSubTotal>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:call-template name="copyCurrentNodeDPUnchanged"/>
+				<VATSubTotal>
+					<xsl:attribute name="VATCode">
+						<xsl:value-of select="@VATCode"/>
+					</xsl:attribute>
+					<xsl:attribute name="VATRate">
+						<xsl:value-of select="format-number(@VATRate div 100,'0.00')"/>
+					</xsl:attribute>
+					<DocumentTotalExclVATAtRate>
+						<xsl:value-of select="format-number(DocumentTotalExclVATAtRate div 100,'0.00')"/>
+					</DocumentTotalExclVATAtRate>
+					<SettlementTotalExclVATAtRate>
+						<xsl:value-of select="format-number(SettlementTotalExclVATAtRate div 100,'0.00')"/>
+					</SettlementTotalExclVATAtRate>
+					<VATAmountAtRate>
+						<xsl:value-of select="format-number(VATAmountAtRate div 100,'0.00')"/>
+					</VATAmountAtRate>
+					<DocumentTotalInclVATAtRate>
+						<xsl:value-of select="format-number(DocumentTotalInclVATAtRate div 100,'0.00')"/>
+					</DocumentTotalInclVATAtRate>
+					<SettlementTotalInclVATAtRate>
+						<xsl:value-of select="format-number(SettlementTotalInclVATAtRate div 100,'0.00')"/>
+					</SettlementTotalInclVATAtRate>
+				</VATSubTotal>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template-->
+	</xsl:template>
 	
+	<xsl:template match="Invoice/InvoiceTrailer/VATSubTotals/VATSubTotal">
+		<xsl:choose>
+			<xsl:when test="@VATCode = 'Z'">
+				<VATSubTotal>
+					<xsl:attribute name="VATCode">
+						<xsl:value-of select="@VATCode"/>
+					</xsl:attribute>
+					<xsl:attribute name="VATRate">
+						<xsl:value-of select="format-number(@VATRate div 100,'0.00')"/>
+					</xsl:attribute>
+					<DocumentTotalExclVATAtRate>
+						<xsl:value-of select="format-number(sum(../VATSubTotal[@VATCode = 'X' or @VATCode = 'Z']/DocumentTotalExclVATAtRate) div 100,'0.00')"/>
+					</DocumentTotalExclVATAtRate>
+					<SettlementDiscountAtRate>
+						<xsl:value-of select="format-number(sum(../VATSubTotal[@VATCode = 'X' or @VATCode = 'Z']/SettlementDiscountAtRate) div 100,'0.00')"/>
+					</SettlementDiscountAtRate>
+					<SettlementTotalExclVATAtRate>
+						<xsl:value-of select="format-number(sum(../VATSubTotal[@VATCode = 'X' or @VATCode = 'Z']/SettlementTotalExclVATAtRate) div 100,'0.00')"/>
+					</SettlementTotalExclVATAtRate>
+					<VATAmountAtRate>
+						<xsl:value-of select="format-number(sum(../VATSubTotal[@VATCode = 'X' or @VATCode = 'Z']/VATAmountAtRate) div 100,'0.00')"/>
+					</VATAmountAtRate>
+					<DocumentTotalInclVATAtRate>
+						<xsl:value-of select="format-number(sum(../VATSubTotal[@VATCode = 'X' or @VATCode = 'Z']/DocumentTotalInclVATAtRate) div 100,'0.00')"/>
+					</DocumentTotalInclVATAtRate>				
+					<SettlementTotalInclVATAtRate>
+						<xsl:value-of select="format-number(sum(../VATSubTotal[@VATCode = 'X' or @VATCode = 'Z']/SettlementTotalInclVATAtRate) div 100,'0.00')"/>
+					</SettlementTotalInclVATAtRate>				
+				</VATSubTotal>
+			</xsl:when>
+			<xsl:when test="@VATCode = 'X' and count(../VATSubTotal[@VATCode = 'Z' != 0])"></xsl:when>
+			<xsl:when test="@VATCode = 'X' and count(../VATSubTotal[@VATCode = 'Z' = 0])">
+				<VATSubTotal>
+					<xsl:attribute name="VATCode">
+						<xsl:text>Z</xsl:text>
+					</xsl:attribute>
+					<xsl:attribute name="VATRate">
+						<xsl:text>0.00</xsl:text>
+					</xsl:attribute>
+					<DocumentTotalExclVATAtRate>
+						<xsl:value-of select="format-number(sum(../VATSubTotal[@VATCode = 'X' or @VATCode = 'Z']/DocumentTotalExclVATAtRate) div 100,'0.00')"/>
+					</DocumentTotalExclVATAtRate>
+					<SettlementDiscountAtRate>
+						<xsl:value-of select="format-number(sum(../VATSubTotal[@VATCode = 'X' or @VATCode = 'Z']/SettlementDiscountAtRate) div 100,'0.00')"/>
+					</SettlementDiscountAtRate>
+					<SettlementTotalExclVATAtRate>
+						<xsl:value-of select="format-number(sum(../VATSubTotal[@VATCode = 'X' or @VATCode = 'Z']/SettlementTotalExclVATAtRate) div 100,'0.00')"/>
+					</SettlementTotalExclVATAtRate>
+					<VATAmountAtRate>
+						<xsl:value-of select="format-number(sum(../VATSubTotal[@VATCode = 'X' or @VATCode = 'Z']/VATAmountAtRate) div 100,'0.00')"/>
+					</VATAmountAtRate>
+					<DocumentTotalInclVATAtRate>
+						<xsl:value-of select="format-number(sum(../VATSubTotal[@VATCode = 'X' or @VATCode = 'Z']/DocumentTotalInclVATAtRate) div 100,'0.00')"/>
+					</DocumentTotalInclVATAtRate>				
+					<SettlementTotalInclVATAtRate>
+						<xsl:value-of select="format-number(sum(../VATSubTotal[@VATCode = 'X' or @VATCode = 'Z']/SettlementTotalInclVATAtRate) div 100,'0.00')"/>
+					</SettlementTotalInclVATAtRate>				
+				</VATSubTotal>
+			</xsl:when>
+			<xsl:otherwise>
+				<VATSubTotal>
+					<xsl:attribute name="VATCode">
+						<xsl:value-of select="@VATCode"/>
+					</xsl:attribute>
+					<xsl:attribute name="VATRate">
+						<xsl:value-of select="format-number(@VATRate div 100,'0.00')"/>
+					</xsl:attribute>
+					<DocumentTotalExclVATAtRate>
+						<xsl:value-of select="format-number(DocumentTotalExclVATAtRate div 100,'0.00')"/>
+					</DocumentTotalExclVATAtRate>
+					<SettlementDiscountAtRate>
+						<xsl:value-of select="format-number(SettlementDiscountAtRate div 100,'0.00')"/>
+					</SettlementDiscountAtRate>
+					<SettlementTotalExclVATAtRate>
+						<xsl:value-of select="format-number(SettlementTotalExclVATAtRate div 100,'0.00')"/>
+					</SettlementTotalExclVATAtRate>
+					<VATAmountAtRate>
+						<xsl:value-of select="format-number(VATAmountAtRate div 100,'0.00')"/>
+					</VATAmountAtRate>
+					<DocumentTotalInclVATAtRate>
+						<xsl:value-of select="format-number(DocumentTotalInclVATAtRate div 100,'0.00')"/>
+					</DocumentTotalInclVATAtRate>				
+					<SettlementTotalInclVATAtRate>
+						<xsl:value-of select="format-number(SettlementTotalInclVATAtRate div 100,'0.00')"/>
+					</SettlementTotalInclVATAtRate>		
+				</VATSubTotal>		
+			</xsl:otherwise>
+		</xsl:choose>
+
+
+	</xsl:template>
+
+
 	<xsl:template match="@UnitOfMeasure">
 		<xsl:attribute name="UnitOfMeasure">
 			<xsl:choose>
