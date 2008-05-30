@@ -10,29 +10,9 @@
 				<ffsLiteral/>
 			</ffsEscapeChar>
 			<ffsEscapeChar>
-				<ffsNative>?=</ffsNative>
-				<ffsTradesimple>¬E</ffsTradesimple>
-				<ffsLiteral>=</ffsLiteral>
-			</ffsEscapeChar>
-			<ffsEscapeChar>
-				<ffsNative>?+</ffsNative>
-				<ffsTradesimple>¬P</ffsTradesimple>
-				<ffsLiteral>+</ffsLiteral>
-			</ffsEscapeChar>
-			<ffsEscapeChar>
-				<ffsNative>?:</ffsNative>
-				<ffsTradesimple>¬C</ffsTradesimple>
-				<ffsLiteral>:</ffsLiteral>
-			</ffsEscapeChar>
-			<ffsEscapeChar>
-				<ffsNative>?'</ffsNative>
-				<ffsTradesimple>¬A</ffsTradesimple>
-				<ffsLiteral>'</ffsLiteral>
-			</ffsEscapeChar>
-			<ffsEscapeChar>
-				<ffsNative>??</ffsNative>
+				<ffsNative>""</ffsNative>
 				<ffsTradesimple>¬Q</ffsTradesimple>
-				<ffsLiteral>?</ffsLiteral>
+				<ffsLiteral>"</ffsLiteral>
 			</ffsEscapeChar>
 		</ffsEscapeChars>
 		<ffsFieldSeparators>
@@ -71,9 +51,9 @@
 								<SendersTransmissionDate RecordPos="I" LPos="8"/>
 							</BatchInformation>
 							<Buyer>
-								<!--<BuyersLocationID>
-									<SuppliersCode RecordPos="" LPos=""/>
-								</BuyersLocationID>-->
+								<BuyersLocationID>
+									<SuppliersCode RecordPos="I" LPos="9"/>
+								</BuyersLocationID>
 								<BuyersName RecordPos="H" LPos="10"/>
 								<BuyersAddress>
 									<AddressLine1 RecordPos="H" LPos="11"/>
@@ -133,7 +113,9 @@
 									<SuppliersProductCode RecordPos="D" LPos="6"/>
 								</ProductID>
 								<ProductDescription RecordPos="D" LPos="7"/>
-								<InvoicedQuantity RecordPos="D" LPos="9"/>
+								<InvoicedQuantity RecordPos="D" LPos="9">
+									<ffsAttribute1 name="UnitOfMeasure" RecordPos="D" LPos="14"/>
+								</InvoicedQuantity>
 								<PackSize RecordPos="D" LPos="8"/>
 								<UnitValueExclVAT RecordPos="D" LPos="10"/>
 								<LineValueExclVAT RecordPos="D" LPos="11"/>
