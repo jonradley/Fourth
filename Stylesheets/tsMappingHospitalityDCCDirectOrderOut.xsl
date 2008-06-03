@@ -46,10 +46,9 @@ R Cambridge	| 2008-05-22		| 2245 Created Module
 		
 			<xsl:value-of select="ProductID/SuppliersProductCode"/>
 			<xsl:text>,</xsl:text>
-			<xsl:value-of select="PackSize"/>
+			<xsl:value-of select="format-number(OrderedQuantity,'0'"/>
 			<xsl:text>,</xsl:text>
-			<xsl:value-of select="OrderedQuantity"/>
-			
+			<xsl:value-of select="position()"/>
 			<xsl:if test="position() != last()">
 				<xsl:text>&#13;&#10;</xsl:text>
 			</xsl:if>
