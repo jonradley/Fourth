@@ -81,6 +81,13 @@ R Cambridge	| 29/10/2007	| 1556 Create module
 											<xsl:with-param name="vsYYMMDD" select="DeliveryNoteHeader/DeliveryNoteReferences/DeliveryNoteDate"/>
 										</xsl:call-template>
 									</xsl:variable>
+
+									<xsl:variable name="sPurchaseOrderDate">
+										<xsl:call-template name="msFormatDate">
+											<xsl:with-param name="vsYYMMDD" select="DeliveryNoteHeader/PurchaseOrderReferences/PurchaseOrderDate"/>
+										</xsl:call-template>
+									</xsl:variable>									
+										
 									<xsl:variable name="sDeliveryDate">
 										<xsl:call-template name="msFormatDate">
 											<xsl:with-param name="vsYYMMDD" select="DeliveryNoteHeader/DeliveredDeliveryDetails/DeliveryDate"/>
@@ -89,7 +96,7 @@ R Cambridge	| 29/10/2007	| 1556 Create module
 									
 									<PurchaseOrderReferences>
 										<PurchaseOrderReference><xsl:value-of select="DeliveryNoteHeader/PurchaseOrderReferences/PurchaseOrderReference"/></PurchaseOrderReference>
-										<PurchaseOrderDate><xsl:value-of select="DeliveryNoteHeader/PurchaseOrderReferences/PurchaseOrderDate"/></PurchaseOrderDate>
+										<PurchaseOrderDate><xsl:value-of select="$sPurchaseOrderDate"/></PurchaseOrderDate>
 									</PurchaseOrderReferences>
 									
 									<DeliveryNoteReferences>
