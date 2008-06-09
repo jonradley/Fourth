@@ -28,7 +28,7 @@
 	<xsl:key name="keyLinesByAccount" match="InvoiceLine | CreditNoteLine" use="LineExtraData/AccountCode"/>
 	<xsl:key name="keyLinesByAccountAndVAT" match="InvoiceLine | CreditNoteLine" use="concat(LineExtraData/AccountCode,'::',VATCode)"/>
 	
-	<xsl:template match="/Invoice[InvoiceHeader/HeaderExtraData/Authorisation/IsAuthorised = '1'] | /CreditNote[CreditNoteHeader/HeaderExtraData/Authorisation/IsAuthorised = '1'] | /Invoice[InvoiceHeader/HeaderExtraData/Authorisation/IsAuthorised = 'true'] | /CreditNote[CreditNoteHeader/HeaderExtraData/Authorisation/IsAuthorised = 'true']">
+	<xsl:template match="/Invoice | /CreditNote">
 
 		<xsl:variable name="NewLine">
 			<xsl:text>&#13;&#10;</xsl:text>
