@@ -323,10 +323,10 @@
 							<xsl:value-of select="ProductID/GTIN"/>
 						</GTIN>
 						
-						<!-- we always use BuyersProductCode as the alternate -->
-						<xsl:if test="ProductID/BuyersProductCode">
+						<!-- we always use SuppliersProductCode as the alternate -->
+						<xsl:if test="ProductID/SuppliersProductCode">
 							<AlternateCode scheme="OTHER">
-								<xsl:value-of select="ProductID/BuyersProductCode"/>
+								<xsl:value-of select="ProductID/SuppliersProductCode"/>
 							</AlternateCode>
 						</xsl:if>
 					</ItemIdentifier>
