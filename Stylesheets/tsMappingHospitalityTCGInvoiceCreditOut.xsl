@@ -24,7 +24,7 @@
 ==========================================================================================
  29/03/2007	| R Cambridge			| 864 re-instate minus in credit 
 ==========================================================================================
-           	|                 	|
+ 16/06/2008	| A Sheppard			| 2283. Minor changes to spec
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 <xsl:output method="text" encoding="utf-8"/>
@@ -34,12 +34,9 @@
 		<xsl:text>H</xsl:text>		
 		<xsl:text>|</xsl:text>
 		
-		<xsl:text>OAREG</xsl:text>
-		<xsl:text>|</xsl:text>
-		
 		<xsl:choose>
-			<xsl:when test="/Invoice">XPRIN</xsl:when>
-			<xsl:otherwise>XPRCR</xsl:otherwise>
+			<xsl:when test="/Invoice">XPIN</xsl:when>
+			<xsl:otherwise>XPCR</xsl:otherwise>
 		</xsl:choose>		
 		<xsl:text>|</xsl:text>
 		
