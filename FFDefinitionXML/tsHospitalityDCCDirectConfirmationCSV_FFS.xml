@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--******************************************************************
+Alterations
+**********************************************************************
+Name			| Date			| Change
+**********************************************************************
+R Cambridge	| 16/06/2008	| 2245
+**********************************************************************
+				|					|
+**********************************************************************
+				|					|
+*******************************************************************-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>sequenced</ffsRecordPositionType>
+		<ffsRecordSeparator>chr(10)</ffsRecordSeparator>
+		<ffsEscapeChars>
+			<ffsEscapeChar>
+				<ffsNative>chr(13)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>""</ffsNative>
+				<ffsTradesimple>¬Q</ffsTradesimple>
+				<ffsLiteral>"</ffsLiteral>
+			</ffsEscapeChar>
+		</ffsEscapeChars>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>,</ffsFieldSeparator>
+		</ffsFieldSeparators>
+		<ffsPadding/>
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<BatchDocuments>
+				<BatchDocument>
+					<PurchaseOrderConfirmation>
+						
+						<TradeSimpleHeader>
+							<SendersCodeForRecipient RecordPos="1" LPos="2"/>
+							<!--SendersBranchReference RecordPos="1" LPos="4"/-->
+						</TradeSimpleHeader>
+						
+						<PurchaseOrderConfirmationHeader>
+							<Buyer>
+								<BuyersLocationID>
+									<SuppliersCode RecordPos="1" LPos="1"/>
+								</BuyersLocationID>
+							</Buyer>
+							<ShipTo>
+								<ShipToLocationID>
+									<SuppliersCode RecordPos="1" LPos="2"/>
+								</ShipToLocationID>
+							</ShipTo>
+							<PurchaseOrderReferences>
+								<PurchaseOrderReference RecordPos="1" LPos="3"/>
+								<PurchaseOrderDate RecordPos="1" LPos="4"/>
+							</PurchaseOrderReferences>
+							<PurchaseOrderConfirmationReferences>
+								<PurchaseOrderConfirmationReference RecordPos="1" LPos="6"/>
+								<PurchaseOrderConfirmationDate RecordPos="1" LPos="4"/>
+							</PurchaseOrderConfirmationReferences>
+							<PurchaseOrderConfirmationReferences>
+								<PurchaseOrderConfirmationReference RecordPos="1" LPos="6"/>
+								<PurchaseOrderConfirmationDate RecordPos="1" LPos="4"/>
+							</PurchaseOrderConfirmationReferences>
+						</PurchaseOrderConfirmationHeader>						
+						
+						<PurchaseOrderConfirmationDetail>
+							<PurchaseOrderConfirmationLine>
+								<ProductID>
+									<SuppliersProductCode RecordLength="7" RecordPos="*" LPos="1"/>
+								</ProductID>
+								<OrderedQuantity RecordLength="7" RecordPos="*" LPos="2"/>
+								<ConfirmedQuantity RecordLength="7" RecordPos="*" LPos="4"/>								
+								<ConfirmedDeliveryDetailsLineLevel>
+									<DeliveryDate RecordLength="7" RecordPos="*" LPos="7"/>
+								</ConfirmedDeliveryDetailsLineLevel>
+							</PurchaseOrderConfirmationLine>
+						</PurchaseOrderConfirmationDetail>
+						
+					</PurchaseOrderConfirmation>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>
