@@ -11,11 +11,11 @@ R Cambridge	| 2008-05-22		| 2245 Created Module
 				|						|				
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-	<xsl:output method="text" encoding="UTF-8" />
+	<xsl:output method="xml" encoding="UTF-8" />
 	
 	<xsl:template match="/">
 		<BatchRoot>
-			<xsl:apply-templates select="@* | node()"/>
+			<xsl:apply-templates select="@* | node() | *"/>
 		</BatchRoot>
 	</xsl:template>
 	
@@ -23,30 +23,59 @@ R Cambridge	| 2008-05-22		| 2245 Created Module
 	<xsl:template match="BatchDocument">
 		<xsl:copy>
 			<xsl:attribute name="DocumentTypeNo">3</xsl:attribute>			
-			<xsl:apply-templates select="@* | node()"/>			
+			<xsl:apply-templates select="@* | node() |*"/>			
 		</xsl:copy>	
 	</xsl:template>
 	
+	<xsl:template match="PurchaseOrderConfirmationReferences">
+	
+		<xsl:copy>
+			<xsl:apply-templates select="@* | node() | *"/>
+		</xsl:copy>
+
+		<ConfirmedDeliveryDetails>
+			<DeliveryDate>
+				
+				<xsl:for-each select="../../PurchaseOrderConfirmationDetail/PurchaseOrderConfirmationLine/ConfirmedDeliveryDetailsLineLevel/DeliveryDate">
+					<xsl:sort select="concat('20',substring(.,7,2),'-',substring(.,4,2),'-',substring(.,1,2))"/>
+				
+					<xsl:if test="position()=1">
+						<xsl:text>20</xsl:text>
+						<xsl:value-of select="substring(.,7,2)"/>							
+						<xsl:text>-</xsl:text>			
+						<xsl:value-of select="substring(.,4,2)"/>			
+						<xsl:text>-</xsl:text>							
+						<xsl:value-of select="substring(.,1,2)"/>					
+					</xsl:if>
+				
+				</xsl:for-each>
+				
+			</DeliveryDate>		
+		</ConfirmedDeliveryDetails>
+	
+	</xsl:template>
 	
 	
-	<xsl:template match="PurchaseOrderDate | PurchaseOrderAcknowledgementDate | DeliveryDate">
+	<xsl:template match="PurchaseOrderDate | PurchaseOrderConfirmationDate | DeliveryDate">
 	
 		<xsl:copy>
 		
 			<xsl:text>20</xsl:text>
-			<xsl:value-of select="substring(.,1,2)"/>							
+			<xsl:value-of select="substring(.,7,2)"/>							
 			<xsl:text>-</xsl:text>			
-			<xsl:value-of select="substring(.,3,2)"/>			
+			<xsl:value-of select="substring(.,4,2)"/>			
 			<xsl:text>-</xsl:text>							
-			<xsl:value-of select="substring(.,5,2)"/>
+			<xsl:value-of select="substring(.,1,2)"/>
 
 		</xsl:copy>
 	
 	</xsl:template>
 	
-	<xsl:template match="@* | node()">
+	<xsl:template match="ConfirmedDeliveryDetailsLineLevel"/>
+	
+	<xsl:template match="@* | node() | *">
 		<xsl:copy>
-			<xsl:apply-templates select="@* | node()"/>
+			<xsl:apply-templates select="@* | node() | *"/>
 		</xsl:copy>
 	</xsl:template>
 		

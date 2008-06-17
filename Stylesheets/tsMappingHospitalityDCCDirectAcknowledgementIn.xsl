@@ -33,11 +33,11 @@ R Cambridge	| 2008-05-22		| 2245 Created Module
 		<xsl:copy>
 		
 			<xsl:text>20</xsl:text>
-			<xsl:value-of select="substring(.,1,2)"/>							
+			<xsl:value-of select="substring(.,7,2)"/>							
 			<xsl:text>-</xsl:text>			
-			<xsl:value-of select="substring(.,3,2)"/>			
+			<xsl:value-of select="substring(.,4,2)"/>			
 			<xsl:text>-</xsl:text>							
-			<xsl:value-of select="substring(.,5,2)"/>
+			<xsl:value-of select="substring(.,1,2)"/>
 
 		</xsl:copy>
 	
