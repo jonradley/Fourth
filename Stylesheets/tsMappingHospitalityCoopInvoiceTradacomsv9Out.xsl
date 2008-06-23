@@ -15,6 +15,10 @@
 ==========================================================================================
  04/08/2006	| Lee Boyton			| Created module
 ==========================================================================================
+           	| Calum Scott      	| 2249
+==========================================================================================
+ 23/06/2008	| Robert Cambridge 	| 2249 Only use 4 digit FGN
+==========================================================================================
            	|                 	|
 =======================================================================================-->
 
@@ -31,10 +35,17 @@
 	<xsl:key name="keyLinesByPOAndDN" match="InvoiceDetail/InvoiceLine" use="concat('¬',PurchaseOrderReferences/PurchaseOrderReference,'::¬',DeliveryNoteReferences/DeliveryNoteReference)"/>
 	
 	<xsl:template match="/Invoice">
+	
 
 		<xsl:variable name="sRecordSep">
 			<xsl:text>'</xsl:text>
 			<!--xsl:text>'&#13;&#10;</xsl:text-->
+		</xsl:variable>
+			
+		<xsl:variable name="FGN">
+			<xsl:variable name="atLeast4DigitFGN" select="format-number(InvoiceHeader/FileGenerationNumber,'0000')"/>			
+			<!-- Only get 4 right hand digits -->
+			<xsl:value-of select="substring($atLeast4DigitFGN, string-length($atLeast4DigitFGN)-3)"/>			
 		</xsl:variable>
 			
 		<xsl:variable name="sFileGenerationDate" select="vb:msFileGenerationDate()"/>
@@ -64,16 +75,7 @@
 			<xsl:text>+</xsl:text>
 			<!-- if a new file generation number has been generated for this message use it, otherwise
 			     use the file generation number sent by the original message sender -->
-			<xsl:variable name="FGN">
-				<xsl:choose>
-					<xsl:when test="InvoiceHeader/FileGenerationNumber != ''">
-						<xsl:value-of select="InvoiceHeader/FileGenerationNumber"/>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:value-of select="InvoiceHeader/BatchInformation/FileGenerationNo"/>				
-					</xsl:otherwise>
-				</xsl:choose>			
-			</xsl:variable>
+
 			<xsl:value-of select="$FGN"/>
 			<xsl:text>+</xsl:text>
 			<xsl:text>+</xsl:text>
