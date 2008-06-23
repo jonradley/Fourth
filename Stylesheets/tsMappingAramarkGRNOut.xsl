@@ -189,31 +189,43 @@
 		'========================================================================================*/
 		function msPadNumber(vvNumber, vlLength, vlDPs)
 		{
-			try
-			{
-				vvNumber = parseFloat(vvNumber(0).text);
-			}
-			catch(e){}
+			var sNumber = '';
 			
 			try
 			{
-				vvNumber = parseFloat(vvNumber);
+				sNumber = vvNumber(0).text;
 			}
 			catch(e)
+			{}
+			
+			if(sNumber.indexOf('.') != -1)
 			{
-				vvNumber = '0';
+				var lDPs = sNumber.length - sNumber.indexOf('.') - 1;
+				
+				if(lDPs > vlDPs)
+				{
+					sNumber = sNumber.substr(0, sNumber.length + vlDPs - lDPs);
+					vlDPs = 0;
+				}
+				else
+				{
+					vlDPs -= lDPs;
+				} 
 			}
 			
-			vvNumber = vvNumber * Math.pow(10, vlDPs);
-			
-			vvNumber = '' + parseInt(vvNumber);
-			
-			while(vvNumber.length < vlLength)
+			for(var i=0; i<vlDPs; i++)
 			{
-				vvNumber = '0' + vvNumber;
+				sNumber += '0';
 			}
 			
-			return vvNumber.substr(0, vlLength);
+			sNumber = sNumber.replace('.','');
+			
+			while(sNumber.length < vlLength)
+			{
+				sNumber = '0' + sNumber;
+			}
+			
+			return sNumber.substr(0, vlLength);
 				
 		}
 
