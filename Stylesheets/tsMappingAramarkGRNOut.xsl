@@ -26,6 +26,9 @@
 	<xsl:template match="/">
 
 		<xsl:for-each select="//GoodsReceivedNoteLine">
+			<xsl:if test="script:mbIsNotFirstLine()">
+				<xsl:text>&#13;&#10;</xsl:text>
+			</xsl:if>
 			<xsl:text>3</xsl:text>
 			<xsl:value-of select="script:msPad(/GoodsReceivedNote/GoodsReceivedNoteHeader/Supplier/SuppliersName, 40)"/>
 			<xsl:value-of select="script:msPad(/GoodsReceivedNote/GoodsReceivedNoteHeader/Supplier/SuppliersName, 40)"/>
@@ -127,13 +130,19 @@
 			<xsl:value-of select="script:msPad('', 15)"/>
 			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
 			<xsl:value-of select="script:msPad('', 20)"/>
-			<xsl:text>&#13;&#10;</xsl:text>
 		</xsl:for-each>
 
 	</xsl:template>
 		
 	<msxsl:script language="JScript" implements-prefix="script"><![CDATA[ 
-
+		var mbIsFirstLine = true;
+		function mbIsNotFirstLine()
+		{
+			var bIsFirstLine = mbIsFirstLine;
+			mbIsFirstLine = false;
+			return (!bIsFirstLine);
+		}
+		
 		/*=========================================================================================
 		' Routine       	 : msPad
 		' Description 	 : Pads the string to the appropriate length
