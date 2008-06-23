@@ -25,6 +25,8 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	06/05/2007	|	Nigel Emsen		|	Case: 1164 - handle zero priced items. detects if
 						|							|	unitvalue is present. if not present zero.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	23/08/2008	| Lee Boyton		|	FB2280 - Map out special delivery instructions.
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -244,6 +246,32 @@
 				<xsl:with-param name="vsUTCDate" select="PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate"/>
 			</xsl:call-template>
 			<xsl:text>+</xsl:text>
+			<xsl:text>+</xsl:text>
+			<xsl:variable name="sDeliveryNotes1">
+				<xsl:value-of select="substring(string(PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions),1,40)"/>
+			</xsl:variable>
+			<xsl:variable name="sDeliveryNotes2">
+				<xsl:value-of select="substring(string(PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions),41,40)"/>
+			</xsl:variable>
+			<xsl:variable name="sDeliveryNotes3">
+				<xsl:value-of select="substring(string(PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions),81,40)"/>
+			</xsl:variable>
+			<xsl:variable name="sDeliveryNotes4">
+				<xsl:value-of select="substring(string(PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions),121,40)"/>
+			</xsl:variable>
+			<xsl:value-of select="js:msSafeText(string($sDeliveryNotes1),40)"/>
+			<xsl:if test="string-length($sDeliveryNotes2) > 0">
+				<xsl:text>:</xsl:text>
+				<xsl:value-of select="js:msSafeText(string($sDeliveryNotes2),40)"/>
+			</xsl:if>
+			<xsl:if test="string-length($sDeliveryNotes3) > 0">
+				<xsl:text>:</xsl:text>
+				<xsl:value-of select="js:msSafeText(string($sDeliveryNotes3),40)"/>
+			</xsl:if>
+			<xsl:if test="string-length($sDeliveryNotes4) > 0">
+				<xsl:text>:</xsl:text>
+				<xsl:value-of select="js:msSafeText(string($sDeliveryNotes4),40)"/>
+			</xsl:if>
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<!--
