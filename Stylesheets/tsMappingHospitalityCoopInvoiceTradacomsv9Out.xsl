@@ -251,20 +251,20 @@
 						<xsl:text>+</xsl:text>
 						<xsl:value-of select="position()"/>
 						<xsl:text>+</xsl:text>
-						<!-- use GTIN here if 13 digit EAN number -->
-						<!--xsl:if test="string-length(ProductID/GTIN) = 13 and ProductID/GTIN != '5555555555555'">
-							<xsl:value-of select="ProductID/GTIN"/>
-						</xsl:if-->
+						
 						<xsl:choose>
+							<!-- Is there a 13 digit GTIN? -->
 							<xsl:when test="string-length(ProductID/GTIN) = 13 and ProductID/GTIN != '5555555555555'">
 								<xsl:value-of select="ProductID/GTIN"/>
 							</xsl:when>
-							<xsl:otherwise>
-								<xsl:call-template name="msCheckField">
-									<xsl:with-param name="vobjNode" select="ProductID/BuyersProductCode"/>
-									<xsl:with-param name="vnLength" select="30"/>
-								</xsl:call-template>
-							</xsl:otherwise>
+							
+							<!-- Does the buyer's product code look like a 13 digit GTIN? -->
+							<xsl:when test="string-length(ProductID/BuyersProductCode) = 13 and translate(ProductID/BuyersProductCode,'0123456789','') = ''">
+								<xsl:value-of select="ProductID/BuyersProductCode"/>							
+							</xsl:when>							
+							
+							<!-- Leave this blank -->
+							<xsl:otherwise/>
 						</xsl:choose>
 
 						<xsl:text>:</xsl:text>
@@ -273,11 +273,25 @@
 							<xsl:with-param name="vobjNode" select="ProductID/SuppliersProductCode"/>
 							<xsl:with-param name="vnLength" select="30"/>
 						</xsl:call-template>
+						
+						<xsl:text>:</xsl:text>
 						<!-- use GTIN here if 14 digit DUN number -->
-						<xsl:if test="string-length(ProductID/GTIN) = 14 and ProductID/GTIN != '55555555555555'">
-							<xsl:text>:</xsl:text>
-							<xsl:value-of select="ProductID/GTIN"/>
-						</xsl:if>						
+						<xsl:choose>
+							<!-- Is there a 14 digit GTIN? -->
+							<xsl:when test="string-length(ProductID/GTIN) = 14 and ProductID/GTIN != '55555555555555' and ProductID/GTIN != '00000000000000'">
+								<xsl:value-of select="ProductID/GTIN"/>
+							</xsl:when>
+							
+							<!-- Does the buyer's product code look like a 14 digit GTIN? -->
+							<xsl:when test="string-length(ProductID/BuyersProductCode) = 14 and translate(ProductID/BuyersProductCode,'0123456789','') = ''">
+								<xsl:value-of select="ProductID/BuyersProductCode"/>							
+							</xsl:when>							
+							
+							<!-- Leave this blank -->
+							<xsl:otherwise/>
+						</xsl:choose>
+											
+						
 						<xsl:text>+</xsl:text>
 						<xsl:text>+</xsl:text>
 						<!-- truncate to 30 -->
