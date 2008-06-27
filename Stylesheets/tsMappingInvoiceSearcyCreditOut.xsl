@@ -14,13 +14,14 @@
 ******************************************************************************************
  26/06/08 | G Lokhande | Created module.
 ******************************************************************************************
- 
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:user="http://mycompany.com/mynamespace"
+		   xmlns:script="http://mycompany.com/mynamespace"
                 xmlns:msxsl="urn:schemas-microsoft-com:xslt"
-                exclude-result-prefixes="#default xsl msxsl">
+                exclude-result-prefixes="#default xsl msxsl script">
+
        <xsl:output method="text"/>
        <xsl:include href="HospitalityInclude.xsl"/>
        
@@ -51,14 +52,10 @@
              <xsl:variable name="InvoiceDate">
                     <xsl:choose>
                            <xsl:when test="/Invoice/InvoiceHeader/InvoiceReferences/InvoiceDate">
-                                 <xsl:call-template name="formatDate">
-                                        <xsl:with-param name="xmlDate" select="/Invoice/InvoiceHeader/InvoiceReferences/InvoiceDate"/>
-                                 </xsl:call-template>
+					<xsl:value-of select="script:msFormatDate(/Invoice/InvoiceHeader/InvoiceReferences/InvoiceDate)"/>
                            </xsl:when>
                            <xsl:otherwise>
-                                 <xsl:call-template name="formatDate">
-                                        <xsl:with-param name="xmlDate" select="/CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteDate"/>
-                                 </xsl:call-template>
+					<xsl:value-of select="script:msFormatDate(/CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteDate)"/>
                            </xsl:otherwise>
                     </xsl:choose>
              </xsl:variable>
@@ -224,15 +221,29 @@
              <xsl:value-of select="$NewLine"/>
        </xsl:template>
              
-       <!-- translates a date in YYYY-MM-DD format to a date in DD/MM/YYYY format -->
-       <xsl:template name="formatDate">
-             <xsl:param name="xmlDate"/>
-             <xsl:value-of select="substring($xmlDate,9,2)"/>
-             <xsl:text>/</xsl:text>
-             <xsl:value-of select="substring($xmlDate,6,2)"/>
-             <xsl:text>/</xsl:text>
-             <xsl:value-of select="substring($xmlDate,1,4)"/>
-       </xsl:template>            
+	<msxsl:script language="JScript" implements-prefix="script"><![CDATA[ 
+		/*=========================================================================================
+		' Routine       	 : msFormatDate
+		' Description 	 : Formats the date
+		' Inputs          	 : Date in yyyy-mm-dd format
+		' Outputs       	 : None
+		' Returns       	 : Date in "dd/mm/yyyy" format
+		' Author       		 : A Sheppard, 23/08/2004.
+		' Alterations   	 : 
+		'========================================================================================*/
+		function msFormatDate(vsDate)
+		{
+			if(vsDate.length > 0)
+			{
+				vsDate = vsDate(0).text;
+				return vsDate.substr(8,2) + "/" +vsDate.substr(5,2) + "/" + vsDate.substr(2,2);
+			}
+			else
+			{
+				return '';
+			}
+		}
+	]]></msxsl:script>
 </xsl:stylesheet>
 
 
