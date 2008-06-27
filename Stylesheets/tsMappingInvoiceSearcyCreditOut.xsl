@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!--
 ******************************************************************************************
  Overview
@@ -74,17 +74,7 @@
                     </xsl:choose>
              </xsl:variable>
              
-             <xsl:variable name="JournalType">
-                    <xsl:choose>
-                           <xsl:when test="/Invoice">
-                                 <xsl:text>EINV</xsl:text>
-                           </xsl:when>
-                           <xsl:otherwise>
-                                 <xsl:text>ECRN</xsl:text>
-                           </xsl:otherwise>
-                    </xsl:choose>
-             </xsl:variable>
-                    
+             <xsl:variable name="JournalType"><xsl:text>JournalType</xsl:text></xsl:variable>
              <xsl:variable name="Department"><xsl:text>Department</xsl:text></xsl:variable>
              <xsl:variable name="VAT"><xsl:value-of select="VATCode"/></xsl:variable >        
              <xsl:variable name="SupplierCode" select="TradeSimpleHeader/RecipientsCodeForSender"/>
@@ -98,7 +88,6 @@
                            </xsl:otherwise>
                     </xsl:choose>
              </xsl:variable>
-
 
              <xsl:variable name="OperatorCode"> <xsl:text>tradesimple</xsl:text> </xsl:variable>
              
