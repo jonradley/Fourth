@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 ******************************************************************************************
  Overview
@@ -37,7 +37,7 @@
                     <xsl:text>2;</xsl:text>
              </xsl:variable>
 
-             <xsl:variable name="DocumentReference">
+             <xsl:variable name="InvoiceNo">
                     <xsl:choose>
                            <xsl:when test="/Invoice/InvoiceHeader/InvoiceReferences/InvoiceReference">
                                  <xsl:value-of select="/Invoice/InvoiceHeader/InvoiceReferences/InvoiceReference"/>
@@ -48,7 +48,7 @@
                     </xsl:choose>
              </xsl:variable>  
              
-             <xsl:variable name="DocumentDate">
+             <xsl:variable name="InvoiceDate">
                     <xsl:choose>
                            <xsl:when test="/Invoice/InvoiceHeader/InvoiceReferences/InvoiceDate">
                                  <xsl:call-template name="formatDate">
@@ -115,9 +115,9 @@
                            <!-- now output a summary line for the current Account Code and VAT Code combination -->
                            <xsl:value-of select="$RowTypeIndicator"/>
                            <xsl:text>,</xsl:text>                          
-                           <xsl:value-of select="$DocumentReference"/>
+                           <xsl:value-of select="$InvoiceNo"/>
                            <xsl:text>,</xsl:text>                          
-                           <xsl:value-of select="$DocumentDate"/>
+                           <xsl:value-of select="$InvoiceDate"/>
                            <xsl:text>,</xsl:text>
                            <xsl:value-of select="$AccountCode"/>
                            <xsl:text>,</xsl:text>
@@ -153,9 +153,9 @@
              <xsl:for-each select="//VATSubTotal[@VATRate != 0.00]">
                     <xsl:value-of select="$RowTypeIndicator"/>
                     <xsl:text>,</xsl:text>
-                    <xsl:value-of select="$DocumentReference"/>
+                    <xsl:value-of select="$InvoiceNo"/>
                     <xsl:text>,</xsl:text>                   
-                    <xsl:value-of select="$DocumentDate"/>
+                    <xsl:value-of select="$InvoiceDate"/>
                     <xsl:text>,</xsl:text>
                     <xsl:text>700400</xsl:text>
                     <xsl:text>,</xsl:text>
@@ -191,9 +191,9 @@
              <!--Display Supplier-->
              <xsl:value-of select="$RowTypeIndicator"/>
              <xsl:text>,</xsl:text>
-             <xsl:value-of select="$DocumentReference"/>
+             <xsl:value-of select="$InvoiceNo"/>
              <xsl:text>,</xsl:text>             
-             <xsl:value-of select="$DocumentDate"/>
+             <xsl:value-of select="$InvoiceDate"/>
              <xsl:text>,</xsl:text>
              <xsl:value-of select="TradeSimpleHeader/RecipientsCodeForSender"/>
              <xsl:text>,</xsl:text>
