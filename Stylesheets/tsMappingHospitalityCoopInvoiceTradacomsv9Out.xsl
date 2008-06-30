@@ -166,9 +166,8 @@
 		<xsl:value-of select="$sRecordSep"/>
 
 		<xsl:text>CLO=</xsl:text>
-		<xsl:if test="InvoiceHeader/ShipTo/ShipToLocationID/GLN != '5555555555555'">
-			<xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/GLN"/>
-		</xsl:if>
+		<!-- Initially at least this will have to be hard coded as NDC Coventry -->
+		<xsl:text>5000128997786</xsl:text>
 		<xsl:text>:</xsl:text>
 		<!-- truncate to 17 CLOC 2 = 3001 = AN..17 -->
 		<xsl:value-of select="js:msSafeText(string(InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode),17)"/>
