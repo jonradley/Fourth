@@ -293,11 +293,6 @@
 						
 						<xsl:text>+</xsl:text>
 						<xsl:text>+</xsl:text>
-						<!-- truncate to 30 -->
-						<xsl:call-template name="msCheckField">
-							<xsl:with-param name="vobjNode" select="ProductID/BuyersProductCode"/>
-							<xsl:with-param name="vnLength" select="30"/>
-						</xsl:call-template>
 						<xsl:text>+::</xsl:text>
 						<xsl:value-of select="InvoicedQuantity/@UnitOfMeasure"/>
 						<xsl:text>+</xsl:text>
