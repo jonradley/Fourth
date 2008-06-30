@@ -276,9 +276,9 @@
 					</BuyerAssigned>
 				</xsl:if>
 				
-				<xsl:if test="/Invoice/InvoiceHeader/ShipTo/ShipToLocationID/SellersCode">				
+				<xsl:if test="/Invoice/InvoiceHeader/ShipTo/ShipToLocationID/SuppliersCode">				
 					<SellerAssigned scheme="OTHER">
-						<xsl:value-of select="/Invoice/InvoiceHeader/ShipTo/ShipToLocationID/SellersCode"/>
+						<xsl:value-of select="/Invoice/InvoiceHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
 					</SellerAssigned>			
 				</xsl:if>
 			</ShipTo>
