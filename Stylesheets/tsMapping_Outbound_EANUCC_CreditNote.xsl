@@ -16,9 +16,11 @@
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" 
 				xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+				xmlns="http://www.eanucc.org/2002/Pay/FoodService/FoodService/UK/EanUcc/Pay"
 				xmlns:fo="http://www.w3.org/1999/XSL/Format" 
 				xmlns:script="http://mycompany.com/mynamespace" 
-				xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+				xmlns:msxsl="urn:schemas-microsoft-com:xslt"
+				exclude-result-prefixes="fo script msxsl">
 	<xsl:output method="xml"/>
 	
 	<!-- we use constants for default values -->
@@ -278,9 +280,9 @@
 					</BuyerAssigned>
 				</xsl:if>
 				
-				<xsl:if test="/CreditNote/CreditNoteHeader/ShipTo/ShipToLocationID/SellersCode">
+				<xsl:if test="/CreditNote/CreditNoteHeader/ShipTo/ShipToLocationID/SuppliersCode">
 					<SellerAssigned scheme="OTHER">
-						<xsl:value-of select="/CreditNote/CreditNoteHeader/ShipTo/ShipToLocationID/SellersCode"/>
+						<xsl:value-of select="/CreditNote/CreditNoteHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
 					</SellerAssigned>			
 				</xsl:if>
 			</ShipTo>
