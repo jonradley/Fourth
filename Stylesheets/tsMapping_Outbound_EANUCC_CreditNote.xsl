@@ -12,6 +12,10 @@
 ******************************************************************************************
  28/05/2008	| R Cambridge   | 2257 copied from King/trunk/Stylesheets/tsMapping_Outbound_EANUCC_Invoice.xsl and then modified
 ******************************************************************************************
+ 30/06/2008	| R Cambridge   | 2257 temporary buyer GLN translation. 3663's dummy code needs to be translated to Moto's own code (issued by Freeway)
+******************************************************************************************
+			  	|               |
+******************************************************************************************
 			  	|               |
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" 
@@ -160,7 +164,15 @@
 			      ~~~~~~~~~~~~~~~~~~~~~~~-->
 			<Buyer>
 				<BuyerGLN scheme="GLN">
-					<xsl:value-of select="/CreditNote/CreditNoteHeader/Buyer/BuyersLocationID/GLN"/>
+					<!-- 2257 temp translation while Moto suppliers are migrated to the correct GLN (...0004)
+							from the dummy on created by 3663 (...0022)
+					 -->
+					<xsl:choose>
+						<xsl:when test="string(/CreditNote/CreditNoteHeader/Buyer/BuyersLocationID/GLN) = '5027615900022'">5029224000004</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="/CreditNote/CreditNoteHeader/Buyer/BuyersLocationID/GLN"/>
+						</xsl:otherwise>
+					</xsl:choose>					
 				</BuyerGLN>
 			
 				<xsl:if test="/CreditNote/CreditNoteHeader/Buyer/BuyersLocationID/BuyersCode">
