@@ -158,6 +158,16 @@
 		<xsl:value-of select="$sFileGenerationDate"/>
 		<xsl:value-of select="$sRecordSep"/>
 		
+		<xsl:text>FDT=</xsl:text>
+		<xsl:call-template name="msFormateDate">
+			<xsl:with-param name="vsUTCDate" select="InvoiceHeader/InvoiceReferences/InvoiceDate"/>
+		</xsl:call-template>
+		<xsl:text>+</xsl:text>
+		<xsl:call-template name="msFormateDate">
+			<xsl:with-param name="vsUTCDate" select="InvoiceDetail/InvoiceLine/DeliveryNoteReferences/DespatchDate"/>
+		</xsl:call-template>
+		<xsl:value-of select="$sRecordSep"/>
+		
 		<xsl:text>MTR=6</xsl:text>
 		<xsl:value-of select="$sRecordSep"/>
 		
@@ -217,12 +227,17 @@
 					<xsl:variable name="DeliveryNumber" select="position()"/>					
 					<xsl:value-of select="$DeliveryNumber"/>
 					<xsl:text>+</xsl:text>
+					<xsl:variable name="poRef">					
+						<xsl:call-template name="msCheckField">
+							<xsl:with-param name="vobjNode" select="PurchaseOrderReferences/PurchaseOrderReference"/>
+							<xsl:with-param name="vnLength" select="17"/>
+						</xsl:call-template>					
+					</xsl:variable>
 					<!-- truncate to 17 ORNO 1 = 5010 = AN..17 -->
-					<xsl:call-template name="msCheckField">
-						<xsl:with-param name="vobjNode" select="PurchaseOrderReferences/PurchaseOrderReference"/>
-						<xsl:with-param name="vnLength" select="17"/>
-					</xsl:call-template>
-					<xsl:text>::</xsl:text>
+					<xsl:value-of select="$poRef"/>
+					<xsl:text>:</xsl:text>
+					<xsl:value-of select="$poRef"/>
+					<xsl:text>:</xsl:text>
 					<xsl:call-template name="msFormateDate">
 						<xsl:with-param name="vsUTCDate" select="PurchaseOrderReferences/PurchaseOrderDate"/>
 					</xsl:call-template>					
