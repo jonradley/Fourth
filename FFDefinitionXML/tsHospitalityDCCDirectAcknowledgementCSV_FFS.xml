@@ -38,30 +38,30 @@ R Cambridge	| 16/06/2008	| 2245
 				<BatchDocument>
 					<PurchaseOrderAcknowledgement>
 						<TradeSimpleHeader>
-							<SendersCodeForRecipient RecordPos="*" LPos="2"/>
+							<SendersCodeForRecipient RecordLength="7" RecordPos="*" LPos="2"/>
 							<!--SendersBranchReference RecordPos="1" LPos="4"/-->
 						</TradeSimpleHeader>
 						<PurchaseOrderAcknowledgementHeader>
 							<Buyer>
 								<BuyersLocationID>
-									<SuppliersCode RecordPos="*" LPos="1"/>
+									<SuppliersCode RecordLength="7" RecordPos="*" LPos="1"/>
 								</BuyersLocationID>
 							</Buyer>
 							<ShipTo>
 								<ShipToLocationID>
-									<SuppliersCode RecordPos="*" LPos="2"/>
+									<SuppliersCode RecordLength="7" RecordPos="*" LPos="2"/>
 								</ShipToLocationID>
 							</ShipTo>
 							<PurchaseOrderReferences>
-								<PurchaseOrderReference RecordPos="*" LPos="3"/>
-								<PurchaseOrderDate RecordPos="*" LPos="4"/>
+								<PurchaseOrderReference RecordLength="7" RecordPos="*" LPos="3"/>
+								<PurchaseOrderDate RecordLength="7" RecordPos="*" LPos="4"/>
 							</PurchaseOrderReferences>
 							<PurchaseOrderAcknowledgementReferences>
-								<PurchaseOrderAcknowledgementReference RecordPos="*" LPos="6"/>
-								<PurchaseOrderAcknowledgementDate RecordPos="*" LPos="4"/>
+								<PurchaseOrderAcknowledgementReference RecordLength="7" RecordPos="*" LPos="6"/>
+								<PurchaseOrderAcknowledgementDate RecordLength="7" RecordPos="*" LPos="4"/>
 							</PurchaseOrderAcknowledgementReferences>
 							<OrderedDeliveryDetails>
-								<DeliveryDate RecordPos="*" LPos="5"/>
+								<DeliveryDate RecordLength="7" RecordPos="*" LPos="5"/>
 							</OrderedDeliveryDetails>
 						</PurchaseOrderAcknowledgementHeader>
 					</PurchaseOrderAcknowledgement>

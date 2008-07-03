@@ -30,56 +30,48 @@ R Cambridge	| 16/06/2008	| 2245
 			<ffsFieldSeparator>,</ffsFieldSeparator>
 		</ffsFieldSeparators>
 		<ffsPadding/>
+		<ffsSplitBatchRecord LPos="3"/>
 	</ffsSettings>
 	<ffsRoot>
 		<Batch>
 			<BatchDocuments>
 				<BatchDocument>
 					<PurchaseOrderConfirmation>
-						
 						<TradeSimpleHeader>
-							<SendersCodeForRecipient RecordPos="1" LPos="2"/>
-							<!--SendersBranchReference RecordPos="1" LPos="4"/-->
+							<SendersCodeForRecipient RecordLength="12" RecordPos="*" LPos="2"/>
 						</TradeSimpleHeader>
-						
 						<PurchaseOrderConfirmationHeader>
 							<Buyer>
 								<BuyersLocationID>
-									<SuppliersCode RecordPos="1" LPos="1"/>
+									<SuppliersCode RecordLength="12" RecordPos="*" LPos="1"/>
 								</BuyersLocationID>
 							</Buyer>
 							<ShipTo>
 								<ShipToLocationID>
-									<SuppliersCode RecordPos="1" LPos="2"/>
+									<SuppliersCode RecordLength="12" RecordPos="*" LPos="2"/>
 								</ShipToLocationID>
 							</ShipTo>
 							<PurchaseOrderReferences>
-								<PurchaseOrderReference RecordPos="1" LPos="3"/>
-								<PurchaseOrderDate RecordPos="1" LPos="4"/>
+								<PurchaseOrderReference RecordLength="12" RecordPos="*" LPos="3"/>
+								<PurchaseOrderDate RecordLength="12" RecordPos="*" LPos="10"/>
 							</PurchaseOrderReferences>
 							<PurchaseOrderConfirmationReferences>
-								<PurchaseOrderConfirmationReference RecordPos="1" LPos="6"/>
-								<PurchaseOrderConfirmationDate RecordPos="1" LPos="4"/>
+								<PurchaseOrderConfirmationReference RecordLength="12" RecordPos="*" LPos="4"/>
+								<PurchaseOrderConfirmationDate RecordLength="12" RecordPos="*" LPos="12"/>
 							</PurchaseOrderConfirmationReferences>
-							<PurchaseOrderConfirmationReferences>
-								<PurchaseOrderConfirmationReference RecordPos="1" LPos="6"/>
-								<PurchaseOrderConfirmationDate RecordPos="1" LPos="4"/>
-							</PurchaseOrderConfirmationReferences>
-						</PurchaseOrderConfirmationHeader>						
-						
+						</PurchaseOrderConfirmationHeader>
 						<PurchaseOrderConfirmationDetail>
 							<PurchaseOrderConfirmationLine>
 								<ProductID>
-									<SuppliersProductCode RecordLength="7" RecordPos="*" LPos="1"/>
+									<SuppliersProductCode RecordLength="12" RecordPos="*" LPos="6"/>
 								</ProductID>
-								<OrderedQuantity RecordLength="7" RecordPos="*" LPos="2"/>
-								<ConfirmedQuantity RecordLength="7" RecordPos="*" LPos="4"/>								
+								<OrderedQuantity RecordLength="12" RecordPos="*" LPos="7"/>
+								<ConfirmedQuantity RecordLength="12" RecordPos="*" LPos="9"/>
 								<ConfirmedDeliveryDetailsLineLevel>
-									<DeliveryDate RecordLength="7" RecordPos="*" LPos="7"/>
+									<DeliveryDate RecordLength="12" RecordPos="*" LPos="12"/>
 								</ConfirmedDeliveryDetailsLineLevel>
 							</PurchaseOrderConfirmationLine>
 						</PurchaseOrderConfirmationDetail>
-						
 					</PurchaseOrderConfirmation>
 				</BatchDocument>
 			</BatchDocuments>
