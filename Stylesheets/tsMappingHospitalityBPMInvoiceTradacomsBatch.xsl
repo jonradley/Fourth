@@ -139,7 +139,7 @@ N Emsen		|	08/11/2006	|	Case 531: Purchase order reference working.
 						<xsl:value-of select="@VATCode"/>
 					</xsl:attribute>
 					<xsl:attribute name="VATRate">
-						<xsl:value-of select="format-number(@VATRate div 100,'0.00')"/>
+						<xsl:value-of select="format-number(@VATRate div 1000,'0.00')"/>
 					</xsl:attribute>
 					<DocumentTotalExclVATAtRate>
 						<xsl:value-of select="format-number(DocumentTotalExclVATAtRate div 100,'0.00')"/>
@@ -226,7 +226,7 @@ N Emsen		|	08/11/2006	|	Case 531: Purchase order reference working.
 						<xsl:value-of select="@VATCode"/>
 					</xsl:attribute>
 					<xsl:attribute name="VATRate">
-						<xsl:value-of select="format-number(@VATRate div 100,'0.00')"/>
+						<xsl:value-of select="format-number(@VATRate div 1000,'0.00')"/>
 					</xsl:attribute>
 					<DocumentTotalExclVATAtRate>
 						<xsl:value-of select="format-number(DocumentTotalExclVATAtRate div 100,'0.00')"/>
@@ -307,11 +307,11 @@ N Emsen		|	08/11/2006	|	Case 531: Purchase order reference working.
 		<xsl:call-template name="copyCurrentNodeExplicit3DP"/>
 	</xsl:template>
 	<!--Add any attribute XPath whose value needs to be converted from implicit 3 D.P to explicit 2 D.P. -->
-	<xsl:template match="VATSubTotal/@VATRate">
+	<!--xsl:template match="VATSubTotal/@VATRate">
 		<xsl:attribute name="{name()}">
 			<xsl:value-of select="format-number(. div 1000.0, '0.00')"/>
 		</xsl:attribute>
-	</xsl:template>
+	</xsl:template-->
 	<!-- SIMPLE CONVERSION IMPLICIT TO EXPLICIT 4 D.P -->
 	<!-- Add any XPath whose text node needs to be converted from implicit to explicit 4 D.P. -->
 	<xsl:template match="InvoiceLine/UnitValueExclVAT">
