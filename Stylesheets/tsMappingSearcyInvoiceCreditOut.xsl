@@ -94,8 +94,8 @@
 		<!-- construct the value for the Department as it is used on multiple lines -->
 		<xsl:variable name="Department">		
 			<xsl:choose>
-				<xsl:when test="/Invoice/InvoiceDetail/InvoiceLine/LineExtraData/Department">
-					<xsl:value-of select="/Invoice/InvoiceDetail/InvoiceLine/LineExtraData/Department"/>
+				<xsl:when test="/Invoice/InvoiceHeader/HeaderExtraData/Department">
+					<xsl:value-of select="/Invoice/InvoiceHeader/HeaderExtraData/Department"/>
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:value-of select="/Credit/CreditNoteDetail/CreditNoteLine/LineExtraData/Department"/>
@@ -122,10 +122,10 @@
 		<xsl:variable name="Description">			
 			<xsl:choose>
 				<xsl:when test="/Invoice/TradeSimpleHeader/RecipientsName">
-					<xsl:text>Purchase Invoice -</xsl:text><xsl:value-of select="/Invoice/TradeSimpleHeader/RecipientsName"/>
+					<xsl:text>Purchase Invoice-</xsl:text><xsl:value-of select="/Invoice/TradeSimpleHeader/RecipientsName"/>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:text>Purchase Invoice -</xsl:text><xsl:value-of select="/CreditNote/TradeSimpleHeader/RecipientsName"/>
+					<xsl:text>Purchase Invoice-</xsl:text><xsl:value-of select="/CreditNote/TradeSimpleHeader/RecipientsName"/>
 				</xsl:otherwise>
 			</xsl:choose>			
 		</xsl:variable>
