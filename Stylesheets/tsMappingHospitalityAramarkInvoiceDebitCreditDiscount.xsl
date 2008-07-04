@@ -118,8 +118,8 @@
 				<xsl:when test="InvoiceTrailer/DocumentTotalExclVAT">
 					<xsl:value-of select="translate(format-number(InvoiceTrailer/DocumentTotalExclVAT,'0.00'),'.','')"/>
 				</xsl:when>
-				<xsl:when test="/DebitNote/DebitNoteTrailer/DocumentTotalExclVAT">
-					<xsl:value-of select="translate(format-number(/DebitNote/DebitNoteTrailer/DocumentTotalExclVAT,'0.00'),'.','')"/>
+				<xsl:when test="DebitNoteTrailer/DocumentTotalExclVAT">
+					<xsl:value-of select="translate(format-number(-1* DebitNoteTrailer/DocumentTotalExclVAT,'0.00'),'.','')"/>
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:value-of select="translate(format-number(-1 * CreditNoteTrailer/DocumentTotalExclVAT,'0.00'),'.','')"/>
@@ -161,7 +161,7 @@
 							<xsl:value-of select="translate(format-number(sum(//InvoiceLine[LineExtraData/AccountCode = $AccountCode and VATCode = $VATCode]/LineValueExclVAT) * ($VATRate div 100),'0.00'),'.','')"/>
 						</xsl:when>
 						<xsl:when test="/DebitNote">
-							<xsl:value-of select="translate(format-number(sum(//DebitNoteLine[LineExtraData/AccountCode = $AccountCode and VATCode = $VATCode]/LineValueExclVAT) * ($VATRate div 100),'0.00'),'.','')"/>
+							<xsl:value-of select="translate(format-number(-1* sum(//DebitNoteLine[LineExtraData/AccountCode = $AccountCode and VATCode = $VATCode]/LineValueExclVAT) * ($VATRate div 100),'0.00'),'.','')"/>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:value-of select="translate(format-number(-1* sum(//CreditNoteLine[LineExtraData/AccountCode = $AccountCode and VATCode = $VATCode]/LineValueExclVAT) * ($VATRate div 100),'0.00'),'.','')"/>
