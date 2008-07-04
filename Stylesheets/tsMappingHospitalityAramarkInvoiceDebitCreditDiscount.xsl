@@ -89,9 +89,9 @@
 						<xsl:with-param name="xmlDate" select="InvoiceHeader/InvoiceReferences/InvoiceDate"/>
 					</xsl:call-template>
 				</xsl:when>
-				<xsl:when test="InvoiceHeader/InvoiceReferences/InvoiceDate">
+				<xsl:when test="DebitNoteHeader/DebitNoteReferences/DebitNoteDate">
 					<xsl:call-template name="formatDate">
-						<xsl:with-param name="xmlDate" select="InvoiceHeader/InvoiceReferences/InvoiceDate"/>
+						<xsl:with-param name="xmlDate" select="DebitNoteHeader/DebitNoteReferences/DebitNoteDate"/>
 					</xsl:call-template>
 				</xsl:when>
 				<xsl:otherwise>
@@ -104,9 +104,6 @@
 		
 		<xsl:variable name="RFCTotalExclVAT">
 			<xsl:choose>
-				<xsl:when test="Invoice">
-					<xsl:text>0</xsl:text>
-				</xsl:when>
 				<xsl:when test="/DebitNote/DebitNoteTrailer/DocumentTotalExclVAT">
 					<xsl:value-of select="translate(format-number(/DebitNote/DebitNoteTrailer/DocumentTotalExclVAT,'0.00'),'.','')"/>
 				</xsl:when>
@@ -150,7 +147,7 @@
 							<xsl:value-of select="translate(format-number(sum(//InvoiceLine[LineExtraData/AccountCode = $AccountCode and VATCode = $VATCode]/LineValueExclVAT),'0.00'),'.','')"/>
 						</xsl:when>
 						<xsl:when test="/DebitNote">
-							<xsl:value-of select="translate(format-number(sum(//DebitNoteLine[LineExtraData/AccountCode = $AccountCode and VATCode = $VATCode]/LineValueExclVAT),'0.00'),'.','')"/>
+							<xsl:value-of select="translate(format-number(-1* sum(//DebitNoteLine[LineExtraData/AccountCode = $AccountCode and VATCode = $VATCode]/LineValueExclVAT),'0.00'),'.','')"/>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:value-of select="translate(format-number(-1* sum(//CreditNoteLine[LineExtraData/AccountCode = $AccountCode and VATCode = $VATCode]/LineValueExclVAT),'0.00'),'.','')"/>
@@ -223,10 +220,10 @@
 		</xsl:for-each>
 
 		<!--Discount Line -->					
-		<xsl:variable name="DiscountAmt">
-			<xsl:value-of select="(/Invoice/InvoiceTrailer/DocumentDiscount)"/>
+		<xsl:variable name="DiscountAmount">
+			<xsl:value-of select="/Invoice/InvoiceTrailer/DocumentDiscount"/>
 		</xsl:variable>
-		<xsl:if test="$DiscountAmt &gt; 0">
+		<xsl:if test="$DiscountAmount &gt; 0">
 			<xsl:value-of select="$DocumentType"/>
 			<xsl:text>|</xsl:text>
 			<xsl:value-of select="$PLAccountCode"/>
@@ -241,7 +238,7 @@
 			<xsl:text>|</xsl:text>
 			<xsl:value-of select="$DocumentDate"/>
 			<xsl:text>|</xsl:text>
-			<xsl:value-of select="translate(format-number($DiscountAmt,'0.00'),'.','')"/>
+			<xsl:value-of select="translate(format-number(-1 * $DiscountAmount,'0.00'),'.','')"/>
 			<xsl:text>||||</xsl:text>
 			<xsl:value-of select="/Invoice/InvoiceHeader/HeaderExtraData/DiscountAccountCode"/>
 			<xsl:text>|0|0|</xsl:text>
@@ -304,26 +301,4 @@
 		      floor($y div 4) - floor($y div 100) + floor($y div 400) - 
 		      32045"/>		
 	</xsl:template>
-	
-	<msxsl:script language="JScript" implements-prefix="script"><![CDATA[ 
-		/*=========================================================================================
-		' Routine       	 : msRight
-		' Description 	 : Retruns right() functionality
-		' Inputs          	 : String, Length
-		' Outputs       	 : None
-		' Returns       	 : String 
-		' Author       		 : G Lokhande, 04/07/2008.
-		' Alterations   	 : 
-		'========================================================================================*/
-		function msRight(vsText, vnLen){
-		    if (vnLen <= 0)
-		       return "";
-		    else if (vnLen > String(vsText).length)
-		       return vsText;
-		    else {
-		       var iLen = String(vsText).length;
-		       return String(vsText).substring(iLen, iLen - vnLen);
-		    }
-		}
-	]]></msxsl:script>
 </xsl:stylesheet>
