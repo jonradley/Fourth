@@ -308,7 +308,14 @@
 						
 						<xsl:text>+</xsl:text>
 						<xsl:text>+</xsl:text>
-						<xsl:text>+::</xsl:text>
+						<xsl:text>+</xsl:text>
+						<xsl:if test="string(number(Measure/UnitsInPack)) != 'NaN'">						
+							<xsl:call-template name="msCheckField">
+								<xsl:with-param name="vobjNode" select="Measure/UnitsInPack"/>
+								<xsl:with-param name="vnLength" select="6"/>
+							</xsl:call-template>	
+						</xsl:if>
+						<xsl:text>::</xsl:text>
 						<xsl:value-of select="InvoicedQuantity/@UnitOfMeasure"/>
 						<xsl:text>+</xsl:text>
 						<xsl:value-of select="format-number(InvoicedQuantity,'0')"/>
@@ -486,7 +493,7 @@
 		
 			<xsl:when test="string-length($sEscapedField) &gt; $vnLength">
 				<xsl:message terminate="yes">
-					<xsl:text>Error raised by tsMappingHospitalityOrderTradacomsv6Out.xsl.&#13;&#10;</xsl:text>
+					<xsl:text>Error raised by tsMappingHospitalityCoopInvoiceTradacomsv9Out.xsl.&#13;&#10;</xsl:text>
 					
 					<xsl:text>The internal format of this message contains a field that would be truncated when mapped to a corresponding tradacoms field.&#13;&#10;</xsl:text>
 					<xsl:text>The element is </xsl:text>
