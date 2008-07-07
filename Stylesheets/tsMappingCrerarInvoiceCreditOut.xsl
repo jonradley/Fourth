@@ -85,7 +85,7 @@
 						<xsl:text>1</xsl:text>
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:text>0</xsl:text>
+						<xsl:text>2</xsl:text>
 					</xsl:otherwise>
 				</xsl:choose>
 				<xsl:text>,</xsl:text>
