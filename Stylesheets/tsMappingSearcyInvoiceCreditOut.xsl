@@ -26,8 +26,9 @@
 	
 	<!-- define keys (think of them a bit like database indexes) to be used for finding distinct line information.
 	     note;  the '::' literal is simply used as a convenient separator for the 2 values that make up the second key. -->
+	<xsl:key name="keyLinesByVAT" match="InvoiceLine | CreditNoteLine" use="LineExtraData/BuyersVATCode"/>
 	<xsl:key name="keyLinesByAccount" match="InvoiceLine | CreditNoteLine" use="LineExtraData/AccountCode"/>
-	<xsl:key name="keyLinesByAccountAndVAT" match="InvoiceLine | CreditNoteLine" use="concat(LineExtraData/AccountCode,'::',VATCode)"/>
+	<xsl:key name="keyLinesByAccountAndVAT" match="InvoiceLine | CreditNoteLine" use="concat(LineExtraData/AccountCode,'::',LineExtraData/BuyersVATCode)"/>
 	
 	<xsl:template match="/Invoice | /CreditNote">
 			
@@ -103,18 +104,6 @@
 			</xsl:choose>	
 		</xsl:variable>	
 		
-		<!-- construct the value for the Translated Vat Code as it is used on multiple lines -->
-		<xsl:variable name="TranslatedVatCode">		
-			<xsl:choose>
-				<xsl:when test="/Invoice/InvoiceDetail/InvoiceLine/LineExtraData/BuyersVatCode">
-					<xsl:value-of select="/Invoice/InvoiceDetail/InvoiceLine/LineExtraData/BuyersVatCode"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="/CreditNote/CreditNoteDetail/CreditNoteLine/LineExtraData/BuyersVatCode"/>
-				</xsl:otherwise>
-			</xsl:choose>	
-		</xsl:variable>
-		
 		<!-- construct the value for the Supplier Code as it is used on multiple lines -->
 		<xsl:variable name="SupplierCode" select="TradeSimpleHeader/RecipientsCodeForSender"/>
 		
@@ -158,9 +147,9 @@
 			<xsl:sort select="LineExtraData/AccountCode" data-type="text"/>
 			<xsl:variable name="AccountCode" select="LineExtraData/AccountCode"/>
 			<!-- now, given we can find all lines for the current Account Code, loop through and match the first line for each unique VAT Code -->
-			<xsl:for-each select="key('keyLinesByAccount',$AccountCode)[generate-id() = generate-id(key('keyLinesByAccountAndVAT',concat($AccountCode,'::',VATCode))[1])]">
-				<xsl:sort select="VATCode" data-type="text"/>
-				<xsl:variable name="VATCode" select="VATCode"/>
+			<xsl:for-each select="key('keyLinesByAccount',$AccountCode)[generate-id() = generate-id(key('keyLinesByAccountAndVAT',concat($AccountCode,'::',LineExtraData/BuyersVATCode))[1])]">
+				<xsl:sort select="LineExtraData/BuyersVATCode" data-type="text"/>
+				<xsl:variable name="TranslatedVatCode" select="LineExtraData/BuyersVATCode"/>
 				
 					<!-- now output a summary line for the current Account Code and VAT Code combination -->
 					<xsl:value-of select="$RowTypeIndicator"/>
@@ -175,10 +164,10 @@
 					<xsl:text>,</xsl:text>
 					<xsl:choose>
 						<xsl:when test="/Invoice">
-							<xsl:value-of select="format-number(sum(//InvoiceLine[LineExtraData/AccountCode = $AccountCode and VATCode = $VATCode]/LineValueExclVAT),'0.00')"/>
+							<xsl:value-of select="format-number(sum(//InvoiceLine[LineExtraData/AccountCode = $AccountCode and LineExtraData/BuyersVATCode= $TranslatedVatCode]/LineValueExclVAT),'0.00')"/>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:value-of select="format-number(-1 * sum(//CreditNoteLine[LineExtraData/AccountCode = $AccountCode and VATCode = $VATCode]/LineValueExclVAT),'0.00')"/>
+							<xsl:value-of select="format-number(-1 * sum(//CreditNoteLine[LineExtraData/AccountCode = $AccountCode and LineExtraData/BuyersVATCode= $TranslatedVatCode]/LineValueExclVAT),'0.00')"/>
 						</xsl:otherwise>
 					</xsl:choose>
 					<xsl:text>,</xsl:text>
@@ -196,12 +185,15 @@
 					<xsl:text>,</xsl:text>
 					<xsl:value-of select="$AccountingPeriod"/>															
 					<xsl:value-of select="$NewLine"/>
-				
 			</xsl:for-each>
 		</xsl:for-each>
 		
 		<!--Taxes Lines-->
-		<xsl:for-each select="//VATSubTotal[@VATRate != 0.00]">
+		<xsl:for-each select="(CreditNoteDetail/CreditNoteLine | InvoiceDetail/InvoiceLine)[generate-id() = generate-id(key('keyLinesByVAT',LineExtraData/BuyersVATCode)[1])]">
+			<xsl:sort select="LineExtraData/BuyersVATCode" data-type="text"/>
+			<xsl:variable name="TranslatedVatCode" select="LineExtraData/BuyersVATCode"/>
+			<xsl:variable name="VATRate" select="VATRate"/>
+
 			<xsl:value-of select="$RowTypeIndicator"/>
 			<xsl:text>,</xsl:text>
 			<xsl:value-of select="$DocumentReference"/>
@@ -214,10 +206,10 @@
 			<xsl:text>,</xsl:text>
 			<xsl:choose>
 				<xsl:when test="/Invoice">
-					<xsl:value-of select="format-number(VATAmountAtRate,'0.00')"/>
+					<xsl:value-of select="format-number(sum(//InvoiceLine[LineExtraData/BuyersVATCode= $TranslatedVatCode]/LineValueExclVAT)  * ($VATRate div 100) ,'0.00')"/>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:value-of select="format-number(-1 * VATAmountAtRate,'0.00')"/>
+					<xsl:value-of select="format-number(-1 * sum(//CreditNoteLine[LineExtraData/BuyersVATCode= $TranslatedVatCode]/LineValueExclVAT) * ($VATRate div 100),'0.00')"/>
 				</xsl:otherwise>
 			</xsl:choose>
 			<xsl:text>,</xsl:text>
@@ -230,7 +222,7 @@
 			<xsl:value-of select="$JournalType"/>
 			<xsl:text>,</xsl:text>
 			<xsl:value-of select="$Description"/>
-			<xsl:text>,</xsl:text>				
+			<xsl:text>,</xsl:text>
 			<xsl:value-of select="$OperatorCode"/>
 			<xsl:text>,</xsl:text>			
 			<xsl:value-of select="$AccountingPeriod"/>						
@@ -259,7 +251,14 @@
 		<xsl:text>,</xsl:text>
 		<xsl:value-of select="$Department"/>
 		<xsl:text>,</xsl:text>
-		<xsl:value-of select="$TranslatedVatCode"/>		
+		<xsl:choose>
+			<xsl:when test="/Invoice/InvoiceTrailer/VATSubTotals/VATSubTotal/@VATCode">
+				<xsl:value-of select="/Invoice/InvoiceTrailer/VATSubTotals/VATSubTotal/@VATCode"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="/CreditNote/CreditNoteTrailer/VATSubTotals/VATSubTotal/@VATCode"/>
+			</xsl:otherwise>
+		</xsl:choose>
 		<xsl:text>,</xsl:text>	
 		<xsl:value-of select="$SupplierCode"/>
 		<xsl:text>,</xsl:text>	
