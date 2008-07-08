@@ -40,7 +40,7 @@
 						<xsl:otherwise>
 							<xsl:choose>
 
-								<xsl:when test="TradeSimpleHeader/SendersBranchReference = 'R023'">
+								<xsl:when test="TradeSimpleHeader/SendersBranchReference = 'R023' or TradeSimpleHeader/SendersBranchReference = 'J501'">
 								</xsl:when>
 								<xsl:otherwise>
 									<xsl:choose>
