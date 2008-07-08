@@ -34,7 +34,7 @@
 				}
 				TR.listrow0
 				{
-				    BACKGROUND-COLOR: #E6F5FF
+				    BACKGROUND-COLOR: #F6E3E7
 				}
 				TR.listrow1
 				{
@@ -46,7 +46,7 @@
 				    FONT-SIZE: 10pt;
 				    COLOR: #ffffff;
 				    FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif;
-				    BACKGROUND-COLOR: #234D9F
+				    BACKGROUND-COLOR: #880029
 				}
 				TD
 				{
@@ -58,7 +58,7 @@
 				}				
 				TABLE.DocumentSurround
 				{
-				    BACKGROUND-COLOR: #E6F5FF;
+				    BACKGROUND-COLOR: #F6E3E7;
 				    WIDTH: 100%;
 				}
 				TABLE.DocumentSurround TH
