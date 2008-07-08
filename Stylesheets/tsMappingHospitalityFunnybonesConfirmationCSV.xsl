@@ -273,11 +273,11 @@
 				<xsl:if test="PurchaseOrderConfirmationTrailer/NumberOfLines != '' or PurchaseOrderConfirmationTrailer/TotalExclVAT != ''">
 					<PurchaseOrderConfirmationTrailer>
 						
-						<xsl:if test="PurchaseOrderConfirmationTrailer/NumberOfLines != ''">
+						<!--xsl:if test="PurchaseOrderConfirmationTrailer/NumberOfLines != ''">
 							<NumberOfLines>
 								<xsl:value-of select="PurchaseOrderConfirmationTrailer/NumberOfLines"/>
 							</NumberOfLines>	
-						</xsl:if>
+						</xsl:if-->
 						
 						<xsl:if test="PurchaseOrderConfirmationTrailer/TotalExclVAT != ''">
 							<TotalExclVAT>
