@@ -4,6 +4,7 @@
 12 April 05 - Andy T - tsMappingHospitality3663WSEliorCreditTradacomsBatch.xsl Created from tsMappingHospitalityCreditTradacomsBatch.xsl
 25 April 05 - Andy T - Updates to reflect 3663 specific requirement in Appendix A of ELI010 - Integration Proposal For 3663 v1 DRAFT 2.doc - search for '3663'
 02 June 05 - Andy T - H433 3663-Elior: fix to ensure unique FGNs
+14 July 08 - R Cambridge - FB1291: Credit note needs to handle catchweight products
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
@@ -146,11 +147,18 @@
 					<xsl:with-param name="lMultiplier" select="-1.0"/>
 				</xsl:call-template>
 			</xsl:when>
+			<!-- Check and map from wt'd item segments -->
+			<xsl:when test="string(../Measure/TotalMeasure) !='' ">
+				<CreditedQuantity>
+					<xsl:value-of select="format-number(../Measure/TotalMeasure div 10000,'0.000#')"/>
+				</CreditedQuantity>
+			</xsl:when>
 			<xsl:otherwise>
 				<xsl:call-template name="copyCurrentNodeDPUnchanged"/>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+	
 	
 	<!-- CLD-EXLV (CreditNoteLine/LineValueExclVAT) need to be multiplied by -1 if (CreditNoteLine/ProductID/GTIN) is NOT blank -->
 	<xsl:template match="CreditNoteLine/LineValueExclVAT">
