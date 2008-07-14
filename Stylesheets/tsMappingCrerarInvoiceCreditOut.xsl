@@ -93,14 +93,16 @@
 				<xsl:value-of select="format-number($SumExclVat * ($VatRate div 100), '0.00')" />
 				<xsl:text>,</xsl:text>
 
-				<xsl:text>REPLACEWITHCRERARREF</xsl:text>
+				<xsl:text>REPLACEWITHCRERARREF </xsl:text>
+				<xsl:value-of select="/Invoice/InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode"/>
 				<xsl:text>,</xsl:text>
 				
 				<xsl:value-of select="/Invoice/InvoiceHeader/InvoiceReferences/InvoiceReference" />
 				<xsl:text>,</xsl:text>
 				
-				<xsl:text>REPLACEWITHCRERARREF/</xsl:text>
-				<xsl:value-of select="/Invoice/InvoiceHeader/InvoiceReferences/InvoiceReference" /><xsl:text>/</xsl:text>
+				<xsl:text>REPLACEWITHCRERARREF </xsl:text>
+				<xsl:value-of select="/Invoice/InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode" /><xsl:text>/</xsl:text>
+				<xsl:value-of select="/Invoice/InvoiceHeader/InvoiceReferences/InvoiceReference"/><xsl:text>/</xsl:text>
 				<xsl:value-of select="//TradeSimpleHeader/RecipientsCodeForSender"/>
 				<xsl:text>,</xsl:text>
 	
@@ -109,7 +111,8 @@
 				<!-- blank -->
 				<xsl:text>,</xsl:text>
 
-				<xsl:text>REPLACEWITHCRERARREF/</xsl:text>
+				<xsl:text>REPLACEWITHCRERARREF </xsl:text>
+				<xsl:value-of select="/Invoice/InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode"/><xsl:text>/</xsl:text>
 				<xsl:value-of select="/Invoice/InvoiceHeader/InvoiceReferences/InvoiceReference" /><xsl:text>/</xsl:text>
 				<xsl:value-of select="//TradeSimpleHeader/RecipientsCodeForSender"/>
 				<xsl:value-of select="$NewLine" />
