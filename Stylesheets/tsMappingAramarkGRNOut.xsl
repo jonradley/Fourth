@@ -41,7 +41,7 @@
 			<xsl:value-of select="script:msPad(/GoodsReceivedNote/GoodsReceivedNoteHeader/ShipTo/ShipToAddress/PostCode, 10)"/>
 			<xsl:value-of select="script:msPad('', 30)"/>
 			<xsl:value-of select="script:msPad('United Kingdom', 30)"/>
-			<xsl:text>GRN-</xsl:text><xsl:value-of select="script:msPad(/GoodsReceivedNote/GoodsReceivedNoteHeader/GoodsReceivedNoteReferences/GoodsReceivedNoteReference, 11)"/>
+			<xsl:text>G-</xsl:text><xsl:value-of select="script:msPadNumber(/GoodsReceivedNote/GoodsReceivedNoteHeader/GoodsReceivedNoteReferences/GoodsReceivedNoteReference, 13, 0)"/>
 			<xsl:value-of select="/GoodsReceivedNote/GoodsReceivedNoteHeader/GoodsReceivedNoteReferences/GoodsReceivedNoteDate"/>
 			<xsl:value-of select="script:msPad(ProductID/SuppliersProductCode, 20)"/>
 			<xsl:value-of select="script:msPad(AcceptedQuantity/@UnitOfMeasure, 10)"/>
