@@ -74,7 +74,7 @@
 	</xsl:template>
 	
 	<xsl:template match="CreditedQuantity">
-		<InvoicedQuantity>
+		<CreditedQuantity>
 			<xsl:attribute name="UnitOfMeasure">
 				<xsl:call-template name="decodePacksize">
 					<xsl:with-param name="sInput">
@@ -83,7 +83,7 @@
 				</xsl:call-template>
 			</xsl:attribute>
 			<xsl:value-of select="."/>
-		</InvoicedQuantity>
+		</CreditedQuantity>
 	</xsl:template>
 	
 	<xsl:template match="PackSize"></xsl:template>
