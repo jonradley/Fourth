@@ -93,7 +93,7 @@
 			
 			<xsl:if test="/GoodsReceivedNote/GoodsReceivedNoteHeader/PurchaseOrderReferences/PurchaseOrderDate">
 				<xsl:call-template name="msFormatDate">
-					<xsl:with-param name="vsDate" select="/GoodsReceivedNote/GoodsReceivedNoteHeader/PurchaseOrderReferences/PurchaseOrderDate"/>
+					<xsl:with-param name="vsDate" select="/GoodsReceivedNote/GoodsReceivedNoteHeader/DeliveryNoteReferences/DeliveryNoteDate"/>
 				</xsl:call-template>
 			</xsl:if>
 			<xsl:text>,</xsl:text>
