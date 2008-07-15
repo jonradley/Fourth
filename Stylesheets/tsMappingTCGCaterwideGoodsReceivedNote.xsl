@@ -99,7 +99,7 @@
 			<xsl:text>,</xsl:text>
 
 			<!-- Take the buyers code for supplier -->
-			<xsl:value-of select="/GoodsReceivedNote/GoodsReceivedNoteHeader/Supplier/SuppliersLocationID/BuyersCode"/>
+			<xsl:value-of select="/GoodsReceivedNote/TradeSimpleHeader/SendersCodeForRecipient"/>
 			<xsl:text>,</xsl:text>
 			
 			<xsl:text>,</xsl:text>
