@@ -2,7 +2,7 @@
 <ffsFlatFileSchema>
 	<ffsSettings>
 		<ffsRecordPositionType>named</ffsRecordPositionType>
-		<ffsRecordSeparator>chr(10)</ffsRecordSeparator>
+		<ffsRecordSeparator>chr(13)chr(10)</ffsRecordSeparator>
 		<ffsFieldSeparators>
 			<ffsFieldSeparator>,</ffsFieldSeparator>
 		</ffsFieldSeparators>
@@ -60,7 +60,7 @@
 						<InvoiceHeader>
 							<Buyer>
 								<BuyersLocationID>
-									<SuppliersCode RecordPos="&quot;HEAD&quot;" LPos="4"/>
+									<SuppliersCode RecordPos="&quot;HEAD&quot;" LPos="40"/>
 								</BuyersLocationID>
 								<!--BuyersName RecordPos="&quot;HEAD&quot;" LPos="17"/-->
 								<!--BuyersAddress>
