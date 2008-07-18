@@ -11,6 +11,8 @@ R Cambridge	| 2007-11-13		| 1332 no info to populate Buyer tag
 R Cambrdige	| 2008-03-27		| 2099 Logistics delivery reference should be the PO number 
 												 (Because DN ref on electronic copy will never match paper copy)
 **********************************************************************
+Lee Boyton	| 2008-07-18		| 2358 Use the buyer's code for shipto if the seller's code is missing.				
+**********************************************************************
 				|						|				
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -46,7 +48,14 @@ R Cambrdige	| 2008-03-27		| 2099 Logistics delivery reference should be the PO n
 						
 							<TradeSimpleHeader>
 								<SendersCodeForRecipient>
-									<xsl:value-of select="shipTo/additionalPartyIdentification[additionalPartyIdentificationType='SELLER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue[1]"/>
+									<xsl:choose>
+										<xsl:when test="shipTo/additionalPartyIdentification[additionalPartyIdentificationType='SELLER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue[1] != ''">
+											<xsl:value-of select="shipTo/additionalPartyIdentification[additionalPartyIdentificationType='SELLER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue[1]"/>
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:value-of select="shipTo/additionalPartyIdentification[additionalPartyIdentificationType='BUYER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue[1]"/>
+										</xsl:otherwise>
+									</xsl:choose>									
 								</SendersCodeForRecipient>
 							</TradeSimpleHeader>
 							
@@ -70,7 +79,9 @@ R Cambrdige	| 2008-03-27		| 2099 Logistics delivery reference should be the PO n
 											<BuyersCode><xsl:value-of select="."/></BuyersCode>
 										</xsl:for-each>
 										<xsl:for-each select="shipTo/additionalPartyIdentification[additionalPartyIdentificationType='SELLER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue[1]">
-											<SuppliersCode><xsl:value-of select="."/></SuppliersCode>
+											<xsl:if test=". != ''">
+												<SuppliersCode><xsl:value-of select="."/></SuppliersCode>
+											</xsl:if>
 										</xsl:for-each>
 									</ShipToLocationID>
 								</ShipTo>
