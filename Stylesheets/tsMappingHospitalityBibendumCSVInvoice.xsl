@@ -48,21 +48,29 @@
 				<xsl:choose>
 					<xsl:when test="SendersBranchReference = 'MIL14T'">MIL14T</xsl:when>
 					<xsl:when test="SendersBranchReference = 'FMC01T'">FMC01T</xsl:when>
+					<xsl:when test="SendersBranchReference = 'TES01T'">TES01T</xsl:when>					
+					<xsl:when test="SendersBranchReference = 'TES08T'">TES08T</xsl:when>					
+					<xsl:when test="SendersBranchReference = 'TES12T'">TES12T</xsl:when>					
+					<xsl:when test="SendersBranchReference = 'TES15T'">TES15T</xsl:when>					
+					<xsl:when test="SendersBranchReference = 'TES25T'">TES25T</xsl:when>					
 					<xsl:otherwise>
 						<xsl:value-of select="SendersCodeForRecipient"/>
 					</xsl:otherwise>
 				</xsl:choose>
 			</SendersCodeForRecipient>
 			
-			<xsl:if test="SendersBranchReference = 'MIL14T' or SendersBranchReference = 'FMC01T'">
+			<!--xsl:if test="SendersBranchReference = 'MIL14T' or SendersBranchReference = 'FMC01T' or SendersBranchReference = 'TES01T'"-->
+			<xsl:if test="SendersBranchReference">
+			<xsl:if test="contains('MIL14T~FMC01T~TES01T~TES08T~TES12T~TES15T~TES25T',SendersBranchReference)">
 				<SendersBranchReference>
 					<xsl:value-of select="SendersBranchReference"/>
 				</SendersBranchReference>
 			</xsl:if>
+			</xsl:if>
 		</TradeSimpleHeader>
 	</xsl:template>
 	
-	<xsl:template match="ShipToLocationID">
+	<!--xsl:template match="ShipToLocationID">
 		<ShipToLocationID>
 			<SuppliersCode>
 				<xsl:value-of select="SuppliersCode"/>
@@ -73,6 +81,28 @@
 				</BuyersCode>
 			</xsl:if>
 		</ShipToLocationID>
+	</xsl:template-->
+	
+	<xsl:template match="ShipTo">
+		<ShipTo>
+			<xsl:if test="ShipToLocationID or (//TradeSimpleHeader/SendersBranchReference != '' and contains('TES01T~TES08T~TES12T~TES15T~TES25T',//TradeSimpleHeader/SendersBranchReference))">
+				<ShipToLocationID>
+					<xsl:if test="//TradeSimpleHeader/SendersBranchReference != '' and contains('TES01T~TES08T~TES12T~TES15T~TES25T',//TradeSimpleHeader/SendersBranchReference)">
+						<GLN>
+							<xsl:value-of select="ShipToAddress/AddressLine2"/>
+						</GLN>
+					</xsl:if>
+					<xsl:copy-of select="ShipToLocationID/SuppliersCode"/>
+					<xsl:if test="//TradeSimpleHeader/SendersBranchReference = 'MIL14T' or //TradeSimpleHeader/SendersBranchReference = 'FMC01T'">
+						<BuyersCode>
+							<xsl:value-of select="ShipToLocationID/SuppliersCode"/>
+						</BuyersCode>
+					</xsl:if>
+				</ShipToLocationID>
+			</xsl:if>
+			<xsl:copy-of select="ShipToName"/>
+			<xsl:copy-of select="ShipToAddress"/>
+		</ShipTo>
 	</xsl:template>
 	
 	<xsl:template match="InvoiceHeader/Supplier">
@@ -86,6 +116,8 @@
 			<xsl:copy-of select="SuppliersAddress"/>
 		</Supplier>
 	</xsl:template>
+	
+
 	
 	<!-- sort all the dates in the file -->
 	<xsl:template match="InvoiceHeader/BatchInformation/FileCreationDate">
@@ -358,7 +390,18 @@
 			<xsl:variable name="UnitValue">
 				<xsl:value-of select="format-number(. div 10000,'0.0000')"/>
 			</xsl:variable>
-			<xsl:value-of select="format-number($UnitValue div ($UnitsInPricedPack div $UnitsInOrderedPack),'0.00')"/>
+			<!-- Leave the price blank to fail validation if there is no order basis -->
+			<xsl:if test="$UnitsInOrderedPack != 	''">
+				<!-- Round to 3dp for Compass or 2 for everyone else -->
+				<xsl:choose>
+					<xsl:when test="../../../TradeSimpleHeader/SendersBranchReference = 'MIL14T' or ../../../TradeSimpleHeader/SendersBranchReference = 'FMC01T'">
+						<xsl:value-of select="format-number($UnitValue div ($UnitsInPricedPack div $UnitsInOrderedPack),'0.000')"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="format-number($UnitValue div ($UnitsInPricedPack div $UnitsInOrderedPack),'0.00')"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:if>
 		</xsl:element>
 	</xsl:template>
 	
