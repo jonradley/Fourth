@@ -2,7 +2,7 @@
 <ffsFlatFileSchema>
 	<ffsSettings>
 		<ffsRecordPositionType>named</ffsRecordPositionType>
-		<ffsRecordSeparator>chr(13)chr(10)</ffsRecordSeparator>
+		<ffsRecordSeparator>chr(10)</ffsRecordSeparator>
 		<ffsFieldSeparators>
 			<ffsFieldSeparator>,</ffsFieldSeparator>
 		</ffsFieldSeparators>
