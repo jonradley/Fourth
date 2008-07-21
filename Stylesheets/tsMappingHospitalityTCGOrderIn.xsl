@@ -25,8 +25,8 @@
 			<PurchaseOrder>
 				
 				<TradeSimpleHeader>
-				
-					<SendersCodeForRecipient><xsl:value-of select="@SupplierCode"/></SendersCodeForRecipient>
+					<!--Hardcode to cope with TCG dual codes for S and N issue - no orders for non S and N suppliers will use this mapper-->
+					<SendersCodeForRecipient><xsl:text>SCO011</xsl:text></SendersCodeForRecipient>
 					<SendersBranchReference><xsl:value-of select="@LocationCode"/></SendersBranchReference>
 	
 				</TradeSimpleHeader>
