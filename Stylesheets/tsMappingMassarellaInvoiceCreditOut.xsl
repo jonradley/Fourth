@@ -147,7 +147,7 @@
 				<xsl:value-of select="$DocumentReference"/>					
 				<xsl:text>,</xsl:text>							
 				<xsl:text>,</xsl:text>
-				<xsl:value-of select="$LineTotalExclVAT + $LineVATAmount"/>
+				<xsl:value-of select="format-number($LineTotalExclVAT + $LineVATAmount,'0.00')"/>
 				<xsl:text>,</xsl:text>
 				<!-- translate the VAT code -->
 				<xsl:choose>
