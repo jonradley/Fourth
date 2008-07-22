@@ -101,7 +101,7 @@
 	<xsl:template name="decodeVATCodes">
 		<xsl:param name="sVATCode"/>
 		<xsl:choose>
-			<xsl:when test="$sVATCode = 'S0'">E</xsl:when>
+			<xsl:when test="$sVATCode = 'S0'">Z</xsl:when>
 			<xsl:otherwise> </xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
