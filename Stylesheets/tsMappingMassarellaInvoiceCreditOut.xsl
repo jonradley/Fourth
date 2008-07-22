@@ -64,8 +64,8 @@
 				<xsl:when test="/Invoice/InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode">
 					<xsl:value-of select="substring(/Invoice/InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode,string-length(/Invoice/InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode)-2)"/>		
 				</xsl:when>				
-				<xsl:otherwise>
-					<xsl:value-of select="substring(/CreditNote/CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode,string-length(/CreditNote/CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode),-2)"/>
+				<xsl:otherwise>				
+					 <xsl:value-of select="substring(/CreditNote/CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode,string-length(/CreditNote/CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode)-2)"/> 
 				</xsl:otherwise>
 			</xsl:choose>	
 		</xsl:variable>
