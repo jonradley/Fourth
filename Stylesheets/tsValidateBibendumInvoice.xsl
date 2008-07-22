@@ -30,7 +30,7 @@ Alterations	: A Sheppard, 15/10/2004 - Upgraded for new schemas
 	<xsl:template name="tempLines">
 		<xsl:for-each select="//InvoiceLine">
 			<!--Check LineValueExclVAT-->
-			<xsl:if test="format-number(number(InvoicedQuantity) * number(UnitValueExclVAT), '#.00') = format-number(number(LineValueExclVAT), '#.00')">
+			<xsl:if test="format-number(number(InvoicedQuantity) * number(UnitValueExclVAT), '#.00') != format-number(number(LineValueExclVAT), '#.00')">
 				<xsl:element name="Error">
 					<xsl:text>The total value on line </xsl:text>
 					<xsl:value-of select="LineNumber"/>
