@@ -218,11 +218,11 @@
 												</PurchaseOrderConfirmationDate>
 											</PurchaseOrderConfirmationReferences>
 										</xsl:if>
-										<xsl:if test="/biztalk_1/body/Invoice/InvoiceReferences/SuppliersOrderReference">
+										<xsl:if test="/biztalk_1/body/Invoice/Delivery/DeliverTo/DeliverToReferences/BuyersCodeForDelivery">
 											<DeliveryNoteReferences>
-												<xsl:if test="/biztalk_1/body/Invoice/InvoiceReferences/SuppliersOrderReference">
+												<xsl:if test="/biztalk_1/body/Invoice/Delivery/DeliverTo/DeliverToReferences/BuyersCodeForDelivery">
 													<DeliveryNoteReference>
-														<xsl:value-of select="/biztalk_1/body/Invoice/InvoiceReferences/SuppliersOrderReference"/>
+														<xsl:value-of select="/biztalk_1/body/Invoice/Delivery/DeliverTo/DeliverToReferences/BuyersCodeForDelivery"/>
 													</DeliveryNoteReference>
 												</xsl:if>
 												<!--xsl:if test="/Invoice/DespatchReference/DespatchDocumentDate">
@@ -417,7 +417,7 @@
 								</DocumentTotalInclVAT>
 								<!-- we need a SettlementTotalInclVAT internally but it is optional in EAN.UCC so we work it out if it is missing -->
 								<SettlementTotalInclVAT>
-									<xsl:value-of select="format-number(Invoice/InvoiceTotal/NetPaymentTotal, '0.00')"/>
+									<xsl:value-of select="format-number(Invoice/InvoiceTotal/GrossPaymentTotal, '0.00')"/>
 								</SettlementTotalInclVAT>
 							</InvoiceTrailer>
 						</Invoice>
