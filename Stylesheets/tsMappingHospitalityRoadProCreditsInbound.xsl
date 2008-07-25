@@ -174,7 +174,7 @@
 									<!-- In case multiple references are present, we create them in the document so it may fail validation-->
 									<xsl:for-each select="/biztalk_1/body/Invoice/InvoiceLine/InvoiceLineReferences/BuyersOrderNumber[not(.=preceding::BuyersOrderNumber)]">
 										<InvoiceReference><xsl:value-of select="."/></InvoiceReference>
-										<InvoiceDate><xsl:value-of select="/biztalk_1/body/Invoice/InvoiceDate"/></InvoiceDate>
+										<InvoiceDate><xsl:value-of select="substring(/biztalk_1/body/Invoice/InvoiceDate,1,10)"/></InvoiceDate>
 										<TaxPointDate><xsl:value-of select="/biztalk_1/body/Invoice/InvoiceDate"/></TaxPointDate>
 									</xsl:for-each>
 								</InvoiceReferences>								
@@ -183,10 +183,10 @@
 										<xsl:value-of select="Invoice/InvoiceReferences/SuppliersInvoiceNumber"/>
 									</CreditNoteReference>
 									<CreditNoteDate>
-										<xsl:value-of select="Invoice/InvoiceDate"/>
+										<xsl:value-of select="substring(Invoice/InvoiceDate,1,10)"/>
 									</CreditNoteDate>
 									<TaxPointDate>
-										<xsl:value-of select="Invoice/InvoiceDate"/>
+										<xsl:value-of select="substring(Invoice/InvoiceDate,1,10)"/>
 									</TaxPointDate>
 									<xsl:if test="translate(Invoice/Supplier/SupplierReferences/TaxNumber, ' ', '')">
 										<VATRegNo>
@@ -211,7 +211,7 @@
 												<!-- no date provided so use invoice date-->
 												<xsl:if test="/biztalk_1/body/Invoice/InvoiceReferences/BuyersOrderNumber">
 													<PurchaseOrderDate>
-														<xsl:value-of select="/biztalk_1/body/Invoice/InvoiceDate"/>
+														<xsl:value-of select="substring(/biztalk_1/body/Invoice/InvoiceDate1,10)"/>
 													</PurchaseOrderDate>
 												</xsl:if>
 											</PurchaseOrderReferences>
@@ -222,7 +222,7 @@
 													<xsl:value-of select="/biztalk_1/body/Invoice/InvoiceReferences/SuppliersOrderReference"/>
 												</PurchaseOrderConfirmationReference>
 												<PurchaseOrderConfirmationDate>
-													<xsl:value-of select="/biztalk_1/body/Invoice/InvoiceDate"/>
+													<xsl:value-of select="substring(/biztalk_1/body/Invoice/InvoiceDate1,10)"/>
 												</PurchaseOrderConfirmationDate>
 											</PurchaseOrderConfirmationReferences>
 										</xsl:if>
