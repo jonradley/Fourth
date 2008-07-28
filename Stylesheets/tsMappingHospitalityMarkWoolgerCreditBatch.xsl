@@ -41,21 +41,24 @@ Overview
 		
 			<xsl:apply-templates select="ProductID"/>
 			<xsl:apply-templates select="ProductDescription"/>
-			<choose>
+			<xsl:choose>
 				<xsl:when test="substring(CreditedQuantity,1,1)='-'"> 
 					<CreditedQuantity>substring(CreditedQuantity,2,4)</CreditedQuantity>
 				</xsl:when>
-			</choose>
-			<choose>
+				<xsl:otherwise><xsl:apply-templates select="CreditedQuantity"/></xsl:otherwise>
+			</xsl:choose>
+			<xsl:choose>
 				<xsl:when test="substring(UnitValueExclVAT,1,1)='-'"> 
 					<UnitValueExclVAT>substring(UnitValueExclVAT,2,4)</UnitValueExclVAT>
 				</xsl:when>
-			</choose>	
-			<choose>
+				<xsl:otherwise><xsl:apply-templates select="UnitValueExclVAT"/></xsl:otherwise>
+			</xsl:choose>	
+			<xsl:choose>
 				<xsl:when test="substring(LineValueExclVAT,1,1)='-'"> 
 					<LineValueExclVAT>substring(LineValueExclVAT,2,4)</LineValueExclVAT>
 				</xsl:when>
-			</choose>	
+				<xsl:otherwise><xsl:apply-templates select="LineValueExclVAT"/></xsl:otherwise>
+			</xsl:choose>	
 			<xsl:apply-templates select="VATCode"/>
 			<xsl:apply-templates select="VATRate"/>		
 
