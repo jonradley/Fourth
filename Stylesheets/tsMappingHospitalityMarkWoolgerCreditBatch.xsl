@@ -28,7 +28,7 @@ Overview
 		<xsl:copy>
 			<xsl:for-each select="BatchDocument[position()!=1]">
 				<xsl:copy>
-					<xsl:attribute name="DocumentTypeNo">86</xsl:attribute>
+					<xsl:attribute name="DocumentTypeNo">87</xsl:attribute>
 					<xsl:apply-templates/>
 				</xsl:copy>			
 			</xsl:for-each>
