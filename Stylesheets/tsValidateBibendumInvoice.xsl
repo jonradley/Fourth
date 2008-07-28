@@ -20,10 +20,21 @@ Alterations	: A Sheppard, 15/10/2004 - Upgraded for new schemas
 	<xsl:output encoding="UTF-8"/>
 	<xsl:template match="/">
 		<xsl:element name="ValidationErrors">
+			<xsl:call-template name="tempTradeAgreement"/>
 			<xsl:call-template name="tempLines"/>
 			<xsl:call-template name="tempVATSubtotals"/>
 			<xsl:call-template name="tempTotals"/>
 		</xsl:element>	
+	</xsl:template>
+
+	<!--This template will check that at least one trade agreement reference has been included-->
+	<xsl:template name="tempTradeAgreement">
+		<!--Check LineDiscountValue-->
+		<xsl:if test="not(/Invoice/InvoiceDetail/InvoiceLine/PurchaseOrderReferences/TradeAgreement/ContractReference and /Invoice/InvoiceDetail/InvoiceLine/PurchaseOrderReferences/TradeAgreement/ContractReference != '')">
+			<xsl:element name="Error">
+				<xsl:text>There must be at least one valid trade agreement</xsl:text>
+			</xsl:element>
+		</xsl:if>
 	</xsl:template>
 
 	<!--This template will check various validation rules for all lines-->
