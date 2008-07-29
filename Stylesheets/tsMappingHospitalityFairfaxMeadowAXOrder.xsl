@@ -8,6 +8,8 @@
 		<!-- Recipient’s Code for Unit -->
 		<xsl:text>&quot;</xsl:text>
 		<xsl:value-of select="TradeSimpleHeader/RecipientsCodeForSender"/>
+		<xsl:text>,</xsl:text>
+		<!-- test flag -->
 		<xsl:choose>
 			<xsl:when test="TradeSimpleHeader/TestFlag = 'false'">N</xsl:when>
 			<xsl:otherwise>Y</xsl:otherwise>
@@ -20,7 +22,7 @@
 		<xsl:text>&quot;</xsl:text>
 		<xsl:text>,</xsl:text>
 		<!-- Purchase Order Date YYYYMMDD -->
-		<xsl:value-of select="translate(PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference,'-','')"/>
+		<xsl:value-of select="translate(PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderDate,'-','')"/>
 		<xsl:text>,</xsl:text>
 		<!-- Requested Delivery Date YYYYMMDD -->
 		<xsl:value-of select="translate(PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate,'-','')"/>
