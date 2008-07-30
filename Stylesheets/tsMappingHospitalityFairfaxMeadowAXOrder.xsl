@@ -8,13 +8,13 @@
 		<!-- Recipient’s Code for Unit -->
 		<xsl:text>&quot;</xsl:text>
 		<xsl:value-of select="TradeSimpleHeader/RecipientsCodeForSender"/>
+		<xsl:text>&quot;</xsl:text>
 		<xsl:text>,</xsl:text>
 		<!-- test flag -->
 		<xsl:choose>
 			<xsl:when test="TradeSimpleHeader/TestFlag = 'false'">N</xsl:when>
 			<xsl:otherwise>Y</xsl:otherwise>
 		</xsl:choose>
-		<xsl:text>&quot;</xsl:text>
 		<xsl:text>,</xsl:text>
 		<!-- Purchase Order Reference -->
 		<xsl:text>&quot;</xsl:text>
