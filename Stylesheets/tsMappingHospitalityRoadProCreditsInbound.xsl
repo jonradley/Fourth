@@ -26,6 +26,7 @@
 	<xsl:variable name="defaultSettlementDiscountValue" select="'0'"/>
 	<xsl:variable name="creditLineIndicator" select="'2'"/>
 	<xsl:variable name="invoiceLineIndicator" select="'1'"/>
+	<xsl:variable name="InvoiceReferenceCheck" select="/biztalk_1/body/Invoice/InvoiceLine/InvoiceLineReferences/BuyersOrderNumber"/>
 	<xsl:template match="/biztalk_1/header"/>
 	<xsl:template match="/biztalk_1/body">
 		<BatchRoot>
@@ -170,14 +171,17 @@
 									</ShipToLocationID>
 									<!-- ShipTo name and address will be populated by subsequent processors -->
 								</ShipTo>
-								<InvoiceReferences>
-									<!-- In case multiple references are present, we create them in the document so it may fail validation-->
-									<xsl:for-each select="/biztalk_1/body/Invoice/InvoiceLine/InvoiceLineReferences/BuyersOrderNumber[not(.=preceding::BuyersOrderNumber)]">
-										<InvoiceReference><xsl:value-of select="."/></InvoiceReference>
+								
+								<!-- If more than one invioce reference exists, strip them all out. To do this we compare the first invoice reference to all the others and only insert the 									 invoice reference if they all match-->
+								<xsl:if test="not(/biztalk_1/body/Invoice/InvoiceLine/InvoiceLineReferences/BuyersOrderNumber != $InvoiceReferenceCheck)">
+									<InvoiceReferences>
+										<InvoiceReference><xsl:value-of select="$InvoiceReferenceCheck"/></InvoiceReference>
 										<InvoiceDate><xsl:value-of select="substring(/biztalk_1/body/Invoice/InvoiceDate,1,10)"/></InvoiceDate>
 										<TaxPointDate><xsl:value-of select="/biztalk_1/body/Invoice/InvoiceDate"/></TaxPointDate>
-									</xsl:for-each>
-								</InvoiceReferences>								
+									</InvoiceReferences>	
+								</xsl:if>
+								
+								
 								<CreditNoteReferences>
 									<CreditNoteReference>
 										<xsl:value-of select="Invoice/InvoiceReferences/SuppliersInvoiceNumber"/>
