@@ -128,6 +128,8 @@
 									<SuppliersProductCode RecordPos="LINE" LPos="2"/>
 								</ProductID>
 								<ProductDescription RecordPos="LINE" LPos="25"/>
+								<!-- Hijacked as invoiced qty can come in two places -->
+								<OrderedQuantity RecordPos="LINE" LPos="7"/>
 								<InvoicedQuantity RecordPos="LINE" LPos="8"/>
 								<PackSize RecordPos="LINE" LPos="4"/>
 								<UnitValueExclVAT RecordPos="LINE" LPos="13"/>
