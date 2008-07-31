@@ -25,19 +25,19 @@
 				</MHDSegment-->
 				<!--VATSubTotals>
 					<VATSubTotal-->
-						<!-- MANDATORY VATTLR - VRS - VSDE (File sub-total amount excluding discount) -->
-						<!--DocumentTotalExclVATAtRate RecordPos="VATSUMMARY" LPos="4"/-->
-						<!-- MANDATORY VATTLR - VRS - VSDI (File sub total amount including discount) -->
-						<!--SettlementTotalExclVATAtRate RecordPos="VATSUMMARY" LPos="5"/-->
-						<!-- MANDATORY VATTLR - VRS - VVAT (File VAT sub-total)-->
-						<!--VATAmountAtRate RecordPos="VATSUMMARY" LPos="6"/-->
-						<!-- MANDATORY VATTLR - VRS - VPSE (File sub-total payable excluding discount) [ unless blank, then use VPSI ]-->
-						<!--DocumentTotalInclVATAtRate RecordPos="VATSUMMARY" LPos="8"/-->
-						<!-- MANDATORY VATTLR - VRS - VPSI (File sub-total payable including discount) -->
-						<!--SettlementTotalInclVATAtRate RecordPos="VATSUMMARY" LPos="8"/-->
-						<!--ffsAttribute1 name="VATCode" RecordPos="VATSUMMARY" LPos="2"/-->
-						<!--ffsAttribute1 name="VATRate" RecordPos="VATSUMMARY" LPos="3"/-->
-					<!--/VATSubTotal>
+				<!-- MANDATORY VATTLR - VRS - VSDE (File sub-total amount excluding discount) -->
+				<!--DocumentTotalExclVATAtRate RecordPos="VATSUMMARY" LPos="4"/-->
+				<!-- MANDATORY VATTLR - VRS - VSDI (File sub total amount including discount) -->
+				<!--SettlementTotalExclVATAtRate RecordPos="VATSUMMARY" LPos="5"/-->
+				<!-- MANDATORY VATTLR - VRS - VVAT (File VAT sub-total)-->
+				<!--VATAmountAtRate RecordPos="VATSUMMARY" LPos="6"/-->
+				<!-- MANDATORY VATTLR - VRS - VPSE (File sub-total payable excluding discount) [ unless blank, then use VPSI ]-->
+				<!--DocumentTotalInclVATAtRate RecordPos="VATSUMMARY" LPos="8"/-->
+				<!-- MANDATORY VATTLR - VRS - VPSI (File sub-total payable including discount) -->
+				<!--SettlementTotalInclVATAtRate RecordPos="VATSUMMARY" LPos="8"/-->
+				<!--ffsAttribute1 name="VATCode" RecordPos="VATSUMMARY" LPos="2"/-->
+				<!--ffsAttribute1 name="VATRate" RecordPos="VATSUMMARY" LPos="3"/-->
+				<!--/VATSubTotal>
 				</VATSubTotals-->
 				<!-- MANDATORY INVTLR - TOT - FASE (File total amount ex VAT ex discount) -->
 				<!--DocumentTotalExclVAT RecordPos="INVTOTALS" LPos="3"/-->
@@ -62,8 +62,8 @@
 								<FileGenerationNo RecordPos="FILEDETS" LPos="2"/>
 								<FileVersionNo RecordPos="FILEDETS" LPos="3"/>
 								<FileCreationDate RecordPos="FILEDETS" LPos="4"/-->
-								<!-- TBC -->
-								<!--SendersTransmissionReference RecordPos="I" LPos="7"/>
+							<!-- TBC -->
+							<!--SendersTransmissionReference RecordPos="I" LPos="7"/>
 								<SendersTransmissionDate RecordPos="I" LPos="8"/-->
 							<!--/BatchInformation-->
 							<Buyer>
@@ -80,10 +80,10 @@
 								</BuyersAddress-->
 							</Buyer>
 							<!--Supplier-->
-								<!--SuppliersLocationID>
+							<!--SuppliersLocationID>
 									<SuppliersCode RecordPos="" LPos=""/>
 								</SuppliersLocationID-->
-								<!--SuppliersName RecordPos="SUPPLIER" LPos="3"/>
+							<!--SuppliersName RecordPos="SUPPLIER" LPos="3"/>
 								<SuppliersAddress>
 									<AddressLine1 RecordPos="SUPPLIER" LPos="4"/>
 									<AddressLine2 RecordPos="SUPPLIER" LPos="5"/>
@@ -128,7 +128,7 @@
 									<SuppliersProductCode RecordPos="LINE" LPos="2"/>
 								</ProductID>
 								<ProductDescription RecordPos="LINE" LPos="25"/>
-								<InvoicedQuantity RecordPos="LINE" LPos="7"/>
+								<InvoicedQuantity RecordPos="LINE" LPos="8"/>
 								<PackSize RecordPos="LINE" LPos="4"/>
 								<UnitValueExclVAT RecordPos="LINE" LPos="13"/>
 								<LineValueExclVAT RecordPos="LINE" LPos="16"/>
@@ -148,16 +148,16 @@
 							<!--VATSubTotals>
 								<VATSubTotal>
 									<NumberOfLinesAtRate RecordPos="VAT" LPos="3"/-->
-									<!--NumberOfItemsAtRate RecordPos="V" LPos="5"/-->
-									<!--DocumentTotalExclVATAtRate RecordPos="VAT" LPos="5"/>
+							<!--NumberOfItemsAtRate RecordPos="V" LPos="5"/-->
+							<!--DocumentTotalExclVATAtRate RecordPos="VAT" LPos="5"/>
 									<SettlementDiscountAtRate RecordPos="VATSUBTLR" LPos="6"/-->
-									<!--SettlementTotalExclVATAtRate RecordPos="VATSUBTLR" LPos="12"/-->
-									<!--VATAmountAtRate RecordPos="VAT" LPos="7"/-->
-									<!--DocumentTotalInclVATAtRate RecordPos="VAT" LPos="5"/-->
-									<!--SettlementTotalInclVATAtRate RecordPos="VAT" LPos="6"/-->
-									<!--ffsAttribute1 name="VATCode" RecordPos="VAT" LPos="2"/-->
-									<!--ffsAttribute1 name="VATRate" RecordPos="VAT" LPos="10"/-->
-								<!--/VATSubTotal>
+							<!--SettlementTotalExclVATAtRate RecordPos="VATSUBTLR" LPos="12"/-->
+							<!--VATAmountAtRate RecordPos="VAT" LPos="7"/-->
+							<!--DocumentTotalInclVATAtRate RecordPos="VAT" LPos="5"/-->
+							<!--SettlementTotalInclVATAtRate RecordPos="VAT" LPos="6"/-->
+							<!--ffsAttribute1 name="VATCode" RecordPos="VAT" LPos="2"/-->
+							<!--ffsAttribute1 name="VATRate" RecordPos="VAT" LPos="10"/-->
+							<!--/VATSubTotal>
 							</VATSubTotals-->
 							<DocumentTotalExclVAT RecordPos="TRAIL" LPos="2"/>
 							<!--SettlementDiscount RecordPos="TRAIL" LPos="6"/-->
