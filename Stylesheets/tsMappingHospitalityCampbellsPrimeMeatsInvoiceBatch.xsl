@@ -27,21 +27,64 @@
 	<!-- END of GENERIC HANDLERS -->
 
 	<!-- insert VAT Rates -->
-	<xsl:template match="InvoiceLine">
-		<!--xsl:element name="InvoiceLine"-->
-			<xsl:copy>
+	<!--xsl:template match="InvoiceLine">
+		<xsl:copy>
 			<xsl:apply-templates/>
 			<xsl:element name="VATRate">
 				<xsl:call-template name="lookupVATRate">
 					<xsl:with-param name="sVATCode" select="VATCode"/>
 				</xsl:call-template>
 			</xsl:element>
-			</xsl:copy>
-		<!--/xsl:element-->
+		</xsl:copy>
+	</xsl:template-->
+
+	<xsl:template match="InvoiceLine">
+		<InvoiceLine>
+			<PurchaseOrderReferences>
+				<xsl:copy-of select="PurchaseOrderReferences/PurchaseOrderReference"/>
+				<xsl:element name="PurchaseOrderDate">
+					<xsl:call-template name="sortDate">
+						<xsl:with-param name="sDate" select="PurchaseOrderReferences/PurchaseOrderDate"/>
+					</xsl:call-template>
+				</xsl:element>
+			</PurchaseOrderReferences>
+			<DeliveryNoteReferences>
+				<xsl:copy-of select="DeliveryNoteReferences/DeliveryNoteReference"/>
+				<xsl:element name="DeliveryNoteDate">
+					<xsl:call-template name="sortDate">
+						<xsl:with-param name="sDate" select="DeliveryNoteReferences/DeliveryNoteDate"/>
+					</xsl:call-template>
+				</xsl:element>
+			</DeliveryNoteReferences>
+			<xsl:copy-of select="ProductID"/>
+			<xsl:copy-of select="ProductDescription"/>
+			<InvoicedQuantity>
+				<xsl:choose>
+					<xsl:when test="InvoicedQuantity != ''">
+						<xsl:value-of select="InvoicedQuantity"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="OrderedQuantity"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</InvoicedQuantity>
+			<xsl:copy-of select="PackSize"/>
+			<xsl:copy-of select="UnitValueExclVAT"/>
+			<xsl:copy-of select="LineValueExclVAT"/>
+			<xsl:element name="VATCode">
+				<xsl:call-template name="decodeVATCodes">
+					<xsl:with-param name="sVATCode" select="VATCode"/>
+				</xsl:call-template>
+			</xsl:element>
+			<xsl:element name="VATRate">
+				<xsl:call-template name="lookupVATRate">
+					<xsl:with-param name="sVATCode" select="VATCode"/>
+				</xsl:call-template>
+			</xsl:element>
+		</InvoiceLine>
 	</xsl:template>
 
 
-	
 	<!-- tradesimple VAT codes -->
 	<xsl:template match="VATCode">
 		<xsl:element name="VATCode">
@@ -73,22 +116,8 @@
 			</xsl:call-template>
 		</xsl:element>
 	</xsl:template>
-	<xsl:template match="PurchaseOrderDate">
-		<xsl:element name="PurchaseOrderDate">
-			<xsl:call-template name="sortDate">
-				<xsl:with-param name="sDate" select="."/>
-			</xsl:call-template>
-		</xsl:element>
-	</xsl:template>
-	<xsl:template match="DeliveryNoteDate">
-		<xsl:element name="DeliveryNoteDate">
-			<xsl:call-template name="sortDate">
-				<xsl:with-param name="sDate" select="."/>
-			</xsl:call-template>
-		</xsl:element>
-	</xsl:template>
-
-
+	
+	
 	<!-- Date sorter -->
 	<xsl:template name="sortDate">
 		<xsl:param name="sDate"/>
