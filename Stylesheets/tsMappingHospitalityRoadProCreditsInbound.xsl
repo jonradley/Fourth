@@ -177,7 +177,8 @@
 									<InvoiceReferences>
 										<InvoiceReference><xsl:value-of select="$InvoiceReferenceCheck"/></InvoiceReference>
 										<InvoiceDate><xsl:value-of select="substring(/biztalk_1/body/Invoice/InvoiceDate,1,10)"/></InvoiceDate>
-										<TaxPointDate><xsl:value-of select="/biztalk_1/body/Invoice/InvoiceDate"/></TaxPointDate>
+										<TaxPointDate><xsl:value-of select="substring(/biztalk_1/body/Invoice/InvoiceDate,1,10)"/></TaxPointDate>
+										<VATRegNo><xsl:value-of select="translate(Invoice/Supplier/SupplierReferences/TaxNumber, ' ', '')"/></VATRegNo>
 									</InvoiceReferences>	
 								</xsl:if>
 								
@@ -215,7 +216,7 @@
 												<!-- no date provided so use invoice date-->
 												<xsl:if test="/biztalk_1/body/Invoice/InvoiceReferences/BuyersOrderNumber">
 													<PurchaseOrderDate>
-														<xsl:value-of select="substring(/biztalk_1/body/Invoice/InvoiceDate1,10)"/>
+														<xsl:value-of select="substring(/biztalk_1/body/Invoice/InvoiceDate,1,10)"/>
 													</PurchaseOrderDate>
 												</xsl:if>
 											</PurchaseOrderReferences>
@@ -230,11 +231,11 @@
 												</PurchaseOrderConfirmationDate>
 											</PurchaseOrderConfirmationReferences>
 										</xsl:if>
-										<xsl:if test="/biztalk_1/body/Invoice/InvoiceReferences/BuyersCodeForDelivery">
+										<xsl:if test="/biztalk_1/body/Invoice/Delivery/DeliverTo/DeliverToReferences/BuyersCodeForDelivery">
 											<DeliveryNoteReferences>
-												<xsl:if test="/biztalk_1/body/Invoice/InvoiceReferences/BuyersCodeForDelivery">
+												<xsl:if test="/biztalk_1/body/Invoice/Delivery/DeliverTo/DeliverToReferences/BuyersCodeForDelivery">
 													<DeliveryNoteReference>
-														<xsl:value-of select="/biztalk_1/body/Invoice/InvoiceReferences/BuyersCodeForDelivery"/>
+														<xsl:value-of select="/biztalk_1/body/Invoice/Delivery/DeliverTo/DeliverToReferences/BuyersCodeForDelivery"/>
 													</DeliveryNoteReference>
 												</xsl:if>
 												<!--xsl:if test="/Invoice/DespatchReference/DespatchDocumentDate">
