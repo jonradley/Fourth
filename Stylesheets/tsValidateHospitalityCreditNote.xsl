@@ -12,6 +12,7 @@ Author		: A Sheppard
 Date		: 04/03/2004
 Alterations	: A Sheppard, 17/12/2004. Add tolerances
 			  A Sheppard, 16/01/2005. H312. Bug fix
+Alterations	: Lee Boyton, 05/08/2008. 2401. Fixed element name bug in DiscountedLinesTotalExclVATAtRate check.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 -->
 <xsl:stylesheet version="1.0" 
@@ -73,7 +74,7 @@ Alterations	: A Sheppard, 17/12/2004. Add tolerances
 				</xsl:element>	
 			</xsl:if>
 			<!--Check DiscountedLinesTotalExclVATAtRate-->
-			<xsl:if test="(format-number(sum(//CreditNoteLine[VATCode=$VATCode and format-number(VATRate, '#.00')=format-number($VATRate, '#.00')]/LineValueExclVAT) - sum(//CreditNoteLine[VATCode=$VATCode and format-number(VATRate, '#.00')=format-number($VATRate, '#.00')]/LineDiscountValue), '#.00') &gt; format-number(number(DiscountedLinesTotalExclVATAtRate) + $Tolerance, '#.00')) or (format-number(sum(//CreditNoteLine[VATCode=$VATCode and format-number(VATRate, '#.00')=format-number($VATRate, '#.00')]/LineValueExclVAT) - sum(//CreditNoteLine[VATCode=$VATCode and format-number(VATRate, '#.00')=format-number($VATRate, '#.00')]/LineDiscountValue), '#.00') &lt; format-number(number(DiscountedLinesTotalExclVAT) - $Tolerance, '#.00'))">
+			<xsl:if test="(format-number(sum(//CreditNoteLine[VATCode=$VATCode and format-number(VATRate, '#.00')=format-number($VATRate, '#.00')]/LineValueExclVAT) - sum(//CreditNoteLine[VATCode=$VATCode and format-number(VATRate, '#.00')=format-number($VATRate, '#.00')]/LineDiscountValue), '#.00') &gt; format-number(number(DiscountedLinesTotalExclVATAtRate) + $Tolerance, '#.00')) or (format-number(sum(//CreditNoteLine[VATCode=$VATCode and format-number(VATRate, '#.00')=format-number($VATRate, '#.00')]/LineValueExclVAT) - sum(//CreditNoteLine[VATCode=$VATCode and format-number(VATRate, '#.00')=format-number($VATRate, '#.00')]/LineDiscountValue), '#.00') &lt; format-number(number(DiscountedLinesTotalExclVATAtRate) - $Tolerance, '#.00'))">
 				<xsl:element name="Error">
 					<xsl:text>The discount lines total excl VAT at rate for VAT code </xsl:text>
 					<xsl:value-of select="$VATCode"/>
