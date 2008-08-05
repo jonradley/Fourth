@@ -30,7 +30,7 @@ R Cambridge	| 16/06/2008	| 2245
 			<ffsFieldSeparator>,</ffsFieldSeparator>
 		</ffsFieldSeparators>
 		<ffsPadding/>
-		<ffsSplitBatchRecord LPos="6"/>
+		<ffsSplitBatchRecord LPos="3"/>
 	</ffsSettings>
 	<ffsRoot>
 		<Batch>
@@ -38,30 +38,30 @@ R Cambridge	| 16/06/2008	| 2245
 				<BatchDocument>
 					<PurchaseOrderAcknowledgement>
 						<TradeSimpleHeader>
-							<SendersCodeForRecipient RecordLength="10" RecordPos="*" LPos="5"/>
+							<SendersCodeForRecipient RecordLength="7" RecordPos="*" LPos="2"/>
 							<!--SendersBranchReference RecordPos="1" LPos="4"/-->
 						</TradeSimpleHeader>
 						<PurchaseOrderAcknowledgementHeader>
 							<Buyer>
 								<BuyersLocationID>
-									<SuppliersCode RecordLength="10" RecordPos="*" LPos="4"/>
+									<SuppliersCode RecordLength="7" RecordPos="*" LPos="1"/>
 								</BuyersLocationID>
 							</Buyer>
 							<ShipTo>
 								<ShipToLocationID>
-									<SuppliersCode RecordLength="10" RecordPos="*" LPos="5"/>
+									<SuppliersCode RecordLength="7" RecordPos="*" LPos="2"/>
 								</ShipToLocationID>
 							</ShipTo>
 							<PurchaseOrderReferences>
-								<PurchaseOrderReference RecordLength="10" RecordPos="*" LPos="6"/>
-								<PurchaseOrderDate RecordLength="10" RecordPos="*" LPos="7"/>
+								<PurchaseOrderReference RecordLength="7" RecordPos="*" LPos="3"/>
+								<PurchaseOrderDate RecordLength="7" RecordPos="*" LPos="4"/>
 							</PurchaseOrderReferences>
 							<PurchaseOrderAcknowledgementReferences>
-								<PurchaseOrderAcknowledgementReference RecordLength="10" RecordPos="*" LPos="9"/>
-								<PurchaseOrderAcknowledgementDate RecordLength="10" RecordPos="*" LPos="7"/>
+								<PurchaseOrderAcknowledgementReference RecordLength="7" RecordPos="*" LPos="6"/>
+								<PurchaseOrderAcknowledgementDate RecordLength="7" RecordPos="*" LPos="4"/>
 							</PurchaseOrderAcknowledgementReferences>
 							<OrderedDeliveryDetails>
-								<DeliveryDate RecordLength="10" RecordPos="*" LPos="8"/>
+								<DeliveryDate RecordLength="7" RecordPos="*" LPos="5"/>
 							</OrderedDeliveryDetails>
 						</PurchaseOrderAcknowledgementHeader>
 					</PurchaseOrderAcknowledgement>
