@@ -73,15 +73,20 @@
 		<!-- store the Invoice Date -->		
 		<xsl:variable name="DocumentDate">
 			<xsl:choose>
+				<xsl:when test="//HeaderExtraData/FinancialPeriodStartDate">
+					<xsl:call-template name="formatDate">					
+						<xsl:with-param name="xmlDate" select="//HeaderExtraData/FinancialPeriodStartDate"/>
+					</xsl:call-template>	
+				</xsl:when>
 				<xsl:when test="InvoiceHeader/InvoiceReferences/InvoiceDate">
-						<xsl:call-template name="formatDate">					
+					<xsl:call-template name="formatDate">					
 						<xsl:with-param name="xmlDate" select="InvoiceHeader/InvoiceReferences/InvoiceDate"/>
-						</xsl:call-template>				
+					</xsl:call-template>				
 				</xsl:when>				
 				<xsl:otherwise>	
-						<xsl:call-template name="formatDate">					
+					<xsl:call-template name="formatDate">					
 						<xsl:with-param name="xmlDate" select="CreditNoteHeader/CreditNoteReferences/CreditNoteDate"/>
-						</xsl:call-template>				
+					</xsl:call-template>				
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
