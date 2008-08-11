@@ -14,6 +14,8 @@
 ******************************************************************************************
  18/07/2007 | A Sheppard 	| Created module.
 ******************************************************************************************
+ 11/08/2008 | Lee Boyton	| 2410. Ensure line numbers are unique.
+******************************************************************************************
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -48,7 +50,7 @@
 			<xsl:value-of select="$Tab"/>
 			<xsl:value-of select="/CreditNote/CreditNoteHeader/CreditNoteReferences/TaxPointDate | /Invoice/InvoiceHeader/InvoiceReferences/TaxPointDate"/>
 			<xsl:value-of select="$Tab"/>
-			<xsl:value-of select="LineNumber"/>
+			<xsl:value-of select="position()"/>
 			<xsl:value-of select="$Tab"/>
 			<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderReference"/>
 			<xsl:value-of select="$Tab"/>
