@@ -252,11 +252,11 @@
 		<xsl:value-of select="$Department"/>
 		<xsl:text>,</xsl:text>
 		<xsl:choose>
-			<xsl:when test="/Invoice/InvoiceTrailer/VATSubTotals/VATSubTotal/@VATCode">
-				<xsl:value-of select="/Invoice/InvoiceTrailer/VATSubTotals/VATSubTotal/@VATCode"/>
+			<xsl:when test="/Invoice/InvoiceTrailer/VATSubTotals/VATSubTotal/VATTrailerExtraData/BuyersVATCode">
+				<xsl:value-of select="/Invoice/InvoiceTrailer/VATSubTotals/VATSubTotal/VATTrailerExtraData/BuyersVATCode"/>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:value-of select="/CreditNote/CreditNoteTrailer/VATSubTotals/VATSubTotal/@VATCode"/>
+				<xsl:value-of select="/Invoice/InvoiceTrailer/VATSubTotals/VATSubTotal/VATTrailerExtraData/BuyersVATCode"/>
 			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:text>,</xsl:text>	
