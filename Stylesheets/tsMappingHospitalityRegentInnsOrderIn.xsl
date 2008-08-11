@@ -49,6 +49,7 @@
 										<xsl:choose>
 											<xsl:when test="ItemUOM = ''">EA</xsl:when>
 											<xsl:when test="ItemUOM = 'PACK'">CS</xsl:when>
+											<xsl:when test="ItemUOM = 'CASE'">CS</xsl:when>
 											<xsl:otherwise>
 												<xsl:value-of select="ItemUOM"/>
 											</xsl:otherwise>
