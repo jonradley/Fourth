@@ -48,6 +48,7 @@
 									<xsl:attribute name="UnitOfMeasure">
 										<xsl:choose>
 											<xsl:when test="ItemUOM = ''">EA</xsl:when>
+											<xsl:when test="ItemUOM = 'PACK'">CS</xsl:when>
 											<xsl:otherwise>
 												<xsl:value-of select="ItemUOM"/>
 											</xsl:otherwise>
@@ -56,10 +57,10 @@
 									<xsl:value-of select="Quantity"/>
 								</OrderedQuantity>
 								<UnitValueExclVAT>
-									<xsl:value-of select="UnitCost"/>
+									<xsl:value-of select="format-number(UnitCost,'0.00')"/>
 								</UnitValueExclVAT>
 								<LineValueExclVAT>
-									<xsl:value-of select="Value - TaxValue"/>
+									<xsl:value-of select="format-number(Value - TaxValue,'0.00')"/>
 								</LineValueExclVAT>
 							</PurchaseOrderLine>
 						</xsl:for-each>
@@ -69,9 +70,8 @@
 							<xsl:value-of select="count(OrderItems/OrderItem)"/>
 						</NumberOfLines>
 						<TotalExclVAT>
-							<xsl:value-of select="sum(OrderItems/OrderItem/Value) - sum(OrderItems/OrderItem/TaxValue)"/>
+							<xsl:value-of select="format-number(sum(OrderItems/OrderItem/Value) - sum(OrderItems/OrderItem/TaxValue),'0.00')"/>
 						</TotalExclVAT>
-						<TrailerExtraData/>
 					</PurchaseOrderTrailer>
 				</PurchaseOrder>
 			</xsl:for-each>
