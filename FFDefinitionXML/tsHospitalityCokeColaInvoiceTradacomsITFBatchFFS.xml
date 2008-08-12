@@ -212,7 +212,7 @@ V1.0 	2nd October 2004 		Andy Trafford 		Created
 									<!-- Not GTIN - Used to store value of ILD-CRLI for stylesheet use-->
 									<GTIN RecordPos="ILD=" LPos="13"/>
 									<!-- OPTIONAL Supplier’s Product Code, MANDATORY, INVOIC – ILD – SPRO(2), Your unique code for this product -->
-									<SuppliersProductCode RecordPos="ILD=" LPos="3" SFPos="2"/>
+									<SuppliersProductCode RecordPos="ILD=" LPos="3" SFPos="1"/>
 									<!-- NOT USED FOR BuyersProductCode, actually used for DNC - GNAR  at the line level: DFOB use this field for a weeks worth of line level quantities -->
 									<BuyersProductCode RecordPos="DNC=" LPos="6"/>
 								</ProductID>
