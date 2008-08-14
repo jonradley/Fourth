@@ -31,6 +31,7 @@
 	                     SendersBranchReference |
 	                     BuyersLocationID/SuppliersCode |
 	                     ShipToLocationID/SuppliersCode |
+	                     ShipToLocationID/BuyersCode |
 	                     InvoiceReference |
 	                     CreditNoteReference |
 	                     PurchaseOrderReference |
@@ -66,11 +67,46 @@
 	
 	</xsl:template>
 	
+	<!-- juggle SCRs -->
+	<xsl:template match="SendersCodeForRecipient">
+		<SendersCodeForRecipient>
+			<xsl:choose>
+				<xsl:when test="contains('&quot;TH&quot;~~&quot;MC&quot;',../../CreditNoteHeader/Buyer/BuyersLocationID/SuppliersCode)">
+					<xsl:call-template name="stripQuotes">
+						<xsl:with-param name="sInput">
+							<xsl:value-of select="../../CreditNoteHeader/Buyer/BuyersLocationID/SuppliersCode"/>
+						</xsl:with-param>
+					</xsl:call-template>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:call-template name="stripQuotes">
+						<xsl:with-param name="sInput">
+							<xsl:value-of select="."/>
+						</xsl:with-param>
+					</xsl:call-template>
+				</xsl:otherwise>
+			</xsl:choose>
+		</SendersCodeForRecipient>
+	</xsl:template>
+
+	<!-- juggle branch references -->
+	<xsl:template match="SendersBranchReference">
+		<xsl:if test="not(contains('&quot;TH&quot;~~&quot;MC&quot;',../../CreditNoteHeader/Buyer/BuyersLocationID/SuppliersCode))">
+			<SendersBranchReference>
+				<xsl:call-template name="stripQuotes">
+					<xsl:with-param name="sInput">
+						<xsl:value-of select="."/>
+					</xsl:with-param>
+				</xsl:call-template>
+			</SendersBranchReference>
+		</xsl:if>
+	</xsl:template>
+	
 	<!-- where there is an ordered quantity, make it an invoiced quantity -->
 	<xsl:template match="OrderedQuantity">
-		<InvoicedQuantity>
+		<CreditedQuantity>
 			<xsl:value-of select="."/>
-		</InvoicedQuantity>
+		</CreditedQuantity>
 	</xsl:template>
 	
 	<xsl:template match="CreditedQuantity">
