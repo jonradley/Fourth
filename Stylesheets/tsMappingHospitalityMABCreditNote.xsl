@@ -4,10 +4,13 @@
                               xmlns:sh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" 
                               xmlns:eanucc="urn:ean.ucc:2" 
                               xmlns:pay="urn:ean.ucc:pay:2" 
-                              exclude-result-prefixes="fo xsl">
+                              xmlns:vat="urn:ean.ucc:pay:vat:2"
+                              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                              exclude-result-prefixes="fo xsl vat">
 	<xsl:template match="CreditNote">
 	
 		<sh:StandardBusinessDocument>
+			<xsl:attribute name="xsi:schemaLocation">http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader ../Schemas/sbdh/StandardBusinessDocumentHeader.xsd urn:ean.ucc:2 ../Schemas/InvoiceProxy.xsd</xsl:attribute>
 			<sh:StandardBusinessDocumentHeader>
 				<sh:HeaderVersion>2.2</sh:HeaderVersion>
 				<sh:Sender>
@@ -77,6 +80,7 @@
 										<xsl:value-of select="concat(CreditNoteHeader/CreditNoteReferences/CreditNoteDate,'T00:00:00')"/>
 									</xsl:attribute>
 									<xsl:attribute name="documentStatus">ORIGINAL</xsl:attribute>
+									<xsl:attribute name="xsi:schemaLocation">urn:ean.ucc:2 ../Schemas/InvoiceProxy.xsd</xsl:attribute>
 									<contentVersion>
 										<versionIdentification>2.1</versionIdentification>
 									</contentVersion>
@@ -133,7 +137,8 @@
 											</gln>
 										</partyIdentification>
 										<extension>
-											<vat:vATInvoicePartyExtension>
+											<vat:vATInvoicePartyExtension xmlns:vat="urn:ean.ucc:pay:vat:2">
+												<xsl:attribute name="xsi:schemaLocation">urn:ean.ucc:pay:vat:2 ../Schemas/Invoice_VATExtensionProxy.xsd</xsl:attribute>
 												<vATRegistrationNumber>
 													<xsl:value-of select="CreditNoteHeader/InvoiceReferences/VATRegNo"/>
 												</vATRegistrationNumber>
@@ -196,7 +201,7 @@
 											<xsl:if test="DeliveryNoteReferences/DeliveryNoteDate != '' and DeliveryNoteReferences/DeliveryNoteReference != ''">
 												<deliveryNote>
 													<referenceDateTime>
-														<xsL:value-of select="concat(DeliveryNoteReferences/DeliveryNoteDate,'T00:00:00')"/>
+														<xsl:value-of select="concat(DeliveryNoteReferences/DeliveryNoteDate,'T00:00:00')"/>
 													</referenceDateTime>
 													<referenceIdentification>
 														<xsl:value-of select="DeliveryNoteReferences/DeliveryNoteReference"/>
@@ -232,7 +237,8 @@
 											<invoiceLineTaxInformation>
 												<dutyTaxFeeType>VALUE_ADDED_TAX</dutyTaxFeeType>
 												<extension>
-													<vat:vATTaxInformationExtension>
+													<vat:vATTaxInformationExtension xmlns:vat="urn:ean.ucc:pay:vat:2">
+														<xsl:attribute name="xsi:schemaLocation">urn:ean.ucc:pay:vat:2 ../Schemas/Invoice_VATExtensionProxy.xsd</xsl:attribute>
 														<rate>
 															<xsl:value-of select="format-number(VATRate,'0.00')"/>
 														</rate>
@@ -267,7 +273,8 @@
 													<xsl:value-of select="VATAmountAtRate"/>
 												</taxAmount>
 												<extension>
-													<vat:vATTaxInformationExtension>
+													<vat:vATTaxInformationExtension xmlns:vat="urn:ean.ucc:pay:vat:2">
+														<xsl:attribute name="xsi:schemaLocation">urn:ean.ucc:pay:vat:2 ../Schemas/Invoice_VATExtensionProxy.xsd</xsl:attribute>
 														<rate>
 															<xsl:value-of select="format-number(@VATRate,'0.00')"/>
 														</rate>

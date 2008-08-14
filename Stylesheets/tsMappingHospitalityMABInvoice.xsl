@@ -4,10 +4,12 @@
                               xmlns:sh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" 
                               xmlns:eanucc="urn:ean.ucc:2" 
                               xmlns:pay="urn:ean.ucc:pay:2"
-                              xmlns:vat="urn:ean.ucc:pay:vat:2"
+                              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                               exclude-result-prefixes="xsl fo">
+	
 	<xsl:template match="Invoice">
 		<sh:StandardBusinessDocument>
+			<xsl:attribute name="xsi:schemaLocation">http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader ../Schemas/sbdh/StandardBusinessDocumentHeader.xsd urn:ean.ucc:2 ../Schemas/InvoiceProxy.xsd</xsl:attribute>
 			<sh:StandardBusinessDocumentHeader>
 				<sh:HeaderVersion>2.2</sh:HeaderVersion>
 				<sh:Sender>
@@ -77,6 +79,7 @@
 										<xsl:value-of select="concat(InvoiceHeader/InvoiceReferences/InvoiceDate,'T00:00:00')"/>
 									</xsl:attribute>
 									<xsl:attribute name="documentStatus">ORIGINAL</xsl:attribute>
+									<xsl:attribute name="xsi:schemaLocation">urn:ean.ucc:2 ../Schemas/InvoiceProxy.xsd</xsl:attribute>
 									<contentVersion>
 										<versionIdentification>2.1</versionIdentification>
 									</contentVersion>
@@ -110,14 +113,19 @@
 												<additionalPartyIdentificationType>SELLER_ASSIGNED_IDENTIFIER_FOR_A_PARTY</additionalPartyIdentificationType>
 											</additionalPartyIdentification>
 										</xsl:if>
-										<xsl:if test="InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode">
-											<additionalPartyIdentification>
-												<additionalPartyIdentificationValue>
-													<xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode"/>
-												</additionalPartyIdentificationValue>
-												<additionalPartyIdentificationType>BUYER_ASSIGNED_IDENTIFIER_FOR_A_PARTY</additionalPartyIdentificationType>
-											</additionalPartyIdentification>
-										</xsl:if>
+										<additionalPartyIdentification>
+											<additionalPartyIdentificationValue>
+												<xsl:choose>
+													<xsl:when test="InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode != ''">
+														<xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode"/>
+													</xsl:when>
+													<xsl:otherwise>
+														<xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
+													</xsl:otherwise>
+												</xsl:choose>
+											</additionalPartyIdentificationValue>
+											<additionalPartyIdentificationType>BUYER_ASSIGNED_IDENTIFIER_FOR_A_PARTY</additionalPartyIdentificationType>
+										</additionalPartyIdentification>
 									</shipTo>
 									<buyer>
 										<partyIdentification>
@@ -133,7 +141,9 @@
 											</gln>
 										</partyIdentification>
 										<extension>
-											<vat:vATInvoicePartyExtension>
+											<vat:vATInvoicePartyExtension xmlns:vat="urn:ean.ucc:pay:vat:2">
+												<!--xsl:attribute name="xmlns:vat">urn:ean.ucc:pay:vat:2</xsl:attribute-->
+												<xsl:attribute name="xsi:schemaLocation">urn:ean.ucc:pay:vat:2 ../Schemas/Invoice_VATExtensionProxy.xsd</xsl:attribute>
 												<vATRegistrationNumber>
 													<xsl:value-of select="InvoiceHeader/InvoiceReferences/VATRegNo"/>
 												</vATRegistrationNumber>
@@ -148,7 +158,7 @@
 											<tradeItemIdentification>
 												<gtin>
 													<xsl:choose>
-														<xsl:when test="ProductID/GTIN != ''">
+														<xsl:when test="ProductID/GTIN != '' and ProductID/GTIN != '55555555555555'">
 															<xsl:value-of select="ProductID/GTIN"/>
 														</xsl:when>
 														<xsl:otherwise>00000000000</xsl:otherwise>
@@ -214,7 +224,9 @@
 											<invoiceLineTaxInformation>
 												<dutyTaxFeeType>VALUE_ADDED_TAX</dutyTaxFeeType>
 												<extension>
-													<vat:vATTaxInformationExtension>
+													<vat:vATTaxInformationExtension xmlns:vat="urn:ean.ucc:pay:vat:2">
+														<!--xsl:attribute name="xmlns:vat">urn:ean.ucc:pay:vat:2</xsl:attribute-->
+														<xsl:attribute name="xsi:schemaLocation">urn:ean.ucc:pay:vat:2 ../Schemas/Invoice_VATExtensionProxy.xsd</xsl:attribute>
 														<rate>
 															<xsl:value-of select="format-number(VATRate,'0.00')"/>
 														</rate>
@@ -249,7 +261,9 @@
 													<xsl:value-of select="VATAmountAtRate"/>
 												</taxAmount>
 												<extension>
-													<vat:vATTaxInformationExtension>
+													<vat:vATTaxInformationExtension xmlns:vat="urn:ean.ucc:pay:vat:2">
+														<!--xsl:attribute name="xmlns:vat">urn:ean.ucc:pay:vat:2</xsl:attribute-->
+														<xsl:attribute name="xsi:schemaLocation">urn:ean.ucc:pay:vat:2 ../Schemas/Invoice_VATExtensionProxy.xsd</xsl:attribute>
 														<rate>
 															<xsl:value-of select="format-number(@VATRate,'0.00')"/>
 														</rate>
