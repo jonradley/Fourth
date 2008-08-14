@@ -2,11 +2,14 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                               xmlns:fo="http://www.w3.org/1999/XSL/Format"
                               xmlns:sh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader"
+                              xmlns:order="urn:ean.ucc:order:2"
                               xmlns:eanucc="urn:ean.ucc:2"
-                              xmlns:order="urn:ean.ucc:order:2">
+                              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                              exclude-result-prefixes="fo">
 	<xsl:template match="PurchaseOrderConfirmation">
 	
 		<sh:StandardBusinessDocument>
+			<xsl:attribute name="xsi:schemaLocation">http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader ../Schemas/sbdh/StandardBusinessDocumentHeader.xsd urn:ean.ucc:2 ../Schemas/OrderResponseProxy.xsd</xsl:attribute>
 			<sh:StandardBusinessDocumentHeader>
 				<sh:HeaderVersion>2.2</sh:HeaderVersion>
 				<sh:Sender>
@@ -59,6 +62,7 @@
 					<xsl:attribute name="responseStatusType">
 						<xsl:value-of select="$sStatusType"/>
 					</xsl:attribute>
+					<xsl:attribute name="xsi:schemaLocation">urn:ean.ucc:2 ../Schemas/OrderResponseProxy.xsd</xsl:attribute>
 					<responseIdentification>
 						<uniqueCreatorIdentification>
 							<xsl:value-of select="PurchaseOrderConfirmationHeader/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationReference"/>

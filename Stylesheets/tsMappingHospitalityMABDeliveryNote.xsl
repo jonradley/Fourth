@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:sh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" xmlns:deliver="urn:ean.ucc:deliver:2" xmlns:eanucc="urn:ean.ucc:2">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+                              xmlns:fo="http://www.w3.org/1999/XSL/Format" 
+                              xmlns:sh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" 
+                              xmlns:deliver="urn:ean.ucc:deliver:2" 
+                              xmlns:eanucc="urn:ean.ucc:2"
+                              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                              exclude-result-prefixes="fo xsl">
 	<xsl:template match="DeliveryNote">
 		<sh:StandardBusinessDocument>
+			<xsl:attribute name="xsi:schemaLocation">http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader ../Schemas/sbdh/StandardBusinessDocumentHeader.xsd urn:ean.ucc:2 ../Schemas/DespatchAdviceProxy.xsd</xsl:attribute>
 			<sh:StandardBusinessDocumentHeader>
 				<sh:HeaderVersion>2.2</sh:HeaderVersion>
 				<sh:Sender>
@@ -71,6 +78,7 @@
 										<xsl:value-of select="concat(DeliveryNoteHeader/DeliveryNoteReferences/DeliveryNoteDate,'T00:00:00')"/>
 									</xsl:attribute>
 									<xsl:attribute name="documentStatus">ORIGINAL</xsl:attribute>
+									<xsl:attribute name="xsi:schemaLocation">urn:ean.ucc:2 ../Schemas/DespatchAdviceProxy.xsd</xsl:attribute>
 									<contentVersion>
 										<versionIdentification>2.0.2</versionIdentification>
 									</contentVersion>
@@ -107,14 +115,19 @@
 												<additionalPartyIdentificationType>SELLER_ASSIGNED_IDENTIFIER_FOR_A_PARTY</additionalPartyIdentificationType>
 											</additionalPartyIdentification>
 										</xsl:if>
-										<xsl:if test="DeliveryNoteHeader/ShipTo/ShipToLocationID/BuyersCode">
-											<additionalPartyIdentification>
-												<additionalPartyIdentificationValue>
+										<additionalPartyIdentification>
+											<additionalPartyIdentificationValue>
+											<xsl:choose>
+												<xsl:when test="">
 													<xsl:value-of select="DeliveryNoteHeader/ShipTo/ShipToLocationID/BuyersCode"/>
-												</additionalPartyIdentificationValue>
-												<additionalPartyIdentificationType>BUYER_ASSIGNED_IDENTIFIER_FOR_A_PARTY</additionalPartyIdentificationType>
-											</additionalPartyIdentification>
-										</xsl:if>
+												</xsl:when>
+												<xsl:otherwise>
+													<xsl:value-of select="DeliveryNoteHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
+												</xsl:otherwise>
+											</xsl:choose>
+											</additionalPartyIdentificationValue>
+											<additionalPartyIdentificationType>BUYER_ASSIGNED_IDENTIFIER_FOR_A_PARTY</additionalPartyIdentificationType>
+										</additionalPartyIdentification>
 									</shipTo>
 									<receiver>
 										<gln>0000000000000</gln>
@@ -126,14 +139,19 @@
 												<additionalPartyIdentificationType>SELLER_ASSIGNED_IDENTIFIER_FOR_A_PARTY</additionalPartyIdentificationType>
 											</additionalPartyIdentification>
 										</xsl:if>
-										<xsl:if test="DeliveryNoteHeader/ShipTo/ShipToLocationID/BuyersCode">
-											<additionalPartyIdentification>
-												<additionalPartyIdentificationValue>
+										<additionalPartyIdentification>
+											<additionalPartyIdentificationValue>
+											<xsl:choose>
+												<xsl:when test="">
 													<xsl:value-of select="DeliveryNoteHeader/ShipTo/ShipToLocationID/BuyersCode"/>
-												</additionalPartyIdentificationValue>
-												<additionalPartyIdentificationType>BUYER_ASSIGNED_IDENTIFIER_FOR_A_PARTY</additionalPartyIdentificationType>
-											</additionalPartyIdentification>
-										</xsl:if>
+												</xsl:when>
+												<xsl:otherwise>
+													<xsl:value-of select="DeliveryNoteHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
+												</xsl:otherwise>
+											</xsl:choose>
+											</additionalPartyIdentificationValue>
+											<additionalPartyIdentificationType>BUYER_ASSIGNED_IDENTIFIER_FOR_A_PARTY</additionalPartyIdentificationType>
+										</additionalPartyIdentification>
 									</receiver>
 									<despatchAdviceIdentification>
 										<uniqueCreatorIdentification>
@@ -181,7 +199,7 @@
 													<containedItemIdentification>
 														<gtin>
 															<xsl:choose>
-																<xsl:when test="ProductID/GTIN != ''">
+																<xsl:when test="ProductID/GTIN != '' and ProductID/GTIN != '55555555555555'">
 																	<xsl:value-of select="ProductID/GTIN"/>
 																</xsl:when>
 																<xsl:otherwise>00000000000</xsl:otherwise>
