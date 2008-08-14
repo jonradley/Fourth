@@ -22,6 +22,8 @@ Overview
 ******************************************************************************************
  28/02/2008		| Lee Boyton     | 2036 Do not include any special delivery instructions.
 ******************************************************************************************
+ 14/08/2008		| Lee Boyton     | 2418 Cater for the old Moto GLN and translate to the new value.
+******************************************************************************************
 			  		|                |
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" 
@@ -105,9 +107,21 @@ Overview
 			<!-- ~~~~~~~~~~~~~~~~~~~~~~~
 			    BUYER
 			      ~~~~~~~~~~~~~~~~~~~~~~~-->
+
+			<!-- Moto are transitioning to a new GLN, so to ensure any old documents go to CCE with the correct (new) GLN then check for this here -->			      
+			<xsl:variable name="OldMotoGLN" select="'5027615900022'"/>
+			<xsl:variable name="NewMotoGLN" select="'5029224000004'"/>
+			
 			<Buyer>
 				<BuyerGLN scheme="GLN">
-					<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/>
+					<xsl:choose>
+						<xsl:when test="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN = $OldMotoGLN">
+							<xsl:value-of select="$NewMotoGLN"/>						
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/>						
+						</xsl:otherwise>
+					</xsl:choose>
 				</BuyerGLN>
 			
 				<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/BuyersCode">
