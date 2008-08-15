@@ -436,7 +436,7 @@
 				</SettlementDiscountRate>
 				
 				<!-- loop through the VATSubTotal nodes -->	
-				<xsl:for-each select="/Invoice/InvoiceTrailer/VATSubTotal">
+				<xsl:for-each select="/Invoice/InvoiceTrailer/VATSubTotals/VATSubTotal">
 					<VATRateTotals>
 						<VATDetails>
 							<TaxCategory codeList="EANCOM">
