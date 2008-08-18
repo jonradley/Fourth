@@ -14,7 +14,7 @@
 ******************************************************************************************
  30/06/2008	| R Cambridge   | 2257 temporary buyer GLN translation. 3663's dummy code needs to be translated to Moto's own code (issued by Freeway)
 ******************************************************************************************
-			  	|               |
+30/06/2008	| M Dimant        | 2257 'IInvoice' changed to 'Invoice' within XPaths throughout mapper
 ******************************************************************************************
 			  	|               |
 ***************************************************************************************-->
@@ -74,19 +74,19 @@
 			<!-- ~~~~~~~~~~~~~~~~~~~~~~~
 			    ORDER REFERENCE
 			      ~~~~~~~~~~~~~~~~~~~~~~~-->
-			<xsl:if test="/Invoice/InvoiceDetail/IInvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderDate or /Invoice/InvoiceDetail/IInvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderReference">
+			<xsl:if test="/Invoice/InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderDate or /Invoice/InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderReference">
 				<OrderReference>
 			
-					<xsl:if test="/Invoice/InvoiceDetail/IInvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderDate">
+					<xsl:if test="/Invoice/InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderDate">
 						<PurchaseOrderDate format="YYYY-MM-DDThh:mm:ss:TZD">
-							<xsl:value-of select="/Invoice/InvoiceDetail/IInvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderDate"/>
+							<xsl:value-of select="/Invoice/InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderDate"/>
 							<xsl:text>T00:00:00</xsl:text>
 						</PurchaseOrderDate>
 					</xsl:if>
 	
-					<xsl:if test="/Invoice/InvoiceDetail/IInvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderReference">
+					<xsl:if test="/Invoice/InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderReference">
 						<PurchaseOrderNumber scheme="OTHER">
-							<xsl:value-of select="/Invoice/InvoiceDetail/IInvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderReference"/>
+							<xsl:value-of select="/Invoice/InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderReference"/>
 						</PurchaseOrderNumber>
 					</xsl:if>				
 				</OrderReference> 
@@ -95,19 +95,19 @@
 			<!-- ~~~~~~~~~~~~~~~~~~~~~~~
 			    ORDER CONFIRMATION REFERENCE
 			      ~~~~~~~~~~~~~~~~~~~~~~~-->
-			<xsl:if test="/Invoice/InvoiceDetail/IInvoiceLine[1]/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationDate or /Invoice/InvoiceDetail/IInvoiceLine[1]/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationReference">
+			<xsl:if test="/Invoice/InvoiceDetail/InvoiceLine[1]/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationDate or /Invoice/InvoiceDetail/InvoiceLine[1]/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationReference">
 				<OrderConfirmationReference>
 				
-					<xsl:if test="/Invoice/InvoiceDetail/IInvoiceLine[1]/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationDate">
+					<xsl:if test="/Invoice/InvoiceDetail/InvoiceLine[1]/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationDate">
 						<PurchaseOrderConfirmationDate format="YYYY-MM-DDThh:mm:ss:TZD">
-							<xsl:value-of select="/Invoice/InvoiceDetail/IInvoiceLine[1]/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationDate"/>
+							<xsl:value-of select="/Invoice/InvoiceDetail/InvoiceLine[1]/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationDate"/>
 							<xsl:text>T00:00:00</xsl:text>
 						</PurchaseOrderConfirmationDate>
 					</xsl:if>
 					
-					<xsl:if test="/Invoice/InvoiceDetail/IInvoiceLine[1]/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationReference">
+					<xsl:if test="/Invoice/InvoiceDetail/InvoiceLine[1]/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationReference">
 						<PurchaseOrderConfirmationNumber scheme="OTHER">
-							<xsl:value-of select="/Invoice/InvoiceDetail/IInvoiceLine[1]/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationReference"/>
+							<xsl:value-of select="/Invoice/InvoiceDetail/InvoiceLine[1]/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationReference"/>
 						</PurchaseOrderConfirmationNumber>	
 					</xsl:if>			
 				</OrderConfirmationReference> 			
@@ -116,20 +116,20 @@
 			<!-- ~~~~~~~~~~~~~~~~~~~~~~~
 			    DESPATCH REFERENCE
 			      ~~~~~~~~~~~~~~~~~~~~~~~-->
-			<xsl:if test="/Invoice/InvoiceDetail/IInvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteDate or /Invoice/InvoiceDetail/IInvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteReference">
+			<xsl:if test="/Invoice/InvoiceDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteDate or /Invoice/InvoiceDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteReference">
 
 				<DespatchReference>
 				
-					<xsl:if test="/Invoice/InvoiceDetail/IInvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteDate">
+					<xsl:if test="/Invoice/InvoiceDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteDate">
 						<DespatchDocumentDate format="YYYY-MM-DDThh:mm:ss:TZD">
-							<xsl:value-of select="/Invoice/InvoiceDetail/IInvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteDate"/>
+							<xsl:value-of select="/Invoice/InvoiceDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteDate"/>
 							<xsl:text>T00:00:00</xsl:text>
 						</DespatchDocumentDate>
 					</xsl:if>
 	
-					<xsl:if test="/Invoice/InvoiceDetail/IInvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteReference">
+					<xsl:if test="/Invoice/InvoiceDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteReference">
 						<DespatchDocumentNumber scheme="OTHER">
-							<xsl:value-of select="/Invoice/InvoiceDetail/IInvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteReference"/>
+							<xsl:value-of select="/Invoice/InvoiceDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteReference"/>
 						</DespatchDocumentNumber>				
 					</xsl:if>
 				</DespatchReference> 
@@ -138,20 +138,20 @@
 			<!-- ~~~~~~~~~~~~~~~~~~~~~~~
 			    RECEIPT ADVICE REFERENCE
 			      ~~~~~~~~~~~~~~~~~~~~~~~-->
-			<xsl:if test="/Invoice/InvoiceDetail/IInvoiceLine[1]/GoodsReceivedNoteReferences/GoodsReceivedNoteDate or /Invoice/InvoiceDetail/IInvoiceLine[1]/GoodsReceivedNoteReferences/GoodsReceivedNoteReference">
+			<xsl:if test="/Invoice/InvoiceDetail/InvoiceLine[1]/GoodsReceivedNoteReferences/GoodsReceivedNoteDate or /Invoice/InvoiceDetail/InvoiceLine[1]/GoodsReceivedNoteReferences/GoodsReceivedNoteReference">
    
 				<ReceiptAdviceReference>
 
-					<xsl:if test="/Invoice/InvoiceDetail/IInvoiceLine[1]/GoodsReceivedNoteReferences/GoodsReceivedNoteDate">
+					<xsl:if test="/Invoice/InvoiceDetail/InvoiceLine[1]/GoodsReceivedNoteReferences/GoodsReceivedNoteDate">
 						<ReceiptAdviceDocumentDate format="YYYY-MM-DDThh:mm:ss:TZD">
-							<xsl:value-of select="/Invoice/InvoiceDetail/IInvoiceLine[1]/GoodsReceivedNoteReferences/GoodsReceivedNoteDate"/>
+							<xsl:value-of select="/Invoice/InvoiceDetail/InvoiceLine[1]/GoodsReceivedNoteReferences/GoodsReceivedNoteDate"/>
 							<xsl:text>T00:00:00</xsl:text>
 						</ReceiptAdviceDocumentDate>
 					</xsl:if>
 	
-					<xsl:if test="/Invoice/InvoiceDetail/IInvoiceLine[1]/GoodsReceivedNoteReferences/GoodsReceivedNoteReference">
+					<xsl:if test="/Invoice/InvoiceDetail/InvoiceLine[1]/GoodsReceivedNoteReferences/GoodsReceivedNoteReference">
 						<ReceiptAdviceDocumentNumber scheme="OTHER">
-							<xsl:value-of select="/Invoice/InvoiceDetail/IInvoiceLine[1]/GoodsReceivedNoteReferences/GoodsReceivedNoteReference"/>
+							<xsl:value-of select="/Invoice/InvoiceDetail/InvoiceLine[1]/GoodsReceivedNoteReferences/GoodsReceivedNoteReference"/>
 						</ReceiptAdviceDocumentNumber>
 					</xsl:if>
 				</ReceiptAdviceReference> 
