@@ -14,6 +14,8 @@
 ******************************************************************************************
  03/07/08 |S Dubey, G Lokhande | Created module.
 ******************************************************************************************
+19/08/2008  | Lee Boyton | 2427. Account Code field already contains period separator.
+******************************************************************************************
 		  |						| 
 ******************************************************************************************
 -->
@@ -199,7 +201,7 @@
 					<xsl:otherwise><xsl:text>SI</xsl:text></xsl:otherwise>
 				</xsl:choose>
 				<xsl:text>|</xsl:text>
-				<xsl:value-of select="concat(substring($AccountCode,1,4),'.',substring($AccountCode,5))"/>
+				<xsl:value-of select="$AccountCode"/>
 				<xsl:text>|</xsl:text>
 				<xsl:value-of select="$TotalExclVAT"/>
 				<xsl:text>|</xsl:text>
