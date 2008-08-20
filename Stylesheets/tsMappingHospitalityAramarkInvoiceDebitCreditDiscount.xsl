@@ -16,6 +16,8 @@
 ******************************************************************************************
 19/08/2008  | Lee Boyton | 2427. Account Code field already contains period separator.
 ******************************************************************************************
+20/08/2008  |	Lee Boyton | 2427. Sender and recipient are reversed in a debit note.
+******************************************************************************************
 		  |						| 
 ******************************************************************************************
 -->
@@ -55,17 +57,38 @@
 		<!-- Remove any letters from the Aramark PL Account Code - these may be present for some suppliers who have more than one account relating to each PL account, 
 			such as M&J with their depots or Bunzl with their Chemicals accounts -->
 		<xsl:variable name="PLAccountCode">
-			<xsl:value-of select="translate(TradeSimpleHeader/RecipientsCodeForSender, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', '')"/>
+			<xsl:choose>
+				<xsl:when test="/DebitNote">
+					<xsl:value-of select="translate(TradeSimpleHeader/SendersCodeForRecipient, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', '')"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="translate(TradeSimpleHeader/RecipientsCodeForSender, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', '')"/>
+				</xsl:otherwise>
+			</xsl:choose>
 		</xsl:variable>
 		
 		<!-- store the ARAMARK Supplier Name as it is referenced on multiple lines -->
 		<xsl:variable name="PLAccountName">
-			<xsl:value-of select="TradeSimpleHeader/SendersName"/>
+			<xsl:choose>
+				<xsl:when test="/DebitNote">
+					<xsl:value-of select="TradeSimpleHeader/RecipientsName"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="TradeSimpleHeader/SendersName"/>
+				</xsl:otherwise>
+			</xsl:choose>
 		</xsl:variable>
 		
 		<!-- store the Component Number as it is referenced on multiple lines -->
 		<xsl:variable name="UnitCode">
-			<xsl:value-of select="TradeSimpleHeader/RecipientsBranchReference"/>			
+			<xsl:choose>
+				<xsl:when test="/DebitNote">
+					<xsl:value-of select="TradeSimpleHeader/SendersBranchReference"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="TradeSimpleHeader/RecipientsBranchReference"/>			
+				</xsl:otherwise>
+			</xsl:choose>
 		</xsl:variable>
 
 		<!-- store the Invoice/Debit Number-->
