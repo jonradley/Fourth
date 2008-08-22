@@ -25,6 +25,8 @@
  29/03/2007	| R Cambridge			| 864 re-instate minus in credit 
 ==========================================================================================
  16/06/2008	| A Sheppard			| 2283. Minor changes to spec
+==========================================================================================
+ 22/08/2008	| Lee Boyton			| 2436. Support for "0" (Outside the scopt of VAT) VAT code.
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 <xsl:output method="text" encoding="utf-8"/>
@@ -90,11 +92,8 @@
 		<xsl:for-each select="(/Invoice/InvoiceTrailer/VATSubTotals/VATSubTotal | /CreditNote/CreditNoteTrailer/VATSubTotals/VATSubTotal)[position() &lt;=5]">
 		
 			<xsl:choose>
-				<xsl:when test="@VATCode='S'">S</xsl:when>
-				<xsl:when test="@VATCode='E'">E</xsl:when>
-				<xsl:when test="@VATCode='Z'">Z</xsl:when>
 				<xsl:when test="@VATCode='L'">5</xsl:when>
-				<xsl:otherwise>?</xsl:otherwise>
+				<xsl:otherwise><xsl:value-of select="@VATCode"/></xsl:otherwise>
 			</xsl:choose>
 			<xsl:text>|</xsl:text>
 			
@@ -186,11 +185,8 @@
 				<xsl:text>|</xsl:text>
 				
 				<xsl:choose>
-					<xsl:when test="*/VATCode='S'">S</xsl:when>
-					<xsl:when test="*/VATCode='E'">E</xsl:when>
-					<xsl:when test="*/VATCode='Z'">Z</xsl:when>
 					<xsl:when test="*/VATCode='L'">5</xsl:when>
-					<xsl:otherwise>?</xsl:otherwise>
+					<xsl:otherwise><xsl:value-of select="*/VATCode"/></xsl:otherwise>
 				</xsl:choose>
 		
 				<xsl:text>&#13;&#10;</xsl:text>
