@@ -22,6 +22,8 @@
                          |       TEMPORARILY hard-code DiscountAccountCode. This should
                          |       be a setting, but appears to have been missed during development.
 ******************************************************************************************
+22/08/2008  |	Lee Boyton | 2427. Convert document references to upper case.
+******************************************************************************************
 		  |						| 
 ******************************************************************************************
 -->
@@ -99,13 +101,13 @@
 		<xsl:variable name="DocumentReference">
 			<xsl:choose>
 				<xsl:when test="InvoiceHeader/InvoiceReferences/InvoiceReference">
-					<xsl:value-of select="InvoiceHeader/InvoiceReferences/InvoiceReference"/>
+					<xsl:value-of select="translate(InvoiceHeader/InvoiceReferences/InvoiceReference, 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')"/>
 				</xsl:when>
 				<xsl:when test="DebitNoteHeader/DebitNoteReferences/DebitNoteReference">
-					<xsl:value-of select="concat(DebitNoteHeader/InvoiceReferences/InvoiceReference,'/',substring(DebitNoteHeader/DebitNoteReferences/DebitNoteReference,string-length(DebitNoteHeader/DebitNoteReferences/DebitNoteReference)-7))"/> 
+					<xsl:value-of select="translate(concat(DebitNoteHeader/InvoiceReferences/InvoiceReference,'/',substring(DebitNoteHeader/DebitNoteReferences/DebitNoteReference,string-length(DebitNoteHeader/DebitNoteReferences/DebitNoteReference)-7)), 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')"/> 
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:value-of select="CreditNoteHeader/CreditNoteReferences/CreditNoteReference"/>
+					<xsl:value-of select="translate(CreditNoteHeader/CreditNoteReferences/CreditNoteReference, 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')"/>
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
@@ -241,9 +243,9 @@
 					</xsl:call-template>
 				</xsl:if>
 				<xsl:text>|</xsl:text>
-				<xsl:value-of select="DeliveryNoteReferences/DeliveryNoteReference"/>
+				<xsl:value-of select="translate(DeliveryNoteReferences/DeliveryNoteReference, 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')"/>
 				<xsl:text>|</xsl:text>
-				<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderReference"/>
+				<xsl:value-of select="translate(PurchaseOrderReferences/PurchaseOrderReference, 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')"/>
 				<xsl:value-of select="$NewLine"/>
 			</xsl:for-each>
 		</xsl:for-each>
@@ -286,9 +288,9 @@
 				</xsl:call-template>
 			</xsl:if>
 			<xsl:text>|</xsl:text>
-			<xsl:value-of select="InvoiceDetail/InvoiceLine/DeliveryNoteReferences/DeliveryNoteReference[1]"/>
+			<xsl:value-of select="translate(InvoiceDetail/InvoiceLine/DeliveryNoteReferences/DeliveryNoteReference[1], 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')"/>
 			<xsl:text>|</xsl:text>
-			<xsl:value-of select="InvoiceDetail/InvoiceLine/PurchaseOrderReferences/PurchaseOrderReference[1]"/>
+			<xsl:value-of select="translate(InvoiceDetail/InvoiceLine/PurchaseOrderReferences/PurchaseOrderReference[1], 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')"/>
 			<xsl:value-of select="$NewLine"/>
 		</xsl:if>
 	</xsl:template>
