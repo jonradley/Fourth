@@ -18,6 +18,10 @@
 ******************************************************************************************
 20/08/2008  |	Lee Boyton | 2427. Sender and recipient are reversed in a debit note.
 ******************************************************************************************
+21/08/2008  |	Lee Boyton | 2427. Fixed a number of issues with the discount line output.
+                         |       TEMPORARILY hard-code DiscountAccountCode. This should
+                         |       be a setting, but appears to have been missed during development.
+******************************************************************************************
 		  |						| 
 ******************************************************************************************
 -->
@@ -259,24 +263,32 @@
 			<xsl:text>|</xsl:text>
 			<xsl:value-of select="$DocumentReference"/>
 			<xsl:text>|</xsl:text>
-			<xsl:value-of select="format-number(position(),'000')"/>					
+			<xsl:variable name="distinctlines" select="InvoiceDetail/InvoiceLine[generate-id() = generate-id(key('keyLinesByAccountAndVAT',concat(LineExtraData/AccountCode,'::',VATCode)))]"/>
+			<xsl:value-of select="format-number(1 + count($distinctlines),'000')"/>
 			<xsl:text>|</xsl:text>
 			<xsl:value-of select="$DocumentDate"/>
 			<xsl:text>|</xsl:text>
 			<xsl:value-of select="translate(format-number(-1 * $DiscountAmount,'0.00'),'.','')"/>
 			<xsl:text>||||</xsl:text>
-			<xsl:value-of select="/Invoice/InvoiceHeader/HeaderExtraData/DiscountAccountCode"/>
+			<xsl:choose>
+				<xsl:when test="InvoiceHeader/HeaderExtraData/DiscountAccountCode != ''">
+					<xsl:value-of select="InvoiceHeader/HeaderExtraData/DiscountAccountCode"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:text>6908.99</xsl:text>
+				</xsl:otherwise>
+			</xsl:choose>
 			<xsl:text>|0|0|</xsl:text>
 			<!-- delivery note date in Julian format cyyddd -->
-			<xsl:if test="DeliveryNoteReferences/DeliveryNoteDate">
+			<xsl:if test="InvoiceDetail/InvoiceLine/DeliveryNoteReferences/DeliveryNoteDate[1]">
 				<xsl:call-template name="formatDate">
-					<xsl:with-param name="xmlDate" select="DeliveryNoteReferences/DeliveryNoteDate"/>
+					<xsl:with-param name="xmlDate" select="InvoiceDetail/InvoiceLine/DeliveryNoteReferences/DeliveryNoteDate[1]"/>
 				</xsl:call-template>
 			</xsl:if>
 			<xsl:text>|</xsl:text>
-			<xsl:value-of select="DeliveryNoteReferences/DeliveryNoteReference"/>
+			<xsl:value-of select="InvoiceDetail/InvoiceLine/DeliveryNoteReferences/DeliveryNoteReference[1]"/>
 			<xsl:text>|</xsl:text>
-			<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderReference"/>
+			<xsl:value-of select="InvoiceDetail/InvoiceLine/PurchaseOrderReferences/PurchaseOrderReference[1]"/>
 			<xsl:value-of select="$NewLine"/>
 		</xsl:if>
 	</xsl:template>
