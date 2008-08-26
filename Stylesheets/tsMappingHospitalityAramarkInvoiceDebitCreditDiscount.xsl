@@ -24,6 +24,8 @@
 ******************************************************************************************
 22/08/2008  |	Lee Boyton | 2427. Convert document references to upper case.
 ******************************************************************************************
+26/08/2008  |	Lee Boyton | 2427. Cater for rounding errors in VAT calculations.
+******************************************************************************************
 		  |						| 
 ******************************************************************************************
 -->
@@ -186,16 +188,17 @@
 					</xsl:choose>
 				</xsl:variable>
 				
+				<!-- Important note. To cater with dodgy xslt maths and rounding errors, the vat calculations are first formatted to 3 decimal places and then to 2 decimal places. -->
 				<xsl:variable name="LineVATAmount">
 					<xsl:choose>
 						<xsl:when test="/Invoice">
-							<xsl:value-of select="translate(format-number(sum(//InvoiceLine[LineExtraData/AccountCode = $AccountCode and VATCode = $VATCode]/LineValueExclVAT) * ($VATRate div 100),'0.00'),'.','')"/>
+							<xsl:value-of select="translate(format-number(format-number(sum(//InvoiceLine[LineExtraData/AccountCode = $AccountCode and VATCode = $VATCode]/LineValueExclVAT) * ($VATRate div 100),'0.000'),'0.00'),'.','')"/>
 						</xsl:when>
 						<xsl:when test="/DebitNote">
-							<xsl:value-of select="translate(format-number(-1* sum(//DebitNoteLine[LineExtraData/AccountCode = $AccountCode and VATCode = $VATCode]/LineValueExclVAT) * ($VATRate div 100),'0.00'),'.','')"/>
+							<xsl:value-of select="translate(format-number(format-number(-1* sum(//DebitNoteLine[LineExtraData/AccountCode = $AccountCode and VATCode = $VATCode]/LineValueExclVAT) * ($VATRate div 100),'0.000'),'0.00'),'.','')"/>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:value-of select="translate(format-number(-1* sum(//CreditNoteLine[LineExtraData/AccountCode = $AccountCode and VATCode = $VATCode]/LineValueExclVAT) * ($VATRate div 100),'0.00'),'.','')"/>
+							<xsl:value-of select="translate(format-number(format-number(-1* sum(//CreditNoteLine[LineExtraData/AccountCode = $AccountCode and VATCode = $VATCode]/LineValueExclVAT) * ($VATRate div 100),'0.000'),'0.00'),'.','')"/>
 						</xsl:otherwise>
 					</xsl:choose>					
 				</xsl:variable>
