@@ -107,14 +107,7 @@
 					</xsl:otherwise>
 					</xsl:choose>
 					<xsl:text>,</xsl:text>
-					<xsl:choose>
-					<xsl:when test="$VATCode = 'S'">
-						<xsl:text>1</xsl:text>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:text>0</xsl:text>
-					</xsl:otherwise>
-					</xsl:choose>
+					<xsl:value-of select="$TranslatedVatCode"/>
 					<xsl:text>,</xsl:text>
 					<xsl:call-template name="for.loop"> 
 					<xsl:with-param name="i">1</xsl:with-param> 
