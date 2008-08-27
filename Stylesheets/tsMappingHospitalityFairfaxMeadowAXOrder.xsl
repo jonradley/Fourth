@@ -62,8 +62,8 @@
 		</xsl:if>
 		<xsl:text>,</xsl:text>
 		<!-- Delivery Location Address Line 3 -->
-		<xsl:text>&quot;</xsl:text>
-			<xsl:if test="PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine3 != '.'">
+		<xsl:if test="PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine3 != '.'">
+			<xsl:text>&quot;</xsl:text>
 			<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine3"/>
 			<xsl:text>&quot;</xsl:text>
 		</xsl:if>
@@ -107,9 +107,11 @@
 			<xsl:text>&quot;</xsl:text>
 			<xsl:text>,</xsl:text>
 			<!-- Product Description -->
-			<xsl:text>&quot;</xsl:text>
-			<xsl:value-of select="ProductDescription"/>
-			<xsl:text>&quot;</xsl:text>
+			<xsl:if test="ProductDescription != 'Not Provided'">
+				<xsl:text>&quot;</xsl:text>
+				<xsl:value-of select="ProductDescription"/>
+				<xsl:text>&quot;</xsl:text>
+			</xsl:if>
 			<xsl:text>,</xsl:text>
 			<!-- Pack Size -->
 			<xsl:value-of select="OrderedQuantity/@UnitOfMeasure"/>
