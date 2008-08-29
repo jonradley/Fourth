@@ -118,7 +118,7 @@
 										<additionalPartyIdentification>
 											<additionalPartyIdentificationValue>
 											<xsl:choose>
-												<xsl:when test="">
+												<xsl:when test="DeliveryNoteHeader/ShipTo/ShipToLocationID/BuyersCode != ''">
 													<xsl:value-of select="DeliveryNoteHeader/ShipTo/ShipToLocationID/BuyersCode"/>
 												</xsl:when>
 												<xsl:otherwise>
@@ -142,7 +142,7 @@
 										<additionalPartyIdentification>
 											<additionalPartyIdentificationValue>
 											<xsl:choose>
-												<xsl:when test="">
+												<xsl:when test="DeliveryNoteHeader/ShipTo/ShipToLocationID/BuyersCode != ''">
 													<xsl:value-of select="DeliveryNoteHeader/ShipTo/ShipToLocationID/BuyersCode"/>
 												</xsl:when>
 												<xsl:otherwise>
@@ -202,7 +202,7 @@
 																<xsl:when test="ProductID/GTIN != '' and ProductID/GTIN != '55555555555555'">
 																	<xsl:value-of select="ProductID/GTIN"/>
 																</xsl:when>
-																<xsl:otherwise>00000000000</xsl:otherwise>
+																<xsl:otherwise>00000000000000</xsl:otherwise>
 															</xsl:choose>
 														</gtin>
 														<xsl:if test="ProductID/SuppliersProductCode">
