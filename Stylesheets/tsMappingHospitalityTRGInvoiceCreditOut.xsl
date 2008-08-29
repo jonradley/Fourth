@@ -14,6 +14,8 @@
 ==========================================================================================
  28/08/2007	| R Cambridge			| FB1400 Created module 
 ==========================================================================================
+ 29/08/2008	| Lee Boyton       	| FB2452. Supplier Code added, as per v1-1 of specification.
+==========================================================================================
            	|                 	|
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -48,6 +50,10 @@
 		
 		
 		<xsl:value-of select="format-number(InvoiceTrailer/SettlementTotalInclVAT,'0.00')"/>
+		<xsl:text>,</xsl:text>
+		
+		
+		<xsl:value-of select="TradeSimpleHeader/RecipientsCodeForSender"/>
 		<xsl:text>&#13;&#10;</xsl:text>
 
 	</xsl:template>
@@ -84,6 +90,10 @@
 		
 		
 		<xsl:value-of select="format-number(-1 * CreditNoteTrailer/SettlementTotalInclVAT,'0.00')"/>
+		<xsl:text>,</xsl:text>
+		
+		
+		<xsl:value-of select="TradeSimpleHeader/RecipientsCodeForSender"/>
 		<xsl:text>&#13;&#10;</xsl:text>
 
 	</xsl:template>
