@@ -27,6 +27,8 @@
  16/06/2008	| A Sheppard			| 2283. Minor changes to spec
 ==========================================================================================
  22/08/2008	| Lee Boyton			| 2436. Support for "0" (Outside the scopt of VAT) VAT code.
+==========================================================================================
+ 01/09/2008	| Lee Boyton			| 2456. Change to specification to include Company code.
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 <xsl:output method="text" encoding="utf-8"/>
@@ -34,6 +36,9 @@
 	<xsl:template 	match="/Invoice | /CreditNote">
 	
 		<xsl:text>H</xsl:text>		
+		<xsl:text>|</xsl:text>
+
+		<xsl:value-of select="(/Invoice/InvoiceHeader/HeaderExtraData/CompanyCode | /CreditNote/CreditNoteHeader/HeaderExtraData/CompanyCode)"/>
 		<xsl:text>|</xsl:text>
 		
 		<xsl:choose>
