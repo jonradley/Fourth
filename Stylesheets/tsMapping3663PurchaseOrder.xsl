@@ -20,6 +20,8 @@
 '******************************************************************************************
 ' 02/08/2006  | Lee Boyton   | H610. Add support for wholesale orders (based on certain GLNs.)
 '******************************************************************************************
+' 03/09/2008  | R Cambridge  | FB case 2459 Amphire require ship to GLN to be default
+'******************************************************************************************
 '             |              | 
 '******************************************************************************************
 -->
@@ -211,16 +213,7 @@
 				</BuyerAssigned>
 			</Seller>
 			<ShipTo>
-				<ShipToGLN scheme="GLN">
-					<xsl:choose>
-						<xsl:when test="PurchaseOrderHeader/ShipTo/ShipToLocationID/GLN = '0000000000000'">
-							<xsl:text>5555555555555</xsl:text>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="substring(PurchaseOrderHeader/ShipTo/ShipToLocationID/GLN,1,13)"/>
-						</xsl:otherwise>
-					</xsl:choose>															
-				</ShipToGLN>
+				<ShipToGLN scheme="GLN">5555555555555</ShipToGLN>
 				<xsl:if test="PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode">
 					<BuyerAssigned scheme="OTHER">
 						<xsl:value-of select="substring(PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode,1,13)"/>
