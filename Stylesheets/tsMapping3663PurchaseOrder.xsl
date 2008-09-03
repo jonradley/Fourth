@@ -213,6 +213,7 @@
 				</BuyerAssigned>
 			</Seller>
 			<ShipTo>
+				<!-- 2459 Always use default GLN-->
 				<ShipToGLN scheme="GLN">5555555555555</ShipToGLN>
 				<xsl:if test="PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode">
 					<BuyerAssigned scheme="OTHER">
