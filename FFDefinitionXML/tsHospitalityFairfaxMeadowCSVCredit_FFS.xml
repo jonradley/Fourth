@@ -50,7 +50,7 @@
 						<CreditNoteHeader>
 							<Buyer>
 								<BuyersLocationID>
-									<SuppliersCode RecordPos="&quot;HEAD&quot;" LPos="40"/>
+									<SuppliersCode RecordPos="&quot;HEAD&quot;" LPos="3"/>
 								</BuyersLocationID>
 								<!--BuyersName RecordPos="HEAD" LPos="17"/-->
 								<!--BuyersAddress>
@@ -76,6 +76,7 @@
 							</Supplier-->
 							<ShipTo>
 								<ShipToLocationID>
+									<BuyersCode RecordPos="&quot;HEAD&quot;" LPos="24"/>
 									<SuppliersCode RecordPos="&quot;HEAD&quot;" LPos="4"/>
 								</ShipToLocationID>
 								<!--ShipToName RecordPos="HEAD" LPos="17"/-->
