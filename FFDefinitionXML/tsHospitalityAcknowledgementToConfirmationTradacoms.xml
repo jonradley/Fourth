@@ -130,12 +130,12 @@
 					</ShipToAddress>
 				</ShipTo>
 				<PurchaseOrderReferences>
-					<PurchaseOrderReference RecordPos="ORD=" LPos="1" SFPos="1"/>
-					<PurchaseOrderDate RecordPos="ORD=" LPos="1" SFPos="3"/>
+					<PurchaseOrderReference RecordPos="AOR=" LPos="1" SFPos="1"/>
+					<PurchaseOrderDate RecordPos="AOR=" LPos="1" SFPos="3"/>
 				</PurchaseOrderReferences>
 				<PurchaseOrderConfirmationReferences>
-					<PurchaseOrderConfirmationReference RecordPos="ORD=" LPos="1" SFPos="1"/>
-					<PurchaseOrderConfirmationDate RecordPos="ORD=" LPos="1" SFPos="3"/>
+					<PurchaseOrderConfirmationReference RecordPos="AOR=" LPos="1" SFPos="1"/>
+					<PurchaseOrderConfirmationDate RecordPos="AOR=" LPos="1" SFPos="3"/>
 				</PurchaseOrderConfirmationReferences>
 				<OrderedDeliveryDetails>
 					<!--DeliveryType RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/-->
@@ -162,14 +162,14 @@
 					<!--LineNumber RecordPos="" LPos=""/-->
 					<ProductID>
 						<!--GTIN RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/-->
-						<SuppliersProductCode RecordPos="OLD=" LPos="2" SFPos="2"/>
-						<BuyersProductCode RecordPos="OLD=" LPos="4" SFPos="2"/>
+						<SuppliersProductCode RecordPos="ALD=" LPos="2" SFPos="2"/>
+						<BuyersProductCode RecordPos="ALD=" LPos="4" SFPos="2"/>
 					</ProductID>
-					<ProductDescription RecordPos="OLD=" LPos="10" SFPos="1"/>
-					<OrderedQuantity RecordPos="OLD=" LPos="6" SFPos="2"/>
-					<ConfirmedQuantity RecordPos="OLD" LPos="6" SFPos="2"/>
+					<ProductDescription RecordPos="ALD=" LPos="10" SFPos="1"/>
+					<OrderedQuantity RecordPos="ALD=" LPos="6" SFPos="2"/>
+					<ConfirmedQuantity RecordPos="ALD" LPos="6" SFPos="2"/>
 					<!--PackSize RecordPos="D" LPos="6"/-->
-					<UnitValueExclVAT RecordPos="OLD=" LPos="7" SFPos="1"/>
+					<UnitValueExclVAT RecordPos="ALD=" LPos="7" SFPos="1"/>
 					<!--LineValueExclVAT /-->
 					<!--OrderedDeliveryDetailsLineLevel>
 						<DeliveryDate RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
