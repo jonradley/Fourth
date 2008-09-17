@@ -148,7 +148,7 @@
 				</OrderedDeliveryDetails>
 				<ConfirmedDeliveryDetails>
 					<!--DeliveryType RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/-->
-					<DeliveryDate RecordPos="AQB=" LPos="3" SFPos="1"/>
+					<DeliveryDate RecordPos="AQB" LPos="3" SFPos="1"/>
 					<!--DeliverySlot>
 						<SlotStart RecordPos="H" LPos="8"/>
 						<SlotEnd RecordPos="H" LPos="9"/>
