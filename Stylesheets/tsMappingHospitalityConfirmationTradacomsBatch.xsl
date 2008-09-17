@@ -89,9 +89,6 @@
 							<ConfirmedQuantity>
 								<xsl:value-of select="format-number(ConfirmedQuantity div 1000,'0.000')"/>
 							</ConfirmedQuantity>
-							<UnitValueExclVAT>
-								<xsl:value-of select="format-number(UnitValueExclVAT div 10000,'0.0000')"/>
-							</UnitValueExclVAT>
 						</PurchaseOrderConfirmationLine>
 					</xsl:for-each>
 				</PurchaseOrderConfirmationDetail>
