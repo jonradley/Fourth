@@ -64,7 +64,7 @@
 				</PurchaseOrderConfirmationHeader>
 				<PurchaseOrderConfirmationDetail>
 					<xsl:for-each select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationDetail/PurchaseOrderConfirmationLine">
-						<PurchaseOrderConfirmationLine LineStatus="Accept">
+						<PurchaseOrderConfirmationLine>
 							<LineNumber>
 								<xsl:value-of select="count(preceding-sibling::* | self::*)"/>
 							</LineNumber>
