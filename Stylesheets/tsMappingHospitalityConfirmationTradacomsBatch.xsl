@@ -84,10 +84,10 @@
 								<xsl:value-of select="ProductDescription"/>
 							</ProductDescription>
 							<OrderedQuantity>
-								<xsl:value-of select="format-number(OrderedQuantity div 1000,'0.000')"/>
+								<xsl:value-of select="format-number(OrderedQuantity,'0.00')"/>
 							</OrderedQuantity>
 							<ConfirmedQuantity>
-								<xsl:value-of select="format-number(ConfirmedQuantity div 1000,'0.000')"/>
+								<xsl:value-of select="format-number(ConfirmedQuantity,'0.00')"/>
 							</ConfirmedQuantity>
 						</PurchaseOrderConfirmationLine>
 					</xsl:for-each>
