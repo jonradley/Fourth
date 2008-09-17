@@ -162,10 +162,10 @@
 					<!--LineNumber RecordPos="" LPos=""/-->
 					<ProductID>
 						<!--GTIN RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/-->
-						<SuppliersProductCode RecordPos="ALD=" LPos="2" SFPos="2"/>
+						<SuppliersProductCode RecordPos="ALD=" LPos="2" SFPos="3"/>
 						<BuyersProductCode RecordPos="ALD=" LPos="4" SFPos="2"/>
 					</ProductID>
-					<ProductDescription RecordPos="ALD=" LPos="10" SFPos="1"/>
+					<ProductDescription RecordPos="ALD=" LPos="9" SFPos="1"/>
 					<OrderedQuantity RecordPos="ALD=" LPos="6" SFPos="2"/>
 					<ConfirmedQuantity RecordPos="ALD" LPos="6" SFPos="2"/>
 					<!--PackSize RecordPos="D" LPos="6"/-->
