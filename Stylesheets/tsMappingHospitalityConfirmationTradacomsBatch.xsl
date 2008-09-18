@@ -92,11 +92,6 @@
 						</PurchaseOrderConfirmationLine>
 					</xsl:for-each>
 				</PurchaseOrderConfirmationDetail>
-				<PurchaseOrderConfirmationTrailer>
-					<NumberOfLines>
-						<xsl:value-of select="count(/PurchaseOrderConfirmation/PurchaseOrderConfirmationDetail/PurchaseOrderConfirmationLine)"/>
-					</NumberOfLines>
-				</PurchaseOrderConfirmationTrailer>
 			</PurchaseOrderConfirmation>
 		</BatchRoot>	
 	</xsl:template>
