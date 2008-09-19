@@ -56,11 +56,11 @@
 					<xsl:value-of select="$LineReference + position() - 1"/>
 					<xsl:text>,</xsl:text>
 					<xsl:choose>
-					<xsl:when test="/Invoice/InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode">
-						<xsl:value-of select="/Invoice/InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode"/>
+					<xsl:when test="/Invoice/InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode">
+						<xsl:value-of select="/Invoice/InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode"/>
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:value-of select="/CreditNote/CreditNoteHeader/Buyer/BuyersLocationID/SuppliersCode"/>
+						<xsl:value-of select="/CreditNote/CreditNoteHeader/Supplier/SuppliersLocationID/BuyersCode"/>
 					</xsl:otherwise>
 					</xsl:choose>	
 					<xsl:text>,</xsl:text>
