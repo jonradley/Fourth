@@ -14,29 +14,48 @@
 ==========================================================================================
  23/08/2007	| R Cambridge			| FB1400 Created module (based on tsMappingHospitalityTCGOrderIn.xsl)
 ==========================================================================================
+ 22/09/2008	| R Cambridge     	| 2474 
+==========================================================================================
            	|                 	|
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:template match="/Order">
 		<xsl:variable name="sDateTimeSeperator" select="substring(@OrderDateTime,11,1)"/>
+		
+		<xsl:variable name="sTRGUnitCode">
+			<xsl:choose>
+				<xsl:when test="substring-before(substring-after(@LocationCode,'RG'),'/') != ''">
+					<xsl:value-of select="substring-before(substring-after(@LocationCode,'RG'),'/')"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="@LocationCode"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		
 		<BatchRoot>
+		
 			<PurchaseOrder>
+			
 				<TradeSimpleHeader>
 					<SendersCodeForRecipient>
 						<xsl:value-of select="@SupplierCode"/>
 					</SendersCodeForRecipient>
 					<SendersBranchReference>
-						<xsl:choose>
-							<xsl:when test="substring-before(substring-after(@LocationCode,'RG'),'/') != ''">
-								<xsl:value-of select="substring-before(substring-after(@LocationCode,'RG'),'/')"/>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:value-of select="@LocationCode"/>
-							</xsl:otherwise>
-						</xsl:choose>
+						<xsl:value-of select="$sTRGUnitCode"/>
 					</SendersBranchReference>
 				</TradeSimpleHeader>
+				
 				<PurchaseOrderHeader>
+				
+					<ShipTo>
+						<ShipToLocationID>
+							<BuyersCode>
+								<xsl:value-of select="$sTRGUnitCode"/>
+							</BuyersCode>
+						</ShipToLocationID>
+					</ShipTo>				
+				
 					<PurchaseOrderReferences>
 						<PurchaseOrderReference>
 							<xsl:value-of select="@OrderID"/>
@@ -48,6 +67,7 @@
 							<xsl:value-of select="substring-after(@OrderDateTime,$sDateTimeSeperator)"/>
 						</PurchaseOrderTime>
 					</PurchaseOrderReferences>
+					
 					<OrderedDeliveryDetails>
 						<DeliveryDate>
 							<xsl:value-of select="substring-before(@TargetDeliveryDate,$sDateTimeSeperator)"/>
@@ -58,9 +78,13 @@
 							</SpecialDeliveryInstructions>
 						</xsl:for-each>
 					</OrderedDeliveryDetails>
+					
 				</PurchaseOrderHeader>
+				
 				<PurchaseOrderDetail>
+					
 					<xsl:for-each select="/Order/OrderItem">
+						
 						<PurchaseOrderLine>
 							<ProductID>
 								<SuppliersProductCode>
@@ -92,8 +116,11 @@
 								</xsl:choose>
 							</UnitValueExclVAT>
 						</PurchaseOrderLine>
+						
 					</xsl:for-each>
+					
 				</PurchaseOrderDetail>
+				
 			</PurchaseOrder>
 		</BatchRoot>
 	</xsl:template>
