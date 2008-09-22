@@ -44,6 +44,18 @@ N Emsen		|	08/11/2006	|	Case 531: Purchase order reference working.
 		<xsl:copy/>
 	</xsl:template>
 	<!-- END of GENERIC HANDLERS -->
+	
+	<!-- Shuffle up address lines -->
+	<xsl:template match="BuyersAddress | SuppliersAddress | ShipToAddress">
+		<xsl:copy>
+			<xsl:for-each select="*[starts-with(name(),'AddressLine')][.!=''][position() &lt;5 ]">
+				<xsl:element name="{concat('AddressLine',position())}">
+					<xsl:value-of select="."/>
+				</xsl:element>			
+			</xsl:for-each>
+			<PostCode><xsl:value-of select="PostCode"/></PostCode>
+		</xsl:copy>
+	</xsl:template>
 
 	<!-- InvoiceLine/ProductID/BuyersProductCode is used as a placeholder for INVOIC-ILD-CRLI and should not be copied over -->
 	<xsl:template match="BuyersProductCode"/>
