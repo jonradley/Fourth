@@ -91,10 +91,10 @@
 					<xsl:text>,</xsl:text>
 					<xsl:choose>
 						<xsl:when test="/Invoice">
-							<xsl:value-of select="format-number(sum(//InvoiceLine[LineExtraData/AccountCode = $AccountCode and LineExtraData/BuyersVATCode= $TranslatedVatCode]/LineValueExclVAT),'0.00')"/>
+							<xsl:value-of select="format-number(sum(//InvoiceLine[LineExtraData/AccountCode = $AccountCode and LineExtraData/BuyersVATCode= $TranslatedVatCode]/LineValueExclVAT) + sum(//InvoiceLine[LineExtraData/BuyersVATCode= $TranslatedVatCode]/LineValueExclVAT)  * ($VATRate div 100),'0.00')"/>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:value-of select="format-number(sum(//CreditNoteLine[LineExtraData/AccountCode = $AccountCode and LineExtraData/BuyersVATCode= $TranslatedVatCode]/LineValueExclVAT),'0.00')"/>
+							<xsl:value-of select="format-number(sum(//CreditNoteLine[LineExtraData/AccountCode = $AccountCode and LineExtraData/BuyersVATCode= $TranslatedVatCode]/LineValueExclVAT) + sum(//CreditNoteLine[LineExtraData/BuyersVATCode= $TranslatedVatCode]/LineValueExclVAT) * ($VATRate div 100),'0.00')"/>
 						</xsl:otherwise>
 					</xsl:choose>
 					<xsl:text>,</xsl:text>
@@ -168,7 +168,7 @@
 			if(vsDate.length > 0)
 			{
 				vsDate = vsDate(0).text;
-				return 1+ vsDate.substr(2,2) + vsDate.substr(5,2) + vsDate.substr(8,2) ;
+        return vsDate.substr(8,2) + vsDate.substr(5, 2) + vsDate.substr(2,2);
 			}
 			else
 			{
@@ -176,6 +176,4 @@
 			}
 		}
 	]]></msxsl:script>
-
-		
 </xsl:stylesheet>
