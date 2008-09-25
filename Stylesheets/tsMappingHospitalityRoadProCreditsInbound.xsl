@@ -173,7 +173,7 @@
 								</ShipTo>
 								
 								<!-- If more than one invioce reference exists, strip them all out. To do this we compare the first invoice reference to all the others and only insert the 									 invoice reference if they all match-->
-								<xsl:if test="not(/biztalk_1/body/Invoice/InvoiceLine/InvoiceLineReferences/BuyersOrderNumber != $InvoiceReferenceCheck)">
+								<xsl:if test="not(/biztalk_1/body/Invoice/InvoiceLine/InvoiceLineReferences/BuyersOrderNumber != $InvoiceReferenceCheck) and $InvoiceReferenceCheck !=''">
 									<InvoiceReferences>
 										<InvoiceReference><xsl:value-of select="$InvoiceReferenceCheck"/></InvoiceReference>
 										<InvoiceDate><xsl:value-of select="substring(/biztalk_1/body/Invoice/InvoiceDate,1,10)"/></InvoiceDate>
