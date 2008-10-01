@@ -22,7 +22,7 @@
 		<Order>
 
 			<xsl:attribute name="Type">
-				<xsl:value-of select="'GoodsReceived'"/>
+				<xsl:value-of select="'Shipping Note'"/>
 			</xsl:attribute>
 			
 			<xsl:attribute name="OrderID">
@@ -105,7 +105,7 @@
 					</xsl:attribute>
 					
 					<xsl:attribute name="Quantity">
-						<xsl:value-of select="DespatchedQuantity"/>
+						<xsl:value-of select="format-number(DespatchedQuantity div MaxSplits,'0.00000000000000')"/>
 					</xsl:attribute>
 					
 					<xsl:attribute name="MajorUnitPrice">
