@@ -29,9 +29,10 @@
 				<xsl:value-of select="DeliveryNoteHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
 			</xsl:attribute>
 			
-			<xsl:attribute name="DeliveryID">
+			<!-- Despite what it says in Torex's own spec this field isn't necessary -->
+			<!--xsl:attribute name="DeliveryID">
 				<xsl:value-of select="DeliveryNoteHeader/DeliveryNoteReferences/DeliveryNoteReference"/>
-			</xsl:attribute>
+			</xsl:attribute-->
 			
 			
 			<xsl:attribute name="UserReference">
@@ -98,7 +99,9 @@
 			<xsl:for-each select="DeliveryNoteDetail/DeliveryNoteLine">
 
 				<!-- write the details of this line -->
-				<DeliveryItem>
+				
+				<!-- Spec from Torex said these elements should be called DeliveryItem but it wasn't the case -->				
+				<OrderItem>
 					
 					<xsl:attribute name="SupplierProductCode">
 						<xsl:value-of select="ProductID/SuppliersProductCode"/>
@@ -121,7 +124,7 @@
 						<xsl:value-of select="'{00000000-0000-0000-0000-000000000000}'"/>
 					</xsl:attribute>
 					
-				</DeliveryItem>	
+				</OrderItem>	
 				
 			</xsl:for-each>
 			
