@@ -61,8 +61,39 @@ R Cambridge		| 14/08/2007		| 1746 Created module (copied from tsMappingHospitali
 			<xsl:value-of select="../../PurchaseOrderConfirmationHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
 		</xsl:element>
 	</xsl:template>
+	
+	<!-- Map UoM codes to tsvalues -->
+	<xsl:template match="//@UnitOfMeasure">
+	
+		<xsl:attribute name="UnitOfMeasure">
+			<xsl:choose>
+			
+				<xsl:when test=".='EA'">EA</xsl:when>
+				<xsl:when test=".='Each'">EA</xsl:when>
+				
+				<xsl:when test=".='PK'">CS</xsl:when>
+				<xsl:when test=".='Pkg'">CS</xsl:when>
+				
+				<xsl:when test=".='BX'">CS</xsl:when>
+				<xsl:when test=".='Box'">CS</xsl:when>
+				
+				<xsl:otherwise>EA</xsl:otherwise>
+				
+			</xsl:choose>
+		</xsl:attribute>	
+	</xsl:template>
+	
+	
+	<!-- Lyreco's line status is hard coded as Accepted -->
+	<xsl:template match="@LineStatus"/>
+	
+	<!-- Lyreco's ordered quantity is always the same as confirmed quantity -->
+	<xsl:template match="OrderedQuantity"/>	
 
-	<!-- Lyreco's total ex VAT invlucdes VAT -->
+	<!-- For a rejected order Lyreco give number of lines = 0, better that tradesimple calculates it -->
+	<xsl:template match="NumberOfLines"/>
+
+	<!-- Lyreco's total ex VAT includes VAT -->
 	<xsl:template match="TotalExclVAT"/>
 
 
