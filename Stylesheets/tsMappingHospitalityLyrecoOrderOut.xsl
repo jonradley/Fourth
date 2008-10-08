@@ -39,9 +39,9 @@
 			</xsl:variable>		
 		
 			<xsl:choose>
-				<xsl:when test="contains($packSize,'box')">BX</xsl:when>
+				<xsl:when test="contains($packSize,'box')">BOX</xsl:when>
 				<xsl:when test="contains($packSize,'each')">EA</xsl:when>
-				<xsl:when test="contains($packSize,'pack')">PK</xsl:when>
+				<xsl:when test="contains($packSize,'pack')">PKG</xsl:when>
 				<xsl:when test="contains($packSize,'wallet')">EA</xsl:when>				
 				<xsl:otherwise/>				
 			</xsl:choose>		
