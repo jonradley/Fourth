@@ -46,20 +46,20 @@
 			<ffsSubFieldSeparator>:</ffsSubFieldSeparator>
 		</ffsFieldSeparators>
 		<ffsPadding/>
-		<!--ffsBatchHeader>
+		<ffsBatchHeader>
 			<ffsHeaderRecord RecordPos="STX="/>
 			<ffsHeaderRecord RecordPos="TYP="/>
 			<ffsHeaderRecord RecordPos="SDT="/>
 			<ffsHeaderRecord RecordPos="CDT="/>
 			<ffsHeaderRecord RecordPos="FIL="/>
 		</ffsBatchHeader>
-		<ffsGroups>
+		<!--<ffsGroups>
 			<ffsGroup>
 				<ffsGroupRecord RecordPos="ODD=" FieldTotal="11"/>
 				<ffsSubGroupRecord RecordPos="ILD=" FieldTotal="25"/>
 			</ffsGroup>
-		</ffsGroups>
-		<ffsSplitBatchRecord RecordPos="CLO="/-->
+		</ffsGroups>-->
+		<ffsSplitBatchRecord RecordPos="CLO="/>
 	</ffsSettings>
 	<ffsRoot>
 		<PurchaseOrderConfirmation>
