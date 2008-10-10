@@ -7,6 +7,7 @@
 <!-- 04/07/2007 - NE - Case 577: Underwood adoption. -->
 <!-- 07/05/2007 - NE - FB: 791 - copied for bunzl -->
 <!-- 13/06/2007 - NE - FB: 1197 - Number of lines correction. -->
+<!-- 10/10/2008 - Lee Boyton - FB2500 - Do not map the document total from the inbound file, let the in-filler do it. -->
 <!-- *********************************************************************** -->
 <ffsFlatFileSchema>
 	<ffsSettings>
@@ -77,7 +78,6 @@
 			</PurchaseOrderConfirmationDetail>
 			<PurchaseOrderConfirmationTrailer>
 				<NumberOfLines RecordPos="H" LPos="17"/>
-				<TotalExclVAT RecordPos="H" LPos="19"/>
 			</PurchaseOrderConfirmationTrailer>
 		</PurchaseOrderConfirmation>
 	</ffsRoot>
