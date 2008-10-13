@@ -101,7 +101,13 @@
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:text>SDT=</xsl:text>
-			<xsl:text>5013546009230</xsl:text>
+			<!--xsl:text>5013546009230</xsl:text-->
+			<xsl:choose>
+				<xsl:when test="PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN != '5555555555555'">
+					<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN"/>
+				</xsl:when>
+				<xsl:otherwise>5013546009230</xsl:otherwise>
+			</xsl:choose>
 			<xsl:text>:</xsl:text>
 			<!-- required to strip before the '/' on the Aramark orders as Bunzl require 'ARAMARK'. But Orchid does not have any '/'
 					in the trading relationship so we have to test for it first -->
@@ -274,14 +280,30 @@
 			</xsl:if>
 		<xsl:value-of select="$sRecordSep"/>
 		
-		<!--
+		<xsl:if test="PurchaseOrderHeader/ShipTo/ContactName != ''">
 		<xsl:text>DNA=</xsl:text>
+			<!-- SEQA - M - First Level Sequence Nubmer -->
+				<!-- 4141 - M - First Level Sequence Number -->
+				<xsl:text>1</xsl:text>
+				<xsl:text>+</xsl:text>
+			<!-- DNAC - O - Data Narrative Code -->
+				<!-- 9140 O - Code Table Number -->
+				<!-- 9141 O - Code Value -->
+				<xsl:text>+</xsl:text>
+			<!-- RTEX - O - Registered Text -->
+				<!-- 9130 O - Application Code -->
+				<xsl:text>138</xsl:text>
+				<xsl:text>:</xsl:text>
+				<!-- 9131 O - First Application Text -->
+				<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/ShipTo/ContactName),35)"/>
+			<!-- GNAR - O - General Narrative -->
+				<!-- 9040 O - General Narrative Line 1 -->
+				<!-- 9040 O - General Narrative Line 2 -->
+				<!-- 9040 O - General Narrative Line 3 -->
+				<!-- 9040 O - General Narrative Line 4 -->
+			<xsl:value-of select="$sRecordSep"/>
+			</xsl:if>
 
-				???
-				
-		<xsl:value-of select="$sRecordSep"/>
-		-->
-		
 		<!--xsl:value-of select="HelperObj:ResetCounter('OrderLineDetails')"/-->
 		<xsl:for-each select="PurchaseOrderDetail/PurchaseOrderLine">
 		
