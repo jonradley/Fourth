@@ -1,12 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--******************************************************************
+Alterations
+
+	Bibendum inbound invoice translator
+
+**********************************************************************
+Name			| Date				| Change
+**********************************************************************
+     ?     	|       ?    		| Created Modele
+**********************************************************************
+R Cambridge	|	2008-10-15		| PO ref mod	
+**********************************************************************
+				|						|				
+**********************************************************************
+				|						|				
+*******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
 	
+	
+	<!-- The structure of the interal XML varries depending on who the customer is -->
+	
+	<!-- All documents in the batch will be for the same customer/agreement -->	
+	<xsl:variable name="COMPASS" select="'COMPASS'"/>
+	<xsl:variable name="TESCO" select="'TESCO'"/>
+	
+	<xsl:variable name="CustomerFlag">
+		<xsl:variable name="accountCode" select="string(//Invoice/TradeSimpleHeader/SendersBranchReference)"/>
+	
+		<xsl:choose>
+			<xsl:when test="$accountCode = 'MIL14T'"><xsl:value-of select="$COMPASS"/></xsl:when>
+			<xsl:when test="$accountCode = 'FMC01T'"><xsl:value-of select="$COMPASS"/></xsl:when>
+			<xsl:when test="$accountCode = 'TES01T'"><xsl:value-of select="$TESCO"/></xsl:when>
+			<xsl:when test="$accountCode = 'TES08T'"><xsl:value-of select="$TESCO"/></xsl:when>
+			<xsl:when test="$accountCode = 'TES12T'"><xsl:value-of select="$TESCO"/></xsl:when>
+			<xsl:when test="$accountCode = 'TES15T'"><xsl:value-of select="$TESCO"/></xsl:when>
+			<xsl:when test="$accountCode = 'TES25T'"><xsl:value-of select="$TESCO"/></xsl:when>
+			<xsl:otherwise></xsl:otherwise>
+		</xsl:choose>
+	
+	</xsl:variable>
+	
+	
 	<!-- Start point - ensure required outer BatchRoot tag is applied -->
 	<xsl:template match="/">
-<BatchRoot>
-		<xsl:apply-templates/>
-</BatchRoot>
+		<BatchRoot>
+			<xsl:apply-templates/>
+		</BatchRoot>
 	</xsl:template>
 	
 	<!-- GENERIC HANDLER to copy unchanged nodes, will be overridden by any node-specific templates below -->
@@ -19,6 +59,7 @@
 			<xsl:apply-templates/>
 		</xsl:copy>
 	</xsl:template>
+	
 	<!-- GENERIC ATTRIBUTE HANDLER to copy unchanged attributes, will be overridden by any attribute-specific templates below-->
 	<xsl:template match="@*">
 		<!--Copy the attribute unchanged-->
@@ -60,13 +101,15 @@
 			</SendersCodeForRecipient>
 			
 			<!--xsl:if test="SendersBranchReference = 'MIL14T' or SendersBranchReference = 'FMC01T' or SendersBranchReference = 'TES01T'"-->
-			<xsl:if test="SendersBranchReference">
-			<xsl:if test="contains('MIL14T~FMC01T~TES01T~TES08T~TES12T~TES15T~TES25T',SendersBranchReference)">
+			<!--xsl:if test="SendersBranchReference">
+			<xsl:if test="contains('MIL14T~FMC01T~TES01T~TES08T~TES12T~TES15T~TES25T',SendersBranchReference)"-->
+			<xsl:if test="$CustomerFlag = $COMPASS or $CustomerFlag = $TESCO ">
 				<SendersBranchReference>
 					<xsl:value-of select="SendersBranchReference"/>
 				</SendersBranchReference>
 			</xsl:if>
-			</xsl:if>
+			<!--/xsl:if>
+			</xsl:if-->
 		</TradeSimpleHeader>
 	</xsl:template>
 	
@@ -85,15 +128,17 @@
 	
 	<xsl:template match="ShipTo">
 		<ShipTo>
-			<xsl:if test="ShipToLocationID or (//TradeSimpleHeader/SendersBranchReference != '' and contains('TES01T~TES08T~TES12T~TES15T~TES25T',//TradeSimpleHeader/SendersBranchReference))">
+			<xsl:if test="ShipToLocationID or $CustomerFlag = $TESCO">
 				<ShipToLocationID>
-					<xsl:if test="//TradeSimpleHeader/SendersBranchReference != '' and contains('TES01T~TES08T~TES12T~TES15T~TES25T',//TradeSimpleHeader/SendersBranchReference)">
+					<!--xsl:if test="//TradeSimpleHeader/SendersBranchReference != '' and contains('TES01T~TES08T~TES12T~TES15T~TES25T',//TradeSimpleHeader/SendersBranchReference)"-->
+					<xsl:if test="$CustomerFlag = $TESCO">
 						<GLN>
-							<xsl:value-of select="ShipToAddress/AddressLine2"/>
+							<xsl:value-of select="ShipToAddress/AddressLine1"/>
 						</GLN>
 					</xsl:if>
 					<xsl:copy-of select="ShipToLocationID/SuppliersCode"/>
-					<xsl:if test="//TradeSimpleHeader/SendersBranchReference = 'MIL14T' or //TradeSimpleHeader/SendersBranchReference = 'FMC01T'">
+					<!--xsl:if test="//TradeSimpleHeader/SendersBranchReference = 'MIL14T' or //TradeSimpleHeader/SendersBranchReference = 'FMC01T'"-->
+					<xsl:if test="$CustomerFlag = $COMPASS">
 						<BuyersCode>
 							<xsl:value-of select="ShipToLocationID/SuppliersCode"/>
 						</BuyersCode>
@@ -107,8 +152,9 @@
 	
 	<xsl:template match="InvoiceHeader/Supplier">
 		<Supplier>
-			<xsl:if test="//TradeSimpleHeader/SendersBranchReference = 'MIL14T' or //TradeSimpleHeader/SendersBranchReference = 'FMC01T'">
-					<SuppliersLocationID>
+			<!--xsl:if test="//TradeSimpleHeader/SendersBranchReference = 'MIL14T' or //TradeSimpleHeader/SendersBranchReference = 'FMC01T'"-->
+			<xsl:if test="$CustomerFlag = $COMPASS">
+				<SuppliersLocationID>
 					<SuppliersCode>Bibendum</SuppliersCode>
 				</SuppliersLocationID>
 			</xsl:if>
@@ -394,7 +440,8 @@
 			<xsl:if test="$UnitsInOrderedPack != 	''">
 				<!-- Round to 3dp for Compass or 2 for everyone else -->
 				<xsl:choose>
-					<xsl:when test="../../../TradeSimpleHeader/SendersBranchReference = 'MIL14T' or ../../../TradeSimpleHeader/SendersBranchReference = 'FMC01T'">
+					<!--xsl:when test="../../../TradeSimpleHeader/SendersBranchReference = 'MIL14T' or ../../../TradeSimpleHeader/SendersBranchReference = 'FMC01T'"-->
+					<xsl:when test="$CustomerFlag = $COMPASS">
 						<xsl:value-of select="format-number($UnitValue div ($UnitsInPricedPack div $UnitsInOrderedPack),'0.000')"/>
 					</xsl:when>
 					<xsl:otherwise>
@@ -426,15 +473,52 @@
 	</xsl:template-->
 	
 	<xsl:template match="PurchaseOrderReferences">
+		
 		<PurchaseOrderReferences>
+						
 			<PurchaseOrderReference>
+			
 				<xsl:choose>
-					<xsl:when test="PurchaseOrderReference != ''">
-						<xsl:value-of select="PurchaseOrderReference"/>
+				
+					<xsl:when test="$CustomerFlag = $TESCO">
+					
+						<!-- PO ref and date are stored in PO ref field
+								format = nnn-nnnnn yymmdd or nnnnnnnn yymmdd -->
+								
+						<xsl:variable name="allNumericPORef" select="translate(substring-before(PurchaseOrderReference,' '),'-','')"/>
+						
+						<xsl:value-of select="$allNumericPORef"/>
+					
 					</xsl:when>
-					<xsl:otherwise>Not Provided</xsl:otherwise>
+					
+					<xsl:otherwise>
+					
+						<xsl:choose>
+							<xsl:when test="PurchaseOrderReference != ''">
+								<xsl:value-of select="PurchaseOrderReference"/>
+							</xsl:when>
+							<xsl:otherwise>Not Provided</xsl:otherwise>
+						</xsl:choose>
+					
+					</xsl:otherwise>
+					
 				</xsl:choose>
+
 			</PurchaseOrderReference>
+			
+			<xsl:if test="$CustomerFlag = $TESCO">
+			
+				<PurchaseOrderDate>
+			
+					<xsl:call-template name="fixDate">
+						<xsl:with-param name="sDate" select="substring-after(PurchaseOrderReference,' ')"/>
+					</xsl:call-template>
+				
+				</PurchaseOrderDate>
+						
+			
+			</xsl:if>
+				
 			<xsl:if test="not(normalize-space(TradeAgreement/ContractReference) = 'TRADE' or normalize-space(TradeAgreement/ContractReference) = '')">
 				<TradeAgreement>
 					<ContractReference>
@@ -442,7 +526,9 @@
 					</ContractReference>
 				</TradeAgreement>
 			</xsl:if>
+			
 		</PurchaseOrderReferences>
+		
 	</xsl:template>
 
 
