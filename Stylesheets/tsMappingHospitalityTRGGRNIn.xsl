@@ -14,11 +14,22 @@
 ==========================================================================================
  23/08/2007	| R Cambridge			| FB1400 Created module (based on tsMappingHospitalityTCGOrderIn.xsl)
 ==========================================================================================
+ 21/10/2008	| R Cambridge     	| 2524 temporary fix to ignore split pack info for some suppliers
+==========================================================================================
            	|                 	|
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+	<xsl:include href="tsMappingHospitalityTRG_SupplierSplitPackLogic.xsl"/>
+
 	<xsl:template 	match="/Delivery">
 	
+		<xsl:variable name="sProcessMaxSplits">
+			<xsl:call-template name="sProcessMaxSplits">
+				<xsl:with-param name="vsSupplierCode" select="@SupplierCode"/>	
+			</xsl:call-template>
+		</xsl:variable>
+
 		<BatchRoot>
 	
 			<GoodsReceivedNote>
@@ -84,7 +95,7 @@
 							
 							<AcceptedQuantity>
 								<xsl:choose>
-									<xsl:when test="@MaxSplits = '1'">
+									<xsl:when test="@MaxSplits = '1' or $sProcessMaxSplits = $IGNORE_MAXSPLITS">
 										<xsl:attribute name="UnitOfMeasure">CS</xsl:attribute>
 										<xsl:value-of select="@Quantity"/>
 									</xsl:when>
@@ -99,7 +110,7 @@
 													
 							<UnitValueExclVAT>
 								<xsl:choose>
-									<xsl:when test="@MaxSplits = '1'">
+									<xsl:when test="@MaxSplits = '1' or $sProcessMaxSplits = $IGNORE_MAXSPLITS">
 										<xsl:value-of select="@MajorUnitPrice"/>
 									</xsl:when>
 									<xsl:otherwise>
