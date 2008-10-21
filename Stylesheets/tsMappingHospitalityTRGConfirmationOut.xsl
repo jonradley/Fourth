@@ -14,11 +14,23 @@
 ==========================================================================================
  23/08/2007	| R Cambridge			| FB1400 Created module 
 ==========================================================================================
+ 21/10/2008	| R Cambridge     	| 2524 temporary fix to ignore split pack info for some suppliers
+==========================================================================================
            	|                 	|
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="xml" encoding="UTF-8"/>
+	
+	<xsl:include href="tsMappingHospitalityTRG_SupplierSplitPackLogic.xsl"/>
+	
+	<xsl:variable name="sProcessMaxSplits">
+		<xsl:call-template name="sProcessMaxSplits">
+			<xsl:with-param name="vsSupplierCode" select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/Supplier/SuppliersLocationID/BuyersCode"/>	
+		</xsl:call-template>
+	</xsl:variable>	
+	
 	<xsl:template match="/PurchaseOrderConfirmation">
+	
 		<Order>
 
 			<xsl:attribute name="Type">
@@ -118,8 +130,15 @@
 		<xsl:attribute name="SupplierProductCode">
 			<xsl:value-of select="ProductID/SuppliersProductCode"/>
 		</xsl:attribute>	
-		<xsl:attribute name="Quantity">
-			<xsl:value-of select="format-number(ConfirmedQuantity div MaxSplits,'0.00000000000000')"/>
+		<xsl:attribute name="Quantity">		
+			<xsl:choose>
+				<xsl:when test="$sProcessMaxSplits = $IGNORE_MAXSPLITS">
+					<xsl:value-of select="format-number(ConfirmedQuantity,'0.00000000000000')"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="format-number(ConfirmedQuantity div MaxSplits,'0.00000000000000')"/>
+				</xsl:otherwise>
+			</xsl:choose>			
 		</xsl:attribute>
 		<xsl:attribute name="MajorUnitPrice">
 			<xsl:value-of select="format-number(UnitValueExclVAT,'0.00')"/>
