@@ -88,9 +88,11 @@
 										<xsl:value-of select="tradeItemIdentification/additionalTradeItemIdentification[additionalTradeItemIdentificationType = 'SUPPLIER_ASSIGNED']/additionalTradeItemIdentificationValue"/>
 									</SuppliersProductCode>
 									
-									<BuyersProductCode>
-										<xsl:value-of select="tradeItemIdentification/additionalTradeItemIdentification[additionalTradeItemIdentificationType = 'BUYER_ASSIGNED']/additionalTradeItemIdentificationValue"/>
-									</BuyersProductCode>
+									<xsl:if test="tradeItemIdentification/additionalTradeItemIdentification[additionalTradeItemIdentificationType = 'BUYER_ASSIGNED']/additionalTradeItemIdentificationValue != ''">
+										<BuyersProductCode>
+											<xsl:value-of select="tradeItemIdentification/additionalTradeItemIdentification[additionalTradeItemIdentificationType = 'BUYER_ASSIGNED']/additionalTradeItemIdentificationValue"/>
+										</BuyersProductCode>
+									</xsl:if>
 									
 								</ProductID>
 								
