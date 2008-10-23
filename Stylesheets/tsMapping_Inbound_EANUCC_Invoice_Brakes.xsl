@@ -1,43 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-'******************************************************************************************
-' Overview
-'
-' Maps EAN UCC format (OFSCI) Invoices into the King internal format
-' The following details must be populated by subsequent processors:
-' 	TradeSimpleHeader : 
-'						Senders Name, Address1-4 and PostCode
-'						RecipientsCodeForSender, RecipientsBranchReference, RecipientsName, Address1-4
-'						TestFlag
-'	InvoiceLine :
-'						ProductDescription
-'						Pack Size
-'						OrderedQuantity (if not present)
-'						ConfirmedQuantity
-'						DeliveredQuantity
-'
-' © Alternative Business Solutions Ltd., 2005.
-'******************************************************************************************
-' Module History
-'******************************************************************************************
-' Date             | Name              | Description of modification
-'******************************************************************************************
-' 25/04/2005  | Steven Hewitt | Created
-'******************************************************************************************
-' 26/07/2005  | A Sheppard    | 2344. Bug fix.
-'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-'	26/01/2007	|	Nigel Emsen	|	Case 710: Fairfax Adoption for Aramark. XPaths adjusted.
-'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-'	31/01/2007	| Lee Boyton   |	Case 767: Cater for an empty ContractReferenceNumber element.
-'******************************************************************************************
-'	12/09/2007	| R Cambridge  |	Case 1444: Don't create buyers address lines that would blank
-'******************************************************************************************
-'	20/01/2007	| Lee Boyton   |	Case 1709: Ensure line numbers are unique in mapped document.
-'******************************************************************************************
-'	          	|              |	                                                            
-'******************************************************************************************
+<!--**************************************************************************************
+ Overview
 
--->
+ Maps EAN UCC format (OFSCI) Invoices into the King internal format
+ The following details must be populated by subsequent processors:
+ 	TradeSimpleHeader : 
+						Senders Name, Address1-4 and PostCode
+						RecipientsCodeForSender, RecipientsBranchReference, RecipientsName, Address1-4
+						TestFlag
+	InvoiceLine :
+						ProductDescription
+						Pack Size
+						OrderedQuantity (if not present)
+						ConfirmedQuantity
+						DeliveredQuantity
+
+ © Alternative Business Solutions Ltd., 2005.
+******************************************************************************************
+ Module History
+******************************************************************************************
+ Date         | Name       		| Description of modification
+******************************************************************************************
+ 25/04/2005  	| Steven Hewitt 	| Created
+******************************************************************************************
+ 26/07/2005  	| A Sheppard    	| 2344. Bug fix.
+******************************************************************************************
+	26/01/2007	|	Nigel Emsen		|	Case 710: Fairfax Adoption for Aramark. XPaths adjusted.
+******************************************************************************************
+	31/01/2007	| Lee Boyton   	|	Case 767: Cater for an empty ContractReferenceNumber element.
+******************************************************************************************
+	12/09/2007	| R Cambridge  	|	Case 1444: Don't create buyers address lines that would blank
+******************************************************************************************
+	20/01/2008	| Lee Boyton   	|	Case 1709: Ensure line numbers are unique in mapped document.
+******************************************************************************************
+	23/10/2008	| R Cambridge  	|	Case 2469: Use PO confirmation date as substitute for missing PO date 
+******************************************************************************************
+	          	|              	|	                                                            
+***************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	<xsl:output method="xml"/>
 	<!-- we use constants for default values -->
@@ -240,12 +239,20 @@
 														<xsl:value-of select="/Invoice/OrderReference/PurchaseOrderNumber"/>
 													</PurchaseOrderReference>
 												</xsl:if>
-												<xsl:if test="/Invoice/OrderReference/PurchaseOrderNumber">
+												
+												<xsl:variable name="purchaseOrderDate">
+													<xsl:for-each select="(/Invoice/OrderReference/PurchaseOrderDate | /Invoice/OrderConfirmationReference/PurchaseOrderConfirmationDate)[1]">
+														<xsl:value-of select="string(.)"/>													
+													</xsl:for-each>
+												</xsl:variable>
+												
+												
+												<xsl:if test="$purchaseOrderDate != ''">
 													<PurchaseOrderDate>
-														<xsl:value-of select="substring-before(/Invoice/OrderReference/PurchaseOrderDate,'T')"/>
+														<xsl:value-of select="substring-before($purchaseOrderDate,'T')"/>
 													</PurchaseOrderDate>
 													<PurchaseOrderTime>
-														<xsl:value-of select="substring-after(/Invoice/OrderReference/PurchaseOrderDate,'T')"/>
+														<xsl:value-of select="substring-after($purchaseOrderDate,'T')"/>
 													</PurchaseOrderTime>
 												</xsl:if>
 												<xsl:if test="/Invoice/TradeAgreementReference/ContractReferenceNumber != ''">
