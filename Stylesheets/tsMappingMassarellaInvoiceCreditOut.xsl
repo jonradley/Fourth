@@ -152,14 +152,14 @@
 				<xsl:value-of select="$DocumentReference"/>					
 				<xsl:text>,</xsl:text>							
 				<xsl:text>,</xsl:text>
-				<xsl:value-of select="format-number($LineTotalExclVAT + $LineVATAmount,'0.00')"/>
+				<xsl:value-of select="format-number($LineTotalExclVAT,'0.00')"/>
 				<xsl:text>,</xsl:text>
 				<!-- translate the VAT code -->
 				<xsl:choose>
-					<xsl:when test="(not(LineExtraData/BuyersVATCode) and $VATCode = 'S') or LineExtraData/BuyersVATCode = 'S' or LineExtraData/BuyersVATCode = '1'"><xsl:text>1</xsl:text>											</xsl:when>
-					<xsl:when test="(not(LineExtraData/BuyersVATCode) and $VATCode = 'Z') or LineExtraData/BuyersVATCode = 'Z' or LineExtraData/BuyersVATCode = '3'"><xsl:text>3</xsl:text>											</xsl:when>
-					<xsl:when test="(not(LineExtraData/BuyersVATCode) and $VATCode = 'E') or LineExtraData/BuyersVATCode = 'E' or LineExtraData/BuyersVATCode = '4'"><xsl:text>4</xsl:text></xsl:when>
-					<xsl:when test="(not(LineExtraData/BuyersVATCode) and $VATCode = 'L') or LineExtraData/BuyersVATCode = 'L' or LineExtraData/BuyersVATCode = '2'"><xsl:text>2</xsl:text></xsl:when>
+					<xsl:when test="(not(LineExtraData/BuyersVATCode) and $VATCode = 'S') or LineExtraData/BuyersVATCode = 'S' or LineExtraData/BuyersVATCode = '1'"><xsl:text>T1</xsl:text>											</xsl:when>
+					<xsl:when test="(not(LineExtraData/BuyersVATCode) and $VATCode = 'Z') or LineExtraData/BuyersVATCode = 'Z' or LineExtraData/BuyersVATCode = '3'"><xsl:text>T3</xsl:text>											</xsl:when>
+					<xsl:when test="(not(LineExtraData/BuyersVATCode) and $VATCode = 'E') or LineExtraData/BuyersVATCode = 'E' or LineExtraData/BuyersVATCode = '4'"><xsl:text>T4</xsl:text></xsl:when>
+					<xsl:when test="(not(LineExtraData/BuyersVATCode) and $VATCode = 'L') or LineExtraData/BuyersVATCode = 'L' or LineExtraData/BuyersVATCode = '2'"><xsl:text>T2</xsl:text></xsl:when>
 					<xsl:otherwise><xsl:text>5</xsl:text></xsl:otherwise>
 				</xsl:choose>				
 				<xsl:text>,</xsl:text>
