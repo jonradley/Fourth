@@ -188,7 +188,11 @@
 				
 					<RequestedQuantity>
 						<xsl:attribute name="unitCode">
-							<xsl:value-of select="OrderedQuantity/@UnitOfMeasure"/>
+							<!--xsl:value-of select="OrderedQuantity/@UnitOfMeasure"/-->
+							<xsl:choose>
+								<xsl:when test="translate(PackSize,'EACH','each') = 'each'">EA</xsl:when>
+								<xsl:otherwise>CS</xsl:otherwise>
+							</xsl:choose>
 						</xsl:attribute>
 						
 						<xsl:value-of select="format-number(OrderedQuantity,'0.000')"></xsl:value-of>
