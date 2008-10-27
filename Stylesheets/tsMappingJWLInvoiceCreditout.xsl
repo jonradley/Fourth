@@ -14,7 +14,9 @@
 ******************************************************************************************
  13/08/2008 | Shailesh Dubey| Created module.
 ******************************************************************************************
- 
+ 27/10/2008 | Lee Boyton | 2537. Spec. change (DRAFT 3). Credit note monetary
+                                         |           values need to be negative.
+******************************************************************************************
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -87,7 +89,7 @@
 							<xsl:value-of select="format-number(sum(//InvoiceLine[LineExtraData/AccountCode = $AccountCode and LineExtraData/BuyersVATCode= $TranslatedVatCode]/LineValueExclVAT) + sum(//InvoiceLine[LineExtraData/BuyersVATCode= $TranslatedVatCode]/LineValueExclVAT)  * ($VATRate div 100),'0.00')"/>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:value-of select="format-number(sum(//CreditNoteLine[LineExtraData/AccountCode = $AccountCode and LineExtraData/BuyersVATCode= $TranslatedVatCode]/LineValueExclVAT) + sum(//CreditNoteLine[LineExtraData/BuyersVATCode= $TranslatedVatCode]/LineValueExclVAT) * ($VATRate div 100),'0.00')"/>
+							<xsl:value-of select="format-number(-1 * sum(//CreditNoteLine[LineExtraData/AccountCode = $AccountCode and LineExtraData/BuyersVATCode= $TranslatedVatCode]/LineValueExclVAT) + sum(//CreditNoteLine[LineExtraData/BuyersVATCode= $TranslatedVatCode]/LineValueExclVAT) * ($VATRate div 100),'0.00')"/>
 						</xsl:otherwise>
 					</xsl:choose>
 					<xsl:text>,</xsl:text>
@@ -96,7 +98,7 @@
 						<xsl:value-of select="format-number(sum(//InvoiceLine[LineExtraData/BuyersVATCode= $TranslatedVatCode]/LineValueExclVAT)  * ($VATRate div 100) ,'0.00')"/>
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:value-of select="format-number(sum(//CreditNoteLine[LineExtraData/BuyersVATCode= $TranslatedVatCode]/LineValueExclVAT) * ($VATRate div 100),'0.00')"/>
+						<xsl:value-of select="format-number(-1 * sum(//CreditNoteLine[LineExtraData/BuyersVATCode= $TranslatedVatCode]/LineValueExclVAT) * ($VATRate div 100),'0.00')"/>
 					</xsl:otherwise>
 					</xsl:choose>
 					<xsl:text>,</xsl:text>
