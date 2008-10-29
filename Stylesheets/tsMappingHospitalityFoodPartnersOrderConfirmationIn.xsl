@@ -39,7 +39,7 @@ R Cambridge	| 2008-01-03		| 1686 revised rejection codes
 				
 				<TradeSimpleHeader>
 					<SendersCodeForRecipient>
-						<xsl:value-of select="buyer/additionalPartyIdentification[additionalPartyIdentificationType='SELLER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue[1]"/>
+						<xsl:value-of select="buyer/additionalPartyIdentification[additionalPartyIdentificationType='BUYER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue[1]"/>
 					</SendersCodeForRecipient>
 				</TradeSimpleHeader>
 				
@@ -67,7 +67,7 @@ R Cambridge	| 2008-01-03		| 1686 revised rejection codes
 							<xsl:for-each select="seller/additionalPartyIdentification[additionalPartyIdentificationType='BUYER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue[1]">
 								<BuyersCode><xsl:value-of select="."/></BuyersCode>
 							</xsl:for-each>
-							<SuppliersCode/>
+							<!--SuppliersCode/-->
 						</SuppliersLocationID>
 					</Supplier>
 					
@@ -208,16 +208,19 @@ R Cambridge	| 2008-01-03		| 1686 revised rejection codes
 											<ProductID>
 												<GTIN><xsl:value-of select="modifiedOrderInformation/tradeItemIdentification/gtin"/></GTIN>
 												<SuppliersProductCode><xsl:value-of select="modifiedOrderInformation/tradeItemIdentification/additionalTradeItemIdentification[additionalTradeItemIdentificationType='SUPPLIER_ASSIGNED']/additionalTradeItemIdentificationValue"/></SuppliersProductCode>
-												<xsl:for-each select="modifiedOrderInformation/tradeItemIdentification/additionalTradeItemIdentification[additionalTradeItemIdentificationType='BUYER_ASSIGNED']/additionalTradeItemIdentificationValue">
-													<BuyersProductCode><xsl:value-of select="."/></BuyersProductCode>
-												</xsl:for-each>
+												<!-- buyer's code contains description -->
 											</ProductID>
 										
 										</xsl:otherwise>									
 									
 									</xsl:choose>								
 								
-									<!--ProductDescription/-->
+								
+									<xsl:for-each select="modifiedOrderInformation/tradeItemIdentification/additionalTradeItemIdentification[additionalTradeItemIdentificationType='BUYER_ASSIGNED']/additionalTradeItemIdentificationValue[.!=''][1]">
+										<ProductDescription><xsl:value-of select="."/></ProductDescription>
+									</xsl:for-each>
+																	
+									
 									<!--OrderedQuantity><xsl:value-of select="modifiedOrderInformation/requestedQuantity/value"/></OrderedQuantity-->
 									
 									<ConfirmedQuantity>
@@ -287,23 +290,19 @@ R Cambridge	| 2008-01-03		| 1686 revised rejection codes
 	
 		<xsl:choose>
 			
-			<!-- translations, as specified by Kewill to Brakes -->
-			<xsl:when test="$brakesReasonCode = 'INVALID_BUYER_IDENTIFICATION'">Invalid\wrong Customer account number</xsl:when>
-			<xsl:when test="$brakesReasonCode = 'BUSINESS_SCOPE_BLOCK'">Customer account number on stop</xsl:when>
-			<xsl:when test="$brakesReasonCode = 'CUSTOMER_IDENTIFICATION_NUMBER_DOES_NOT_EXIST'">Customer account number DNU'd</xsl:when>
-			<xsl:when test="$brakesReasonCode = 'DELIVERY_SLOT_NOT_VALID_FOR_LOCATION'">Invalid delivery day is requested</xsl:when>
-			<xsl:when test="$brakesReasonCode = 'DELIVERY_SLOT_MISSED'">Request delivery cut-off time is missed</xsl:when>
-			<xsl:when test="$brakesReasonCode = 'MISSING_MESSAGE_REFERENCE_NUMBER'">Purchase Order number is missing\invalid</xsl:when>
-			<xsl:when test="$brakesReasonCode = 'MISSING_DATA'">Purchase Card number is missing\invalid</xsl:when>
-			<xsl:when test="$brakesReasonCode = 'BUSINESS_SCOPE_BLOCK'">Minimum Order Level Not Reached</xsl:when>
-			<xsl:when test="$brakesReasonCode = 'INVALID_PRODUCT_OR_ITEM_IDENTIFICATION'">Invalid product code</xsl:when>
-			<xsl:when test="$brakesReasonCode = 'ITEM_NOT_AUTHORIZED'">Product not on ABL</xsl:when>
-			<xsl:when test="$brakesReasonCode = 'PRODUCT_NOT_VALID_FOR_LOCATION'">Product not valid on servicing depot</xsl:when>
-			<xsl:when test="$brakesReasonCode = 'DISCONTINUED_LINE'">Product discontinued\not on sale</xsl:when>
-			<xsl:when test="$brakesReasonCode = 'PRODUCT_OUT_OF_STOCK'">Product out of stock and no sub set up</xsl:when>
-			<xsl:when test="$brakesReasonCode = 'PRODUCT_OUT_OF_STOCK'">Insufficient stock and no sub set up</xsl:when>
-			<xsl:when test="$brakesReasonCode = 'RECEIVED_AFTER_CUTOFF_DATE_OR_TIME'">Product past product cut-off time</xsl:when>
-			<xsl:when test="$brakesReasonCode = 'UNAUTHORIZED_BUSINESS_PROCESS_STATE'">Quantity greater than 99</xsl:when>
+			<!-- translations, as specified by Kewill to Food Partners -->
+			<xsl:when test="$brakesReasonCode = 'CUSTOMER_IDENTIFICATION_NUMBER_IS_MISSING'">Customer identification number is missing</xsl:when>
+			<xsl:when test="$brakesReasonCode = 'CUSTOMER_IDENTIFICATION_NUMBER_IS_INVALID'">Customer identification number is invalid</xsl:when>
+			<xsl:when test="$brakesReasonCode = 'INVALID_DATE'">Invalid date</xsl:when>
+			<xsl:when test="$brakesReasonCode = 'DELIVERY_SLOT_NOT_VALID_FOR_LOCATION'">Delivery slot not valid for location</xsl:when>
+			<xsl:when test="$brakesReasonCode = 'MISSING_MESSAGE_REFERENCE_NUMBER'">Missing message reference number</xsl:when>
+			<xsl:when test="$brakesReasonCode = 'SENDER_NOT_AUTHORIZED_FOR_THIS_MESSAGE'">Sender not authorized for this message	</xsl:when>
+			<xsl:when test="$brakesReasonCode = 'DISCONTINUED_LINE'">Discontinued line</xsl:when>
+			<xsl:when test="$brakesReasonCode = 'ITEM_TEMPORARILY_NOT_AVAILABLE'">Item temporarily not available</xsl:when>
+			<xsl:when test="$brakesReasonCode = 'INVALID_PRODUCT_OR_ITEM_IDENTIFICATION'">Invalid product or item identification</xsl:when>
+			<xsl:when test="$brakesReasonCode = 'PRODUCT_NOT_VALID_FOR_LOCATION'">Product not valid for location</xsl:when>
+			<xsl:when test="$brakesReasonCode = 'RECEIVED_AFTER_CUTOFF_DATE_OR_TIME'">Received after cutoff date or time</xsl:when>
+			<xsl:when test="$brakesReasonCode = 'OTHER_UNLISTED_REASON'">Other unlisted reason</xsl:when>
 			
 			<!-- default -->
 			<xsl:otherwise></xsl:otherwise>
