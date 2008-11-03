@@ -51,7 +51,7 @@
 				
 				<xsl:choose>
 					<xsl:when test="/Invoice">INV</xsl:when>
-					<xsl:otherwise>CRN</xsl:otherwise>
+					<xsl:otherwise>CRD</xsl:otherwise>
 				</xsl:choose>
 				<xsl:text>,</xsl:text>
 				
@@ -94,32 +94,40 @@
 				<xsl:text>,</xsl:text>
 
 				<xsl:text>REPLACEWITHCRERARREF </xsl:text>
-				<xsl:value-of select="/Invoice/InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode"/>
+				<xsl:value-of select="//ShipTo/ShipToLocationID/BuyersCode"/>
 				<xsl:text>,</xsl:text>
-				
-				<xsl:value-of select="/Invoice/InvoiceHeader/InvoiceReferences/InvoiceReference" />
+				<xsl:choose>
+					<xsl:when test="/Invoice"><xsl:value-of select="/Invoice/InvoiceHeader/InvoiceReferences/InvoiceReference"/></xsl:when>
+					<xsl:otherwise><xsl:value-of select="/CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteReference"/></xsl:otherwise>
+				</xsl:choose>
 				<xsl:text>,</xsl:text>
-				
 				<xsl:text>REPLACEWITHCRERARREF </xsl:text>
-				<xsl:value-of select="/Invoice/InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode" /><xsl:text>/</xsl:text>
-				<xsl:value-of select="/Invoice/InvoiceHeader/InvoiceReferences/InvoiceReference"/><xsl:text>/</xsl:text>
+				<xsl:value-of select="//ShipTo/ShipToLocationID/BuyersCode"/>
+				<xsl:text>/</xsl:text>
+				<xsl:choose>
+					<xsl:when test="/Invoice"><xsl:value-of select="/Invoice/InvoiceHeader/InvoiceReferences/InvoiceReference"/></xsl:when>
+					<xsl:otherwise><xsl:value-of select="/CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteReference"/></xsl:otherwise>
+				</xsl:choose>
+				<xsl:text>/</xsl:text>
 				<xsl:value-of select="//TradeSimpleHeader/RecipientsCodeForSender"/>
 				<xsl:text>,</xsl:text>
-	
 				<!-- blank -->
 				<xsl:text>,</xsl:text>
 				<!-- blank -->
 				<xsl:text>,</xsl:text>
-
 				<xsl:text>REPLACEWITHCRERARREF </xsl:text>
-				<xsl:value-of select="/Invoice/InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode"/><xsl:text>/</xsl:text>
-				<xsl:value-of select="/Invoice/InvoiceHeader/InvoiceReferences/InvoiceReference" /><xsl:text>/</xsl:text>
+				<xsl:value-of select="//ShipTo/ShipToLocationID/BuyersCode"/>
+				<xsl:text>/</xsl:text>
+				<xsl:choose>
+					<xsl:when test="/Invoice"><xsl:value-of select="/Invoice/InvoiceHeader/InvoiceReferences/InvoiceReference"/></xsl:when>
+					<xsl:otherwise><xsl:value-of select="/CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteReference"/></xsl:otherwise>
+				</xsl:choose>
+				<xsl:text>/</xsl:text>
 				<xsl:value-of select="//TradeSimpleHeader/RecipientsCodeForSender"/>
 				<xsl:value-of select="$NewLine" />
 			</xsl:for-each>
 		</xsl:for-each>	
 	</xsl:template>
-		
 	<msxsl:script language="JScript" implements-prefix="script"><![CDATA[ 
 
 		/*=========================================================================================
