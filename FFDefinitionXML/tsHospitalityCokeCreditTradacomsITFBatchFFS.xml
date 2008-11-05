@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-**********************************************************************
+<!--******************************************************************
+
 Alterations
 **********************************************************************
-Name		| Date			| Change
+Name			| Date			| Change
 **********************************************************************
 S Jefford	| 22/08/2005	| GTIN field now sourced from CLD/SPRO(1).
-			|				| CLD/DRLI now stored in BuyersProductCode
+				|					| CLD/DRLI now stored in BuyersProductCode
 **********************************************************************
-			|				|
+N Dry    	|           	| Use Bar code as product code          
 **********************************************************************
--->
+R Cambridge	| 05/11/2008	| 2548 get SBR from SDT record (not CDT)
+**********************************************************************
+				|					|
+**********************************************************************
+				|					|
+**********************************************************************
+				|					|
+**********************************************************************
+				|					|
+*******************************************************************-->
 <ffsFlatFileSchema>
 	<ffsSettings>
 		<ffsRecordPositionType>named</ffsRecordPositionType>
@@ -115,7 +124,7 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from CLD/SPRO(1).
 							<!-- MANDATORY Sender’s code for recipient, MANDATORY, CREDIT – CLO – CLOC(2), You must provide this code.  It is your internal identifier for the company that is to receive the document. It must match the code that you have entered on the trading relationship you have with the other company -->
 							<SendersCodeForRecipient RecordPos="CLO=" LPos="1" SFPos="2"/>
 							<!-- OPTIONAL Sender’s Branch Reference, MANDATORY, CREHDR – CDT – CIDN(2), Depending on your particular relationship with the company, you must provide this code.  It is your internal identifier for the “contract” that the receiving company belongs to. It must match the code that you have provided to ABS on set-up -->
-							<SendersBranchReference RecordPos="CDT=" LPos="1" SFPos="2"/>
+							<SendersBranchReference RecordPos="SDT=" LPos="1" SFPos="2"/>
 						</TradeSimpleHeader>
 						<CreditNoteHeader>
 							<BatchInformation>
