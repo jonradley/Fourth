@@ -13,7 +13,7 @@
 ******************************************************************************************
  17/11/2004 | S Hewitt       | Created
 ******************************************************************************************
-
+ 06/11/2008 | Lee Boyton     | 2551. Pull unit number from Buyers code for Ship To field.
 ******************************************************************************************
 -->
 
@@ -48,7 +48,7 @@
 					<xsl:element name="RefDesc">Unit Number</xsl:element>
 					
 					<xsl:element name="RefCode">
-						<xsl:value-of select="/GoodsReceivedNote/TradeSimpleHeader/RecipientsCodeForSender"/>
+						<xsl:value-of select="/GoodsReceivedNote/GoodsReceivedNoteHeader/ShipTo/ShipToLocationID/BuyersCode"/>
 					</xsl:element>
 				</xsl:element>
 
