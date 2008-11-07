@@ -15,6 +15,9 @@
 ******************************************************************************************
  06/11/2008 | Lee Boyton     | 2551. Pull unit number from Buyers code for Ship To field.
 ******************************************************************************************
+ 07/11/2008 | Lee Boyton     | 2551. Hot fix for King UK receipts, pull unit number from
+                             | Recipients Branch Reference if Buyers code for Ship To field is blank.
+******************************************************************************************
 -->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 	
@@ -48,7 +51,14 @@
 					<xsl:element name="RefDesc">Unit Number</xsl:element>
 					
 					<xsl:element name="RefCode">
-						<xsl:value-of select="/GoodsReceivedNote/GoodsReceivedNoteHeader/ShipTo/ShipToLocationID/BuyersCode"/>
+						<xsl:choose>
+							<xsl:when test="/GoodsReceivedNote/GoodsReceivedNoteHeader/ShipTo/ShipToLocationID/BuyersCode != ''">
+								<xsl:value-of select="/GoodsReceivedNote/GoodsReceivedNoteHeader/ShipTo/ShipToLocationID/BuyersCode"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="/GoodsReceivedNote/TradeSimpleHeader/RecipientsBranchReference"/>
+							</xsl:otherwise>
+						</xsl:choose>
 					</xsl:element>
 				</xsl:element>
 
