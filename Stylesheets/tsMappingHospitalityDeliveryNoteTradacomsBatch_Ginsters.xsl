@@ -6,7 +6,11 @@ Alterations
 **********************************************************************
 Name			| Date			| Change
 **********************************************************************
-R Cambridge	| 29/10/2007	| 1556 Create module
+R Cambridge	| 29/10/2007	| 1556 Created module
+**********************************************************************
+R Cambridge	| 10/11/2008	| 2564 Only create SBR if a value is present
+**********************************************************************
+				|					|
 **********************************************************************
 				|					|
 *******************************************************************-->
@@ -29,7 +33,9 @@ R Cambridge	| 29/10/2007	| 1556 Create module
 							<DeliveryNote>
 								<TradeSimpleHeader>
 									<SendersCodeForRecipient><xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/></SendersCodeForRecipient>
-									<SendersBranchReference><xsl:value-of select="TradeSimpleHeader/SendersBranchReference"/></SendersBranchReference>
+									<xsl:for-each select="TradeSimpleHeader/SendersBranchReference[1]">
+										<SendersBranchReference><xsl:value-of select="."/></SendersBranchReference>
+									</xsl:for-each>									
 								</TradeSimpleHeader>
 								<DeliveryNoteHeader>
 								
