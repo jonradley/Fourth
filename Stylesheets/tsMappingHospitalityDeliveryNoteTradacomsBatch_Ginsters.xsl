@@ -10,7 +10,7 @@ R Cambridge	| 29/10/2007	| 1556 Created module
 **********************************************************************
 R Cambridge	| 10/11/2008	| 2564 Only create SBR if a value is present
 **********************************************************************
-				|					|
+R Cambridge	| 11/11/2008	| 2564 Create dummy PO references to prevent all DN threading together
 **********************************************************************
 				|					|
 *******************************************************************-->
@@ -81,14 +81,15 @@ R Cambridge	| 10/11/2008	| 2564 Only create SBR if a value is present
 											<xsl:with-param name="vsYYMMDD" select="DeliveryNoteHeader/DeliveredDeliveryDetails/DeliveryDate"/>
 										</xsl:call-template>
 									</xsl:variable>
+									<xsl:variable name="sDummyPORef" select="concat(DeliveryNoteHeader/ShipTo/ShipToLocationID/SuppliersCode,'-',$sDeliveryDate)"/>
 									
 									<PurchaseOrderReferences>
-										<PurchaseOrderReference>Not provided</PurchaseOrderReference>
+										<PurchaseOrderReference><xsl:value-of select="$sDummyPORef"/></PurchaseOrderReference>
 										<PurchaseOrderDate><xsl:value-of select="$sDocumentDate"/></PurchaseOrderDate>
 									</PurchaseOrderReferences>
 									
 									<PurchaseOrderConfirmationReferences>
-										<PurchaseOrderConfirmationReference>Not provided</PurchaseOrderConfirmationReference>
+										<PurchaseOrderConfirmationReference><xsl:value-of select="$sDummyPORef"/></PurchaseOrderConfirmationReference>
 										<PurchaseOrderConfirmationDate><xsl:value-of select="$sDocumentDate"/></PurchaseOrderConfirmationDate>
 									</PurchaseOrderConfirmationReferences>
 									
