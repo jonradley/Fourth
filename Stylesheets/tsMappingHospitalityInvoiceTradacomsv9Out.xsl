@@ -15,6 +15,10 @@
 ==========================================================================================
  04/08/2006	| Lee Boyton			| Created module
 ==========================================================================================
+ 04/11/2008	| R Cambridge     	| 2544 some minor refinements 
+==========================================================================================
+           	|                 	|
+==========================================================================================
            	|                 	|
 =======================================================================================-->
 
@@ -35,7 +39,25 @@
 		<xsl:variable name="sRecordSep">
 			<xsl:text>'</xsl:text>
 			<!--xsl:text>'&#13;&#10;</xsl:text-->
+		</xsl:variable>		
+		
+		<xsl:variable name="FGN">
+			<!-- if a new file generation number has been generated for this message use it, otherwise
+			     use the file generation number sent by the original message sender -->
+			<xsl:variable name="atLeast4DigitFGN">						
+				<xsl:choose>
+					<xsl:when test="InvoiceHeader/FileGenerationNumber != ''">
+						<xsl:value-of select="format-number(InvoiceHeader/FileGenerationNumber,'0000')"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="format-number(InvoiceHeader/BatchInformation/FileGenerationNo,'0000')"/>				
+					</xsl:otherwise>
+				</xsl:choose>						
+			</xsl:variable>		
+			<!-- Only get 4 right hand digits -->
+			<xsl:value-of select="substring($atLeast4DigitFGN, string-length($atLeast4DigitFGN)-3)"/>			
 		</xsl:variable>
+			
 			
 		<xsl:variable name="sFileGenerationDate" select="vb:msFileGenerationDate()"/>
 	
@@ -62,18 +84,6 @@
 			<xsl:text>:</xsl:text>
 			<xsl:value-of select="vb:msFileGenerationTime()"/>
 			<xsl:text>+</xsl:text>
-			<!-- if a new file generation number has been generated for this message use it, otherwise
-			     use the file generation number sent by the original message sender -->
-			<xsl:variable name="FGN">
-				<xsl:choose>
-					<xsl:when test="InvoiceHeader/FileGenerationNumber != ''">
-						<xsl:value-of select="InvoiceHeader/FileGenerationNumber"/>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:value-of select="InvoiceHeader/BatchInformation/FileGenerationNo"/>				
-					</xsl:otherwise>
-				</xsl:choose>			
-			</xsl:variable>
 			<xsl:value-of select="$FGN"/>
 			<xsl:text>+</xsl:text>
 			<xsl:text>+</xsl:text>
@@ -308,10 +318,7 @@
 						<xsl:value-of select="translate(format-number(VATRate,'#.000'),'.','')"/>
 						<xsl:text>+++</xsl:text>
 						<!-- truncate to 40 TDES = 9030 = AN..40-->
-						<xsl:call-template name="msCheckField">
-							<xsl:with-param name="vobjNode" select="ProductDescription"/>
-							<xsl:with-param name="vnLength" select="40"/>
-						</xsl:call-template>					
+						<xsl:value-of select="js:msSafeText(string(ProductDescription),40)"/>			
 						<xsl:value-of select="$sRecordSep"/>
 						
 					</xsl:for-each>
@@ -469,7 +476,7 @@
 		
 			<xsl:when test="string-length($sEscapedField) &gt; $vnLength">
 				<xsl:message terminate="yes">
-					<xsl:text>Error raised by tsMappingHospitalityOrderTradacomsv6Out.xsl.&#13;&#10;</xsl:text>
+					<xsl:text>Error raised by tsMappingHospitalityInvoiceTradacomsv9Out.xsl.&#13;&#10;</xsl:text>
 					
 					<xsl:text>The internal format of this message contains a field that would be truncated when mapped to a corresponding tradacoms field.&#13;&#10;</xsl:text>
 					<xsl:text>The element is </xsl:text>
