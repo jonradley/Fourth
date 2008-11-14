@@ -13,9 +13,7 @@
 ==========================================================================================
  Date      	| Name 					| Description of modification
 ==========================================================================================
- 04/08/2006	| Lee Boyton			| Created module
-==========================================================================================
- 04/11/2008	| R Cambridge     	| 2544 some minor refinements 
+ 14/11/2008	| R Cambridge     	| 2544 Batch version of tsMappingHospitalityInvoiceTradacomsv9Out.xsl
 ==========================================================================================
            	|                 	|
 ==========================================================================================
@@ -27,6 +25,8 @@
 	xmlns:vb="http://www.abs-ltd.com/dummynamespaces/vbscript"
 	xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	<xsl:output method="text"/>
+	
+	<xsl:param name="nBatchID"/>
 
 	<!-- define keys (think of them a bit like database indexes) to be used for finding distinct line information.
 	     note 1) the '::' literal is simply used as a convenient separator for the 2 values that make up the second key.
@@ -34,7 +34,7 @@
 	<xsl:key name="keyLinesByPO" match="InvoiceLine" use="concat('¬',PurchaseOrderReferences/PurchaseOrderReference)"/>
 	<xsl:key name="keyLinesByPOAndDN" match="InvoiceDetail/InvoiceLine" use="concat('¬',PurchaseOrderReferences/PurchaseOrderReference,'::¬',DeliveryNoteReferences/DeliveryNoteReference)"/>
 	
-	<xsl:template match="/Invoice">
+	<xsl:template match="/BatchRoot[Invoice]">
 
 		<xsl:variable name="sRecordSep">
 			<xsl:text>'</xsl:text>
@@ -45,17 +45,30 @@
 			<!-- if a new file generation number has been generated for this message use it, otherwise
 			     use the file generation number sent by the original message sender -->
 			<xsl:variable name="atLeast4DigitFGN">						
+				
 				<xsl:choose>
-					<xsl:when test="InvoiceHeader/FileGenerationNumber != ''">
-						<xsl:value-of select="format-number(InvoiceHeader/FileGenerationNumber,'0000')"/>
+					
+					<!-- FGN assigned by outbound batching processor -->
+					<xsl:when test="$nBatchID != ''">
+						<xsl:value-of select="format-number($nBatchID,'0000')"/>
 					</xsl:when>
+					
+					<!-- FGN assigned by 'FGN assign' processor -->
+					<xsl:when test="Invoice/InvoiceHeader/FileGenerationNumber != ''">
+						<xsl:value-of select="format-number(Invoice/InvoiceHeader/FileGenerationNumber,'0000')"/>
+					</xsl:when>
+					
+					<!-- Try the original inbound FGN -->
 					<xsl:otherwise>
-						<xsl:value-of select="format-number(InvoiceHeader/BatchInformation/FileGenerationNo,'0000')"/>				
+						<xsl:value-of select="format-number(Invoice/InvoiceHeader/BatchInformation/FileGenerationNo,'0000')"/>				
 					</xsl:otherwise>
-				</xsl:choose>						
+				</xsl:choose>				
+						
 			</xsl:variable>		
+			
 			<!-- Only get 4 right hand digits -->
-			<xsl:value-of select="substring($atLeast4DigitFGN, string-length($atLeast4DigitFGN)-3)"/>			
+			<xsl:value-of select="substring($atLeast4DigitFGN, string-length($atLeast4DigitFGN)-3)"/>	
+					
 		</xsl:variable>
 			
 			
@@ -65,7 +78,7 @@
 			<xsl:text>ANA:1+</xsl:text>
 			<!--Our mailbox reference-->
 			<xsl:choose>
-				<xsl:when test="TradeSimpleHeader/TestFlag = 'false' or TradeSimpleHeader/TestFlag = '0'">
+				<xsl:when test="Invoice/TradeSimpleHeader/TestFlag = 'false' or Invoice/TradeSimpleHeader/TestFlag = '0'">
 					<xsl:text>5013546145710</xsl:text>
 				</xsl:when>
 				<xsl:otherwise>
@@ -73,12 +86,12 @@
 				</xsl:otherwise>
 			</xsl:choose>
 			<xsl:text>:</xsl:text>
-			<xsl:value-of select="js:msSafeText(string(InvoiceHeader/Supplier/SuppliersName), 35)"/>
+			<xsl:value-of select="js:msSafeText(string(Invoice/InvoiceHeader/Supplier/SuppliersName), 35)"/>
 			<xsl:text>+</xsl:text>
 			<!--Your mailbox reference-->
-			<xsl:value-of select="InvoiceHeader/Buyer/BuyersLocationID/GLN"/>
+			<xsl:value-of select="Invoice/InvoiceHeader/Buyer/BuyersLocationID/GLN"/>
 			<xsl:text>:</xsl:text>
-			<xsl:value-of select="js:msSafeText(string(InvoiceHeader/Buyer/BuyersName), 35)"/>
+			<xsl:value-of select="js:msSafeText(string(Invoice/InvoiceHeader/Buyer/BuyersName), 35)"/>
 			<xsl:text>+</xsl:text>
 			<xsl:value-of select="$sFileGenerationDate"/>
 			<xsl:text>:</xsl:text>
@@ -88,7 +101,7 @@
 			<xsl:text>+</xsl:text>
 			<xsl:text>+</xsl:text>
 			<xsl:choose>
-				<xsl:when test="TradeSimpleHeader/TestFlag = 'false' or TradeSimpleHeader/TestFlag = '0'">
+				<xsl:when test="Invoice/TradeSimpleHeader/TestFlag = 'false' or Invoice/TradeSimpleHeader/TestFlag = '0'">
 					<xsl:text>INVFIL</xsl:text>
 				</xsl:when>
 				<xsl:otherwise><xsl:text>INVTES</xsl:text></xsl:otherwise>
@@ -104,73 +117,73 @@
 		
 		<xsl:text>SDT=</xsl:text>
 		<xsl:choose>
-			<xsl:when test="InvoiceHeader/Supplier/SuppliersLocationID/GLN != '5555555555555'">
-				<xsl:value-of select="InvoiceHeader/Supplier/SuppliersLocationID/GLN"/>
+			<xsl:when test="Invoice/InvoiceHeader/Supplier/SuppliersLocationID/GLN != '5555555555555'">
+				<xsl:value-of select="Invoice/InvoiceHeader/Supplier/SuppliersLocationID/GLN"/>
 			</xsl:when>
 			<xsl:otherwise>
 				<!-- SIDN 1 = 3050 must be a number (ANA) -->
-				<xsl:if test="string(number(InvoiceHeader/Supplier/SuppliersLocationID/SuppliersCode)) != 'NaN'">
-					<xsl:value-of select="InvoiceHeader/Supplier/SuppliersLocationID/SuppliersCode"/>
+				<xsl:if test="string(number(Invoice/InvoiceHeader/Supplier/SuppliersLocationID/SuppliersCode)) != 'NaN'">
+					<xsl:value-of select="Invoice/InvoiceHeader/Supplier/SuppliersLocationID/SuppliersCode"/>
 				</xsl:if>
 			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:text>:</xsl:text>
 		<!-- truncate to 17 SIDN 2 = 3051 = AN..17 -->
-		<xsl:value-of select="js:msSafeText(string(InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode),17)"/>
+		<xsl:value-of select="js:msSafeText(string(Invoice/InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode),17)"/>
 		<xsl:text>+</xsl:text>
 		<!-- truncate to 40 SNAM = 3060 = AN..40-->
-		<xsl:value-of select="js:msSafeText(string(InvoiceHeader/Supplier/SuppliersName),40)"/>
+		<xsl:value-of select="js:msSafeText(string(Invoice/InvoiceHeader/Supplier/SuppliersName),40)"/>
 		<xsl:text>+</xsl:text>
 		<!-- truncate to 35 SADD 1-4 = 3062 = AN..35-->		
-		<xsl:value-of select="js:msSafeText(string(InvoiceHeader/Supplier/SuppliersAddress/AddressLine1),35)"/>
+		<xsl:value-of select="js:msSafeText(string(Invoice/InvoiceHeader/Supplier/SuppliersAddress/AddressLine1),35)"/>
 		<xsl:text>:</xsl:text>
-		<xsl:value-of select="js:msSafeText(string(InvoiceHeader/Supplier/SuppliersAddress/AddressLine2),35)"/>
+		<xsl:value-of select="js:msSafeText(string(Invoice/InvoiceHeader/Supplier/SuppliersAddress/AddressLine2),35)"/>
 		<xsl:text>:</xsl:text>
-		<xsl:value-of select="js:msSafeText(string(InvoiceHeader/Supplier/SuppliersAddress/AddressLine3),35)"/>
+		<xsl:value-of select="js:msSafeText(string(Invoice/InvoiceHeader/Supplier/SuppliersAddress/AddressLine3),35)"/>
 		<xsl:text>:</xsl:text>
-		<xsl:value-of select="js:msSafeText(string(InvoiceHeader/Supplier/SuppliersAddress/AddressLine4),35)"/>
+		<xsl:value-of select="js:msSafeText(string(Invoice/InvoiceHeader/Supplier/SuppliersAddress/AddressLine4),35)"/>
 		<xsl:text>:</xsl:text>
 		<!-- truncate to 8 (just in case) SADD 5 = 3063 = AN..8-->		
-		<xsl:value-of select="js:msSafeText(string(InvoiceHeader/Supplier/SuppliersAddress/PostCode),8)"/>
+		<xsl:value-of select="js:msSafeText(string(Invoice/InvoiceHeader/Supplier/SuppliersAddress/PostCode),8)"/>
 		<xsl:text>+</xsl:text>
 		<!-- truncate to 17 (if an alphanumeric value) VATN 2 = 308A = AN..17 -->
 		<xsl:choose>
-			<xsl:when test="string(number(InvoiceHeader/InvoiceReferences/VATRegNo)) != 'NaN'">
-				<xsl:value-of select="InvoiceHeader/InvoiceReferences/VATRegNo"/>
+			<xsl:when test="string(number(Invoice/InvoiceHeader/InvoiceReferences/VATRegNo)) != 'NaN'">
+				<xsl:value-of select="Invoice/InvoiceHeader/InvoiceReferences/VATRegNo"/>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:text>:</xsl:text>
-				<xsl:value-of select="js:msSafeText(string(InvoiceHeader/InvoiceReferences/VATRegNo),17)"/>
+				<xsl:value-of select="js:msSafeText(string(Invoice/InvoiceHeader/InvoiceReferences/VATRegNo),17)"/>
 			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:text>CDT=</xsl:text>
 		<xsl:choose>
-			<xsl:when test="InvoiceHeader/Buyer/BuyersLocationID/GLN != '5555555555555'">
-				<xsl:value-of select="InvoiceHeader/Buyer/BuyersLocationID/GLN"/>
+			<xsl:when test="Invoice/InvoiceHeader/Buyer/BuyersLocationID/GLN != '5555555555555'">
+				<xsl:value-of select="Invoice/InvoiceHeader/Buyer/BuyersLocationID/GLN"/>
 			</xsl:when>
 			<xsl:otherwise>
 				<!-- CIDN 1 = 3020 must be a number (ANA) -->
-				<xsl:if test="string(number(InvoiceHeader/Buyer/BuyersLocationID/BuyersCode)) != 'NaN'">
-					<xsl:value-of select="InvoiceHeader/Buyer/BuyersLocationID/BuyersCode"/>
+				<xsl:if test="string(number(Invoice/InvoiceHeader/Buyer/BuyersLocationID/BuyersCode)) != 'NaN'">
+					<xsl:value-of select="Invoice/InvoiceHeader/Buyer/BuyersLocationID/BuyersCode"/>
 				</xsl:if>
 			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:text>:</xsl:text>
 		<!-- truncate to 17 CIDN 2 = 3021 = AN..17 -->
-		<xsl:value-of select="js:msSafeText(string(InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode),17)"/>
+		<xsl:value-of select="js:msSafeText(string(Invoice/InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode),17)"/>
 		<xsl:text>+</xsl:text>
 		<!-- truncate to 40 CNAM = 3060 = AN..40-->
-		<xsl:value-of select="js:msSafeText(string(InvoiceHeader/Buyer/BuyersName),40)"/>
+		<xsl:value-of select="js:msSafeText(string(Invoice/InvoiceHeader/Buyer/BuyersName),40)"/>
 		<xsl:text>+</xsl:text> 
 		<!-- truncate to 35 CADD 1-4 = 3032 = AN..35-->
-		<xsl:value-of select="js:msSafeText(string(InvoiceHeader/Buyer/BuyersAddress/AddressLine1),35)"/><xsl:text>:</xsl:text>
-		<xsl:value-of select="js:msSafeText(string(InvoiceHeader/Buyer/BuyersAddress/AddressLine2),35)"/><xsl:text>:</xsl:text>
-		<xsl:value-of select="js:msSafeText(string(InvoiceHeader/Buyer/BuyersAddress/AddressLine3),35)"/><xsl:text>:</xsl:text>
-		<xsl:value-of select="js:msSafeText(string(InvoiceHeader/Buyer/BuyersAddress/AddressLine4),35)"/><xsl:text>:</xsl:text>
+		<xsl:value-of select="js:msSafeText(string(Invoice/InvoiceHeader/Buyer/BuyersAddress/AddressLine1),35)"/><xsl:text>:</xsl:text>
+		<xsl:value-of select="js:msSafeText(string(Invoice/InvoiceHeader/Buyer/BuyersAddress/AddressLine2),35)"/><xsl:text>:</xsl:text>
+		<xsl:value-of select="js:msSafeText(string(Invoice/InvoiceHeader/Buyer/BuyersAddress/AddressLine3),35)"/><xsl:text>:</xsl:text>
+		<xsl:value-of select="js:msSafeText(string(Invoice/InvoiceHeader/Buyer/BuyersAddress/AddressLine4),35)"/><xsl:text>:</xsl:text>
 		<!-- truncate to 8 (just in case) CADD 5 = 3033 = AN..8-->
-		<xsl:value-of select="js:msSafeText(string(InvoiceHeader/Buyer/BuyersAddress/PostCode),8)"/>
+		<xsl:value-of select="js:msSafeText(string(Invoice/InvoiceHeader/Buyer/BuyersAddress/PostCode),8)"/>
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<!--
@@ -189,209 +202,218 @@
 		<xsl:text>MTR=6</xsl:text>
 		<xsl:value-of select="$sRecordSep"/>
 		
-		<xsl:text>MHD=</xsl:text>	
-		<xsl:text>2+INVOIC:9</xsl:text>
-		<xsl:value-of select="$sRecordSep"/>
-
-		<xsl:text>CLO=</xsl:text>
-		<xsl:if test="InvoiceHeader/ShipTo/ShipToLocationID/GLN != '5555555555555'">
-			<xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/GLN"/>
-		</xsl:if>
-		<xsl:text>:</xsl:text>
-		<!-- truncate to 17 CLOC 2 = 3001 = AN..17 -->
-		<xsl:value-of select="js:msSafeText(string(InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode),17)"/>
-		<xsl:text>:</xsl:text>
-		<!-- truncate to 17 CLOC 3 = 300A = AN..17 -->
-		<xsl:value-of select="js:msSafeText(string(InvoiceHeader/ShipTo/ShipToLocationID/SuppliersCode),17)"/>
-		<xsl:text>+</xsl:text>
-		<!-- truncate to 40 CNAM = 3060 = AN..40-->
-		<xsl:value-of select="js:msSafeText(string(InvoiceHeader/ShipTo/ShipToName),40)"/>
-		<xsl:text>+</xsl:text>
-		<!-- truncate to 35 CADD 1-4 = 3032 = AN..35-->
-		<xsl:value-of select="js:msSafeText(string(InvoiceHeader/ShipTo/ShipToAddress/AddressLine1),35)"/><xsl:text>:</xsl:text>
-		<xsl:value-of select="js:msSafeText(string(InvoiceHeader/ShipTo/ShipToAddress/AddressLine2),35)"/><xsl:text>:</xsl:text>
-		<xsl:value-of select="js:msSafeText(string(InvoiceHeader/ShipTo/ShipToAddress/AddressLine3),35)"/><xsl:text>:</xsl:text>
-		<xsl:value-of select="js:msSafeText(string(InvoiceHeader/ShipTo/ShipToAddress/AddressLine4),35)"/><xsl:text>:</xsl:text>
-		<!-- truncate to 8 (just in case) CADD 5 = 3033 = AN..8-->
-		<xsl:value-of select="js:msSafeText(string(InvoiceHeader/ShipTo/ShipToAddress/PostCode),8)"/>
-		<xsl:value-of select="$sRecordSep"/>
-
-		<xsl:text>IRF=</xsl:text>
-		<xsl:call-template name="msCheckField">
-			<xsl:with-param name="vobjNode" select="InvoiceHeader/InvoiceReferences/InvoiceReference"/>
-			<xsl:with-param name="vnLength" select="17"/>
-		</xsl:call-template>
-		<xsl:text>+</xsl:text>
-		<xsl:call-template name="msFormateDate">
-			<xsl:with-param name="vsUTCDate" select="InvoiceHeader/InvoiceReferences/InvoiceDate"/>
-		</xsl:call-template>
-		<xsl:text>+</xsl:text>
-		<xsl:call-template name="msFormateDate">
-			<xsl:with-param name="vsUTCDate" select="InvoiceHeader/InvoiceReferences/TaxPointDate"/>
-		</xsl:call-template>
-		<xsl:value-of select="$sRecordSep"/>
-
-		<!-- use the keys for grouping Lines by PO Reference and then by DN Reference -->
-		<!-- the first loop will match the first line in each set of lines grouped by PO Reference -->
-		<xsl:for-each select="InvoiceDetail/InvoiceLine[generate-id() = generate-id(key('keyLinesByPO',concat('¬',PurchaseOrderReferences/PurchaseOrderReference))[1])]">
-			<xsl:sort select="PurchaseOrderReferences/PurchaseOrderReference" data-type="text"/>
-			<xsl:variable name="POReference" select="concat('¬',PurchaseOrderReferences/PurchaseOrderReference)"/>
-			<!-- now, given we can find all lines for the current PO reference, loop through and match the first line for each unique DN reference -->
-			<xsl:for-each select="key('keyLinesByPO',$POReference)[generate-id() = generate-id(key('keyLinesByPOAndDN',concat($POReference,'::',concat('¬',DeliveryNoteReferences/DeliveryNoteReference)))[1])]">
-				<xsl:sort select="DeliveryNoteReferences/DeliveryNoteReference" data-type="text"/>
-				<xsl:variable name="DNReference" select="concat('¬',DeliveryNoteReferences/DeliveryNoteReference)"/>
-				
-					<!-- now that we have our distinct and sorted list of lines we can output the required delivery line and associated detail lines-->
-					<xsl:text>ODD=</xsl:text>
-					<xsl:variable name="DeliveryNumber" select="position()"/>					
-					<xsl:value-of select="$DeliveryNumber"/>
-					<xsl:text>+</xsl:text>
-					<!-- truncate to 17 ORNO 1 = 5010 = AN..17 -->
-					<xsl:call-template name="msCheckField">
-						<xsl:with-param name="vobjNode" select="PurchaseOrderReferences/PurchaseOrderReference"/>
-						<xsl:with-param name="vnLength" select="17"/>
-					</xsl:call-template>
-					<xsl:text>::</xsl:text>
-					<xsl:call-template name="msFormateDate">
-						<xsl:with-param name="vsUTCDate" select="PurchaseOrderReferences/PurchaseOrderDate"/>
-					</xsl:call-template>					
-					<xsl:text>+</xsl:text>
-					<!-- truncate to 17 DELN 1 = 5040 = AN..17 -->
-					<xsl:call-template name="msCheckField">
-						<xsl:with-param name="vobjNode" select="DeliveryNoteReferences/DeliveryNoteReference"/>
-						<xsl:with-param name="vnLength" select="17"/>
-					</xsl:call-template>
-					<xsl:text>:</xsl:text>
-					<xsl:call-template name="msFormateDate">
-						<xsl:with-param name="vsUTCDate" select="DeliveryNoteReferences/DeliveryNoteDate"/>
-					</xsl:call-template>
-					<xsl:text>+++:</xsl:text>
-					<xsl:call-template name="msFormateDate">
-						<xsl:with-param name="vsUTCDate" select="DeliveryNoteReferences/DespatchDate"/>
-					</xsl:call-template>
-					<xsl:value-of select="$sRecordSep"/>
+		<xsl:for-each select="Invoice">
+		
+			<xsl:text>MHD=</xsl:text>	
+			<xsl:value-of select="format-number(count(preceding-sibling::* | self::*) + 1,'0')"/>
+			<xsl:text>+</xsl:text>
+			<xsl:text>INVOIC:9</xsl:text>
+			<xsl:value-of select="$sRecordSep"/>
+	
+			<xsl:text>CLO=</xsl:text>
+			<xsl:if test="InvoiceHeader/ShipTo/ShipToLocationID/GLN != '5555555555555'">
+				<xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/GLN"/>
+			</xsl:if>
+			<xsl:text>:</xsl:text>
+			<!-- truncate to 17 CLOC 2 = 3001 = AN..17 -->
+			<xsl:value-of select="js:msSafeText(string(InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode),17)"/>
+			<xsl:text>:</xsl:text>
+			<!-- truncate to 17 CLOC 3 = 300A = AN..17 -->
+			<xsl:value-of select="js:msSafeText(string(InvoiceHeader/ShipTo/ShipToLocationID/SuppliersCode),17)"/>
+			<xsl:text>+</xsl:text>
+			<!-- truncate to 40 CNAM = 3060 = AN..40-->
+			<xsl:value-of select="js:msSafeText(string(InvoiceHeader/ShipTo/ShipToName),40)"/>
+			<xsl:text>+</xsl:text>
+			<!-- truncate to 35 CADD 1-4 = 3032 = AN..35-->
+			<xsl:value-of select="js:msSafeText(string(InvoiceHeader/ShipTo/ShipToAddress/AddressLine1),35)"/><xsl:text>:</xsl:text>
+			<xsl:value-of select="js:msSafeText(string(InvoiceHeader/ShipTo/ShipToAddress/AddressLine2),35)"/><xsl:text>:</xsl:text>
+			<xsl:value-of select="js:msSafeText(string(InvoiceHeader/ShipTo/ShipToAddress/AddressLine3),35)"/><xsl:text>:</xsl:text>
+			<xsl:value-of select="js:msSafeText(string(InvoiceHeader/ShipTo/ShipToAddress/AddressLine4),35)"/><xsl:text>:</xsl:text>
+			<!-- truncate to 8 (just in case) CADD 5 = 3033 = AN..8-->
+			<xsl:value-of select="js:msSafeText(string(InvoiceHeader/ShipTo/ShipToAddress/PostCode),8)"/>
+			<xsl:value-of select="$sRecordSep"/>
+	
+			<xsl:text>IRF=</xsl:text>
+			<xsl:call-template name="msCheckField">
+				<xsl:with-param name="vobjNode" select="InvoiceHeader/InvoiceReferences/InvoiceReference"/>
+				<xsl:with-param name="vnLength" select="17"/>
+			</xsl:call-template>
+			<xsl:text>+</xsl:text>
+			<xsl:call-template name="msFormateDate">
+				<xsl:with-param name="vsUTCDate" select="InvoiceHeader/InvoiceReferences/InvoiceDate"/>
+			</xsl:call-template>
+			<xsl:text>+</xsl:text>
+			<xsl:call-template name="msFormateDate">
+				<xsl:with-param name="vsUTCDate" select="InvoiceHeader/InvoiceReferences/TaxPointDate"/>
+			</xsl:call-template>
+			<xsl:value-of select="$sRecordSep"/>
+	
+			<!-- use the keys for grouping Lines by PO Reference and then by DN Reference -->
+			<!-- the first loop will match the first line in each set of lines grouped by PO Reference -->
+			<xsl:for-each select="InvoiceDetail/InvoiceLine[generate-id() = generate-id(key('keyLinesByPO',concat('¬',PurchaseOrderReferences/PurchaseOrderReference))[1])]">
+				<xsl:sort select="PurchaseOrderReferences/PurchaseOrderReference" data-type="text"/>
+				<xsl:variable name="POReference" select="concat('¬',PurchaseOrderReferences/PurchaseOrderReference)"/>
+				<!-- now, given we can find all lines for the current PO reference, loop through and match the first line for each unique DN reference -->
+				<xsl:for-each select="key('keyLinesByPO',$POReference)[generate-id() = generate-id(key('keyLinesByPOAndDN',concat($POReference,'::',concat('¬',DeliveryNoteReferences/DeliveryNoteReference)))[1])]">
+					<xsl:sort select="DeliveryNoteReferences/DeliveryNoteReference" data-type="text"/>
+					<xsl:variable name="DNReference" select="concat('¬',DeliveryNoteReferences/DeliveryNoteReference)"/>
 					
-					<!-- now output all the lines for the current PO reference and DN reference combination -->
-					<xsl:for-each select="key('keyLinesByPOAndDN',concat($POReference,'::',$DNReference))">
-					
-						<xsl:text>ILD=</xsl:text>
+						<!-- now that we have our distinct and sorted list of lines we can output the required delivery line and associated detail lines-->
+						<xsl:text>ODD=</xsl:text>
+						<xsl:variable name="DeliveryNumber" select="position()"/>					
 						<xsl:value-of select="$DeliveryNumber"/>
 						<xsl:text>+</xsl:text>
-						<xsl:value-of select="position()"/>
-						<xsl:text>+</xsl:text>
-						<!-- use GTIN here if 13 digit EAN number -->
-						<xsl:if test="string-length(ProductID/GTIN) = 13 and ProductID/GTIN != '5555555555555'">
-							<xsl:value-of select="ProductID/GTIN"/>
-						</xsl:if>
-						<xsl:text>:</xsl:text>
-						<!-- truncate to 30 SPRO 2 = 3071 = AN..30-->
+						<!-- truncate to 17 ORNO 1 = 5010 = AN..17 -->
 						<xsl:call-template name="msCheckField">
-							<xsl:with-param name="vobjNode" select="ProductID/SuppliersProductCode"/>
-							<xsl:with-param name="vnLength" select="30"/>
+							<xsl:with-param name="vobjNode" select="PurchaseOrderReferences/PurchaseOrderReference"/>
+							<xsl:with-param name="vnLength" select="17"/>
 						</xsl:call-template>
-						<!-- use GTIN here if 14 digit DUN number -->
-						<xsl:if test="string-length(ProductID/GTIN) = 14 and ProductID/GTIN != '55555555555555'">
-							<xsl:text>:</xsl:text>
-							<xsl:value-of select="ProductID/GTIN"/>
-						</xsl:if>						
+						<xsl:text>::</xsl:text>
+						<xsl:call-template name="msFormateDate">
+							<xsl:with-param name="vsUTCDate" select="PurchaseOrderReferences/PurchaseOrderDate"/>
+						</xsl:call-template>					
 						<xsl:text>+</xsl:text>
-						<xsl:text>+</xsl:text>
-						<!-- truncate to 30 -->
+						<!-- truncate to 17 DELN 1 = 5040 = AN..17 -->
 						<xsl:call-template name="msCheckField">
-							<xsl:with-param name="vobjNode" select="ProductID/BuyersProductCode"/>
-							<xsl:with-param name="vnLength" select="30"/>
+							<xsl:with-param name="vobjNode" select="DeliveryNoteReferences/DeliveryNoteReference"/>
+							<xsl:with-param name="vnLength" select="17"/>
 						</xsl:call-template>
-						<xsl:text>+::</xsl:text>
-						<xsl:value-of select="InvoicedQuantity/@UnitOfMeasure"/>
-						<xsl:text>+</xsl:text>
-						<xsl:value-of select="format-number(InvoicedQuantity,'0')"/>
 						<xsl:text>:</xsl:text>
-						<xsl:value-of select="translate(format-number(InvoicedQuantity,'#.000'),'.','')"/>
-						<xsl:text>+</xsl:text>
-						<xsl:value-of select="translate(format-number(UnitValueExclVAT,'#.0000'),'.','')"/>
-						<xsl:text>+</xsl:text>
-						<xsl:value-of select="translate(format-number(LineValueExclVAT,'#.0000'),'.','')"/>
-						<xsl:text>+</xsl:text>
-						<!-- VATC = 4030 = AN..1 -->
-						<xsl:value-of select="VATCode"/>
-						<xsl:text>+</xsl:text>
-						<xsl:value-of select="translate(format-number(VATRate,'#.000'),'.','')"/>
-						<xsl:text>+++</xsl:text>
-						<!-- truncate to 40 TDES = 9030 = AN..40-->
-						<xsl:value-of select="js:msSafeText(string(ProductDescription),40)"/>			
+						<xsl:call-template name="msFormateDate">
+							<xsl:with-param name="vsUTCDate" select="DeliveryNoteReferences/DeliveryNoteDate"/>
+						</xsl:call-template>
+						<xsl:text>+++:</xsl:text>
+						<xsl:call-template name="msFormateDate">
+							<xsl:with-param name="vsUTCDate" select="DeliveryNoteReferences/DespatchDate"/>
+						</xsl:call-template>
 						<xsl:value-of select="$sRecordSep"/>
 						
-					</xsl:for-each>
-			</xsl:for-each>					
-		</xsl:for-each>
-		
-		<xsl:for-each select="InvoiceTrailer/VATSubTotals/VATSubTotal">
-		
-			<xsl:text>STL=</xsl:text>
-			<xsl:value-of select="position()"/>
+						<!-- now output all the lines for the current PO reference and DN reference combination -->
+						<xsl:for-each select="key('keyLinesByPOAndDN',concat($POReference,'::',$DNReference))">
+						
+							<xsl:text>ILD=</xsl:text>
+							<xsl:value-of select="$DeliveryNumber"/>
+							<xsl:text>+</xsl:text>
+							<xsl:value-of select="position()"/>
+							<xsl:text>+</xsl:text>
+							<!-- use GTIN here if 13 digit EAN number -->
+							<xsl:if test="string-length(ProductID/GTIN) = 13 and ProductID/GTIN != '5555555555555'">
+								<xsl:value-of select="ProductID/GTIN"/>
+							</xsl:if>
+							<xsl:text>:</xsl:text>
+							<!-- truncate to 30 SPRO 2 = 3071 = AN..30-->
+							<xsl:call-template name="msCheckField">
+								<xsl:with-param name="vobjNode" select="ProductID/SuppliersProductCode"/>
+								<xsl:with-param name="vnLength" select="30"/>
+							</xsl:call-template>
+							<!-- use GTIN here if 14 digit DUN number -->
+							<xsl:if test="string-length(ProductID/GTIN) = 14 and ProductID/GTIN != '55555555555555'">
+								<xsl:text>:</xsl:text>
+								<xsl:value-of select="ProductID/GTIN"/>
+							</xsl:if>						
+							<xsl:text>+</xsl:text>
+							<xsl:text>+</xsl:text>
+							<!-- truncate to 30 -->
+							<xsl:call-template name="msCheckField">
+								<xsl:with-param name="vobjNode" select="ProductID/BuyersProductCode"/>
+								<xsl:with-param name="vnLength" select="30"/>
+							</xsl:call-template>
+							<xsl:text>+::</xsl:text>
+							<xsl:value-of select="InvoicedQuantity/@UnitOfMeasure"/>
+							<xsl:text>+</xsl:text>
+							<xsl:value-of select="format-number(InvoicedQuantity,'0')"/>
+							<xsl:text>:</xsl:text>
+							<xsl:value-of select="translate(format-number(InvoicedQuantity,'#.000'),'.','')"/>
+							<xsl:text>+</xsl:text>
+							<xsl:value-of select="translate(format-number(UnitValueExclVAT,'#.0000'),'.','')"/>
+							<xsl:text>+</xsl:text>
+							<xsl:value-of select="translate(format-number(LineValueExclVAT,'#.0000'),'.','')"/>
+							<xsl:text>+</xsl:text>
+							<!-- VATC = 4030 = AN..1 -->
+							<xsl:value-of select="VATCode"/>
+							<xsl:text>+</xsl:text>
+							<xsl:value-of select="translate(format-number(VATRate,'#.000'),'.','')"/>
+							<xsl:text>+++</xsl:text>
+							<!-- truncate to 40 TDES = 9030 = AN..40-->
+							<xsl:value-of select="js:msSafeText(string(ProductDescription),40)"/>			
+							<xsl:value-of select="$sRecordSep"/>
+							
+						</xsl:for-each>
+				</xsl:for-each>					
+			</xsl:for-each>
+			
+			<xsl:for-each select="InvoiceTrailer/VATSubTotals/VATSubTotal">
+			
+				<xsl:text>STL=</xsl:text>
+				<xsl:value-of select="position()"/>
+				<xsl:text>+</xsl:text>
+				<!-- VATC = 4030 = AN..1 -->
+				<xsl:value-of select="@VATCode"/>
+				<xsl:text>+</xsl:text>
+				<xsl:value-of select="translate(format-number(@VATRate,'#.000'),'.','')"/>
+				<xsl:text>+</xsl:text>
+				<xsl:value-of select="NumberOfLinesAtRate"/>
+				<xsl:text>+</xsl:text>
+				<xsl:value-of select="translate(format-number(DiscountedLinesTotalExclVATAtRate,'#.00'),'.','')"/>
+				<xsl:text>+++++</xsl:text>
+				<xsl:value-of select="translate(format-number(DocumentTotalExclVATAtRate,'#.00'),'.','')"/>
+				<xsl:text>+</xsl:text>
+				<xsl:if test="number(SettlementDiscountAtRate) != 0">
+					<xsl:value-of select="translate(format-number(SettlementDiscountAtRate,'#.00'),'.','')"/>
+				</xsl:if>
+				<xsl:text>+</xsl:text>
+				<xsl:value-of select="translate(format-number(SettlementTotalExclVATAtRate,'#.00'),'.','')"/>
+				<xsl:text>+</xsl:text>
+				<xsl:value-of select="translate(format-number(VATAmountAtRate,'#.00'),'.','')"/>
+				<xsl:text>+</xsl:text>
+				<xsl:value-of select="translate(format-number(DocumentTotalInclVATAtRate,'#.00'),'.','')"/>
+				<xsl:text>+</xsl:text>
+				<xsl:value-of select="translate(format-number(SettlementTotalInclVATAtRate,'#.00'),'.','')"/>
+				<xsl:value-of select="$sRecordSep"/>
+			
+			</xsl:for-each>
+			
+			<xsl:text>TLR=</xsl:text>	
+			<xsl:value-of select="InvoiceTrailer/NumberOfLines"/>
 			<xsl:text>+</xsl:text>
-			<!-- VATC = 4030 = AN..1 -->
-			<xsl:value-of select="@VATCode"/>
-			<xsl:text>+</xsl:text>
-			<xsl:value-of select="translate(format-number(@VATRate,'#.000'),'.','')"/>
-			<xsl:text>+</xsl:text>
-			<xsl:value-of select="NumberOfLinesAtRate"/>
-			<xsl:text>+</xsl:text>
-			<xsl:value-of select="translate(format-number(DiscountedLinesTotalExclVATAtRate,'#.00'),'.','')"/>
+			<xsl:value-of select="translate(format-number(InvoiceTrailer/DiscountedLinesTotalExclVAT,'#.00'),'.','')"/>
 			<xsl:text>+++++</xsl:text>
-			<xsl:value-of select="translate(format-number(DocumentTotalExclVATAtRate,'#.00'),'.','')"/>
+			<xsl:value-of select="translate(format-number(InvoiceTrailer/DocumentTotalExclVAT,'#.00'),'.','')"/>
 			<xsl:text>+</xsl:text>
-			<xsl:if test="number(SettlementDiscountAtRate) != 0">
-				<xsl:value-of select="translate(format-number(SettlementDiscountAtRate,'#.00'),'.','')"/>
+			<xsl:if test="number(InvoiceTrailer/SettlementDiscount) != 0">
+				<xsl:value-of select="translate(format-number(InvoiceTrailer/SettlementDiscount,'#.00'),'.','')"/>
 			</xsl:if>
 			<xsl:text>+</xsl:text>
-			<xsl:value-of select="translate(format-number(SettlementTotalExclVATAtRate,'#.00'),'.','')"/>
+			<xsl:value-of select="translate(format-number(InvoiceTrailer/SettlementTotalExclVAT,'#.00'),'.','')"/>
 			<xsl:text>+</xsl:text>
-			<xsl:value-of select="translate(format-number(VATAmountAtRate,'#.00'),'.','')"/>
+			<xsl:value-of select="translate(format-number(InvoiceTrailer/VATAmount,'#.00'),'.','')"/>
 			<xsl:text>+</xsl:text>
-			<xsl:value-of select="translate(format-number(DocumentTotalInclVATAtRate,'#.00'),'.','')"/>
+			<xsl:value-of select="translate(format-number(InvoiceTrailer/DocumentTotalInclVAT,'#.00'),'.','')"/>
 			<xsl:text>+</xsl:text>
-			<xsl:value-of select="translate(format-number(SettlementTotalInclVATAtRate,'#.00'),'.','')"/>
+			<xsl:value-of select="translate(format-number(InvoiceTrailer/SettlementTotalInclVAT,'#.00'),'.','')"/>
 			<xsl:value-of select="$sRecordSep"/>
-		
+			
+			<xsl:text>MTR=</xsl:text>
+			<xsl:value-of select="5 + number(InvoiceTrailer/NumberOfDeliveries) + count(InvoiceDetail/InvoiceLine) + count(InvoiceTrailer/VATSubTotals/VATSubTotal)"/>
+			<xsl:value-of select="$sRecordSep"/>
+			
 		</xsl:for-each>
 		
-		<xsl:text>TLR=</xsl:text>	
-		<xsl:value-of select="InvoiceTrailer/NumberOfLines"/>
-		<xsl:text>+</xsl:text>
-		<xsl:value-of select="translate(format-number(InvoiceTrailer/DiscountedLinesTotalExclVAT,'#.00'),'.','')"/>
-		<xsl:text>+++++</xsl:text>
-		<xsl:value-of select="translate(format-number(InvoiceTrailer/DocumentTotalExclVAT,'#.00'),'.','')"/>
-		<xsl:text>+</xsl:text>
-		<xsl:if test="number(InvoiceTrailer/SettlementDiscount) != 0">
-			<xsl:value-of select="translate(format-number(InvoiceTrailer/SettlementDiscount,'#.00'),'.','')"/>
-		</xsl:if>
-		<xsl:text>+</xsl:text>
-		<xsl:value-of select="translate(format-number(InvoiceTrailer/SettlementTotalExclVAT,'#.00'),'.','')"/>
-		<xsl:text>+</xsl:text>
-		<xsl:value-of select="translate(format-number(InvoiceTrailer/VATAmount,'#.00'),'.','')"/>
-		<xsl:text>+</xsl:text>
-		<xsl:value-of select="translate(format-number(InvoiceTrailer/DocumentTotalInclVAT,'#.00'),'.','')"/>
-		<xsl:text>+</xsl:text>
-		<xsl:value-of select="translate(format-number(InvoiceTrailer/SettlementTotalInclVAT,'#.00'),'.','')"/>
-		<xsl:value-of select="$sRecordSep"/>
-		
-		<xsl:text>MTR=</xsl:text>
-		<xsl:value-of select="5 + number(InvoiceTrailer/NumberOfDeliveries) + count(InvoiceDetail/InvoiceLine) + count(InvoiceTrailer/VATSubTotals/VATSubTotal)"/>
-		<xsl:value-of select="$sRecordSep"/>
-		
-		<xsl:text>MHD=3+VATTLR:9</xsl:text>		
+		<xsl:text>MHD=</xsl:text>			
+		<xsl:value-of select="format-number(count(/BatchRoot/Invoice) + 2,'0')"/>		
+		<xsl:text>+</xsl:text>	
+		<xsl:text>VATTLR:9</xsl:text>		
 		<xsl:value-of select="$sRecordSep"/>
 
-		<xsl:for-each select="InvoiceTrailer/VATSubTotals/VATSubTotal">
+		<!--xsl:for-each select="InvoiceTrailer/VATSubTotals/VATSubTotal">
 		
 			<xsl:text>VRS=</xsl:text>	
 			<xsl:value-of select="position()"/>
 			<xsl:text>+</xsl:text>
-			<!-- VATC = 4030 = AN..1 -->
+			< VATC = 4030 = AN..1 >
 			<xsl:value-of select="@VATCode"/>
 			<xsl:text>+</xsl:text>
-			<!-- format to 3 implied decimal places -->
+			< format to 3 implied decimal places >
 			<xsl:value-of select="translate(format-number(@VATRate,'#.000'),'.','')"/>
 			<xsl:text>+</xsl:text>
 			<xsl:value-of select="translate(format-number(DocumentTotalExclVATAtRate,'#.00'),'.','')"/>
@@ -405,13 +427,68 @@
 			<xsl:value-of select="translate(format-number(SettlementTotalInclVATAtRate,'#.00'),'.','')"/>
 			<xsl:value-of select="$sRecordSep"/>
 		
+		</xsl:for-each-->
+		
+		
+		<!-- /a/*[.!=preceding-sibling::*] -->
+		
+		<xsl:variable name="VATRatesInBatch">
+			<xsl:copy-of select="/"/>
+			<xsl:for-each select="/BatchRoot/Invoice/InvoiceTrailer/VATSubTotals/VATSubTotal/@VATCode">
+				<xsl:sort select="."/>
+				<VAT>
+					<VATRate>
+						<xsl:value-of select="."/>
+					</VATRate>
+				</VAT>
+			</xsl:for-each>
+		</xsl:variable>
+	
+<!--  -->
+	
+		<xsl:for-each select="msxsl:node-set($VATRatesInBatch)/VAT">
+			<xsl:variable name="VATRate">
+				<xsl:value-of select="VATRate"/>
+			</xsl:variable>
+			<xsl:text>VRS=</xsl:text>
+			<!-- SEQA -->
+			<xsl:value-of select="format-number(count(preceding-sibling::* | self::*) + 1,'0')"/>
+			<xsl:text>+</xsl:text>
+			<!-- VATC -->
+			<xsl:choose>
+				<xsl:when test="/BatchRoot/Invoice/InvoiceDetail/InvoiceLine[number(./VATRate) = number($VATRate)]/VATCode = 'standard'">S</xsl:when>
+				<xsl:when test="/BatchRoot/Invoice/InvoiceDetail/InvoiceLine[number(./VATRate) = number($VATRate)]/VATCode = 'zero-rated'">Z</xsl:when>
+			</xsl:choose>
+			<xsl:text>+</xsl:text>
+			<!-- VATP -->
+			<xsl:value-of select="format-number($VATRate * 1000,'0')"/>
+			<xsl:text>+</xsl:text>
+			<!-- VSDE -->
+			<xsl:value-of select="format-number(sum(/BatchRoot/Invoice/InvoiceDetail/InvoiceLine[number(./VATRate) = number($VATRate)]/LineCostExclVat) * 100,'0')"/>
+			<xsl:text>+</xsl:text>
+			<!-- VSDI -->
+			<xsl:value-of select="format-number(sum(/BatchRoot/Invoice/InvoiceDetail/InvoiceLine[number(./VATRate) = number($VATRate)]/LineCostExclVat) * 100,'0')"/>
+			<xsl:text>+</xsl:text>
+			<!-- VVAT -->
+			<xsl:value-of select="format-number(sum(/BatchRoot/Invoice/InvoiceTrailer/VATPayableForEachRate/VATPayableAtRate[number(./VATRate) = number($VATRate)]/VATAmount) * 100,'0')"/>
+			<!-- VPSE -->
+			<xsl:text>++</xsl:text>
+			<!-- VPSI -->
+			<xsl:value-of select="format-number((sum(/BatchRoot/Invoice/InvoiceTrailer/VATPayableForEachRate/VATPayableAtRate[number(./VATRate) = number($VATRate)]/VATAmount) + sum(/BatchRoot/Invoice/InvoiceDetail/InvoiceLine[number(./VATRate) = number($VATRate)]/LineCostExclVat)) * 100,'0')"/>
+			<xsl:value-of select="$sRecordSep"/>
+	
 		</xsl:for-each>
+
+<!--  -->
 				
 		<xsl:text>MTR=</xsl:text>	
-		<xsl:value-of select="2 + count(InvoiceTrailer/VATSubTotals/VATSubTotal)"/>
+		<xsl:value-of select="2 + count(msxsl:node-set($VATRatesInBatch)/VAT)"/>
 		<xsl:value-of select="$sRecordSep"/>
 	
-		<xsl:text>MHD=4+INVTLR:9</xsl:text>
+		<xsl:text>MHD=</xsl:text>
+		<xsl:value-of select="format-number(count(/BatchRoot/Invoice) + 3,'0')"/>
+		<xsl:text>+</xsl:text>
+		<xsl:text>INVTLR:9</xsl:text>
 		<xsl:value-of select="$sRecordSep"/>
 
 		<xsl:text>TOT=</xsl:text>
@@ -431,7 +508,8 @@
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<!-- END = number of message headers (MHD) -->
-		<xsl:text>END=4</xsl:text>
+		<xsl:text>END=</xsl:text>
+		<xsl:value-of select="format-number(count(/BatchRoot/Invoice) + 3,'0')"/>
 		<xsl:value-of select="$sRecordSep"/>
 		
 	</xsl:template>
