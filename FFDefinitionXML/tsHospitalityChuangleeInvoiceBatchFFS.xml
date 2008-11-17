@@ -16,6 +16,8 @@
 15/11/2007	| R Cambridge		| FB1424 Move VAT sub-total fields to allow for totals more 
 													than 999.99
 ******************************************************************************************
+17/11/2008	| Lee Boyton		| FB2577 The unit codes can be 8 characters in length
+******************************************************************************************
             |                 | 
 ******************************************************************************************
 -->
@@ -42,7 +44,7 @@
 				<BatchDocument>
 					<Invoice>
 						<TradeSimpleHeader>
-							<SendersCodeForRecipient RecordPos="H" LPos="3" UPos="8"/>
+							<SendersCodeForRecipient RecordPos="H" LPos="3" UPos="10"/>
 						</TradeSimpleHeader>
 						<InvoiceHeader>
 							<Buyer>
@@ -73,7 +75,7 @@
 							</Supplier>
 							<ShipTo>
 								<ShipToLocationID>
-									<SuppliersCode RecordPos="H" LPos="3" UPos="8"/>
+									<SuppliersCode RecordPos="H" LPos="3" UPos="10"/>
 								</ShipToLocationID>>
 								<!--ShipToName RecordPos="H" LPos="12" UPos="8"/>
 								<ShipToAddress>
