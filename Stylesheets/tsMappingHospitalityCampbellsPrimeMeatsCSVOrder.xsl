@@ -11,7 +11,7 @@
 		<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
 		<xsl:text>,</xsl:text>
 		<!-- 3. SOP Type -->
-		<xsl:text>STD INV</xsl:text>
+		<xsl:text>STD ORDER</xsl:text>
 		<xsl:text>,</xsl:text>
 		<!-- 4. SOP Number -->
 		<xsl:text>,</xsl:text>
