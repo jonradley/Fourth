@@ -32,8 +32,8 @@
 				<CreditNoteDocumentNumber scheme="OTHER"><xsl:value-of select="/CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteReference"/></CreditNoteDocumentNumber>
 				<DocumentStatus codeList="EANCOM">
 					<xsl:choose>
-						<xsl:when test="/CreditNote/CreditNoteHeader/DocumentStatus = 'Original'">7</xsl:when>
-						<xsl:otherwise>9</xsl:otherwise>
+						<xsl:when test="/CreditNote/CreditNoteHeader/DocumentStatus = 'Original'">9</xsl:when>
+						<xsl:otherwise>7</xsl:otherwise>
 					</xsl:choose>
 				</DocumentStatus>
 			</CreditNoteDocumentDetails>
@@ -59,14 +59,18 @@
 					<PurchaseOrderNumber scheme="OTHER"><xsl:value-of select="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/PurchaseOrderReferences/PurchaseOrderReference"/></PurchaseOrderNumber>
 				</OrderReference>
 			</xsl:if>
-			<xsl:if test="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationReference">
-				<OrderConfirmationReference>
-					<xsl:if test="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationDate">
+			<OrderConfirmationReference>
+				<xsl:choose>
+					<xsl:when test="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationReference">
 						<PurchaseOrderConfirmationDate format="YYYY-MM-DDThh:mm:ss:TZD"><xsl:value-of select="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationDate"/>T00:00:00</PurchaseOrderConfirmationDate>
-					</xsl:if>
-					<PurchaseOrderConfirmationNumber scheme="OTHER"><xsl:value-of select="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationReference"/></PurchaseOrderConfirmationNumber>
-				</OrderConfirmationReference>
-			</xsl:if>
+						<PurchaseOrderConfirmationNumber scheme="OTHER"><xsl:value-of select="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationReference"/></PurchaseOrderConfirmationNumber>				
+					</xsl:when>
+					<xsl:otherwise>
+						<PurchaseOrderConfirmationDate format="YYYY-MM-DDThh:mm:ss:TZD"><xsl:value-of select="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/PurchaseOrderReferences/PurchaseOrderDate"/>T00:00:00</PurchaseOrderConfirmationDate>
+						<PurchaseOrderConfirmationNumber scheme="OTHER"><xsl:value-of select="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/PurchaseOrderReferences/PurchaseOrderReference"/></PurchaseOrderConfirmationNumber>				
+					</xsl:otherwise>
+				</xsl:choose>
+			</OrderConfirmationReference>				
 			<xsl:if test="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/DeliveryNoteReferences/DeliveryNoteReference">
 				<DespatchReference>
 					<xsl:if test="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/DeliveryNoteReferences/DeliveryNoteDate">
@@ -75,22 +79,28 @@
 					<DespatchDocumentNumber scheme="OTHER"><xsl:value-of select="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/DeliveryNoteReferences/DeliveryNoteReference"/></DespatchDocumentNumber>
 				</DespatchReference>
 			</xsl:if>
-			<xsl:if test="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/GoodsReceivedNoteReferences/GoodsReceivedNoteReference">
-				<ReceiptAdviceReference>
-					<xsl:if test="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/GoodsReceivedNoteReferences/GoodsReceivedNoteDate">
+			
+			<ReceiptAdviceReference>
+				<xsl:choose>
+					<xsl:when test="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/GoodsReceivedNoteReferences/GoodsReceivedNoteReference">
 						<ReceiptAdviceDocumentDate format="YYYY-MM-DDThh:mm:ss:TZD"><xsl:value-of select="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/GoodsReceivedNoteReferences/GoodsReceivedNoteDate"/>T00:00:00</ReceiptAdviceDocumentDate>
-					</xsl:if>
-					<ReceiptAdviceDocumentNumber scheme="OTHER"><xsl:value-of select="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/GoodsReceivedNoteReferences/GoodsReceivedNoteReference"/></ReceiptAdviceDocumentNumber>
-				</ReceiptAdviceReference>
-			</xsl:if>
+						<ReceiptAdviceDocumentNumber scheme="OTHER"><xsl:value-of select="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/GoodsReceivedNoteReferences/GoodsReceivedNoteReference"/></ReceiptAdviceDocumentNumber>
+					</xsl:when>
+					<xsl:otherwise>
+						<ReceiptAdviceDocumentDate format="YYYY-MM-DDThh:mm:ss:TZD"><xsl:value-of select="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/DeliveryNoteReferences/DeliveryNoteDate"/>T00:00:00</ReceiptAdviceDocumentDate>
+						<ReceiptAdviceDocumentNumber scheme="OTHER"><xsl:value-of select="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/DeliveryNoteReferences/DeliveryNoteReference"/></ReceiptAdviceDocumentNumber>
+					</xsl:otherwise>
+				</xsl:choose>
+			</ReceiptAdviceReference>
+			
 			<Buyer>
 				<BuyerGLN scheme="GLN"><xsl:value-of select="/CreditNote/CreditNoteHeader/Buyer/BuyersLocationID/GLN"/></BuyerGLN>
 				<xsl:if test="/CreditNote/CreditNoteHeader/Buyer/BuyersLocationID/BuyersCode">
 					<BuyerAssigned scheme="OTHER"><xsl:value-of select="/CreditNote/CreditNoteHeader/Buyer/BuyersLocationID/BuyersCode"/></BuyerAssigned>
 				</xsl:if>
-				<xsl:if test="/CreditNote/CreditNoteHeader/Buyer/BuyersLocationID/SuppliersCode">
+				<!--xsl:if test="/CreditNote/CreditNoteHeader/Buyer/BuyersLocationID/SuppliersCode">
 					<SellerAssigned scheme="OTHER"><xsl:value-of select="/CreditNote/CreditNoteHeader/Buyer/BuyersLocationID/SuppliersCode"/></SellerAssigned>
-				</xsl:if>
+				</xsl:if-->
 				<Address>
 					<BuildingIdentifier scheme="OTHER"><xsl:value-of select="/CreditNote/CreditNoteHeader/Buyer/BuyersAddress/AddressLine1"/></BuildingIdentifier>
 					<xsl:if test="/CreditNote/CreditNoteHeader/Buyer/BuyersAddress/AddressLine2">
@@ -122,6 +132,7 @@
 					<PostCode scheme="OTHER"><xsl:value-of select="/CreditNote/CreditNoteHeader/Supplier/SuppliersAddress/PostCode"/></PostCode>
 					<Country codeList="ISO">GB</Country>
 				</Address>
+				<VATRegisterationNumber scheme="OTHER"><xsl:value-of select="/CreditNote/CreditNoteHeader/InvoiceReferences/VATRegNo"/></VATRegisterationNumber>
 			</Seller>
 			<ShipTo>
 				<ShipToGLN scheme="GLN"><xsl:value-of select="/CreditNote/CreditNoteHeader/ShipTo/ShipToLocationID/GLN"/></ShipToGLN>
@@ -174,12 +185,25 @@
 							<xsl:otherwise><xsl:value-of select="format-number(LineValueExclVAT * -1, '0.00')"/></xsl:otherwise>
 						</xsl:choose>
 					</LineItemPrice>
-					<xsl:if test="LineDiscountRate and LineDiscountValue">
-						<LineItemDiscount>
-							<DiscountValue Amount="GBP"><xsl:value-of select="format-number(LineDiscountValue, '0.00')"/></DiscountValue>
-							<DiscountRate Format="PERCENT"><xsl:value-of select="format-number(LineDiscountRate, '0.00')"/></DiscountRate>
-						</LineItemDiscount>
-					</xsl:if>
+					<LineItemDiscount>
+						<DiscountValue Amount="GBP">
+							<xsl:choose>
+								<xsl:when test="LineDiscountValue != ''">
+									<xsl:value-of select="format-number(LineDiscountValue, '0.00')"/>
+								</xsl:when>
+								<xsl:otherwise>0.00</xsl:otherwise>
+							</xsl:choose>
+						</DiscountValue>
+						<DiscountRate>
+							<xsl:attribute name="Format">PERCENT</xsl:attribute>
+							<xsl:choose>
+								<xsl:when test="LineDiscountRate != ''">
+									<xsl:value-of select="format-number(LineDiscountRate, '0.00')"/>
+								</xsl:when>
+								<xsl:otherwise>0.00</xsl:otherwise>
+							</xsl:choose>
+						</DiscountRate>
+					</LineItemDiscount>
 					<xsl:if test="VATRate">
 						<VATDetails>
 							<xsl:if test="VATCode">
@@ -205,7 +229,7 @@
 							<TaxCategory codeList="EANCOM"><xsl:value-of select="@VATCode"/></TaxCategory>
 							<TaxRate Format="PERCENT"><xsl:value-of select="format-number(@VATRate, '0.00')"/></TaxRate>
 						</VATDetails>
-						<DiscountedLineTotals Amount="GBP"><xsl:value-of select="format-number(DiscountedLinesTotalExclVATAtRate, '0.00')"/></DiscountedLineTotals>
+						<DiscountedLineTotals Amount="GBP">0.00</DiscountedLineTotals>
 						<DocumentDiscountValue Amount="GBP"><xsl:value-of select="format-number(DocumentDiscountAtRate, '0.00')"/></DocumentDiscountValue>
 						<SettlementDiscountValue Amount="GBP"><xsl:value-of select="format-number(SettlementDiscountAtRate, '0.00')"/></SettlementDiscountValue>
 						<TaxableAmount Amount="GBP"><xsl:value-of select="format-number(SettlementTotalExclVATAtRate, '0.00')"/></TaxableAmount>
