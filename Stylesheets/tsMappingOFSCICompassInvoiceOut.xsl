@@ -136,7 +136,7 @@
 					<PostCode scheme="OTHER"><xsl:value-of select="/Invoice/InvoiceHeader/Supplier/SuppliersAddress/PostCode"/></PostCode>
 					<Country codeList="ISO">GB</Country>
 				</Address>
-				<VATRegisterAtionNumber scheme="OTHER">GB<xsl:value-of select="/Invoice/InvoiceHeader/InvoiceReferences/VATRegNo"/></VATRegisterAtionNumber>
+				<VATRegisterationNumber scheme="OTHER">GB<xsl:value-of select="/Invoice/InvoiceHeader/InvoiceReferences/VATRegNo"/></VATRegisterationNumber>
 			</Seller>
 			<ShipTo>
 				<ShipToGLN scheme="GLN"><xsl:value-of select="/Invoice/InvoiceHeader/ShipTo/ShipToLocationID/GLN"/></ShipToGLN>
