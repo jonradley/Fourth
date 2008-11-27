@@ -7,6 +7,8 @@ Name			| Date				| Change
 R cambridge	| 11/06/2007		| Created module
 **********************************************************************
            	|           		|
+**********************************************************************
+           	|           		|
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="xml" encoding="UTF-8"/>
@@ -34,6 +36,30 @@ R cambridge	| 11/06/2007		| Created module
 		<xsl:copy/>
 	</xsl:template>
 	<!-- END of GENERIC HANDLERS -->
+	
+	
+	<xsl:template match="InvoiceHeader">
+		
+		<InvoiceHeader>
+	
+			<DocumentStatus><xsl:value-of select="DocumentStatus"/></DocumentStatus>
+				
+			<ShipTo>
+				<ShipToLocationID>
+					<SuppliersCode><xsl:value-of select="../TradeSimpleHeader/SendersCodeForRecipient"/></SuppliersCode>
+				</ShipToLocationID>
+			</ShipTo>
+			
+			<InvoiceReferences>
+				<xsl:apply-templates select="InvoiceReferences/*"/>
+			</InvoiceReferences>
+	
+		</InvoiceHeader>
+	
+	</xsl:template>
+
+	
+	
 
 	<xsl:template match="//PurchaseOrderReferences">
 	
