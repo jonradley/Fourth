@@ -279,7 +279,7 @@
 										<!-- we default VATCode and Rate if not found in the EAN.UCC document -->
 										<VATCode>
 											<xsl:choose>
-													<xsl:when test="LineTax/TaxRate/@Code = 'N' OR LineTax/TaxRate/@Code = ''">
+													<xsl:when test="LineTax/TaxRate/@Code = 'N' or LineTax/TaxRate/@Code = ''">
 														<xsl:text>S</xsl:text>
 													</xsl:when>
 													<xsl:otherwise>
@@ -294,9 +294,9 @@
 												</xsl:when>
 												<xsl:otherwise>
 													<xsl:choose>
-														<xsl:when test="/Invoice/TaxPointDateTime !=''">
+														<xsl:when test="/biztalk_1/body/Invoice/TaxPointDateTime !=''">
 															<xsl:choose>
-																<xsl:when test="translate(substring(/Invoice/TaxPointDateTime,1,10),'-','')  &lt;= translate('2008-11-30','-','')">
+																<xsl:when test="translate(substring(/biztalk_1/body/Invoice/TaxPointDateTime,1,10),'-','')  &lt;= translate('2008-11-30','-','')">
 																	<xsl:value-of select="format-number($defaultTaxRate, '0.00')"/>
 																</xsl:when>
 																<xsl:otherwise>
@@ -306,7 +306,7 @@
 														</xsl:when>
 														<xsl:when test="/biztalk_1/body/Invoice/InvoiceDate !=''">
 															<xsl:choose>
-																<xsl:when test="translate(substring-before(/biztalk_1/body/Invoice/InvoiceDate,1,10),'-','')  &lt;= translate('2008-11-30','-','')">
+																<xsl:when test="translate(substring(/biztalk_1/body/Invoice/InvoiceDate,1,10),'-','')  &lt;= translate('2008-11-30','-','')">
 																	<xsl:value-of select="format-number($defaultTaxRate, '0.00')"/>
 																</xsl:when>
 																<xsl:otherwise>
