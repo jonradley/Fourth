@@ -24,16 +24,6 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:script="http://mycompany.com/mynamespace">
 	<xsl:output method="xml" encoding="UTF-8"/>
 	<xsl:variable name="CurrentDate" select="script:msGetTodaysDate()"/>
-	<xsl:variable name="TaxPointDate">	
-		<xsl:call-template name="sFormatDate">
-			<xsl:with-param name="vsDDoMMoYYYY" select="InvoiceHeader/InvoiceReferences/TaxPointDate"/>
-		</xsl:call-template>
-	</xsl:variable>
-	<xsl:variable name="InvoiceDate">	
-		<xsl:call-template name="sFormatDate">
-			<xsl:with-param name="vsDDoMMoYYYY" select="InvoiceHeader/InvoiceReferences/InvoiceDate"/>
-		</xsl:call-template>
-	</xsl:variable>
 	<xsl:template match="/">
 
 		<BatchRoot>
@@ -47,6 +37,17 @@
 							<BatchDocument>
 		
 							<Invoice>
+								<xsl:variable name="TaxPointDate">	
+									<xsl:call-template name="sFormatDate">
+										<xsl:with-param name="vsDDoMMoYYYY" select="InvoiceHeader/InvoiceReferences/TaxPointDate"/>
+									</xsl:call-template>
+								</xsl:variable>
+								<xsl:variable name="InvoiceDate">	
+									<xsl:call-template name="sFormatDate">
+										<xsl:with-param name="vsDDoMMoYYYY" select="InvoiceHeader/InvoiceReferences/InvoiceDate"/>
+									</xsl:call-template>
+								</xsl:variable>							
+
 								<TradeSimpleHeader>
 									<SendersCodeForRecipient><xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/></SendersCodeForRecipient>								
 								</TradeSimpleHeader>
