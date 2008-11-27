@@ -16,13 +16,14 @@
 ' 28/09/2007 | Lee Boyton      | FB1424. Cope with more than 1 document in the batch.
 '                              |         Corrected VAT sub total translation for standard rate.
 '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+' 26/11/2008 | Rave Tech  	   | 2592 - Handled VAT rate change from 17.5% to 15%.
+'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 '
 '******************************************************************************************
 -->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:script="http://mycompany.com/mynamespace">
 	<xsl:output method="xml" encoding="UTF-8"/>
-
-
+	<xsl:variable name="CurrentDate" select="script:msGetTodaysDate()"/>
 	<xsl:template match="/">
 
 		<BatchRoot>
@@ -152,7 +153,38 @@
 										<xsl:if test="InvoiceTrailer/VATSubTotals/VATSubTotal/DocumentDiscountAtRate[.='1'] and InvoiceTrailer/VATSubTotals/VATSubTotal/NumberOfLinesAtRate[.!=0]">
 											<VATSubTotal>
 												<xsl:attribute name="VATCode">S</xsl:attribute>
-												<xsl:attribute name="VATRate">17.5</xsl:attribute>
+												<xsl:choose>
+													<xsl:when test="/Batch/BatchDocuments/BatchDocument/Invoice/TaxPointDateTime !=''">
+														<xsl:choose>
+															<xsl:when test="translate(substring(/Batch/BatchDocuments/BatchDocument/Invoice/TaxPointDateTime,1,10),'-','')  &lt;= translate('2008-11-30','-','')">
+																<xsl:attribute name="VATRate">17.5</xsl:attribute>
+															</xsl:when>
+															<xsl:otherwise>
+																<xsl:attribute name="VATRate">15</xsl:attribute>
+															</xsl:otherwise>
+														</xsl:choose>
+													</xsl:when>
+													<xsl:when test="/Batch/BatchDocuments/BatchDocument/Invoice/InvoiceDocumentDetails/InvoiceDocumentDate !=''">
+														<xsl:choose>
+															<xsl:when test="translate(substring(/Batch/BatchDocuments/BatchDocument/Invoice/InvoiceDocumentDetails/InvoiceDocumentDate,1,10),'-','')  &lt;= translate('2008-11-30','-','')">
+																<xsl:attribute name="VATRate">17.5</xsl:attribute>
+															</xsl:when>
+															<xsl:otherwise>
+																<xsl:attribute name="VATRate">15</xsl:attribute>
+															</xsl:otherwise>
+														</xsl:choose>
+													</xsl:when>
+													<xsl:otherwise>
+														<xsl:choose>
+															<xsl:when test="translate($CurrentDate,'-','')  &lt;= translate('2008-11-30','-','')">
+																<xsl:attribute name="VATRate">17.5</xsl:attribute>
+															</xsl:when>
+															<xsl:otherwise>
+																<xsl:attribute name="VATRate">15</xsl:attribute>
+															</xsl:otherwise>
+														</xsl:choose>
+													</xsl:otherwise>
+												</xsl:choose>
 												<DocumentTotalExclVATAtRate><xsl:value-of select="InvoiceTrailer/VATSubTotals/VATSubTotal/NumberOfLinesAtRate"/></DocumentTotalExclVATAtRate>
 												<VATAmountAtRate><xsl:value-of select="InvoiceTrailer/VATSubTotals/VATSubTotal/NumberOfItemsAtRate"/></VATAmountAtRate>
 											</VATSubTotal>	
@@ -171,7 +203,38 @@
 										<xsl:if test="InvoiceTrailer/VATSubTotals/VATSubTotal/VATAmountAtRate[.='1'] and InvoiceTrailer/VATSubTotals/VATSubTotal/DocumentTotalExclVATAtRate[.!=0]">
 											<VATSubTotal>
 												<xsl:attribute name="VATCode">S</xsl:attribute>
-												<xsl:attribute name="VATRate">17.5</xsl:attribute>
+												<xsl:choose>
+													<xsl:when test="/Batch/BatchDocuments/BatchDocument/Invoice/TaxPointDateTime !=''">
+														<xsl:choose>
+															<xsl:when test="translate(substring(/Batch/BatchDocuments/BatchDocument/Invoice/TaxPointDateTime,1,10),'-','')  &lt;= translate('2008-11-30','-','')">
+																<xsl:attribute name="VATRate">17.5</xsl:attribute>
+															</xsl:when>
+															<xsl:otherwise>
+																<xsl:attribute name="VATRate">15</xsl:attribute>
+															</xsl:otherwise>
+														</xsl:choose>
+													</xsl:when>
+													<xsl:when test="(/Batch/BatchDocuments/BatchDocument/Invoice/InvoiceHeader/InvoiceReferences/InvoiceDate !=''">
+														<xsl:choose>
+															<xsl:when test="translate(substring(/Batch/BatchDocuments/BatchDocument/Invoice/InvoiceHeader/InvoiceReferences/InvoiceDate,1,10),'-','')  &lt;= translate('2008-11-30','-','')">
+																<xsl:attribute name="VATRate">17.5</xsl:attribute>
+															</xsl:when>
+															<xsl:otherwise>
+																<xsl:attribute name="VATRate">15</xsl:attribute>
+															</xsl:otherwise>
+														</xsl:choose>
+													</xsl:when>
+													<xsl:otherwise>
+														<xsl:choose>
+															<xsl:when test="translate($CurrentDate,'-','')  &lt;= translate('2008-11-30','-','')">
+																<xsl:attribute name="VATRate">17.5</xsl:attribute>
+															</xsl:when>
+															<xsl:otherwise>
+																<xsl:attribute name="VATRate">15</xsl:attribute>
+															</xsl:otherwise>
+														</xsl:choose>
+													</xsl:otherwise>
+												</xsl:choose>
 												<DocumentTotalExclVATAtRate><xsl:value-of select="InvoiceTrailer/VATSubTotals/VATSubTotal/DocumentTotalExclVATAtRate"/></DocumentTotalExclVATAtRate>
 												<VATAmountAtRate><xsl:value-of select="InvoiceTrailer/VATSubTotals/VATSubTotal/SettlementDiscountAtRate"/></VATAmountAtRate>
 											</VATSubTotal>	
@@ -204,5 +267,36 @@
 		</xsl:if>	
 	</xsl:template>
 	
-	
+	<msxsl:script language="JScript" implements-prefix="script"><![CDATA[ 
+		/*=========================================================================================
+		' Routine       	 : msGetTodaysDate
+		' Description 	 : Gets todays date, formatted to yyyy-mm-dd
+		' Inputs          	 : None
+		' Outputs       	 : None
+		' Returns       	 : Class of row
+		' Author       		 : Rave Tech, 26/11/2008
+		' Alterations   	 : 
+		'========================================================================================*/
+		function msGetTodaysDate()
+		{
+		var dtDate = new Date();
+			
+			var sDate = dtDate.getDate();
+			if(sDate<10)
+			{
+				sDate = '0' + sDate;
+			}
+			
+			var sMonth = dtDate.getMonth() + 1;
+			if(sMonth<10)
+			{
+				sMonth = '0' + sMonth;
+			}
+						
+			var sYear  = dtDate.getYear() ;
+			
+		
+			return sYear + '-'+ sMonth +'-'+ sDate;
+		}
+	]]></msxsl:script>
 </xsl:stylesheet>

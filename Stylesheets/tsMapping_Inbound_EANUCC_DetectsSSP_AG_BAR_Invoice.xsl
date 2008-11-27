@@ -20,11 +20,13 @@
 '******************************************************************************************
 ' Module History
 '******************************************************************************************
-' Date         | Name         | Description of modification
+' Date		| Name         	| Description of modification
 '******************************************************************************************
-'	26/01/2007	|	Nigel Emsen	|	FB: - Created from standard mapper and modified to detect
-'						|						|	SSP invoice and use SSP unit code for SCFR.
-'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+'26/01/2007	| Nigel Emsen	|	FB: - Created from standard mapper and modified to detect
+'			|				|	SSP invoice and use SSP unit code for SCFR.
+'*************************************************************************************************
+'26/11/2008 | Rave Tech  	| 2592 - Handled VAT rate change from 17.5% to 15%.
+'*************************************************************************************************
 '
 '******************************************************************************************
 -->
@@ -33,6 +35,8 @@
 	<!-- we use constants for default values -->
 	<xsl:variable name="defaultTaxCategory" select="'S'"/>
 	<xsl:variable name="defaultTaxRate" select="'17.5'"/>
+	<xsl:variable name="defaultTaxRateNew" select="'15'"/>
+	<xsl:variable name="CurrentDate" select="script:msGetTodaysDate()"/>	
 	<xsl:variable name="defaultDocumentStatus" select="'Original'"/>
 	<xsl:variable name="defaultUnitOfMeasure" select="'EA'"/>
 	<xsl:variable name="defaultInvoiceQuantity" select="'1'"/>
@@ -368,7 +372,38 @@
 													<xsl:value-of select="format-number(VATDetails/TaxRate, '0.00')"/>
 												</xsl:when>
 												<xsl:otherwise>
-													<xsl:value-of select="format-number($defaultTaxRate, '0.00')"/>
+													<xsl:choose>
+														<xsl:when test="/Invoice/TaxPointDateTime !=''">
+															<xsl:choose>
+																<xsl:when test="translate(substring(/Invoice/TaxPointDateTime,1,10),'-','')  &lt;= translate('2008-11-30','-','')">
+																	<xsl:value-of select="format-number($defaultTaxRate, '0.00')"/>
+																</xsl:when>
+																<xsl:otherwise>
+																	<xsl:value-of select="format-number($defaultTaxRateNew, '0.00')"/>
+																</xsl:otherwise>
+															</xsl:choose>
+														</xsl:when>
+														<xsl:when test="/Invoice/InvoiceDate !=''">
+															<xsl:choose>
+																<xsl:when test="translate(substring(/Invoice/InvoiceDate,1,10),'-','')  &lt;= translate('2008-11-30','-','')">
+																	<xsl:value-of select="format-number($defaultTaxRate, '0.00')"/>
+																</xsl:when>
+																<xsl:otherwise>
+																	<xsl:value-of select="format-number($defaultTaxRateNew, '0.00')"/>
+																</xsl:otherwise>
+															</xsl:choose>
+														</xsl:when>
+														<xsl:otherwise>
+															<xsl:choose>
+																<xsl:when test="translate($CurrentDate,'-','')  &lt;= translate('2008-11-30','-','')">
+																	<xsl:value-of select="format-number($defaultTaxRate, '0.00')"/>
+																</xsl:when>
+																<xsl:otherwise>
+																	<xsl:value-of select="format-number($defaultTaxRateNew, '0.00')"/>
+																</xsl:otherwise>
+															</xsl:choose>
+														</xsl:otherwise>
+													</xsl:choose>
 												</xsl:otherwise>
 											</xsl:choose>
 										</VATRate>
@@ -431,7 +466,38 @@
 														<xsl:value-of select="VATDetails/TaxRate"/>
 													</xsl:when>
 													<xsl:otherwise>
-														<xsl:value-of select="$defaultTaxRate"/>
+														<xsl:choose>
+															<xsl:when test="/Invoice/TaxPointDateTime !=''">
+																<xsl:choose>
+																	<xsl:when test="translate(substring(/Invoice/TaxPointDateTime,1,10),'-','')  &lt;= translate('2008-11-30','-','')">
+																		<xsl:value-of select="format-number($defaultTaxRate, '0.00')"/>
+																	</xsl:when>
+																	<xsl:otherwise>
+																		<xsl:value-of select="format-number($defaultTaxRateNew, '0.00')"/>
+																	</xsl:otherwise>
+																</xsl:choose>
+															</xsl:when>
+															<xsl:when test="/Invoice/InvoiceDate !=''">
+																<xsl:choose>
+																	<xsl:when test="translate(substring(/Invoice/InvoiceDate,1,10),'-','')  &lt;= translate('2008-11-30','-','')">
+																		<xsl:value-of select="format-number($defaultTaxRate, '0.00')"/>
+																	</xsl:when>
+																	<xsl:otherwise>
+																		<xsl:value-of select="format-number($defaultTaxRateNew, '0.00')"/>
+																	</xsl:otherwise>
+																</xsl:choose>
+															</xsl:when>
+															<xsl:otherwise>
+																<xsl:choose>
+																	<xsl:when test="translate($CurrentDate,'-','')  &lt;= translate('2008-11-30','-','')">
+																		<xsl:value-of select="format-number($defaultTaxRate, '0.00')"/>
+																	</xsl:when>
+																	<xsl:otherwise>
+																		<xsl:value-of select="format-number($defaultTaxRateNew, '0.00')"/>
+																	</xsl:otherwise>
+																</xsl:choose>
+															</xsl:otherwise>
+														</xsl:choose>
 													</xsl:otherwise>
 												</xsl:choose>
 											</xsl:variable>
@@ -592,4 +658,37 @@
 			</Batch>
 		</BatchRoot>
 	</xsl:template>
+	
+	<msxsl:script language="JScript" implements-prefix="script"><![CDATA[ 
+		/*=========================================================================================
+		' Routine       	 : msGetTodaysDate
+		' Description 	 : Gets todays date, formatted to yyyy-mm-dd
+		' Inputs          	 : None
+		' Outputs       	 : None
+		' Returns       	 : Class of row
+		' Author       		 : Rave Tech, 26/11/2008
+		' Alterations   	 : 
+		'========================================================================================*/
+		function msGetTodaysDate()
+		{
+		var dtDate = new Date();
+			
+			var sDate = dtDate.getDate();
+			if(sDate<10)
+			{
+				sDate = '0' + sDate;
+			}
+			
+			var sMonth = dtDate.getMonth() + 1;
+			if(sMonth<10)
+			{
+				sMonth = '0' + sMonth;
+			}
+						
+			var sYear  = dtDate.getYear() ;
+			
+		
+			return sYear + '-'+ sMonth +'-'+ sDate;
+		}
+	]]></msxsl:script>	
 </xsl:stylesheet>
