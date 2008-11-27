@@ -300,7 +300,7 @@
 													<xsl:text>S</xsl:text>
 												</xsl:when>
 												<xsl:otherwise>
-													<xsl:value-of select="$defaultTaxCategory"/>
+													<xsl:value-of select="LineTax/TaxRate/@Code"/>
 												</xsl:otherwise>
 											</xsl:choose>
 										</VATCode>
