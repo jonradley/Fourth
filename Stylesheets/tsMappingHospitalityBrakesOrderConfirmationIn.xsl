@@ -4,13 +4,14 @@ Alterations
 **********************************************************************
 Name			| Date				| Change
 **********************************************************************
-R Cambridge	| 2007-07-26		| 1332 Created Modele
+R Cambridge	| 2007-07-26		| 1332 Created Modue
 **********************************************************************
 R Cambridge	| 2007-11-13		| 1332 no info to populate Buyer tag
 **********************************************************************
 R Cambridge	| 2008-01-03		| 1686 revised rejection codes
 **********************************************************************
-				|						|
+R cambridge	| 2008-11-24		| 2587 revised rejection narratives
+												 for substitute lines set status to 'Add' and make rejected line explicit
 **********************************************************************
 				|						|				
 *******************************************************************-->
@@ -171,92 +172,88 @@ R Cambridge	| 2008-01-03		| 1686 revised rejection codes
 						
 						<xsl:otherwise>
 						
+						
 							<xsl:for-each select="orderModification/orderModificationLineItemLevel">
 							
-								<PurchaseOrderConfirmationLine>
-									<xsl:attribute name="LineStatus">
+							
+								<xsl:call-template name="writeConfLine">
+								
+									<xsl:with-param name="lineStatus">
 										<xsl:choose>
 											<xsl:when test="number(modifiedOrderInformation/requestedQuantity/value) = 0">Rejected</xsl:when>
+											<xsl:when test="substituteItemIdentification">Added</xsl:when>
 											<xsl:otherwise>Changed</xsl:otherwise>
 										</xsl:choose>
-									</xsl:attribute>
-								
-									<xsl:choose>
+									</xsl:with-param>
 									
-										<xsl:when test="substituteItemIdentification">
-										
-											<ProductID>
-												<GTIN><xsl:value-of select="modifiedOrderInformation/tradeItemIdentification/gtin"/></GTIN>
-												<SuppliersProductCode><xsl:value-of select="modifiedOrderInformation/tradeItemIdentification/additionalTradeItemIdentification[additionalTradeItemIdentificationType='SUPPLIER_ASSIGNED']/additionalTradeItemIdentificationValue"/></SuppliersProductCode>
-												<xsl:for-each select="modifiedOrderInformation/tradeItemIdentification/additionalTradeItemIdentification[additionalTradeItemIdentificationType='BUYER_ASSIGNED']/additionalTradeItemIdentificationValue">
-													<BuyersProductCode><xsl:value-of select="."/></BuyersProductCode>
-												</xsl:for-each>
-											</ProductID>
-											
-											<SubstitutedProductID>
-												<GTIN><xsl:value-of select="substituteItemIdentification/gtin"/></GTIN>
-												<SuppliersProductCode><xsl:value-of select="substituteItemIdentification/additionalTradeItemIdentification[additionalTradeItemIdentificationType='SUPPLIER_ASSIGNED']/additionalTradeItemIdentificationValue"/></SuppliersProductCode>
-												<xsl:for-each select="substituteItemIdentification/additionalTradeItemIdentification[additionalTradeItemIdentificationType='BUYER_ASSIGNED']/additionalTradeItemIdentificationValue">
-													<BuyersProductCode><xsl:value-of select="."/></BuyersProductCode>
-												</xsl:for-each>
-											</SubstitutedProductID>
-										
-										</xsl:when>
-										
-										<xsl:otherwise>
-										
-											<ProductID>
-												<GTIN><xsl:value-of select="modifiedOrderInformation/tradeItemIdentification/gtin"/></GTIN>
-												<SuppliersProductCode><xsl:value-of select="modifiedOrderInformation/tradeItemIdentification/additionalTradeItemIdentification[additionalTradeItemIdentificationType='SUPPLIER_ASSIGNED']/additionalTradeItemIdentificationValue"/></SuppliersProductCode>
-												<xsl:for-each select="modifiedOrderInformation/tradeItemIdentification/additionalTradeItemIdentification[additionalTradeItemIdentificationType='BUYER_ASSIGNED']/additionalTradeItemIdentificationValue">
-													<BuyersProductCode><xsl:value-of select="."/></BuyersProductCode>
-												</xsl:for-each>
-											</ProductID>
-										
-										</xsl:otherwise>									
+									<xsl:with-param name="productID" select="modifiedOrderInformation/tradeItemIdentification"/>
 									
-									</xsl:choose>								
-								
-									<!--ProductDescription/-->
-									<!--OrderedQuantity><xsl:value-of select="modifiedOrderInformation/requestedQuantity/value"/></OrderedQuantity-->
+									<xsl:with-param name="subProductID" select="substituteItemIdentification"/>
 									
-									<ConfirmedQuantity>
 									
-										<xsl:attribute name="UnitOfMeasure">										
-											<xsl:call-template name="transUoM">
-												<xsl:with-param name="brakesUoM" select="modifiedOrderInformation/requestedQuantity/unitOfMeasure/measurementUnitCodeValue"/>
-											</xsl:call-template>
-										</xsl:attribute>
 										
+									<xsl:with-param name="quantityOrdered">
+										<xsl:if test="substituteItemIdentification">0</xsl:if>
+									</xsl:with-param>		
+																
+									
+									<xsl:with-param name="quantityConfirmed">
 										<xsl:value-of select="modifiedOrderInformation/requestedQuantity/value"/>
+									</xsl:with-param>
+									
+									<xsl:with-param name="quantityUoM">									
+										<xsl:value-of select="modifiedOrderInformation/requestedQuantity/unitOfMeasure/measurementUnitCodeValue"/>
+									</xsl:with-param>
+
+									<xsl:with-param name="reasonCode">
+									
+										<xsl:choose>
 										
-									</ConfirmedQuantity>
-									
-									<!--PackSize/>
-									<UnitValueExclVAT/>
-									<LineValueExclVAT/-->
-									
-									<xsl:variable name="reasonCode">
-										<xsl:call-template name="transReasonCode">
-											<xsl:with-param name="brakesReasonCode" select="orderResponseReasonCode"/>
-										</xsl:call-template>									
-									</xsl:variable>
-									
-									<xsl:if test="$reasonCode != ''">
-									
-										<Narrative>
-											<xsl:value-of select="$reasonCode"/>
-										</Narrative>
+											<xsl:when test="substituteItemIdentification">Substitute</xsl:when>
+											
+											<xsl:otherwise>
+												<xsl:value-of select="orderResponseReasonCode"/>
+											</xsl:otherwise>
 										
-									</xsl:if>
+										</xsl:choose>
 									
-									<!--LineExtraData/-->
+									</xsl:with-param>								
 									
-								</PurchaseOrderConfirmationLine>
+															
+								</xsl:call-template>
+								
+
+								<xsl:if test="substituteItemIdentification">
+								
+									<!-- Previous line was an Add, now reject the substituted product -->
+									<xsl:call-template name="writeConfLine">
+									
+										<xsl:with-param name="lineStatus">Rejected</xsl:with-param>
+										
+										<xsl:with-param name="productID" select="substituteItemIdentification"/>
+										
+										<xsl:with-param name="subProductID" select="ShouldntMatchAnythingEver"/>
+										
+										<xsl:with-param name="quantityConfirmed">0</xsl:with-param>
+										
+										<xsl:with-param name="quantityUoM">
+											<xsl:value-of select="modifiedOrderInformation/requestedQuantity/unitOfMeasure/measurementUnitCodeValue"/>
+										</xsl:with-param>
+										
+										<xsl:with-param name="reasonCode">
+										  <xsl:value-of select="orderResponseReasonCode"/>
+										</xsl:with-param>	
+									
+									</xsl:call-template>
+								
+								</xsl:if>
+								
 
 							</xsl:for-each>
+							
 	
 						</xsl:otherwise>
+						
 	
 					</xsl:choose>
 				
@@ -268,6 +265,92 @@ R Cambridge	| 2008-01-03		| 1686 revised rejection codes
 		</BatchRoot>
 	
 	</xsl:template>
+	
+	
+	<xsl:template name="writeConfLine">
+		<xsl:param name="lineStatus"/>
+		<xsl:param name="productID"/>
+		<xsl:param name="subProductID"/>
+		<xsl:param name="quantityOrdered" select="''"/>
+		<xsl:param name="quantityConfirmed"/>
+		<xsl:param name="quantityUoM"/>
+		<xsl:param name="reasonCode"/>
+		
+	
+	
+		<PurchaseOrderConfirmationLine>
+			<xsl:attribute name="LineStatus">
+				<xsl:value-of select="$lineStatus"/>
+			</xsl:attribute>
+				
+			<ProductID>
+				<GTIN><xsl:value-of select="$productID/gtin"/></GTIN>
+				<SuppliersProductCode><xsl:value-of select="$productID/additionalTradeItemIdentification[additionalTradeItemIdentificationType='SUPPLIER_ASSIGNED']/additionalTradeItemIdentificationValue"/></SuppliersProductCode>
+				<xsl:for-each select="$productID/additionalTradeItemIdentification[additionalTradeItemIdentificationType='BUYER_ASSIGNED']/additionalTradeItemIdentificationValue">
+					<BuyersProductCode><xsl:value-of select="."/></BuyersProductCode>
+				</xsl:for-each>
+			</ProductID>			
+			
+			<xsl:if test="count($subProductID/*)">
+					
+				<SubstitutedProductID>
+					<GTIN><xsl:value-of select="$subProductID/gtin"/></GTIN>
+					<SuppliersProductCode><xsl:value-of select="$subProductID/additionalTradeItemIdentification[additionalTradeItemIdentificationType='SUPPLIER_ASSIGNED']/additionalTradeItemIdentificationValue"/></SuppliersProductCode>
+					<xsl:for-each select="$subProductID/additionalTradeItemIdentification[additionalTradeItemIdentificationType='BUYER_ASSIGNED']/additionalTradeItemIdentificationValue">
+						<BuyersProductCode><xsl:value-of select="."/></BuyersProductCode>
+					</xsl:for-each>
+				</SubstitutedProductID>
+			
+			</xsl:if>							
+		
+			<!--ProductDescription/-->
+			<!--OrderedQuantity><xsl:value-of select="modifiedOrderInformation/requestedQuantity/value"/></OrderedQuantity-->
+			
+			<xsl:if test="$quantityOrdered != ''">
+				<OrderedQuantity>
+					<xsl:value-of select="$quantityOrdered"/>
+				</OrderedQuantity>			
+			</xsl:if>
+			
+			<ConfirmedQuantity>
+			
+				<xsl:attribute name="UnitOfMeasure">										
+					<xsl:call-template name="transUoM">
+						<xsl:with-param name="brakesUoM" select="$quantityUoM"/>
+					</xsl:call-template>
+				</xsl:attribute>
+				
+				<xsl:value-of select="$quantityConfirmed"/>
+				
+			</ConfirmedQuantity>
+			
+			<!--PackSize/>
+			<UnitValueExclVAT/>
+			<LineValueExclVAT/-->
+			
+			<xsl:variable name="reasonText">
+				<xsl:call-template name="transReasonCode">
+					<xsl:with-param name="brakesReasonCode" select="$reasonCode"/>
+				</xsl:call-template>									
+			</xsl:variable>
+			
+			<xsl:if test="$reasonText != ''">
+			
+				<Narrative>
+					<xsl:value-of select="$reasonText"/>
+				</Narrative>
+				
+			</xsl:if>
+			
+			<!--LineExtraData/-->
+			
+		</PurchaseOrderConfirmationLine>
+
+	
+	
+	</xsl:template>
+	
+	
 
 	<xsl:template name="transUoM">
 		<xsl:param name="brakesUoM"/>
@@ -288,25 +371,26 @@ R Cambridge	| 2008-01-03		| 1686 revised rejection codes
 		<xsl:choose>
 			
 			<!-- translations, as specified by Kewill to Brakes -->
-			<xsl:when test="$brakesReasonCode = 'INVALID_BUYER_IDENTIFICATION'">Invalid\wrong Customer account number</xsl:when>
+			<xsl:when test="$brakesReasonCode = 'INVALID_BUYER_IDENTIFICATION'">Invalid Customer account number</xsl:when>   
 			<xsl:when test="$brakesReasonCode = 'BUSINESS_SCOPE_BLOCK'">Customer account number on stop</xsl:when>
-			<xsl:when test="$brakesReasonCode = 'CUSTOMER_IDENTIFICATION_NUMBER_DOES_NOT_EXIST'">Customer account number DNU'd</xsl:when>
+			<xsl:when test="$brakesReasonCode = 'CUSTOMER_IDENTIFICATION_NUMBER_DOES_NOT_EXIST'">Customer account number closed</xsl:when>
 			<xsl:when test="$brakesReasonCode = 'DELIVERY_SLOT_NOT_VALID_FOR_LOCATION'">Invalid delivery day is requested</xsl:when>
 			<xsl:when test="$brakesReasonCode = 'DELIVERY_SLOT_MISSED'">Request delivery cut-off time is missed</xsl:when>
 			<xsl:when test="$brakesReasonCode = 'MISSING_MESSAGE_REFERENCE_NUMBER'">Purchase Order number is missing\invalid</xsl:when>
 			<xsl:when test="$brakesReasonCode = 'MISSING_DATA'">Purchase Card number is missing\invalid</xsl:when>
 			<xsl:when test="$brakesReasonCode = 'BUSINESS_SCOPE_BLOCK'">Minimum Order Level Not Reached</xsl:when>
 			<xsl:when test="$brakesReasonCode = 'INVALID_PRODUCT_OR_ITEM_IDENTIFICATION'">Invalid product code</xsl:when>
-			<xsl:when test="$brakesReasonCode = 'ITEM_NOT_AUTHORIZED'">Product not on ABL</xsl:when>
+			<xsl:when test="$brakesReasonCode = 'ITEM_NOT_AUTHORIZED'">Product not on Agreed Buying List</xsl:when>
 			<xsl:when test="$brakesReasonCode = 'PRODUCT_NOT_VALID_FOR_LOCATION'">Product not valid on servicing depot</xsl:when>
 			<xsl:when test="$brakesReasonCode = 'DISCONTINUED_LINE'">Product discontinued\not on sale</xsl:when>
-			<xsl:when test="$brakesReasonCode = 'PRODUCT_OUT_OF_STOCK'">Product out of stock and no sub set up</xsl:when>
-			<xsl:when test="$brakesReasonCode = 'PRODUCT_OUT_OF_STOCK'">Insufficient stock and no sub set up</xsl:when>
+			<xsl:when test="$brakesReasonCode = 'PRODUCT_OUT_OF_STOCK'">Product out of stock</xsl:when>
 			<xsl:when test="$brakesReasonCode = 'RECEIVED_AFTER_CUTOFF_DATE_OR_TIME'">Product past product cut-off time</xsl:when>
 			<xsl:when test="$brakesReasonCode = 'UNAUTHORIZED_BUSINESS_PROCESS_STATE'">Quantity greater than 99</xsl:when>
 			
 			<!-- default -->
-			<xsl:otherwise></xsl:otherwise>
+			<xsl:otherwise>
+        <xsl:value-of select="$brakesReasonCode"/>
+      </xsl:otherwise>
 			
 		</xsl:choose>
 	
