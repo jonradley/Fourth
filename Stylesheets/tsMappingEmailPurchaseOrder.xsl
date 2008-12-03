@@ -19,7 +19,7 @@
 ******************************************************************************************
  23/10/2007 | Lee Boyton | FB1542. Added contact name
 ****************************************************************************************** 
-            |            |
+ 03/12/2008 | A Sheppard | 2581. Added narrative row if required
 ******************************************************************************************
 -->
 
@@ -400,9 +400,12 @@
 									</xsl:if>
 								</tr>
 								<xsl:for-each select="/PurchaseOrder/PurchaseOrderDetail/PurchaseOrderLine">
+									<xsl:variable name="RowClass">
+										<xsl:value-of select="user:gsGetRowClass()"/>
+									</xsl:variable>
 									<tr>
 										<xsl:attribute name="class">
-											<xsl:value-of select="user:gsGetRowClass()"/>
+											<xsl:value-of select="@RowClass"/>
 										</xsl:attribute>
 										<td align="center"><xsl:value-of select="LineNumber"/></td>
 										<xsl:if test="/PurchaseOrder/PurchaseOrderDetail/PurchaseOrderLine/ProductID/SuppliersProductCode">
@@ -436,6 +439,17 @@
 											</td>
 										</xsl:if>
 									</tr>
+									<xsl:if test="LineExtraData/Narrative">
+										<tr>
+											<xsl:attribute name="class">
+												<xsl:value-of select="@RowClass"/>
+											</xsl:attribute>
+											<td>&#xa0;</td>
+											<td colspan="7">
+												<xsl:value-of select="LineExtraData/Narrative"/>
+											</td>
+										</tr>
+									</xsl:if>
 								</xsl:for-each>
 							</table>
 						</td>
