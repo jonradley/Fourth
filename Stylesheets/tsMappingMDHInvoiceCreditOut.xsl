@@ -14,6 +14,8 @@
 ******************************************************************************************
  12/03/2008	| A Sheppard	| Created Module
 ******************************************************************************************
+ 03/12/2008	| Lee Boyton	| 2057. Do not output final VAT detail line if total is zero.
+******************************************************************************************
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -118,23 +120,25 @@
 			</xsl:for-each>
 		</xsl:for-each>
 	
-		<!--VAT total line-->
-		<xsl:value-of select="$NewLine"/>
-		<xsl:text>D</xsl:text>
-		<xsl:text>,</xsl:text>
-		<xsl:text>A-099-000-211180</xsl:text>
-		<xsl:text>,</xsl:text>
-		<xsl:text>VAT</xsl:text>
-		<xsl:text>,</xsl:text>
-		<xsl:text>V1</xsl:text>
-		<xsl:text>,</xsl:text>
-		<xsl:text>V</xsl:text>
-		<xsl:text>,</xsl:text>
-		
-		<xsl:text>,</xsl:text>
-		
-		<xsl:text>,</xsl:text>
-		<xsl:value-of select="//VATAmount"/>
+		<!--VAT total line (only required if non-zero)-->
+		<xsl:if test="number(//VATAmount) != 0">
+			<xsl:value-of select="$NewLine"/>
+			<xsl:text>D</xsl:text>
+			<xsl:text>,</xsl:text>
+			<xsl:text>A-099-000-211180</xsl:text>
+			<xsl:text>,</xsl:text>
+			<xsl:text>VAT</xsl:text>
+			<xsl:text>,</xsl:text>
+			<xsl:text>V1</xsl:text>
+			<xsl:text>,</xsl:text>
+			<xsl:text>V</xsl:text>
+			<xsl:text>,</xsl:text>
+			
+			<xsl:text>,</xsl:text>
+			
+			<xsl:text>,</xsl:text>
+			<xsl:value-of select="//VATAmount"/>
+		</xsl:if>
 	
 		<xsl:value-of select="$NewLine"/>
 	
