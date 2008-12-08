@@ -10,11 +10,10 @@ R Cambridge	| 2008-12-02		| 2600 Created Module (based on tsMappingHospitalityIn
 **********************************************************************
 				|						|				
 *******************************************************************-->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	<xsl:output method="xml"/>
 	<!-- we use constants for default values -->
 	<xsl:variable name="defaultTaxCategory" select="'S'"/>
-	<xsl:variable name="defaultTaxRate" select="'17.5'"/>
 	<xsl:variable name="defaultDocumentStatus" select="'Original'"/>
 	<xsl:variable name="defaultUnitOfMeasure" select="'EA'"/>
 	<xsl:variable name="defaultInvoiceQuantity" select="'1'"/>
@@ -41,10 +40,8 @@ R Cambridge	| 2008-12-02		| 2600 Created Module (based on tsMappingHospitalityIn
 										<xsl:value-of select="/Invoice/Buyer/BuyerReferences/SuppliersCodeForBuyer"/>
 								</SendersCodeForRecipient>
 								
-								<SendersBranchReference>																		
-									<xsl:call-template name="extractSBR">
-										<xsl:with-param name="rawValue" select="/Invoice/Buyer/Party"/>
-									</xsl:call-template>									
+								<SendersBranchReference>
+									<xsl:value-of select="/Invoice/Supplier/Contact/Department"/>																									
 								</SendersBranchReference>
 								
 							</TradeSimpleHeader>
