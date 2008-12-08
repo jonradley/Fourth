@@ -10,11 +10,10 @@ R Cambridge	| 2008-12-02		| 2600 Created Module (based on tsMappingHospitalityIn
 **********************************************************************
 				|						|				
 *******************************************************************-->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	<xsl:output method="xml"/>
 	<!-- we use constants for default values -->
 	<xsl:variable name="defaultTaxCategory" select="'S'"/>
-	<xsl:variable name="defaultTaxRate" select="'17.5'"/>
 	<xsl:variable name="defaultDocumentStatus" select="'Original'"/>
 	<xsl:variable name="defaultUnitOfMeasure" select="'EA'"/>
 	<xsl:variable name="defaultInvoiceQuantity" select="'1'"/>
@@ -25,7 +24,11 @@ R Cambridge	| 2008-12-02		| 2600 Created Module (based on tsMappingHospitalityIn
 	<xsl:variable name="defaultSettlementDiscountValue" select="'0'"/>
 	<xsl:variable name="creditLineIndicator" select="'2'"/>
 	<xsl:variable name="invoiceLineIndicator" select="'1'"/>
-	<xsl:template match="/">
+	
+	<xsl:template match="/biztalk_1/header"/>
+	
+	
+	<xsl:template match="/biztalk_1/body">
 		<BatchRoot>
 			<Batch>
 				<BatchDocuments>
@@ -37,10 +40,10 @@ R Cambridge	| 2008-12-02		| 2600 Created Module (based on tsMappingHospitalityIn
 							<TradeSimpleHeader>
 								<!-- SCR comes from Sellers code for buyer if there, else it comes from Buyer GLN -->
 								<SendersCodeForRecipient>
-										<xsl:value-of select="/Invoice/Buyer/BuyerReferences/SuppliersCodeForBuyer"/>
+										<xsl:value-of select="Invoice/Buyer/BuyerReferences/SuppliersCodeForBuyer"/>
 								</SendersCodeForRecipient>
 								<SendersBranchReference>
-									<xsl:value-of select="/Invoice/Buyer/BuyerReferences/SuppliersCodeForBuyer"/>
+									<xsl:value-of select="Invoice/Buyer/BuyerReferences/SuppliersCodeForBuyer"/>
 								</SendersBranchReference>
 
 							</TradeSimpleHeader>
@@ -56,23 +59,23 @@ R Cambridge	| 2008-12-02		| 2600 Created Module (based on tsMappingHospitalityIn
 								
 								<!--Buyer>
 									<BuyersLocationID>
-										<xsl:if test="string(/Invoice/Buyer/BuyerGLN) != '' ">
+										<xsl:if test="string(Invoice/Buyer/BuyerGLN) != '' ">
 											<GLN>
-												<xsl:value-of select="/Invoice/Buyer/BuyerGLN"/>
+												<xsl:value-of select="Invoice/Buyer/BuyerGLN"/>
 											</GLN>
 										</xsl:if>
-										<xsl:if test="string(/Invoice/Buyer/BuyerAssigned)">
+										<xsl:if test="string(Invoice/Buyer/BuyerAssigned)">
 											<BuyersCode>
-												<xsl:value-of select="/Invoice/Buyer/BuyerAssigned"/>
+												<xsl:value-of select="Invoice/Buyer/BuyerAssigned"/>
 											</BuyersCode>
 										</xsl:if>
-										<xsl:if test="string(concat(/Invoice/Buyer/SellerAssigned,/Invoice/Buyer/BuyerGLN))">
+										<xsl:if test="string(concat(Invoice/Buyer/SellerAssigned,Invoice/Buyer/BuyerGLN))">
 											<SuppliersCode>
-												<xsl:value-of select="/Invoice/Buyer/SellerAssigned"/>
+												<xsl:value-of select="Invoice/Buyer/SellerAssigned"/>
 											</SuppliersCode>
 										</xsl:if-->
 										<!--
-										<xsl:for-each select="(/Invoice/Buyer/BuyerGLN | /Invoice/Buyer/SellerAssigned )[1]">
+										<xsl:for-each select="(Invoice/Buyer/BuyerGLN | Invoice/Buyer/SellerAssigned )[1]">
 											<SuppliersCode>
 												<xsl:value-of select="."/>
 											</SuppliersCode>
@@ -80,85 +83,85 @@ R Cambridge	| 2008-12-02		| 2600 Created Module (based on tsMappingHospitalityIn
 									</BuyersLocationID>
 									<BuyersAddress>
 										<AddressLine1>
-											<xsl:value-of select="/Invoice/Buyer/Address/BuildingIdentifier"/>
+											<xsl:value-of select="Invoice/Buyer/Address/BuildingIdentifier"/>
 										</AddressLine1>
-										<xsl:if test="string(/Invoice/Buyer/Address/StreetName)">
+										<xsl:if test="string(Invoice/Buyer/Address/StreetName)">
 											<AddressLine2>
-												<xsl:value-of select="/Invoice/Buyer/Address/StreetName"/>
+												<xsl:value-of select="Invoice/Buyer/Address/StreetName"/>
 											</AddressLine2>
 										</xsl:if>
-										<xsl:if test="string(/Invoice/Buyer/Address/City)">
+										<xsl:if test="string(Invoice/Buyer/Address/City)">
 											<AddressLine3>
-												<xsl:value-of select="/Invoice/Buyer/Address/City"/>
+												<xsl:value-of select="Invoice/Buyer/Address/City"/>
 											</AddressLine3>
 										</xsl:if>
 										<AddressLine4>
 											<xsl:text>GB</xsl:text>
 										</AddressLine4>
-										<xsl:if test="string(/Invoice/Buyer/Address/PostCode)">
+										<xsl:if test="string(Invoice/Buyer/Address/PostCode)">
 											<PostCode>
-												<xsl:value-of select="/Invoice/Buyer/Address/PostCode"/>
+												<xsl:value-of select="Invoice/Buyer/Address/PostCode"/>
 											</PostCode>
 										</xsl:if>
 									</BuyersAddress>
 								</Buyer>
 								<Supplier>
 									<SuppliersLocationID>
-										<xsl:if test="string(/Invoice/Seller/SellerGLN)">
+										<xsl:if test="string(Invoice/Seller/SellerGLN)">
 											<GLN>
-												<xsl:value-of select="/Invoice/Seller/SellerGLN"/>
+												<xsl:value-of select="Invoice/Seller/SellerGLN"/>
 											</GLN>
 										</xsl:if>
-										<xsl:if test="string(/Invoice/Seller/BuyerAssigned)">
+										<xsl:if test="string(Invoice/Seller/BuyerAssigned)">
 											<BuyersCode>
-												<xsl:value-of select="/Invoice/Seller/BuyerAssigned"/>
+												<xsl:value-of select="Invoice/Seller/BuyerAssigned"/>
 											</BuyersCode>
 										</xsl:if>
-										<xsl:if test="string(/Invoice/Seller/SellerAssigned)">
+										<xsl:if test="string(Invoice/Seller/SellerAssigned)">
 											<SuppliersCode>
-												<xsl:value-of select="/Invoice/Seller/SellerAssigned"/>
+												<xsl:value-of select="Invoice/Seller/SellerAssigned"/>
 											</SuppliersCode>
 										</xsl:if>
 									</SuppliersLocationID>
 									<SuppliersAddress>
 										<AddressLine1>
-											<xsl:value-of select="/Invoice/Seller/Address/BuildingIdentifier"/>
+											<xsl:value-of select="Invoice/Seller/Address/BuildingIdentifier"/>
 										</AddressLine1>
-										<xsl:if test="string(/Invoice/Seller/Address/StreetName)">
+										<xsl:if test="string(Invoice/Seller/Address/StreetName)">
 											<AddressLine2>
-												<xsl:value-of select="/Invoice/Seller/Address/StreetName"/>
+												<xsl:value-of select="Invoice/Seller/Address/StreetName"/>
 											</AddressLine2>
 										</xsl:if>
-										<xsl:if test="string(/Invoice/Seller/Address/City)">
+										<xsl:if test="string(Invoice/Seller/Address/City)">
 											<AddressLine3>
-												<xsl:value-of select="/Invoice/Seller/Address/City"/>
+												<xsl:value-of select="Invoice/Seller/Address/City"/>
 											</AddressLine3>
 										</xsl:if>
 										<AddressLine4>
 											<xsl:text>GB</xsl:text>
 										</AddressLine4>
-										<xsl:if test="string(/Invoice/Seller/Address/PostCode)">
+										<xsl:if test="string(Invoice/Seller/Address/PostCode)">
 											<PostCode>
-												<xsl:value-of select="/Invoice/Seller/Address/PostCode"/>
+												<xsl:value-of select="Invoice/Seller/Address/PostCode"/>
 											</PostCode>
 										</xsl:if>
 									</SuppliersAddress>
 								</Supplier-->
 								<ShipTo>
 									<ShipToLocationID>
-										<!--xsl:if test="string(/Invoice/ShipTo/ShipToGLN)">
+										<!--xsl:if test="string(Invoice/ShipTo/ShipToGLN)">
 											<GLN>
-												<xsl:value-of select="/Invoice/ShipTo/ShipToGLN"/>
+												<xsl:value-of select="Invoice/ShipTo/ShipToGLN"/>
 											</GLN>
 										</xsl:if>
-										<xsl:if test="string(/Invoice/ShipTo/BuyerAssigned)">
+										<xsl:if test="string(Invoice/ShipTo/BuyerAssigned)">
 											<BuyersCode>
-												<xsl:value-of select="/Invoice/ShipTo/BuyerAssigned"/>
+												<xsl:value-of select="Invoice/ShipTo/BuyerAssigned"/>
 											</BuyersCode>
 										</xsl:if-->
-										<xsl:if test="string(/Invoice/Buyer/BuyerReferences/SuppliersCodeForBuyer)">
+										<xsl:if test="string(Invoice/Buyer/BuyerReferences/SuppliersCodeForBuyer)">
 											<SuppliersCode>
-												<xsl:value-of select="/Invoice/Buyer/BuyerReferences/SuppliersCodeForBuyer"/>
+												<xsl:value-of select="Invoice/Buyer/BuyerReferences/SuppliersCodeForBuyer"/>
 											</SuppliersCode>
 										</xsl:if>
 									</ShipToLocationID>
@@ -166,17 +169,17 @@ R Cambridge	| 2008-12-02		| 2600 Created Module (based on tsMappingHospitalityIn
 								</ShipTo>
 								<InvoiceReferences>
 									<InvoiceReference>
-										<xsl:value-of select="/Invoice/InvoiceReferences/SuppliersInvoiceNumber"/>
+										<xsl:value-of select="Invoice/InvoiceReferences/SuppliersInvoiceNumber"/>
 									</InvoiceReference>
 									<InvoiceDate>
-										<xsl:value-of select="/Invoice/InvoiceDate"/>
+										<xsl:value-of select="Invoice/InvoiceDate"/>
 									</InvoiceDate>
 									<TaxPointDate>
-										<xsl:value-of select="/Invoice/InvoiceDate"/>
+										<xsl:value-of select="Invoice/InvoiceDate"/>
 									</TaxPointDate>
-									<xsl:if test="translate(/Invoice/Supplier/SupplierReferences/TaxNumber, ' ', '')">
+									<xsl:if test="translate(Invoice/Supplier/SupplierReferences/TaxNumber, ' ', '')">
 										<VATRegNo>
-											<xsl:value-of select="translate(/Invoice/Supplier/SupplierReferences/TaxNumber, ' ', '')"/>
+											<xsl:value-of select="translate(Invoice/Supplier/SupplierReferences/TaxNumber, ' ', '')"/>
 										</VATRegNo>
 									</xsl:if>
 								</InvoiceReferences>
@@ -185,46 +188,46 @@ R Cambridge	| 2008-12-02		| 2600 Created Module (based on tsMappingHospitalityIn
 				      INVOICE DETAIL
 				      ~~~~~~~~~~~~~~~~~~~~~~~ -->
 							<InvoiceDetail>
-								<xsl:for-each select="/Invoice/InvoiceLine">
+								<xsl:for-each select="Invoice/InvoiceLine">
 									<InvoiceLine>
-										<xsl:if test="/Invoice/InvoiceReferences/BuyersOrderNumber != ''">
+										<xsl:if test="../InvoiceReferences/BuyersOrderNumber != ''">
 											<PurchaseOrderReferences>
-												<xsl:if test="/Invoice/InvoiceReferences/BuyersOrderNumber">
+												<xsl:if test="../InvoiceReferences/BuyersOrderNumber">
 													<PurchaseOrderReference>
-														<xsl:value-of select="/Invoice/InvoiceReferences/BuyersOrderNumber"/>
+														<xsl:value-of select="../InvoiceReferences/BuyersOrderNumber"/>
 													</PurchaseOrderReference>
 												</xsl:if>
 												<!-- no date provided so use invoice date-->
-												<xsl:if test="/Invoice/InvoiceReferences/BuyersOrderNumber">
+												<xsl:if test="../InvoiceReferences/BuyersOrderNumber">
 													<PurchaseOrderDate>
-														<xsl:value-of select="/Invoice/InvoiceDate"/>
+														<xsl:value-of select="../InvoiceDate"/>
 													</PurchaseOrderDate>
 												</xsl:if>
 											</PurchaseOrderReferences>
 										</xsl:if>
-										<xsl:if test="/Invoice/InvoiceReferences/SuppliersOrderReference">
+										<xsl:if test="../InvoiceReferences/SuppliersOrderReference">
 											<PurchaseOrderConfirmationReferences>
 												<PurchaseOrderConfirmationReference>
-													<xsl:value-of select="/Invoice/InvoiceReferences/SuppliersOrderReference"/>
+													<xsl:value-of select="../InvoiceReferences/SuppliersOrderReference"/>
 												</PurchaseOrderConfirmationReference>
 												<PurchaseOrderConfirmationDate>
-													<xsl:value-of select="/Invoice/InvoiceDate"/>
+													<xsl:value-of select="../InvoiceDate"/>
 												</PurchaseOrderConfirmationDate>
 											</PurchaseOrderConfirmationReferences>
 										</xsl:if>
-										<xsl:if test="/Invoice/InvoiceReferences/SuppliersOrderReference">
+										<xsl:if test="../InvoiceReferences/DeliveryNoteNumber">
 											<DeliveryNoteReferences>
-												<xsl:if test="/Invoice/InvoiceReferences/SuppliersOrderReference">
+												<xsl:if test="../InvoiceReferences/DeliveryNoteNumber">
 													<DeliveryNoteReference>
-														<xsl:value-of select="/Invoice/InvoiceReferences/SuppliersOrderReference"/>
+														<xsl:value-of select="../InvoiceReferences/DeliveryNoteNumber"/>
 													</DeliveryNoteReference>
 												</xsl:if>
-												<!--xsl:if test="/Invoice/DespatchReference/DespatchDocumentDate">
+												<!--xsl:if test="Invoice/DespatchReference/DespatchDocumentDate">
 													<DeliveryNoteDate>
-														<xsl:value-of select="substring-before(/Invoice/DespatchReference/DespatchDocumentDate, 'T')"/>
+														<xsl:value-of select="substring-before(Invoice/DespatchReference/DespatchDocumentDate, 'T')"/>
 													</DeliveryNoteDate>
 													<DespatchDate>
-														<xsl:value-of select="substring-before(/Invoice/DespatchReference/DespatchDocumentDate, 'T')"/>
+														<xsl:value-of select="substring-before(Invoice/DespatchReference/DespatchDocumentDate, 'T')"/>
 													</DespatchDate>
 												</xsl:if-->
 											</DeliveryNoteReferences>
@@ -281,8 +284,8 @@ R Cambridge	| 2008-12-02		| 2600 Created Module (based on tsMappingHospitalityIn
 								</NumberOfDeliveries>
 								<DocumentDiscountRate>
 									<xsl:choose>
-										<xsl:when test="/Invoice/InvoiceTotals/DocumentDiscountRate">
-											<xsl:value-of select="format-number(/Invoice/InvoiceTotals/DocumentDiscountRate, '0.00')"/>
+										<xsl:when test="Invoice/InvoiceTotals/DocumentDiscountRate">
+											<xsl:value-of select="format-number(Invoice/InvoiceTotals/DocumentDiscountRate, '0.00')"/>
 										</xsl:when>
 										<xsl:otherwise>
 											<xsl:value-of select="format-number($defaultDocumentDiscountRate, '0.00')"/>
@@ -291,8 +294,8 @@ R Cambridge	| 2008-12-02		| 2600 Created Module (based on tsMappingHospitalityIn
 								</DocumentDiscountRate>
 								<SettlementDiscountRate>
 									<xsl:choose>
-										<xsl:when test="/Invoice/InvoiceTotals/SettlementDiscountRate">
-											<xsl:value-of select="format-number(/Invoice/InvoiceTotals/SettlementDiscountRate, '0.00')"/>
+										<xsl:when test="Invoice/InvoiceTotals/SettlementDiscountRate">
+											<xsl:value-of select="format-number(Invoice/InvoiceTotals/SettlementDiscountRate, '0.00')"/>
 										</xsl:when>
 										<xsl:otherwise>
 											<xsl:value-of select="format-number($defaultSettlementDiscountRate, '0.00')"/>
@@ -302,18 +305,11 @@ R Cambridge	| 2008-12-02		| 2600 Created Module (based on tsMappingHospitalityIn
 								<!-- VATRateTotals are not mandatory in EAN.UCC but we have to assume at least some details will exist
 					       to stand any chance at all of filling in any of our mandatory details -->
 								<VATSubTotals>
-									<xsl:for-each select="/Invoice/TaxSubTotal">
+									<xsl:for-each select="Invoice/TaxSubTotal">
 										<VATSubTotal>
 											<!-- store the VATRate and VATCode in variables as we use them more than once below -->
 											<xsl:variable name="currentVATCode">
-												<xsl:choose>
-													<xsl:when test="TaxRate/@Code = 'N'">
-														<xsl:text>S</xsl:text>
-													</xsl:when>
-													<xsl:otherwise>
-														<xsl:value-of select="TaxRate/@Code"/>
-													</xsl:otherwise>
-												</xsl:choose>
+												<xsl:value-of select="TaxRate/@Code"/>
 											</xsl:variable>
 											<xsl:variable name="currentVATRate">
 												<xsl:if test="TaxRate">
@@ -326,11 +322,7 @@ R Cambridge	| 2008-12-02		| 2600 Created Module (based on tsMappingHospitalityIn
 											<NumberOfLinesAtRate>
 												<xsl:value-of select="NumberOfLinesAtRate"/>
 											</NumberOfLinesAtRate>
-											<!-- EAN.UCC also doesn't sum the quantities at a specific rate so we have to work it out. Code and Rate must be the same -->
-											<NumberOfItemsAtRate>
-												<xsl:value-of select="sum(/Invoice/InvoiceLine/Quantity/Amount)"/>
-											</NumberOfItemsAtRate>
-											<!-- EAN.UCC also doesn't sum the values at a specific rate so we have to work it out. Code and Rate must be the same -->
+											
 											<xsl:if test="TotalValueAtRate">
 												<DocumentTotalExclVATAtRate>
 													<xsl:value-of select="format-number(TotalValueAtRate,'0.00')"/>
@@ -366,39 +358,39 @@ R Cambridge	| 2008-12-02		| 2600 Created Module (based on tsMappingHospitalityIn
 								</VATSubTotals>
 								<!-- DiscountedLinesTotalExclVAT is mandatory in our schema but not EAN.UCC. If we find none then just default the value -->
 								<DiscountedLinesTotalExclVAT>
-									<xsl:value-of select="format-number(/Invoice/InvoiceTotal/LineValueTotal, '0.00')"/>
+									<xsl:value-of select="format-number(Invoice/InvoiceTotal/LineValueTotal, '0.00')"/>
 								</DiscountedLinesTotalExclVAT>
 								<!-- DocumentDiscount is mandatory in our schema but not EAN.UCC. If we find none then just default the value -->
 								<DocumentDiscount>
 									<xsl:value-of select="format-number($defaultDocumentDiscountValue,'0.00')"/>
 								</DocumentDiscount>
 								<DocumentTotalExclVAT>
-									<xsl:value-of select="format-number(/Invoice/InvoiceTotal/LineValueTotal, '0.00')"/>
+									<xsl:value-of select="format-number(Invoice/InvoiceTotal/LineValueTotal, '0.00')"/>
 								</DocumentTotalExclVAT>
 								<!-- SettlementDiscount is mandatory in our schema but not EAN.UCC. If we find none then just default the value -->
-								<xsl:if test="/Invoice/InvoiceTotal/SettlementDiscountTotal">
+								<xsl:if test="Invoice/InvoiceTotal/SettlementDiscountTotal">
 									<SettlementDiscount>
-										<xsl:value-of select="format-number(/Invoice/InvoiceTotal/SettlementDiscountTotal, '0.00')"/>
+										<xsl:value-of select="format-number(Invoice/InvoiceTotal/SettlementDiscountTotal, '0.00')"/>
 									</SettlementDiscount>
 								</xsl:if>
 								<!-- we need a SettlementTotalExclVAT internally but it is optional in EAN.UCC so we work it out if it is missing -->
-								<xsl:if test="/Invoice/InvoiceTotal/TaxableTotal">
+								<xsl:if test="Invoice/InvoiceTotal/TaxableTotal">
 									<SettlementTotalExclVAT>
-										<xsl:value-of select="format-number(/Invoice/InvoiceTotal/TaxableTotal, '0.00')"/>
+										<xsl:value-of select="format-number(Invoice/InvoiceTotal/TaxableTotal, '0.00')"/>
 									</SettlementTotalExclVAT>
 								</xsl:if>
 								<!-- we need a VATAmount internally but it is optional in EAN.UCC so we work it out if it is missing -->
-								<xsl:if test="/Invoice/InvoiceTotal/TaxTotal">
+								<xsl:if test="Invoice/InvoiceTotal/TaxTotal">
 									<VATAmount>
-										<xsl:value-of select="format-number(/Invoice/InvoiceTotal/TaxTotal, '0.00')"/>
+										<xsl:value-of select="format-number(Invoice/InvoiceTotal/TaxTotal, '0.00')"/>
 									</VATAmount>
 								</xsl:if>
 								<DocumentTotalInclVAT>
-									<xsl:value-of select="format-number(/Invoice/InvoiceTotal/GrossPaymentTotal, '0.00')"/>
+									<xsl:value-of select="format-number(Invoice/InvoiceTotal/GrossPaymentTotal, '0.00')"/>
 								</DocumentTotalInclVAT>
 								<!-- we need a SettlementTotalInclVAT internally but it is optional in EAN.UCC so we work it out if it is missing -->
 								<SettlementTotalInclVAT>
-									<xsl:value-of select="format-number(/Invoice/InvoiceTotal/NetPaymentTotal, '0.00')"/>
+									<xsl:value-of select="format-number(Invoice/InvoiceTotal/NetPaymentTotal, '0.00')"/>
 								</SettlementTotalInclVAT>
 							</InvoiceTrailer>
 						</Invoice>
