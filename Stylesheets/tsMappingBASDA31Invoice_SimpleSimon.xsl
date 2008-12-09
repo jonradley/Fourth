@@ -307,14 +307,7 @@ R Cambridge	| 2008-12-02		| 2600 Created Module (based on tsMappingHospitalityIn
 										<VATSubTotal>
 											<!-- store the VATRate and VATCode in variables as we use them more than once below -->
 											<xsl:variable name="currentVATCode">
-												<xsl:choose>
-													<xsl:when test="TaxRate/@Code = 'N'">
-														<xsl:text>S</xsl:text>
-													</xsl:when>
-													<xsl:otherwise>
-														<xsl:value-of select="TaxRate/@Code"/>
-													</xsl:otherwise>
-												</xsl:choose>
+												<xsl:value-of select="TaxRate/@Code"/>
 											</xsl:variable>
 											<xsl:variable name="currentVATRate">
 												<xsl:if test="TaxRate">
@@ -327,11 +320,7 @@ R Cambridge	| 2008-12-02		| 2600 Created Module (based on tsMappingHospitalityIn
 											<NumberOfLinesAtRate>
 												<xsl:value-of select="NumberOfLinesAtRate"/>
 											</NumberOfLinesAtRate>
-											<!-- EAN.UCC also doesn't sum the quantities at a specific rate so we have to work it out. Code and Rate must be the same -->
-											<NumberOfItemsAtRate>
-												<xsl:value-of select="sum(/Invoice/InvoiceLine/Quantity/Amount)"/>
-											</NumberOfItemsAtRate>
-											<!-- EAN.UCC also doesn't sum the values at a specific rate so we have to work it out. Code and Rate must be the same -->
+											
 											<xsl:if test="TotalValueAtRate">
 												<DocumentTotalExclVATAtRate>
 													<xsl:value-of select="format-number(TotalValueAtRate,'0.00')"/>
