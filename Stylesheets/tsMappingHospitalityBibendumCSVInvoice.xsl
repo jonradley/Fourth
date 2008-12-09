@@ -7,7 +7,7 @@ Alterations
 **********************************************************************
 Name			| Date				| Change
 **********************************************************************
-     ?     	|       ?    		| Created Modele
+     ?     	|       ?    		| Created Module
 **********************************************************************
 R Cambridge	|	2008-10-15		| PO ref mod	
 **********************************************************************
@@ -24,6 +24,7 @@ R Cambridge	|	2008-10-15		| PO ref mod
 	<!-- All documents in the batch will be for the same customer/agreement -->	
 	<xsl:variable name="COMPASS" select="'COMPASS'"/>
 	<xsl:variable name="TESCO" select="'TESCO'"/>
+	<xsl:variable name="BEACON_PURCHASING" select="'BEACON_PURCHASING'"/>
 	
 	<xsl:variable name="CustomerFlag">
 		<xsl:variable name="accountCode" select="string(//Invoice/TradeSimpleHeader/SendersBranchReference)"/>
@@ -31,11 +32,14 @@ R Cambridge	|	2008-10-15		| PO ref mod
 		<xsl:choose>
 			<xsl:when test="$accountCode = 'MIL14T'"><xsl:value-of select="$COMPASS"/></xsl:when>
 			<xsl:when test="$accountCode = 'FMC01T'"><xsl:value-of select="$COMPASS"/></xsl:when>
+			
 			<xsl:when test="$accountCode = 'TES01T'"><xsl:value-of select="$TESCO"/></xsl:when>
 			<xsl:when test="$accountCode = 'TES08T'"><xsl:value-of select="$TESCO"/></xsl:when>
 			<xsl:when test="$accountCode = 'TES12T'"><xsl:value-of select="$TESCO"/></xsl:when>
 			<xsl:when test="$accountCode = 'TES15T'"><xsl:value-of select="$TESCO"/></xsl:when>
 			<xsl:when test="$accountCode = 'TES25T'"><xsl:value-of select="$TESCO"/></xsl:when>
+			
+			<xsl:when test="$accountCode = 'BEACON'"><xsl:value-of select="$BEACON_PURCHASING"/></xsl:when>
 			<xsl:otherwise></xsl:otherwise>
 		</xsl:choose>
 	
@@ -87,16 +91,22 @@ R Cambridge	|	2008-10-15		| PO ref mod
 		<TradeSimpleHeader>
 			<SendersCodeForRecipient>
 				<xsl:choose>
-					<xsl:when test="SendersBranchReference = 'MIL14T'">MIL14T</xsl:when>
+					<!--xsl:when test="SendersBranchReference = 'MIL14T'">MIL14T</xsl:when>
 					<xsl:when test="SendersBranchReference = 'FMC01T'">FMC01T</xsl:when>
 					<xsl:when test="SendersBranchReference = 'TES01T'">TES01T</xsl:when>					
 					<xsl:when test="SendersBranchReference = 'TES08T'">TES08T</xsl:when>					
 					<xsl:when test="SendersBranchReference = 'TES12T'">TES12T</xsl:when>					
 					<xsl:when test="SendersBranchReference = 'TES15T'">TES15T</xsl:when>					
-					<xsl:when test="SendersBranchReference = 'TES25T'">TES25T</xsl:when>					
+					<xsl:when test="SendersBranchReference = 'TES25T'">TES25T</xsl:when-->	
+					
+					<xsl:when test="$CustomerFlag = $COMPASS or $CustomerFlag = $TESCO or $CustomerFlag = $BEACON_PURCHASING">
+						<xsl:value-of select="SendersBranchReference"/>
+					</xsl:when>			
+									
 					<xsl:otherwise>
 						<xsl:value-of select="SendersCodeForRecipient"/>
 					</xsl:otherwise>
+					
 				</xsl:choose>
 			</SendersCodeForRecipient>
 			
@@ -138,7 +148,7 @@ R Cambridge	|	2008-10-15		| PO ref mod
 					</xsl:if>
 					<xsl:copy-of select="ShipToLocationID/SuppliersCode"/>
 					<!--xsl:if test="//TradeSimpleHeader/SendersBranchReference = 'MIL14T' or //TradeSimpleHeader/SendersBranchReference = 'FMC01T'"-->
-					<xsl:if test="$CustomerFlag = $COMPASS">
+					<xsl:if test="$CustomerFlag = $COMPASS or $CustomerFlag = $BEACON_PURCHASING">
 						<BuyersCode>
 							<xsl:value-of select="ShipToLocationID/SuppliersCode"/>
 						</BuyersCode>
