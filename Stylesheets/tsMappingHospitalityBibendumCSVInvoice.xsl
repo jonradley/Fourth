@@ -24,6 +24,7 @@ R Cambridge	|	2008-10-15		| PO ref mod
 	<!-- All documents in the batch will be for the same customer/agreement -->	
 	<xsl:variable name="COMPASS" select="'COMPASS'"/>
 	<xsl:variable name="TESCO" select="'TESCO'"/>
+	<xsl:variable name="ARAMARK" select="'ARAMARK'"/>
 	<xsl:variable name="BEACON_PURCHASING" select="'BEACON_PURCHASING'"/>
 	
 	<xsl:variable name="CustomerFlag">
@@ -38,7 +39,7 @@ R Cambridge	|	2008-10-15		| PO ref mod
 			<xsl:when test="$accountCode = 'TES12T'"><xsl:value-of select="$TESCO"/></xsl:when>
 			<xsl:when test="$accountCode = 'TES15T'"><xsl:value-of select="$TESCO"/></xsl:when>
 			<xsl:when test="$accountCode = 'TES25T'"><xsl:value-of select="$TESCO"/></xsl:when>
-			
+			<xsl:when test="$accountCode = 'ARA02T'"><xsl:value-of select="$ARAMARK"/></xsl:when>
 			<xsl:when test="$accountCode = 'BEACON'"><xsl:value-of select="$BEACON_PURCHASING"/></xsl:when>
 			<xsl:otherwise></xsl:otherwise>
 		</xsl:choose>
@@ -113,7 +114,7 @@ R Cambridge	|	2008-10-15		| PO ref mod
 			<!--xsl:if test="SendersBranchReference = 'MIL14T' or SendersBranchReference = 'FMC01T' or SendersBranchReference = 'TES01T'"-->
 			<!--xsl:if test="SendersBranchReference">
 			<xsl:if test="contains('MIL14T~FMC01T~TES01T~TES08T~TES12T~TES15T~TES25T',SendersBranchReference)"-->
-			<xsl:if test="$CustomerFlag = $COMPASS or $CustomerFlag = $TESCO ">
+			<xsl:if test="$CustomerFlag = $COMPASS or $CustomerFlag = $TESCO or $CustomerFlag = $ARAMARK">
 				<SendersBranchReference>
 					<xsl:value-of select="SendersBranchReference"/>
 				</SendersBranchReference>
