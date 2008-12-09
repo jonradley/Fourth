@@ -39,16 +39,9 @@ R Cambridge	| 2008-12-02		| 2600 Created Module (based on tsMappingHospitalityIn
 								<SendersCodeForRecipient>
 										<xsl:value-of select="/Invoice/Buyer/BuyerReferences/SuppliersCodeForBuyer"/>
 								</SendersCodeForRecipient>
-								<!-- SendersBranchReference not used for Inverarity yet (if ever) -->
-								<!-- SBR used to pick out the PL Account code to be used in the trading relationship set up. This could be Buyer or Supplier value. -->
-								<!--xsl:if test="string(/Invoice/TradeAgreementReference/ContractReferenceNumber) != '' ">
-									<SendersBranchReference>
-										<xsl:value-of select="/Invoice/TradeAgreementReference/ContractReferenceNumber"/>
-									</SendersBranchReference>
-								</xsl:if-->
-								<!-- SendersName, Address1 - 4 and PostCode will be populated by subsequent processors  -->
-								<!-- Recipients Code for Sender, Recipients Branch Reference, Name, Address1 - 4, PostCode will be populated by subsequent 	processors -->
-								<!-- the TestFlag will be populated by subsequent processors -->
+								<SendersBranchReference>
+									<xsl:value-of select="/Invoice/InvoiceTo/InvoiceToReferences/SuppliersCodeForInvoiceTo"/>
+								</SendersBranchReference>
 							</TradeSimpleHeader>
 							<!-- ~~~~~~~~~~~~~~~~~~~~~~~
 				      INVOICE HEADER
@@ -263,19 +256,10 @@ R Cambridge	| 2008-12-02		| 2600 Created Module (based on tsMappingHospitalityIn
 										</LineValueExclVAT>
 										<!-- we default VATCode and Rate if not found in the EAN.UCC document -->
 										<VATCode>
-											<xsl:if test="LineTax/TaxRate/@Code = 'N'">
-												<xsl:text>S</xsl:text>
-											</xsl:if>
+											<xsl:value-of select="LineTax/TaxRate/@Code"/>
 										</VATCode>
 										<VATRate>
-											<xsl:choose>
-												<xsl:when test="LineTax/TaxRate">
-													<xsl:value-of select="format-number(LineTax/TaxRate, '0.00')"/>
-												</xsl:when>
-												<xsl:otherwise>
-													<xsl:value-of select="format-number($defaultTaxRate, '0.00')"/>
-												</xsl:otherwise>
-											</xsl:choose>
+											<xsl:value-of select="format-number(LineTax/TaxRate, '0.00')"/>
 										</VATRate>
 									</InvoiceLine>
 								</xsl:for-each>
