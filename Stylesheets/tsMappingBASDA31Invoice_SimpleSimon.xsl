@@ -346,11 +346,7 @@ R Cambridge	| 2008-12-02		| 2600 Created Module (based on tsMappingHospitalityIn
 													<xsl:value-of select="format-number(NetPaymentAtRate,'0.00')"/>
 												</DocumentTotalInclVATAtRate>
 											</xsl:if>
-											<xsl:if test="GrossPaymentAtRate">
-												<SettlementTotalInclVATAtRate>
-													<xsl:value-of select="format-number(GrossPaymentAtRate,'0.00')"/>
-												</SettlementTotalInclVATAtRate>
-											</xsl:if>
+
 										</VATSubTotal>
 									</xsl:for-each>
 								</VATSubTotals>
@@ -383,9 +379,9 @@ R Cambridge	| 2008-12-02		| 2600 Created Module (based on tsMappingHospitalityIn
 										<xsl:value-of select="format-number(/Invoice/InvoiceTotal/TaxTotal, '0.00')"/>
 									</VATAmount>
 								</xsl:if>
-								<DocumentTotalInclVAT>
+								<!--DocumentTotalInclVAT>
 									<xsl:value-of select="format-number(/Invoice/InvoiceTotal/GrossPaymentTotal, '0.00')"/>
-								</DocumentTotalInclVAT>
+								</DocumentTotalInclVAT-->
 								<!-- we need a SettlementTotalInclVAT internally but it is optional in EAN.UCC so we work it out if it is missing -->
 								<SettlementTotalInclVAT>
 									<xsl:value-of select="format-number(/Invoice/InvoiceTotal/NetPaymentTotal, '0.00')"/>
