@@ -54,7 +54,7 @@ Overview
 				
 			<xsl:choose>
 				<xsl:when test="substring(LineValueExclVAT,1,1)='-'"> 
-					<LineValueExclVAT><xsl:value-of select="substring(LineValueExclVAT,2,4)"/></LineValueExclVAT>
+					<LineValueExclVAT><xsl:value-of select="substring(LineValueExclVAT,2,5)"/></LineValueExclVAT>
 				</xsl:when>
 				<xsl:otherwise><xsl:apply-templates select="LineValueExclVAT"/></xsl:otherwise>
 			</xsl:choose>	
