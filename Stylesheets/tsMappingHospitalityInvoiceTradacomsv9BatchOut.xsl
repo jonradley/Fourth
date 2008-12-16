@@ -42,33 +42,7 @@
 		</xsl:variable>		
 		
 		<xsl:variable name="FGN">
-			<!-- if a new file generation number has been generated for this message use it, otherwise
-			     use the file generation number sent by the original message sender -->
-			<xsl:variable name="atLeast4DigitFGN">						
-				
-				<xsl:choose>
-					
-					<!-- FGN assigned by outbound batching processor -->
-					<xsl:when test="$nBatchID != ''">
-						<xsl:value-of select="format-number($nBatchID,'0000')"/>
-					</xsl:when>
-					
-					<!-- FGN assigned by 'FGN assign' processor -->
-					<xsl:when test="Invoice/InvoiceHeader/FileGenerationNumber != ''">
-						<xsl:value-of select="format-number(Invoice/InvoiceHeader/FileGenerationNumber,'0000')"/>
-					</xsl:when>
-					
-					<!-- Try the original inbound FGN -->
-					<xsl:otherwise>
-						<xsl:value-of select="format-number(Invoice/InvoiceHeader/BatchInformation/FileGenerationNo,'0000')"/>				
-					</xsl:otherwise>
-				</xsl:choose>				
-						
-			</xsl:variable>		
-			
-			<!-- Only get 4 right hand digits -->
-			<xsl:value-of select="substring($atLeast4DigitFGN, string-length($atLeast4DigitFGN)-3)"/>	
-					
+			<xsl:value-of select="$nBatchID"/>					
 		</xsl:variable>
 			
 			
@@ -434,7 +408,7 @@
 		
 		<xsl:variable name="VATRatesInBatch">
 			<xsl:copy-of select="/"/>
-			<xsl:for-each select="/BatchRoot/Invoice/InvoiceTrailer/VATSubTotals/VATSubTotal/@VATCode">
+			<xsl:for-each select="/BatchRoot/Invoice/InvoiceTrailer/VATSubTotals/VATSubTotal/@VATRate">
 				<xsl:sort select="."/>
 				<VAT>
 					<VATRate>
@@ -456,8 +430,8 @@
 			<xsl:text>+</xsl:text>
 			<!-- VATC -->
 			<xsl:choose>
-				<xsl:when test="/BatchRoot/Invoice/InvoiceDetail/InvoiceLine[number(./VATRate) = number($VATRate)]/VATCode = 'standard'">S</xsl:when>
-				<xsl:when test="/BatchRoot/Invoice/InvoiceDetail/InvoiceLine[number(./VATRate) = number($VATRate)]/VATCode = 'zero-rated'">Z</xsl:when>
+				<xsl:when test="/BatchRoot/Invoice/InvoiceDetail/InvoiceLine[number(./VATRate) = number($VATRate)]/VATCode = 'S'">S</xsl:when>
+				<xsl:when test="/BatchRoot/Invoice/InvoiceDetail/InvoiceLine[number(./VATRate) = number($VATRate)]/VATCode = 'Z'">Z</xsl:when>
 			</xsl:choose>
 			<xsl:text>+</xsl:text>
 			<!-- VATP -->
@@ -470,11 +444,11 @@
 			<xsl:value-of select="format-number(sum(/BatchRoot/Invoice/InvoiceDetail/InvoiceLine[number(./VATRate) = number($VATRate)]/LineCostExclVat) * 100,'0')"/>
 			<xsl:text>+</xsl:text>
 			<!-- VVAT -->
-			<xsl:value-of select="format-number(sum(/BatchRoot/Invoice/InvoiceTrailer/VATPayableForEachRate/VATPayableAtRate[number(./VATRate) = number($VATRate)]/VATAmount) * 100,'0')"/>
+			<xsl:value-of select="format-number(sum(/BatchRoot/Invoice/InvoiceTrailer/VATSubTotals/VATSubTotal[number(./@VATRate) = number($VATRate)]/VATAmountAtRate) * 100,'0')"/>
 			<!-- VPSE -->
 			<xsl:text>++</xsl:text>
 			<!-- VPSI -->
-			<xsl:value-of select="format-number((sum(/BatchRoot/Invoice/InvoiceTrailer/VATPayableForEachRate/VATPayableAtRate[number(./VATRate) = number($VATRate)]/VATAmount) + sum(/BatchRoot/Invoice/InvoiceDetail/InvoiceLine[number(./VATRate) = number($VATRate)]/LineCostExclVat)) * 100,'0')"/>
+			<xsl:value-of select="format-number((sum(/BatchRoot/Invoice/InvoiceTrailer/VATSubTotals/VATSubTotal[number(./@VATRate) = number($VATRate)]/DocumentTotalInclVATAtRate) ) * 100,'0')"/>
 			<xsl:value-of select="$sRecordSep"/>
 	
 		</xsl:for-each>
@@ -492,15 +466,15 @@
 		<xsl:value-of select="$sRecordSep"/>
 
 		<xsl:text>TOT=</xsl:text>
-		<xsl:value-of select="translate(format-number(InvoiceTrailer/DocumentTotalExclVAT,'#.00'),'.','')"/>
+		<xsl:value-of select="translate(format-number(sum(/BatchRoot/Invoice/InvoiceTrailer/DocumentTotalExclVAT),'#.00'),'.','')"/>
 		<xsl:text>+</xsl:text>
-		<xsl:value-of select="translate(format-number(InvoiceTrailer/SettlementTotalExclVAT,'#.00'),'.','')"/>
+		<xsl:value-of select="translate(format-number(sum(/BatchRoot/Invoice/InvoiceTrailer/SettlementTotalExclVAT),'#.00'),'.','')"/>
 		<xsl:text>+</xsl:text>
-		<xsl:value-of select="translate(format-number(InvoiceTrailer/VATAmount,'#.00'),'.','')"/>
+		<xsl:value-of select="translate(format-number(sum(/BatchRoot/Invoice/InvoiceTrailer/VATAmount),'#.00'),'.','')"/>
 		<xsl:text>+</xsl:text>
-		<xsl:value-of select="translate(format-number(InvoiceTrailer/DocumentTotalInclVAT,'#.00'),'.','')"/>
+		<xsl:value-of select="translate(format-number(sum(/BatchRoot/Invoice/InvoiceTrailer/DocumentTotalInclVAT),'#.00'),'.','')"/>
 		<xsl:text>+</xsl:text>
-		<xsl:value-of select="translate(format-number(InvoiceTrailer/SettlementTotalInclVAT,'#.00'),'.','')"/>
+		<xsl:value-of select="translate(format-number(sum(/BatchRoot/Invoice/InvoiceTrailer/SettlementTotalInclVAT),'#.00'),'.','')"/>
 		<xsl:text>+1</xsl:text>
 		<xsl:value-of select="$sRecordSep"/>
 
@@ -554,7 +528,7 @@
 		
 			<xsl:when test="string-length($sEscapedField) &gt; $vnLength">
 				<xsl:message terminate="yes">
-					<xsl:text>Error raised by tsMappingHospitalityInvoiceTradacomsv9Out.xsl.&#13;&#10;</xsl:text>
+					<xsl:text>Error raised by tsMappingHospitalityInvoiceTradacomsv9BatchOut.xsl.&#13;&#10;</xsl:text>
 					
 					<xsl:text>The internal format of this message contains a field that would be truncated when mapped to a corresponding tradacoms field.&#13;&#10;</xsl:text>
 					<xsl:text>The element is </xsl:text>
