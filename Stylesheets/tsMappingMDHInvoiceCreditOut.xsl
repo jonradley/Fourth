@@ -16,6 +16,8 @@
 ******************************************************************************************
  03/12/2008	| Lee Boyton	| 2057. Do not output final VAT detail line if total is zero.
 ******************************************************************************************
+16/12/2008  | Natalie Dry	      | 2646. Replace "V1" with "V2" temporarily whilst VAT rate is problem for them
+******************************************************************************************
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
