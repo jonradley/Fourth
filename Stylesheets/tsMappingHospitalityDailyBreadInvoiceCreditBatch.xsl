@@ -59,6 +59,23 @@ R cambridge	| 11/06/2007		| Created module
 	</xsl:template>
 
 	
+	<xsl:template match="VATCode">	
+		<xsl:copy>
+			<xsl:choose>
+				<xsl:when test=".='1'">Z</xsl:when>
+				<xsl:otherwise>S</xsl:otherwise>
+			</xsl:choose>
+		</xsl:copy>	
+	</xsl:template>
+	
+	<xsl:template match="@VATCode">
+		<xsl:attribute name="VATCode">
+			<xsl:choose>
+				<xsl:when test=".='1'">Z</xsl:when>
+				<xsl:otherwise>S</xsl:otherwise>
+			</xsl:choose>	
+		</xsl:attribute>
+	</xsl:template>
 	
 
 	<xsl:template match="//PurchaseOrderReferences">
