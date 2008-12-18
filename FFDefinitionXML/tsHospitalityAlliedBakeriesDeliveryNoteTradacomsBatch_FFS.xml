@@ -107,19 +107,19 @@ R Cambridge	| 29/10/2007	| 1556 Create module
 						</PurchaseOrderReferences>
 						<DeliveryNoteReferences>
 							<DeliveryNoteReference RecordPos="DEL=" LPos="1" SFPos="1"/>
-							<DeliveryNoteDate RecordPos="DEL=" LPos="1" SFPos="6"/>
-							<DespatchDate RecordPos="DEL=" LPos="1" SFPos="6"/>
+							<DeliveryNoteDate RecordPos="DEL=" LPos="6" SFPos="1"/>
+							<DespatchDate RecordPos="DEL=" LPos="6" SFPos="1"/>
 						</DeliveryNoteReferences>
 						<DeliveredDeliveryDetails>
 							<!--DeliveryType/-->
-							<DeliveryDate RecordPos="DEL=" LPos="1" SFPos="6"/>
+							<DeliveryDate RecordPos="DEL=" LPos="6" SFPos="1"/>
 						</DeliveredDeliveryDetails>
 					</DeliveryNoteHeader>
 					<DeliveryNoteDetail>
 						<DeliveryNoteLine>
 							<ProductID>
-								<GTIN RecordPos="DLD=" LPos="3" SFPos="3"/>
-								<SuppliersProductCode RecordPos="DLD=" LPos="3" SFPos="2"/>
+								<GTIN RecordPos="DLD=" LPos="3" SFPos="1"/>
+								<SuppliersProductCode RecordPos="DLD=" LPos="5" SFPos="2"/>
 								<BuyersProductCode RecordPos="DLD=" LPos="5" SFPos="2"/>
 							</ProductID>
 							<ProductDescription RecordPos="DLD=" LPos="8" SFPos="1"/>
