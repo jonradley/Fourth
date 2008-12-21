@@ -26,6 +26,8 @@
 ******************************************************************************************
 26/08/2008  |	Lee Boyton | 2427. Cater for rounding errors in VAT calculations.
 ******************************************************************************************
+21/12/2008  |	Lee Boyton | 2427. Changed previous handling of rounding errors.
+******************************************************************************************
 		  |						| 
 ******************************************************************************************
 -->
@@ -173,7 +175,7 @@
 				<xsl:variable name="VATCode" select="VATCode"/>
 				<xsl:variable name="VATRate" select="VATRate"/>
 
-				<!-- calculate the NET and VAT amounts for this summary line (formatted to 2 implied decimal places) -->
+				<!-- calculate the NET and VAT amounts for this summary line (formatted to 2 implied decimal places) -->				
 				<xsl:variable name="LineTotalExclVAT">
 					<xsl:choose>
 						<xsl:when test="/Invoice">
@@ -187,20 +189,20 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
-				
-				<!-- Important note. To cater with dodgy xslt maths and rounding errors, the vat calculations are first formatted to 3 decimal places and then to 2 decimal places. -->
+
+				<!-- Important note. To cater with dodgy xslt maths and rounding errors, the calculations have .000000000000001 added to them before being formatted to 2 decimal places. -->	
 				<xsl:variable name="LineVATAmount">
 					<xsl:choose>
 						<xsl:when test="/Invoice">
-							<xsl:value-of select="translate(format-number(format-number(sum(//InvoiceLine[LineExtraData/AccountCode = $AccountCode and VATCode = $VATCode]/LineValueExclVAT) * ($VATRate div 100),'0.000'),'0.00'),'.','')"/>
+							<xsl:value-of select="translate(format-number(sum(//InvoiceLine[LineExtraData/AccountCode = $AccountCode and VATCode = $VATCode]/LineValueExclVAT) * ($VATRate div 100) + .000000000000001,'0.00'),'.','')"/>
 						</xsl:when>
 						<xsl:when test="/DebitNote">
-							<xsl:value-of select="translate(format-number(format-number(-1* sum(//DebitNoteLine[LineExtraData/AccountCode = $AccountCode and VATCode = $VATCode]/LineValueExclVAT) * ($VATRate div 100),'0.000'),'0.00'),'.','')"/>
+							<xsl:value-of select="translate(format-number(-1* sum(//DebitNoteLine[LineExtraData/AccountCode = $AccountCode and VATCode = $VATCode]/LineValueExclVAT) * ($VATRate div 100) - .000000000000001,'0.00'),'.','')"/>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:value-of select="translate(format-number(format-number(-1* sum(//CreditNoteLine[LineExtraData/AccountCode = $AccountCode and VATCode = $VATCode]/LineValueExclVAT) * ($VATRate div 100),'0.000'),'0.00'),'.','')"/>
+							<xsl:value-of select="translate(format-number(-1* sum(//CreditNoteLine[LineExtraData/AccountCode = $AccountCode and VATCode = $VATCode]/LineValueExclVAT) * ($VATRate div 100) - .000000000000001,'0.00'),'.','')"/>
 						</xsl:otherwise>
-					</xsl:choose>					
+					</xsl:choose>
 				</xsl:variable>
 				
 				<!-- now output a summary line for the current Account Code and VAT Code combination -->					
