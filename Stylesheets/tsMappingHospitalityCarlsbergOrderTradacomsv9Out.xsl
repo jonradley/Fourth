@@ -112,7 +112,7 @@
 		<xsl:choose>
 			<!-- Orchid Pub Operations -->
 			<xsl:when test="$sOPOCode = $sSCFR">
-				<xsl:text>5999999145710</xsl:text>
+				<xsl:text>5999997145710</xsl:text>
 			</xsl:when>
 			<!-- Orient Resturanent Pubs -->
 			<xsl:when test="$sORPCode = $sSCFR">
