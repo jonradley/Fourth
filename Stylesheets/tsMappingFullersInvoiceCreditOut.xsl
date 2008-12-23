@@ -12,6 +12,8 @@
  Date       	| Name       		| Description of modification
 ******************************************************************************************
  07/01/2008	| A Sheppard	| 1675.Created module.
+ ******************************************************************************************
+ 22/12/2008	| Rave Tech		| 2653. Get Fullers STX Supplier Code.
 ******************************************************************************************
 -->
 <xsl:stylesheet version="1.0"
@@ -43,7 +45,7 @@
 			<xsl:when test="InvoiceHeader"><xsl:text>I</xsl:text></xsl:when>
 			<xsl:otherwise><xsl:text>N</xsl:text></xsl:otherwise>
 		</xsl:choose>
-		<xsl:value-of select="script:gsFormatFixedWidth(//Supplier/SuppliersLocationID/BuyersCode, 10)"/>
+		<xsl:value-of select="script:gsFormatFixedWidth(//HeaderExtraData/STXSupplierCode, 10)"/>
 		<xsl:choose>
 			<xsl:when test="InvoiceHeader">
 				<xsl:call-template name="formatDate"><xsl:with-param name="xmlDate" select="//InvoiceDate"/></xsl:call-template>
