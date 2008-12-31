@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--******************************************************************
+CSV Goods Received Note mapperfor Moto
+**********************************************************************
+Name         	| Date       		| Change
+*********************************************************************
+Rave Tech	| 30/12/2008 	| Created
+*******************************************************************-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>chr(13)chr(10)</ffsRecordSeparator>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>,</ffsFieldSeparator>
+		</ffsFieldSeparators>
+	</ffsSettings>
+	<ffsRoot>
+		<GoodsReceivedNote>
+			<TradeSimpleHeader>
+				<SendersCodeForRecipient RecordPos="&quot;H&quot;" LPos="3"/>
+				<SendersBranchReference RecordPos="&quot;H&quot;" LPos="2"/>
+				<RecipientsBranchReference RecordPos="&quot;H&quot;" LPos="1"/>
+			</TradeSimpleHeader>
+			<GoodsReceivedNoteHeader>
+				<PurchaseOrderReferences>
+					<PurchaseOrderReference RecordPos="&quot;H&quot;" LPos="4"/>
+				</PurchaseOrderReferences>
+				<GoodsReceivedNoteReferences>
+					<GoodsReceivedNoteDate RecordPos="&quot;H&quot;" LPos="5"/>
+				</GoodsReceivedNoteReferences>
+			</GoodsReceivedNoteHeader>
+			<GoodsReceivedNoteDetail>
+				<GoodsReceivedNoteLine>
+					<LineStatus RecordPos="&quot;D&quot;" LPos="14"/>
+					<ProductID>
+						<SuppliersProductCode RecordPos="&quot;D&quot;" LPos="6"/>
+					</ProductID>
+					<ProductDescription RecordPos="&quot;D&quot;" LPos="7"/>
+					<DeliveredQuantity RecordPos="&quot;D&quot;" LPos="8"/>
+					<AcceptedQuantity RecordPos="&quot;D&quot;" LPos="9">
+						<ffsAttribute1 name="UnitOfMeasure" RecordPos="&quot;D&quot;" LPos="10"/>
+					</AcceptedQuantity>
+					<PackSize RecordPos="&quot;D&quot;" LPos="11"/>
+					<UnitValueExclVAT RecordPos="&quot;D&quot;" LPos="12"/>
+					<LineValueExclVAT RecordPos="&quot;D&quot;" LPos="13"/>
+					<Narrative RecordPos="&quot;D&quot;" LPos="15"/>
+				</GoodsReceivedNoteLine>
+			</GoodsReceivedNoteDetail>
+		</GoodsReceivedNote>
+	</ffsRoot>
+</ffsFlatFileSchema>
