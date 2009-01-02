@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by Dev (ABS Ltd) -->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>chr(10)</ffsRecordSeparator>
+		<ffsEscapeChars>
+			<ffsEscapeChar>
+				<ffsNative>chr(13)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+		</ffsEscapeChars>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>,</ffsFieldSeparator>
+		</ffsFieldSeparators>
+		<ffsPadding/>
+		<ffsBatchHeader>
+			<!--list of records that make up the header, this will be added to each document in the batch -->
+			<ffsHeaderRecord RecordPos="HEAD"/>
+		</ffsBatchHeader>
+		<ffsGroups>
+			<ffsGroup>
+				<!--References below which MEAN RecordPos 'HEAD' -->
+				<ffsGroupRecord RecordPos="HEAD" FieldTotal="27"/>
+				<ffsSubGroupRecord RecordPos="LINE" FieldTotal="30"/>
+			</ffsGroup>
+		</ffsGroups>
+		<ffsSplitBatchRecord RecordPos="HEAD"/>
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<BatchDocuments>
+				<BatchDocument>
+					<CreditNote>
+						<TradeSimpleHeader>
+							<SendersCodeForRecipient RecordPos="HEAD" LPos="4"/>
+							<SendersBranchReference RecordPos="HEAD" LPos="3"/>
+						</TradeSimpleHeader>
+						<CreditNoteHeader>
+							<BatchInformation>
+								<FileGenerationNo RecordPos="HEAD" LPos="25"/>
+								<FileVersionNo RecordPos="HEAD" LPos="26"/>
+								<FileCreationDate RecordPos="HEAD" LPos="27"/>
+							</BatchInformation>
+							<Buyer>
+								<BuyersLocationID>
+									<SuppliersCode RecordPos="HEAD" LPos="4"/>
+									<BuyersCode RecordPos="HEAD" LPos="2"/>
+								</BuyersLocationID>
+							</Buyer>
+							<Supplier>
+								<SuppliersLocationID>
+									<BuyersCode RecordPos="HEAD" LPos="3"/>
+								</SuppliersLocationID>
+							</Supplier>
+							<ShipTo>
+								<ShipToLocationID>
+									<GLN RecordPos="HEAD" LPos="23"/>
+									<BuyersCode RecordPos="HEAD" LPos="24"/>
+								</ShipToLocationID>
+								<ShipToName RecordPos="HEAD" LPos="17"/>
+								<ShipToAddress>
+									<AddressLine1 RecordPos="HEAD" LPos="18"/>
+									<AddressLine2 RecordPos="HEAD" LPos="19"/>
+									<AddressLine3 RecordPos="HEAD" LPos="20"/>
+									<PostCode RecordPos="HEAD" LPos="21"/>
+								</ShipToAddress>
+							</ShipTo>
+							<InvoiceReferences>
+								<InvoiceReference RecordPos="HEAD" LPos="28"/>
+								<InvoiceDate RecordPos="HEAD" LPos="29"/>
+							</InvoiceReferences>
+							<CreditNoteReferences>
+								<CreditNoteReference RecordPos="HEAD" LPos="5"/>
+								<CreditNoteDate RecordPos="HEAD" LPos="6"/>
+							</CreditNoteReferences>
+						</CreditNoteHeader>
+						<CreditNoteDetail>
+							<CreditNoteLine>
+								<PurchaseOrderReferences>
+									<PurchaseOrderReference RecordPos="HEAD" LPos="7"/>
+									<PurchaseOrderDate RecordPos="HEAD" LPos="8"/>
+									<TradeAgreement>
+										<ContractReference RecordPos="HEAD" LPos="40"/>
+									</TradeAgreement>
+								</PurchaseOrderReferences>
+								<PurchaseOrderConfirmationReferences>
+									<PurchaseOrderConfirmationReference RecordPos="HEAD" LPos="7"/>
+								</PurchaseOrderConfirmationReferences>
+								<DeliveryNoteReferences>
+									<DeliveryNoteReference RecordPos="HEAD" LPos="11"/>
+									<DeliveryNoteDate RecordPos="HEAD" LPos="12"/>
+								</DeliveryNoteReferences>
+								<ProductID>
+									<GTIN RecordPos="LINE" LPos="18"/>
+									<SuppliersProductCode RecordPos="LINE" LPos="2"/>
+								</ProductID>
+								<ProductDescription RecordPos="LINE" LPos="25"/>
+								<InvoicedQuantity RecordPos="LINE" LPos="7">
+									<ffsAttribute1 name="UnitOfMeasure" RecordPos="LINE" LPos="9"/>
+								</InvoicedQuantity>
+								<PackSize RecordPos="LINE" LPos="4"/>
+								<UnitValueExclVAT RecordPos="LINE" LPos="10"/>
+								<VATCode RecordPos="LINE" LPos="14"/>
+								<LineDiscountRate RecordPos="LINE" LPos="11"/>
+								<LineDiscountValue RecordPos="LINE" LPos="12"/>
+							</CreditNoteLine>
+						</CreditNoteDetail>
+						<CreditNoteTrailer>
+							<VATSubTotals>
+								<VATSubTotal>
+									<NumberOfLinesAtRate RecordPos="VAT" LPos="3"/>
+									<DiscountedLinesTotalExclVATAtRate RecordPos="VAT" LPos="5"/>
+									<DocumentDiscountAtRate RecordPos="VAT" LPos="8"/>
+									<SettlementDiscountAtRate RecordPos="VAT" LPos="6"/>
+									<VATAmountAtRate RecordPos="VAT" LPos="7"/>
+									<ffsAttribute1 name="VATCode" RecordPos="VAT" LPos="2"/>
+								</VATSubTotal>
+							</VATSubTotals>
+							<DocumentDiscountRate RecordPos="TRAIL" LPos="10"/>
+							<SettlementDiscountRate RecordPos="HEAD" LPos="16"/>
+							<DiscountedLinesTotalExclVAT RecordPos="TRAIL" LPos="2"/>
+							<DocumentDiscount RecordPos="TRAIL" LPos="8"/>
+							<SettlementDiscount RecordPos="TRAIL" LPos="6"/>
+							<VATAmount RecordPos="TRAIL" LPos="7"/>
+							<SettlementTotalInclVAT RecordPos="TRAIL" LPos="9"/>
+						</CreditNoteTrailer>
+					</CreditNote>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>
