@@ -16,6 +16,8 @@
 ******************************************************************************************
 30/06/2008	| M Dimant        | 2257 'IInvoice' changed to 'Invoice' within XPaths throughout mapper
 ******************************************************************************************
+ 02/01/2009 | Lee Boyton    | 2664. Removed time element from reference dates as failing Freeway validation.
+******************************************************************************************
 			  	|               |
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" 
@@ -34,9 +36,8 @@
 			      INVOICE DOCUMENT DETAILS 
 			      ~~~~~~~~~~~~~~~~~~~~~~~ -->
 			<InvoiceDocumentDetails>
-				<InvoiceDocumentDate format="YYYY-MM-DDThh:mm:ss:TZD">
+				<InvoiceDocumentDate format="YYYY-MM-DD">
 					<xsl:value-of select="/Invoice/InvoiceHeader/InvoiceReferences/InvoiceDate"/>
-					<xsl:text>T00:00:00</xsl:text>
 				</InvoiceDocumentDate>
 				
 				<InvoiceDocumentNumber scheme="OTHER">
@@ -58,10 +59,9 @@
 						      
  				<TradeAgreementReference>
 			      
-				      <xsl:if test="/Invoice/InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/TradeAgreement/ContractDate">
-						<ContractReferenceDate format="YYYY-MM-DDThh:mm:ss:TZD">
+				   <xsl:if test="/Invoice/InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/TradeAgreement/ContractDate">
+						<ContractReferenceDate format="YYYY-MM-DD">
 							<xsl:value-of select="/Invoice/InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/TradeAgreement/ContractDate"/>
-							<xsl:text>T00:00:00</xsl:text>
 						</ContractReferenceDate>
 					</xsl:if>
 					
@@ -78,9 +78,8 @@
 				<OrderReference>
 			
 					<xsl:if test="/Invoice/InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderDate">
-						<PurchaseOrderDate format="YYYY-MM-DDThh:mm:ss:TZD">
+						<PurchaseOrderDate format="YYYY-MM-DD">
 							<xsl:value-of select="/Invoice/InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderDate"/>
-							<xsl:text>T00:00:00</xsl:text>
 						</PurchaseOrderDate>
 					</xsl:if>
 	
@@ -99,9 +98,8 @@
 				<OrderConfirmationReference>
 				
 					<xsl:if test="/Invoice/InvoiceDetail/InvoiceLine[1]/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationDate">
-						<PurchaseOrderConfirmationDate format="YYYY-MM-DDThh:mm:ss:TZD">
+						<PurchaseOrderConfirmationDate format="YYYY-MM-DD">
 							<xsl:value-of select="/Invoice/InvoiceDetail/InvoiceLine[1]/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationDate"/>
-							<xsl:text>T00:00:00</xsl:text>
 						</PurchaseOrderConfirmationDate>
 					</xsl:if>
 					
@@ -121,9 +119,8 @@
 				<DespatchReference>
 				
 					<xsl:if test="/Invoice/InvoiceDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteDate">
-						<DespatchDocumentDate format="YYYY-MM-DDThh:mm:ss:TZD">
+						<DespatchDocumentDate format="YYYY-MM-DD">
 							<xsl:value-of select="/Invoice/InvoiceDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteDate"/>
-							<xsl:text>T00:00:00</xsl:text>
 						</DespatchDocumentDate>
 					</xsl:if>
 	
@@ -143,9 +140,8 @@
 				<ReceiptAdviceReference>
 
 					<xsl:if test="/Invoice/InvoiceDetail/InvoiceLine[1]/GoodsReceivedNoteReferences/GoodsReceivedNoteDate">
-						<ReceiptAdviceDocumentDate format="YYYY-MM-DDThh:mm:ss:TZD">
+						<ReceiptAdviceDocumentDate format="YYYY-MM-DD">
 							<xsl:value-of select="/Invoice/InvoiceDetail/InvoiceLine[1]/GoodsReceivedNoteReferences/GoodsReceivedNoteDate"/>
-							<xsl:text>T00:00:00</xsl:text>
 						</ReceiptAdviceDocumentDate>
 					</xsl:if>
 	
@@ -298,9 +294,8 @@
 			<!-- ~~~~~~~~~~~~~~~~~~~~~~~
 			    TAX POINT DATE TIME
 			      ~~~~~~~~~~~~~~~~~~~~~~~-->		
-			<TaxPointDateTime format="YYYY-MM-DDThh:mm:ss:TZD">
+			<TaxPointDateTime format="YYYY-MM-DD">
 				<xsl:value-of select="/Invoice/InvoiceHeader/InvoiceReferences/TaxPointDate"/>
-				<xsl:text>T00:00:00</xsl:text>
 			</TaxPointDateTime>
 			
 			<!-- ~~~~~~~~~~~~~~~~~~~~~~~
