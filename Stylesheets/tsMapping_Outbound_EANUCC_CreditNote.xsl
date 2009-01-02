@@ -14,7 +14,7 @@
 ******************************************************************************************
  30/06/2008	| R Cambridge   | 2257 temporary buyer GLN translation. 3663's dummy code needs to be translated to Moto's own code (issued by Freeway)
 ******************************************************************************************
-			  	|               |
+ 02/01/2009	| Lee Boyton    | 2257 'ICreditNoteLine' corrected to 'CreditNoteLine' within XPaths.
 ******************************************************************************************
 			  	|               |
 ***************************************************************************************-->
@@ -75,18 +75,18 @@
 			    TRADE AGREEMENT REFERENCE
 			      ~~~~~~~~~~~~~~~~~~~~~~~-->
 			<!-- If TradeAgreement exists then TradeAgreement/ContractReference must also exist -->	      
-			<xsl:if test="/CreditNote/CreditNoteDetail/ICreditNoteLine[1]/PurchaseOrderReferences/TradeAgreement">
+			<xsl:if test="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/PurchaseOrderReferences/TradeAgreement">
 				<TradeAgreementReference>
 				
-					<xsl:if test="/CreditNote/CreditNoteDetail/ICreditNoteLine[1]/PurchaseOrderReferences/TradeAgreement/ContractDate">
+					<xsl:if test="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/PurchaseOrderReferences/TradeAgreement/ContractDate">
 						<ContractReferenceDate format="YYYY-MM-DDThh:mm:ss:TZD">
-							<xsl:value-of select="/CreditNote/CreditNoteDetail/ICreditNoteLine[1]/PurchaseOrderReferences/TradeAgreement/ContractDate"/>
+							<xsl:value-of select="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/PurchaseOrderReferences/TradeAgreement/ContractDate"/>
 							<xsl:text>T00:00:00</xsl:text>
 						</ContractReferenceDate>
 					</xsl:if>
 					
 					<ContractReferenceNumber scheme="OTHER">
-						<xsl:value-of select="/CreditNote/CreditNoteDetail/ICreditNoteLine[1]/PurchaseOrderReferences/TradeAgreement/ContractReference"/>
+						<xsl:value-of select="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/PurchaseOrderReferences/TradeAgreement/ContractReference"/>
 					</ContractReferenceNumber>				
 				</TradeAgreementReference> 
 			</xsl:if>
@@ -95,15 +95,15 @@
 			    ORDER REFERENCE
 			      ~~~~~~~~~~~~~~~~~~~~~~~-->
 			<!-- If PurchaseOrderReferences exists then both date and reference must also exist -->	      			
-			<xsl:if test="/CreditNote/CreditNoteDetail/ICreditNoteLine[1]/PurchaseOrderReferences">
+			<xsl:if test="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/PurchaseOrderReferences">
 				<OrderReference>
 					<PurchaseOrderDate format="YYYY-MM-DDThh:mm:ss:TZD">
-						<xsl:value-of select="/CreditNote/CreditNoteDetail/ICreditNoteLine[1]/PurchaseOrderReferences/PurchaseOrderDate"/>
+						<xsl:value-of select="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/PurchaseOrderReferences/PurchaseOrderDate"/>
 						<xsl:text>T00:00:00</xsl:text>
 					</PurchaseOrderDate>
 	
 					<PurchaseOrderNumber scheme="OTHER">
-						<xsl:value-of select="/CreditNote/CreditNoteDetail/ICreditNoteLine[1]/PurchaseOrderReferences/PurchaseOrderReference"/>
+						<xsl:value-of select="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/PurchaseOrderReferences/PurchaseOrderReference"/>
 					</PurchaseOrderNumber>				
 				</OrderReference> 
 			</xsl:if>
@@ -112,15 +112,15 @@
 			    ORDER CONFIRMATION REFERENCE
 			      ~~~~~~~~~~~~~~~~~~~~~~~-->
 			<!-- If PurchaseOrderConfirmationReferences exists then both date and reference must also exist -->	      			
-			<xsl:if test="/CreditNote/CreditNoteDetail/ICreditNoteLine[1]/PurchaseOrderConfirmationReferences">
+			<xsl:if test="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/PurchaseOrderConfirmationReferences">
 				<OrderConfirmationReference>
 					<PurchaseOrderConfirmationDate format="YYYY-MM-DDThh:mm:ss:TZD">
-						<xsl:value-of select="/CreditNote/CreditNoteDetail/ICreditNoteLine[1]/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationDate"/>
+						<xsl:value-of select="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationDate"/>
 						<xsl:text>T00:00:00</xsl:text>
 					</PurchaseOrderConfirmationDate>
 	
 					<PurchaseOrderConfirmationNumber scheme="OTHER">
-						<xsl:value-of select="/CreditNote/CreditNoteDetail/ICreditNoteLine[1]/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationReference"/>
+						<xsl:value-of select="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationReference"/>
 					</PurchaseOrderConfirmationNumber>				
 				</OrderConfirmationReference> 
 			</xsl:if>
@@ -129,15 +129,15 @@
 			    DESPATCH REFERENCE
 			      ~~~~~~~~~~~~~~~~~~~~~~~-->
 			<!-- If DeliveryNoteReferences exists then both date and reference must also exist -->	      			
-			<xsl:if test="/CreditNote/CreditNoteDetail/ICreditNoteLine[1]/DeliveryNoteReferences">
+			<xsl:if test="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/DeliveryNoteReferences">
 				<DespatchReference>
 					<DespatchDocumentDate format="YYYY-MM-DDThh:mm:ss:TZD">
-						<xsl:value-of select="/CreditNote/CreditNoteDetail/ICreditNoteLine[1]/DeliveryNoteReferences/DeliveryNoteDate"/>
+						<xsl:value-of select="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/DeliveryNoteReferences/DeliveryNoteDate"/>
 						<xsl:text>T00:00:00</xsl:text>
 					</DespatchDocumentDate>
 	
 					<DespatchDocumentNumber scheme="OTHER">
-						<xsl:value-of select="/CreditNote/CreditNoteDetail/ICreditNoteLine[1]/DeliveryNoteReferences/DeliveryNoteReference"/>
+						<xsl:value-of select="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/DeliveryNoteReferences/DeliveryNoteReference"/>
 					</DespatchDocumentNumber>				
 				</DespatchReference> 
 			</xsl:if>
@@ -146,15 +146,15 @@
 			    RECEIPT ADVICE REFERENCE
 			      ~~~~~~~~~~~~~~~~~~~~~~~-->
 			<!-- If GoodsReceivedNoteReferencesexists then both date and reference must also exist -->	      			
-			<xsl:if test="/CreditNote/CreditNoteDetail/ICreditNoteLine[1]/GoodsReceivedNoteReferences">			      
+			<xsl:if test="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/GoodsReceivedNoteReferences">			      
 				<ReceiptAdviceReference>
 					<ReceiptAdviceDocumentDate format="YYYY-MM-DDThh:mm:ss:TZD">
-						<xsl:value-of select="/CreditNote/CreditNoteDetail/ICreditNoteLine[1]/GoodsReceivedNoteReferences/GoodsReceivedNoteDate"/>
+						<xsl:value-of select="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/GoodsReceivedNoteReferences/GoodsReceivedNoteDate"/>
 						<xsl:text>T00:00:00</xsl:text>
 					</ReceiptAdviceDocumentDate>
 	
 					<ReceiptAdviceDocumentNumber scheme="OTHER">
-						<xsl:value-of select="/CreditNote/CreditNoteDetail/ICreditNoteLine[1]/GoodsReceivedNoteReferences/GoodsReceivedNoteReference"/>
+						<xsl:value-of select="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/GoodsReceivedNoteReferences/GoodsReceivedNoteReference"/>
 					</ReceiptAdviceDocumentNumber>				
 				</ReceiptAdviceReference> 
 			</xsl:if>
