@@ -19,7 +19,14 @@ Rave Tech	| 02/01/2008| Created Module
 			<xsl:apply-templates/>
 		</BatchRoot>
 	</xsl:template>
-		
+	
+	<!--set value of documentstatus -->
+	<xsl:template match="DocumentStatus">
+		<DocumentStatus>
+			<xsl:text>Original</xsl:text>
+		</DocumentStatus>
+	</xsl:template>
+			
 	<!-- translate the date from [dd/mm/yyyy] format to [yyyy-mm-dd] -->
 	<xsl:template match="GoodsReceivedNoteDate">
 		<xsl:variable name="dayPart">
