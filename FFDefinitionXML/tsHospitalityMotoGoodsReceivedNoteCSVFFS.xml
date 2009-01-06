@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by Dev (ABS Ltd) -->
 <!--******************************************************************
 CSV Goods Received Note mapperfor Moto
 **********************************************************************
@@ -13,15 +14,27 @@ Rave Tech	| 30/12/2008 	| Created
 		<ffsFieldSeparators>
 			<ffsFieldSeparator>,</ffsFieldSeparator>
 		</ffsFieldSeparators>
+		<ffsSplitBatchRecord LPos="4"/>
 	</ffsSettings>
 	<ffsRoot>
 		<GoodsReceivedNote>
 			<TradeSimpleHeader>
 				<SendersCodeForRecipient RecordPos="" LPos="3"/>
-				<SendersBranchReference RecordPos="" LPos="2"/>
-				<RecipientsBranchReference RecordPos="" LPos="1"/> 
+				<SendersBranchReference RecordPos="" LPos="1"/>
 			</TradeSimpleHeader>
 			<GoodsReceivedNoteHeader>
+				<DocumentStatus RecordPos="" LPos="3"/>
+				<Supplier>
+					<SuppliersLocationID>
+						<BuyersCode RecordPos="" LPos="3"/>
+					</SuppliersLocationID>
+				</Supplier>
+				<ShipTo>
+					<ShipToName RecordPos="" LPos="2"/>
+					<ShipToLocationID>
+						<BuyersCode RecordPos="" LPos="1"/>
+					</ShipToLocationID>
+				</ShipTo>
 				<PurchaseOrderReferences>
 					<PurchaseOrderReference RecordPos="" LPos="4"/>
 				</PurchaseOrderReferences>
@@ -30,7 +43,7 @@ Rave Tech	| 30/12/2008 	| Created
 				</GoodsReceivedNoteReferences>
 			</GoodsReceivedNoteHeader>
 			<GoodsReceivedNoteDetail>
-				<GoodsReceivedNoteLine>					
+				<GoodsReceivedNoteLine>
 					<ffsAttribute1 name="LineStatus" RecordPos="" LPos="14"/>
 					<ProductID>
 						<SuppliersProductCode RecordPos="" LPos="6"/>
