@@ -293,7 +293,7 @@
 	<!--  Format a YYMMDD as YYYY-MM-DD -->
 	<xsl:template name="fixDate">
 		<xsl:param name="sDate"/>
-		<xsl:value-of select="concat(substring($sDate,1,4),'-',substring($sDate,3,2),'-',substring($sDate,5,2))"/>
+		<xsl:value-of select="concat(substring($sDate,1,4),'-',substring($sDate,5,2),'-',substring($sDate,7,2))"/>
 	</xsl:template>
 
 	<!-- Decode the VATCodes -->
