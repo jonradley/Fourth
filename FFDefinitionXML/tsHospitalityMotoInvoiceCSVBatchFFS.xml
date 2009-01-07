@@ -22,7 +22,7 @@
 		<ffsGroups>
 			<ffsGroup>
 				<!--References below which MEAN RecordPos 'HEAD' -->
-				<ffsGroupRecord RecordPos="HEAD" FieldTotal="27"/>
+				<ffsGroupRecord RecordPos="HEAD" FieldTotal="40"/>
 				<ffsSubGroupRecord RecordPos="LINE" FieldTotal="30"/>
 			</ffsGroup>
 		</ffsGroups>
@@ -38,6 +38,8 @@
 							<SendersBranchReference RecordPos="HEAD" LPos="3"/>
 						</TradeSimpleHeader>
 						<InvoiceHeader>
+							<!--Set dummy value (HEAD-3) to DocumentStatus and correct it in stylesheet.-->
+							<DocumentStatus RecordPos="HEAD" LPos="3"/>
 							<BatchInformation>
 								<FileGenerationNo RecordPos="HEAD" LPos="25"/>
 								<FileVersionNo RecordPos="HEAD" LPos="26"/>
@@ -45,14 +47,32 @@
 							</BatchInformation>
 							<Buyer>
 								<BuyersLocationID>
+									<!--Set dummy value (HEAD-4) to GLN and correct it in stylesheet.-->
+									<GLN RecordPos="HEAD" LPos="4"/>
 									<SuppliersCode RecordPos="HEAD" LPos="4"/>
 									<BuyersCode RecordPos="HEAD" LPos="2"/>
 								</BuyersLocationID>
+								<!--Set dummy value (HEAD-17) to BuyersName and correct it in stylesheet.-->
+								<BuyersName RecordPos="HEAD" LPos="17"/>
+								<BuyersAddress>
+									<!--Set dummy value (HEAD-18) to AdressLine1 and correct it in stylesheet.-->
+									<AdressLine1 RecordPos="HEAD" LPos="18"/>
+									<!--Set dummy value (HEAD-21) to PostCode and correct it in stylesheet.-->
+									<PostCode RecordPos="HEAD" LPos="21"/>
+								</BuyersAddress>
 							</Buyer>
 							<Supplier>
 								<SuppliersLocationID>
+									<!--Set dummy value (HEAD-3) to GLN and correct it in stylesheet.-->
+									<GLN RecordPos="HEAD" LPos="3"/>
 									<BuyersCode RecordPos="HEAD" LPos="3"/>
 								</SuppliersLocationID>
+								<!--Set dummy value (HEAD-17) to SuppliersName and correct it in stylesheet.-->
+								<SuppliersName RecordPos="HEAD" LPos="17"/>
+								<SuppliersAddress>
+									<!--Set dummy value (HEAD-18) to AdressLine1 and correct it in stylesheet.-->
+									<AddressLine1 RecordPos="HEAD" LPos="18"/>
+								</SuppliersAddress>
 							</Supplier>
 							<ShipTo>
 								<ShipToLocationID>
@@ -68,14 +88,21 @@
 								</ShipToAddress>
 							</ShipTo>
 							<InvoiceReferences>
-								<InvoiceReference RecordPos="HEAD" LPos="28"/>
-								<InvoiceDate RecordPos="HEAD" LPos="29"/>
+								<InvoiceReference RecordPos="HEAD" LPos="5"/>
+								<InvoiceDate RecordPos="HEAD" LPos="6"/>
+								<!--Set TaxPoint Date same as Invoice Date.-->
+								<TaxPointDate RecordPos="HEAD" LPos="6"/>
 							</InvoiceReferences>
+							<!--Set dummy value (HEAD-3) to Currency and correct it in stylesheet.-->
+							<Currency RecordPos="HEAD" LPos="3"/>
 						</InvoiceHeader>
 						<InvoiceDetail>
 							<InvoiceLine>
+								<!--Set dummy value (Line-7) to LineNo and correct it in stylesheet.-->
+								<LineNumber RecordPos="LINE" LPos="7"/>
 								<PurchaseOrderReferences>
 									<PurchaseOrderReference RecordPos="HEAD" LPos="7"/>
+									<PurchaseOrderDate RecordPos="HEAD" LPos="8"/>
 									<TradeAgreement>
 										<ContractReference RecordPos="HEAD" LPos="40"/>
 									</TradeAgreement>
@@ -86,39 +113,78 @@
 								<DeliveryNoteReferences>
 									<DeliveryNoteReference RecordPos="HEAD" LPos="11"/>
 									<DeliveryNoteDate RecordPos="HEAD" LPos="12"/>
+									<!--Set Despatch Date same as Delivery Note Date.-->
+									<DespatchDate RecordPos="HEAD" LPos="12"/>
 								</DeliveryNoteReferences>
 								<ProductID>
 									<GTIN RecordPos="LINE" LPos="18"/>
 									<SuppliersProductCode RecordPos="LINE" LPos="2"/>
 								</ProductID>
-								<ProductDescription RecordPos="LINE" LPos="26"/>
+								<ProductDescription RecordPos="LINE" LPos="25"/>
 								<InvoicedQuantity RecordPos="LINE" LPos="7">
 									<ffsAttribute1 name="UnitOfMeasure" RecordPos="LINE" LPos="9"/>
 								</InvoicedQuantity>
 								<PackSize RecordPos="LINE" LPos="4"/>
 								<UnitValueExclVAT RecordPos="LINE" LPos="10"/>
+								<!--Set dummy value (Line-10) to LineValueExclVAT and correct it in stylesheet.-->
+								<LineValueExclVAT RecordPos="LINE" LPos="10"/>
 								<VATCode RecordPos="LINE" LPos="14"/>
+								<!--Set dummy value (Line-14) to VATRate and correct it in stylesheet.-->
+								<VATRate RecordPos="LINE" LPos="14"/>
 								<LineDiscountRate RecordPos="LINE" LPos="11"/>
 								<LineDiscountValue RecordPos="LINE" LPos="12"/>
+								<LineExtraData>
+									<!--ProductGroup (LINE-5) contains extra appendable value to PackSize.-->
+									<ProductGroup RecordPos="LINE" LPos="5"/>
+									<!--OriginalProductCode (LINE-6) contains extra appendable value to PackSize.-->
+									<OriginalProductCode RecordPos="LINE" LPos="6"/>
+									<!--ProductDescription2 (LINE-26) contains extra appendable value to ProductDescription.-->
+									<ProductDescription2 RecordPos="LINE" LPos="26"/>
+									<!--CodaVATCode (LINE-30) contains extra appendable value to credit line indicator.-->
+									<CodaVATCode RecordPos="LINE" LPos="30"/>
+								</LineExtraData>
 							</InvoiceLine>
 						</InvoiceDetail>
 						<InvoiceTrailer>
+							<!--Set dummy value (TRAIL-10) to NumberOfLines and correct it in stylesheet.-->
+							<NumberOfLines RecordPos="TRAIL" LPos="10"/>
+							<!--Set dummy value (TRAIL-10) to NumberOfItems and correct it in stylesheet.-->
+							<NumberOfItems RecordPos="TRAIL" LPos="10"/>
+							<!--Set dummy value (TRAIL-10) to NumberOfDeliveries and correct it in stylesheet.-->
+							<NumberOfDeliveries RecordPos="TRAIL" LPos="10"/>
 							<VATSubTotals>
 								<VATSubTotal>
 									<NumberOfLinesAtRate RecordPos="VAT" LPos="3"/>
+									<!--Set dummy value (VAT-3) to NumberOfItemsAtRate and correct it in stylesheet.-->
+									<NumberOfItemsAtRate RecordPos="VAT" LPos="3"/>
 									<DiscountedLinesTotalExclVATAtRate RecordPos="VAT" LPos="5"/>
 									<DocumentDiscountAtRate RecordPos="VAT" LPos="8"/>
+									<!--Set dummy value (VAT-5) to DocumentTotalExclVATAtRate and correct it in stylesheet.-->
+									<DocumentTotalExclVATAtRate RecordPos="VAT" LPos="5"/>
 									<SettlementDiscountAtRate RecordPos="VAT" LPos="6"/>
+									<!--Set dummy value (VAT-5) to SettlementTotalExclVATAtRate and correct it in stylesheet.-->
+									<SettlementTotalExclVATAtRate RecordPos="VAT" LPos="5"/>
 									<VATAmountAtRate RecordPos="VAT" LPos="7"/>
+									<!--Set dummy value (VAT-5) to DocumentTotalInclVATAtRate and correct it in stylesheet.-->
+									<DocumentTotalInclVATAtRate RecordPos="VAT" LPos="5"/>
+									<!--Set dummy value (VAT-5) to SettlementTotalInclVATAtRate and correct it in stylesheet.-->
+									<SettlementTotalInclVATAtRate RecordPos="VAT" LPos="5"/>
+									<!--Set dummy value (VAT-2) to VATRate and correct it in stylesheet.-->
 									<ffsAttribute1 name="VATCode" RecordPos="VAT" LPos="2"/>
-									<ffsAttribute1 name="VATRate" RecordPos="VAT" LPos=""/>
+									<ffsAttribute1 name="VATRate" RecordPos="VAT" LPos="2"/>
 								</VATSubTotal>
 							</VATSubTotals>
 							<DocumentDiscountRate RecordPos="TRAIL" LPos="10"/>
-							<SettlementDiscountRate RecordPos="TRAIL" LPos="16"/>
+							<SettlementDiscountRate RecordPos="HEAD" LPos="16"/>
 							<DiscountedLinesTotalExclVAT RecordPos="TRAIL" LPos="2"/>
 							<DocumentDiscount RecordPos="TRAIL" LPos="8"/>
+							<!--Set dummy value (TRAIL-9) to DocumentTotalExclVAT and correct it in stylesheet.-->
+							<DocumentTotalExclVAT RecordPos="TRAIL" LPos="9"/>
 							<SettlementDiscount RecordPos="TRAIL" LPos="6"/>
+							<!--Set dummy value (TRAIL-9) to SettlementTotalExclVATand correct it in stylesheet.-->
+							<SettlementTotalExclVAT RecordPos="TRAIL" LPos="9"/>
+							<!--Set dummy value (TRAIL-9) to DocumentTotalInclVAT correct it in stylesheet.-->
+							<DocumentTotalInclVAT RecordPos="TRAIL" LPos="9"/>
 							<VATAmount RecordPos="TRAIL" LPos="7"/>
 							<SettlementTotalInclVAT RecordPos="TRAIL" LPos="9"/>
 						</InvoiceTrailer>
