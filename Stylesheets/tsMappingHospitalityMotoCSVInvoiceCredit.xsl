@@ -123,19 +123,53 @@ Rave Tech     	|  02/01/2009 | Created Module
 		</xsl:copy> 
 	</xsl:template>
 
-	<!--Append minus (-) sign to invoiced quantity when Credit Line indicator is 'Y'-->
-	<xsl:template match="//InvoicedQuantity|//CreditedQuantity">
-		<xsl:copy>
+	<!--Decode UOM of InvoicedQuantity-->
+	<xsl:template match="//InvoicedQuantity">
+		<xsl:element name="InvoicedQuantity">
+			<xsl:attribute name="UnitOfMeasure">
+				<xsl:variable name="UoM">
+					<xsl:call-template name="DecodePacks">
+						<xsl:with-param name="sMotoPack" select="following-sibling::Measure/UnitsInPack"/>
+					</xsl:call-template>
+				</xsl:variable>
+				<xsl:choose>
+					<xsl:when test="$UoM = 1">EA</xsl:when>
+					<xsl:otherwise>CS</xsl:otherwise>
+				</xsl:choose>
+			</xsl:attribute>
+			<!--Append minus (-) sign when Credit Line indicator is 'Y'-->
 			<xsl:if test="..//LineExtraData/CodaVATCode = 'Y'">
 				<xsl:text>-</xsl:text>
 			</xsl:if> 
-			<xsl:value-of select="../InvoicedQuantity|../CreditedQuantity"></xsl:value-of>
-		</xsl:copy> 
+			<xsl:value-of select="format-number(../InvoicedQuantity, '0.00')"></xsl:value-of>
+		</xsl:element>
+	</xsl:template>
+
+	<!--Decode UOM of CreditedQuantity-->
+	<xsl:template match="//CreditedQuantity">
+		<xsl:element name="CreditedQuantity">
+			<xsl:attribute name="UnitOfMeasure">
+				<xsl:variable name="UoM">
+					<xsl:call-template name="DecodePacks">
+						<xsl:with-param name="sMotoPack" select="following-sibling::Measure/UnitsInPack"/>
+					</xsl:call-template>
+				</xsl:variable>
+				<xsl:choose>
+					<xsl:when test="$UoM = 1">EA</xsl:when>
+					<xsl:otherwise>CS</xsl:otherwise>
+				</xsl:choose>
+			</xsl:attribute>
+			<xsl:value-of select="format-number(../CreditedQuantity, '0.00')"></xsl:value-of>
+		</xsl:element>
 	</xsl:template>
 
 	<!--Calculate LineValueExclVAT-->
 	<xsl:template match="//LineValueExclVAT">
 		<xsl:element name="LineValueExclVAT">
+			<!--Append minus (-) sign to when Credit Line indicator is 'Y'-->
+			<xsl:if test="..//LineExtraData/CodaVATCode = 'Y'">
+				<xsl:text>-</xsl:text>
+			</xsl:if> 
 			<xsl:choose>
 				<xsl:when test="../CreditedQuantity != 0">
 					<xsl:value-of select="format-number(../CreditedQuantity * ../UnitValueExclVAT, '0.00')"/>
@@ -162,34 +196,17 @@ Rave Tech     	|  02/01/2009 | Created Module
 	</xsl:template>
 
 	<!-- Decode UOM -->
-	<xsl:template match="InvoicedQuantity|CreditedQuantity">
-		<xsl:element name="InvoicedQuantity">
-			<xsl:attribute name="UnitOfMeasure">
-				<xsl:variable name="UoM">
-					<xsl:call-template name="decodePacks">
-						<xsl:with-param name="sMotoPack" select="following-sibling::Measure/UnitsInPack"/>
-					</xsl:call-template>
-				</xsl:variable>
-				<xsl:choose>
-					<xsl:when test="$UoM = 1">EA</xsl:when>
-					<xsl:otherwise>CS</xsl:otherwise>
-				</xsl:choose>
-			</xsl:attribute>
-			<xsl:value-of select="format-number(.,'0')"/>
-		</xsl:element>
-	</xsl:template>
-
 	<xsl:template match="Measure">
 		<xsl:element name="Measure">
 			<xsl:element name="UnitsInPack">
-				<xsl:call-template name="decodePacks">
+				<xsl:call-template name="DecodePacks">
 					<xsl:with-param name="sMotoPack" select="UnitsInPack"/>
 				</xsl:call-template>
 			</xsl:element>
 		</xsl:element>
 	</xsl:template>
 
-	<xsl:template name="decodePacks">
+	<xsl:template name="DecodePacks">
 		<xsl:param name="sMotoPack"/>
 		<xsl:choose>
 			<xsl:when test="normalize-space($sMotoPack) = 'EACH' or normalize-space($sMotoPack) = 'BOTTLE'">1</xsl:when>
@@ -222,7 +239,7 @@ Rave Tech     	|  02/01/2009 | Created Module
 				<NumberOfItems><xsl:value-of select="sum(../../InvoiceDetail/InvoiceLine/InvoicedQuantity)"/></NumberOfItems>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template>	
+	</xsl:template>
 
 	<xsl:template match="//NumberOfDeliveries">
 		<NumberOfDeliveries>1</NumberOfDeliveries>
@@ -238,39 +255,6 @@ Rave Tech     	|  02/01/2009 | Created Module
 		</xsl:attribute>
 	</xsl:template>
 	
-	<xsl:template match="//DocumentTotalExclVAT">
-		<xsl:choose>
-			<xsl:when test="../../CreditNoteDetail/CreditNoteLine/CreditedQuantity != 0">
-				<DocumentTotalExclVAT><xsl:value-of select="format-number(sum(../../CreditNoteDetail/CreditNoteLine/LineValueExclVAT), '0.00')"/></DocumentTotalExclVAT>
-			</xsl:when>
-			<xsl:otherwise>
-				<DocumentTotalExclVAT><xsl:value-of select="format-number(sum(../../InvoiceDetail/InvoiceLine/LineValueExclVAT), '0.00')"/></DocumentTotalExclVAT>
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:template>
-
-	<xsl:template match="//SettlementTotalExclVAT">
-		<xsl:choose>
-			<xsl:when test="../../CreditNoteDetail/CreditNoteLine/CreditedQuantity != 0">
-				<SettlementTotalExclVAT><xsl:value-of select="format-number(sum(../../CreditNoteDetail/CreditNoteLine/LineValueExclVAT), '0.00')"/></SettlementTotalExclVAT>
-			</xsl:when>
-			<xsl:otherwise>
-				<SettlementTotalExclVAT><xsl:value-of select="format-number(sum(../../InvoiceDetail/InvoiceLine/LineValueExclVAT), '0.00')"/></SettlementTotalExclVAT>
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:template>
-
-	<xsl:template match="//DocumentTotalInclVAT">
-		<xsl:choose>
-			<xsl:when test="../../CreditNoteDetail/CreditNoteLine/CreditedQuantity != 0">
-				<DocumentTotalInclVAT><xsl:value-of select="format-number(sum(../../CreditNoteDetail/CreditNoteLine/LineValueExclVAT), '0.00')"/></DocumentTotalInclVAT>
-			</xsl:when>
-			<xsl:otherwise>
-				<DocumentTotalInclVAT><xsl:value-of select="format-number(sum(../../InvoiceDetail/InvoiceLine/LineValueExclVAT), '0.00')"/></DocumentTotalInclVAT>
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:template>
-
 	<msxsl:script language="VBScript" implements-prefix="vbscript"><![CDATA[ 
 	Dim lLineNumber
 	
