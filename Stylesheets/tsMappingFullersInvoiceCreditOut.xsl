@@ -14,6 +14,8 @@
  07/01/2008	| A Sheppard	| 1675.Created module.
  ******************************************************************************************
  22/12/2008	| Rave Tech		| 2653. Get Fullers STX Supplier Code.
+ ******************************************************************************************
+ 08/01/2009	| Lee Boyton	| 2674. Fullers requested change to the GL code derivation.
 ******************************************************************************************
 -->
 <xsl:stylesheet version="1.0"
@@ -93,9 +95,9 @@
 			<!--Add the info from all lines with this account code-->
 			<xsl:value-of select="$NewLine"/>
 			<xsl:text>TN</xsl:text>
-			<xsl:text>BI</xsl:text>
+			<xsl:value-of select="script:gsFormatFixedWidth($AccountCode,2)"/>
 			<xsl:value-of select="script:gsFormatFixedWidth(//CostCentreCode, 4)"/>
-			<xsl:value-of select="script:gsFormatFixedWidth($AccountCode,9)"/>
+			<xsl:value-of select="script:gsFormatFixedWidth(substring($AccountCode,3),9)"/>
 			<xsl:value-of select="script:gsFormatFixedWidth(format-number(sum((//InvoiceLine | //CreditNoteLine)[LineExtraData/AccountCode = $AccountCode]/LineValueExclVAT),'0.00'),15)"/>
 			<xsl:value-of select="script:gsFormatFixedWidth('', 68)"/>
 			
