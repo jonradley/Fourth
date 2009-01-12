@@ -15,10 +15,6 @@
 			<ffsFieldSeparator>,</ffsFieldSeparator>
 		</ffsFieldSeparators>
 		<ffsPadding/>
-		<ffsBatchHeader>
-			<!--list of records that make up the header, this will be added to each document in the batch -->
-			<ffsHeaderRecord RecordPos="HEAD"/>
-		</ffsBatchHeader>
 		<ffsGroups>
 			<ffsGroup>
 				<!--References below which MEAN RecordPos 'HEAD' -->
