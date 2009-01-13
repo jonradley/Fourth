@@ -27,6 +27,7 @@
 	
 	<!--Define keys to be used for finding distinct line information. -->
 	<xsl:key name="keyLinesByAccount" match="InvoiceLine | CreditNoteLine" use="LineExtraData/AccountCode"/>	
+	<xsl:key name="keyLinesByAccount2" match="InvoiceLine | CreditNoteLine" use="substring-after(LineExtraData/AccountCode,'/')"/>	
 	
 	<xsl:template match="/Invoice | /CreditNote">
 			
@@ -173,9 +174,9 @@
 			
 		
 		<!--VAT Line-->
-		<xsl:for-each select="(CreditNoteDetail/CreditNoteLine | InvoiceDetail/InvoiceLine)[generate-id() = generate-id(key('keyLinesByAccount',LineExtraData/AccountCode)[1])]">
-			<xsl:sort select="LineExtraData/AccountCode" data-type="text"/>
-			<xsl:variable name="AccountCode" select="LineExtraData/AccountCode"/>		
+        <xsl:for-each select="(CreditNoteDetail/CreditNoteLine | InvoiceDetail/InvoiceLine)[generate-id() = generate-id(key('keyLinesByAccount2',substring-after(LineExtraData/AccountCode,'/'))[1])]">
+            <xsl:sort select="substring-after(LineExtraData/AccountCode,'/')" data-type="text"/>                                                                                      
+            <xsl:variable name="AccountCode" select="substring-after(LineExtraData/AccountCode,'/')"/>                                   
 
 			<xsl:value-of select="$TransactionType"/>
 			<xsl:text>,</xsl:text>				
@@ -196,10 +197,10 @@
 			<xsl:text>,</xsl:text> 
 			
 			<xsl:variable name="summaryXML">
-				<xsl:for-each select="//InvoiceLine[LineExtraData/AccountCode = $AccountCode] | //CreditNoteLine[LineExtraData/AccountCode = $AccountCode]">
+				<xsl:for-each select="//InvoiceLine[substring-after(LineExtraData/AccountCode,'/') = $AccountCode] | //CreditNoteLine[substring-after(LineExtraData/AccountCode,'/') = $AccountCode]">
 					<LineVat>
 						<xsl:value-of select="./LineValueExclVAT * ./VATRate div 100"/>
-					</LineVat>					
+					</LineVat>
 				</xsl:for-each>
 			</xsl:variable>
 			
@@ -214,14 +215,7 @@
 			<xsl:text>,</xsl:text>			
 			<xsl:value-of select="$DocumentReference"/>
 			<xsl:text>,</xsl:text>			
-			<xsl:choose>
-			     <xsl:when test="contains($AccountCode,'/')">			      
-			         <xsl:value-of select="substring-after($AccountCode,'/')"/>			     
-			     </xsl:when>
-			     <xsl:otherwise>
-			        <xsl:text>01</xsl:text>
-			     </xsl:otherwise>
-			</xsl:choose>
+                    <xsl:value-of select="$AccountCode"/>
 			<xsl:text>,</xsl:text>
 			<xsl:value-of select="$SuppliersName"/>
 			<xsl:text>,</xsl:text>
@@ -229,10 +223,10 @@
 			<xsl:text>,</xsl:text>
 			<xsl:choose>
 				<xsl:when test="/Invoice">
-					<xsl:value-of select="format-number(sum(//InvoiceLine[LineExtraData/AccountCode = $AccountCode]/LineValueExclVAT),'0.00')"/>
+					<xsl:value-of select="format-number(sum(//InvoiceLine[substring-after(LineExtraData/AccountCode,'/') = $AccountCode]/LineValueExclVAT),'0.00')"/>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:value-of select="format-number(-1 * sum(//CreditNoteLine[LineExtraData/AccountCode = $AccountCode]/LineValueExclVAT),'0.00')"/>
+					<xsl:value-of select="format-number(-1 * sum(//CreditNoteLine[substring-after(LineExtraData/AccountCode,'/') = $AccountCode]/LineValueExclVAT),'0.00')"/>
 				</xsl:otherwise>
 			</xsl:choose>			
 			<xsl:text>,</xsl:text>
