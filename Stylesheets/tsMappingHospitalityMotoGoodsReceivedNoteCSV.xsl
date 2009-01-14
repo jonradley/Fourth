@@ -26,24 +26,14 @@ Rave Tech	| 02/01/2008| Created Module
 			<xsl:text>Original</xsl:text>
 		</DocumentStatus>
 	</xsl:template>
+
+	<!-- DATE CONVERSION dd/mm/yyyy to xsd:date -->
+	<xsl:template match="GoodsReceivedNoteDate | PurchaseOrderDate | DeliveryNoteDate | DespatchDate">
+		<xsl:copy>
+			<xsl:value-of select="concat(substring(., 1, 2), '-', substring(., 4, 2), '-', substring(., 7, 4))"/>
+		</xsl:copy>
+	</xsl:template>
 			
-	<!-- translate the date from [dd/mm/yyyy] format to [yyyy-mm-dd] -->
-	<xsl:template match="GoodsReceivedNoteDate">
-		<xsl:variable name="dayPart">
-			<xsl:value-of select="substring(.,1,2)"/>
-		</xsl:variable>
-		<xsl:variable name="monthPart">
-			<xsl:value-of select="substring(.,4,2)"/>
-		</xsl:variable>
-		<xsl:variable name="yearPart">
-			<xsl:value-of select="substring(.,7,4)"/>
-		</xsl:variable>
-		<!-- construct the final xml formatted date -->
-		<GoodsReceivedNoteDate>
-			<xsl:value-of select="concat($yearPart,'-',$monthPart,'-',$dayPart)"/>
-		</GoodsReceivedNoteDate>
-	</xsl:template>	
-	
 	<!--identity transformation -->
 	<xsl:template match="@*|node()">
 		<xsl:copy>
