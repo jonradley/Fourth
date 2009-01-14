@@ -81,20 +81,20 @@
 								<!--Set dummy value (Line-7) to LineNo and correct it in stylesheet.-->
 								<LineNumber RecordPos="LINE" LPos="7"/>
 								<PurchaseOrderReferences>
-									<PurchaseOrderReference RecordPos="HEAD" LPos="7"/>
-									<PurchaseOrderDate RecordPos="HEAD" LPos="8"/>
+									<PurchaseOrderReference RecordPos="LINE" LPos="37"/>
+									<PurchaseOrderDate RecordPos="LINE" LPos="38"/>
 									<TradeAgreement>
-										<ContractReference RecordPos="HEAD" LPos="40"/>
+										<ContractReference RecordPos="LINE" LPos="70"/>
 									</TradeAgreement>
 								</PurchaseOrderReferences>
 								<PurchaseOrderConfirmationReferences>
-									<PurchaseOrderConfirmationReference RecordPos="HEAD" LPos="7"/>
+									<PurchaseOrderConfirmationReference RecordPos="LINE" LPos="37"/>
 								</PurchaseOrderConfirmationReferences>
 								<DeliveryNoteReferences>
-									<DeliveryNoteReference RecordPos="HEAD" LPos="11"/>
-									<DeliveryNoteDate RecordPos="HEAD" LPos="12"/>
+									<DeliveryNoteReference RecordPos="LINE" LPos="41"/>
+									<DeliveryNoteDate RecordPos="LINE" LPos="42"/>
 									<!--Set Despatch Date same as Delivery Note Date.-->
-									<DespatchDate RecordPos="HEAD" LPos="12"/>
+									<DespatchDate RecordPos="LINE" LPos="42"/>
 								</DeliveryNoteReferences>
 								<ProductID>
 									<GTIN RecordPos="LINE" LPos="18"/>
