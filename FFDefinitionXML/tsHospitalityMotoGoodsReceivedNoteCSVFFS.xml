@@ -37,7 +37,17 @@ Rave Tech	| 30/12/2008 	| Created
 				</ShipTo>
 				<PurchaseOrderReferences>
 					<PurchaseOrderReference RecordPos="" LPos="4"/>
+					<!--Set PO date same as GRN Date-->
+					<PurchaseOrderDate RecordPos="" LPos="5"/>
 				</PurchaseOrderReferences>
+				<DeliveryNoteReferences>
+					<!--Set delivery reference same as PO reference-->
+					<DeliveryNoteReference RecordPos="" LPos="4"/>
+					<!--Set delivery note date same as GRN date-->
+					<DeliveryNoteDate RecordPos="" LPos="5"/>
+					<!--Set despatch note date same as GRN date-->
+					<DespatchDate RecordPos="" LPos="5"/>
+				</DeliveryNoteReferences>
 				<GoodsReceivedNoteReferences>
 					<GoodsReceivedNoteDate RecordPos="" LPos="5"/>
 				</GoodsReceivedNoteReferences>
