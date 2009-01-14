@@ -69,7 +69,7 @@ Rave Tech     	|  02/01/2009 | Created Module
 						DeliveryNoteReferences/DeliveryNoteDate |						
 						DeliveryNoteReferences/DespatchDate">
 		<xsl:copy>
-			<xsl:value-of select="concat(substring(., 7, 4), '-', substring(., 1, 2), '-', substring(., 4, 2))"/>
+			<xsl:value-of select="concat(substring(., 1, 2), '-', substring(., 4, 2), '-', substring(., 7, 4))"/>
 		</xsl:copy>
 	</xsl:template>
 
