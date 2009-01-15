@@ -128,9 +128,9 @@
 					</SellerAssigned>
 				</xsl:if>
 	
-				<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/BuyersCode">
+				<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN">
 					<BuyerAssigned scheme="OTHER">
-						<xsl:value-of select="number(/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/BuyersCode)"/>
+						<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/>
 					</BuyerAssigned>
 				</xsl:if>
 			</Seller>
