@@ -26,6 +26,11 @@ Rave Tech	| 02/01/2008| Created Module
 			<xsl:text>Original</xsl:text>
 		</DocumentStatus>
 	</xsl:template>
+
+	<!--Set dummy value to BuyersLocationID/GLN-->
+	<xsl:template match="BuyersLocationID/GLN">
+		<GLN><xsl:text>9999999999</xsl:text></GLN>
+	</xsl:template>
 			
 	<!-- translate the date from [dd/mm/yyyy] format to [yyyy-mm-dd] -->
 	<xsl:template match="GoodsReceivedNoteDate">
@@ -114,5 +119,23 @@ Rave Tech	| 02/01/2008| Created Module
 			<xsl:apply-templates select="@*|node()"/>
 		</xsl:copy>
 	</xsl:template>
+
+	<!--************** TRAILERS ***********-->
+	<!--***************************************-->
+	<xsl:template match="NumberOfLines">
+		<NumberOfLines><xsl:value-of select="count(../../GoodsReceivedNoteDetail/GoodsReceivedNoteLine)"/></NumberOfLines>
+	</xsl:template>	
+
+	<xsl:template match="DiscountedLinesTotalExclVAT">
+		<DiscountedLinesTotalExclVAT><xsl:text>0.00</xsl:text></DiscountedLinesTotalExclVAT>
+	</xsl:template>	
+
+	<xsl:template match="DocumentDiscount">
+		<DocumentDiscount><xsl:text>0.00</xsl:text></DocumentDiscount>
+	</xsl:template>	
+
+	<xsl:template match="TotalExclVAT">
+		<TotalExclVAT><xsl:value-of select="format-number(sum(../../GoodsReceivedNoteDetail/GoodsReceivedNoteLine/LineValueExclVAT), '0.00')"/></TotalExclVAT>
+	</xsl:template>	
 	
 </xsl:stylesheet>
