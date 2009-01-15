@@ -24,6 +24,12 @@ Rave Tech	| 30/12/2008 	| Created
 			</TradeSimpleHeader>
 			<GoodsReceivedNoteHeader>
 				<DocumentStatus RecordPos="" LPos="3"/>
+				<Buyer>
+					<BuyersLocationID>
+						<!--Set dummy value to GLN in stylesheet.-->
+						<GLN RecordPos="" LPos="3"/>
+					</BuyersLocationID>
+				</Buyer>
 				<Supplier>
 					<SuppliersLocationID>
 						<BuyersCode RecordPos="" LPos="3"/>
@@ -56,10 +62,22 @@ Rave Tech	| 30/12/2008 	| Created
 				<GoodsReceivedNoteLine>
 					<ffsAttribute1 name="LineStatus" RecordPos="" LPos="14"/>
 					<ProductID>
+						<!--Set GTIN same as supplier product code-->
+						<GTIN RecordPos="" LPos="6"/>
 						<SuppliersProductCode RecordPos="" LPos="6"/>
 					</ProductID>
 					<ProductDescription RecordPos="" LPos="7"/>
-					<DeliveredQuantity RecordPos="" LPos="8"/>
+					<!--Set OrderedQuantity same as DeliveredQuantity-->
+					<OrderedQuantity RecordPos="" LPos="8">
+						<ffsAttribute1 name="UnitOfMeasure" RecordPos="" LPos="10"/>
+					</OrderedQuantity>
+					<!--Set ConfirmedQuantity same as DeliveredQuantity-->
+					<ConfirmedQuantity RecordPos="" LPos="8">
+						<ffsAttribute1 name="UnitOfMeasure" RecordPos="" LPos="10"/>
+					</ConfirmedQuantity>
+					<DeliveredQuantity RecordPos="" LPos="8">
+						<ffsAttribute1 name="UnitOfMeasure" RecordPos="" LPos="10"/>
+					</DeliveredQuantity>
 					<AcceptedQuantity RecordPos="" LPos="9">
 						<ffsAttribute1 name="UnitOfMeasure" RecordPos="" LPos="10"/>
 					</AcceptedQuantity>
@@ -69,6 +87,16 @@ Rave Tech	| 30/12/2008 	| Created
 					<Narrative RecordPos="" LPos="15"/>
 				</GoodsReceivedNoteLine>
 			</GoodsReceivedNoteDetail>
+			<GoodsReceivedNoteTrailer>
+				<!--Set dummy value to NumberOfLines and correct it in stylesheet.-->
+				<NumberOfLines RecordPos="" LPos="1"/>
+				<!--Set dummy value to DiscountedLinesTotalExclVAT and correct it in stylesheet.-->
+				<DiscountedLinesTotalExclVAT RecordPos="" LPos="1"/>
+				<!--Set dummy value to DocumentDiscount and correct it in stylesheet.-->
+				<DocumentDiscount RecordPos="" LPos="1"/>
+				<!--Set dummy value to TotalExclVAT and correct it in stylesheet.-->
+				<TotalExclVAT RecordPos="" LPos="1"/>
+			</GoodsReceivedNoteTrailer>
 		</GoodsReceivedNote>
 	</ffsRoot>
 </ffsFlatFileSchema>
