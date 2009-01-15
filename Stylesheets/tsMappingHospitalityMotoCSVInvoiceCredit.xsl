@@ -66,10 +66,11 @@ Rave Tech     	|  02/01/2009 | Created Module
 						CreditNoteReferences/CreditNoteDate |
 						CreditNoteReferences/TaxPointDate |						
 						PurchaseOrderReferences/PurchaseOrderDate |
+						PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationDate |
 						DeliveryNoteReferences/DeliveryNoteDate |						
 						DeliveryNoteReferences/DespatchDate">
 		<xsl:copy>
-			<xsl:value-of select="concat(substring(., 1, 2), '-', substring(., 4, 2), '-', substring(., 7, 4))"/>
+			<xsl:value-of select="concat(substring(., 7, 4), '-', substring(., 4, 2), '-', substring(., 1, 2))"/>
 		</xsl:copy>
 	</xsl:template>
 

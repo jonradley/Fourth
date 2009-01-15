@@ -31,7 +31,6 @@
 					<Invoice>
 						<TradeSimpleHeader>
 							<SendersCodeForRecipient RecordPos="HEAD" LPos="4"/>
-							<SendersBranchReference RecordPos="HEAD" LPos="3"/>
 						</TradeSimpleHeader>
 						<InvoiceHeader>
 							<!--Set dummy value (HEAD-3) to DocumentStatus and correct it in stylesheet.-->
@@ -87,9 +86,6 @@
 										<ContractReference RecordPos="LINE" LPos="70"/>
 									</TradeAgreement>
 								</PurchaseOrderReferences>
-								<PurchaseOrderConfirmationReferences>
-									<PurchaseOrderConfirmationReference RecordPos="LINE" LPos="37"/>
-								</PurchaseOrderConfirmationReferences>
 								<DeliveryNoteReferences>
 									<DeliveryNoteReference RecordPos="LINE" LPos="41"/>
 									<DeliveryNoteDate RecordPos="LINE" LPos="42"/>
