@@ -93,4 +93,6 @@ R Cambridge	| 04/12/2006	| 585 Created, based on tsMappingHospitalityInboundCSVo
 		</xsl:element>
 	</xsl:template>
 	
+	<xsl:template match="NumberOfLines"/>
+	
 </xsl:stylesheet>
