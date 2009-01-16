@@ -60,7 +60,7 @@ Moty Dimant 	| 15/01/2009 		| Created
 													<xsl:value-of select="InvoiceHeader/BatchInformation/FileCreationDate"/>
 												</xsl:variable>
 												<FileCreationDate>
-													<xsl:value-of select="concat(substring($sFileDate,1,4),'-',substring($sFileDate,5,2),'-',substring($sFileDate,7,2))"/>
+													<xsl:value-of select="concat(substring($sFileDate,5,2),'-',substring($sFileDate,3,2),'-','20',substring($sFileDate,1,2))"/>
 												</FileCreationDate>
 											</xsl:if>
 											<xsl:if test="InvoiceHeader/BatchInformation/SendersTransmissionReference != ''">
@@ -73,7 +73,7 @@ Moty Dimant 	| 15/01/2009 		| Created
 													<xsl:value-of select="InvoiceHeader/BatchInformation/SendersTransmissionDate"/>
 												</xsl:variable>
 												<SendersTransmissionDate>
-													<xsl:value-of select="concat(substring($sSendersTransDate,1,4),'-',substring($sSendersTransDate,5,2),'-',substring($sSendersTransDate,7,2))"/>
+													<xsl:value-of select="concat(substring($sSendersTransDate,5,2),'-',substring($sSendersTransDate,3,2),'-','20',substring($sSendersTransDate,1,2))"/>
 												</SendersTransmissionDate>
 											</xsl:if>
 										</BatchInformation>
@@ -190,7 +190,7 @@ Moty Dimant 	| 15/01/2009 		| Created
 										<xsl:for-each select="InvoiceTrailer/VATSubTotals/VATSubTotal">
 											<VATSubTotal>
 												<xsl:attribute name="VATCode"><xsl:value-of select="./@VATCode"/></xsl:attribute>
-												<xsl:attribute name="VATRate"><xsl:value-of select="./@VATRate"/></xsl:attribute>
+												<xsl:attribute name="VATRate"><xsl:value-of select="format-number((./@VATRate) div 1000.0, '0.00#')"/></xsl:attribute>
 												<xsl:if test="NumberOfLinesAtRate != ''">
 													<NumberOfLinesAtRate>
 														<xsl:value-of select="NumberOfLinesAtRate"/>
@@ -262,6 +262,8 @@ Moty Dimant 	| 15/01/2009 		| Created
 								</InvoiceTrailer>
 							</Invoice>
 						</BatchDocument>
+						
+						<!--DELIVERY NOTES-->
 						<BatchDocument>
 							<xsl:attribute name="DocumentTypeNo">7</xsl:attribute>
 							<DeliveryNote>
@@ -347,6 +349,11 @@ Moty Dimant 	| 15/01/2009 		| Created
 		</BatchRoot>
 	</xsl:template>
 	
+	<xsl:template name="msFormatDate">
+		<xsl:param name="vsYYMMDD"/>
+			<xsl:value-of select="concat('20',substring($vsYYMMDD,1,2),'-',substring($vsYYMMDD,3,2),'-',substring($vsYYMMDD,5,2))"/>
+		</xsl:template>
+
 	<!--END of DATE CONVERSIONS -->
 	<msxsl:script language="VBScript" implements-prefix="vbscript"><![CDATA[ 
 		Dim lLineNumber
