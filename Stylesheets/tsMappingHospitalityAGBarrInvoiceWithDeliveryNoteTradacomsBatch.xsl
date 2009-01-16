@@ -89,7 +89,7 @@ Moty Dimant 	| 15/01/2009 		| Created
 											<xsl:value-of select="InvoiceHeader/InvoiceReferences/InvoiceDate"/>
 										</xsl:variable>
 										<InvoiceDate>
-											<xsl:value-of select="concat(substring($sInvDate,1,4),'-',substring($sInvDate,5,2),'-',substring($sInvDate,7,2))"/>
+											<xsl:value-of select="concat(substring($sInvDate,5,2),'-',substring($sInvDate,3,2),'-','20',substring($sInvDate,1,2))"/>
 										</InvoiceDate>
 										<xsl:variable name="sTaxDate">
 											<xsl:choose>
@@ -102,7 +102,7 @@ Moty Dimant 	| 15/01/2009 		| Created
 											</xsl:choose>
 										</xsl:variable>
 										<TaxPointDate>
-											<xsl:value-of select="concat(substring($sTaxDate,1,4),'-',substring($sTaxDate,5,2),'-',substring($sTaxDate,7,2))"/>
+											<xsl:value-of select="concat(substring($sTaxDate,5,2),'-',substring($sTaxDate,3,2),'-','20',substring($sTaxDate,1,2))"/>
 										</TaxPointDate>
 										<VATRegNo>
 											<xsl:value-of select="InvoiceHeader/InvoiceReferences/VATRegNo"/>
@@ -124,7 +124,7 @@ Moty Dimant 	| 15/01/2009 		| Created
 														<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderDate"/>
 													</xsl:variable>
 													<PurchaseOrderDate>
-														<xsl:value-of select="concat(substring($sPODate,1,4),'-',substring($sPODate,5,2),'-',substring($sPODate,7,2))"/>
+														<xsl:value-of select="concat(substring($sPODate,5,2),'-',substring($sPODate,3,2),'-','20',substring($sPODate,1,2))"/>
 													</PurchaseOrderDate>
 												</PurchaseOrderReferences>
 											</xsl:if>
@@ -136,7 +136,7 @@ Moty Dimant 	| 15/01/2009 		| Created
 													<xsl:value-of select="DeliveryNoteReferences/DeliveryNoteDate"/>
 												</xsl:variable>
 												<DeliveryNoteDate>
-													<xsl:value-of select="concat(substring($sDelNoteDate,1,4),'-',substring($sDelNoteDate,5,2),'-',substring($sDelNoteDate,7,2))"/>
+													<xsl:value-of select="concat(substring($sDelNoteDate,5,2),'-',substring($sDelNoteDate,3,2),'-','20',substring($sDelNoteDate,1,2))"/>
 												</DeliveryNoteDate>
 											</DeliveryNoteReferences>
 											<ProductID>
@@ -154,11 +154,11 @@ Moty Dimant 	| 15/01/2009 		| Created
 												</PackSize>
 											</xsl:if>
 											<UnitValueExclVAT>
-												<xsl:value-of select="UnitValueExclVAT"/>
+												<xsl:value-of select="format-number((UnitValueExclVAT) div 10000.0,'0.00#')"/>   
 											</UnitValueExclVAT>
 											<xsl:if test="LineValueExclVAT != ''">
 												<LineValueExclVAT>
-													<xsl:value-of select="LineValueExclVAT"/>
+													<xsl:value-of select="format-number((LineValueExclVAT) div 10000.0,'0.00#')"/>
 												</LineValueExclVAT>
 											</xsl:if>
 											<VATCode>
@@ -190,7 +190,7 @@ Moty Dimant 	| 15/01/2009 		| Created
 										<xsl:for-each select="InvoiceTrailer/VATSubTotals/VATSubTotal">
 											<VATSubTotal>
 												<xsl:attribute name="VATCode"><xsl:value-of select="./@VATCode"/></xsl:attribute>
-												<xsl:attribute name="VATRate"><xsl:value-of select="format-number((./@VATRate) div 1000.0, '0.00#')"/></xsl:attribute>
+												<xsl:attribute name="VATRate"><xsl:value-of select="format-number((./@VATRate) div 10000.0, '0.00#')"/></xsl:attribute>
 												<xsl:if test="NumberOfLinesAtRate != ''">
 													<NumberOfLinesAtRate>
 														<xsl:value-of select="NumberOfLinesAtRate"/>
@@ -203,66 +203,82 @@ Moty Dimant 	| 15/01/2009 		| Created
 												</xsl:if>
 												<xsl:if test="DocumentTotalExclVATAtRate != ''">
 													<DocumentTotalExclVATAtRate>
-														<xsl:value-of select="DocumentTotalExclVATAtRate"/>
+														<xsl:value-of select="format-number((DocumentTotalExclVATAtRate) div 100.0, '0.00#')"/>
 													</DocumentTotalExclVATAtRate>
 												</xsl:if>
 												<xsl:if test="SettlementDiscountAtRate != ''">
 													<SettlementDiscountAtRate>
-														<xsl:value-of select="SettlementDiscountAtRate"/>
+														<xsl:value-of select="format-number((SettlementDiscountAtRate ) div 100.0, '0.00#')"/>
 													</SettlementDiscountAtRate>
 												</xsl:if>
 												<xsl:if test="SettlementTotalExclVATAtRate != ''">
 													<SettlementTotalExclVATAtRate>
-														<xsl:value-of select="SettlementTotalExclVATAtRate"/>
+														<xsl:value-of select="format-number((SettlementTotalExclVATAtRate) div 100.0, '0.00#')"/>
 													</SettlementTotalExclVATAtRate>
 												</xsl:if>
 												<xsl:if test="VATAmountAtRate != ''">
 													<VATAmountAtRate>
-														<xsl:value-of select="VATAmountAtRate"/>
+														<xsl:value-of select="format-number((VATAmountAtRate) div 100.0, '0.00#')"/>
 													</VATAmountAtRate>
 												</xsl:if>
 												<xsl:if test="DocumentTotalInclVATAtRate != ''">
 													<DocumentTotalInclVATAtRate>
-														<xsl:value-of select="DocumentTotalInclVATAtRate"/>
+														<xsl:value-of select="format-number((DocumentTotalInclVATAtRate) div 100.0, '0.00#')"/>
 													</DocumentTotalInclVATAtRate>
 												</xsl:if>
 												<xsl:if test="SettlementTotalInclVATAtRate">
 													<SettlementTotalInclVATAtRate>
-														<xsl:value-of select="SettlementTotalInclVATAtRate"/>
+														<xsl:value-of select="format-number((SettlementTotalInclVATAtRate) div 100.0, '0.00#')"/>
 													</SettlementTotalInclVATAtRate>
 												</xsl:if>
 											</VATSubTotal>
 										</xsl:for-each>
 									</VATSubTotals>
+									<xsl:variable name="sDTEV">
+										<xsl:value-of select="InvoiceTrailer/DocumentTotalExclVAT"/>
+									</xsl:variable>
 									<xsl:if test="InvoiceTrailer/DocumentTotalExclVAT != ''">
 										<DocumentTotalExclVAT>
-											<xsl:value-of select="InvoiceTrailer/DocumentTotalExclVAT"/>
+											<xsl:value-of select="format-number(($sDTEV) div 100.0, '0.00#')"/>
 										</DocumentTotalExclVAT>
 									</xsl:if>
+									<xsl:variable name="sSettDisc">
+										<xsl:value-of select="InvoiceTrailer/SettlementDiscount"/>
+									</xsl:variable>
 									<xsl:if test="InvoiceTrailer/SettlementDiscount != ''">
 										<SettlementDiscount>
-											<xsl:value-of select="InvoiceTrailer/SettlementDiscount"/>
+											<xsl:value-of select="format-number(($sSettDisc) div 100.0, '0.00#')"/>
 										</SettlementDiscount>
 									</xsl:if>
+									<xsl:variable name="sSTEV">
+										<xsl:value-of select="InvoiceTrailer/SettlementTotalExclVAT"/>
+									</xsl:variable>
 									<xsl:if test="InvoiceTrailer/SettlementTotalExclVAT != ''">
 										<SettlementTotalExclVAT>
-											<xsl:value-of select="InvoiceTrailer/SettlementTotalExclVAT"/>
+											<xsl:value-of select="format-number(($sSTEV) div 100.0, '0.00#')"/>
 										</SettlementTotalExclVAT>
 									</xsl:if>
+										<xsl:variable name="sVATAm">
+										<xsl:value-of select="InvoiceTrailer/VATAmount"/>
+									</xsl:variable>
 									<xsl:if test="InvoiceTrailer/VATAmount != ''">
 										<VATAmount>
-											<xsl:value-of select="InvoiceTrailer/VATAmount"/>
+											<xsl:value-of select="format-number(($sVATAm) div 100.0, '0.00#')"/>
 										</VATAmount>
 									</xsl:if>
+									<xsl:variable name="sDTIV">
+										<xsl:value-of select="InvoiceTrailer/DocumentTotalInclVAT"/>
+									</xsl:variable>
 									<xsl:if test="InvoiceTrailer/DocumentTotalInclVAT != ''">
 										<DocumentTotalInclVAT>
-											<xsl:value-of select="InvoiceTrailer/DocumentTotalInclVAT"/>
+											<xsl:value-of select="format-number(($sDTIV) div 100.0, '0.00#')"/>
 										</DocumentTotalInclVAT>
 									</xsl:if>
 								</InvoiceTrailer>
 							</Invoice>
 						</BatchDocument>
 						
+											
 						<!--DELIVERY NOTES-->
 						<BatchDocument>
 							<xsl:attribute name="DocumentTypeNo">7</xsl:attribute>
@@ -304,7 +320,7 @@ Moty Dimant 	| 15/01/2009 		| Created
 													<xsl:value-of select="InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderDate"/>
 												</xsl:variable>
 												<PurchaseOrderDate>
-													<xsl:value-of select="concat(substring($sDPODate,1,4),'-',substring($sDPODate,5,2),'-',substring($sDPODate,7,2))"/>
+													<xsl:value-of select="concat(substring($sDPODate,1,4),'-',substring($sDPODate,5,2),'-','20',substring($sDPODate,7,2))"/>
 												</PurchaseOrderDate>
 											</xsl:if>
 										</PurchaseOrderReferences>
@@ -317,7 +333,7 @@ Moty Dimant 	| 15/01/2009 		| Created
 											<xsl:value-of select="InvoiceDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteDate"/>
 										</xsl:variable>
 										<DeliveryNoteDate>
-											<xsl:value-of select="concat(substring($dDDelNoteDate,1,4),'-',substring($dDDelNoteDate,5,2),'-',substring($dDDelNoteDate,7,2))"/>
+											<xsl:value-of select="concat(substring($dDDelNoteDate,5,2),'-',substring($dDDelNoteDate,3,2),'-',substring($dDDelNoteDate,1,2))"/>
 										</DeliveryNoteDate>
 									</DeliveryNoteReferences>
 								</DeliveryNoteHeader>
