@@ -190,7 +190,7 @@ Moty Dimant 	| 15/01/2009 		| Created
 										<xsl:for-each select="InvoiceTrailer/VATSubTotals/VATSubTotal">
 											<VATSubTotal>
 												<xsl:attribute name="VATCode"><xsl:value-of select="./@VATCode"/></xsl:attribute>
-												<xsl:attribute name="VATRate"><xsl:value-of select="format-number((./@VATRate) div 10000.0, '0.00#')"/></xsl:attribute>
+												<xsl:attribute name="VATRate"><xsl:value-of select="format-number((./@VATRate) div 1000.0, '0.00#')"/></xsl:attribute>
 												<xsl:if test="NumberOfLinesAtRate != ''">
 													<NumberOfLinesAtRate>
 														<xsl:value-of select="NumberOfLinesAtRate"/>
