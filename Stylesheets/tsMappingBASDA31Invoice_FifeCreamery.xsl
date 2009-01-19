@@ -37,13 +37,13 @@ R Cambridge	| 2008-12-02		| 2600 Created Module (based on tsMappingHospitalityIn
 							<TradeSimpleHeader>
 								<!-- SCR comes from Sellers code for buyer if there, else it comes from Buyer GLN -->
 								<SendersCodeForRecipient>
-										<xsl:value-of select="/Invoice/Buyer/BuyerReferences/SuppliersCodeForBuyer"/>
+										<xsl:value-of select="/Invoice/ShipTo/SellerAssigned"/>
 								</SendersCodeForRecipient>
 								<SendersBranchReference>
 									<!--<xsl:value-of select="/Invoice/InvoiceTo/InvoiceToReferences/SuppliersCodeForInvoiceTo"/>-->
 									
 									<xsl:call-template name="getRightHandWord">
-										<xsl:with-param name="text" select="/Invoice/Buyer/Party"/>
+										<xsl:with-param name="text" select="/Invoice/TradeAgreementReference/ContractReferenceNumber"/>
 									</xsl:call-template>
 									
 								</SendersBranchReference>
