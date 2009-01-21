@@ -82,7 +82,7 @@
 		<xsl:text>SDT=</xsl:text>
 			<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN"/>
 			<xsl:text>:</xsl:text>
-			<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/BuyersCode"/>
+			<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
 			<xsl:text>+</xsl:text>
 			<!-- truncate to 40 SNAM = 3060 = AN..40-->
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersName),40)"/>
