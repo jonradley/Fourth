@@ -21,10 +21,10 @@
 			<xsl:value-of select="$DelDate"/>
 			<xsl:text>,</xsl:text>
 			<xsl:value-of select="$SiteCode"/>
-			<xsl:text>,,,,,,,,,</xsl:text>
-			<!-- Merret SKU-->
+			<xsl:text>,,,</xsl:text>
+			<!-- Merret Style-->
 			<xsl:value-of select="ProductID/SuppliersProductCode"/>
-			<xsl:text>,</xsl:text>
+			<xsl:text>,,,,,,,</xsl:text>
 			<!-- Qty Requested-->
 			<xsl:value-of select="OrderedQuantity"/>
 			<xsl:text>&#13;&#10;</xsl:text>
