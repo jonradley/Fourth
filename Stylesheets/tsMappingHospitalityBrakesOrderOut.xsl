@@ -27,9 +27,15 @@ Lee Boyton	| 19/07/2007     | 1332 Changes following acceptance testing.
 				<sh:Sender>
 					<sh:Identifier>
 						<xsl:attribute name="Authority">EAN.UCC</xsl:attribute>
-						<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersName"/>
+						<xsl:choose>
+							<xsl:when test="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN = '5060166760274'">
+								<xsl:text>J.W._Lees</xsl:text>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersName"/>
+							</xsl:otherwise>
+						</xsl:choose>
 					</sh:Identifier>
-
 				</sh:Sender>
 				<!--Target Vendor  - Description-->
 				<sh:Receiver>
