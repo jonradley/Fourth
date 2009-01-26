@@ -29,7 +29,7 @@ Lee Boyton	| 19/07/2007     | 1332 Changes following acceptance testing.
 						<xsl:attribute name="Authority">EAN.UCC</xsl:attribute>
 						<xsl:choose>
 							<xsl:when test="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN = '5060166760274'">
-								<xsl:text>J.W._Lees</xsl:text>
+								<xsl:text>J.W. Lees</xsl:text>
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersName"/>
