@@ -93,6 +93,19 @@ R Cambridge	| 04/12/2006	| 585 Created, based on tsMappingHospitalityInboundCSVo
 		</xsl:element>
 	</xsl:template>
 	
+	<xsl:template match="SuppliersProductCode">
+		<xsl:copy>
+			<xsl:choose>
+				<xsl:when test="string(number(.)) != 'NaN'">
+					<xsl:value-of select="number(.)"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="."/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:copy>
+	</xsl:template>
+	
 	<xsl:template match="NumberOfLines"/>
 	
 </xsl:stylesheet>
