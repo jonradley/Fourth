@@ -57,7 +57,12 @@
 					<xsl:text>,</xsl:text>				
 					<xsl:value-of select="$LineReference + position() - 1"/>
 					<xsl:text>,</xsl:text>
-					<xsl:value-of select="//TradeSimpleHeader/RecipientsCodeForSender"/>
+					<xsl:choose>
+						<xsl:when test="//TradeSimpleHeader/RecipientsCodeForSender = 'LW0163OLD'">LW0163</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="//TradeSimpleHeader/RecipientsCodeForSender"/>
+						</xsl:otherwise>
+					</xsl:choose>
 					<xsl:text>,</xsl:text>
 					<xsl:text>,</xsl:text>
 					<xsl:choose>
