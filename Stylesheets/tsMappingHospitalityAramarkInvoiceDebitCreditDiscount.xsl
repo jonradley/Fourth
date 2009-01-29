@@ -28,6 +28,8 @@
 ******************************************************************************************
 21/12/2008  |	Lee Boyton | 2427. Changed previous handling of rounding errors.
 ******************************************************************************************
+29/01/2009  |	Rave Tech | 2713. Added document type for Electronic Invoices/Credit Notes/Debit Notes.
+******************************************************************************************
 		  |						| 
 ******************************************************************************************
 -->
@@ -47,22 +49,39 @@
 	<xsl:template match="/Invoice | /DebitNote| /CreditNote">
 		<xsl:variable name="NewLine">
 			<xsl:text>&#13;&#10;</xsl:text>
-		</xsl:variable>
-				
+		</xsl:variable>			
 		<!-- store the Document Type as it is referenced on multiple lines -->
 		<xsl:variable name="DocumentType">
 			<xsl:choose>
-				<xsl:when test="/Invoice">
-					<xsl:text>PV</xsl:text>
+				<xsl:when test="/Invoice/InvoiceHeader/HeaderExtraData/IsPaperInvoice">				
+						<xsl:choose>
+							<xsl:when test="/Invoice">
+								<xsl:text>PV</xsl:text>
+							</xsl:when>
+							<xsl:when test="/DebitNote">
+								<xsl:text>PX</xsl:text>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:text>PD</xsl:text>
+							</xsl:otherwise>
+						</xsl:choose>								
 				</xsl:when>
-				<xsl:when test="/DebitNote">
-					<xsl:text>PX</xsl:text>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:text>PD</xsl:text>
+				<xsl:otherwise>			
+						<xsl:choose>
+							<xsl:when test="/Invoice">
+								<xsl:text>HV</xsl:text>
+							</xsl:when>
+							<xsl:when test="/DebitNote">
+								<xsl:text>HX</xsl:text>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:text>HD</xsl:text>
+							</xsl:otherwise>
+						</xsl:choose>						
 				</xsl:otherwise>
 			</xsl:choose>
-		</xsl:variable>
+		</xsl:variable>	
+		
 		<!-- store the ARAMARK Supplier Number as it is referenced on multiple lines -->
 		<!-- Remove any letters from the Aramark PL Account Code - these may be present for some suppliers who have more than one account relating to each PL account, 
 			such as M&J with their depots or Bunzl with their Chemicals accounts -->
