@@ -53,7 +53,7 @@
 		<!-- store the Document Type as it is referenced on multiple lines -->
 		<xsl:variable name="DocumentType">
 			<xsl:choose>
-				<xsl:when test="/Invoice/InvoiceHeader/HeaderExtraData/IsPaperDocument">				
+				<xsl:when test="/Invoice/InvoiceHeader/HeaderExtraData/IsPaperDocument | /CreditNote/CreditNoteHeader/HeaderExtraData/IsPaperDocument | /DebitNote/DebitNoteHeader/HeaderExtraData/IsPaperDocument">			
 						<xsl:choose>
 							<xsl:when test="/Invoice">
 								<xsl:text>PV</xsl:text>
