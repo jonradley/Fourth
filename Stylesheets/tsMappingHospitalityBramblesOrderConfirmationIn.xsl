@@ -38,12 +38,21 @@ R Cambridge	| 2008-01-03		| 1686 revised rejection codes
 			<PurchaseOrderConfirmation>
 				
 				<TradeSimpleHeader>
-					<SendersCodeForRecipient>
+					<!--SendersCodeForRecipient>
 						<xsl:value-of select="buyer/additionalPartyIdentification[additionalPartyIdentificationType='BUYER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue[1]"/>
 					</SendersCodeForRecipient>
 					
 					<SendersBranchReference>
 						<xsl:value-of select="seller/additionalPartyIdentification[additionalPartyIdentificationType='BUYER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue[1]"/>
+					</SendersBranchReference-->
+					
+					
+					<SendersCodeForRecipient>
+						<xsl:value-of select="substring-after(buyer/additionalPartyIdentification[additionalPartyIdentificationType='BUYER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue[1],'/')"/>
+					</SendersCodeForRecipient>
+					
+					<SendersBranchReference>
+						<xsl:value-of select="substring-before(buyer/additionalPartyIdentification[additionalPartyIdentificationType='BUYER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue[1],'/')"/>
 					</SendersBranchReference>
 					
 				</TradeSimpleHeader>
@@ -78,9 +87,9 @@ R Cambridge	| 2008-01-03		| 1686 revised rejection codes
 					
 					<ShipTo>
 						<ShipToLocationID>
-							<xsl:for-each select="buyer/additionalPartyIdentification[additionalPartyIdentificationType='BUYER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue[1]">
-								<BuyersCode><xsl:value-of select="."/></BuyersCode>
-							</xsl:for-each>
+							<BuyersCode>
+								<xsl:value-of select="substring-after(buyer/additionalPartyIdentification[additionalPartyIdentificationType='BUYER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue[1],'/')"/>
+							</BuyersCode>
 							<xsl:for-each select="buyer/additionalPartyIdentification[additionalPartyIdentificationType='SELLER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue[1]">
 								<SuppliersCode><xsl:value-of select="."/></SuppliersCode>
 							</xsl:for-each>
