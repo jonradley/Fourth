@@ -94,7 +94,7 @@
 								</DeliveryNoteReferences>
 								<ProductID>
 									<GTIN RecordPos="LINE" LPos="18"/>
-									<SuppliersProductCode RecordPos="LINE" LPos="2"/>
+									<SuppliersProductCode RecordPos="LINE" LPos="19"/>
 								</ProductID>
 								<ProductDescription RecordPos="LINE" LPos="25"/>
 								<InvoicedQuantity RecordPos="LINE" LPos="7">
