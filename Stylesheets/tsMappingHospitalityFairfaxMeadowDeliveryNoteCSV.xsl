@@ -27,8 +27,31 @@
 	<!-- END of GENERIC HANDLERS -->
 
 	<!-- strip quotes from text fields -->
-	<xsl:template match="SendersCodeForRecipient |
-	                     BuyersLocationID/SuppliersCode |
+	<xsl:template match="SendersCodeForRecipient">
+	
+		<xsl:copy>
+			<xsl:call-template name="stripQuotes">
+				<xsl:with-param name="sInput" select="."/>	
+			</xsl:call-template>
+			
+			<xsl:if test="../SendersAddress/AddressLine1">
+				
+				<xsl:text>/</xsl:text>
+				<xsl:call-template name="stripQuotes">
+					<xsl:with-param name="sInput" select="../SendersAddress/AddressLine1"/>	
+				</xsl:call-template>
+			
+			</xsl:if>
+				
+		</xsl:copy>		
+
+	</xsl:template>
+	
+	<xsl:template match="TradeSimpleHeader/SendersAddress"/>
+
+
+	<!-- strip quotes from text fields -->
+	<xsl:template match="BuyersLocationID/SuppliersCode |
 	                     ShipToLocationID/SuppliersCode |
 	                     PurchaseOrderReference |
 	                     DeliveryNoteReference |
