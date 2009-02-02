@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--**************************************************************************************
+ Overview
+
+
+ © Fourth Hospitality 2009
+******************************************************************************************
+ Module History
+******************************************************************************************
+ Date         | Name       		| Description of modification
+******************************************************************************************
+     ?       	|       ?       	| Created
+******************************************************************************************
+ 27/01/2009  	| R Cambridge   	| 2666 Extra fields for 3663 orders
+******************************************************************************************
+	          	|              	|	                                                            
+***************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 	<xsl:output method="text" encoding="UTF-8"/>
+	
 	<xsl:template match="PurchaseOrder">
 		<!-- Row Type -->
 		<xsl:text>H</xsl:text>
@@ -108,6 +125,27 @@
 		<xsl:text>&quot;</xsl:text>
 		<xsl:value-of select="TradeSimpleHeader/RecipientsBranchReference"/>
 		<xsl:text>&quot;</xsl:text>
+		<xsl:text>,</xsl:text>
+
+
+		<!-- CustomerOrderNumber -->
+		<xsl:text>&quot;</xsl:text>
+		<xsl:value-of select="PurchaseOrderHeader/HeaderExtraData/CustomerOrderNumber"/>
+		<xsl:text>&quot;</xsl:text>
+		<xsl:text>,</xsl:text>	
+		<!-- DistributionDepotCode -->
+		<xsl:value-of select="PurchaseOrderHeader/HeaderExtraData/DistributionDepotCode"/>		
+		<xsl:text>,</xsl:text>	
+		<!-- CustomerDeliveryDate -->
+		<xsl:value-of select="translate(PurchaseOrderHeader/HeaderExtraData/CustomerDeliveryDate,'-','')"/>	
+		<xsl:text>,</xsl:text>					
+		<!-- RouteNumber -->
+		<xsl:value-of select="PurchaseOrderHeader/HeaderExtraData/RouteNumber"/>		
+		<xsl:text>,</xsl:text>		
+		<!-- DropNumber -->
+		<xsl:value-of select="PurchaseOrderHeader/HeaderExtraData/DropNumber"/>
+	
+
 		<xsl:text>&#13;&#10;</xsl:text>
 		
 		<xsl:for-each select="PurchaseOrderDetail/PurchaseOrderLine">
@@ -120,7 +158,7 @@
 			<xsl:text>&quot;</xsl:text>
 			<xsl:text>,</xsl:text>
 			<!-- Product Description -->
-			<xsl:if test="ProductDescription != 'Not Provided'">
+			<xsl:if test="'not provided' != translate(ProductDescription,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')">
 				<xsl:text>&quot;</xsl:text>
 				<xsl:value-of select="ProductDescription"/>
 				<xsl:text>&quot;</xsl:text>
@@ -133,10 +171,23 @@
 			<xsl:value-of select="OrderedQuantity"/>
 			<xsl:text>,</xsl:text>
 			<!-- Unit Price Ex VAT -->
-			<xsl:value-of select="UnitValueExclVAT"/>
+			<xsl:choose>
+				<xsl:when test="string(UnitValueExclVAT) != ''">
+					<xsl:value-of select="UnitValueExclVAT"/>
+				</xsl:when>
+				<xsl:otherwise>0.00</xsl:otherwise>
+			</xsl:choose>			
 			<xsl:text>,</xsl:text>
 			<!-- Line Value Ex VAT -->
-			<xsl:value-of select="LineValueExclVAT"/>
+			<xsl:choose>
+				<xsl:when test="string(LineValueExclVAT) != ''">
+					<xsl:value-of select="LineValueExclVAT"/>
+				</xsl:when>
+				<xsl:otherwise>0.00</xsl:otherwise>
+			</xsl:choose>
+			<xsl:text>,</xsl:text>
+			<!-- Original Line from order on distributor -->
+			<xsl:value-of select="LineExtraData/CustomerLineNumber"/>
 			<xsl:text>&#13;&#10;</xsl:text>
 		</xsl:for-each>
 	</xsl:template>
