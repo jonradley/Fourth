@@ -21,7 +21,6 @@
                 xmlns:msxsl="urn:schemas-microsoft-com:xslt"
                 exclude-result-prefixes="#default xsl msxsl script">
 	<xsl:output method="text"/>
-	<xsl:include href="HospitalityInclude.xsl"/>
 	
 	<!-- define keys (think of them a bit like database indexes) to be used for finding distinct line information.-->
 	<xsl:key name="keyLinesByVATCode" match="InvoiceTrailer/VATSubTotals/VATSubTotal | CreditNoteTrailer/VATSubTotals/VATSubTotal" use="@VATCode"/>
@@ -33,8 +32,7 @@
 		</xsl:variable>
 
 		<!--### HEADER LINE ###-->
-		<xsl:text>INVHEAD</xsl:text>
-		<xsl:text>,</xsl:text>
+		<xsl:text>INVHEAD,</xsl:text>
 		
 		<xsl:value-of select="substring(InvoiceHeader/InvoiceReferences/InvoiceReference | CreditNoteHeader/CreditNoteReferences/CreditNoteReference,1,20)"/>
 		<xsl:text>,</xsl:text>
@@ -92,7 +90,6 @@
 		<xsl:text>,</xsl:text>
 
 		<xsl:value-of select="substring(CreditNoteHeader/InvoiceReferences/InvoiceReference,1,20)"/>
-		<xsl:value-of select="$NewLine"/>
 
 		<!--### VAT LINES ###-->
 		<!-- use the keys for grouping Lines by VAT Code -->
@@ -100,8 +97,8 @@
 			<xsl:sort select="@VATCode" data-type="text"/>
 			<xsl:variable name="VATCode" select="@VATCode"/>
 			
-			<xsl:text>INVTAX</xsl:text>
-			<xsl:text>,</xsl:text>
+			<xsl:value-of select="$NewLine"/>
+			<xsl:text>INVTAX,</xsl:text>
 			
 			<xsl:value-of select="substring(//InvoiceHeader/InvoiceReferences/InvoiceReference | //CreditNoteHeader/CreditNoteReferences/CreditNoteReference,1,20)"/>
 			<xsl:text>,</xsl:text>
@@ -127,15 +124,15 @@
 					<xsl:value-of select="format-number(-1 * sum(//VATSubTotal[@VATCode= $VATCode]/VATAmountAtRate),'0.00')"/>
 				</xsl:otherwise>
 			</xsl:choose>
-			<xsl:value-of select="$NewLine"/>
 		</xsl:for-each>
 
 		<!--### ITEM LINES ###-->
 		<xsl:for-each select="(InvoiceDetail/InvoiceLine | CreditNoteDetail/CreditNoteLine)">
-			<xsl:text>INVITEM</xsl:text>
-			<xsl:text>,</xsl:text>
 
-			<xsl:value-of select="substring(/Invoice/InvoiceHeader/InvoiceReferences/InvoiceReference | /CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteReference,1,20)"/>
+			<xsl:value-of select="$NewLine"/>
+			<xsl:text>INVITEM,</xsl:text>
+
+			<xsl:value-of select="substring(//InvoiceHeader/InvoiceReferences/InvoiceReference | //CreditNoteHeader/CreditNoteReferences/CreditNoteReference,1,20)"/>
 			<xsl:text>,</xsl:text>
 
 			<xsl:value-of select="substring(PurchaseOrderReferences/PurchaseOrderReference,1,13)"/>
@@ -177,7 +174,6 @@
 			<xsl:text>,</xsl:text>
 
 			<xsl:value-of select="substring(PackSize,1,20)"/>
-			<xsl:value-of select="$NewLine"/>
 		</xsl:for-each>
 	
 	</xsl:template>
