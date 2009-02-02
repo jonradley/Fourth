@@ -60,7 +60,11 @@
 		<xsl:element name="{name()}"	>
 			<xsl:call-template name="formatDates">
 				<xsl:with-param name="sInput">
-					<xsl:value-of select="."/>
+					<xsl:call-template name="stripQuotes">
+						<xsl:with-param name="sInput">
+							<xsl:value-of select="."/>
+						</xsl:with-param>
+					</xsl:call-template>
 				</xsl:with-param>
 			</xsl:call-template>
 		</xsl:element>
@@ -104,22 +108,26 @@
 	
 	<!-- where there is an ordered quantity, make it an invoiced quantity -->
 	<xsl:template match="OrderedQuantity">
-		<CreditedQuantity>
-			<xsl:value-of select="."/>
-		</CreditedQuantity>
+		<xsl:if test="number(.) != 0">
+			<CreditedQuantity>
+				<xsl:value-of select="."/>
+			</CreditedQuantity>
+		</xsl:if>
 	</xsl:template>
 	
-	<xsl:template match="CreditedQuantity">
-		<CreditedQuantity>
-			<xsl:attribute name="UnitOfMeasure">
-				<xsl:call-template name="decodePacksize">
-					<xsl:with-param name="sInput">
-						<xsl:value-of select="../PackSize"/>
-					</xsl:with-param>
-				</xsl:call-template>
-			</xsl:attribute>
-			<xsl:value-of select="."/>
-		</CreditedQuantity>
+	<xsl:template match="CreditedQuantity[. != 0]">
+		<xsl:if test="number(.) != 0">
+			<CreditedQuantity>
+				<xsl:attribute name="UnitOfMeasure">
+					<xsl:call-template name="decodePacksize">
+						<xsl:with-param name="sInput">
+							<xsl:value-of select="../PackSize"/>
+						</xsl:with-param>
+					</xsl:call-template>
+				</xsl:attribute>
+				<xsl:value-of select="."/>
+			</CreditedQuantity>
+		</xsl:if>
 	</xsl:template>
 	
 	<xsl:template match="PackSize"></xsl:template>
@@ -129,8 +137,16 @@
 			<xsl:choose>
 				<xsl:when test=". = '&quot;0&quot;'">Z</xsl:when>
 				<xsl:when test=". = '&quot;1&quot;'">S</xsl:when>
+				<xsl:when test=". = '0'">Z</xsl:when>
+				<xsl:when test=". = '1'">S</xsl:when>
 			</xsl:choose>
 		</VATCode>
+	</xsl:template>
+	
+	<xsl:template match="CreditRequestReferences">
+		<xsl:if test="CreditRequestReference != '&quot;&quot;' and CreditRequestDate != '&quot;&quot;'">
+			<xsl:copy-of select="."/>
+		</xsl:if>
 	</xsl:template>
 	
 	<xsl:template match="ProductID">
@@ -149,13 +165,24 @@
 
 	<xsl:template name="stripQuotes">
 		<xsl:param name="sInput"/>
-	
+		<xsl:variable name="sLF"><xsl:text>&#10;</xsl:text></xsl:variable>
+		<xsl:variable name="sWorking">
+			<xsl:choose>
+				<xsl:when test="substring($sInput,string-length($sInput),1) = $sLF">
+					<xsl:value-of select="substring($sInput,1,string-length($sInput)-1)"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="$sInput"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		
 		<xsl:choose>
-			<xsl:when test="starts-with($sInput,'&quot;') and substring($sInput,string-length($sInput),1) = '&quot;'">
-				<xsl:value-of select="substring($sInput,2,string-length($sInput)-2)"/>
+			<xsl:when test="starts-with($sWorking,'&quot;') and substring($sWorking,string-length($sWorking),1) = '&quot;'">
+				<xsl:value-of select="substring($sWorking,2,string-length($sWorking)-2)"/>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:value-of select="$sInput"/>
+				<xsl:value-of select="$sWorking"/>
 			</xsl:otherwise>
 		</xsl:choose>
 	
