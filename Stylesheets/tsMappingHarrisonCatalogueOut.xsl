@@ -27,8 +27,7 @@
 		</xsl:variable>
 
 		<!--### HEADER LINE ###-->
-		<xsl:text>CATHEAD</xsl:text>
-		<xsl:text>,</xsl:text>
+		<xsl:text>CATHEAD,</xsl:text>
 		
 		<xsl:value-of select="substring(PriceCatHeader/CatHdrRef/PriceCat/RefNum,1,10)"/>
 		<xsl:text>,</xsl:text>
@@ -41,10 +40,9 @@
 
 		<!--### ITEM LINES ###-->
 		<xsl:for-each select="(ListOfPriceCatAction/PriceCatAction)">
-			<xsl:value-of select="$NewLine"/>
 
-			<xsl:text>CATITEM</xsl:text>
-			<xsl:text>,</xsl:text>
+			<xsl:value-of select="$NewLine"/>
+			<xsl:text>CATITEM,</xsl:text>
 
 			<xsl:value-of select="substring(//PriceCatHeader/CatHdrRef/PriceCat/RefNum,1,10)"/>
 			<xsl:text>,</xsl:text>
