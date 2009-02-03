@@ -10,7 +10,7 @@
 ******************************************************************************************
  Module History
 ******************************************************************************************
- Date       | Name       	| Description of modification
+ Date       	| Name       		| Description of modification
 ******************************************************************************************
  30/07/2008 | Shailesh Dubey| Created module.
 ****************************************************************************************** 
@@ -21,6 +21,7 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 		   xmlns:user="http://mycompany.com/mynamespace"
                 xmlns:msxsl="urn:schemas-microsoft-com:xslt"
+		  xmlns:vbscript="http://abs-Ltd.com"
                 exclude-result-prefixes="#default xsl msxsl">
 	<xsl:output method="text"/>
 	<xsl:include href="HospitalityInclude.xsl"/>	
@@ -111,73 +112,70 @@
 			</xsl:choose>
 		</xsl:variable>
 		
-	
-				
-			<!-- Control Account  Line-->
-			<xsl:value-of select="$TransactionType"/>
-			<xsl:text>,</xsl:text>				
-			<xsl:value-of select="$FinancialYear"/>
-			<xsl:text>,</xsl:text>
-			<xsl:value-of select="$FinancialPeriod"/>
-			<xsl:text>,</xsl:text>				
-			<xsl:value-of select="$DocumentType"/>
-			<xsl:text>,</xsl:text>
-			<xsl:text>1</xsl:text>
-			<xsl:text>,</xsl:text>
-			<xsl:value-of select="$DocumentDate"/>
-			<xsl:text>,</xsl:text>
-			<xsl:text>30100005</xsl:text>   
-			<xsl:text>,</xsl:text>
-			<xsl:choose>
-				<xsl:when test="/Invoice/InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode">
-					<xsl:choose>
-					     <xsl:when test="contains(/Invoice/InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode,'/')">			      
-					         <xsl:value-of select="substring-before(/Invoice/InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode,'/')"/>			     
-					     </xsl:when>
-					     <xsl:otherwise>
-					        <xsl:value-of select="/Invoice/InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode"/>
-					     </xsl:otherwise>
-					</xsl:choose>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:choose>
-					     <xsl:when test="contains(/CreditNote/CreditNoteHeader/Supplier/SuppliersLocationID/BuyersCode,'/')">			      
-					         <xsl:value-of select="substring-before(/CreditNote/CreditNoteHeader/Supplier/SuppliersLocationID/BuyersCode,'/')"/>			     
-					     </xsl:when>
-					     <xsl:otherwise>
-					        <xsl:value-of select="/CreditNote/CreditNoteHeader/Supplier/SuppliersLocationID/BuyersCode"/>
-					   </xsl:otherwise>
-					</xsl:choose>					
-				</xsl:otherwise>
-			</xsl:choose>
-			<xsl:text>,</xsl:text>			
-			<xsl:text>,</xsl:text>			
-			<xsl:text>,</xsl:text> 
-			<xsl:choose>
-				<xsl:when test="/Invoice/InvoiceTrailer/DocumentTotalInclVAT">
-					<xsl:value-of select="format-number(/Invoice/InvoiceTrailer/DocumentTotalInclVAT,'0.00')"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="format-number(-1* /CreditNote/CreditNoteTrailer/DocumentTotalInclVAT,'0.00')"/>
-				</xsl:otherwise>
-			</xsl:choose>
-			<xsl:text>,</xsl:text>			
-			<xsl:value-of select="$DocumentReference"/>
-			<xsl:text>,</xsl:text>			
-			<xsl:text>,</xsl:text>
-			<xsl:value-of select="$SuppliersName"/>
-			<xsl:text>,</xsl:text>
-			<xsl:value-of select="$DocumentReference"/>
-			<xsl:text>,</xsl:text>
-			<xsl:text>,</xsl:text>																		
-			<xsl:value-of select="$NewLine"/>
+		<!-- Control Account  Line-->
+		<xsl:value-of select="$TransactionType"/>
+		<xsl:text>,</xsl:text>				
+		<xsl:value-of select="$FinancialYear"/>
+		<xsl:text>,</xsl:text>
+		<xsl:value-of select="$FinancialPeriod"/>
+		<xsl:text>,</xsl:text>				
+		<xsl:value-of select="$DocumentType"/>
+		<xsl:text>,</xsl:text>
+		<xsl:text>1</xsl:text>
+		<xsl:text>,</xsl:text>
+		<xsl:value-of select="$DocumentDate"/>
+		<xsl:text>,</xsl:text>
+		<xsl:text>30100005</xsl:text>   
+		<xsl:text>,</xsl:text>
+		<xsl:choose>
+			<xsl:when test="/Invoice/InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode">
+				<xsl:choose>
+				     <xsl:when test="contains(/Invoice/InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode,'/')">			      
+				         <xsl:value-of select="substring-before(/Invoice/InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode,'/')"/>			     
+				     </xsl:when>
+				     <xsl:otherwise>
+				        <xsl:value-of select="/Invoice/InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode"/>
+				     </xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:choose>
+				     <xsl:when test="contains(/CreditNote/CreditNoteHeader/Supplier/SuppliersLocationID/BuyersCode,'/')">			      
+				         <xsl:value-of select="substring-before(/CreditNote/CreditNoteHeader/Supplier/SuppliersLocationID/BuyersCode,'/')"/>			     
+				     </xsl:when>
+				     <xsl:otherwise>
+				        <xsl:value-of select="/CreditNote/CreditNoteHeader/Supplier/SuppliersLocationID/BuyersCode"/>
+				   </xsl:otherwise>
+				</xsl:choose>					
+			</xsl:otherwise>
+		</xsl:choose>
+		<xsl:text>,</xsl:text>			
+		<xsl:text>,</xsl:text>			
+		<xsl:text>,</xsl:text> 
+		<xsl:choose>
+			<xsl:when test="/Invoice/InvoiceTrailer/DocumentTotalInclVAT">
+				<xsl:value-of select="format-number(/Invoice/InvoiceTrailer/DocumentTotalInclVAT,'0.00')"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="format-number(-1* /CreditNote/CreditNoteTrailer/DocumentTotalInclVAT,'0.00')"/>
+			</xsl:otherwise>
+		</xsl:choose>
+		<xsl:text>,</xsl:text>			
+		<xsl:value-of select="$DocumentReference"/>
+		<xsl:text>,</xsl:text>			
+		<xsl:text>,</xsl:text>
+		<xsl:value-of select="$SuppliersName"/>
+		<xsl:text>,</xsl:text>
+		<xsl:value-of select="$DocumentReference"/>
+		<xsl:text>,</xsl:text>
+		<xsl:text>,</xsl:text>																		
+		<xsl:value-of select="$NewLine"/>
 			
-		
 		<!--VAT Line-->
-        <xsl:for-each select="(CreditNoteDetail/CreditNoteLine | InvoiceDetail/InvoiceLine)[generate-id() = generate-id(key('keyLinesByAccount2',substring-after(LineExtraData/AccountCode,'/'))[1])]">
-            <xsl:sort select="substring-after(LineExtraData/AccountCode,'/')" data-type="text"/>                                                                                      
-            <xsl:variable name="AccountCode" select="substring-after(LineExtraData/AccountCode,'/')"/>                                   
-
+		<xsl:for-each select="(CreditNoteDetail/CreditNoteLine | InvoiceDetail/InvoiceLine)[generate-id() = generate-id(key('keyLinesByAccount2',substring-after(LineExtraData/AccountCode,'/'))[1])]">
+	            <xsl:sort select="substring-after(LineExtraData/AccountCode,'/')" data-type="text"/>                                                                                      
+	            <xsl:variable name="AccountCode" select="substring-after(LineExtraData/AccountCode,'/')"/>                                   
+	
 			<xsl:value-of select="$TransactionType"/>
 			<xsl:text>,</xsl:text>				
 			<xsl:value-of select="$FinancialYear"/>
@@ -186,7 +184,7 @@
 			<xsl:text>,</xsl:text>				
 			<xsl:value-of select="$DocumentType"/>
 			<xsl:text>,</xsl:text>
-			<xsl:text>2</xsl:text>
+			<xsl:value-of select="vbscript:getLineNumber()"/>
 			<xsl:text>,</xsl:text>
 			<xsl:value-of select="$DocumentDate"/>
 			<xsl:text>,</xsl:text>
@@ -212,9 +210,9 @@
 					<xsl:value-of select="format-number(-1 * sum(msxsl:node-set($summaryXML)/LineVat),'0.00')"/>
 				</xsl:otherwise>
 			</xsl:choose>
-			<xsl:text>,</xsl:text>			
+			<xsl:text>,</xsl:text>
 			<xsl:value-of select="$DocumentReference"/>
-			<xsl:text>,</xsl:text>			
+			<xsl:text>,</xsl:text>
                     <xsl:value-of select="$AccountCode"/>
 			<xsl:text>,</xsl:text>
 			<xsl:value-of select="$SuppliersName"/>
@@ -228,10 +226,10 @@
 				<xsl:otherwise>
 					<xsl:value-of select="format-number(-1 * sum(//CreditNoteLine[substring-after(LineExtraData/AccountCode,'/') = $AccountCode]/LineValueExclVAT),'0.00')"/>
 				</xsl:otherwise>
-			</xsl:choose>			
+			</xsl:choose>
 			<xsl:text>,</xsl:text>
 			<xsl:value-of select="$NewLine"/>
-		</xsl:for-each>						
+		</xsl:for-each>
 		
 		<!--Expense Line-->		
 		<!-- use the keys for grouping Lines by Account Code -->
@@ -248,7 +246,7 @@
 			<xsl:text>,</xsl:text>				
 			<xsl:value-of select="$DocumentType"/>
 			<xsl:text>,</xsl:text>
-			<xsl:value-of select="position() + 2"/>	
+			<xsl:value-of select="vbscript:getLineNumber()"/>
 			<xsl:text>,</xsl:text>
 			<xsl:value-of select="$DocumentDate"/>
 			<xsl:text>,</xsl:text>
@@ -310,6 +308,16 @@
 		<xsl:text>/</xsl:text>
 		<xsl:value-of select="substring($xmlDate,1,4)"/>		
 	</xsl:template>
+
+	<msxsl:script language="VBScript" implements-prefix="vbscript"><![CDATA[ 
+		Dim lLineNumber
+		lLineNumber = 2
 		
+		Function getLineNumber()
+			getLineNumber = lLineNumber
+			lLineNumber = lLineNumber + 1
+		End Function
+	]]></msxsl:script>
+
 </xsl:stylesheet>
 
