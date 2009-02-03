@@ -35,10 +35,12 @@
 		<xsl:variable name="NewLine">
 			<xsl:text>&#13;&#10;</xsl:text>
 		</xsl:variable>
+		
 		<!-- store the Transaction type as it is referenced on multiple lines -->
 		<xsl:variable name="TransactionType">
 			<xsl:text>ACTUAL</xsl:text>
 		</xsl:variable>
+		
 		<!-- store the Financial Year as it is referenced on multiple lines -->		
 		<xsl:variable name="FinancialYear">
 			<xsl:choose>
@@ -50,6 +52,7 @@
 				</xsl:otherwise>
 		</xsl:choose>
 		</xsl:variable>	
+		
 		<!-- store the Financial Period  as it is referenced on multiple lines -->		
 		<xsl:variable name="FinancialPeriod">
 			<xsl:choose>
@@ -61,6 +64,7 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
+		
 		<!-- store the Document Type  as it is referenced on multiple lines -->	
 		<xsl:variable name="DocumentType">
 					<xsl:choose>
@@ -72,6 +76,7 @@
 						</xsl:otherwise>
 					</xsl:choose>
 		</xsl:variable>
+		
 		<!-- store the document date as it is referenced on multiple lines -->		
 		<xsl:variable name="DocumentDate">
 			<xsl:choose>
@@ -111,7 +116,19 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		
+
+		<!-- store the VAT amount -->		
+		<xsl:variable name="VATAmount">
+			<xsl:choose>
+				<xsl:when test="//InvoiceTrailer/VATAmount">
+					<xsl:value-of select="//InvoiceTrailer/VATAmount"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="//CreditNoteTrailer/VATAmount"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+				
 		<!-- Control Account  Line-->
 		<xsl:value-of select="$TransactionType"/>
 		<xsl:text>,</xsl:text>				
@@ -173,43 +190,68 @@
 			
 		<!--VAT Line-->
 		<xsl:for-each select="(CreditNoteDetail/CreditNoteLine | InvoiceDetail/InvoiceLine)[generate-id() = generate-id(key('keyLinesByAccount2',substring-after(LineExtraData/AccountCode,'/'))[1])]">
-	            <xsl:sort select="substring-after(LineExtraData/AccountCode,'/')" data-type="text"/>                                                                                      
-	            <xsl:variable name="AccountCode" select="substring-after(LineExtraData/AccountCode,'/')"/>                                   
+			<xsl:sort select="substring-after(LineExtraData/AccountCode,'/')" data-type="text"/> 
+			<xsl:variable name="AccountCode" select="substring-after(LineExtraData/AccountCode,'/')"/> 
 	
 			<xsl:value-of select="$TransactionType"/>
-			<xsl:text>,</xsl:text>				
+			<xsl:text>,</xsl:text>
 			<xsl:value-of select="$FinancialYear"/>
 			<xsl:text>,</xsl:text>
 			<xsl:value-of select="$FinancialPeriod"/>
-			<xsl:text>,</xsl:text>				
+			<xsl:text>,</xsl:text>
 			<xsl:value-of select="$DocumentType"/>
 			<xsl:text>,</xsl:text>
 			<xsl:value-of select="vbscript:getLineNumber()"/>
 			<xsl:text>,</xsl:text>
 			<xsl:value-of select="$DocumentDate"/>
 			<xsl:text>,</xsl:text>
-			<xsl:text>30405010</xsl:text>   
-			<xsl:text>,</xsl:text>			
-			<xsl:text>,</xsl:text>			
-			<xsl:text>,</xsl:text>			
+			<xsl:text>30405010</xsl:text>
+			<xsl:text>,</xsl:text>
+			<xsl:text>,</xsl:text>
+			<xsl:text>,</xsl:text>
 			<xsl:text>,</xsl:text> 
-			
-			<xsl:variable name="summaryXML">
-				<xsl:for-each select="//InvoiceLine[substring-after(LineExtraData/AccountCode,'/') = $AccountCode] | //CreditNoteLine[substring-after(LineExtraData/AccountCode,'/') = $AccountCode]">
-					<LineVat>
-						<xsl:value-of select="./LineValueExclVAT * ./VATRate div 100"/>
-					</LineVat>
-				</xsl:for-each>
-			</xsl:variable>
-			
+
 			<xsl:choose>
-				<xsl:when test="/Invoice">
-					<xsl:value-of select="format-number(sum(msxsl:node-set($summaryXML)/LineVat),'0.00')"/>
+				<!--When its NOT a last account code, Calculate VAT amt as, sum of (Line Value * VATRate) -->
+				<xsl:when test="position() != last()">
+					<xsl:variable name="summaryXML">
+						<xsl:for-each select="//InvoiceLine[substring-after(LineExtraData/AccountCode,'/') = $AccountCode] | //CreditNoteLine[substring-after(LineExtraData/AccountCode,'/') = $AccountCode]">
+							<LineVat>
+								<xsl:value-of select="./LineValueExclVAT * ./VATRate div 100"/>
+							</LineVat>
+						</xsl:for-each>
+					</xsl:variable>
+
+					<xsl:choose>
+						<xsl:when test="/Invoice">
+							<xsl:value-of select="format-number(sum(msxsl:node-set($summaryXML)/LineVat),'0.00')"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="format-number(-1 * sum(msxsl:node-set($summaryXML)/LineVat),'0.00')"/>
+						</xsl:otherwise>
+					</xsl:choose>					
 				</xsl:when>
+				<!--When its a last account code, Calculate VAT amt as, Tralier VAT amount minus sum of VAT amount of earlier lines to avoid rounding difference -->
 				<xsl:otherwise>
-					<xsl:value-of select="format-number(-1 * sum(msxsl:node-set($summaryXML)/LineVat),'0.00')"/>
-				</xsl:otherwise>
+					<xsl:variable name="summaryXML">
+						<xsl:for-each select="//InvoiceLine[substring-after(LineExtraData/AccountCode,'/') != $AccountCode] | //CreditNoteLine[substring-after(LineExtraData/AccountCode,'/') != $AccountCode]">
+							<LineVat>
+								<xsl:value-of select="./LineValueExclVAT * ./VATRate div 100"/>
+							</LineVat>
+						</xsl:for-each>
+					</xsl:variable>
+
+					<xsl:choose>
+						<xsl:when test="/Invoice">
+							<xsl:value-of select="format-number($VATAmount - sum(msxsl:node-set($summaryXML)/LineVat),'0.00')"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="format-number(-1 * ($VATAmount - sum(msxsl:node-set($summaryXML)/LineVat)),'0.00')"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:otherwise>  
 			</xsl:choose>
+			
 			<xsl:text>,</xsl:text>
 			<xsl:value-of select="$DocumentReference"/>
 			<xsl:text>,</xsl:text>
