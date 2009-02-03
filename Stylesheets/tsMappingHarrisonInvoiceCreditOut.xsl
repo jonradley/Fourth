@@ -142,6 +142,20 @@
 			<xsl:text>,</xsl:text>
 
 			<xsl:value-of select="substring(ProductID/SuppliersProductCode,1,20)"/>
+
+			<!--Suffix 'X' to product code when invoice price is 50% different (more or less) from Catalogue price-->
+			<xsl:if test="LineExtraData/CataloguePrice">
+				<xsl:variable name="FiftyPercentCP">
+					<xsl:value-of select="0.5 * LineExtraData/CataloguePrice"/>
+				</xsl:variable>
+				<xsl:variable name="OneFiftyPercentCP">
+					<xsl:value-of select="1.5 * LineExtraData/CataloguePrice"/>
+				</xsl:variable>
+
+				<xsl:if test="UnitValueExclVAT &lt; $FiftyPercentCP or UnitValueExclVAT &gt; $OneFiftyPercentCP">
+					<xsl:text>X</xsl:text>
+				</xsl:if>
+			</xsl:if>
 			<xsl:text>,</xsl:text>
 
 			<xsl:choose>
