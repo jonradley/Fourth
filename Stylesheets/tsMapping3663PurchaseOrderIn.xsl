@@ -125,8 +125,8 @@
 	<xsl:template match="ProductID">
 		<xsl:copy>
 			<SuppliersProductCode>
-				<!-- User supplier's code if present otherwise buyer's code -->
-				<xsl:value-of select="(SuppliersProductCode | BuyersProductCode)[1]"/>
+				<!-- User buyer's code if present otherwise supplier's code -->
+				<xsl:value-of select="(SuppliersProductCode | BuyersProductCode)[. != ''][last()]"/>
 			</SuppliersProductCode>
 			<BuyersProductCode>
 				<xsl:value-of select="BuyersProductCode"/>
