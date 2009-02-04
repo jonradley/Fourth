@@ -186,13 +186,13 @@
 		<xsl:value-of select="$DocumentReference"/>
 		<xsl:text>,</xsl:text>
 		<xsl:text>,</xsl:text>																		
-		<xsl:value-of select="$NewLine"/>
 			
 		<!--VAT Line-->
 		<xsl:for-each select="(CreditNoteDetail/CreditNoteLine | InvoiceDetail/InvoiceLine)[generate-id() = generate-id(key('keyLinesByAccount2',substring-after(LineExtraData/AccountCode,'/'))[1])]">
 			<xsl:sort select="substring-after(LineExtraData/AccountCode,'/')" data-type="text"/> 
 			<xsl:variable name="AccountCode" select="substring-after(LineExtraData/AccountCode,'/')"/> 
 	
+			<xsl:value-of select="$NewLine"/>
 			<xsl:value-of select="$TransactionType"/>
 			<xsl:text>,</xsl:text>
 			<xsl:value-of select="$FinancialYear"/>
@@ -212,7 +212,7 @@
 			<xsl:text>,</xsl:text> 
 
 			<xsl:choose>
-				<!--When its NOT a last account code, Calculate VAT amt as, sum of (Line Value * VATRate) -->
+				<!--When its NOT the last account code, Calculate VAT amt as, sum of (Line Value * VATRate) -->
 				<xsl:when test="position() != last()">
 					<xsl:variable name="summaryXML">
 						<xsl:for-each select="//InvoiceLine[substring-after(LineExtraData/AccountCode,'/') = $AccountCode] | //CreditNoteLine[substring-after(LineExtraData/AccountCode,'/') = $AccountCode]">
@@ -231,7 +231,7 @@
 						</xsl:otherwise>
 					</xsl:choose>					
 				</xsl:when>
-				<!--When its a last account code, Calculate VAT amt as, Tralier VAT amount minus sum of VAT amount of earlier lines to avoid rounding difference -->
+				<!--When its a last account code, Calculate VAT amt as, Tralier VAT amount minus sum of VAT amounts of earlier lines to avoid rounding difference -->
 				<xsl:otherwise>
 					<xsl:variable name="summaryXML">
 						<xsl:for-each select="//InvoiceLine[substring-after(LineExtraData/AccountCode,'/') != $AccountCode] | //CreditNoteLine[substring-after(LineExtraData/AccountCode,'/') != $AccountCode]">
@@ -270,7 +270,7 @@
 				</xsl:otherwise>
 			</xsl:choose>
 			<xsl:text>,</xsl:text>
-			<xsl:value-of select="$NewLine"/>
+
 		</xsl:for-each>
 		
 		<!--Expense Line-->		
@@ -279,7 +279,8 @@
 		<xsl:for-each select="(CreditNoteDetail/CreditNoteLine | InvoiceDetail/InvoiceLine)[generate-id() = generate-id(key('keyLinesByAccount',LineExtraData/AccountCode)[1])]">
 			<xsl:sort select="LineExtraData/AccountCode" data-type="text"/>
 			<xsl:variable name="AccountCode" select="LineExtraData/AccountCode"/>
-						
+			<xsl:value-of select="$NewLine"/>
+
 			<xsl:value-of select="$TransactionType"/>
 			<xsl:text>,</xsl:text>				
 			<xsl:value-of select="$FinancialYear"/>
@@ -337,7 +338,6 @@
 			<xsl:value-of select="$DocumentReference"/>
 			<xsl:text>,</xsl:text>	
 			<xsl:text>,</xsl:text>	
-			<xsl:value-of select="$NewLine"/>										
 		</xsl:for-each>			
 	</xsl:template>	
 	
