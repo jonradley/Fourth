@@ -61,9 +61,10 @@ R Cambridge	| 08/01/2009	| 2666 Created FSS
 								<CustomerPurchaseOrderReference RecordLength="27" RecordPos="*" LPos="19"/>
 							</PurchaseOrderReferences>
 							<OrderedDeliveryDetails>
-								<DeliveryDate RecordLength="27" RecordPos="*" LPos="2"/>
 								<!-- Customer's delivery date -->
-								<DeliveryCutOffDate RecordLength="27" RecordPos="*" LPos="23"/>
+								<DeliveryDate RecordLength="27" RecordPos="*" LPos="23"/>
+								<!-- Delivery date -->
+								<DeliveryCutOffDate RecordLength="27" RecordPos="*" LPos="2"/>
 								<!-- 3663 route number -->
 								<DeliveryCutOffTime RecordLength="27" RecordPos="*" LPos="25"/>
 								<!-- Drop number on route -->
