@@ -55,11 +55,6 @@
 										<LineNumber>
 											<xsl:value-of select="LineNumber"/>
 										</LineNumber>
-										<ProductID>
-											<GTIN>
-												<xsl:value-of select="Product/SuppliersProductCode"/>
-											</GTIN>
-										</ProductID>
 										<ProductDescription>
 											<xsl:value-of select="Product/Description"/>
 										</ProductDescription>
