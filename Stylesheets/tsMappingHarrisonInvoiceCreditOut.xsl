@@ -50,7 +50,7 @@
 		<xsl:value-of select="substring(//TradeSimpleHeader/RecipientsCodeForSender,1,10)"/>
 		<xsl:text>,</xsl:text>
 		
-		<xsl:value-of select="substring(InvoiceHeader/ShipTo/ShipToLocationID/GLN | CreditNoteHeader/ShipTo/ShipToLocationID/GLN,1,10)"/>
+		<xsl:value-of select="substring(InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode| CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode,1,10)"/>
 		<xsl:text>,</xsl:text>
 
 		<xsl:value-of select="script:msFormatDate(InvoiceHeader/InvoiceReferences/InvoiceDate | CreditNoteHeader/CreditNoteReferences/CreditNoteDate)"/>
