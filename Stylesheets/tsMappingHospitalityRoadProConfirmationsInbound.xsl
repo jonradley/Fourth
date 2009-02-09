@@ -55,6 +55,11 @@
 										<LineNumber>
 											<xsl:value-of select="LineNumber"/>
 										</LineNumber>
+										<ProductID>
+											<SuppliersProductCode>
+												<xsl:value-of select="Product/SuppliersProductCode"/>
+											</SuppliersProductCode>
+										</ProductID>
 										<ProductDescription>
 											<xsl:value-of select="Product/Description"/>
 										</ProductDescription>
