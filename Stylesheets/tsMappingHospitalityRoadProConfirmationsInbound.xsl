@@ -27,7 +27,9 @@
 								<Supplier>
 									<SuppliersLocationID>
 										<GLN><xsl:value-of select="//Supplier/SupplierReferences/GLN"/></GLN>
-										<BuyersCode><xsl:value-of select="//Supplier/SupplierReferences/BuyersCodeForSupplier"/></BuyersCode>
+										<xsl:if test="//Supplier/SupplierReferences/BuyersCodeForSupplier !=''">
+											<BuyersCode><xsl:value-of select="//Supplier/SupplierReferences/BuyersCodeForSupplier"/></BuyersCode>
+										</xsl:if>
 									</SuppliersLocationID>
 								</Supplier>
 								<PurchaseOrderReferences>
