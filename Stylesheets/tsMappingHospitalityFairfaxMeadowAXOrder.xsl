@@ -129,6 +129,15 @@
 				<!-- If this order is from 3663 add the price file code (there's only no agreement so no PL account TR to store this in) -->
 				<xsl:text>BAR</xsl:text>
 			</xsl:when>
+			<xsl:when test="'PM' = PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode">
+				<!-- If this order is from 3663 add the price file code (there's only no agreement so no PL account TR to store this in) -->
+				<xsl:text>TPM</xsl:text>
+			</xsl:when>
+			<xsl:when test="'BS' = PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode">
+				<!-- If this order is from 3663 add the price file code (there's only no agreement so no PL account TR to store this in) -->
+				<xsl:text>RBS</xsl:text>
+			</xsl:when>
+			
 			<xsl:otherwise>
 				<xsl:value-of select="TradeSimpleHeader/RecipientsBranchReference"/>
 			</xsl:otherwise>
@@ -145,7 +154,15 @@
 		<xsl:text>,</xsl:text>	
 		<!-- DistributionDepotCode -->
 		<!--xsl:value-of select="PurchaseOrderHeader/HeaderExtraData/DistributionDepotCode"/-->	
-		<xsl:value-of select="/PurchaseOrder/TradeSimpleHeader/SendersBranchReference"/>		
+		<xsl:choose>
+			<xsl:when test="'PM' = PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode">
+				<!-- get the 'TH' bit -->
+				<xsl:value-of select="PurchaseOrderHeader/HeaderExtraData/DistDepotCode"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="/PurchaseOrder/TradeSimpleHeader/SendersBranchReference"/>		
+			</xsl:otherwise>
+		</xsl:choose>
 		<xsl:text>,</xsl:text>	
 		<!-- CustomerDeliveryDate -->
 		<xsl:value-of select="translate(PurchaseOrderHeader/HeaderExtraData/CustomerDeliveryDate,'-','')"/>	
