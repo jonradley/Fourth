@@ -23,6 +23,8 @@ N Emsen		|	10/05/2007	|	Case 1086: MJ / Aramark changes to SBR.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 N Emsen		|	06/06/2007	|	Case 1172: Logic for '1' in SCFR.				
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Lee Boyton	|	12/02/2009	| 2736. Removed redundant '1' logic for delivery location code.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 **********************************************************************
 -->
@@ -61,25 +63,6 @@ N Emsen		|	06/06/2007	|	Case 1172: Logic for '1' in SCFR.
 		<xsl:copy/>
 	</xsl:template>
 	<!-- END of GENERIC HANDLERS -->
-
-	<!--
-		Senders Code For Recipient Code Converter
-		If the delivery location code is 6 characters long, add a "1" in as the second character
-		FB:1172, NE, June 2007.
-	-->
-	<xsl:template match="//TradeSimpleHeader/SendersCodeForRecipient">
-		<xsl:choose>
-			<xsl:when test="string-length(.) = 6">
-				<xsl:copy>
-					<xsl:value-of select="substring(.,1,1)"/>1<xsl:value-of select="substring(.,2,5)"/>
-				</xsl:copy>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:copy-of select="."/>
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:template>
-	<!-- END of Delivery Location Code Converter-->
 
 	<!-- InvoiceLine/ProductID/BuyersProductCode is used as a placeholder for INVOIC-ILD-CRLI and should not be copied over -->
 	<xsl:template match="BuyersProductCode"/>
@@ -277,25 +260,7 @@ N Emsen		|	06/06/2007	|	Case 1172: Logic for '1' in SCFR.
 		</xsl:copy>
 	</xsl:template>
 	<!-- END of MHDSegment HANDLER -->
-	
-	<!--
-	Delivery Location Code Converter
-	If the delivery location code is 6 characters long, add a "1" in as the second character
-	-->
-	<xsl:template match="ShipTo/ShipToLocationID/SuppliersCode">
-		<xsl:choose>
-			<xsl:when test="string-length(.) = 6">
-				<xsl:copy>
-					<xsl:value-of select="substring(.,1,1)"/>1<xsl:value-of select="substring(.,2,5)"/>
-				</xsl:copy>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:copy-of select="."/>
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:template>
-	<!-- END of Delivery Location Code Converter-->
-	
+		
 	<!-- Check for Purchase Order Date -->
 	<xsl:template match="//PurchaseOrderReferences/PurchaseOrderDate">
 		<xsl:variable name="sPORefDate" select="translate(.,' ','')"/>
