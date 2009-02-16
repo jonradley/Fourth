@@ -236,9 +236,9 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from ILD/SPRO(1).
 									<!-- OPTIONAL Measure Indicator, OPTIONAL, INVOIC – ILD –UNOR(3), Text -->
 									<MeasureIndicator RecordPos="ILD=" LPos="6" SFPos="3"/>
 									<!-- OPTIONAL Total Measure Invoiced, OPTIONAL, INVOIC – ILD –QTYI(2), 3 d.p. implied -->
-									<!--TotalMeasure RecordPos="ILD=" LPos="7" SFPos="2"/-->
+									<TotalMeasure RecordPos="ILD=" LPos="7" SFPos="3"/>
 									<!-- OPTIONAL Total Measure Indicator, OPTIONAL, INVOIC – ILD –QTYI(3), Text -->
-									<TotalMeasureIndicator RecordPos="ILD=" LPos="7" SFPos="3"/>
+									<TotalMeasureIndicator RecordPos="ILD=" LPos="7" SFPos="2"/>
 								</Measure>
 								<LineExtraData>
 									<!-- INVOIC-ILD-IGPI -->
