@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-**********************************************************************
+<!--******************************************************************
 Alterations
 **********************************************************************
-Name			| Date				| Change
+Name				| Date				| Change
 **********************************************************************
-S Jefford	| 22/08/2005		| GTIN field now sourced from ILD/SPRO(1).
-				|						| ILD/CRLI now stored in BuyersProductCode
+ C Scott 		| ?					| 
 **********************************************************************
-N Emsen		| 14/09/2006		|	Purchase order date stipped if = blank
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-N Emsen		|	08/11/2006	|	Case 531: Purchase order reference working.
+ R Cambridge	| 10/02/2009		| 2722 Added creation of delivery notes
 **********************************************************************
--->
+         		| 						| 
+*******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
 	<!-- NOTE that these string literals are not only enclosed with double quotes, but have single quotes within also-->
@@ -23,9 +20,23 @@ N Emsen		|	08/11/2006	|	Case 531: Purchase order reference working.
 	
 	<!-- Start point - ensure required outer BatchRoot tag is applied -->
 	<xsl:template match="/">
-<BatchRoot>
-		<xsl:apply-templates/>
-</BatchRoot>
+		<BatchRoot>
+			<Document>
+				<xsl:attribute name="TypePrefix">INV</xsl:attribute>
+				<!-- Create invoice -->		
+				<xsl:apply-templates/>
+			</Document>
+			
+			<xsl:if test="translate(/Batch/BatchDocuments/BatchDocument/Invoice/InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz') = 'fullers'">
+				<!-- Create delivery notes for fullers -->
+				<Document>
+					<xsl:attribute name="TypePrefix">DNB</xsl:attribute>				
+					<!-- 2722 -->
+					<xsl:call-template name="createDeliveryNotes"/>
+				</Document>
+			</xsl:if>
+			
+		</BatchRoot>
 	</xsl:template>
 	
 	<!-- GENERIC HANDLER to copy unchanged nodes, will be overridden by any node-specific templates below -->
@@ -55,10 +66,7 @@ N Emsen		|	08/11/2006	|	Case 531: Purchase order reference working.
 		</xsl:copy>
 	</xsl:template>
 	
-	<xsl:template match="SendersBranchReference">
-	</xsl:template>
-	
-	<!-- VAT Codes, BPM use X instead of Z -->
+<!-- VAT Codes, BPM use X instead of Z -->
 	<xsl:template match="VATCode">
 		<VATCode>
 			<xsl:choose>
@@ -253,18 +261,66 @@ N Emsen		|	08/11/2006	|	Case 531: Purchase order reference working.
 
 	</xsl:template>
 
-
-	<xsl:template match="@UnitOfMeasure">
-		<xsl:attribute name="UnitOfMeasure">
-			<xsl:choose>
-				<xsl:when test=". = 'EACH'">EA</xsl:when>
-				<xsl:when test=". = 'KG'">KGM</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="."/>
-				</xsl:otherwise>
-			</xsl:choose>
-		</xsl:attribute>
+	
+	
+	<xsl:template match="InvoiceLine">
+	
+		<InvoiceLine>
+	
+			<xsl:apply-templates select="LineNumber"/>
+			<xsl:apply-templates select="PurchaseOrderReferences"/>
+			<xsl:apply-templates select="PurchaseOrderConfirmationReferences"/>
+			<xsl:apply-templates select="DeliveryNoteReferences"/>
+			<xsl:apply-templates select="GoodsReceivedNoteReferences"/>
+			<xsl:apply-templates select="ProductID"/>
+			<xsl:apply-templates select="ProductDescription"/>
+			<xsl:apply-templates select="OrderedQuantity"/>
+			<xsl:apply-templates select="ConfirmedQuantity"/>
+			<xsl:apply-templates select="DeliveredQuantity"/>
+			
+			<xsl:variable name="sQuantity">
+				<xsl:choose>
+					<xsl:when test="string(./*[TotalMeasureIndicator]/TotalMeasure) != ''">
+						<xsl:for-each select="./Measure/TotalMeasure[1]">
+							<xsl:call-template name="copyCurrentNodeExplicit3DP"/>
+						</xsl:for-each>
+					</xsl:when>
+					<xsl:otherwise><xsl:value-of select="InvoicedQuantity"/></xsl:otherwise>
+				</xsl:choose>		
+			</xsl:variable>
+			
+			<xsl:variable name="sUoM">
+				<xsl:call-template name="translateUoM">
+					<xsl:with-param name="givenUoM" select="./Measure/TotalMeasureIndicator"/>
+				</xsl:call-template>		
+			</xsl:variable>
+	
+			
+			<InvoicedQuantity>
+				<xsl:if test="string-length($sUoM) &gt; 0">
+					<xsl:attribute name="UnitOfMeasure">
+						<xsl:value-of select="$sUoM"/>
+					</xsl:attribute>
+				</xsl:if>
+				<xsl:if test="string-length(./ProductID/BuyersProductCode) &gt; 0">-</xsl:if>
+				<xsl:value-of select="$sQuantity"/>			
+			</InvoicedQuantity>
+			
+			<xsl:apply-templates select="PackSize"/>
+			<xsl:apply-templates select="UnitValueExclVAT"/>
+			<xsl:apply-templates select="LineValueExclVAT"/>
+			<xsl:apply-templates select="LineDiscountRate"/>
+			<xsl:apply-templates select="LineDiscountValue"/>
+			<xsl:apply-templates select="VATCode"/>
+			<xsl:apply-templates select="VATRate"/>
+			<xsl:apply-templates select="NetPriceFlag"/>
+			<xsl:apply-templates select="Measure"/>
+			<xsl:apply-templates select="LineExtraData"/>
+			
+		</InvoiceLine>
+		
 	</xsl:template>
+	
 	
 	<!-- INVOIC-ILD-LEXC(InvoiceLine/LineValueExclVAT) need to be multiplied by -1 if (InvoiceLine/ProductID/BuyersProductCode) is NOT blank -->
 	<xsl:template match="InvoiceLine/LineValueExclVAT">
@@ -282,6 +338,7 @@ N Emsen		|	08/11/2006	|	Case 531: Purchase order reference working.
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+	
 	
 	<!-- SIMPLE CONVERSION IMPLICIT TO EXPLICIT 2 D.P -->
 	<!-- Add any XPath whose text node needs to be converted from implicit to explicit 2 D.P. -->
@@ -307,11 +364,11 @@ N Emsen		|	08/11/2006	|	Case 531: Purchase order reference working.
 		<xsl:call-template name="copyCurrentNodeExplicit3DP"/>
 	</xsl:template>
 	<!--Add any attribute XPath whose value needs to be converted from implicit 3 D.P to explicit 2 D.P. -->
-	<!--xsl:template match="VATSubTotal/@VATRate">
+	<xsl:template match="VATSubTotal/@VATRate">
 		<xsl:attribute name="{name()}">
 			<xsl:value-of select="format-number(. div 1000.0, '0.00')"/>
 		</xsl:attribute>
-	</xsl:template-->
+	</xsl:template>
 	<!-- SIMPLE CONVERSION IMPLICIT TO EXPLICIT 4 D.P -->
 	<!-- Add any XPath whose text node needs to be converted from implicit to explicit 4 D.P. -->
 	<xsl:template match="InvoiceLine/UnitValueExclVAT">
@@ -450,5 +507,127 @@ N Emsen		|	08/11/2006	|	Case 531: Purchase order reference working.
 			//return vs;
 		}
 	]]></msxsl:script>
+	
+	
+	
+	<xsl:template name="createDeliveryNotes">
+	
+		<Batch>
+			<BatchDocuments>
+				<xsl:for-each select="Batch/BatchDocuments/BatchDocument/Invoice">
+					<BatchDocument>
+						<xsl:attribute name="DocumentTypeNo">7</xsl:attribute>
+						<DeliveryNote>
+							<TradeSimpleHeader>
+								<SendersCodeForRecipient>
+									<xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/>
+								</SendersCodeForRecipient>
+								<xsl:if test="TradeSimpleHeader/SendersBranchReference != ''">
+									<SendersBranchReference>
+										<xsl:value-of select="TradeSimpleHeader/SendersBranchReference"/>
+									</SendersBranchReference>
+								</xsl:if>
+							</TradeSimpleHeader>
+							<DeliveryNoteHeader>
+								<DocumentStatus>Original</DocumentStatus>
+								<xsl:copy-of select="InvoiceHeader/Buyer"/>
+								<xsl:copy-of select="InvoiceHeader/Supplier"/>
+								<xsl:copy-of select="InvoiceHeader/ShipTo"/>
+								<xsl:if test="InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderReference != '' and InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderDate != ''">
+									<PurchaseOrderReferences>
+										<xsl:if test="InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderReference != ''">
+											<PurchaseOrderReference>
+												<xsl:value-of select="InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderReference"/>
+											</PurchaseOrderReference>
+										</xsl:if>
+										<xsl:if test="InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderDate != ''">
+											<xsl:variable name="sDPODate">
+												<xsl:value-of select="InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderDate"/>
+											</xsl:variable>
+											<PurchaseOrderDate>
+												<xsl:value-of select="concat('20',substring($sDPODate,1,2),'-',substring($sDPODate,3,2),'-',substring($sDPODate,5,2))"/>
+											</PurchaseOrderDate>
+										</xsl:if>
+									</PurchaseOrderReferences>
+								</xsl:if>
+								<DeliveryNoteReferences>
+									<DeliveryNoteReference>
+										<xsl:value-of select="InvoiceDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteReference"/>
+									</DeliveryNoteReference>
+									<xsl:variable name="dDDelNoteDate">
+										<xsl:value-of select="InvoiceDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteDate"/>
+									</xsl:variable>
+									<DeliveryNoteDate>
+										<xsl:value-of select="concat('20',substring($dDDelNoteDate,1,2),'-',substring($dDDelNoteDate,3,2),'-',substring($dDDelNoteDate,5,2))"/>
+									</DeliveryNoteDate>
+								</DeliveryNoteReferences>
+							</DeliveryNoteHeader>
+							<DeliveryNoteDetail>
+								<xsl:for-each select="InvoiceDetail/InvoiceLine[not(ProductID/BuyersProductCode = '1')]">
+									<DeliveryNoteLine>
+										<xsl:copy-of select="ProductID"/>
+										<xsl:copy-of select="ProductDescription"/>
+										
+										
+										
+										<xsl:variable name="sQuantity">
+											<xsl:choose>
+												<xsl:when test="string(./*[TotalMeasureIndicator]/TotalMeasure) != ''">
+													<xsl:for-each select="./Measure/TotalMeasure[1]">
+														<xsl:call-template name="copyCurrentNodeExplicit3DP"/>
+													</xsl:for-each>
+												</xsl:when>
+												<xsl:otherwise><xsl:value-of select="InvoicedQuantity"/></xsl:otherwise>
+											</xsl:choose>		
+										</xsl:variable>
+										
+										<xsl:variable name="sUoM">
+											<xsl:call-template name="translateUoM">
+												<xsl:with-param name="givenUoM" select="./Measure/TotalMeasureIndicator"/>
+											</xsl:call-template>		
+										</xsl:variable>
+								
+										
+										<DespatchedQuantity>
+											<xsl:if test="string-length($sUoM) &gt; 0">
+												<xsl:attribute name="UnitOfMeasure">
+													<xsl:value-of select="$sUoM"/>
+												</xsl:attribute>
+											</xsl:if>
+											<xsl:value-of select="$sQuantity"/>			
+										</DespatchedQuantity>
+										
+										
+
+										<xsl:copy-of select="PackSize"/>
+									</DeliveryNoteLine>
+								</xsl:for-each>
+							</DeliveryNoteDetail>
+							<xsl:if test="InvoiceTrailer/NumberOfLines != ''">
+								<DeliveryNoteTrailer>
+									<xsl:copy-of select="InvoiceTrailer/NumberOfLines"/>
+								</DeliveryNoteTrailer>
+							</xsl:if>
+						</DeliveryNote>
+					</BatchDocument>
+				</xsl:for-each>
+			</BatchDocuments>
+		</Batch>
+
+	
+	</xsl:template>
+	
+		
+	<!-- Templates shared by both doc types -->
+	<xsl:template name="translateUoM">
+		<xsl:param name="givenUoM"/>
+		
+		<xsl:choose>
+			<xsl:when test="$givenUoM = 'KG'">KGM</xsl:when>
+			<xsl:when test="$givenUoM = 'EACH'">EA</xsl:when>
+			<xsl:otherwise><xsl:value-of select="$givenUoM"/></xsl:otherwise>
+		</xsl:choose>
+	
+	</xsl:template>
 	
 </xsl:stylesheet>
