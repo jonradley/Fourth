@@ -34,7 +34,8 @@
 			<OrderDocumentDetails>
 				<PurchaseOrderDate format="YYYY-MM-DDThh:mm:ss:TZD">
 					<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderDate"/>
-					<xsl:text>T00:00:00</xsl:text>
+					<xsl:text>T</xsl:text>
+					<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderTime"/>
 				</PurchaseOrderDate>
 				
 				<PurchaseOrderNumber scheme="OTHER">
