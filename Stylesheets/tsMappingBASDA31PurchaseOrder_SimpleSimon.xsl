@@ -14,7 +14,7 @@
 ******************************************************************************************
  10/04/2008  | R Cambridge  | 1800 Created        
 ******************************************************************************************
-             |              | 
+ 19/02/2009  |K O'shaughnessy| 2751 stylesheet owner changed to choose between two options. 
 ***************************************************************************************-->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:schemas-basda-org:2000:purchaseOrder:xdr:3.01"  version="1.0">
 	<!-- xmlns:doc="urn:schemas-basda-org:schema-extensions:documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:schemas-basda-org:2000:purchaseOrder:xdr:3.01		P:\Hospitality\Aramark\SimpleSimon\eBIS-XML-3.09\schemas\Order-v3.xsd" -->
@@ -27,7 +27,12 @@
 					<Version>3.01</Version>
 				</Schema>
 				<Stylesheet>
-					<StylesheetOwner>BML</StylesheetOwner>
+					<StylesheetOwner> 
+						<xsl:choose>
+							<xsl:when test="/PurchaseOrder/TradeSimpleHeader/TestFlag = 'true' ">BML test</xsl:when>
+							<xsl:otherwise>BML live</xsl:otherwise>
+						</xsl:choose>
+					</StylesheetOwner>
 					<StylesheetName>charord.xsl</StylesheetName>
 					<Version>1</Version>
 					<StylesheetType>XSL</StylesheetType>
