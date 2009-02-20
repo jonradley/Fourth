@@ -11,7 +11,7 @@
 			<ffsGroup>
 				<!--References below which MEAN RecordPos 'H' with LPos 1 would be CODED as 'D' and LPos 14 (13+1)-->
 				<ffsGroupRecord RecordPos="&quot;HEAD&quot;" FieldTotal="30"/>
-				<ffsSubGroupRecord RecordPos="&quot;DTL&quot;" FieldTotal="22"/>
+				<ffsSubGroupRecord RecordPos="&quot;DTL&quot;" FieldTotal="23"/>
 			</ffsGroup>
 		</ffsGroups>
 		<ffsSplitBatchRecord RecordPos="&quot;HEAD&quot;"/>
