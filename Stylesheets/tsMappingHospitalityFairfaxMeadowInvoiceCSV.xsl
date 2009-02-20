@@ -72,7 +72,7 @@
 	<xsl:template match="SendersCodeForRecipient">
 		<SendersCodeForRecipient>
 			<xsl:choose>
-				<xsl:when test="contains('&quot;TH&quot;~~&quot;MC&quot;',../../InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode)">
+				<xsl:when test="contains('&quot;TH&quot;~~&quot;MC&quot;~~&quot;AQ&quot;~~&quot;RE&quot;~~&quot;YE&quot;~~&quot;AD&quot;',../../InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode)">
 					<xsl:call-template name="stripQuotes">
 						<xsl:with-param name="sInput">
 							<xsl:value-of select="../../InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode"/>
@@ -92,7 +92,7 @@
 
 	<!-- juggle branch references -->
 	<xsl:template match="SendersBranchReference">
-		<xsl:if test="not(contains('&quot;TH&quot;~~&quot;MC&quot;',../../InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode))">
+			<xsl:if test="contains('&quot;TH&quot;~~&quot;MC&quot;~~&quot;AQ&quot;~~&quot;RE&quot;~~&quot;YE&quot;~~&quot;AD&quot;',../../InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode)">
 			<SendersBranchReference>
 				<xsl:call-template name="stripQuotes">
 					<xsl:with-param name="sInput">
