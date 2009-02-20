@@ -183,6 +183,13 @@
 			</xsl:if>
 			<xsl:text>,</xsl:text>
 			
+			<xsl:if test="InvoicedQuantity/@UnitOfMeasure = 'KGM'">
+				<xsl:text>&quot;</xsl:text>
+				<xsl:text>KG</xsl:text>
+				<xsl:text>&quot;</xsl:text>
+			</xsl:if>
+			<xsl:text>,</xsl:text>
+
 			<xsl:value-of select="UnitValueExclVAT"/>
 			<xsl:text>,</xsl:text>
 
