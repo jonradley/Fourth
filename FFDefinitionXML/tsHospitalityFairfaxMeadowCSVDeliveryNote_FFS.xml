@@ -22,12 +22,11 @@
 			<BatchDocument-->
 			<DeliveryNote>
 				<TradeSimpleHeader>
-					<SendersCodeForRecipient RecordPos="&quot;HEAD&quot;" LPos="4"/>					
+					<SendersCodeForRecipient RecordPos="&quot;HEAD&quot;" LPos="4"/>
 					<SendersAddress>
 						<!-- AddressLine1 is used to capture a qualifier to the senders code for recipient that repesents the recipient's depot -->
 						<AddressLine1 RecordPos="&quot;HEAD&quot;" LPos="30"/>
 					</SendersAddress>
-
 				</TradeSimpleHeader>
 				<DeliveryNoteHeader>
 					<Buyer>
@@ -93,7 +92,7 @@
 							</PurchaseOrderConfirmationReferences-->
 					<DeliveryNoteReferences>
 						<DeliveryNoteReference RecordPos="&quot;HEAD&quot;" LPos="12"/>
-						<DeliveryNoteDate RecordPos="&quot;HEAD&quot;" LPos="13"/>
+						<DeliveryNoteDate RecordPos="&quot;HEAD&quot;" LPos="14"/>
 						<!--DespatchDate/-->
 					</DeliveryNoteReferences>
 					<!--DeliveredDeliveryDetails>
@@ -120,14 +119,13 @@
 						</ProductID>
 						<ProductDescription RecordPos="&quot;DTL&quot;" LPos="16"/>
 						<OrderedQuantity RecordPos="&quot;DTL&quot;" LPos="9"/>
-						<!--ConfirmedQuantity UnitOfMeasure=""/-->
+						<!--ConfirmedQuantity/-->
 						<DespatchedQuantity RecordPos="&quot;DTL&quot;" LPos="12"/>
 						<PackSize RecordPos="&quot;DTL&quot;" LPos="8"/>
 						<!--ExpiryDate/>
-								<SellByDate/>
-								<SSCC/>
-								<UnitValueExclVAT/>
-								<LineExtraData/-->
+								<SellByDate/-->
+						<SSCC RecordPos="&quot;DTL&quot;" LPos="24"/>
+						<UnitValueExclVAT RecordPos="&quot;DTL&quot;" LPos="23"/>
 					</DeliveryNoteLine>
 				</DeliveryNoteDetail>
 				<!--DeliveryNoteTrailer>
