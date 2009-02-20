@@ -43,9 +43,9 @@
 
 	<xsl:text>STX=</xsl:text>
 		<xsl:text>ANA:1+</xsl:text>
-		<xsl:value-of select="/BatchRoot/DeliveryNote/DeliveryNoteHeader/Buyer/BuyersLocationID/GLN"/>
-		<xsl:text>+</xsl:text>
 		<xsl:value-of select="/BatchRoot/DeliveryNote/DeliveryNoteHeader/Supplier/SuppliersLocationID/GLN"/>
+		<xsl:text>+</xsl:text>
+		<xsl:value-of select="/BatchRoot/DeliveryNote/DeliveryNoteHeader/Buyer/BuyersLocationID/GLN"/>
 		<xsl:text>+</xsl:text>
 		<xsl:value-of select="$sDocumentDate"/><xsl:text>:</xsl:text><xsl:value-of select="$sDocumentTime"/>
 		<xsl:text>+</xsl:text>
