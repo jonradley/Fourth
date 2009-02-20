@@ -105,6 +105,8 @@
 								<!--VATRegNo RecordPos="SUPPLIER" LPos="12"/-->
 							</InvoiceReferences>
 							<!--Currency RecordPos="SUPPLIER" LPos="11"/-->
+							<!-- Hijacked for Payment Due Date -->
+							<SequenceNumber RecordPos="&quot;HEAD&quot;" LPos="15"/>
 						</InvoiceHeader>
 						<InvoiceDetail>
 							<InvoiceLine>
