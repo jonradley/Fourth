@@ -74,6 +74,11 @@
 		<xsl:text>,</xsl:text>
 
 		<!-- This should be payment due date -->
+		<xsl:call-template name="formatDate">
+			<xsl:with-param name="sInput">
+				<xsl:value-of select="InvoiceHeader/HeaderExtraData/PaymentDueDate"/>
+			</xsl:with-param>
+		</xsl:call-template>
 		<xsl:text>,</xsl:text>
 
 		<xsl:text>,</xsl:text>
@@ -187,10 +192,13 @@
 
 			<xsl:text>,</xsl:text>
 
-			<!-- "0" /-->
+			<!-- VAT Code /-->
 
 			<xsl:text>&quot;</xsl:text>
-			<xsl:text>0</xsl:text>
+				<xsl:choose>
+					<xsl:when test="VATCode = 'Z'">0</xsl:when>
+					<xsl:when test="VATCode = 'S'">1</xsl:when>
+				</xsl:choose>
 			<xsl:text>&quot;</xsl:text>
 			<xsl:text>,</xsl:text>
 
