@@ -92,7 +92,7 @@
 
 	<!-- juggle branch references -->
 	<xsl:template match="SendersBranchReference">
-			<xsl:if test="contains('&quot;TH&quot;~~&quot;MC&quot;~~&quot;AQ&quot;~~&quot;RE&quot;~~&quot;YE&quot;~~&quot;AD&quot;',../../InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode)">
+		<xsl:if test="not(contains('&quot;TH&quot;~~&quot;MC&quot;~~&quot;AQ&quot;~~&quot;RE&quot;~~&quot;YE&quot;~~&quot;AD&quot;',../../InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode))">
 			<SendersBranchReference>
 				<xsl:call-template name="stripQuotes">
 					<xsl:with-param name="sInput">
@@ -101,6 +101,22 @@
 				</xsl:call-template>
 			</SendersBranchReference>
 		</xsl:if>
+	</xsl:template>
+	
+	<xsl:template match="SequenceNumber">
+		<HeaderExtraData>
+			<PaymentDueDate>
+				<xsl:call-template name="formatDates">
+					<xsl:with-param name="sInput">
+						<xsl:call-template name="stripQuotes">
+							<xsl:with-param name="sInput">
+								<xsl:value-of select="."/>
+							</xsl:with-param>
+						</xsl:call-template>
+					</xsl:with-param>
+				</xsl:call-template>
+			</PaymentDueDate>
+		</HeaderExtraData>
 	</xsl:template>
 	
 	<!-- where there is an ordered quantity, make it an invoiced quantity -->
