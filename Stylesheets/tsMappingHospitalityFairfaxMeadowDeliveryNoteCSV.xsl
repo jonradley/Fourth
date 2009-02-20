@@ -58,16 +58,27 @@
 	                     SuppliersProductCode |
 	                     ProductDescription">
 	
+		<xsl:variable name="sTemp">
+			<xsl:call-template name="stripQuotes">
+				<xsl:with-param name="sInput">
+					<xsl:value-of select="."/>
+				</xsl:with-param>
+			</xsl:call-template>
+		</xsl:variable>
+
 		<xsl:variable name="tagName">
 			<xsl:value-of select="name()"/>
 		</xsl:variable>
-		<xsl:element name="{$tagName}">
-		<xsl:call-template name="stripQuotes">
-			<xsl:with-param name="sInput">
-				<xsl:value-of select="."/>
-			</xsl:with-param>
-		</xsl:call-template>
-		</xsl:element>
+
+		<xsl:if test="$sTemp != ''">
+			<xsl:element name="{$tagName}">
+				<xsl:call-template name="stripQuotes">
+					<xsl:with-param name="sInput">
+						<xsl:value-of select="."/>
+					</xsl:with-param>
+				</xsl:call-template>
+			</xsl:element>
+		</xsl:if>
 	</xsl:template>
 
 	<!-- sort some dates -->
@@ -105,6 +116,24 @@
 
 	<!-- remove the packsize element -->
 	<xsl:template match="PackSize"></xsl:template>
+
+
+
+	<!-- sort the customer orderline ref -->
+	<xsl:template match="UnitValueExclVAT">
+		<LineExtraData>
+			<CustomerOrderLineNumber>
+				<xsl:value-of select="."/>
+			</CustomerOrderLineNumber>
+		</LineExtraData>
+	</xsl:template>
+
+	<!-- sort the price -->
+	<xsl:template match="SSCC">
+		<UnitValueExclVAT>
+			<xsl:value-of select="."/>
+		</UnitValueExclVAT>
+	</xsl:template>
 
 	<xsl:template name="formatDates">
 		<xsl:param name="sInput"/>
