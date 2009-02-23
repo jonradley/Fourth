@@ -136,9 +136,18 @@
 
 	<!-- sort the price -->
 	<xsl:template match="SSCC">
-		<UnitValueExclVAT>
-			<xsl:value-of select="."/>
-		</UnitValueExclVAT>
+		<xsl:variable name="sUnitVal">
+			<xsl:call-template name="stripQuotes">
+				<xsl:with-param name="sInput">
+					<xsl:value-of select="normalize-space(.)"/>
+				</xsl:with-param>
+			</xsl:call-template>
+		</xsl:variable>
+		<xsl:if test="$sUnitVal != ''">
+			<UnitValueExclVAT>
+				<xsl:value-of select="."/>
+			</UnitValueExclVAT>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template name="formatDates">
