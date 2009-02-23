@@ -8,9 +8,10 @@
 ******************************************************************************************
  Date        | Name         | Description of modification
 ******************************************************************************************
- 26/01/2009  | R Cambridge  | 2666 In bound psv order translator
+ 26/01/2009  | R Cambridge  | 2666 Inbound psv order translator
 *****************************************************************************************
-             |              | 
+ 23/02/2009  | R Cambridge  | 2758 Ensure ordered quantity of 0 is stored as 0 not blank
+												 If pack size or quantity are not numeric then pass through whatever value is provided
 *****************************************************************************************
              |              | 
 ***************************************************************************************-->
@@ -136,7 +137,16 @@
 
 	<xsl:template match="OrderedQuantity | PackSize">
 		<xsl:copy>
-			<xsl:value-of select="format-number(.,'#')"/>
+			<xsl:choose>
+				<xsl:when test="'NaN' = string(number(.))">
+					<xsl:value-of select="."/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="format-number(.,'0')"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		
+			
 		</xsl:copy>
 	</xsl:template>
 	
