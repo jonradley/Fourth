@@ -43,7 +43,12 @@
 
 	<xsl:text>STX=</xsl:text>
 		<xsl:text>ANA:1+</xsl:text>
-		<xsl:value-of select="/BatchRoot/DeliveryNote/DeliveryNoteHeader/Supplier/SuppliersLocationID/GLN"/>
+		<xsl:choose>
+			<xsl:when test="/BatchRoot/DeliveryNote/DeliveryNoteHeader/Supplier/SuppliersLocationID/GLN = '5050085091287'">5013546012078</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="/BatchRoot/DeliveryNote/DeliveryNoteHeader/Supplier/SuppliersLocationID/GLN"/>
+			</xsl:otherwise>
+		</xsl:choose>
 		<xsl:text>+</xsl:text>
 		<xsl:value-of select="/BatchRoot/DeliveryNote/DeliveryNoteHeader/Buyer/BuyersLocationID/GLN"/>
 		<xsl:text>+</xsl:text>
@@ -71,7 +76,12 @@
 
 	<xsl:text>SDT=</xsl:text>
 		<xsl:text>:</xsl:text>
-		<xsl:value-of select="/BatchRoot/DeliveryNote/DeliveryNoteHeader/Supplier/SuppliersLocationID/GLN"/>
+		<xsl:choose>
+			<xsl:when test="/BatchRoot/DeliveryNote/DeliveryNoteHeader/Supplier/SuppliersLocationID/GLN = '5050085091287'">5013546012078</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="/BatchRoot/DeliveryNote/DeliveryNoteHeader/Supplier/SuppliersLocationID/GLN"/>
+			</xsl:otherwise>
+		</xsl:choose>
 		<xsl:text>+</xsl:text>
 		<!-- truncate to 40 SNAM = 3060 = AN..40-->
 		<xsl:value-of select="js:msTruncate(string(/BatchRoot/DeliveryNote/DeliveryNoteHeader/Supplier/SuppliersName),40)"/>
