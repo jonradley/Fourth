@@ -263,7 +263,7 @@
 				<xsl:text>+</xsl:text>
 				<xsl:text>N</xsl:text>		
 				<xsl:text>'</xsl:text>
-				<xsl:value-of select="$sLineBreak"/>
+				
 			
 				
 			</xsl:for-each>
