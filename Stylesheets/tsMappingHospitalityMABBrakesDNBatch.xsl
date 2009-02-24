@@ -238,7 +238,7 @@
 	<xsl:text>MHD=</xsl:text>
 	<xsl:value-of select="HelperObj:GetNextCounterValue('MessageHeader')"/>
 	<xsl:text>+</xsl:text>
-	<xsl:text>DELHDR</xsl:text>
+	<xsl:text>DELTLR</xsl:text>
 	<xsl:text>:</xsl:text>
 	<xsl:text>9</xsl:text>
 	<xsl:text>'</xsl:text>
