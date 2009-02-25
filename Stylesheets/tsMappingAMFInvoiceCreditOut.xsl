@@ -174,7 +174,7 @@
 				<xsl:value-of select="format-number(/Invoice/InvoiceTrailer/DocumentTotalInclVAT,'0.00')"/>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:value-of select="format-number(-1* /CreditNote/CreditNoteTrailer/DocumentTotalInclVAT,'0.00')"/>
+				<xsl:value-of select="format-number(/CreditNote/CreditNoteTrailer/DocumentTotalInclVAT,'0.00')"/>
 			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:text>,</xsl:text>			
@@ -227,7 +227,7 @@
 							<xsl:value-of select="format-number(sum(msxsl:node-set($summaryXML)/LineVat),'0.00')"/>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:value-of select="format-number(-1 * sum(msxsl:node-set($summaryXML)/LineVat),'0.00')"/>
+							<xsl:value-of select="format-number(sum(msxsl:node-set($summaryXML)/LineVat),'0.00')"/>
 						</xsl:otherwise>
 					</xsl:choose>					
 				</xsl:when>
@@ -246,7 +246,7 @@
 							<xsl:value-of select="format-number($VATAmount - sum(msxsl:node-set($summaryXML)/LineVat),'0.00')"/>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:value-of select="format-number(-1 * ($VATAmount - sum(msxsl:node-set($summaryXML)/LineVat)),'0.00')"/>
+							<xsl:value-of select="format-number($VATAmount - sum(msxsl:node-set($summaryXML)/LineVat),'0.00')"/>
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:otherwise>  
@@ -266,7 +266,7 @@
 					<xsl:value-of select="format-number(sum(//InvoiceLine[substring-after(LineExtraData/AccountCode,'/') = $AccountCode]/LineValueExclVAT),'0.00')"/>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:value-of select="format-number(-1 * sum(//CreditNoteLine[substring-after(LineExtraData/AccountCode,'/') = $AccountCode]/LineValueExclVAT),'0.00')"/>
+					<xsl:value-of select="format-number(sum(//CreditNoteLine[substring-after(LineExtraData/AccountCode,'/') = $AccountCode]/LineValueExclVAT),'0.00')"/>
 				</xsl:otherwise>
 			</xsl:choose>
 			<xsl:text>,</xsl:text>
@@ -318,7 +318,7 @@
 					<xsl:value-of select="format-number(sum(//InvoiceLine[LineExtraData/AccountCode = $AccountCode]/LineValueExclVAT),'0.00')"/>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:value-of select="format-number(-1 * sum(//CreditNoteLine[LineExtraData/AccountCode = $AccountCode]/LineValueExclVAT),'0.00')"/>
+					<xsl:value-of select="format-number(sum(//CreditNoteLine[LineExtraData/AccountCode = $AccountCode]/LineValueExclVAT),'0.00')"/>
 				</xsl:otherwise>
 			</xsl:choose>			
 			<xsl:text>,</xsl:text>			
