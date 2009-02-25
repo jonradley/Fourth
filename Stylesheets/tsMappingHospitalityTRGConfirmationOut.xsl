@@ -18,6 +18,8 @@
 ==========================================================================================
  04/02/2009	| Rave Tech  		| 2719 Consolidate twice appearing product code into one line using non-supersession price.
 ==========================================================================================
+ 25/02/2009	| Rave Tech  		| 2719 Added condition for status = 'changed '.
+==========================================================================================
 			|					|
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
@@ -118,10 +120,10 @@
 				<xsl:variable name="SkipLine">
 					<xsl:for-each select="//PurchaseOrderConfirmationDetail/PurchaseOrderConfirmationLine[.!=$objCurrentLine and ProductID/SuppliersProductCode = $objCurrentLine/ProductID/SuppliersProductCode]">
 						<xsl:choose>
-							<xsl:when test="current()/@LineStatus='Accepted' and $sLineStatus='Added'" >
+							<xsl:when test="(current()/@LineStatus='Accepted' or current()/@LineStatus='Changed') and $sLineStatus='Added'" >
 								<xsl:text>True</xsl:text> 
 							</xsl:when>
-							<xsl:when test="current()/@LineStatus='Added' and $sLineStatus='Accepted'">
+							<xsl:when test="current()/@LineStatus='Added' and ($sLineStatus='Accepted' or $sLineStatus='Changed')">
 								<xsl:text>XML to process</xsl:text>
 								<OrderItem>
 									<xsl:call-template name="WriteLine2">
