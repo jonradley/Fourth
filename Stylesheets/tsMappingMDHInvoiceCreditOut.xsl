@@ -37,7 +37,9 @@
 		<xsl:variable name="NewLine">
 			<xsl:text>&#13;&#10;</xsl:text>
 		</xsl:variable>
-
+		
+		<xsl:variable name="CompanyVATCode" select="/Invoice/InvoiceHeader/HeaderExtraData/CompanyCode"/>
+		
 		<!-- Header Line-->
 		<xsl:text>H</xsl:text>
 		<xsl:text>,</xsl:text>
@@ -127,7 +129,7 @@
 			<xsl:value-of select="$NewLine"/>
 			<xsl:text>D</xsl:text>
 			<xsl:text>,</xsl:text>
-			<xsl:text>A-099-000-211180</xsl:text>
+			<xsl:value-of select="$CompanyVATCode"/>
 			<xsl:text>,</xsl:text>
 			<xsl:text>VAT</xsl:text>
 			<xsl:text>,</xsl:text>
