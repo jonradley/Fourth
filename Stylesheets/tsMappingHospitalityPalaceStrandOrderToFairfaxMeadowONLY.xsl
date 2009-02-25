@@ -33,7 +33,7 @@
 		<BatchRoot>
 				<PurchaseOrder>
 					<TradeSimpleHeader>
-						<SendersCodeForRecipient>FAIRFAXMEADOW</SendersCodeForRecipient>
+						<SendersCodeForRecipient>FAIRFAX</SendersCodeForRecipient>
 					</TradeSimpleHeader>
 					<PurchaseOrderHeader>
 						<ShipTo>
