@@ -34,7 +34,7 @@ R Cambridge	| 09/02/2009	| 2723 Created mapper
 			<BatchDocument>
 				<DeliveryNote>
 					<TradeSimpleHeader>
-						<SendersCodeForRecipient RecordPos="HEAD" LPos="2"/>
+						<SendersCodeForRecipient RecordPos="HEAD" LPos="4"/>
 					</TradeSimpleHeader>
 					<DeliveryNoteHeader>
 						<Buyer>
