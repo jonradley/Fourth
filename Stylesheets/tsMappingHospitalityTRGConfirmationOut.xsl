@@ -27,11 +27,18 @@
 	
 	<xsl:include href="tsMappingHospitalityTRG_SupplierSplitPackLogic.xsl"/>
 	
-	<xsl:variable name="sProcessMaxSplits">
-		<xsl:call-template name="sProcessMaxSplits">
-			<xsl:with-param name="vsSupplierCode" select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/Supplier/SuppliersLocationID/BuyersCode"/>	
-		</xsl:call-template>
-	</xsl:variable>	
+	<xsl:variable name="sProcessMaxSplits">		
+		<xsl:choose>
+				<xsl:when test="/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/PurchaseOrderReferences/PurchaseOrderReference &lt; 0">
+					 <xsl:value-of select="'IGNORE_MAXSPLITS'"/> 									
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:call-template name="sProcessMaxSplits">
+					<xsl:with-param name="vsSupplierCode" select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/Supplier/SuppliersLocationID/BuyersCode"/>	
+					</xsl:call-template>										
+				</xsl:otherwise>
+		</xsl:choose>		
+	</xsl:variable>
 	
 	<xsl:template match="/PurchaseOrderConfirmation">
 	
@@ -118,23 +125,26 @@
 				<xsl:variable name="objCurrentLine" select="current()"/>
 												
 				<xsl:variable name="SkipLine">
-					<xsl:for-each select="//PurchaseOrderConfirmationDetail/PurchaseOrderConfirmationLine[.!=$objCurrentLine and ProductID/SuppliersProductCode = $objCurrentLine/ProductID/SuppliersProductCode]">
-						<xsl:choose>
-							<xsl:when test="(current()/@LineStatus='Accepted' or current()/@LineStatus='Changed') and $sLineStatus='Added'" >
-								<xsl:text>True</xsl:text> 
-							</xsl:when>
-							<xsl:when test="current()/@LineStatus='Added' and ($sLineStatus='Accepted' or $sLineStatus='Changed')">
-								<xsl:text>XML to process</xsl:text>
-								<OrderItem>
-									<xsl:call-template name="WriteLine2">
-										<xsl:with-param name="vQuantity"><xsl:value-of select="current()/ConfirmedQuantity + $nQuantity"/></xsl:with-param>
-										<xsl:with-param name="vUnitValue"><xsl:value-of select="$nUnitValue"/></xsl:with-param>
-									</xsl:call-template>
-								</OrderItem>
-							</xsl:when>
-						</xsl:choose>
-					</xsl:for-each>
-				</xsl:variable>
+                                                       
+                                 <xsl:choose>
+                                        <xsl:when test="0 &lt; count(//PurchaseOrderConfirmationDetail/PurchaseOrderConfirmationLine[.!=$objCurrentLine and ProductID/SuppliersProductCode =											$objCurrentLine/ProductID/SuppliersProductCode][$sLineStatus='Added' and (@LineStatus='Accepted' or @LineStatus='Changed' or @LineStatus='Rejected')])">
+
+                                               <xsl:text>True</xsl:text>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                               <xsl:variable name="nSumQuantity" select="sum(//PurchaseOrderConfirmationDetail/PurchaseOrderConfirmationLine[.!=$objCurrentLine and ProductID/SuppliersProductCode = 									$objCurrentLine/ProductID/SuppliersProductCode][@LineStatus='Added' and ($sLineStatus='Accepted' or $sLineStatus='Changed' or $sLineStatus='Rejected')]/ConfirmedQuantity ) + $nQuantity"/>
+                                               <xsl:text>XML to process</xsl:text>
+                                               <OrderItem>
+                                                      <xsl:call-template name="WriteLine2">
+                                                             <xsl:with-param name="vQuantity"><xsl:value-of select="$nSumQuantity"/></xsl:with-param>
+                                                             <xsl:with-param name="vUnitValue"><xsl:value-of select="$nUnitValue"/></xsl:with-param>
+                                                      </xsl:call-template>
+                                               </OrderItem>
+
+                                        </xsl:otherwise>
+                                 </xsl:choose>
+          
+                           </xsl:variable>
 				
 				<!--Output variable value-->
 				<xsl:if test="$SkipLine!='' and $SkipLine!='True'">
