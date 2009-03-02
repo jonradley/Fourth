@@ -123,9 +123,11 @@
 							<DeliveryDate>
 								<xsl:value-of select="$sReqDate"/>
 							</DeliveryDate>
-							<SpecialDeliveryInstructions>
-								<xsl:value-of select="H/L2[18]"/>
-							</SpecialDeliveryInstructions>
+							<xsl:if test="H/L2[18] != ''">
+								<SpecialDeliveryInstructions>
+									<xsl:value-of select="H/L2[18]"/>
+								</SpecialDeliveryInstructions>
+							</xsl:if>
 						</OrderedDeliveryDetails>
 					</PurchaseOrderHeader>
 					<PurchaseOrderDetail>
