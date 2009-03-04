@@ -12,6 +12,8 @@
 ******************************************************************************************
  14/01/2009  |	 R Cambridge   | 2669 branched from tsMapping_Outbound_FoodPartners_EANUCC_PurchaseOrder.xsl
 ******************************************************************************************
+ 04/03/2009  | R Cambridge   | 2787 Only try to prepend Recipient's branch ref to buyer's unit code if it exists
+******************************************************************************************
              |               |  
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" 
@@ -146,9 +148,13 @@
 			
 				<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode">			
 					<BuyerAssigned scheme="OTHER">
-						<xsl:value-of select="concat(/PurchaseOrder/TradeSimpleHeader/RecipientsBranchReference,'/',/PurchaseOrder/TradeSimpleHeader/RecipientsCodeForSender)"/>
+						<xsl:if test="string(/PurchaseOrder/TradeSimpleHeader/RecipientsBranchReference) != ''">
+							<xsl:value-of select="/PurchaseOrder/TradeSimpleHeader/RecipientsCodeForSender"/>
+							<xsl:text>/</xsl:text>
+						</xsl:if>
+						<xsl:value-of select="/PurchaseOrder/TradeSimpleHeader/RecipientsCodeForSender"/>						
 					</BuyerAssigned>
-				</xsl:if>	
+				</xsl:if>				
 
 				<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode">
 					<SellerAssigned scheme="OTHER">
