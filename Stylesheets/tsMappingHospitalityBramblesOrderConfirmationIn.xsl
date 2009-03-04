@@ -10,7 +10,8 @@ R Cambridge	| 2007-11-13		| 1332 no info to populate Buyer tag
 **********************************************************************
 R Cambridge	| 2008-01-03		| 1686 revised rejection codes
 **********************************************************************
-				|						|
+R Cambridge	| 2009-03-04		| 2787 Only split out SBR if SCR contains a slash
+												 Reject lines with code ITEM_TEMPORARILY_NOT_AVAILABLE
 **********************************************************************
 				|						|				
 *******************************************************************-->
@@ -27,6 +28,8 @@ R Cambridge	| 2008-01-03		| 1686 revised rejection codes
 	<xsl:template match="/sh:StandardBusinessDocument/sh:StandardBusinessDocumentHeader"/>
 	<xsl:template match="/sh:StandardBusinessDocument/eanucc:message/entityIdentification"/>
 
+	<xsl:variable name="RESPONSE_CODE_item_temporarily_not_available" select="'ITEM_TEMPORARILY_NOT_AVAILABLE'"/>
+		
 	
 	<!-- Start point - ensure required outer BatchRoot tag is applied -->
 	<xsl:template match="/sh:StandardBusinessDocument/eanucc:message/order:orderResponse">
@@ -37,24 +40,33 @@ R Cambridge	| 2008-01-03		| 1686 revised rejection codes
 	
 			<PurchaseOrderConfirmation>
 				
-				<TradeSimpleHeader>
-					<!--SendersCodeForRecipient>
-						<xsl:value-of select="buyer/additionalPartyIdentification[additionalPartyIdentificationType='BUYER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue[1]"/>
-					</SendersCodeForRecipient>
-					
-					<SendersBranchReference>
-						<xsl:value-of select="seller/additionalPartyIdentification[additionalPartyIdentificationType='BUYER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue[1]"/>
-					</SendersBranchReference-->
-					
+				<xsl:variable name="sendersCodeForRecipient">
+					<xsl:choose>
+						<xsl:when test="'' != substring-after(buyer/additionalPartyIdentification[additionalPartyIdentificationType='BUYER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue[1],'/')">
+							<xsl:value-of select="substring-after(buyer/additionalPartyIdentification[additionalPartyIdentificationType='BUYER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue[1],'/')"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="buyer/additionalPartyIdentification[additionalPartyIdentificationType='BUYER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue[1]"/>
+						</xsl:otherwise>
+					</xsl:choose>					
+				</xsl:variable>
+			
+				<xsl:variable name="sendersBranchReference">
+					<xsl:value-of select="substring-before(buyer/additionalPartyIdentification[additionalPartyIdentificationType='BUYER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue[1],'/')"/>				
+				</xsl:variable>
+										
+				<TradeSimpleHeader>		
 					
 					<SendersCodeForRecipient>
-						<xsl:value-of select="substring-after(buyer/additionalPartyIdentification[additionalPartyIdentificationType='BUYER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue[1],'/')"/>
+						<xsl:value-of select="$sendersCodeForRecipient"/>
 					</SendersCodeForRecipient>
-					
-					<SendersBranchReference>
-						<xsl:value-of select="substring-before(buyer/additionalPartyIdentification[additionalPartyIdentificationType='BUYER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue[1],'/')"/>
-					</SendersBranchReference>
-					
+
+					<xsl:if test="'' != $sendersBranchReference">
+						<SendersBranchReference>							
+							<xsl:value-of select="$sendersBranchReference"/>
+						</SendersBranchReference>				
+					</xsl:if>
+											
 				</TradeSimpleHeader>
 				
 				<PurchaseOrderConfirmationHeader>
@@ -88,7 +100,7 @@ R Cambridge	| 2008-01-03		| 1686 revised rejection codes
 					<ShipTo>
 						<ShipToLocationID>
 							<BuyersCode>
-								<xsl:value-of select="substring-after(buyer/additionalPartyIdentification[additionalPartyIdentificationType='BUYER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue[1],'/')"/>
+								<xsl:value-of select="$sendersCodeForRecipient"/>
 							</BuyersCode>
 							<xsl:for-each select="buyer/additionalPartyIdentification[additionalPartyIdentificationType='SELLER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue[1]">
 								<SuppliersCode><xsl:value-of select="."/></SuppliersCode>
@@ -191,6 +203,7 @@ R Cambridge	| 2008-01-03		| 1686 revised rejection codes
 									<xsl:attribute name="LineStatus">
 										<xsl:choose>
 											<xsl:when test="number(modifiedOrderInformation/requestedQuantity/value) = 0">Rejected</xsl:when>
+											<xsl:when test="orderResponseReasonCode = $RESPONSE_CODE_item_temporarily_not_available">Rejected</xsl:when>
 											<xsl:otherwise>Changed</xsl:otherwise>
 										</xsl:choose>
 									</xsl:attribute>
@@ -245,7 +258,16 @@ R Cambridge	| 2008-01-03		| 1686 revised rejection codes
 											</xsl:call-template>
 										</xsl:attribute>
 										
-										<xsl:value-of select="modifiedOrderInformation/requestedQuantity/value"/>
+										
+										<xsl:choose>
+											<xsl:when test="orderResponseReasonCode = $RESPONSE_CODE_item_temporarily_not_available">0</xsl:when>
+											<xsl:otherwise>
+												<xsl:value-of select="modifiedOrderInformation/requestedQuantity/value"/>											
+											</xsl:otherwise>
+										
+										</xsl:choose>
+										
+										
 										
 									</ConfirmedQuantity>
 									
@@ -312,7 +334,7 @@ R Cambridge	| 2008-01-03		| 1686 revised rejection codes
 			<xsl:when test="$brakesReasonCode = 'MISSING_MESSAGE_REFERENCE_NUMBER'">Missing message reference number</xsl:when>
 			<xsl:when test="$brakesReasonCode = 'SENDER_NOT_AUTHORIZED_FOR_THIS_MESSAGE'">Sender not authorized for this message	</xsl:when>
 			<xsl:when test="$brakesReasonCode = 'DISCONTINUED_LINE'">Discontinued line</xsl:when>
-			<xsl:when test="$brakesReasonCode = 'ITEM_TEMPORARILY_NOT_AVAILABLE'">Item temporarily not available</xsl:when>
+			<xsl:when test="$brakesReasonCode = $RESPONSE_CODE_item_temporarily_not_available">Item temporarily not available</xsl:when>
 			<xsl:when test="$brakesReasonCode = 'INVALID_PRODUCT_OR_ITEM_IDENTIFICATION'">Invalid product or item identification</xsl:when>
 			<xsl:when test="$brakesReasonCode = 'PRODUCT_NOT_VALID_FOR_LOCATION'">Product not valid for location</xsl:when>
 			<xsl:when test="$brakesReasonCode = 'RECEIVED_AFTER_CUTOFF_DATE_OR_TIME'">Received after cutoff date or time</xsl:when>
