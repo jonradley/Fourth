@@ -144,7 +144,7 @@ R Cambridge	| 2008-01-03		| 1686 revised rejection codes
 											<xsl:with-param name="brakesReasonCode" select="orderResponseReasonCode"/>
 										</xsl:call-template>
 									</xsl:attribute>
-									<xsl:text>Unrecognised lines status code recieved from Brake Bros system</xsl:text>
+									<xsl:text>Unrecognised lines status code received from Food Partners' system</xsl:text>
 								</ImplicitLinesStatus>
 							</xsl:otherwise>
 		
