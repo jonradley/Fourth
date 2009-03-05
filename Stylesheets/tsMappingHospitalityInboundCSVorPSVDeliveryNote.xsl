@@ -26,6 +26,16 @@
 	</xsl:template>
 	<!-- END of GENERIC HANDLERS -->
 	
+	<xsl:template match="BatchDocument">
+		<!-- Copy the node unchanged -->
+		<xsl:copy>
+			<!-- Fix what documenttype this is -->
+			<xsl:attribute name="DocumentTypeNo">7</xsl:attribute>
+			<!-- Then within this node, continue processing children -->
+			<xsl:apply-templates/>
+		</xsl:copy>
+	</xsl:template>
+	
 	<!-- CONVERT TestFlag from Y / N to 1 / 0 -->
 	<xsl:template match="TradeSimpleHeader/TestFlag">
 		<xsl:copy>
