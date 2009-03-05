@@ -145,7 +145,7 @@ R cambridge	| 2008-11-24		| 2587 revised rejection narratives
 											<xsl:with-param name="brakesReasonCode" select="orderResponseReasonCode"/>
 										</xsl:call-template>
 									</xsl:attribute>
-									<xsl:text>Unrecognised lines status code recieved from Brake Bros system</xsl:text>
+									<xsl:text>Unrecognised lines status code received from Brake Bros system</xsl:text>
 								</ImplicitLinesStatus>
 							</xsl:otherwise>
 		
