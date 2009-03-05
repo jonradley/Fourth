@@ -23,7 +23,7 @@
 				</xsl:if>
 			<xsl:text>|</xsl:text>
 			<xsl:value-of select="UnitValueExclVAT"/>
-			<xsl:text>&#13;&#10;</xsl:text>
+			<xsl:text>&#13;</xsl:text>
 			
 		</xsl:for-each>
 	</xsl:template>
