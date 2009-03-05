@@ -11,7 +11,7 @@ R Cambridge	| 2007-11-13		| 1332 no info to populate Buyer tag
 R Cambridge	| 2008-01-03		| 1686 revised rejection codes
 **********************************************************************
 R Cambridge	| 2009-03-04		| 2787 Only split out SBR if SCR contains a slash
-												 Reject lines with code ITEM_TEMPORARILY_NOT_AVAILABLE
+												 Reject lines with certain response codes
 **********************************************************************
 				|						|				
 *******************************************************************-->
@@ -27,8 +27,13 @@ R Cambridge	| 2009-03-04		| 2787 Only split out SBR if SCR contains a slash
 	
 	<xsl:template match="/sh:StandardBusinessDocument/sh:StandardBusinessDocumentHeader"/>
 	<xsl:template match="/sh:StandardBusinessDocument/eanucc:message/entityIdentification"/>
-
+	
+	<xsl:variable name="RESPONSE_CODE_invalid_product_or_item_identification" select="'INVALID_PRODUCT_OR_ITEM_IDENTIFICATION'"/>
+	<xsl:variable name="RESPONSE_CODE_other_unlisted_reason" select="'OTHER_UNLISTED_REASON'"/>
+	<xsl:variable name="RESPONSE_CODE_received_after_cutoff_date_or_time" select="'RECEIVED_AFTER_CUTOFF_DATE_OR_TIME'"/>
 	<xsl:variable name="RESPONSE_CODE_item_temporarily_not_available" select="'ITEM_TEMPORARILY_NOT_AVAILABLE'"/>
+	<xsl:variable name="RESPONSE_CODE_product_not_valid_for_location" select="'PRODUCT_NOT_VALID_FOR_LOCATION'"/>
+	<xsl:variable name="RESPONSE_CODE_discontinued_line" select="'DISCONTINUED_LINE'"/>
 		
 	
 	<!-- Start point - ensure required outer BatchRoot tag is applied -->
@@ -170,7 +175,7 @@ R Cambridge	| 2009-03-04		| 2787 Only split out SBR if SCR contains a slash
 											<xsl:with-param name="brakesReasonCode" select="orderResponseReasonCode"/>
 										</xsl:call-template>
 									</xsl:attribute>
-									<xsl:text>Unrecognised lines status code recieved from Brake Bros system</xsl:text>
+									<xsl:text>Unrecognised lines status code received from Brambles' system</xsl:text>
 								</ImplicitLinesStatus>
 							</xsl:otherwise>
 		
@@ -203,7 +208,12 @@ R Cambridge	| 2009-03-04		| 2787 Only split out SBR if SCR contains a slash
 									<xsl:attribute name="LineStatus">
 										<xsl:choose>
 											<xsl:when test="number(modifiedOrderInformation/requestedQuantity/value) = 0">Rejected</xsl:when>
+											<xsl:when test="orderResponseReasonCode = $RESPONSE_CODE_invalid_product_or_item_identification">Rejected</xsl:when>
+											<xsl:when test="orderResponseReasonCode = $RESPONSE_CODE_other_unlisted_reason">Rejected</xsl:when>
+											<xsl:when test="orderResponseReasonCode = $RESPONSE_CODE_received_after_cutoff_date_or_time">Rejected</xsl:when>
 											<xsl:when test="orderResponseReasonCode = $RESPONSE_CODE_item_temporarily_not_available">Rejected</xsl:when>
+											<xsl:when test="orderResponseReasonCode = $RESPONSE_CODE_product_not_valid_for_location">Rejected</xsl:when>
+											<xsl:when test="orderResponseReasonCode = $RESPONSE_CODE_discontinued_line">Rejected</xsl:when>											
 											<xsl:otherwise>Changed</xsl:otherwise>
 										</xsl:choose>
 									</xsl:attribute>
@@ -259,8 +269,15 @@ R Cambridge	| 2009-03-04		| 2787 Only split out SBR if SCR contains a slash
 										</xsl:attribute>
 										
 										
-										<xsl:choose>
+										<xsl:choose>											
+											
+											<xsl:when test="orderResponseReasonCode = $RESPONSE_CODE_invalid_product_or_item_identification">0</xsl:when>
+											<xsl:when test="orderResponseReasonCode = $RESPONSE_CODE_other_unlisted_reason">0</xsl:when>
+											<xsl:when test="orderResponseReasonCode = $RESPONSE_CODE_received_after_cutoff_date_or_time">0</xsl:when>
 											<xsl:when test="orderResponseReasonCode = $RESPONSE_CODE_item_temporarily_not_available">0</xsl:when>
+											<xsl:when test="orderResponseReasonCode = $RESPONSE_CODE_product_not_valid_for_location">0</xsl:when>
+											<xsl:when test="orderResponseReasonCode = $RESPONSE_CODE_discontinued_line">0</xsl:when>							
+											
 											<xsl:otherwise>
 												<xsl:value-of select="modifiedOrderInformation/requestedQuantity/value"/>											
 											</xsl:otherwise>
@@ -332,13 +349,13 @@ R Cambridge	| 2009-03-04		| 2787 Only split out SBR if SCR contains a slash
 			<xsl:when test="$brakesReasonCode = 'INVALID_DATE'">Invalid date</xsl:when>
 			<xsl:when test="$brakesReasonCode = 'DELIVERY_SLOT_NOT_VALID_FOR_LOCATION'">Delivery slot not valid for location</xsl:when>
 			<xsl:when test="$brakesReasonCode = 'MISSING_MESSAGE_REFERENCE_NUMBER'">Missing message reference number</xsl:when>
-			<xsl:when test="$brakesReasonCode = 'SENDER_NOT_AUTHORIZED_FOR_THIS_MESSAGE'">Sender not authorized for this message	</xsl:when>
-			<xsl:when test="$brakesReasonCode = 'DISCONTINUED_LINE'">Discontinued line</xsl:when>
+			<xsl:when test="$brakesReasonCode = 'SENDER_NOT_AUTHORIZED_FOR_THIS_MESSAGE'">Sender not authorized for this message</xsl:when>
+			<xsl:when test="$brakesReasonCode = $RESPONSE_CODE_discontinued_line">Discontinued line</xsl:when>
 			<xsl:when test="$brakesReasonCode = $RESPONSE_CODE_item_temporarily_not_available">Item temporarily not available</xsl:when>
-			<xsl:when test="$brakesReasonCode = 'INVALID_PRODUCT_OR_ITEM_IDENTIFICATION'">Invalid product or item identification</xsl:when>
-			<xsl:when test="$brakesReasonCode = 'PRODUCT_NOT_VALID_FOR_LOCATION'">Product not valid for location</xsl:when>
-			<xsl:when test="$brakesReasonCode = 'RECEIVED_AFTER_CUTOFF_DATE_OR_TIME'">Received after cutoff date or time</xsl:when>
-			<xsl:when test="$brakesReasonCode = 'OTHER_UNLISTED_REASON'">Other unlisted reason</xsl:when>
+			<xsl:when test="$brakesReasonCode = $RESPONSE_CODE_invalid_product_or_item_identification">Invalid product or item identification</xsl:when>
+			<xsl:when test="$brakesReasonCode = $RESPONSE_CODE_product_not_valid_for_location">Product not valid for location</xsl:when>
+			<xsl:when test="$brakesReasonCode = $RESPONSE_CODE_received_after_cutoff_date_or_time">Received after cutoff date or time</xsl:when>
+			<xsl:when test="$brakesReasonCode = $RESPONSE_CODE_other_unlisted_reason">Other unlisted reason</xsl:when>
 			
 			<!-- default -->
 			<xsl:otherwise></xsl:otherwise>
