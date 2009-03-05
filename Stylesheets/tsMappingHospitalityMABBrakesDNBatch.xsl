@@ -203,7 +203,7 @@
 			<xsl:text>:</xsl:text>
 			<xsl:choose>
 				<xsl:when test="DespatchedQuantity/@UnitOfMeasure = 'KGM'">
-					<xsl:value-of select="DespatchedQuantity * 1000"/>
+					<xsl:value-of select="format-number(DespatchedQuantity * 1000,'0')"/>
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:value-of select="DespatchedQuantity"/>
