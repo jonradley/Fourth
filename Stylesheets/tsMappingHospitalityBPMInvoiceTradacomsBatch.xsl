@@ -21,13 +21,20 @@ Name				| Date				| Change
 	<!-- Start point - ensure required outer BatchRoot tag is applied -->
 	<xsl:template match="/">
 		<BatchRoot>
-			<Document>
-				<xsl:attribute name="TypePrefix">INV</xsl:attribute>
-				<!-- Create invoice -->		
-				<xsl:apply-templates/>
-			</Document>
+		
+			<xsl:variable name="suppliersCodeForBuyer" select="translate(/Batch/BatchDocuments/BatchDocument/Invoice/InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"/>
+		
+		
+			<xsl:if test="$suppliersCodeForBuyer != 'fullers'">
+				<!-- Don't create invoices for fullers -->
+				<Document>
+					<xsl:attribute name="TypePrefix">INV</xsl:attribute>
+					<!-- Create invoice -->		
+					<xsl:apply-templates/>
+				</Document>
+			</xsl:if>
 			
-			<xsl:if test="translate(/Batch/BatchDocuments/BatchDocument/Invoice/InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz') = 'fullers'">
+			<xsl:if test="$suppliersCodeForBuyer = 'fullers'">
 				<!-- Create delivery notes for fullers -->
 				<Document>
 					<xsl:attribute name="TypePrefix">DNB</xsl:attribute>				
