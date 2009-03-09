@@ -14,20 +14,29 @@
 ==========================================================================================
  25/09/2008	| R Cambridge			| 2841 Created module 
 ==========================================================================================
- 21/10/2008	| R Cambridge     	| 2524 temporary fix to ignore split pack info for some suppliers
+ 21/10/2008	| R Cambridge     		| 2524 temporary fix to ignore split pack info for some suppliers
+==========================================================================================
+ 09/03/2009	| Rave Tech  			| 2719 Consolidate twice appearing product code into one line using non-supersession price.
 ==========================================================================================
            	|                 	|
 =======================================================================================-->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	<xsl:output method="xml" encoding="UTF-8"/>
 	
 	<xsl:include href="tsMappingHospitalityTRG_SupplierSplitPackLogic.xsl"/>
-	
-	<xsl:variable name="sProcessMaxSplits">
-		<xsl:call-template name="sProcessMaxSplits">
-			<xsl:with-param name="vsSupplierCode" select="/DeliveryNote/DeliveryNoteHeader/Supplier/SuppliersLocationID/BuyersCode"/>	
-		</xsl:call-template>
-	</xsl:variable>	
+			
+	<xsl:variable name="sProcessMaxSplits">		
+		<xsl:choose>
+				<xsl:when test="/DeliveryNote/DeliveryNoteHeader/PurchaseOrderReferences/PurchaseOrderReference &lt; 0">
+					 <xsl:value-of select="'IGNORE_MAXSPLITS'"/> 									
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:call-template name="sProcessMaxSplits">
+					<xsl:with-param name="vsSupplierCode" select="/DeliveryNote/DeliveryNoteHeader/Supplier/SuppliersLocationID/BuyersCode"/>	
+					</xsl:call-template>										
+				</xsl:otherwise>
+		</xsl:choose>		
+	</xsl:variable>
 		
 	<xsl:template match="/DeliveryNote">
 		<Order>
@@ -107,49 +116,119 @@
 				</xsl:choose>
 			</xsl:attribute>
 
-			<xsl:for-each select="DeliveryNoteDetail/DeliveryNoteLine">
+			<!-- For any line that says it's not a substitution.... -->
+			<!-- ... or any line that says it is but the line for the ordered item isn't present -->
+			<xsl:for-each select="DeliveryNoteDetail/DeliveryNoteLine[not(SubstitutedProductID/SuppliersProductCode = 					 	/DeliveryNote/DeliveryNoteDetail/DeliveryNoteLine/ProductID/SuppliersProductCode)]">
 
-				<!-- write the details of this line -->
+				<xsl:variable name="sLineStatus">
+					<xsl:value-of select="current()/@LineStatus"/>
+				</xsl:variable>
+				<xsl:variable name="nQuantity">
+					<xsl:value-of select="current()/ConfirmedQuantity"/>
+				</xsl:variable>
+				<xsl:variable name="nUnitValue">
+					<xsl:value-of select="current()/UnitValueExclVAT"/>
+				</xsl:variable>
 				
-				<!-- Spec from Torex said these elements should be called DeliveryItem but it wasn't the case -->				
-				<OrderItem>
-					
-					<xsl:attribute name="SupplierProductCode">
-						<xsl:value-of select="ProductID/SuppliersProductCode"/>
-					</xsl:attribute>
-					
-					<xsl:attribute name="Quantity">
-						<xsl:choose>
-							<xsl:when test="$sProcessMaxSplits = $IGNORE_MAXSPLITS">
-								<xsl:value-of select="format-number(DespatchedQuantity ,'0.00000000000000')"/>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:value-of select="format-number(DespatchedQuantity div MaxSplits,'0.00000000000000')"/>
-							</xsl:otherwise>
-						</xsl:choose>					
-					</xsl:attribute>
-					
-					<xsl:attribute name="MajorUnitPrice">
-						<xsl:choose>
-							<xsl:when test="UnitValueExclVAT">
-								<xsl:value-of select="UnitValueExclVAT"/>
-							</xsl:when>
-							<xsl:otherwise>0.00</xsl:otherwise>
-						</xsl:choose>
-					</xsl:attribute>
-					
-					<xsl:attribute name="SupplierPackageGuid">
-						<xsl:value-of select="'{00000000-0000-0000-0000-000000000000}'"/>
-					</xsl:attribute>
-					
-				</OrderItem>	
+				<xsl:variable name="objCurrentLine" select="current()"/>
+												
+				<xsl:variable name="SkipLine">
+                                                       
+                                 <xsl:choose>
+                                        <xsl:when test="0 &lt; count(//DeliveryNoteDetail/DeliveryNoteLine[.!=$objCurrentLine and ProductID/SuppliersProductCode =												$objCurrentLine/ProductID/SuppliersProductCode][$sLineStatus='Added' and (@LineStatus='Accepted' or @LineStatus='Changed' or @LineStatus='Rejected')])">
+
+                                               <xsl:text>True</xsl:text>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                               <xsl:variable name="nSumQuantity" select="sum(//DeliveryNoteDetail/DeliveryNoteLine[.!=$objCurrentLine and ProductID/SuppliersProductCode = 									$objCurrentLine/ProductID/SuppliersProductCode][@LineStatus='Added' and ($sLineStatus='Accepted' or $sLineStatus='Changed' or $sLineStatus='Rejected')]/ConfirmedQuantity ) + $nQuantity"/>
+                                               <xsl:text>XML to process</xsl:text>
+                                               <OrderItem>
+                                                      <xsl:call-template name="WriteLine2">
+                                                             <xsl:with-param name="vQuantity"><xsl:value-of select="$nSumQuantity"/></xsl:with-param>
+                                                             <xsl:with-param name="vUnitValue"><xsl:value-of select="$nUnitValue"/></xsl:with-param>
+                                                      </xsl:call-template>
+                                               </OrderItem>
+
+                                        </xsl:otherwise>
+                                 </xsl:choose>
+          
+                           </xsl:variable>
 				
+				<!--Output variable value-->
+				<xsl:if test="$SkipLine!='' and $SkipLine!='True'">
+					<xsl:copy-of select="msxsl:node-set($SkipLine)/*"/>
+				</xsl:if>
+
+				<xsl:if test="$SkipLine = ''">
+					<!-- write the details of this line -->
+					<OrderItem>
+						<xsl:call-template name="writeLine"/>
+						<!-- write the details of the lines that say they are substitions for this line -->
+						<xsl:for-each select="/DeliveryNote/DeliveryNoteDetail/DeliveryNoteLine[SubstitutedProductID/SuppliersProductCode = current()/ProductID/SuppliersProductCode]">
+							<OrderItem>
+								<xsl:call-template name="writeLine"/>	
+							</OrderItem>	
+						</xsl:for-each>
+					</OrderItem>	
+				</xsl:if>
 			</xsl:for-each>
 			
 		</Order>
 		
 	</xsl:template>
 	
+	<xsl:template name="writeLine">
+		<xsl:attribute name="SupplierProductCode">
+			<xsl:value-of select="ProductID/SuppliersProductCode"/>
+		</xsl:attribute>	
+		<xsl:attribute name="Quantity">		
+			<xsl:choose>
+				<xsl:when test="$sProcessMaxSplits = $IGNORE_MAXSPLITS">
+					<xsl:value-of select="format-number(ConfirmedQuantity,'0.00000000000000')"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="format-number(ConfirmedQuantity div MaxSplits,'0.00000000000000')"/>
+				</xsl:otherwise>
+			</xsl:choose>			
+		</xsl:attribute>
+		<xsl:attribute name="MajorUnitPrice">
+			<xsl:value-of select="format-number(UnitValueExclVAT,'0.00')"/>
+		</xsl:attribute>
+		<xsl:attribute name="SupplierPackageGuid">
+			<xsl:value-of select="'{00000000-0000-0000-0000-000000000000}'"/>
+		</xsl:attribute>	
+		<xsl:attribute name="MaxSplits">
+			<xsl:value-of select="MaxSplits"/>
+		</xsl:attribute>	
+	</xsl:template>
+	
+	<xsl:template name="WriteLine2">
+		<xsl:param name="vQuantity"/>
+		<xsl:param name="vUnitValue"/>
+	
+		<xsl:attribute name="SupplierProductCode">
+			<xsl:value-of select="ProductID/SuppliersProductCode"/>
+		</xsl:attribute>	
+		<xsl:attribute name="Quantity">		
+			<xsl:choose>
+				<xsl:when test="$sProcessMaxSplits = $IGNORE_MAXSPLITS">
+					<xsl:value-of select="format-number($vQuantity,'0.00000000000000')"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="format-number($vQuantity div MaxSplits,'0.00000000000000')"/>
+				</xsl:otherwise>
+			</xsl:choose>			
+		</xsl:attribute>
+		<xsl:attribute name="MajorUnitPrice">
+			<xsl:value-of select="format-number($vUnitValue,'0.00')"/>
+		</xsl:attribute>
+		<xsl:attribute name="SupplierPackageGuid">
+			<xsl:value-of select="'{00000000-0000-0000-0000-000000000000}'"/>
+		</xsl:attribute>	
+		<xsl:attribute name="MaxSplits">
+			<xsl:value-of select="MaxSplits"/>
+		</xsl:attribute>	
+	</xsl:template>
 
 	
 </xsl:stylesheet>
