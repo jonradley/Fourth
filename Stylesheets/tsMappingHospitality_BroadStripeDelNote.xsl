@@ -14,13 +14,8 @@
 			<xsl:text>|</xsl:text>
 			<xsl:value-of select="ProductDescription"/>
 			<xsl:text>|</xsl:text>
-				<xsl:if test="DespatchedQuantity != 'KGM'">
-					<xsl:value-of select="DespatchedQuantity"/>
-				</xsl:if>
 			<xsl:text>|</xsl:text>
-				<xsl:if test="DespatchedQuantity = 'KGM'">
-					<xsl:value-of select="DespatchedQuantity"/>
-				</xsl:if>
+				<xsl:value-of select="DespatchedQuantity"/>
 			<xsl:text>|</xsl:text>
 			<xsl:value-of select="UnitValueExclVAT"/>
 			<xsl:text>&#13;</xsl:text>
