@@ -115,7 +115,7 @@
 		</xsl:if>
 	</xsl:template>
 	
-	<xsl:template match="CreditedQuantity[. != 0]">
+	<xsl:template match="CreditedQuantity">
 		<xsl:if test="number(.) != 0">
 			<CreditedQuantity>
 				<xsl:attribute name="UnitOfMeasure">
