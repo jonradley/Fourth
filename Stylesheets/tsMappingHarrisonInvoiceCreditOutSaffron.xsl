@@ -23,7 +23,7 @@
 	<xsl:output method="text"/>
 	
 	<!-- define keys (think of them a bit like database indexes) to be used for finding distinct line information.-->
-	<xsl:key name="keyLinesByVATCode" match="InvoiceTrailer/VATSubTotals/VATSubTotal | CreditNoteTrailer/VATSubTotals/VATSubTotal" use="concat(@VATCode,generate-id(../../..))"/>
+	<xsl:key name="keyLinesByVATCode" match="InvoiceTrailer/VATSubTotals/VATSubTotal | CreditNoteTrailer/VATSubTotals/VATSubTotal" use="concat(@VATCode,number(@VATRate),generate-id(../../..))"/>
 	
 	<xsl:template match="/BatchRoot/Invoice | /BatchRoot/CreditNote">
 
@@ -102,32 +102,43 @@
 		<xsl:for-each select="(InvoiceTrailer/VATSubTotals/VATSubTotal | CreditNoteTrailer/VATSubTotals/VATSubTotal)">
 			<xsl:sort select="@VATCode" data-type="text"/>
 			<xsl:variable name="VATCode" select="@VATCode"/>
-			<xsl:if test="generate-id() = generate-id(key('keyLinesByVATCode', concat($VATCode,generate-id(../../..))))">					
+			<xsl:variable name="VATRate" select="@VATRate"/>
+			<xsl:if test="generate-id() = generate-id(key('keyLinesByVATCode', concat($VATCode,number($VATRate),generate-id(../../..))))">					
 				<xsl:value-of select="$NewLine"/>
 				<xsl:text>INVTAX,</xsl:text>
 	
 				<xsl:value-of select="substring(../../../InvoiceHeader/InvoiceReferences/InvoiceReference | 	../../../CreditNoteHeader/CreditNoteReferences/CreditNoteReference,1,20)"/>
 				<xsl:text>,</xsl:text>
 				
-				<xsl:value-of select="substring($VATCode,1,10)"/>
+				<xsl:choose>
+					<xsl:when test="substring($VATCode,1,1) = 'L'">S</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="substring($VATCode,1,1)"/>
+					</xsl:otherwise>
+				</xsl:choose>
+				<xsl:choose>
+					<xsl:when test="number($VATRate) = 17.5">17.5</xsl:when>
+					<xsl:when test="number($VATRate) = 15">15</xsl:when>
+					<xsl:when test="number($VATRate) = 5">5</xsl:when>
+				</xsl:choose>
 				<xsl:text>,</xsl:text>
 	
 				<xsl:choose>
 					<xsl:when test="/BatchRoot/Invoice">
-						<xsl:value-of select="format-number(sum(../../../InvoiceTrailer/VATSubTotals/VATSubTotal[@VATCode= $VATCode]/DocumentTotalExclVATAtRate),'0.00')"/>
+						<xsl:value-of select="format-number(sum(../../../InvoiceTrailer/VATSubTotals/VATSubTotal[@VATCode= $VATCode and number(@VATRate) = number($VATRate)]/DocumentTotalExclVATAtRate),'0.00')"/>
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:value-of select="format-number(-1 * sum(../../../CreditNoteTrailer/VATSubTotals/VATSubTotal[@VATCode= 	$VATCode]/DocumentTotalExclVATAtRate),'0.00')"/>
+						<xsl:value-of select="format-number(-1 * sum(../../../CreditNoteTrailer/VATSubTotals/VATSubTotal[@VATCode= $VATCode and number(@VATRate) = number($VATRate)]/DocumentTotalExclVATAtRate),'0.00')"/>
 					</xsl:otherwise>
 				</xsl:choose>
 				<xsl:text>,</xsl:text>
 			
 				<xsl:choose>
 					<xsl:when test="/BatchRoot/Invoice">
-						<xsl:value-of select="format-number(sum(../../../InvoiceTrailer/VATSubTotals/VATSubTotal[@VATCode= $VATCode]/VATAmountAtRate),'0.00')"/>
+						<xsl:value-of select="format-number(sum(../../../InvoiceTrailer/VATSubTotals/VATSubTotal[@VATCode= $VATCode and number(@VATRate) = number($VATRate)]/VATAmountAtRate),'0.00')"/>
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:value-of select="format-number(-1 * sum(../../../CreditNoteTrailer/VATSubTotals/VATSubTotal[@VATCode= $VATCode]/VATAmountAtRate),'0.00')"/>
+						<xsl:value-of select="format-number(-1 * sum(../../../CreditNoteTrailer/VATSubTotals/VATSubTotal[@VATCode= $VATCode and number(@VATRate) = number($VATRate)]/VATAmountAtRate),'0.00')"/>
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:if>
@@ -188,7 +199,17 @@
 			</xsl:choose>
 			<xsl:text>,</xsl:text>
 
-			<xsl:value-of select="substring(VATCode,1,10)"/>
+			<xsl:choose>
+				<xsl:when test="substring(VATCode,1,1) = 'L'">S</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="substring(VATCode,1,1)"/>
+				</xsl:otherwise>
+			</xsl:choose>
+			<xsl:choose>
+				<xsl:when test="number(VATRate) = 17.5">17.5</xsl:when>
+				<xsl:when test="number(VATRate) = 15">15</xsl:when>
+				<xsl:when test="number(VATRate) = 5">5</xsl:when>
+			</xsl:choose>
 			<xsl:text>,</xsl:text>
 
 			<xsl:value-of select="substring(ProductDescription,1,50)"/>
