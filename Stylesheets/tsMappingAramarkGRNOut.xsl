@@ -86,8 +86,11 @@
 			<xsl:value-of select="script:msPadNumber(/GoodsReceivedNote/GoodsReceivedNoteTrailer/TotalExclVAT, 12, 2)"/>
 			<xsl:value-of select="script:msPad('', 3)"/>
 			<xsl:value-of select="/GoodsReceivedNote/GoodsReceivedNoteHeader/ReceivedDeliveryDetails/DeliveryDate"/>
-			<xsl:value-of select="script:msPad(/GoodsReceivedNote/GoodsReceivedNoteHeader/Supplier/SuppliersLocationID/BuyersCode, 20)"/>
-			<xsl:value-of select="script:msPad(/GoodsReceivedNote/GoodsReceivedNoteHeader/Supplier/SuppliersLocationID/BuyersCode, 20)"/>
+			<xsl:variable name="PaddedPLAccountNumber">
+				<xsl:value-of select="script:msAddPaddingPrefix(/GoodsReceivedNote/GoodsReceivedNoteHeader/Supplier/SuppliersLocationID/BuyersCode, 7, '0')" />
+			</xsl:variable>
+			<xsl:value-of select="script:msPad(concat('019', $PaddedPLAccountNumber), 20)"/>
+			<xsl:value-of select="script:msPad(concat('019', $PaddedPLAccountNumber), 20)"/>
 			<xsl:value-of select="script:msPad('', 30)"/>
 			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
 			<xsl:value-of select="script:msPad('', 35)"/>
@@ -176,6 +179,20 @@
 			
 			return vsString
 				
+		}
+
+		function msAddPaddingPrefix(vsString, vlLength, vsPrefix)
+		{
+			try
+			{
+				vsString = vsString(0).text;
+			}
+			catch(e){}
+			while(vsString.length<vlLength)
+			{
+				vsString = vsPrefix + vsString;
+			}
+			return vsString.substring(vsString.length - vlLength)
 		}
 		
 		/*=========================================================================================
