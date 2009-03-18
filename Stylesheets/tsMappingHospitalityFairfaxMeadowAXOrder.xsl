@@ -129,19 +129,7 @@
 				<!-- If this order is from 3663 add the price file code (there's only no agreement so no PL account TR to store this in) -->
 				<xsl:text>BAR</xsl:text>
 			</xsl:when>
-			<xsl:when test="'PM6' = PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode">
-				<!-- If this order is from 3663 add the price file code (there's only no agreement so no PL account TR to store this in) -->
-				<xsl:text>TPM</xsl:text>
-			</xsl:when>
-			<xsl:when test="'PM8' = PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode">
-				<!-- If this order is from 3663 add the price file code (there's only no agreement so no PL account TR to store this in) -->
-				<xsl:text>TPM</xsl:text>
-			</xsl:when>
-			<xsl:when test="'PM10' = PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode">
-				<!-- If this order is from 3663 add the price file code (there's only no agreement so no PL account TR to store this in) -->
-				<xsl:text>TPM</xsl:text>
-			</xsl:when>
-			<xsl:when test="'PM12' = PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode">
+			<xsl:when test="'PM' = PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode">
 				<!-- If this order is from 3663 add the price file code (there's only no agreement so no PL account TR to store this in) -->
 				<xsl:text>TPM</xsl:text>
 			</xsl:when>
@@ -167,19 +155,7 @@
 		<!-- DistributionDepotCode -->
 		<!--xsl:value-of select="PurchaseOrderHeader/HeaderExtraData/DistributionDepotCode"/-->	
 		<xsl:choose>
-			<xsl:when test="'PM6' = PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode">
-				<!-- get the 'TH' bit -->
-				<xsl:value-of select="PurchaseOrderHeader/HeaderExtraData/DistDepotCode"/>
-			</xsl:when>
-			<xsl:when test="'PM8' = PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode">
-				<!-- get the 'TH' bit -->
-				<xsl:value-of select="PurchaseOrderHeader/HeaderExtraData/DistDepotCode"/>
-			</xsl:when>
-			<xsl:when test="'PM10' = PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode">
-				<!-- get the 'TH' bit -->
-				<xsl:value-of select="PurchaseOrderHeader/HeaderExtraData/DistDepotCode"/>
-			</xsl:when>
-			<xsl:when test="'PM12' = PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode">
+			<xsl:when test="'PM' = PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode">
 				<!-- get the 'TH' bit -->
 				<xsl:value-of select="PurchaseOrderHeader/HeaderExtraData/DistDepotCode"/>
 			</xsl:when>
@@ -205,10 +181,20 @@
 			<xsl:text>D</xsl:text>
 			<xsl:text>,</xsl:text>
 			<!-- Supplier’s Product Code -->
-			<xsl:text>&quot;</xsl:text>
-			<xsl:value-of select="ProductID/SuppliersProductCode"/>
-			<xsl:text>&quot;</xsl:text>
-			<xsl:text>,</xsl:text>
+			<xsl:choose>
+				<xsl:when test="ProductID/SuppliersProductCode !=''">
+					<xsl:text>"</xsl:text>
+					<xsl:value-of select="ProductID/SuppliersProductCode"/>
+					<xsl:text>"</xsl:text>
+					<xsl:text>,</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:text>"</xsl:text>
+					<xsl:value-of select="ProductID/BuyersProductCode"/>
+					<xsl:text>"</xsl:text>
+					<xsl:text>,</xsl:text>
+				</xsl:otherwise>
+			</xsl:choose>
 			<!-- Product Description -->
 			<xsl:if test="'not provided' != translate(ProductDescription,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')">
 				<xsl:text>&quot;</xsl:text>
