@@ -43,7 +43,7 @@
 					</SendersCodeForRecipient>
 					
 					<!-- Senders Branch Reference comes from Buyers code for ShipTo if there, else it comes from ShipTo GLN -->
-					<SendersBranchReference>
+					<!--<SendersBranchReference>
 						<xsl:choose>
 							<xsl:when test="/Order/ShipTo/BuyerAssigned">
 								<xsl:value-of select="/Order/ShipTo/BuyerAssigned"/>
@@ -52,7 +52,7 @@
 								<xsl:value-of select="/Order/ShipTo/ShipToGLN"/>
 							</xsl:otherwise>
 						</xsl:choose>			
-					</SendersBranchReference>
+					</SendersBranchReference>-->
 					
 					<!-- SendersName, Address1 - 4 and PostCode will be populated by subsequent processors -->
 		
