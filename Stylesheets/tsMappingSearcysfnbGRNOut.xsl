@@ -31,21 +31,25 @@
 			
 			<GoodsReceivedNoteDetail>
 				<xsl:for-each select="/GoodsReceivedNote/GoodsReceivedNoteDetail/GoodsReceivedNoteLine">
-					<xsl:copy-of select="LineStatus"/>
-					<xsl:copy-of select="LineNumber"/>
-					<xsl:copy-of select="ProductDescription"/>
-					<xsl:copy-of select="OrderedQuantity"/>
-					<xsl:copy-of select="ConfirmedQuantity"/>
-					<xsl:copy-of select="DeliveredQuantity"/>
-					<xsl:copy-of select="AcceptedQuantity"/>
-					<!--xsl:copy-of select="PackSize"/-->
-					<PackSize>EA</PackSize>
-					<xsl:copy-of select="UnitValueExclVAT"/>
-					<xsl:copy-of select="LineValueExclVAT"/>
-					<xsl:copy-of select="LineDiscountRate"/>
-					<xsl:copy-of select="LineDiscountValue"/>
-					<xsl:copy-of select="LineExtraData"/>
-					<xsl:text>Yo</xsl:text>
+					<GoodsReceivedNoteLine>
+						<xsl:copy-of select="LineStatus"/>
+						<xsl:copy-of select="LineNumber"/>
+						<xsl:copy-of select="ProductDescription"/>
+						<xsl:copy-of select="OrderedQuantity"/>
+						<xsl:copy-of select="ConfirmedQuantity"/>
+						<xsl:copy-of select="DeliveredQuantity"/>
+						<xsl:copy-of select="AcceptedQuantity"/>
+						<!--xsl:copy-of select="PackSize"/-->
+						<PackSize>EA</PackSize>
+						<xsl:copy-of select="UnitValueExclVAT"/>
+						<xsl:copy-of select="LineValueExclVAT"/>
+						<xsl:copy-of select="LineDiscountRate"/>
+						<xsl:copy-of select="LineDiscountValue"/>
+						<xsl:copy-of select="LineExtraData"/>
+						<tsDescription><xsl:value-of select="ProductDescription"/></tsDescription>
+						<tsPackSize><xsl:value-of select="PackSize"/></tsPackSize>
+						<tsSupplierDeliveryUOM><xsl:value-of select="AcceptedQuantity/@UnitOfMeasure"/></tsSupplierDeliveryUOM>
+					</GoodsReceivedNoteLine>
 				</xsl:for-each>
 			</GoodsReceivedNoteDetail>
 			
