@@ -43,7 +43,7 @@
 							<TradeSimpleHeader>
 								<!-- SCR comes from Sellers code for buyer if there, else it comes from Buyer GLN -->
 								<SendersCodeForRecipient>
-									<xsl:value-of select="Invoice/Buyer/BuyerReferences/SuppliersCodeForBuyer"/>
+									<xsl:value-of select="Invoice/Delivery/DeliverTo/DeliverToReferences/BuyersCodeForDelivery"/>
 								</SendersCodeForRecipient>
 								<!-- SendersBranchReference not used for Inverarity yet (if ever) -->
 								<!-- SBR used to pick out the PL Account code to be used in the trading relationship set up. This could be Buyer or Supplier value. -->
@@ -166,9 +166,9 @@
 												<xsl:value-of select="/Invoice/ShipTo/BuyerAssigned"/>
 											</BuyersCode>
 										</xsl:if-->
-										<xsl:if test="string(Invoice/Buyer/BuyerReferences/SuppliersCodeForBuyer)">
+										<xsl:if test="string(Invoice/Delivery/DeliverTo/DeliverToReferences/BuyersCodeForDelivery)">
 											<SuppliersCode>
-												<xsl:value-of select="Invoice/Buyer/BuyerReferences/SuppliersCodeForBuyer"/>
+												<xsl:value-of select="Invoice/Delivery/DeliverTo/DeliverToReferences/BuyersCodeForDelivery"/>
 											</SuppliersCode>
 										</xsl:if>
 									</ShipToLocationID>
