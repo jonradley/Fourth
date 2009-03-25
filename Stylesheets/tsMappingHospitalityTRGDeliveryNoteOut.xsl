@@ -20,7 +20,7 @@
 ==========================================================================================
            	|                 	|
 =======================================================================================-->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl">
 	<xsl:output method="xml" encoding="UTF-8"/>
 	
 	<xsl:include href="tsMappingHospitalityTRG_SupplierSplitPackLogic.xsl"/>
@@ -127,7 +127,10 @@
 					<xsl:value-of select="current()/ConfirmedQuantity"/>
 				</xsl:variable>
 				<xsl:variable name="nUnitValue">
-					<xsl:value-of select="current()/UnitValueExclVAT"/>
+					<xsl:choose>
+						<xsl:when test="current()/UnitValueExclVAT"><xsl:value-of select="current()/UnitValueExclVAT"/></xsl:when>
+						<xsl:otherwise>0</xsl:otherwise>
+					</xsl:choose>
 				</xsl:variable>
 				
 				<xsl:variable name="objCurrentLine" select="current()"/>
@@ -192,7 +195,12 @@
 			</xsl:choose>			
 		</xsl:attribute>
 		<xsl:attribute name="MajorUnitPrice">
-			<xsl:value-of select="format-number(UnitValueExclVAT,'0.00')"/>
+			<xsl:choose>
+        		<xsl:when test="UnitValueExclVAT">
+           		<xsl:value-of select="format-number(UnitValueExclVAT,'0.00')"/>
+           </xsl:when>
+           <xsl:otherwise>0.00</xsl:otherwise>
+			</xsl:choose>
 		</xsl:attribute>
 		<xsl:attribute name="SupplierPackageGuid">
 			<xsl:value-of select="'{00000000-0000-0000-0000-000000000000}'"/>
@@ -205,7 +213,6 @@
 	<xsl:template name="WriteLine2">
 		<xsl:param name="vQuantity"/>
 		<xsl:param name="vUnitValue"/>
-	
 		<xsl:attribute name="SupplierProductCode">
 			<xsl:value-of select="ProductID/SuppliersProductCode"/>
 		</xsl:attribute>	
