@@ -67,7 +67,7 @@
 											<ProductID>
 												<SuppliersProductCode><xsl:value-of select="ProductID/SuppliersProductCode"/></SuppliersProductCode>
 											</ProductID>
-											<CreditNotedQuantity><xsl:value-of select="CreditNotedQuantity"/></CreditNotedQuantity>
+											<CreditedQuantity><xsl:value-of select="CreditedQuantity"/></CreditedQuantity>
 											<UnitValueExclVAT><xsl:value-of select="UnitValueExclVAT"/></UnitValueExclVAT>
 											<LineValueExclVAT><xsl:value-of select="LineValueExclVAT"/></LineValueExclVAT>
 											<xsl:choose>
