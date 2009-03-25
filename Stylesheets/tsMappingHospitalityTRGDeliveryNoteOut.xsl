@@ -124,7 +124,7 @@
 					<xsl:value-of select="current()/@LineStatus"/>
 				</xsl:variable>
 				<xsl:variable name="nQuantity">
-					<xsl:value-of select="current()/ConfirmedQuantity"/>
+					<xsl:value-of select="current()/DespatchedQuantity"/>
 				</xsl:variable>
 				<xsl:variable name="nUnitValue">
 					<xsl:choose>
@@ -143,7 +143,7 @@
                                                <xsl:text>True</xsl:text>
                                         </xsl:when>
                                         <xsl:otherwise>
-                                               <xsl:variable name="nSumQuantity" select="sum(//DeliveryNoteDetail/DeliveryNoteLine[.!=$objCurrentLine and ProductID/SuppliersProductCode = 									$objCurrentLine/ProductID/SuppliersProductCode][@LineStatus='Added' and ($sLineStatus='Accepted' or $sLineStatus='Changed' or $sLineStatus='Rejected')]/ConfirmedQuantity ) + $nQuantity"/>
+                                               <xsl:variable name="nSumQuantity" select="sum(//DeliveryNoteDetail/DeliveryNoteLine[.!=$objCurrentLine and ProductID/SuppliersProductCode = 									$objCurrentLine/ProductID/SuppliersProductCode][@LineStatus='Added' and ($sLineStatus='Accepted' or $sLineStatus='Changed' or $sLineStatus='Rejected')]/DespatchedQuantity ) + $nQuantity"/>
                                                <xsl:text>XML to process</xsl:text>
                                                <OrderItem>
                                                       <xsl:call-template name="WriteLine2">
@@ -187,10 +187,10 @@
 		<xsl:attribute name="Quantity">		
 			<xsl:choose>
 				<xsl:when test="$sProcessMaxSplits = $IGNORE_MAXSPLITS">
-					<xsl:value-of select="format-number(ConfirmedQuantity,'0.00000000000000')"/>
+					<xsl:value-of select="format-number(DespatchedQuantity,'0.00000000000000')"/>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:value-of select="format-number(ConfirmedQuantity div MaxSplits,'0.00000000000000')"/>
+					<xsl:value-of select="format-number(DespatchedQuantity div MaxSplits,'0.00000000000000')"/>
 				</xsl:otherwise>
 			</xsl:choose>			
 		</xsl:attribute>
