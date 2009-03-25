@@ -59,7 +59,7 @@ Moty Dimant	| 06/03/2009	| Created FSS
 								<ProductID>
 									<SuppliersProductCode RecordPos="DTL" LPos="6" UPos="35"/>
 								</ProductID>
-								<CreditNotedQuantity RecordPos="DTL" LPos="76" UPos="85"/>
+								<CreditedQuantity RecordPos="DTL" LPos="76" UPos="85"/>
 								<UnitValueExclVAT RecordPos="DTL" LPos="101" UPos="110"/>
 								<LineValueExclVAT RecordPos="DTL" LPos="127" UPos="136"/>
 								<VATCode RecordPos="DTL" LPos="137" UPos="141"/>
