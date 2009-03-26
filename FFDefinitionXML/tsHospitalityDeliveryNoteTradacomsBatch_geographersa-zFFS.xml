@@ -118,7 +118,7 @@ R Cambridge	| 29/10/2007	| 1556 Create module
 						<DeliveryNoteLine>
 							<ProductID>
 								<GTIN RecordPos="DLD=" LPos="3" SFPos="3"/>
-								<SuppliersProductCode RecordPos="DLD=" LPos="3" SFPos="2"/>
+								<SuppliersProductCode RecordPos="DLD=" LPos="3" SFPos="1"/>
 								<BuyersProductCode RecordPos="DLD=" LPos="5" SFPos="2"/>
 							</ProductID>
 							<ProductDescription RecordPos="DLD=" LPos="8" SFPos="1"/>
