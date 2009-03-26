@@ -52,7 +52,7 @@
 		<xsl:text>,</xsl:text>
 		<xsl:choose>
 			<!-- Don't supply address details for customers that don't have trade simple branches -->
-				<xsl:when test="TradeSimpleHeader/RecipientsCodeForSender = 'MC'">
+			<xsl:when test="TradeSimpleHeader/RecipientsCodeForSender = 'MC'">
 				<xsl:text>,</xsl:text>
 				<xsl:text>,</xsl:text>
 				<xsl:text>,</xsl:text>
@@ -76,39 +76,40 @@
 				</xsl:if>
 				<xsl:text>,</xsl:text>
 				<!-- Delivery Location Address Line 1 -->
-				<xsl:if test="PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine1 != '.'">
+				<xsl:if test="PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine1 != '.' and string(PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine1) != string		(PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine1)">
 					<xsl:text>&quot;</xsl:text>
 					<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine1"/>
 					<xsl:text>&quot;</xsl:text>
 				</xsl:if>
 				<xsl:text>,</xsl:text>
 				<!-- Delivery Location Address Line 2 -->
-				<xsl:if test="PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine2 != '.'">
+				<xsl:if test="PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine2 != '.' and string(PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine2) != string		(PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine2)">
 					<xsl:text>&quot;</xsl:text>
 					<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine2"/>
 					<xsl:text>&quot;</xsl:text>
 				</xsl:if>
 				<xsl:text>,</xsl:text>
 				<!-- Delivery Location Address Line 3 -->
-				<xsl:if test="PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine3 != '.'">
+				<xsl:if test="PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine3 != '.'and string(PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine3) != string		(PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine3)">
 					<xsl:text>&quot;</xsl:text>
 					<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine3"/>
 					<xsl:text>&quot;</xsl:text>
 				</xsl:if>
 				<xsl:text>,</xsl:text>
 				<!-- Delivery Location Address Line 4 -->
-				<xsl:if test="PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine4 != '.'">
+				<xsl:if test="PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine4 != '.'and string(PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine4) != string		(PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine4)">
 					<xsl:text>&quot;</xsl:text>
 					<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine4"/>
 					<xsl:text>&quot;</xsl:text>
 				</xsl:if>
 				<xsl:text>,</xsl:text>
 				<!-- Delivery Location Address PostCode -->
-				<xsl:if test="PurchaseOrderHeader/ShipTo/ShipToAddress/PostCode != '.'">
+				<xsl:if test="PurchaseOrderHeader/ShipTo/ShipToAddress/PostCode != '.'and string(PurchaseOrderHeader/ShipTo/ShipToAddress/Postcode) != string		(PurchaseOrderHeader/Buyer/BuyersAddress/Postcode)">
 					<xsl:text>&quot;</xsl:text>
 					<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToAddress/PostCode"/>
 					<xsl:text>&quot;</xsl:text>
 				</xsl:if>
+				<xsl:text>,</xsl:text>
 			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:text>,</xsl:text>
