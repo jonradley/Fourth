@@ -204,7 +204,16 @@
 			</xsl:if>
 			<xsl:text>,</xsl:text>
 			<!-- Pack Size -->
-			<xsl:value-of select="OrderedQuantity/@UnitOfMeasure"/>
+			<xsl:choose>
+				<xsl:when test="string(LineExtraData/InvalidUOM) != ''">
+					<xsl:value-of select="LineExtraData/InvalidUOM"/>
+				</xsl:when>
+			
+			<xsl:otherwise>
+				<xsl:value-of select="OrderedQuantity/@UnitOfMeasure"/>		
+			</xsl:otherwise>		
+			</xsl:choose>
+			
 			<xsl:text>,</xsl:text>
 			<!-- Quantity -->
 			<xsl:value-of select="OrderedQuantity"/>
