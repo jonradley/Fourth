@@ -118,7 +118,7 @@
 
 			<!-- For any line that says it's not a substitution.... -->
 			<!-- ... or any line that says it is but the line for the ordered item isn't present -->
-			<xsl:for-each select="DeliveryNoteDetail/DeliveryNoteLine[not(SubstitutedProductID/SuppliersProductCode = 					 	/DeliveryNote/DeliveryNoteDetail/DeliveryNoteLine/ProductID/SuppliersProductCode)]">
+			<xsl:for-each select="DeliveryNoteDetail/DeliveryNoteLine[not(SubstitutedProductID/SuppliersProductCode = /DeliveryNote/DeliveryNoteDetail/DeliveryNoteLine/ProductID/SuppliersProductCode)]">
 
 				<xsl:variable name="sLineStatus">
 					<xsl:value-of select="current()/@LineStatus"/>
@@ -138,12 +138,12 @@
 				<xsl:variable name="SkipLine">
                                                        
                                  <xsl:choose>
-                                        <xsl:when test="0 &lt; count(//DeliveryNoteDetail/DeliveryNoteLine[.!=$objCurrentLine and ProductID/SuppliersProductCode =												$objCurrentLine/ProductID/SuppliersProductCode][$sLineStatus='Added' and (@LineStatus='Accepted' or @LineStatus='Changed' or @LineStatus='Rejected')])">
+                                        <xsl:when test="0 &lt; count(//DeliveryNoteDetail/DeliveryNoteLine[.!=$objCurrentLine and ProductID/SuppliersProductCode = $objCurrentLine/ProductID/SuppliersProductCode][$sLineStatus='Added' and (@LineStatus='Accepted' or @LineStatus='Changed' or @LineStatus='Rejected')])">
 
                                                <xsl:text>True</xsl:text>
                                         </xsl:when>
                                         <xsl:otherwise>
-                                               <xsl:variable name="nSumQuantity" select="sum(//DeliveryNoteDetail/DeliveryNoteLine[.!=$objCurrentLine and ProductID/SuppliersProductCode = 									$objCurrentLine/ProductID/SuppliersProductCode][@LineStatus='Added' and ($sLineStatus='Accepted' or $sLineStatus='Changed' or $sLineStatus='Rejected')]/DespatchedQuantity ) + $nQuantity"/>
+                                               <xsl:variable name="nSumQuantity" select="sum(//DeliveryNoteDetail/DeliveryNoteLine[.!=$objCurrentLine and ProductID/SuppliersProductCode = $objCurrentLine/ProductID/SuppliersProductCode][@LineStatus='Added' and ($sLineStatus='Accepted' or $sLineStatus='Changed' or $sLineStatus='Rejected')]/DespatchedQuantity ) + $nQuantity"/>
                                                <xsl:text>XML to process</xsl:text>
                                                <OrderItem>
                                                       <xsl:call-template name="WriteLine2">
