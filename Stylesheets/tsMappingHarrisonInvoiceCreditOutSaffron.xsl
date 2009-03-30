@@ -14,6 +14,8 @@
 ******************************************************************************************
  30/01/2009	| Rave Tech		| Created Module
 ******************************************************************************************
+ 30/03/2009	| Lee Boyton	| 2817. If the RCS contains a # character then take the string after the #.
+******************************************************************************************
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -50,7 +52,14 @@
 		<xsl:text>,</xsl:text>
 		
 		<!-- Supplier Code -->
-		<xsl:value-of select="substring(TradeSimpleHeader/RecipientsCodeForSender,1,10)"/>
+		<xsl:choose>
+			<xsl:when test="contains(TradeSimpleHeader/RecipientsCodeForSender,'#')">
+				<xsl:value-of select="substring(substring-after(TradeSimpleHeader/RecipientsCodeForSender,'#'),1,10)"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="substring(TradeSimpleHeader/RecipientsCodeForSender,1,10)"/>
+			</xsl:otherwise>
+		</xsl:choose>
 		<xsl:text>,</xsl:text>
 		
 		<!-- Unit Code -->
