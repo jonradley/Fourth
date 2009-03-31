@@ -117,9 +117,6 @@
 			</xsl:attribute>
 
 			<xsl:for-each select="DeliveryNoteDetail/DeliveryNoteLine[not(ProductID/SuppliersProductCode = following::DeliveryNoteLine/ProductID/SuppliersProductCode)]">
-			
-
-
 				<!-- write the details of this line -->
 				
 				<!-- Spec from Torex said these elements should be called DeliveryItem but it wasn't the case -->	
@@ -165,7 +162,5 @@
 		</Order>
 		
 	</xsl:template>
-	
-
 	
 </xsl:stylesheet>
