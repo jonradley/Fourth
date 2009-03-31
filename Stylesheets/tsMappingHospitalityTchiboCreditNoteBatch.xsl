@@ -3,9 +3,6 @@
 										 xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:vbscript="http://blah.blah.blah"
 										 exclude-result-prefixes="blah msxsl vbscript">
 	
-	<xsl:variable name="defaultTaxRate" select="'17.5'"/>
-	<xsl:variable name="defaultTaxRateNew" select="'15'"/>
-
 	<xsl:template match="/">
 	
 		<BatchRoot>
@@ -77,14 +74,7 @@
 												<xsl:otherwise><VATCode><xsl:value-of select="VATCode"/></VATCode></xsl:otherwise>
 											</xsl:choose>
 											<VATRate>
-												<xsl:choose>
-															<xsl:when test="translate(substring(CreditNote/CreditNoteHeader/CreditNoteReferences/TaxPointDate,1,10),'-','')  &lt;= translate('2008-11-30','-','')  and translate(substring(CreditNote/CreditNoteHeader/CreditNoteReferences/TaxPointDate,1,10),'-','') &gt;=translate('2009-11-30','-','')">
-																<xsl:value-of select="format-number($defaultTaxRate, '0.00')"/>
-															</xsl:when>
-															<xsl:otherwise>
-																<xsl:value-of select="format-number($defaultTaxRateNew, '0.00')"/>
-															</xsl:otherwise>
-														</xsl:choose>
+												<xsl:value-of select="format-number(number(//CreditNoteTrailer/VATSubTotals/VATSubTotal/VATAmountAtRate) div number(//CreditNoteTrailer/VATSubTotals/VATSubTotal/DocumentTotalExclVATAtRate) * 100,'0.00')"/>
 											</VATRate>
 										</CreditNoteLine>	
 									</xsl:for-each>								
@@ -97,14 +87,7 @@
 											<VATSubTotal>
 												<xsl:if test="@VATCode = 'V'">
 													<xsl:attribute name="VATCode"><xsl:text>S</xsl:text></xsl:attribute>
-													<xsl:choose>
-														<xsl:when test="translate(substring(CreditNote/CreditNoteHeader/CreditNoteReferences/TaxPointDate,1,10),'-','')  &lt;= translate('2008-11-30','-','')  and translate(substring(CreditNote/CreditNoteHeader/CreditNoteReferences/TaxPointDate,1,10),'-','') &gt;=translate('2009-11-30','-','')">
-															<xsl:attribute name="VATRate"><xsl:value-of select="format-number($defaultTaxRate, '0.00')"/></xsl:attribute>
-														</xsl:when>
-														<xsl:otherwise>
-															<xsl:attribute name="VATRate"><xsl:value-of select="format-number($defaultTaxRateNew, '0.00')"/></xsl:attribute>
-														</xsl:otherwise>
-													</xsl:choose>
+													<xsl:attribute name="VATRate"><xsl:value-of select="format-number(number(VATAmountAtRate) div number(DocumentTotalExclVATAtRate) * 100, '0.00')"/></xsl:attribute>
 												</xsl:if>
 												<xsl:if test="@VATCode = 'Z'">
 													<xsl:attribute name="VATCode"><xsl:text>Z</xsl:text></xsl:attribute>
