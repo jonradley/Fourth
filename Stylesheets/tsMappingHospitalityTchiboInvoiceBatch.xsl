@@ -97,15 +97,8 @@
 											<VATSubTotal>
 												<xsl:if test="@VATCode = 'V'">
 													<xsl:attribute name="VATCode"><xsl:text>S</xsl:text></xsl:attribute>
-													<xsl:choose>
-														<xsl:when test="translate(substring(Invoice/InvoiceHeader/InvoiceReferences/TaxPointDate,1,10),'-','')  &lt;= translate('2008-11-30','-','')  and translate(substring(Invoice/InvoiceHeader/InvoiceReferences/TaxPointDate,1,10),'-','') &gt;=translate('2009-11-30','-','')">
-															<xsl:attribute name="VATRate"><xsl:value-of select="format-number($defaultTaxRate, '0.00')"/></xsl:attribute>
-														</xsl:when>
-														<xsl:otherwise>
-															<xsl:attribute name="VATRate"><xsl:value-of select="format-number($defaultTaxRateNew, '0.00')"/></xsl:attribute>
-														</xsl:otherwise>
-													</xsl:choose>
-												</xsl:if>
+														<xsl:attribute name="VATRate"><xsl:value-of select="format-number(number(VATAmountAtRate) div number(DocumentTotalExclVATAtRate) * 100, '0.00')"/></xsl:attribute>
+													</xsl:if>
 												<xsl:if test="@VATCode = 'Z'">
 													<xsl:attribute name="VATCode"><xsl:text>Z</xsl:text></xsl:attribute>
 													<xsl:attribute name="VATRate">0.00</xsl:attribute>
