@@ -18,6 +18,8 @@
 ******************************************************************************************
 16/12/2008  | Natalie Dry	      | 2646. Replace "V1" with "V2" temporarily whilst VAT rate is problem for them
 ******************************************************************************************
+31/03/2009  | Natalie Dry	      | Remove 'X' if it's contained in the trading partner code - it shouldn't be, but it might occur occassionally as the result of the trading partner 'switch' we had to manage with the use of an 'X'
+******************************************************************************************
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -45,7 +47,7 @@
 		<xsl:text>,</xsl:text>
 		
 		<xsl:text>,</xsl:text>
-		<xsl:value-of select="//TradeSimpleHeader/RecipientsCodeForSender"/>
+		<xsl:value-of select="translate(//TradeSimpleHeader/RecipientsCodeForSender, 'X', '')"/>
 		<xsl:text>,</xsl:text>
 		<xsl:value-of select="/Invoice/InvoiceHeader/InvoiceReferences/InvoiceReference | /CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteReference"/>
 		<xsl:text>,</xsl:text>
