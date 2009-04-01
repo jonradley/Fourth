@@ -112,7 +112,6 @@
 				<xsl:text>,</xsl:text>
 			</xsl:otherwise>
 		</xsl:choose>
-		<xsl:text>,</xsl:text>
 		<!-- Number of Lines -->
 		<xsl:value-of select="PurchaseOrderTrailer/NumberOfLines"/>
 		<xsl:text>,</xsl:text>
