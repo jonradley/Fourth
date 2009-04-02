@@ -16,6 +16,8 @@
 ****************************************************************************************** 
  12/01/2009 | Rave Tech 	| 2681. Create VAT Lines for each AMF account code.
 ****************************************************************************************** 
+ 02/04/2009 | Natalie Dry        | Changed place that AMF's code for supplier comes from, because with 3663 and the parent 3663 member, it picks up the wrong one
+****************************************************************************************** 
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -145,23 +147,23 @@
 		<xsl:text>30100005</xsl:text>   
 		<xsl:text>,</xsl:text>
 		<xsl:choose>
-			<xsl:when test="/Invoice/InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode">
+			<xsl:when test="/Invoice/TradeSimpleHeader/RecipientsCodeForSender">
 				<xsl:choose>
-				     <xsl:when test="contains(/Invoice/InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode,'/')">			      
-				         <xsl:value-of select="substring-before(/Invoice/InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode,'/')"/>			     
+				     <xsl:when test="contains(/Invoice/TradeSimpleHeader/RecipientsCodeForSender,'/')">			      
+				         <xsl:value-of select="substring-before(/Invoice/TradeSimpleHeader/RecipientsCodeForSender,'/')"/>			     
 				     </xsl:when>
 				     <xsl:otherwise>
-				        <xsl:value-of select="/Invoice/InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode"/>
+				        <xsl:value-of select="/Invoice/TradeSimpleHeader/RecipientsCodeForSender"/>
 				     </xsl:otherwise>
 				</xsl:choose>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:choose>
-				     <xsl:when test="contains(/CreditNote/CreditNoteHeader/Supplier/SuppliersLocationID/BuyersCode,'/')">			      
-				         <xsl:value-of select="substring-before(/CreditNote/CreditNoteHeader/Supplier/SuppliersLocationID/BuyersCode,'/')"/>			     
+				     <xsl:when test="contains(/CreditNote/TradeSimpleHeader/RecipientsCodeForSender,'/')">			      
+				         <xsl:value-of select="substring-before(/CreditNote/TradeSimpleHeader/RecipientsCodeForSender,'/')"/>			     
 				     </xsl:when>
 				     <xsl:otherwise>
-				        <xsl:value-of select="/CreditNote/CreditNoteHeader/Supplier/SuppliersLocationID/BuyersCode"/>
+				        <xsl:value-of select="/CreditNote/TradeSimpleHeader/RecipientsCodeForSender"/>
 				   </xsl:otherwise>
 				</xsl:choose>					
 			</xsl:otherwise>
