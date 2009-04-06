@@ -63,7 +63,7 @@
 		<xsl:text>,</xsl:text>
 		
 		<!-- Unit Code -->
-		<xsl:value-of select="substring(InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode| CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode,1,10)"/>
+		<xsl:value-of select="substring(TradeSimpleHeader/RecipientsBranchReference,1,10)"/>
 		<xsl:text>,</xsl:text>
 
 		<!-- Number of Deliveries -->
