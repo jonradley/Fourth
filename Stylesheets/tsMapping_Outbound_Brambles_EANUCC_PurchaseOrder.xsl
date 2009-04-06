@@ -149,7 +149,7 @@
 				<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode">			
 					<BuyerAssigned scheme="OTHER">
 						<xsl:if test="string(/PurchaseOrder/TradeSimpleHeader/RecipientsBranchReference) != ''">
-							<xsl:value-of select="/PurchaseOrder/TradeSimpleHeader/RecipientsCodeForSender"/>
+							<xsl:value-of select="/PurchaseOrder/TradeSimpleHeader/RecipientsBranchReference"/>
 							<xsl:text>/</xsl:text>
 						</xsl:if>
 						<xsl:value-of select="/PurchaseOrder/TradeSimpleHeader/RecipientsCodeForSender"/>						
