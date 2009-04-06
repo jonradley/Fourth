@@ -74,7 +74,7 @@
 												<xsl:otherwise><VATCode><xsl:value-of select="VATCode"/></VATCode></xsl:otherwise>
 											</xsl:choose>
 											<VATRate>
-												<xsl:value-of select="format-number(number(../../InvoiceTrailer/VATSubTotals/VATSubTotal/VATAmountAtRate) div number(../../InvoiceTrailer/VATSubTotals/VATSubTotal/DocumentTotalExclVATAtRate) * 100,'0.0')"/>
+												<xsl:value-of select="format-number(number(../../InvoiceTrailer/VATSubTotals/VATSubTotal[@VATCode  = current()/VATCode]/VATAmountAtRate) div number(../../InvoiceTrailer/VATSubTotals/VATSubTotal/DocumentTotalExclVATAtRate) * 100,'0.0')"/>
 											</VATRate>
 										</InvoiceLine>	
 									</xsl:for-each>								
