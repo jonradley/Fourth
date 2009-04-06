@@ -59,7 +59,7 @@
 								</InvoiceHeader>
 								
 								<InvoiceDetail>
-									<xsl:for-each select="/Batch/BatchDocuments/BatchDocument/Invoice/InvoiceDetail/InvoiceLine">
+									<xsl:for-each select="Invoice/InvoiceDetail/InvoiceLine">
 										<InvoiceLine>
 											<ProductID>
 												<SuppliersProductCode><xsl:value-of select="ProductID/SuppliersProductCode"/></SuppliersProductCode>
@@ -74,7 +74,7 @@
 												<xsl:otherwise><VATCode><xsl:value-of select="VATCode"/></VATCode></xsl:otherwise>
 											</xsl:choose>
 											<VATRate>
-												<xsl:value-of select="format-number(number(//InvoiceTrailer/VATSubTotals/VATSubTotal/VATAmountAtRate) div number(//InvoiceTrailer/VATSubTotals/VATSubTotal/DocumentTotalExclVATAtRate) * 100,'0.00')"/>
+												<xsl:value-of select="format-number(number(../../InvoiceTrailer/VATSubTotals/VATSubTotal/VATAmountAtRate) div number(../../InvoiceTrailer/VATSubTotals/VATSubTotal/DocumentTotalExclVATAtRate) * 100,'0.0')"/>
 											</VATRate>
 										</InvoiceLine>	
 									</xsl:for-each>								
@@ -87,7 +87,7 @@
 											<VATSubTotal>
 												<xsl:if test="@VATCode = 'V'">
 													<xsl:attribute name="VATCode"><xsl:text>S</xsl:text></xsl:attribute>
-														<xsl:attribute name="VATRate"><xsl:value-of select="format-number(number(VATAmountAtRate) div number(DocumentTotalExclVATAtRate) * 100, '0.00')"/></xsl:attribute>
+														<xsl:attribute name="VATRate"><xsl:value-of select="format-number(number(VATAmountAtRate) div number(DocumentTotalExclVATAtRate) * 100, '0.0')"/></xsl:attribute>
 													</xsl:if>
 												<xsl:if test="@VATCode = 'Z'">
 													<xsl:attribute name="VATCode"><xsl:text>Z</xsl:text></xsl:attribute>
