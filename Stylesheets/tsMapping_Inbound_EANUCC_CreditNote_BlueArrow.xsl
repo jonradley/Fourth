@@ -122,11 +122,6 @@ Blue Arrow specific OFSCI map (worker name and job description added to product 
 												<xsl:value-of select="/CreditNote/ShipTo/BuyerAssigned"/>
 											</BuyersCode>
 										</xsl:if>
-										<xsl:if test="string(/CreditNote/ShipTo/SellerAssigned)">
-											<SuppliersCode>
-												<xsl:value-of select="/CreditNote/ShipTo/SellerAssigned"/>
-											</SuppliersCode>
-										</xsl:if>
 									</ShipToLocationID>
 									<!-- ShipTo name and address will be populated by subsequent processors -->
 								</ShipTo>
