@@ -148,7 +148,7 @@
 						</PurchaseOrderDate>
 						
 						<PurchaseOrderTime>
-							<xsl:value-of select="substring-after(/Order/OrderDocumentDetails/PurchaseOrderDate,'T')"/>
+							<xsl:value-of select="substring-before(substring-after(/Order/OrderDocumentDetails/PurchaseOrderDate,'T'),'-' )"/>
 						</PurchaseOrderTime>
 						
 						<xsl:if test="/Order/TradeAgreementReference">
@@ -240,16 +240,29 @@
 											<xsl:value-of select="RequestedQuantity/@unitCode"/>
 										</xsl:with-param>
 									</xsl:call-template>
-									
+								
 
-										
+							
+									
 									<!--xsl:value-of select="RequestedQuantity/@unitCode"/-->
 									
 								</xsl:attribute>
 								
 								<xsl:value-of select="format-number(RequestedQuantity, '0.000')"/>
 							</OrderedQuantity>
-	
+							
+							<!--Line Extra Data-->
+							
+							<LineExtraData>
+							
+								<InvalidUOM>
+								
+									<xsl:value-of select="RequestedQuantity/@unitCode" />
+								
+								</InvalidUOM>
+							
+							</LineExtraData>
+
 							<!-- Pack Size is populated by subsequent processors -->
 						
 						</PurchaseOrderLine>
