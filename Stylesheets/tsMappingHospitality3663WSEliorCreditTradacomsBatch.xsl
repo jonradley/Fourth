@@ -5,6 +5,8 @@
 25 April 05 - Andy T - Updates to reflect 3663 specific requirement in Appendix A of ELI010 - Integration Proposal For 3663 v1 DRAFT 2.doc - search for '3663'
 02 June 05 - Andy T - H433 3663-Elior: fix to ensure unique FGNs
 14 July 08 - R Cambridge - FB1291: Credit note needs to handle catchweight products
+09 April 09 - R Cambridge - 2838: Only manipulate SCR/Suppliers-code-for-ShipTo on documents produced by Crystal (ie those with /8 or /A in the SCR)
+
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
@@ -88,18 +90,36 @@
 			</xsl:call-template>
 		</xsl:copy>
 	</xsl:template>
+	
 	<xsl:template name="Combine3663DocRefAndCLOC2">
 		<xsl:param name="DocRef"/>
 		<xsl:param name="CLOC2"/>
-		<!-- Concat a ? to the end of CLOC2, convert all / in CLOC2 to ?, then get the substring before the first ? - which also means before the first / or the whole thing if no / or ? found -->
-		<xsl:variable name="CLOC2Fragment" select="substring-before(translate(concat($CLOC2, '?'), '/', '?'), '?')"/>
-		<!-- Now create left pad string with enough zeroes to make final CLOC2 Fragment 6 chars: if fragment was length 0, copy starts at posn 1 to end - 6 chars, if length was 6 copy starts at posn 7 - 0 chars -->
-		<xsl:variable name="CLOC2LeadingZeroString" select="substring('000000', 1 + string-length($CLOC2Fragment))"/>
-		<!-- Now create our always 6 character CLOC2Fragment -->
-		<xsl:variable name="CLOC2Fragment6Char" select="concat($CLOC2LeadingZeroString, $CLOC2Fragment)"/>
-		<!-- Finally, concat first two chars of DocRef with this value -->
-		<xsl:value-of select="concat(substring($DocRef,1,2), $CLOC2Fragment6Char)"/>
+
+		<!-- 2838 -->
+		<xsl:choose>
+			<xsl:when test="contains($CLOC2,'?') or contains($CLOC2,'/')">		
+
+				<!-- Concat a ? to the end of CLOC2, convert all / in CLOC2 to ?, then get the substring before the first ? - which also means before the first / or the whole thing if no / or ? found -->
+				<xsl:variable name="CLOC2Fragment" select="substring-before(translate(concat($CLOC2, '?'), '/', '?'), '?')"/>
+				<!-- Now create left pad string with enough zeroes to make final CLOC2 Fragment 6 chars: if fragment was length 0, copy starts at posn 1 to end - 6 chars, if length was 6 copy starts at posn 7 - 0 chars -->
+				<xsl:variable name="CLOC2LeadingZeroString" select="substring('000000', 1 + string-length($CLOC2Fragment))"/>
+				<!-- Now create our always 6 character CLOC2Fragment -->
+				<xsl:variable name="CLOC2Fragment6Char" select="concat($CLOC2LeadingZeroString, $CLOC2Fragment)"/>
+				<!-- Finally, concat first two chars of DocRef with this value -->
+				<xsl:value-of select="concat(substring($DocRef,1,2), $CLOC2Fragment6Char)"/>
+			
+			</xsl:when>
+			
+			<xsl:otherwise>
+			
+				<xsl:value-of select="$CLOC2"/>
+			
+			</xsl:otherwise>
+			
+		</xsl:choose>
+			
 	</xsl:template>
+	
 	<!-- 3663 specific, H433 implemenatation ensure unique FGNs by prepending SendersBranchReference to left 0 padded original FGN -->
 	<xsl:template match="BatchInformation/FileGenerationNo">
 		<xsl:variable name="FGN" select="string(.)"/>
