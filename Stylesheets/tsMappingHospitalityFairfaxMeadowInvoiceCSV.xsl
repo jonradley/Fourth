@@ -123,6 +123,7 @@
 	<xsl:template match="OrderedQuantity">
 		<xsl:if test="number(.) != 0">
 			<InvoicedQuantity>
+				<xsl:attribute name="UnitOfMeasure">CS</xsl:attribute>
 				<xsl:value-of select="."/>
 			</InvoicedQuantity>
 		</xsl:if>
@@ -134,7 +135,7 @@
 				<xsl:attribute name="UnitOfMeasure">
 					<xsl:call-template name="decodePacksize">
 						<xsl:with-param name="sInput">
-							<xsl:value-of select="../PackSize"/>
+							<xsl:value-of select="string(../PackSize)"/>
 						</xsl:with-param>
 					</xsl:call-template>
 				</xsl:attribute>
