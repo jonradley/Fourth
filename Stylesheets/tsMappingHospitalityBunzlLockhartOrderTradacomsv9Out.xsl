@@ -28,11 +28,13 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	23/08/2008	| Lee Boyton		|	FB2280 - Map out special delivery instructions.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- 	14/04/2009	| R Cambridge		|	FB2839 - NB THERE IS A BRANCH OF THIS MAPPER FOR LOCKHARTS -
- 														 YOU MAY NEED TO MAKE YOUR CHANGE IN 
- 														 tsMappingHospitalityBunzlLockhartOrderTradacomsv9Out.xsl
+	14/04/2009	| R Cambridge		|	FB2839 - Sorry branch from tsMappingHospitalityBunzlOrderTradacomsv9Out.xsl 
+													to use Lockhart's GLN when supplier's GLN is 5555555555555
+													(This affects orders from FnB Manager where inbound order 
+													 mapper populates suppliers GLN - if this were fixed then 
+													 this branch wouldn't be necessary)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	          	|            		|	
+           		|           		|	
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -112,7 +114,8 @@
 				<xsl:when test="PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN != '5555555555555'">
 					<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN"/>
 				</xsl:when>
-				<xsl:otherwise>5013546009230</xsl:otherwise>
+				<!-- 2839 use BCE GLN -->
+				<xsl:otherwise>5019757200002</xsl:otherwise>
 			</xsl:choose>
 			<xsl:text>:</xsl:text>
 			<!-- required to strip before the '/' on the Aramark orders as Bunzl require 'ARAMARK'. But Orchid does not have any '/'
