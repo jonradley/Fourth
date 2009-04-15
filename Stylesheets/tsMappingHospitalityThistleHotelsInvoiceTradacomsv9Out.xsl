@@ -296,8 +296,6 @@
 						<xsl:if test="string(number(PackSize)) != 'NaN'">
 							<xsl:value-of select="number(PackSize)"/>
 						</xsl:if>						
-						<xsl:text>::</xsl:text>
-						<xsl:value-of select="InvoicedQuantity/@UnitOfMeasure"/>
 						<xsl:text>+</xsl:text>
 						<xsl:value-of select="format-number(InvoicedQuantity,'0')"/>
 						<xsl:text>:</xsl:text>
