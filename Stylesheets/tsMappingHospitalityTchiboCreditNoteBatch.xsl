@@ -59,7 +59,7 @@
 								</CreditNoteHeader>
 								
 								<CreditNoteDetail>
-									<xsl:for-each select="/Batch/BatchDocuments/BatchDocument/CreditNote/CreditNoteDetail/CreditNoteLine">
+									<xsl:for-each select="CreditNote/CreditNoteDetail/CreditNoteLine">
 										<CreditNoteLine>
 											<ProductID>
 												<SuppliersProductCode><xsl:value-of select="ProductID/SuppliersProductCode"/></SuppliersProductCode>
