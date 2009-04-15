@@ -67,6 +67,7 @@ R Cambridge| 27/10/2006	| 466 Set SCR to be value from CLOC2 (buyer's unit code)
 			<SendersBranchReference><xsl:value-of select="SendersBranchReference"/></SendersBranchReference>
 		</TradeSimpleHeader>	
 	</xsl:template>
+
 	
 	<xsl:template match="Buyer/BuyersLocationID">
 		<BuyersLocationID>
@@ -87,6 +88,18 @@ R Cambridge| 27/10/2006	| 466 Set SCR to be value from CLOC2 (buyer's unit code)
 				</xsl:choose>			
 			</SuppliersCode>
 		</BuyersLocationID>	
+	</xsl:template>
+	
+	<!-- Shuffle up address lines -->
+	<xsl:template match="BuyersAddress | SuppliersAddress | ShipToAddress">
+		<xsl:copy>
+			<xsl:for-each select="*[starts-with(name(),'AddressLine')][.!=''][position() &lt;5 ]">
+				<xsl:element name="{concat('AddressLine',position())}">
+					<xsl:value-of select="."/>
+				</xsl:element>			
+			</xsl:for-each>
+			<PostCode><xsl:value-of select="PostCode"/></PostCode>
+		</xsl:copy>
 	</xsl:template>
 
 	<!-- InvoiceLine/ProductID/BuyersProductCode is used as a placeholder for INVOIC-ILD-CRLI and should not be copied over -->
