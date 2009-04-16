@@ -75,6 +75,8 @@
                              |       Also cater for old Brakes DN references with a text prefix.
 =========================================================================================
  29/04/2008		| Lee Boyton	| 2209. Use the received delivery date rather than the delivery note date in a receipt.
+=========================================================================================
+ 30/03/2009		| Lee Boyton	| Hack Alert. Ignore Waverly GLN, and use ANA number instead.
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -170,7 +172,7 @@
 		
 					<!-- Take the ANA number from the GLN if it is not the default 13 5's otherwise use the SuppliersCode for Supplier -->
 					<xsl:choose>
-						<xsl:when test="/*/*/Supplier/SuppliersLocationID/GLN and /*/*/Supplier/SuppliersLocationID/GLN != '5555555555555'">
+						<xsl:when test="/*/*/Supplier/SuppliersLocationID/GLN and /*/*/Supplier/SuppliersLocationID/GLN != '5555555555555' and /*/*/Supplier/SuppliersLocationID/GLN != '5014748111116' and /*/*/Supplier/SuppliersLocationID/GLN != '5010118000026'">
 							<xsl:value-of select="/*/*/Supplier/SuppliersLocationID/GLN"/>						
 						</xsl:when>
 						<xsl:otherwise>
@@ -304,7 +306,7 @@
 		
 					<!-- Take the ANA number from the GLN if it is not the default 13 5's otherwise use the SuppliersCode for Supplier -->
 					<xsl:choose>
-						<xsl:when test="/*/*/Supplier/SuppliersLocationID/GLN and /*/*/Supplier/SuppliersLocationID/GLN != '5555555555555'">
+						<xsl:when test="/*/*/Supplier/SuppliersLocationID/GLN and /*/*/Supplier/SuppliersLocationID/GLN != '5555555555555' and /*/*/Supplier/SuppliersLocationID/GLN != '5014748111116' and /*/*/Supplier/SuppliersLocationID/GLN != '5010118000026'">
 							<xsl:value-of select="/*/*/Supplier/SuppliersLocationID/GLN"/>						
 						</xsl:when>
 						<xsl:otherwise>
