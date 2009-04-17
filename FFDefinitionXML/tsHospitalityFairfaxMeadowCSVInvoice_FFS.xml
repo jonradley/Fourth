@@ -11,7 +11,7 @@
 			<ffsGroup>
 				<!--References below which MEAN RecordPos 'H' with LPos 1 would be CODED as 'D' and LPos 14 (13+1)-->
 				<ffsGroupRecord RecordPos="&quot;HEAD&quot;" FieldTotal="40"/>
-				<ffsSubGroupRecord RecordPos="&quot;LINE&quot;" FieldTotal="39"/>
+				<ffsSubGroupRecord RecordPos="&quot;LINE&quot;" FieldTotal="40"/>
 			</ffsGroup>
 		</ffsGroups>
 		<ffsSplitBatchRecord RecordPos="&quot;HEAD&quot;"/>
@@ -112,16 +112,16 @@
 							<InvoiceLine>
 								<!--<LineNumber RecordPos="" LPos=""/>-->
 								<PurchaseOrderReferences>
-									<PurchaseOrderReference RecordPos="&quot;LINE&quot;" LPos="46	"/>
-									<PurchaseOrderDate RecordPos="&quot;LINE&quot;" LPos="47"/>
+									<PurchaseOrderReference RecordPos="&quot;LINE&quot;" LPos="47	"/>
+									<PurchaseOrderDate RecordPos="&quot;LINE&quot;" LPos="48"/>
 									<TradeAgreement>
-										<ContractReference RecordPos="&quot;LINE&quot;" LPos="79"/>
+										<ContractReference RecordPos="&quot;LINE&quot;" LPos="80"/>
 									</TradeAgreement>
 								</PurchaseOrderReferences>
 								<DeliveryNoteReferences>
-									<DeliveryNoteReference RecordPos="&quot;LINE&quot;" LPos="50"/>
+									<DeliveryNoteReference RecordPos="&quot;LINE&quot;" LPos="51"/>
 									<!-- use invoice date, dn date is wrong. -->
-									<DeliveryNoteDate RecordPos="&quot;LINE&quot;" LPos="45"/>
+									<DeliveryNoteDate RecordPos="&quot;LINE&quot;" LPos="46"/>
 								</DeliveryNoteReferences>
 								<ProductID>
 									<SuppliersProductCode RecordPos="&quot;LINE&quot;" LPos="2"/>
@@ -129,8 +129,10 @@
 								<ProductDescription RecordPos="&quot;LINE&quot;" LPos="25"/>
 								<!-- Hijacked to overcome a weirdness in the inbound file with qtys -->
 								<OrderedQuantity RecordPos="&quot;LINE&quot;" LPos="7"/>
-								<InvoicedQuantity RecordPos="&quot;LINE&quot;" LPos="8"/>
-								<PackSize RecordPos="&quot;LINE&quot;" LPos="6"/>
+								<InvoicedQuantity RecordPos="&quot;LINE&quot;" LPos="8">
+									<ffsAttribute1 name="UnitOfMeasure" RecordPos="&quot;LINE&quot;" LPos="6"/>
+								</InvoicedQuantity>
+								<PackSize RecordPos="&quot;LINE&quot;" LPos="40"/>
 								<UnitValueExclVAT RecordPos="&quot;LINE&quot;" LPos="10"/>
 								<LineValueExclVAT RecordPos="&quot;LINE&quot;" LPos="15"/>
 								<VATCode RecordPos="&quot;LINE&quot;" LPos="14"/>
