@@ -118,11 +118,11 @@
 								<!--<LineNumber RecordPos="" LPos=""/>-->
 								<PurchaseOrderReferences>
 									<PurchaseOrderReference RecordPos="LINE" LPos="46	"/>
-									<PurchaseOrderDate RecordPos="LINE" LPos="47"/>
+									<PurchaseOrderDate RecordPos="LINE" LPos="51"/>
 								</PurchaseOrderReferences>
 								<DeliveryNoteReferences>
 									<DeliveryNoteReference RecordPos="LINE" LPos="50"/>
-									<DeliveryNoteDate RecordPos="LINE" LPos="51"/>
+									<DeliveryNoteDate RecordPos="LINE" LPos="47"/>
 								</DeliveryNoteReferences>
 								<ProductID>
 									<SuppliersProductCode RecordPos="LINE" LPos="2"/>
