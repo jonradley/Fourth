@@ -297,7 +297,7 @@
 							<xsl:value-of select="number(PackSize)"/>
 						</xsl:if>						
 						<xsl:text>+</xsl:text>
-						<xsl:value-of select="format-number(InvoicedQuantity,'0')"/>
+						<xsl:value-of select="translate(format-number(InvoicedQuantity,'#.000'),'.','')"/>
 						<xsl:text>+</xsl:text>
 						<xsl:value-of select="translate(format-number(UnitValueExclVAT,'#.0000'),'.','')"/>
 						<xsl:text>+</xsl:text>
