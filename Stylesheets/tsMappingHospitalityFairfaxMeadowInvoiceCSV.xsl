@@ -29,7 +29,6 @@
 
 	<!-- Remove quotes from text fields -->
 	<xsl:template match="BuyersLocationID/SuppliersCode |
-	                     ShipToLocationID/BuyersCode |
 	                     ShipToLocationID/SuppliersCode |
 	                     InvoiceReference |
 	                     PurchaseOrderReference |
@@ -47,7 +46,7 @@
 		</xsl:call-template>
 		</xsl:element>
 	</xsl:template>
-	
+
 	<xsl:template match="InvoiceDate |
 	                     TaxPointDate |
 	                     PurchaseOrderDate |
@@ -67,6 +66,14 @@
 	
 	</xsl:template>
 	
+	<!-- Remove Buyers Code for ShipTo for Harrison -->
+	<xsl:template match="ShipToLocationID/BuyersCode">
+		<xsl:if test="not(contains('&quot;AR&quot;',../../../../InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode))">
+			<blha>
+				<xsl:value-of select="."/>
+			</blha>
+		</xsl:if>
+	</xsl:template>
 
 	<!-- juggle SCRs -->
 	<xsl:template match="SendersCodeForRecipient">

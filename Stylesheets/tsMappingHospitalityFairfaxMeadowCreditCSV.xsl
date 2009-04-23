@@ -31,7 +31,6 @@
 	                     SendersBranchReference |
 	                     BuyersLocationID/SuppliersCode |
 	                     ShipToLocationID/SuppliersCode |
-	                     ShipToLocationID/BuyersCode |
 	                     InvoiceReference |
 	                     CreditNoteReference |
 	                     PurchaseOrderReference |
@@ -105,6 +104,17 @@
 			</SendersBranchReference>
 		</xsl:if>
 	</xsl:template>
+	
+	<!-- Remove Buyers Code for ShipTo for Harrison -->
+	<xsl:template match="ShipToLocationID/BuyersCode">
+		<xsl:if test="not(contains('&quot;AR&quot;',../../../../CreditNoteHeader/Buyer/BuyersLocationID/SuppliersCode))">
+			<blha>
+				<xsl:value-of select="."/>
+			</blha>
+		</xsl:if>
+	</xsl:template>
+
+	
 	
 	<!-- where there is an ordered quantity, make it an invoiced quantity -->
 	<xsl:template match="OrderedQuantity">
