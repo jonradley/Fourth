@@ -293,9 +293,15 @@
 							<xsl:with-param name="vnLength" select="30"/>
 						</xsl:call-template>
 						<xsl:text>+</xsl:text>
+						
 						<xsl:if test="string(number(PackSize)) != 'NaN'">
-							<xsl:value-of select="number(PackSize)"/>
+							<xsl:value-of select="number(PackSize)"/>	
+						</xsl:if>	
+						<xsl:if test="InvoicedQuantity/@UnitOfMeasure='KGM' ">
+							<xsl:text>:</xsl:text>
+							<xsl:text>KG</xsl:text>				
 						</xsl:if>						
+					
 						<xsl:text>+</xsl:text>
 						<xsl:value-of select="translate(format-number(InvoicedQuantity,'#.000'),'.','')"/>
 						<xsl:text>+</xsl:text>
