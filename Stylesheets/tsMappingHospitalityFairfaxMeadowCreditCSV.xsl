@@ -108,9 +108,9 @@
 	<!-- Remove Buyers Code for ShipTo for Harrison -->
 	<xsl:template match="ShipToLocationID/BuyersCode">
 		<xsl:if test="not(contains('&quot;AR&quot;',../../../../CreditNoteHeader/Buyer/BuyersLocationID/SuppliersCode))">
-			<blha>
+			<BuyersCode>
 				<xsl:value-of select="."/>
-			</blha>
+			</BuyersCode>
 		</xsl:if>
 	</xsl:template>
 
