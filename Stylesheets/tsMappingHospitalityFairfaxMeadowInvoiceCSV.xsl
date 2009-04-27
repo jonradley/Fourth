@@ -142,7 +142,7 @@
 				<xsl:attribute name="UnitOfMeasure">
 					<xsl:call-template name="decodePacksize">
 						<xsl:with-param name="sInput">
-							<xsl:value-of select="string(@UnitOfMeasure)"/>
+							<xsl:value-of select="string(../PackSize)"/>
 						</xsl:with-param>
 					</xsl:call-template>
 				</xsl:attribute>
@@ -151,7 +151,7 @@
 		</xsl:if>
 	</xsl:template>
 	
-	<!--xsl:template match="PackSize"></xsl:template-->
+	<xsl:template match="PackSize"></xsl:template>
 	
 	<xsl:template match="VATCode">
 		<VATCode>
