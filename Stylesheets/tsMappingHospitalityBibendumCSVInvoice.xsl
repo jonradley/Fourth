@@ -11,7 +11,8 @@ Name			| Date				| Change
 **********************************************************************
 R Cambridge	|	2008-10-15		| PO ref mod	
 **********************************************************************
-				|						|				
+Lee Boyton        | 2009-04-28 | 2867. Translate product codes for SSP
+                          |                     | to ensure they are unique (product code plus UOM on the end).				
 **********************************************************************
 				|						|				
 *******************************************************************-->
@@ -26,6 +27,7 @@ R Cambridge	|	2008-10-15		| PO ref mod
 	<xsl:variable name="TESCO" select="'TESCO'"/>
 	<xsl:variable name="ARAMARK" select="'ARAMARK'"/>
 	<xsl:variable name="BEACON_PURCHASING" select="'BEACON_PURCHASING'"/>
+	<xsl:variable name="SSP" select="'SSP'"/>
 	
 	<xsl:variable name="CustomerFlag">
 		<xsl:variable name="accountCode" select="string(//Invoice/TradeSimpleHeader/SendersBranchReference)"/>
@@ -41,6 +43,7 @@ R Cambridge	|	2008-10-15		| PO ref mod
 			<xsl:when test="$accountCode = 'TES25T'"><xsl:value-of select="$TESCO"/></xsl:when>
 			<xsl:when test="$accountCode = 'ARA02T'"><xsl:value-of select="$ARAMARK"/></xsl:when>
 			<xsl:when test="$accountCode = 'BEACON'"><xsl:value-of select="$BEACON_PURCHASING"/></xsl:when>
+			<xsl:when test="$accountCode = 'SSP25T'"><xsl:value-of select="$SSP"/></xsl:when>
 			<xsl:otherwise></xsl:otherwise>
 		</xsl:choose>
 	
@@ -412,7 +415,36 @@ R Cambridge	|	2008-10-15		| PO ref mod
 		</xsl:element>
 	</xsl:template>
 
+	<!-- SSP specific change to append the unit of measure onto the product code -->
+	<xsl:template match="ProductID/SuppliersProductCode">
+		<xsl:copy>
+			<xsl:choose>
+				<xsl:when test="$CustomerFlag = $SSP">
 
+					<!-- translate the Units In Pack value and then append this to the product code -->
+					<xsl:variable name="UOMRaw">
+						<xsl:call-template name="decodePacks">
+							<xsl:with-param name="sBibPack" select="../../Measure/UnitsInPack"/>
+						</xsl:call-template>
+					</xsl:variable>
+
+					<xsl:variable name="UOM">
+						<xsl:choose>
+							<xsl:when test="$UOMRaw = 1">EA</xsl:when>
+							<xsl:otherwise>CS</xsl:otherwise>
+						</xsl:choose>
+					</xsl:variable>
+				
+					<xsl:value-of select="concat(.,'~',$UOM)"/>
+										
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="."/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:copy>
+	</xsl:template>
+	
 	<!-- Decode Bibendum's PackSizes -->
 	<xsl:template match="InvoicedQuantity">
 		<xsl:element name="InvoicedQuantity">
