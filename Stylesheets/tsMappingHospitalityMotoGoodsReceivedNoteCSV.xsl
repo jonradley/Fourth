@@ -36,7 +36,8 @@ Rave Tech	| 02/01/2008| Created Module
 				<xsl:when test="$SCR= '304637'">50004</xsl:when>
 				<xsl:when test="$SCR= '506114'">50641</xsl:when>
 				<xsl:when test="$SCR= '506214'">50810</xsl:when>
-				<xsl:when test="$SCR= '050811'">50811</xsl:when>				
+				<xsl:when test="$SCR= '050811'">50811</xsl:when>
+				<xsl:otherwise><xsl:value-of select="."/></xsl:otherwise>
 			</xsl:choose>
 		</SendersCodeForRecipient>
 	</xsl:template>
