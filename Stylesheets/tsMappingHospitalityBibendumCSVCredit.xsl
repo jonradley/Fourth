@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--******************************************************************
+Alterations
+
+	Bibendum inbound credit note translator
+
+**********************************************************************
+Name			| Date		| Change
+**********************************************************************
+Lee Boyton        | 2009-04-28 | 2867. Translate product codes for SSP
+                          |                     | to ensure they are unique (product code plus UOM on the end).				
+**********************************************************************
+				|			|				
+*******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 	<xsl:output method="xml" encoding="UTF-8"/>
 	
@@ -240,6 +253,35 @@
 		</xsl:attribute>
 	</xsl:template>
 
+	<!-- SSP specific change to append the unit of measure onto the product code -->
+	<xsl:template match="ProductID/SuppliersProductCode">
+		<xsl:copy>
+			<xsl:choose>
+				<xsl:when test="//TradeSimpleHeader/SendersBranchReference = 'SSP25T'">
+
+					<!-- translate the Units In Pack value and then append this to the product code -->
+					<xsl:variable name="UOMRaw">
+						<xsl:call-template name="decodePacks">
+							<xsl:with-param name="sBibPack" select="../../Measure/UnitsInPack"/>
+						</xsl:call-template>
+					</xsl:variable>
+
+					<xsl:variable name="UOM">
+						<xsl:choose>
+							<xsl:when test="$UOMRaw = 1">EA</xsl:when>
+							<xsl:otherwise>CS</xsl:otherwise>
+						</xsl:choose>
+					</xsl:variable>
+				
+					<xsl:value-of select="concat(.,'~',$UOM)"/>
+										
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="."/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:copy>
+	</xsl:template>
 
 	<!-- Decode Bibendum's PackSizes -->
 	<xsl:template match="CreditedQuantity">
