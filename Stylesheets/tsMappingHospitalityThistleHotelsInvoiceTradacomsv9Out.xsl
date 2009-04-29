@@ -137,17 +137,6 @@
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:text>CDT=</xsl:text>
-		<xsl:choose>
-			<xsl:when test="InvoiceHeader/Buyer/BuyersLocationID/GLN != '5555555555555'">
-				<xsl:value-of select="InvoiceHeader/Buyer/BuyersLocationID/GLN"/>
-			</xsl:when>
-			<xsl:otherwise>
-				<!-- CIDN 1 = 3020 must be a number (ANA) -->
-				<xsl:if test="string(number(InvoiceHeader/Buyer/BuyersLocationID/BuyersCode)) != 'NaN'">
-					<xsl:value-of select="InvoiceHeader/Buyer/BuyersLocationID/BuyersCode"/>
-				</xsl:if>
-			</xsl:otherwise>
-		</xsl:choose>
 		<xsl:text>:</xsl:text>
 		<!-- truncate to 17 CIDN 2 = 3021 = AN..17 -->
 		<xsl:value-of select="js:msSafeText(string(InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode),17)"/>
@@ -299,11 +288,23 @@
 						</xsl:if>	
 						<xsl:if test="InvoicedQuantity/@UnitOfMeasure='KGM' ">
 							<xsl:text>:</xsl:text>
-							<xsl:text>KG</xsl:text>				
+							<xsl:if test="string(number(PackSize)) != 'NaN'">
+								<xsl:value-of select="translate(format-number(PackSize,'#.000'),'.','')"/>
+							</xsl:if>	
+							<xsl:text>:KG</xsl:text>					
 						</xsl:if>						
 					
 						<xsl:text>+</xsl:text>
-						<xsl:value-of select="translate(format-number(InvoicedQuantity,'#.000'),'.','')"/>
+						<xsl:choose>
+							<xsl:when test="InvoicedQuantity/@UnitOfMeasure='KGM'">
+								<xsl:text>:</xsl:text>
+								<xsl:value-of select="translate(format-number(InvoicedQuantity,'#.000'),'.','')"/>
+								<xsl:text>:KG</xsl:text>					
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="format-number(InvoicedQuantity,'#')"/>
+							</xsl:otherwise>
+						</xsl:choose>
 						<xsl:text>+</xsl:text>
 						<xsl:value-of select="translate(format-number(UnitValueExclVAT,'#.0000'),'.','')"/>
 						<xsl:text>+</xsl:text>
