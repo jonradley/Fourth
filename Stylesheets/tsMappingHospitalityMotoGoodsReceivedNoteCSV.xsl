@@ -41,6 +41,9 @@ Rave Tech	| 02/01/2008| Created Module
 			</xsl:choose>
 		</SendersCodeForRecipient>
 	</xsl:template>
+	<xsl:template match="LineNumber">
+		<LineNumber><xsl:value-of select="position()"/></LineNumber>
+	</xsl:template>
 	<!--set value of documentstatus -->
 	<xsl:template match="DocumentStatus">
 		<DocumentStatus>
@@ -52,6 +55,9 @@ Rave Tech	| 02/01/2008| Created Module
 		<GLN>
 			<xsl:text>9999999999</xsl:text>
 		</GLN>
+	</xsl:template>
+	<xsl:template match="DeliveryType">
+		<DeliveryType>Delivery</DeliveryType>
 	</xsl:template>
 	<!-- translate the date from [dd/mm/yyyy] format to [yyyy-mm-dd] -->
 	<xsl:template match="GoodsReceivedNoteDate">
@@ -69,7 +75,7 @@ Rave Tech	| 02/01/2008| Created Module
 			<xsl:value-of select="concat($yearPart,'-',$monthPart,'-',$dayPart)"/>
 		</GoodsReceivedNoteDate>
 	</xsl:template>
-	<xsl:template match="GoodsReceivedNoteDate">
+	<xsl:template match="PurchaseOrderConfirmationDate">
 		<xsl:variable name="dayPart">
 			<xsl:value-of select="substring(.,1,2)"/>
 		</xsl:variable>
@@ -80,9 +86,24 @@ Rave Tech	| 02/01/2008| Created Module
 			<xsl:value-of select="substring(.,7,4)"/>
 		</xsl:variable>
 		<!-- construct the final xml formatted date -->
-		<GoodsReceivedNoteDate>
+		<PurchaseOrderConfirmationDate>
 			<xsl:value-of select="concat($yearPart,'-',$monthPart,'-',$dayPart)"/>
-		</GoodsReceivedNoteDate>
+		</PurchaseOrderConfirmationDate>
+	</xsl:template>
+	<xsl:template match="DeliveryDate">
+		<xsl:variable name="dayPart">
+			<xsl:value-of select="substring(.,1,2)"/>
+		</xsl:variable>
+		<xsl:variable name="monthPart">
+			<xsl:value-of select="substring(.,4,2)"/>
+		</xsl:variable>
+		<xsl:variable name="yearPart">
+			<xsl:value-of select="substring(.,7,4)"/>
+		</xsl:variable>
+		<!-- construct the final xml formatted date -->
+		<DeliveryDate>
+			<xsl:value-of select="concat($yearPart,'-',$monthPart,'-',$dayPart)"/>
+		</DeliveryDate>
 	</xsl:template>
 	<xsl:template match="PurchaseOrderDate">
 		<xsl:variable name="dayPart">
@@ -129,6 +150,11 @@ Rave Tech	| 02/01/2008| Created Module
 			<xsl:value-of select="concat($yearPart,'-',$monthPart,'-',$dayPart)"/>
 		</DespatchDate>
 	</xsl:template>
+	<xsl:template match="@UnitOfMeasure">
+		<xsl:attribute name="{name()}">
+			<xsl:text>EA</xsl:text>
+		</xsl:attribute>
+	</xsl:template>
 	<!--identity transformation -->
 	<xsl:template match="@*|node()">
 		<xsl:copy>
@@ -144,7 +170,7 @@ Rave Tech	| 02/01/2008| Created Module
 	</xsl:template>
 	<xsl:template match="DiscountedLinesTotalExclVAT">
 		<DiscountedLinesTotalExclVAT>
-			<xsl:text>0.00</xsl:text>
+			<xsl:value-of select="format-number(sum(../../GoodsReceivedNoteDetail/GoodsReceivedNoteLine/LineValueExclVAT), '0.00')"/>
 		</DiscountedLinesTotalExclVAT>
 	</xsl:template>
 	<xsl:template match="DocumentDiscount">
