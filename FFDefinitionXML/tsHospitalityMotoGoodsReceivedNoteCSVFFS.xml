@@ -32,20 +32,30 @@ Rave Tech	| 30/12/2008 	| Created
 				</Buyer>
 				<Supplier>
 					<SuppliersLocationID>
+					<GLN RecordPos="" LPos="3"/>
 						<BuyersCode RecordPos="" LPos="3"/>
 					</SuppliersLocationID>
 				</Supplier>
 				<ShipTo>
 					<ShipToName RecordPos="" LPos="2"/>
 					<ShipToLocationID>
+						<GLN RecordPos="" LPos="3"/>
 						<BuyersCode RecordPos="" LPos="1"/>
 					</ShipToLocationID>
+					<ShipToAddress>
+						<AddressLine1 RecordPos="" LPos="3"/>
+					</ShipToAddress>
 				</ShipTo>
 				<PurchaseOrderReferences>
 					<PurchaseOrderReference RecordPos="" LPos="4"/>
 					<!--Set PO date same as GRN Date-->
 					<PurchaseOrderDate RecordPos="" LPos="5"/>
 				</PurchaseOrderReferences>
+				<PurchaseOrderConfirmationReferences>
+					<PurchaseOrderConfirmationReference RecordPos="" LPos="4"/>
+					<!--Set PO date same as GRN Date-->
+					<PurchaseOrderConfirmationDate RecordPos="" LPos="5"/>
+				</PurchaseOrderConfirmationReferences>
 				<DeliveryNoteReferences>
 					<!--Set delivery reference same as PO reference-->
 					<DeliveryNoteReference RecordPos="" LPos="4"/>
@@ -55,12 +65,22 @@ Rave Tech	| 30/12/2008 	| Created
 					<DespatchDate RecordPos="" LPos="5"/>
 				</DeliveryNoteReferences>
 				<GoodsReceivedNoteReferences>
+					<GoodsReceivedNoteReference RecordPos="" LPos="5"/>
 					<GoodsReceivedNoteDate RecordPos="" LPos="5"/>
 				</GoodsReceivedNoteReferences>
+				<DeliveredDeliveryDetails>
+					<DeliveryType RecordPos="" LPos="4"/>
+		 			<DeliveryDate RecordPos="" LPos="5"/>
+				</DeliveredDeliveryDetails>
+				<ReceivedDeliveryDetails>
+					<DeliveryType RecordPos="" LPos="4"/>
+					<DeliveryDate RecordPos="" LPos="5"/>
+				</ReceivedDeliveryDetails>
 			</GoodsReceivedNoteHeader>
 			<GoodsReceivedNoteDetail>
 				<GoodsReceivedNoteLine>
 					<ffsAttribute1 name="LineStatus" RecordPos="" LPos="14"/>
+					<LineNumber RecordPos="" LPos="1" />
 					<ProductID>
 						<!--Set GTIN same as supplier product code-->
 						<GTIN RecordPos="" LPos="6"/>
