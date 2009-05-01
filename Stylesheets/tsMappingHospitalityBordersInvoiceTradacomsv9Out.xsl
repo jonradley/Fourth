@@ -167,7 +167,9 @@
 		<!--
 		<xsl:text>DNA=1</xsl:text>
 		<xsl:text>+</xsl:text>
-		<xsl:text>:</xsl:text>		
+		<xsl:text>Code Table Number</xsl:text>
+		<xsl:text>:</xsl:text>
+		<xsl:text>Code Value</xsl:text>		
 		<xsl:value-of select="$sRecordSep"/>
 		-->
 		
@@ -213,7 +215,25 @@
 		
 		<!-- <xsl:text>DNA=</xsl:text>
 		<xsl:text>1+</xsl:text>
-		<xsl:text>:</xsl:text>			
+		<xsl:text>Code Table Number</xsl:text>
+		<xsl:text>:</xsl:text>
+		<xsl:text>Code Value</xsl:text>
+		<xsl:text>+</xsl:text>
+		<xsl:text>082</xsl:text>
+		<xsl:text>:</xsl:text>
+		<xsl:text>Application Text</xsl:text>
+		<xsl:text>:</xsl:text>
+		<xsl:text>2nd Application Code</xsl:text>
+		<xsl:text>:</xsl:text>
+		<xsl:text>Application Text</xsl:text>
+		<xsl:text>:</xsl:text>
+		<xsl:text>3rd Application Code</xsl:text>
+		<xsl:text>:</xsl:text>
+		<xsl:text>Application Text</xsl:text>
+		<xsl:text>:</xsl:text>
+		<xsl:text>4th Application Code</xsl:text>
+		<xsl:text>:</xsl:text>
+		<xsl:text>Application Text</xsl:text>		
 		<xsl:value-of select="$sRecordSep"/> -->
 
 		<!-- use the keys for grouping Lines by PO Reference and then by DN Reference -->
@@ -304,6 +324,8 @@
 						<xsl:text>+</xsl:text>
 						<xsl:value-of select="translate(format-number(VATRate,'#.000'),'.','')"/>
 						<xsl:text>+</xsl:text>
+					<!-- <xsl:text>MIXI</xsl:text> -->
+						<xsl:text>+</xsl:text>
 						<xsl:text>+</xsl:text>
 						<xsl:if test="string-length(ProductID/GTIN) = 0">
 							<xsl:value-of select="js:msSafeText(string(ProductDescription),40)"/>	
@@ -319,7 +341,13 @@
 						<xsl:text>+</xsl:text>
 						<xsl:value-of select="translate(format-number(LineDiscountValue,'#.0000'),'.','')"/>
 						<xsl:text>+</xsl:text>
-						<xsl:value-of select="translate(format-number(LineDiscountRate,'#.0000'),'.','')"/>			
+						<xsl:value-of select="translate(format-number(LineDiscountRate,'#.0000'),'.','')"/>
+						<xsl:text>+</xsl:text>	
+						<!-- <xsl:text>PIND</xsl:text> -->	
+						<xsl:text>+</xsl:text>	
+						<!-- <xsl:text>IGPI</xsl:text> -->	
+						<xsl:text>+</xsl:text>	
+						<!-- <xsl:text>CSDI</xsl:text> -->
 						<xsl:value-of select="$sRecordSep"/>
 						
 						<xsl:text>DNC=</xsl:text>
@@ -330,10 +358,26 @@
 						<xsl:text>1</xsl:text>
 						<!-- DNAC -->
 						<xsl:text>+</xsl:text>							
+						<xsl:text><!-- Code Table Number --></xsl:text>
 						<xsl:text>:</xsl:text>
+						<xsl:text><!-- Code Value --></xsl:text>
 						<!-- RTEX -->
 						<xsl:text>+</xsl:text>
-						<xsl:text>:::::::</xsl:text>	
+						<xsl:text>082</xsl:text>
+						<xsl:text>:</xsl:text>
+						<xsl:text><!-- Application Text --></xsl:text>
+						<xsl:text>:</xsl:text>
+						<xsl:text><!-- 2nd Application Code --></xsl:text>
+						<xsl:text>:</xsl:text>
+						<xsl:text><!-- Application Text --></xsl:text>
+						<xsl:text>:</xsl:text>
+						<xsl:text><!-- 3rd Application Code --></xsl:text>
+						<xsl:text>:</xsl:text>
+						<xsl:text><!-- Application Text --></xsl:text>
+						<xsl:text>:</xsl:text>
+						<xsl:text><!-- 4th Application Code --></xsl:text>
+						<xsl:text>:</xsl:text>
+						<xsl:text><!-- Application Text--></xsl:text>		
 						<xsl:value-of select="$sRecordSep"/>
 						
 					</xsl:for-each>
