@@ -14,6 +14,10 @@
 ******************************************************************************************
  07/05/2008	| A Sheppard	| Created Module
 ******************************************************************************************
+ 05/05/2009	| Lee Boyton	| 2863. All numerical line values should be output
+                    |                          | as positive numbers as there is a separate flag
+                    |                          | to indicate return/credit lines.
+******************************************************************************************
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -47,9 +51,9 @@
 			<xsl:value-of select="script:msPad(AcceptedQuantity/@UnitOfMeasure, 10)"/>
 			<xsl:value-of select="script:msPadNumber(0, 9, 0)"/>
 			<xsl:value-of select="script:msPad(PackSize, 15)"/>
-			<xsl:value-of select="script:msPadNumber(AcceptedQuantity, 7, 2)"/>
-			<xsl:value-of select="script:msPadNumber(UnitValueExclVAT, 10, 4)"/>
-			<xsl:value-of select="script:msPadNumber(LineValueExclVAT, 9, 2)"/>
+			<xsl:value-of select="script:msPadNumber(AcceptedQuantity * (1 - 2 * (AcceptedQuantity &lt; 0)), 7, 2)"/>
+			<xsl:value-of select="script:msPadNumber(UnitValueExclVAT * (1 - 2 * (UnitValueExclVAT &lt; 0)), 10, 4)"/>
+			<xsl:value-of select="script:msPadNumber(LineValueExclVAT * (1 - 2 * (LineValueExclVAT &lt; 0)), 9, 2)"/>
 			<xsl:value-of select="script:msPad(LineExtraData/Manufacturer, 40)"/>
 			<xsl:value-of select="script:msPad(LineExtraData/Brand, 40)"/>
 			<xsl:value-of select="script:msPad('', 20)"/>
@@ -83,7 +87,7 @@
 			<xsl:value-of select="script:msPad('', 40)"/>
 			<xsl:value-of select="script:msPad(/GoodsReceivedNote/GoodsReceivedNoteHeader/PurchaseOrderReferences/PurchaseOrderReference, 22)"/>
 			<xsl:value-of select="/GoodsReceivedNote/GoodsReceivedNoteHeader/PurchaseOrderReferences/PurchaseOrderDate"/>
-			<xsl:value-of select="script:msPadNumber(/GoodsReceivedNote/GoodsReceivedNoteTrailer/TotalExclVAT, 12, 2)"/>
+			<xsl:value-of select="script:msPadNumber(/GoodsReceivedNote/GoodsReceivedNoteTrailer/TotalExclVAT * (1 - 2 * (/GoodsReceivedNote/GoodsReceivedNoteTrailer/TotalExclVAT &lt; 0)), 12, 2)"/>
 			<xsl:value-of select="script:msPad('', 3)"/>
 			<xsl:value-of select="/GoodsReceivedNote/GoodsReceivedNoteHeader/ReceivedDeliveryDetails/DeliveryDate"/>
 			<xsl:variable name="PaddedPLAccountNumber">
@@ -213,7 +217,9 @@
 				sNumber = vvNumber(0).text;
 			}
 			catch(e)
-			{}
+			{
+				sNumber = vvNumber.toString();
+			}
 			
 			if(sNumber.indexOf('.') != -1)
 			{
