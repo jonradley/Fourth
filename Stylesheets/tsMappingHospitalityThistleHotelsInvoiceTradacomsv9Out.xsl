@@ -137,7 +137,12 @@
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:text>CDT=</xsl:text>
-		<xsl:text>:</xsl:text>
+		<xsl:choose>
+			<xsl:when test="InvoiceHeader/Buyer/BuyersLocationID/GLN != '5555555555555'">
+				<xsl:value-of select="InvoiceHeader/Buyer/BuyersLocationID/GLN"/>
+			</xsl:when>
+		</xsl:choose>
+				<xsl:text>:</xsl:text>
 		<!-- truncate to 17 CIDN 2 = 3021 = AN..17 -->
 		<xsl:value-of select="js:msSafeText(string(InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode),17)"/>
 		<xsl:text>+</xsl:text>
