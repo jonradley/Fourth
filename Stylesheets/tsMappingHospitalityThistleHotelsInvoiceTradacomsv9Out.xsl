@@ -179,9 +179,6 @@
 		<xsl:value-of select="$sRecordSep"/>
 
 		<xsl:text>CLO=</xsl:text>
-		<xsl:if test="InvoiceHeader/ShipTo/ShipToLocationID/GLN != '5555555555555'">
-			<xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/GLN"/>
-		</xsl:if>
 		<xsl:text>:</xsl:text>
 		<!-- truncate to 17 CLOC 2 = 3001 = AN..17 -->
 		<xsl:value-of select="js:msSafeText(string(InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode),17)"/>
@@ -363,7 +360,7 @@
 		</xsl:for-each>
 		
 		<xsl:text>TLR=</xsl:text>	
-		<xsl:value-of select="InvoiceTrailer/NumberOfLines"/>
+		<xsl:value-of select="count(InvoiceTrailer/VATSubTotals/VATSubTotal)"/>
 		<xsl:text>+</xsl:text>
 		<xsl:value-of select="translate(format-number(InvoiceTrailer/DiscountedLinesTotalExclVAT,'#.00'),'.','')"/>
 		<xsl:text>+++++</xsl:text>
