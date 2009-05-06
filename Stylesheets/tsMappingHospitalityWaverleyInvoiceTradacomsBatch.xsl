@@ -1,22 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-**********************************************************************
-Alterations
-**********************************************************************
-Name			| Date			| Change
-**********************************************************************
-S Jefford	| 22/08/2005	| GTIN field now sourced from ILD/SPRO(1).
-				|					| ILD/CRLI now stored in BuyersProductCode
-**********************************************************************
-N Emsen		| 14/09/2006	|	Purchase order date stipped if = blank
-**********************************************************************
-R Cambridge| 27/10/2006	| 466 Set SCR to be value from CLOC2 (buyer's unit code) 
-										if present otherwise use CLOC3 (supplier delivery point code)
-**********************************************************************
-				|					|
-**********************************************************************
 
--->
+
+
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
 	<!-- NOTE that these string literals are not only enclosed with double quotes, but have single quotes within also-->
@@ -109,6 +94,13 @@ R Cambridge| 27/10/2006	| 466 Set SCR to be value from CLOC2 (buyer's unit code)
 	<xsl:template match="InvoiceLine/LineNumber | Measure/UnitsInPack">
 		<xsl:copy>
 			<xsl:value-of select="format-number(., '#0.##')"/>
+		</xsl:copy>
+	</xsl:template>
+	
+	<!-- Strip off leading zero from delivery note reference. This will match the reference Waverley send out in their paper invoices -->
+	<xsl:template match="DeliveryNoteReferences/DeliveryNoteReference">
+		<xsl:copy>
+			<xsl:value-of select="format-number(., '#')"/>
 		</xsl:copy>
 	</xsl:template>
 	
