@@ -91,10 +91,14 @@
 			<xsl:value-of select="js:msSafeText(string(DeliveryNoteHeader/Supplier/SuppliersLocationID/BuyersCode),17)"/>		
 		<xsl:value-of select="$sRecordSep"/>
 		
-		<!-- <xsl:text>DNA=</xsl:text>
-			<xsl:text>1+</xsl:text>
-			<xsl:text>:</xsl:text>			
-		<xsl:value-of select="$sRecordSep"/> -->
+		<!--
+		<xsl:text>DNA=1</xsl:text>
+		<xsl:text>+</xsl:text>
+		<xsl:text>Code Table Number</xsl:text>
+		<xsl:text>:</xsl:text>
+		<xsl:text>Code Value</xsl:text>		
+		<xsl:value-of select="$sRecordSep"/>
+		-->
 				
 		<xsl:text>FIL=</xsl:text>
 			<xsl:value-of select="$FGN"/>
@@ -129,6 +133,10 @@
 			<xsl:call-template name="msFormateDate">
 				<xsl:with-param name="vsUTCDate" select="DeliveryNoteHeader/DeliveryNoteReferences/DespatchDate"/>
 			</xsl:call-template>
+			<xsl:text>+</xsl:text>
+			<!-- <xsl:text>Nodu</xsl:text> -->
+			<xsl:text>+</xsl:text>
+			<xsl:text>+</xsl:text>
 			<xsl:text>+</xsl:text>
 			<xsl:text>+</xsl:text>
 			<xsl:call-template name="msFormateDate">
@@ -177,14 +185,31 @@
 						<xsl:with-param name="vobjNode" select="ProductID/SuppliersProductCode"/>
 						<xsl:with-param name="vnLength" select="30"/>
 					</xsl:call-template>	
+					<xsl:text>:</xsl:text>
 					<xsl:text>+</xsl:text>			
 					<xsl:text>+</xsl:text>
+					<xsl:call-template name="msCheckField">
+						<xsl:with-param name="vobjNode" select="ProductID/BuyersProductCode"/>
+						<xsl:with-param name="vnLength" select="30"/>
+					</xsl:call-template>
 					<xsl:text>+</xsl:text>			
 					<xsl:text>1</xsl:text>
+					<xsl:text>:</xsl:text>
 					<xsl:text>+</xsl:text>
-					<xsl:value-of select="format-number(DespatchedQuantity,'0')"/>					
+					<xsl:value-of select="format-number(DespatchedQuantity,'0')"/>
+					<xsl:text>:</xsl:text>
+					<xsl:text>:</xsl:text>
+					<xsl:text>+</xsl:text>
+					<xsl:if test="string-length(ProductID/GTIN) = 0">
+						<xsl:value-of select="js:msSafeText(string(ProductDescription),40)"/>	
+					</xsl:if>	
+					<xsl:text>:</xsl:text>				
 				<xsl:value-of select="$sRecordSep"/>
 				
+				<!-- <xsl:text>DLS=</xsl:text>
+				??
+				-->
+								
 				<xsl:text>DNC=</xsl:text>
 					<xsl:value-of select="$DeliveryNumber"/>			
 					<xsl:text>+</xsl:text>											
@@ -192,12 +217,23 @@
 					<xsl:text>+</xsl:text>										
 					<!-- <xsl:value-of select="position()"/> -->
 					<xsl:text>1</xsl:text>
+					<!-- RTEX -->
 					<xsl:text>+</xsl:text>
 					<xsl:text>082</xsl:text>
 					<xsl:text>:</xsl:text>
-					<xsl:if test="LineExtraData/CustomerOrderLineNumber != ''">
-						<xsl:value-of select="format-number(LineExtraData/CustomerOrderLineNumber,'0000')"/>
-					</xsl:if>										
+					<!--<xsl:text> Application Text </xsl:text>-->
+					<xsl:text>:</xsl:text>
+					<!-- <xsl:text>2nd Application Code </xsl:text>-->
+					<xsl:text>:</xsl:text>
+					<!-- <xsl:text>Application Text</xsl:text> -->
+					<xsl:text>:</xsl:text>
+					<!-- <xsl:text>3rd Application Code</xsl:text> -->
+					<xsl:text>:</xsl:text>
+					<!-- <xsl:text>Application Text </xsl:text>-->
+					<xsl:text>:</xsl:text>
+					<!-- <xsl:text>4th Application Code</xsl:text> -->
+					<xsl:text>:</xsl:text>
+					<!-- <xsl:text>Application Text</xsl:text>-->										
 				<xsl:value-of select="$sRecordSep"/>				
 								
 		
