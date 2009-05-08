@@ -358,26 +358,26 @@
 						<xsl:text>1</xsl:text>
 						<!-- DNAC -->
 						<xsl:text>+</xsl:text>							
-						<xsl:text><!-- Code Table Number --></xsl:text>
+						<!-- <xsl:text> Code Table Number</xsl:text> -->
 						<xsl:text>:</xsl:text>
-						<xsl:text><!-- Code Value --></xsl:text>
+						<!-- <xsl:text>Code Value</xsl:text> -->
 						<!-- RTEX -->
 						<xsl:text>+</xsl:text>
 						<xsl:text>082</xsl:text>
 						<xsl:text>:</xsl:text>
-						<xsl:text><!-- Application Text --></xsl:text>
+						<!--<xsl:text> Application Text </xsl:text>-->
 						<xsl:text>:</xsl:text>
-						<xsl:text><!-- 2nd Application Code --></xsl:text>
+						<!-- <xsl:text>2nd Application Code </xsl:text>-->
 						<xsl:text>:</xsl:text>
-						<xsl:text><!-- Application Text --></xsl:text>
+						<!-- <xsl:text>Application Text</xsl:text> -->
 						<xsl:text>:</xsl:text>
-						<xsl:text><!-- 3rd Application Code --></xsl:text>
+						<!-- <xsl:text>3rd Application Code</xsl:text> -->
 						<xsl:text>:</xsl:text>
-						<xsl:text><!-- Application Text --></xsl:text>
+						<!-- <xsl:text>Application Text </xsl:text>-->
 						<xsl:text>:</xsl:text>
-						<xsl:text><!-- 4th Application Code --></xsl:text>
+						<!-- <xsl:text>4th Application Code</xsl:text> -->
 						<xsl:text>:</xsl:text>
-						<xsl:text><!-- Application Text--></xsl:text>		
+						<!-- <xsl:text>Application Text</xsl:text>-->		
 						<xsl:value-of select="$sRecordSep"/>
 						
 					</xsl:for-each>
