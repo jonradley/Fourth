@@ -374,30 +374,38 @@
 											</xsl:if>
 										</ShipToLocationID>
 										<!-- ShipTo name and address will be populated by subsequent processors -->
-									</ShipTo>										
-										<xsl:if test="/biztalk_1/body/Invoice/InvoiceReferences/BuyersOrderNumber != ''">
-												<PurchaseOrderReferences>
-													<xsl:if test="/biztalk_1/body/Invoice/InvoiceReferences/BuyersOrderNumber">
-														<PurchaseOrderReference>
-															<xsl:value-of select="/biztalk_1/body/Invoice/InvoiceReferences/BuyersOrderNumber"/>
-														</PurchaseOrderReference>
-													</xsl:if>
-													<!-- no date provided so use invoice date-->
-													<xsl:if test="/biztalk_1/body/Invoice/InvoiceReferences/BuyersOrderNumber">
-														<PurchaseOrderDate>
-															<xsl:value-of select="substring(/biztalk_1/body/Invoice/InvoiceDate,1,10)"/>
-														</PurchaseOrderDate>	
-													</xsl:if>														
-												</PurchaseOrderReferences>		
-											</xsl:if>									
-										<DeliveryNoteReferences>
-											<DeliveryNoteReference>
-												<xsl:value-of select="Invoice/InvoiceReferences/SuppliersInvoiceNumber"/>
-											</DeliveryNoteReference>
-											<DeliveryNoteDate>
-												<xsl:value-of select="substring(Invoice/InvoiceDate, 1,10)"/>
-											</DeliveryNoteDate>
-										</DeliveryNoteReferences>
+									</ShipTo>									
+									<PurchaseOrderReferences>
+									<!-- If no purchase order reference exists, then use the invoice reference -->
+										<xsl:choose>
+											<xsl:when test="/biztalk_1/body/Invoice/InvoiceReferences/BuyersOrderNumber != ''">
+												<PurchaseOrderReference>
+													<xsl:value-of select="/biztalk_1/body/Invoice/InvoiceReferences/BuyersOrderNumber"/>
+												</PurchaseOrderReference>
+												<!-- no date provided so use invoice date-->
+												<PurchaseOrderDate>
+													<xsl:value-of select="substring(/biztalk_1/body/Invoice/InvoiceDate,1,10)"/>
+												</PurchaseOrderDate>	
+											</xsl:when>
+											<xsl:otherwise>
+												<PurchaseOrderReference>
+													<xsl:value-of select="/biztalk_1/body/Invoice/InvoiceReferences/SuppliersInvoiceNumber"/>
+												</PurchaseOrderReference>
+												<PurchaseOrderDate>
+													<xsl:value-of select="substring(/biztalk_1/body/Invoice/InvoiceDate,1,10)"/>
+												</PurchaseOrderDate>	
+											</xsl:otherwise>
+										</xsl:choose>													
+									</PurchaseOrderReferences>		
+																	
+									<DeliveryNoteReferences>
+										<DeliveryNoteReference>
+											<xsl:value-of select="Invoice/InvoiceReferences/SuppliersInvoiceNumber"/>
+										</DeliveryNoteReference>
+										<DeliveryNoteDate>
+											<xsl:value-of select="substring(Invoice/InvoiceDate, 1,10)"/>
+										</DeliveryNoteDate>
+									</DeliveryNoteReferences>
 									</DeliveryNoteHeader>
 									<DeliveryNoteDetail>	
 										<xsl:for-each select="Invoice/InvoiceLine">									
