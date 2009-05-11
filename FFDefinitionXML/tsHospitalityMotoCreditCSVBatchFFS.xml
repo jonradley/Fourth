@@ -31,7 +31,6 @@
 					<CreditNote>
 						<TradeSimpleHeader>
 							<SendersCodeForRecipient RecordPos="HEAD" LPos="4"/>
-							<SendersBranchReference RecordPos="HEAD" LPos="3"/>
 						</TradeSimpleHeader>
 						<CreditNoteHeader>
 							<!--Set dummy value (HEAD-3) to DocumentStatus and correct it in stylesheet.-->
@@ -89,9 +88,6 @@
 										<ContractReference RecordPos="HEAD" LPos="70"/>
 									</TradeAgreement>
 								</PurchaseOrderReferences>
-								<PurchaseOrderConfirmationReferences>
-									<PurchaseOrderConfirmationReference RecordPos="HEAD" LPos="37"/>
-								</PurchaseOrderConfirmationReferences>
 								<DeliveryNoteReferences>
 									<DeliveryNoteReference RecordPos="HEAD" LPos="41"/>
 									<DeliveryNoteDate RecordPos="HEAD" LPos="42"/>
@@ -100,7 +96,7 @@
 								</DeliveryNoteReferences>
 								<ProductID>
 									<GTIN RecordPos="LINE" LPos="18"/>
-									<SuppliersProductCode RecordPos="LINE" LPos="2"/>
+									<SuppliersProductCode RecordPos="LINE" LPos="19"/>
 								</ProductID>
 								<ProductDescription RecordPos="LINE" LPos="25"/>
 								<CreditedQuantity RecordPos="LINE" LPos="7">
