@@ -5,6 +5,8 @@
 25 April 05 - Andy T - Updates to reflect 3663 specific requirement in Appendix A of ELI010 - Integration Proposal For 3663 v1 DRAFT 2.doc - search for '3663'
 02 June 05 - Andy T - H433 3663-Elior: fix to ensure unique FGNs
 09 April 09 - R Cambridge - 2838: Only manipulate SCR/Suppliers-code-for-ShipTo on documents produced by Crystal (ie those with /8 or /A in the SCR)
+12 May 09 - R Cambridge - 2882: Set UoMs based on type of quantity and optional product code suffix 
+
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
@@ -152,25 +154,38 @@
 	
 	<!-- INVOIC-ILD-QTYI (InvoiceLine/InvoicedQuantity) needs to be multiplied by -1 if (InvoiceLine/ProductID/GTIN) is NOT blank -->
 	<!-- NE, 11th JUly 2007 - Change to map in weighted item details, FB: -->
-	<xsl:template match="InvoiceLine/InvoicedQuantity">
-		<xsl:choose>
-			<!--Parent of InvoicedQuantity is InvoiceLine-->
-			<xsl:when test="string-length(../ProductID/GTIN) &gt; 0" >
-				<!--INVOIC-ILD-CRLI is not blank, multiply by -1-->
-				<xsl:call-template name="copyCurrentNodeDPUnchanged">
-					<xsl:with-param name="lMultiplier" select="-1.0"/>
-				</xsl:call-template>
-			</xsl:when>
-			<!-- Check and map from wt'd item segments -->
-			<xsl:when test="string(../Measure/TotalMeasure) !='' ">
-				<InvoicedQuantity>
+	<!-- Robert Cambridge 2009-05-12 FB2882 set UoM -->
+	<xsl:template match="InvoiceLine/InvoicedQuantity">		
+		
+		<InvoicedQuantity>
+		
+			<xsl:attribute name="UnitOfMeasure">
+				<xsl:choose>
+					<!-- If the product code ends in S it's a single -->
+					<xsl:when test="substring(../ProductID/SuppliersProductCode,string-length(../ProductID/SuppliersProductCode))='S'">EA</xsl:when>
+					<!-- if there's a weight it's in kilos -->
+					<xsl:when test="string(../Measure/TotalMeasure) !=''">KGM</xsl:when>
+					<!-- Every thing else is a case -->
+					<xsl:otherwise>CS</xsl:otherwise>
+				</xsl:choose>		
+			</xsl:attribute>
+			
+			<!-- If this is a credit line, make the quantity negative  -->
+			<xsl:if test="string-length(../ProductID/GTIN) &gt; 0">-</xsl:if>			
+			
+			<xsl:choose>
+				<!-- Check and map from wt'd item segments -->
+				<xsl:when test="string(../Measure/TotalMeasure) !='' ">
 					<xsl:value-of select="format-number(../Measure/TotalMeasure div 1000,'0.000#')"/>
-				</InvoicedQuantity>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:call-template name="copyCurrentNodeDPUnchanged"/>
-			</xsl:otherwise>
-		</xsl:choose>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="."/>
+				</xsl:otherwise>
+			</xsl:choose>			
+		
+		</InvoicedQuantity>
+		
+		
 	</xsl:template>
 	
 	<!-- INVOIC-ILD-LEXC(InvoiceLine/LineValueExclVAT) need to be multiplied by -1 if (InvoiceLine/ProductID/GTIN) is NOT blank -->
