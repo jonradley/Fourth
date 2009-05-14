@@ -20,25 +20,12 @@
 ==========================================================================================
  25/02/2009	| Rave Tech  		| 2719 Added condition for status = 'changed '.
 ==========================================================================================
+ 13/05/2009	| Rave Tech  		| 2878 Removed MaxSplits logic and implemented CaseSize logic.
+==========================================================================================
 			|					|
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	<xsl:output method="xml" encoding="UTF-8"/>
-	
-	<xsl:include href="tsMappingHospitalityTRG_SupplierSplitPackLogic.xsl"/>
-	
-	<xsl:variable name="sProcessMaxSplits">		
-		<xsl:choose>
-				<xsl:when test="/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/PurchaseOrderReferences/PurchaseOrderReference &lt; 0">
-					 <xsl:value-of select="'IGNORE_MAXSPLITS'"/> 									
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:call-template name="sProcessMaxSplits">
-					<xsl:with-param name="vsSupplierCode" select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/Supplier/SuppliersLocationID/BuyersCode"/>	
-					</xsl:call-template>										
-				</xsl:otherwise>
-		</xsl:choose>		
-	</xsl:variable>
 	
 	<xsl:template match="/PurchaseOrderConfirmation">
 	
@@ -127,12 +114,12 @@
 				<xsl:variable name="SkipLine">
                                                        
                                  <xsl:choose>
-                                        <xsl:when test="0 &lt; count(//PurchaseOrderConfirmationDetail/PurchaseOrderConfirmationLine[.!=$objCurrentLine and ProductID/SuppliersProductCode =											$objCurrentLine/ProductID/SuppliersProductCode][$sLineStatus='Added' and (@LineStatus='Accepted' or @LineStatus='Changed' or @LineStatus='Rejected')])">
+                                        <xsl:when test="0 &lt; count(//PurchaseOrderConfirmationDetail/PurchaseOrderConfirmationLine[.!=$objCurrentLine and ProductID/SuppliersProductCode =	 $objCurrentLine/ProductID/SuppliersProductCode][$sLineStatus='Added' and (@LineStatus='Accepted' or @LineStatus='Changed' or @LineStatus='Rejected')])">
 
                                                <xsl:text>True</xsl:text>
                                         </xsl:when>
                                         <xsl:otherwise>
-                                               <xsl:variable name="nSumQuantity" select="sum(//PurchaseOrderConfirmationDetail/PurchaseOrderConfirmationLine[.!=$objCurrentLine and ProductID/SuppliersProductCode = 									$objCurrentLine/ProductID/SuppliersProductCode][@LineStatus='Added' and ($sLineStatus='Accepted' or $sLineStatus='Changed' or $sLineStatus='Rejected')]/ConfirmedQuantity ) + $nQuantity"/>
+                                               <xsl:variable name="nSumQuantity" select="sum(//PurchaseOrderConfirmationDetail/PurchaseOrderConfirmationLine[.!=$objCurrentLine and ProductID/SuppliersProductCode = 			$objCurrentLine/ProductID/SuppliersProductCode][@LineStatus='Added' and ($sLineStatus='Accepted' or $sLineStatus='Changed' or $sLineStatus='Rejected')]/ConfirmedQuantity ) + $nQuantity"/>
                                                <xsl:text>XML to process</xsl:text>
                                                <OrderItem>
                                                       <xsl:call-template name="WriteLine2">
@@ -172,19 +159,32 @@
 		<xsl:attribute name="SupplierProductCode">
 			<xsl:value-of select="ProductID/SuppliersProductCode"/>
 		</xsl:attribute>	
-		<xsl:attribute name="Quantity">		
-			<xsl:choose>
-				<xsl:when test="$sProcessMaxSplits = $IGNORE_MAXSPLITS">
+		<xsl:choose>
+			<!--When CaseSize is obtained then devide Qty and multiply Price by it-->
+			<xsl:when test="number(LineExtraData/CaseSize) &gt; 1">
+				<xsl:attribute name="Quantity">
+					<xsl:value-of select="format-number(ConfirmedQuantity div LineExtraData/CaseSize,'0.00000000000000')"/>
+				</xsl:attribute>
+				<xsl:attribute name="UOM">
+					<xsl:text>CS</xsl:text> 
+				</xsl:attribute>
+				<xsl:attribute name="MajorUnitPrice">
+					<xsl:value-of select="format-number(UnitValueExclVAT * LineExtraData/CaseSize,'0.00')"/>
+				</xsl:attribute>
+			</xsl:when>
+			<!--Else keep line unchanged-->
+			<xsl:otherwise>
+				<xsl:attribute name="Quantity">
 					<xsl:value-of select="format-number(ConfirmedQuantity,'0.00000000000000')"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="format-number(ConfirmedQuantity div MaxSplits,'0.00000000000000')"/>
-				</xsl:otherwise>
-			</xsl:choose>			
-		</xsl:attribute>
-		<xsl:attribute name="MajorUnitPrice">
-			<xsl:value-of select="format-number(UnitValueExclVAT,'0.00')"/>
-		</xsl:attribute>
+				</xsl:attribute>
+				<xsl:attribute name="UOM">
+					<xsl:value-of select="ConfirmedQuantity/@UnitOfMeasure"/>
+				</xsl:attribute>
+				<xsl:attribute name="MajorUnitPrice">
+					<xsl:value-of select="format-number(UnitValueExclVAT,'0.00')"/>
+				</xsl:attribute>
+			</xsl:otherwise>
+		</xsl:choose>
 		<xsl:attribute name="SupplierPackageGuid">
 			<xsl:value-of select="'{00000000-0000-0000-0000-000000000000}'"/>
 		</xsl:attribute>	
@@ -200,19 +200,32 @@
 		<xsl:attribute name="SupplierProductCode">
 			<xsl:value-of select="ProductID/SuppliersProductCode"/>
 		</xsl:attribute>	
-		<xsl:attribute name="Quantity">		
-			<xsl:choose>
-				<xsl:when test="$sProcessMaxSplits = $IGNORE_MAXSPLITS">
+		<xsl:choose>
+			<!--When CaseSize is obtained then devide Qty and multiply Price by it-->
+			<xsl:when test="number(LineExtraData/CaseSize) &gt; 1">
+				<xsl:attribute name="Quantity">
+					<xsl:value-of select="format-number($vQuantity div LineExtraData/CaseSize,'0.00000000000000')"/>
+				</xsl:attribute>
+				<xsl:attribute name="UOM">
+					<xsl:text>CS</xsl:text> 
+				</xsl:attribute>
+				<xsl:attribute name="MajorUnitPrice">
+					<xsl:value-of select="format-number($vUnitValue * LineExtraData/CaseSize,'0.00')"/>
+				</xsl:attribute>
+			</xsl:when>
+			<!--Else keep line unchanged-->
+			<xsl:otherwise>
+				<xsl:attribute name="Quantity">
 					<xsl:value-of select="format-number($vQuantity,'0.00000000000000')"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="format-number($vQuantity div MaxSplits,'0.00000000000000')"/>
-				</xsl:otherwise>
-			</xsl:choose>			
-		</xsl:attribute>
-		<xsl:attribute name="MajorUnitPrice">
-			<xsl:value-of select="format-number($vUnitValue,'0.00')"/>
-		</xsl:attribute>
+				</xsl:attribute>
+				<xsl:attribute name="UOM">
+					<xsl:value-of select="ConfirmedQuantity/@UnitOfMeasure"/>
+				</xsl:attribute>
+				<xsl:attribute name="MajorUnitPrice">
+					<xsl:value-of select="format-number($vUnitValue,'0.00')"/>
+				</xsl:attribute>
+			</xsl:otherwise>
+		</xsl:choose>
 		<xsl:attribute name="SupplierPackageGuid">
 			<xsl:value-of select="'{00000000-0000-0000-0000-000000000000}'"/>
 		</xsl:attribute>	
