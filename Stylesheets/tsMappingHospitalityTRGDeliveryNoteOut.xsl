@@ -8,36 +8,23 @@
 ==========================================================================================
  Module History
 ==========================================================================================
- Version		| 
+ Version	| 
 ==========================================================================================
- Date      	| Name 					| Description of modification
+ Date      	| Name 				| Description of modification
 ==========================================================================================
- 25/09/2008	| R Cambridge			| 2841 Created module 
+ 25/09/2008	| R Cambridge		| 2841 Created module 
 ==========================================================================================
- 21/10/2008	| R Cambridge     		| 2524 temporary fix to ignore split pack info for some suppliers
+ 21/10/2008	| R Cambridge     	| 2524 temporary fix to ignore split pack info for some suppliers
 ==========================================================================================
- 09/03/2009	| Rave Tech  			| 2719 Consolidate twice appearing product code into one line using non-supersession price.
+ 09/03/2009	| Rave Tech  		| 2719 Consolidate twice appearing product code into one line using non-supersession price.
+==========================================================================================
+ 13/05/2009	| Rave Tech  		| 2878 Removed MaxSplits logic and implemented CaseSize logic.
 ==========================================================================================
            	|                 	|
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl">
 	<xsl:output method="xml" encoding="UTF-8"/>
 	
-	<xsl:include href="tsMappingHospitalityTRG_SupplierSplitPackLogic.xsl"/>
-			
-	<xsl:variable name="sProcessMaxSplits">		
-		<xsl:choose>
-				<xsl:when test="/DeliveryNote/DeliveryNoteHeader/PurchaseOrderReferences/PurchaseOrderReference &lt; 0">
-					 <xsl:value-of select="'IGNORE_MAXSPLITS'"/> 									
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:call-template name="sProcessMaxSplits">
-					<xsl:with-param name="vsSupplierCode" select="/DeliveryNote/DeliveryNoteHeader/Supplier/SuppliersLocationID/BuyersCode"/>	
-					</xsl:call-template>										
-				</xsl:otherwise>
-		</xsl:choose>		
-	</xsl:variable>
-		
 	<xsl:template match="/DeliveryNote">
 		<Order>
 
@@ -53,7 +40,6 @@
 			<!--xsl:attribute name="DeliveryID">
 				<xsl:value-of select="DeliveryNoteHeader/DeliveryNoteReferences/DeliveryNoteReference"/>
 			</xsl:attribute-->
-			
 			
 			<xsl:attribute name="UserReference">
 				<xsl:value-of select="DeliveryNoteHeader/DeliveryNoteReferences/DeliveryNoteReference"/>
@@ -130,26 +116,43 @@
 					</xsl:attribute>
 					
 					<xsl:variable name="nQuantity" select="sum(//DeliveryNoteDetail/DeliveryNoteLine[ProductID/SuppliersProductCode=$sProductCode]/DespatchedQuantity )"/>
-					
-					<xsl:attribute name="Quantity">
-						<xsl:choose>
-							<xsl:when test="$sProcessMaxSplits = $IGNORE_MAXSPLITS">
-								<xsl:value-of select="format-number($nQuantity ,'0.00000000000000')"/>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:value-of select="format-number($nQuantity div MaxSplits,'0.00000000000000')"/>
-							</xsl:otherwise>
-						</xsl:choose>					
-					</xsl:attribute>
-					
-					<xsl:attribute name="MajorUnitPrice">
-						<xsl:choose>
-							<xsl:when test="UnitValueExclVAT">
-								<xsl:value-of select="UnitValueExclVAT"/>
-							</xsl:when>
-							<xsl:otherwise>0.00</xsl:otherwise>
-						</xsl:choose>
-					</xsl:attribute>
+
+					<xsl:choose>
+						<!--When CaseSize is obtained then devide Qty and multiply Price by it-->
+						<xsl:when test="number(LineExtraData/CaseSize) &gt; 1">
+							<xsl:attribute name="Quantity">
+								<xsl:value-of select="format-number($nQuantity div LineExtraData/CaseSize,'0.00000000000000')"/>
+							</xsl:attribute>
+							<xsl:attribute name="UOM">
+								<xsl:text>CS</xsl:text> 
+							</xsl:attribute>
+							<xsl:attribute name="MajorUnitPrice">
+								<xsl:choose>
+									<xsl:when test="UnitValueExclVAT">
+										<xsl:value-of select="format-number(UnitValueExclVAT * LineExtraData/CaseSize,'0.00')"/>
+									</xsl:when>
+									<xsl:otherwise>0.00</xsl:otherwise>
+								</xsl:choose>
+							</xsl:attribute>
+						</xsl:when>
+						<!--Else keep line unchanged-->
+						<xsl:otherwise>
+							<xsl:attribute name="Quantity">
+								<xsl:value-of select="format-number($nQuantity,'0.00000000000000')"/>
+							</xsl:attribute>
+							<xsl:attribute name="UOM">
+								<xsl:value-of select="DespatchedQuantity/@UnitOfMeasure"/>
+							</xsl:attribute>
+							<xsl:attribute name="MajorUnitPrice">
+								<xsl:choose>
+									<xsl:when test="UnitValueExclVAT">
+										<xsl:value-of select="format-number(UnitValueExclVAT,'0.00')"/>
+									</xsl:when>
+									<xsl:otherwise>0.00</xsl:otherwise>
+								</xsl:choose>
+							</xsl:attribute>
+						</xsl:otherwise>
+					</xsl:choose>
 					
 					<xsl:attribute name="SupplierPackageGuid">
 						<xsl:value-of select="'{00000000-0000-0000-0000-000000000000}'"/>
