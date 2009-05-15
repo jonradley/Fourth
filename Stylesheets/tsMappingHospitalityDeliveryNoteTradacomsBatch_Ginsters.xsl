@@ -12,9 +12,9 @@ R Cambridge	| 10/11/2008	| 2564 Only create SBR if a value is present
 **********************************************************************
 R Cambridge	| 11/11/2008	| 2564 Create dummy PO references to prevent all DN threading together
 **********************************************************************
-				|					|
+M Dimant		| 15/05/2009	| 2886 Add a time stamp to the end of the PO reference 
 *******************************************************************-->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:vbscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="utf-8"/>
 
 	<xsl:template match="/">
@@ -81,7 +81,7 @@ R Cambridge	| 11/11/2008	| 2564 Create dummy PO references to prevent all DN thr
 											<xsl:with-param name="vsYYMMDD" select="DeliveryNoteHeader/DeliveredDeliveryDetails/DeliveryDate"/>
 										</xsl:call-template>
 									</xsl:variable>
-									<xsl:variable name="sDummyPORef" select="concat(DeliveryNoteHeader/ShipTo/ShipToLocationID/SuppliersCode,'-',$sDeliveryDate)"/>
+									<xsl:variable name="sDummyPORef" select="concat(DeliveryNoteHeader/ShipTo/ShipToLocationID/SuppliersCode,'-',$sDeliveryDate,'T',vbscript:msTime())"/>
 									
 									<PurchaseOrderReferences>
 										<PurchaseOrderReference><xsl:value-of select="$sDummyPORef"/></PurchaseOrderReference>
@@ -156,6 +156,16 @@ R Cambridge	| 11/11/2008	| 2564 Create dummy PO references to prevent all DN thr
 		<xsl:value-of select="concat('20',substring($vsYYMMDD,1,2),'-',substring($vsYYMMDD,3,2),'-',substring($vsYYMMDD,5,2))"/>
 		
 	</xsl:template>
-										
+									
+<msxsl:script language="VBScript" implements-prefix="vbscript"><![CDATA[ 
+
+Function msTime
+
+msTime= CStr(TimeValue(Now))
+
+End Function
+]]></msxsl:script>
 
 </xsl:stylesheet>
+
+
