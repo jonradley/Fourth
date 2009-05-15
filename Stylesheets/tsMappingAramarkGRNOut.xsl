@@ -17,6 +17,8 @@
  05/05/2009	| Lee Boyton	| 2863. All numerical line values should be output
                     |                          | as positive numbers as there is a separate flag
                     |                          | to indicate return/credit lines.
+ ******************************************************************************************
+ 14/05/2009	| Rave Tech		| 2880. summed the line values to show in  Field #41 and formatted to show - sign in case of negative number.              
 ******************************************************************************************
 -->
 <xsl:stylesheet version="1.0"
@@ -36,7 +38,7 @@
 			<xsl:text>3</xsl:text>
 			<xsl:value-of select="script:msPad(/GoodsReceivedNote/GoodsReceivedNoteHeader/Supplier/SuppliersName, 40)"/>
 			<xsl:value-of select="script:msPad(/GoodsReceivedNote/GoodsReceivedNoteHeader/Supplier/SuppliersName, 40)"/>
-			<xsl:value-of select="script:msPad(/GoodsReceivedNote/GoodsReceivedNoteHeader/ShipTo/ShipToLocationID/SuppliersCode, 10)"/>
+			<xsl:value-of select="script:msPad(translate(/GoodsReceivedNote/GoodsReceivedNoteHeader/ShipTo/ShipToLocationID/SuppliersCode,'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 10)"/>
 			<xsl:value-of select="script:msPad(/GoodsReceivedNote/GoodsReceivedNoteHeader/ShipTo/ShipToName, 40)"/>
 			<xsl:value-of select="script:msPad(/GoodsReceivedNote/GoodsReceivedNoteHeader/ShipTo/ShipToAddress/AddressLine1, 40)"/>
 			<xsl:value-of select="script:msPad(/GoodsReceivedNote/GoodsReceivedNoteHeader/ShipTo/ShipToAddress/AddressLine2, 40)"/>
@@ -45,8 +47,15 @@
 			<xsl:value-of select="script:msPad(/GoodsReceivedNote/GoodsReceivedNoteHeader/ShipTo/ShipToAddress/PostCode, 10)"/>
 			<xsl:value-of select="script:msPad('', 30)"/>
 			<xsl:value-of select="script:msPad('United Kingdom', 30)"/>
-			<xsl:text>G-</xsl:text><xsl:value-of select="script:msPadNumber(/GoodsReceivedNote/GoodsReceivedNoteHeader/GoodsReceivedNoteReferences/GoodsReceivedNoteReference, 13, 0)"/>
-			<xsl:value-of select="/GoodsReceivedNote/GoodsReceivedNoteHeader/GoodsReceivedNoteReferences/GoodsReceivedNoteDate"/>
+			<xsl:text>G-</xsl:text><xsl:value-of select="script:msPadNumber(/GoodsReceivedNote/GoodsReceivedNoteHeader/GoodsReceivedNoteReferences/GoodsReceivedNoteReference, 13, 0)"/>		
+			<xsl:choose>
+				<xsl:when test="/GoodsReceivedNote/GoodsReceivedNoteHeader/InvoiceReferences/InvoiceDate !=''">
+					<xsl:value-of select="/GoodsReceivedNote/GoodsReceivedNoteHeader/InvoiceReferences/InvoiceDate"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="/GoodsReceivedNote/GoodsReceivedNoteHeader/ReceivedDeliveryDetails/DeliveryDate"/>
+				</xsl:otherwise>
+			</xsl:choose>
 			<xsl:value-of select="script:msPad(ProductID/SuppliersProductCode, 20)"/>
 			<xsl:value-of select="script:msPad(AcceptedQuantity/@UnitOfMeasure, 10)"/>
 			<xsl:value-of select="script:msPadNumber(0, 9, 0)"/>
@@ -87,7 +96,7 @@
 			<xsl:value-of select="script:msPad('', 40)"/>
 			<xsl:value-of select="script:msPad(/GoodsReceivedNote/GoodsReceivedNoteHeader/PurchaseOrderReferences/PurchaseOrderReference, 22)"/>
 			<xsl:value-of select="/GoodsReceivedNote/GoodsReceivedNoteHeader/PurchaseOrderReferences/PurchaseOrderDate"/>
-			<xsl:value-of select="script:msPadNumber(/GoodsReceivedNote/GoodsReceivedNoteTrailer/TotalExclVAT * (1 - 2 * (/GoodsReceivedNote/GoodsReceivedNoteTrailer/TotalExclVAT &lt; 0)), 12, 2)"/>
+			<xsl:value-of select="script:msPadNumber(sum(//LineValueExclVAT), 12, 2)"/>
 			<xsl:value-of select="script:msPad('', 3)"/>
 			<xsl:value-of select="/GoodsReceivedNote/GoodsReceivedNoteHeader/ReceivedDeliveryDetails/DeliveryDate"/>
 			<xsl:variable name="PaddedPLAccountNumber">
@@ -211,6 +220,7 @@
 		function msPadNumber(vvNumber, vlLength, vlDPs)
 		{
 			var sNumber = '';
+			var neg = false;
 			
 			try
 			{
@@ -220,6 +230,14 @@
 			{
 				sNumber = vvNumber.toString();
 			}
+			
+			
+			if(sNumber.search(/-/)!=-1)
+			{
+				sNumber = sNumber.replace(/-/,'');
+				neg=true;
+			}		
+
 			
 			if(sNumber.indexOf('.') != -1)
 			{
@@ -248,6 +266,10 @@
 				sNumber = '0' + sNumber;
 			}
 			
+			if(neg) 
+			{
+				sNumber = '-' +  sNumber ;
+			}
 			return sNumber.substr(0, vlLength);
 				
 		}
