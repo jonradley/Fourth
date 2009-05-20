@@ -262,11 +262,20 @@
 		<xsl:text>MTR=3</xsl:text>
 		<xsl:value-of select="$sRecordSep"/>
 		
-	
-		<xsl:text>END=3</xsl:text>			
+		<xsl:text>MHD=4+RSGRSG:2</xsl:text>
 		<xsl:value-of select="$sRecordSep"/>
 		
-
+		<xsl:text>RSG=</xsl:text>
+		<xsl:value-of select="$FGN"/>
+		<xsl:text>+</xsl:text>
+		<xsl:text>BORDERS</xsl:text>
+		<xsl:value-of select="$sRecordSep"/>
+		
+		<xsl:text>MTR=3</xsl:text>	
+		<xsl:value-of select="$sRecordSep"/>
+		
+		<xsl:text>END=4</xsl:text>			
+		<xsl:value-of select="$sRecordSep"/>
 		
 	</xsl:template>
 	

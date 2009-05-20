@@ -489,8 +489,20 @@
 		<xsl:text>MTR=3</xsl:text>	
 		<xsl:value-of select="$sRecordSep"/>
 		
+		<xsl:text>MHD=5+RSGRSG:2</xsl:text>
+		<xsl:value-of select="$sRecordSep"/>
+		
+		<xsl:text>RSG=</xsl:text>
+		<xsl:value-of select="$FGN"/>
+		<xsl:text>+</xsl:text>
+		<xsl:text>BORDERS</xsl:text>
+		<xsl:value-of select="$sRecordSep"/>
+		
+		<xsl:text>MTR=3</xsl:text>	
+		<xsl:value-of select="$sRecordSep"/>
+
 		<!-- END = number of message headers (MHD) -->
-		<xsl:text>END=4</xsl:text>
+		<xsl:text>END=5</xsl:text>
 		<xsl:value-of select="$sRecordSep"/>
 		
 	</xsl:template>
