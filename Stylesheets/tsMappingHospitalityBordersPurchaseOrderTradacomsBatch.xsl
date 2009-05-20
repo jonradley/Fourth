@@ -13,15 +13,7 @@ Rave Tech	| 01/05/2009	| Created Module FB 2870
 
 	<xsl:template match="/">
 		<!-- create the BatchRoot element required by the Inbound XSL Transform processor -->
-		<!--<BatchRoot>-->
-			<Batch>
-				<BatchDocuments>
-					<BatchDocument DocumentType="2">
-						<xsl:apply-templates select="@*|node()"/>
-					</BatchDocument>
-				</BatchDocuments>
-			</Batch>
-		<!--</BatchRoot>-->
+		<xsl:apply-templates select="@*|node()"/>
 	</xsl:template>
 
 	<!-- DATE CONVERSION dd/mm/yyyy to xsd:date -->
