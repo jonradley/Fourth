@@ -64,7 +64,8 @@ R Cambridge	| 2008-03-20		| 2805 Created Modele
 		<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
 		<xsl:value-of select="$fieldSeperator"/>
 		
-		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate"/>
+		<xsl:variable name="DeliveryDate" select="/PurchaseOrder/PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate"/>
+		<xsl:value-of select="concat(substring($DeliveryDate,9,2),'.',substring($DeliveryDate,6,2),'.',substring($DeliveryDate,1,4))"/>
 		<xsl:value-of select="$fieldSeperator"/>
 		
 		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/>		
@@ -99,7 +100,7 @@ R Cambridge	| 2008-03-20		| 2805 Created Modele
 		<xsl:value-of select="ProductID/SuppliersProductCode"/>
 		<xsl:value-of select="$fieldSeperator"/>
 		
-		<xsl:value-of select="OrderedQuantity"/>
+		<xsl:value-of select="format-number(OrderedQuantity,'0')"/>
 		<xsl:value-of select="$fieldSeperator"/>
 		
 		<xsl:value-of select="OrderedQuantity/@UnitOfMeasure"/>	
