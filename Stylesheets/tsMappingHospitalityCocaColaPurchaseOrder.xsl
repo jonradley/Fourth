@@ -24,6 +24,8 @@ Overview
 ******************************************************************************************
  14/08/2008		| Lee Boyton     | 2418 Cater for the old Moto GLN and translate to the new value.
 ******************************************************************************************
+ 21/05/2009		| Lee Boyton     | 2900 Translate the GLN for SSP and Moto.
+******************************************************************************************
 			  		|                |
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" 
@@ -108,15 +110,28 @@ Overview
 			    BUYER
 			      ~~~~~~~~~~~~~~~~~~~~~~~-->
 
-			<!-- Moto are transitioning to a new GLN, so to ensure any old documents go to CCE with the correct (new) GLN then check for this here -->			      
-			<xsl:variable name="OldMotoGLN" select="'5027615900022'"/>
+			<!-- SSP and Moto are both set-up with the same GLN on trade simple, and this needs to be changed to the correct (different) GLN when the final document is sent to CCE, which unfortunately means some rather rubbish tests need to be employed -->			      
+			<xsl:variable name="OldMotoAndSSPGLN" select="'5027615900022'"/>
 			<xsl:variable name="NewMotoGLN" select="'5029224000004'"/>
+			<xsl:variable name="NewSSPGLN" select="'5013546200266'"/>
+			<xsl:variable name="SCBMoto" select="'MOTO'"/>
+			<xsl:variable name="SCBSSP" select="'5013546200266'"/>
 			
 			<Buyer>
 				<BuyerGLN scheme="GLN">
 					<xsl:choose>
-						<xsl:when test="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN = $OldMotoGLN">
-							<xsl:value-of select="$NewMotoGLN"/>						
+						<xsl:when test="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN = $OldMotoAndSSPGLN">
+							<xsl:choose>
+								<xsl:when test="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode = $SCBMoto">
+									<xsl:value-of select="$NewMotoGLN"/>
+								</xsl:when>
+								<xsl:when test="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode = $SCBSSP">
+									<xsl:value-of select="$NewSSPGLN"/>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/>
+								</xsl:otherwise>
+							</xsl:choose>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/>						
