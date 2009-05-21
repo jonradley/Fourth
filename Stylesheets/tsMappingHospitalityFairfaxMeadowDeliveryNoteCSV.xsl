@@ -89,7 +89,8 @@
 
 	<!-- sort some dates -->
 	<xsl:template match="PurchaseOrderDate |
-	                     DeliveryNoteDate">
+	                     DeliveryNoteDate |
+	                     DeliveryDate">
 	
 		<xsl:element name="{name()}"	>
 			<xsl:call-template name="formatDates">
