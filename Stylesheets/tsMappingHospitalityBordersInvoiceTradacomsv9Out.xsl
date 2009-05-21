@@ -213,11 +213,11 @@
 		</xsl:call-template>
 		<xsl:value-of select="$sRecordSep"/>
 		
-		<!-- <xsl:text>DNA=</xsl:text>
+		<xsl:text>DNA=</xsl:text>
 		<xsl:text>1+</xsl:text>
-		<xsl:text>Code Table Number</xsl:text>
+		<xsl:text><!-- Code Table Number --></xsl:text>
 		<xsl:text>:</xsl:text>
-		<xsl:text>Code Value</xsl:text>
+		<!-- <xsl:text>Code Value</xsl:text>
 		<xsl:text>+</xsl:text>
 		<xsl:text>082</xsl:text>
 		<xsl:text>:</xsl:text>
@@ -233,8 +233,8 @@
 		<xsl:text>:</xsl:text>
 		<xsl:text>4th Application Code</xsl:text>
 		<xsl:text>:</xsl:text>
-		<xsl:text>Application Text</xsl:text>		
-		<xsl:value-of select="$sRecordSep"/> -->
+		<xsl:text>Application Text</xsl:text>	-->	
+		<xsl:value-of select="$sRecordSep"/>
 
 		<!-- use the keys for grouping Lines by PO Reference and then by DN Reference -->
 		<!-- the first loop will match the first line in each set of lines grouped by PO Reference -->
@@ -357,26 +357,26 @@
 						<xsl:text>+</xsl:text>
 						<xsl:text>1</xsl:text>
 						<!-- DNAC -->
-						<xsl:text>+</xsl:text>							
+						<!-- <xsl:text>+</xsl:text>--> 							
 						<!-- <xsl:text> Code Table Number</xsl:text> -->
-						<xsl:text>:</xsl:text>
+						<!-- <xsl:text>:</xsl:text>--> 
 						<!-- <xsl:text>Code Value</xsl:text> -->
 						<!-- RTEX -->
-						<xsl:text>+</xsl:text>
+						<!-- <xsl:text>+</xsl:text>
 						<xsl:text>082</xsl:text>
-						<xsl:text>:</xsl:text>
+						<xsl:text>:</xsl:text>-->
 						<!--<xsl:text> Application Text </xsl:text>-->
-						<xsl:text>:</xsl:text>
+						<!-- <xsl:text>:</xsl:text> -->
 						<!-- <xsl:text>2nd Application Code </xsl:text>-->
-						<xsl:text>:</xsl:text>
+						<!-- <xsl:text>:</xsl:text> -->
 						<!-- <xsl:text>Application Text</xsl:text> -->
-						<xsl:text>:</xsl:text>
+						<!-- <xsl:text>:</xsl:text> -->
 						<!-- <xsl:text>3rd Application Code</xsl:text> -->
-						<xsl:text>:</xsl:text>
+						<!-- <xsl:text>:</xsl:text> -->
 						<!-- <xsl:text>Application Text </xsl:text>-->
-						<xsl:text>:</xsl:text>
+						<!-- <xsl:text>:</xsl:text> -->
 						<!-- <xsl:text>4th Application Code</xsl:text> -->
-						<xsl:text>:</xsl:text>
+						<!-- <xsl:text>:</xsl:text> -->
 						<!-- <xsl:text>Application Text</xsl:text>-->		
 						<xsl:value-of select="$sRecordSep"/>
 						
@@ -436,7 +436,7 @@
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:text>MTR=</xsl:text>
-		<xsl:value-of select="5 + number(InvoiceTrailer/NumberOfDeliveries) + count(InvoiceDetail/InvoiceLine) * 2 + count(InvoiceTrailer/VATSubTotals/VATSubTotal)"/>
+		<xsl:value-of select="6 + number(InvoiceTrailer/NumberOfDeliveries) + count(InvoiceDetail/InvoiceLine) * 2 + count(InvoiceTrailer/VATSubTotals/VATSubTotal)"/>
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:text>MHD=3+VATTLR:9</xsl:text>		
