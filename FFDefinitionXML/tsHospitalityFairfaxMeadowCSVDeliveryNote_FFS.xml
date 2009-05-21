@@ -95,19 +95,19 @@
 						<DeliveryNoteDate RecordPos="&quot;HEAD&quot;" LPos="14"/>
 						<!--DespatchDate/-->
 					</DeliveryNoteReferences>
-					<!--DeliveredDeliveryDetails>
-								<DeliveryType/>
-								<DeliveryDate/>
-								<DeliverySlot>
-									<SlotStart/>
-									<SlotEnd/>
-								</DeliverySlot>
-								<DeliveryCutOffDate/>
-								<DeliveryCutOffTime/>
-								<SpecialDeliveryInstructions/>
-							</DeliveredDeliveryDetails-->
+					<DeliveredDeliveryDetails>
+						<!--DeliveryType/-->
+						<DeliveryDate RecordPos="&quot;HEAD&quot;" LPos="14"/>
+						<!--DeliverySlot>
+							<SlotStart/>
+							<SlotEnd/>
+						</DeliverySlot>
+						<DeliveryCutOffDate/>
+						<DeliveryCutOffTime/>
+						<SpecialDeliveryInstructions/-->
+					</DeliveredDeliveryDetails>
 					<!--SequenceNumber/>
-							<HeaderExtraData/-->
+					<HeaderExtraData/-->
 				</DeliveryNoteHeader>
 				<DeliveryNoteDetail>
 					<DeliveryNoteLine>
