@@ -31,18 +31,18 @@
 					<xsl:copy-of select="/"/>
 					<xsl:for-each select="//PriceCatalog/ListOfPriceCatAction/PriceCatAction">
 						<xsl:sort select="PriceCatDetail/ListOfKeyVal/KeyVal[@Keyword='Group']"/>
-						<xsl:if test="position() = 1 or PriceCatDetail/ListOfKeyVal/KeyVal[@Keyword='Group'] != preceding-sibling::*[1]/PriceCatDetail/ListOfKeyVal/KeyVal[@Keyword='Group']">
+						<!--xsl:if test="position() = 1 or PriceCatDetail/ListOfKeyVal/KeyVal[@Keyword='Group'] != preceding-sibling::*[1]/PriceCatDetail/ListOfKeyVal/KeyVal[@Keyword='Group']"-->
 						<Item>
 							<Group>
 								<xsl:value-of select="PriceCatDetail/ListOfKeyVal/KeyVal[@Keyword='Group']"/>
 							</Group>
 						</Item>
-						</xsl:if>
+						<!--/xsl:if-->
 					</xsl:for-each>
 				</xsl:variable>
 				<xsl:variable name="nsSubGroups">
 					<xsl:copy-of select="/"/>
-					<xsl:for-each select="//PriceCatalog/ListOfPriceCatAction/PriceCatAction">
+					<xsl:for-each select="//PriceCatalog/ListOfPriceCatAction/PriceCatAction[PriceCatDetail/ListOfKeyVal/KeyVal/@Keyword='SubGroup']">
 						<xsl:sort select="PriceCatDetail/ListOfKeyVal/KeyVal[@Keyword='Group']"/>
 						<xsl:sort select="PriceCatDetail/ListOfKeyVal/KeyVal[@Keyword='SubGroup']"/>
 						<xsl:variable name="sGroup">
@@ -77,11 +77,19 @@
 					<xsl:variable name="sSection">
 						<xsl:value-of select="Group"/>
 					</xsl:variable>
-					<xsl:element name="Section">
+					<xsl:if test="position() = 1 or preceding-sibling::*[1]/Group != $sSection">
+					<xsl:element name="Section1">
 						<xsl:attribute name="ID"><xsl:value-of select="Group"/></xsl:attribute>
 						<xsl:attribute name="Name"><xsl:value-of select="Group"/></xsl:attribute>
 						<xsl:attribute name="NoProducts">
-							<xsl:value-of select="count(//PriceCatalog/ListOfPriceCatAction/PriceCatAction[PriceCatDetail/ListOfKeyVal/KeyVal[@Keyword = 'Group'] = $sSection and PriceCatDetail/ListOfKeyVal/KeyVal[@KeyWord='SubGroup'] = ''])"/>
+							<xsl:choose>
+								<xsl:when test="count(msxsl:node-set($nsSubGroups)/Item[Group = $sSection]) = 0">
+									<xsl:value-of select="count(//PriceCatalog/ListOfPriceCatAction/PriceCatAction[PriceCatDetail/ListOfKeyVal/KeyVal[@Keyword = 'Group'] = $sSection])"/>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="count(//PriceCatalog/ListOfPriceCatAction/PriceCatAction[PriceCatDetail/ListOfKeyVal/KeyVal[@Keyword = 'Group'] = $sSection and PriceCatDetail/ListOfKeyVal/KeyVal[@KeyWord='SubGroup'] = ''])"/>
+								</xsl:otherwise>
+							</xsl:choose>
 						</xsl:attribute>
 						
 						<xsl:for-each select="msxsl:node-set($nsSubGroups)/Item[Group = $sSection]">
@@ -92,7 +100,7 @@
 								<xsl:value-of select="SubGroup"/>
 							</xsl:variable>
 							<xsl:if test="position() = 1 or preceding-sibling::*[1] != $sSub">
-								<xsl:element name="Section">
+								<xsl:element name="Section2">
 									<xsl:attribute name="ID"><xsl:value-of select="$sSub"/></xsl:attribute>
 									<xsl:attribute name="Name"><xsl:value-of select="$sSub"/></xsl:attribute>
 									<xsl:attribute name="NoProducts"><xsl:value-of select="NoProds"/></xsl:attribute>
@@ -100,6 +108,7 @@
 							</xsl:if>
 						</xsl:for-each>
 					</xsl:element>
+					</xsl:if>
 				</xsl:for-each>
 			</Sections>
 			<Products>
