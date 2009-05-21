@@ -133,19 +133,19 @@
 			<xsl:call-template name="msFormateDate">
 				<xsl:with-param name="vsUTCDate" select="DeliveryNoteHeader/DeliveryNoteReferences/DespatchDate"/>
 			</xsl:call-template>
-			<xsl:text>+</xsl:text>
-			<!-- <xsl:text>Nodu</xsl:text> -->
+			<!-- <xsl:text>+</xsl:text>
+			<xsl:text>Nodu</xsl:text>
 			<xsl:text>+</xsl:text>
 			<xsl:text>+</xsl:text>
 			<xsl:text>+</xsl:text>
 			<xsl:text>+</xsl:text>
 			<xsl:call-template name="msFormateDate">
 				<xsl:with-param name="vsUTCDate" select="DeliveryNoteHeader/DeliveredDeliveryDetails/DeliveryDate"/>
-			</xsl:call-template>				
+			</xsl:call-template> -->				
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:text>ORF=</xsl:text>
-			<xsl:variable name="DeliveryNumber" select="position()"/>					
+			<xsl:variable name="DeliveryNumber" select="1"/>					
 			<xsl:value-of select="$DeliveryNumber"/>
 			<xsl:text>+</xsl:text>
 			<xsl:call-template name="msCheckField">
@@ -219,7 +219,7 @@
 					<xsl:text>1</xsl:text>
 					<!-- RTEX -->
 					<xsl:text>+</xsl:text>
-					<xsl:text>082</xsl:text>
+					<xsl:text><!--082--></xsl:text>
 					<xsl:text>:</xsl:text>
 					<!--<xsl:text> Application Text </xsl:text>-->
 					<xsl:text>:</xsl:text>
