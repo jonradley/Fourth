@@ -118,7 +118,9 @@
 							<xsl:value-of select="PriceCatDetail/ListOfKeyVal/KeyVal[@Keyword = 'Group']"/>
 						</SectionID>
 						<ProductID>
-							<xsl:value-of select="PriceCatDetail/PartNum/PartID"/>
+							<SuppliersProductCode>
+								<xsl:value-of select="PriceCatDetail/PartNum/PartID"/>
+							</SuppliersProductCode>
 						</ProductID>
 						<ProductDescription>
 							<xsl:value-of select="PriceCatDetail/ListOfDescription/Description"/>
