@@ -81,7 +81,7 @@ M Dimant		| 15/05/2009	| 2886 Add a time stamp to the end of the PO reference
 											<xsl:with-param name="vsYYMMDD" select="DeliveryNoteHeader/DeliveredDeliveryDetails/DeliveryDate"/>
 										</xsl:call-template>
 									</xsl:variable>
-									<xsl:variable name="sDummyPORef" select="concat(DeliveryNoteHeader/ShipTo/ShipToLocationID/SuppliersCode,'-',$sDeliveryDate,'T',vbscript:msTime())"/>
+									<xsl:variable name="sDummyPORef" select="concat(DeliveryNoteHeader/ShipTo/ShipToLocationID/SuppliersCode,'-',$sDeliveryDate,'T',vbscript:msTime(),'-',position())"/>
 									
 									<PurchaseOrderReferences>
 										<PurchaseOrderReference><xsl:value-of select="$sDummyPORef"/></PurchaseOrderReference>
