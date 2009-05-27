@@ -22,6 +22,8 @@
 ==========================================================================================
  13/05/2009	| Rave Tech  		| 2878 Removed MaxSplits logic and implemented CaseSize logic.
 ==========================================================================================
+ 26/05/2009	| Rave Tech  		| 2719 Fixed nested substitution line inside the substituted line issue.
+==========================================================================================
 			|					|
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
@@ -126,6 +128,14 @@
                                                              <xsl:with-param name="vQuantity"><xsl:value-of select="$nSumQuantity"/></xsl:with-param>
                                                              <xsl:with-param name="vUnitValue"><xsl:value-of select="$nUnitValue"/></xsl:with-param>
                                                       </xsl:call-template>
+                                                      
+							  	<!-- write the details of the lines that say they are substitions for this line -->
+								<xsl:for-each select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationDetail/PurchaseOrderConfirmationLine[SubstitutedProductID/SuppliersProductCode = current()/ProductID/SuppliersProductCode]">
+									<OrderItem>
+										<xsl:call-template name="writeLine"/>
+									</OrderItem>
+								</xsl:for-each>
+
                                                </OrderItem>
 
                                         </xsl:otherwise>
