@@ -68,10 +68,10 @@
 			<xsl:variable name="FGN">
 				<xsl:choose>
 					<xsl:when test="InvoiceHeader/FileGenerationNumber != ''">
-						<xsl:value-of select="InvoiceHeader/FileGenerationNumber"/>
+						<xsl:value-of select= "substring(InvoiceHeader/FileGenerationNumber,string-length(InvoiceHeader/FileGenerationNumber)-3)"/>
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:value-of select="InvoiceHeader/BatchInformation/FileGenerationNo"/>				
+						<xsl:value-of select="substring(InvoiceHeader/BatchInformation/FileGenerationNo,string-length(InvoiceHeader/BatchInformation/FileGenerationNo)-3)"/>				
 					</xsl:otherwise>
 				</xsl:choose>			
 			</xsl:variable>
