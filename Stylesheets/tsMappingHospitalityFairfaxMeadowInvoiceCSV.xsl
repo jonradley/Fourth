@@ -34,8 +34,7 @@
 	                     PurchaseOrderReference |
 	                     ContractReference |
 	                     DeliveryNoteReference |
-	                     ProductDescription	|
-	                     ShipToLocationID/BuyersCode">
+	                     ProductDescription">
 		<xsl:variable name="tagName">
 			<xsl:value-of select="name()"/>
 		</xsl:variable>
@@ -71,7 +70,11 @@
 	<xsl:template match="ShipToLocationID/BuyersCode">
 		<xsl:if test="not(contains('&quot;AR&quot;',../../../../InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode))">
 			<BuyersCode>
-				<xsl:value-of select="."/>
+				<xsl:call-template name="stripQuotes">
+					<xsl:with-param name="sInput">
+						<xsl:value-of select="."/>
+					</xsl:with-param>
+				</xsl:call-template>
 			</BuyersCode>
 		</xsl:if>
 	</xsl:template>
