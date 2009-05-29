@@ -34,7 +34,8 @@
 	                     PurchaseOrderReference |
 	                     ContractReference |
 	                     DeliveryNoteReference |
-	                     ProductDescription">
+	                     ProductDescription	|
+	                     ShipToLocationID/BuyersCode">
 		<xsl:variable name="tagName">
 			<xsl:value-of select="name()"/>
 		</xsl:variable>
