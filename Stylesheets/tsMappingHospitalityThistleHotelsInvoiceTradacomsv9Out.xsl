@@ -318,10 +318,7 @@
 						<xsl:value-of select="translate(format-number(VATRate,'#.000'),'.','')"/>
 						<xsl:text>+++</xsl:text>
 						<!-- truncate to 40 TDES = 9030 = AN..40-->
-						<xsl:call-template name="msCheckField">
-							<xsl:with-param name="vobjNode" select="ProductDescription"/>
-							<xsl:with-param name="vnLength" select="40"/>
-						</xsl:call-template>					
+						<xsl:value-of select="js:msSafeText(string(ProductDescription),40)"/>			
 						<xsl:value-of select="$sRecordSep"/>
 						
 					</xsl:for-each>
