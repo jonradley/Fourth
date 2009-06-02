@@ -62,11 +62,24 @@
 			</xsl:when>
 			<xsl:otherwise>
 				<!-- Delivery Location Contact -->
-				<xsl:if test="PurchaseOrderHeader/ShipTo/ContactName != '.'">
-					<xsl:text>&quot;</xsl:text>
-					<xsl:value-of select="PurchaseOrderHeader/ShipTo/ContactName"/>
-					<xsl:text>&quot;</xsl:text>
-				</xsl:if>
+				<xsl:choose>
+				
+					<xsl:when test="TradeSimpleHeader/RecipientsCodeForSender = 'BS' and string(PurchaseOrderHeader/Buyer/BuyersName) != ''">
+						<xsl:text>&quot;</xsl:text>
+						<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersName"/>
+						<xsl:text>&quot;</xsl:text>
+					</xsl:when>
+					
+					<xsl:when test="PurchaseOrderHeader/ShipTo/ContactName != '.'">
+						<xsl:text>&quot;</xsl:text>
+						<xsl:value-of select="PurchaseOrderHeader/ShipTo/ContactName"/>
+						<xsl:text>&quot;</xsl:text>
+					</xsl:when>					
+					
+					<xsl:otherwise/>
+					
+				</xsl:choose>				
+				
 				<xsl:text>,</xsl:text>
 				<!-- Delivery Location Name -->
 				<xsl:if test="PurchaseOrderHeader/ShipTo/ShipToName != '.'">
@@ -172,6 +185,82 @@
 		<xsl:text>,</xsl:text>		
 		<!-- DropNumber -->
 		<xsl:value-of select="PurchaseOrderHeader/HeaderExtraData/DropNumber"/>
+		
+		
+		
+		<!-- Invoice to details from BroadStripe orders (taken from the inbound file as they'll never be held on tradesimple) -->
+		<xsl:choose>
+			<!-- Don't supply address details for customers that don't have trade simple branches -->
+			<xsl:when test="TradeSimpleHeader/RecipientsCodeForSender = 'BS'">
+				
+				<xsl:if test="PurchaseOrderHeader/Buyer/BuyersName != ''">
+					<xsl:text>&quot;</xsl:text>
+					<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersName"/>
+					<xsl:text>&quot;</xsl:text>
+				</xsl:if>
+				<xsl:text>,</xsl:text>				
+				
+				<xsl:if test="PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine1 != ''">
+					<xsl:text>&quot;</xsl:text>
+					<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine1"/>
+					<xsl:text>&quot;</xsl:text>
+				</xsl:if>
+				<xsl:text>,</xsl:text>				
+				
+				<xsl:if test="PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine2!= ''">
+					<xsl:text>&quot;</xsl:text>
+					<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine2"/>
+					<xsl:text>&quot;</xsl:text>
+				</xsl:if>
+				<xsl:text>,</xsl:text>
+				
+				
+				<xsl:if test="PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine3 != ''">
+					<xsl:text>&quot;</xsl:text>
+					<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine3"/>
+					<xsl:text>&quot;</xsl:text>
+				</xsl:if>
+				<xsl:text>,</xsl:text>
+				
+				
+				<xsl:if test="PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine4 != ''">
+					<xsl:text>&quot;</xsl:text>
+					<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine4"/>
+					<xsl:text>&quot;</xsl:text>
+				</xsl:if>
+				<xsl:text>,</xsl:text>
+				
+				
+				<xsl:if test="PurchaseOrderHeader/Buyer/BuyersAddress/PostCode != ''">
+					<xsl:text>&quot;</xsl:text>
+					<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersAddress/PostCode"/>
+					<xsl:text>&quot;</xsl:text>
+				</xsl:if>
+				<xsl:text>,</xsl:text>
+				
+				
+				
+				<xsl:if test="PurchaseOrderHeader/HeaderExtraData/BuyerContactTelephoneNumber != ''">
+					<xsl:text>&quot;</xsl:text>
+					<xsl:value-of select="PurchaseOrderHeader/HeaderExtraData/BuyerContactTelephoneNumber"/>
+					<xsl:text>&quot;</xsl:text>
+				</xsl:if>
+				<xsl:text>,</xsl:text>
+				
+			</xsl:when>
+			
+			<xsl:otherwise>
+				<xsl:text>,</xsl:text>
+				<xsl:text>,</xsl:text>
+				<xsl:text>,</xsl:text>
+				<xsl:text>,</xsl:text>
+				<xsl:text>,</xsl:text>
+				<xsl:text>,</xsl:text>
+				<xsl:text>,</xsl:text>
+			</xsl:otherwise>
+			
+		</xsl:choose>
+		
 	
 
 		<xsl:text>&#13;&#10;</xsl:text>
