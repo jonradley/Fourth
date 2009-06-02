@@ -15,6 +15,8 @@
 '******************************************************************************************
 ' 22/04/2003 | C Scott         | Created
 '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+' 01/06/2009 | R Cambridge     | 2916 capture invoice-to info //Buyer/* and //HeaderExtraData
+'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 '            |                 | 
 '******************************************************************************************
 -->
@@ -35,6 +37,26 @@
 						<SendersCodeForRecipient>FAIRFAXMEADOW</SendersCodeForRecipient>
 					</TradeSimpleHeader>
 					<PurchaseOrderHeader>
+						
+						<!-- 2916 Buyers tag used to store invoice-to fields -->
+						<Buyer>
+							<BuyersName>
+								<xsl:value-of select="H/L2[4]"/>
+							</BuyersName>
+							<BuyersAddress>
+							
+								<xsl:for-each select="H/L2[position() &gt;= 5 and position() &lt;= 8][. != '']">
+									<xsl:element name="{concat('AddressLine',string(position()))}">
+										<xsl:value-of select="."/>
+									</xsl:element>								
+								</xsl:for-each>							
+
+								<PostCode>
+									<xsl:value-of select="H/L2[9]"/>
+								</PostCode>
+							</BuyersAddress>
+						</Buyer>	
+						
 						<ShipTo>
 							<ShipToLocationID>
 								<!--GLN/-->
@@ -129,6 +151,18 @@
 								</SpecialDeliveryInstructions>
 							</xsl:if>
 						</OrderedDeliveryDetails>
+						
+						<!-- 2916 store invoice-to telephone number -->
+						<xsl:for-each select="H/L2[10][. != ''][1]">
+						
+							<HeaderExtraData>
+								<BuyerContactTelephoneNumber>
+									<xsl:value-of select="."/>
+								</BuyerContactTelephoneNumber>
+							</HeaderExtraData>
+							
+						</xsl:for-each>
+						
 					</PurchaseOrderHeader>
 					<PurchaseOrderDetail>
 						<xsl:for-each select="L">
