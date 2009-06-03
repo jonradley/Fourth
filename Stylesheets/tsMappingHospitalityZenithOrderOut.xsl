@@ -66,7 +66,7 @@ K O'Shaughnessy	| 2009-05-18		| 2889 Created Modele
 				<xsl:for-each select="/PurchaseOrder/PurchaseOrderDetail/PurchaseOrderLine">
 					
 					<Item>
-						<xsl:attribute name="OrderID">
+						<xsl:attribute name="OrderID2">
 							<xsl:value-of select="../../PurchaseOrderHeader/FileGenerationNumber"/>
 						</xsl:attribute>
 					
