@@ -71,6 +71,8 @@ R Cambridge	| 2008-03-20		| 2805 Created Modele
 		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/>		
 		<xsl:value-of select="$fieldSeperator"/>
 		
+		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions"/>
+				
 		<!-- last field is always blank -->
 		
 		<xsl:value-of select="$recordSeperator"/>
