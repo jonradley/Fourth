@@ -49,8 +49,8 @@
 			<xsl:value-of select="script:msPad('United Kingdom', 30)"/>
 			<xsl:text>G-</xsl:text><xsl:value-of select="script:msPadNumber(/GoodsReceivedNote/GoodsReceivedNoteHeader/GoodsReceivedNoteReferences/GoodsReceivedNoteReference, 13, 0)"/>		
 			<xsl:choose>
-				<xsl:when test="/GoodsReceivedNote/GoodsReceivedNoteHeader/InvoiceReferences/InvoiceDate !=''">
-					<xsl:value-of select="/GoodsReceivedNote/GoodsReceivedNoteHeader/InvoiceReferences/InvoiceDate"/>
+				<xsl:when test="/GoodsReceivedNote/GoodsReceivedNoteHeader/InvoiceDates/InvoiceDate !=''">
+					<xsl:value-of select="/GoodsReceivedNote/GoodsReceivedNoteHeader/InvoiceDates/InvoiceDate"/>
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:value-of select="/GoodsReceivedNote/GoodsReceivedNoteHeader/ReceivedDeliveryDetails/DeliveryDate"/>
