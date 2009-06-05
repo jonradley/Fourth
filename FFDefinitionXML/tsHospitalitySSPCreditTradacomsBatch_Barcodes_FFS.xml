@@ -216,7 +216,7 @@ H Mahbub		| 04/06/2009	| 2907 Standard SSP Mapper changed to use Barcodes
 									<!-- MANDATORY GTIN, INVOIC - CLD - SPRO(1) -->
 									<GTIN RecordPos="CLD=" LPos="2" SFPos="1"/>
 									<!-- OPTIONAL Supplier’s Product Code, MANDATORY, CREDIT – CLD – SPRO(2), Your unique code for this product -->
-									<SuppliersProductCode RecordPos="CLD=" LPos="3" SFPos="1"/>
+									<SuppliersProductCode RecordPos="CLD=" LPos="4" SFPos="1"/>
 									<!-- NOT BuyersProductCode, actually CLD - DRLI used by stylesheet to action -1.0 multiplier on QTYC and EXLV -->
 									<BuyersProductCode RecordPos="CLD=" LPos="13"/>
 								</ProductID>
