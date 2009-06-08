@@ -185,7 +185,7 @@
 		<xsl:text>,</xsl:text>		
 		<!-- DropNumber -->
 		<xsl:value-of select="PurchaseOrderHeader/HeaderExtraData/DropNumber"/>
-		
+		<xsl:text>,</xsl:text>
 		
 		
 		<!-- Invoice to details from BroadStripe orders (taken from the inbound file as they'll never be held on tradesimple) -->
