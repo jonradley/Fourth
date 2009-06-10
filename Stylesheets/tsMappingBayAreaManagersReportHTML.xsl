@@ -134,41 +134,39 @@
 										</tr>
 									</thead>
 									<xsl:for-each select="/Report/LineDetails/LineDetail">
-											<xsl:attribute name="class">
-												<xsl:value-of select="script:msGetRowClass()"/>
-											</xsl:attribute>
-											<xsl:for-each select="Columns/Column[(@GroupBy != '1' and @GroupBy != 'true') or not(@GroupBy)]">
-												<xsl:variable name="ColumnID"><xsl:value-of select="@ID"/></xsl:variable>
-												<xsl:variable name="ColumnName"><xsl:value-of select="/Report/LineDetails/Columns/Column[@ID =  $ColumnID]"/></xsl:variable>
+										<xsl:for-each select="Columns/Column[(@GroupBy != '1' and @GroupBy != 'true') or not(@GroupBy)]">
+											<xsl:variable name="ColumnID"><xsl:value-of select="@ID"/></xsl:variable>
+											<xsl:variable name="ColumnName"><xsl:value-of select="/Report/LineDetails/Columns/Column[@ID =  $ColumnID]"/></xsl:variable>
 
-												<xsl:variable name="ColorName">
-													<xsl:choose>
-														<xsl:when test="$ColumnName = 'Invoices Requiring Manual Authorisation' and . > 0">red</xsl:when>
-														<xsl:when test="$ColumnName = 'Invoices Requiring Manual Authorisation' and . = 0">green</xsl:when>
-														<xsl:when test="script:msLeft($ColumnName) = 'Correctly ' and . > 0">green</xsl:when>
-														<xsl:when test="script:msLeft($ColumnName) = 'Correctly ' and . = 0">white</xsl:when>
-														<xsl:when test="script:msLeft($ColumnName) = 'Auto-Recie' and . > 0">red</xsl:when>
-														<xsl:when test="script:msLeft($ColumnName) = 'Auto-Recie' and . = 0">white</xsl:when>
-														<xsl:when test="script:msLeft($ColumnName) = 'Orders Del' and . > 0">red</xsl:when>
-														<xsl:when test="script:msLeft($ColumnName) = 'Orders Del' and . = 0">white</xsl:when>
-														<xsl:when test="$ColumnName = 'Orders Not Yet Delivered'">white</xsl:when>
-														<xsl:otherwise>yellow</xsl:otherwise> 
-													</xsl:choose> 
-												</xsl:variable>
+											<xsl:variable name="ColorName">
+												<xsl:choose>
+													<!--Not used column id because number of columns varies in stored procedure-->
+													<xsl:when test="script:msLeft($ColumnName, 8) = 'Invoices' and . > 0">red</xsl:when>
+													<xsl:when test="script:msLeft($ColumnName, 8) = 'Invoices' and . = 0">green</xsl:when>
+													<xsl:when test="script:msLeft($ColumnName, 8) = 'Correctl' and . > 0">green</xsl:when>
+													<xsl:when test="script:msLeft($ColumnName, 8) = 'Correctl' and . = 0">white</xsl:when>
+													<xsl:when test="script:msLeft($ColumnName, 8) = 'Auto-Rec' and . > 0">red</xsl:when>
+													<xsl:when test="script:msLeft($ColumnName, 8) = 'Auto-Rec' and . = 0">white</xsl:when>
+													<xsl:when test="script:msLeft($ColumnName, 8) = 'Orders D' and . > 0">red</xsl:when>
+													<xsl:when test="script:msLeft($ColumnName, 8) = 'Orders D' and . = 0">white</xsl:when>
+													<xsl:when test="script:msLeft($ColumnName, 8) = 'Orders N'">white</xsl:when>
+													<xsl:otherwise>yellow</xsl:otherwise> 
+												</xsl:choose> 
+											</xsl:variable>
 
-												<tr>
-													<xsl:attribute name="bgcolor"><xsl:value-of select="$ColorName"/></xsl:attribute>
-													<td align="left" width="30%">
-														<xsl:value-of select="/Report/LineDetails/Columns/Column[@ID =  $ColumnID]"/>
-													</td>
-													<td align="left">
-														<xsl:value-of select="."/>
-													</td>
-												</tr>
-											</xsl:for-each>
 											<tr>
-												<td colspan="2" style="color=white">.</td>
+												<xsl:attribute name="bgcolor"><xsl:value-of select="$ColorName"/></xsl:attribute>
+												<td align="left" width="30%">
+													<xsl:value-of select="/Report/LineDetails/Columns/Column[@ID =  $ColumnID]"/>
+												</td>
+												<td align="left">
+													<xsl:value-of select="."/>
+												</td>
 											</tr>
+										</xsl:for-each>
+										<tr>
+											<td colspan="2" style="color=white">.</td>
+										</tr>
 									</xsl:for-each>
 								</table>
 							</td>
@@ -226,47 +224,24 @@
 		
 		/*=========================================================================================
 		' Routine       	 : msLeft
-		' Description 	 : Returns Left(str,10)
-		' Inputs          	 : String
+		' Description 	 : Returns Left(str, length)
+		' Inputs          	 : String, length
 		' Outputs       	 : None
 		' Returns       	 : String
 		' Author       		 : Rave Tech, 10/06/2009.
 		' Alterations   	 : 
 		'========================================================================================*/
-		function msLeft(vsString)
+		function msLeft(vsString, vnLen)
 		{
 			if(vsString.length > 0)
 			{
 				vsString= vsString(0).text;
-				return vsString.substr(0,10);
+				return vsString.substr(0, vnLen);
 			}
 			else
 			{
 				return '';
 			}
-		}
-		
-		/*=========================================================================================
-		' Routine       	 : msGetRowClass
-		' Description 	 : Gets listrow 0,1,0 etc.
-		' Inputs          	 : None
-		' Outputs       	 : None
-		' Returns       	 : Class of row
-		' Author       		 : A Sheppard, 23/08/2004.
-		' Alterations   	 : 
-		'========================================================================================*/
-		var msPreviousRowClass = 'listrow0';
-		function msGetRowClass()
-		{
-			if(msPreviousRowClass == 'listrow1')
-			{
-				msPreviousRowClass = 'listrow0';
-			}
-			else
-			{
-				msPreviousRowClass = 'listrow1';
-			}
-			return msPreviousRowClass;
 		}
 
 	]]></msxsl:script>
