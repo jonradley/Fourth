@@ -21,11 +21,14 @@ Nigel Emsen  | 22/04/2007 | Amended for Bunzl
 	
 		<!-- create the BatchRoot element required by the Inbound XSL Transform processor -->
 		<BatchRoot>
-			<!-- Batch -->
-				<!-- BatchDocuments-->
-					<xsl:apply-templates select="@*|node()"/>
-				<!--/BatchDocuments-->
-			<!--/Batch-->
+			<Batch>
+				<BatchDocuments>
+					<BatchDocument>
+						<xsl:attribute name="DocumentTypeNo">84</xsl:attribute>
+						<xsl:apply-templates select="@*|node()"/>
+					</BatchDocument>
+				</BatchDocuments>
+			</Batch>
 		</BatchRoot>
 		
 	</xsl:template>
@@ -37,6 +40,22 @@ Nigel Emsen  | 22/04/2007 | Amended for Bunzl
 				<xsl:text>84</xsl:text>
 			</xsl:attribute>
 			<xsl:apply-templates select="@*|node()"/>
+		</xsl:copy>
+	</xsl:template>
+	
+		<!-- CONVERT TestFlag from Y / N to 1 / 0 -->
+	<xsl:template match="TradeSimpleHeader/TestFlag">
+		<xsl:copy>
+			<xsl:choose>
+				<xsl:when test="string(.) = 'N'">
+					<!-- Is NOT TEST: found an N char, map to '0' -->
+					<xsl:value-of select="'0'"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<!-- Is TEST: map anything else to '1' -->
+					<xsl:value-of select="'1'"/>
+				</xsl:otherwise>
+			</xsl:choose>
 		</xsl:copy>
 	</xsl:template>
 	
