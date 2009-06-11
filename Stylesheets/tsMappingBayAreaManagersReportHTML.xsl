@@ -153,8 +153,18 @@
 													<xsl:otherwise>yellow</xsl:otherwise> 
 												</xsl:choose> 
 											</xsl:variable>
+											
+											<!--Bold font for Unit Code and Unit Name.-->
+											<xsl:variable name="FontBold">
+												<xsl:choose>
+													<xsl:when test="@ID = 1">font=bold</xsl:when>
+													<xsl:when test="@ID = 2">font=bold</xsl:when>
+													<xsl:otherwise>font=regular</xsl:otherwise> 
+												</xsl:choose> 
+											</xsl:variable>
 
 											<tr>
+												<xsl:attribute name="style"><xsl:value-of select="$FontBold"/></xsl:attribute>
 												<xsl:attribute name="bgcolor"><xsl:value-of select="$ColorName"/></xsl:attribute>
 												<td align="left" width="30%">
 													<xsl:value-of select="/Report/LineDetails/Columns/Column[@ID =  $ColumnID]"/>
