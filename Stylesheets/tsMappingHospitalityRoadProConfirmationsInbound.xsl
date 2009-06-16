@@ -24,14 +24,18 @@
 								</SendersCodeForRecipient>
 							</TradeSimpleHeader>
 							<PurchaseOrderConfirmationHeader>
-								<Supplier>
-									<SuppliersLocationID>
-										<GLN><xsl:value-of select="//Supplier/SupplierReferences/GLN"/></GLN>
-										<xsl:if test="//Supplier/SupplierReferences/BuyersCodeForSupplier !=''">
-											<BuyersCode><xsl:value-of select="//Supplier/SupplierReferences/BuyersCodeForSupplier"/></BuyersCode>
-										</xsl:if>
-									</SuppliersLocationID>
-								</Supplier>
+								<xsl:if test="//Supplier/SupplierReferences/GLN !='' or //Supplier/SupplierReferences/BuyersCodeForSupplier !=''">
+									<Supplier>
+										<SuppliersLocationID>
+											<xsl:if test="//Supplier/SupplierReferences/GLN !=''">
+												<GLN><xsl:value-of select="//Supplier/SupplierReferences/GLN"/></GLN>
+											</xsl:if>
+											<xsl:if test="//Supplier/SupplierReferences/BuyersCodeForSupplier !=''">
+												<BuyersCode><xsl:value-of select="//Supplier/SupplierReferences/BuyersCodeForSupplier"/></BuyersCode>
+											</xsl:if>
+										</SuppliersLocationID>
+									</Supplier>
+								</xsl:if>
 								<PurchaseOrderReferences>
 									<PurchaseOrderReference>
 										<xsl:value-of select="//OrderReferences/BuyersOrderNumber"/>
@@ -59,6 +63,11 @@
 											<SuppliersProductCode>
 												<xsl:value-of select="Product/SuppliersProductCode"/>
 											</SuppliersProductCode>
+											<xsl:if test="Product/BuyersProductCode !=''">
+												<BuyersProductCode>
+													<xsl:value-of select="Product/BuyersProductCode"/>
+												</BuyersProductCode>
+											</xsl:if>
 										</ProductID>
 										<ProductDescription>
 											<xsl:value-of select="Product/Description"/>
