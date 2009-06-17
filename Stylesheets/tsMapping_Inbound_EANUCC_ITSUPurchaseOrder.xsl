@@ -251,17 +251,6 @@
 								<xsl:value-of select="format-number(RequestedQuantity, '0.000')"/>
 							</OrderedQuantity>
 							
-							<!--Line Extra Data-->
-							
-							<LineExtraData>
-							
-								<InvalidUOM>
-								
-									<xsl:value-of select="RequestedQuantity/@unitCode" />
-								
-								</InvalidUOM>
-							
-							</LineExtraData>
 
 							<!-- Pack Size is populated by subsequent processors -->
 						
