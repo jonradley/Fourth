@@ -55,7 +55,7 @@
 				}
 				TD
 				{
-				    FONT-SIZE: 8pt
+				    FONT-SIZE: 9pt
 				}
 				TABLE.DocumentSurround
 				{
@@ -142,15 +142,15 @@
 												<xsl:choose>
 													<!--Not used column id because number of columns varies in stored procedure-->
 													<xsl:when test="script:msLeft($ColumnName, 8) = 'Invoices' and . > 0">red</xsl:when>
-													<xsl:when test="script:msLeft($ColumnName, 8) = 'Invoices' and . = 0">green</xsl:when>
-													<xsl:when test="script:msLeft($ColumnName, 8) = 'Correctl' and . > 0">green</xsl:when>
+													<xsl:when test="script:msLeft($ColumnName, 8) = 'Invoices' and . = 0">#00F900</xsl:when>
+													<xsl:when test="script:msLeft($ColumnName, 8) = 'Correctl' and . > 0">#00F900</xsl:when>
 													<xsl:when test="script:msLeft($ColumnName, 8) = 'Correctl' and . = 0">white</xsl:when>
 													<xsl:when test="script:msLeft($ColumnName, 8) = 'Auto-Rec' and . > 0">red</xsl:when>
 													<xsl:when test="script:msLeft($ColumnName, 8) = 'Auto-Rec' and . = 0">white</xsl:when>
 													<xsl:when test="script:msLeft($ColumnName, 8) = 'Orders D' and . > 0">red</xsl:when>
 													<xsl:when test="script:msLeft($ColumnName, 8) = 'Orders D' and . = 0">white</xsl:when>
 													<xsl:when test="script:msLeft($ColumnName, 8) = 'Orders N'">white</xsl:when>
-													<xsl:otherwise>yellow</xsl:otherwise> 
+													<xsl:otherwise>#FFFFCC</xsl:otherwise> 
 												</xsl:choose> 
 											</xsl:variable>
 											
@@ -166,7 +166,7 @@
 											<tr>
 												<xsl:attribute name="style"><xsl:value-of select="$FontBold"/></xsl:attribute>
 												<xsl:attribute name="bgcolor"><xsl:value-of select="$ColorName"/></xsl:attribute>
-												<td align="left" width="30%">
+												<td align="left" width="40%">
 													<xsl:value-of select="/Report/LineDetails/Columns/Column[@ID =  $ColumnID]"/>
 												</td>
 												<td align="left">
