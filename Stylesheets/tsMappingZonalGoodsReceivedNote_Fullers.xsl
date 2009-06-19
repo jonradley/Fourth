@@ -19,6 +19,8 @@
  20/08/2007	| Lee Boyton   	| 1390. Cater for extended characters.
 ******************************************************************************************
  14/03/2008	| A Sheppard	| 2071. Cater for Ullage credits
+ ******************************************************************************************
+ 19/06/2009	| Rave Tech		| 2950. Set OrderNo as PO Ref rather than DN ref for 2 Brakes suppliers.
 ******************************************************************************************
 -->
 <xsl:stylesheet 	version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -48,7 +50,17 @@
 				</xsl:choose>
 			</xsl:attribute>
 			<xsl:attribute name="Supplier"><xsl:value-of select="/GoodsReceivedNote/TradeSimpleHeader/SendersCodeForRecipient | /CreditNote/TradeSimpleHeader/RecipientsCodeForSender"/></xsl:attribute>
-			<xsl:attribute name="OrderNo"><xsl:value-of select="//GoodsReceivedNoteHeader/DeliveryNoteReferences/DeliveryNoteReference | //CreditNoteReference"/></xsl:attribute>
+
+			<!--Set OrderNo as PO Ref rather than DN ref for BrakesFrozen and BrakesGrocery suppliers-->
+			<xsl:choose>
+				<xsl:when test="//TradeSimpleHeader/SendersCodeForRecipient = 'BrakesFrozen' or //TradeSimpleHeader/SendersCodeForRecipient = 'BrakesGrocery'">
+					<xsl:attribute name="OrderNo"><xsl:value-of select="//GoodsReceivedNoteHeader/PurchaseOrderReferences/PurchaseOrderReference | //CreditNoteReference"/></xsl:attribute>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:attribute name="OrderNo"><xsl:value-of select="//GoodsReceivedNoteHeader/DeliveryNoteReferences/DeliveryNoteReference | //CreditNoteReference"/></xsl:attribute>
+				</xsl:otherwise>
+			</xsl:choose>
+			
 			<!-- If the compressed Aztec output product code exists then there will only be a single line -->
 			<xsl:attribute name="Lines">
 				<xsl:choose>
