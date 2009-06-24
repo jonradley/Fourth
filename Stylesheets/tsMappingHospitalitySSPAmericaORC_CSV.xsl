@@ -51,12 +51,22 @@ Rave Tech     	|  19/05/2009 | Created Module
 						ConfirmedDeliveryDetails/DeliveryDate |
 						ConfirmedDeliveryDetailsLineLevel/DeliveryDate">
 		<xsl:copy>
-			<xsl:value-of select="concat(substring(., 7, 2), '-', substring(., 5, 2), '-', substring(., 1, 4))"/>
+			<xsl:value-of select="concat(substring(., 1, 4), '-', substring(., 5, 2), '-', substring(.,7, 2))"/>
 		</xsl:copy>
 	</xsl:template>
 
 	<!--************** HEADERS ***********-->
 	<!--***************************************-->
+	
+	<!-- TestFlag is false is it currently equals 'P' -->
+	<xsl:template match="//TestFlag">
+		<xsl:element name="TestFlag">
+			<xsl:choose>
+				<xsl:when test=".='P'">false</xsl:when>
+				<xsl:otherwise>true</xsl:otherwise>
+			</xsl:choose>
+		</xsl:element>	
+	</xsl:template>
 
 	<!--Set DocumentStatus as 'Original'-->
 	<xsl:template match="//DocumentStatus">
@@ -106,15 +116,17 @@ Rave Tech     	|  19/05/2009 | Created Module
 					<xsl:apply-templates select="ProductID"/>
 			
 					<!--Populate SubstitutedProductID-->
-					<xsl:element name="SubstitutedProductID">
-						<xsl:element name="SuppliersProductCode">
-							<xsl:choose>
-								<xsl:when test="@LineStatus = 'IS'">
-									<xsl:value-of select="SubstitutedProductID/SuppliersProductCode"/>
-								</xsl:when>
-							</xsl:choose>
+					<xsl:if test="@LineStatus = 'IS'">
+						<xsl:element name="SubstitutedProductID">
+							<xsl:element name="SuppliersProductCode">
+								<xsl:choose>
+									<xsl:when test="@LineStatus = 'IS'">
+										<xsl:value-of select="SubstitutedProductID/SuppliersProductCode"/>
+									</xsl:when>
+								</xsl:choose>
+							</xsl:element>
 						</xsl:element>
-					</xsl:element>
+					</xsl:if>
 			
 					<!--Copy ProductDescription node-->
 					<xsl:apply-templates select="ProductDescription"/>
@@ -165,14 +177,16 @@ Rave Tech     	|  19/05/2009 | Created Module
 					<xsl:apply-templates select="UnitValueExclVAT"/>
 
 					<!--Populate ConfirmedDeliveryDetailsLineLevel-->
-					<xsl:element name="ConfirmedDeliveryDetailsLineLevel">
-						<xsl:element name="DeliveryDate">
-							<xsl:if test="ConfirmedDeliveryDetailsLineLevel/DeliveryDate">
-								<xsl:value-of select="jscript:sFormatDate(ConfirmedDeliveryDetailsLineLevel/DeliveryDate)"/>
-							</xsl:if>
+					<xsl:if test="ConfirmedDeliveryDetailsLineLevel/DeliveryDate != ''">
+						<xsl:element name="ConfirmedDeliveryDetailsLineLevel">
+							<xsl:element name="DeliveryDate">
+								<xsl:if test="ConfirmedDeliveryDetailsLineLevel/DeliveryDate">
+									<xsl:value-of select="jscript:sFormatDate(ConfirmedDeliveryDetailsLineLevel/DeliveryDate)"/>
+								</xsl:if>
+							</xsl:element>
 						</xsl:element>
-					</xsl:element>
-
+					</xsl:if>
+	
 					<!--Populate Narrative when status is Rejected-->
 					<xsl:element name="Narrative">
 						<xsl:if test="@LineStatus = 'IH' or @LineStatus = 'IR'">
@@ -239,7 +253,7 @@ Rave Tech     	|  19/05/2009 | Created Module
 			catch(exception)
 			{}
 			
-			return vsString.substr(6,2) + '-' + vsString.substr(4,2) + '-' + vsString.substr(0,4);
+			return vsString.substr(0,4) + '-' + vsString.substr(4,2) + '-' + vsString.substr(6,2);
 		}
 
 		function sFormatUOM(vsString)
