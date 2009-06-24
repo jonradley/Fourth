@@ -77,6 +77,8 @@
  29/04/2008		| Lee Boyton	| 2209. Use the received delivery date rather than the delivery note date in a receipt.
 =========================================================================================
  30/03/2009		| Lee Boyton	| Hack Alert. Ignore Waverly GLN, and use ANA number instead.
+=========================================================================================
+ 24/06/2009		| Lee Boyton	| 2959. /FD is too long for Caterwide now, needs to be just /F.
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -155,14 +157,14 @@
 					<xsl:text>,</xsl:text>
 
 					<!-- the consolidated food line has the same header as the individual non-food stock lines except for the delivery note reference
-					     which has /FD appended to the end of it -->
+					     which has /F appended to the end of it -->
 					<xsl:variable name="DNRef">
 						<xsl:call-template name="msStripLeadingZeros">
 							<xsl:with-param name="vsDNRef" select="translate((/*/*/InvoiceLine | /*/*/CreditNoteLine | /*/*/DebitNoteLine | /DeliveryNote/DeliveryNoteHeader | /GoodsReceivedNote/GoodsReceivedNoteHeader)/DeliveryNoteReferences/DeliveryNoteReference,',','')"/>
 						</xsl:call-template>
 					</xsl:variable>
-					<!-- trim the delivery reference to a maximum of 6 characters so that adding /FD does not exceed the maximum of 9 characters -->
-					<xsl:value-of select="concat(substring($DNRef,1,6),'/FD')"/>
+					<!-- trim the delivery reference to a maximum of 7 characters so that adding /F does not exceed the maximum of 9 characters -->
+					<xsl:value-of select="concat(substring($DNRef,1,7),'/F')"/>
 					<xsl:text>,</xsl:text>
 					
 					<xsl:call-template name="msFormatDate">
