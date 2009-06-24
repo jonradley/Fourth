@@ -43,7 +43,7 @@
 			</ffsEscapeChar>
 		</ffsEscapeChars>
 		<ffsFieldSeparators>
-			<ffsFieldSeparator>|</ffsFieldSeparator>
+			<ffsFieldSeparator>*</ffsFieldSeparator>
 			<ffsSubFieldSeparator>-</ffsSubFieldSeparator>
 		</ffsFieldSeparators>
 		<ffsPadding/>
@@ -54,7 +54,7 @@
 				<!--Dummy element <SendersName> to be removed in stylesheet.-->
 				<SendersName RecordPos="N1" LPos="2"/>
 				<SendersCodeForRecipient RecordPos="N1" LPos="5"/>
-				<RecipientsBranchReference RecordPos="ISA" LPos="7"/>
+				<SendersBranchReference RecordPos="ISA" LPos="7"/>
 				<!--Dummy element <RecipientsName> to be removed in stylesheet.-->
 				<RecipientsName RecordPos="ISA" LPos="16"/>
 				<TestFlag RecordPos="ISA" LPos="16"/>
