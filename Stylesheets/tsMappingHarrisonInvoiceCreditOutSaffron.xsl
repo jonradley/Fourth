@@ -16,6 +16,9 @@
 ******************************************************************************************
  30/03/2009	| Lee Boyton	| 2817. If the RCS contains a # character then take the string after the #.
 ******************************************************************************************
+ 24/06/2009	| Lee Boyton	| 2957. Strip newline characters from packsize field,
+                                | as these cause an additional blank line to appear in final output
+******************************************************************************************
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -224,7 +227,7 @@
 			<xsl:value-of select="substring(ProductDescription,1,50)"/>
 			<xsl:text>,</xsl:text>
 
-			<xsl:value-of select="substring(PackSize,1,20)"/>
+			<xsl:value-of select="substring(normalize-space(PackSize),1,20)"/>
 			
 		</xsl:for-each>
 		<xsl:value-of select="$NewLine"/>	
