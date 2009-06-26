@@ -50,10 +50,14 @@
 				</xsl:choose>
 			</xsl:attribute>
 			<xsl:attribute name="Supplier"><xsl:value-of select="/GoodsReceivedNote/TradeSimpleHeader/SendersCodeForRecipient | /CreditNote/TradeSimpleHeader/RecipientsCodeForSender"/></xsl:attribute>
+			
+			<xsl:variable name="SCR">
+				<xsl:value-of select="translate(//TradeSimpleHeader/SendersCodeForRecipient, 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')"/>
+			</xsl:variable>
 
 			<!--Set OrderNo as PO Ref rather than DN ref for BrakesFrozen and BrakesGrocery suppliers-->
 			<xsl:choose>
-				<xsl:when test="//TradeSimpleHeader/SendersCodeForRecipient = 'BrakesFrozen' or //TradeSimpleHeader/SendersCodeForRecipient = 'BrakesGrocery'">
+				<xsl:when test="$SCR = 'BRAKESFROZEN' or $SCR = 'BRAKESGROCERY'">
 					<xsl:attribute name="OrderNo"><xsl:value-of select="//GoodsReceivedNoteHeader/PurchaseOrderReferences/PurchaseOrderReference | //CreditNoteReference"/></xsl:attribute>
 				</xsl:when>
 				<xsl:otherwise>
