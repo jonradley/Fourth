@@ -31,10 +31,24 @@
 				<TradeSimpleHeader>
 				
 					<SendersCodeForRecipient>
-						<xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/>
+						<xsl:choose>
+							<xsl:when test="not(TradeSimpleHeader/SendersBranchReference) or TradeSimpleHeader/SendersBranchReference = ''">
+								<xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:choose>
+									<xsl:when test="not(contains('HILTON',TradeSimpleHeader/SendersBranchReference))">
+										<xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:value-of select="TradeSimpleHeader/SendersBranchReference"/>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:otherwise>
+						</xsl:choose>
 					</SendersCodeForRecipient>
 					
-					<xsl:if test="string(TradeSimpleHeader/SendersBranchReference) !='' ">
+					<xsl:if test="string(TradeSimpleHeader/SendersBranchReference) != '' and not(contains('HILTON',TradeSimpleHeader/SendersBranchReference))">
 						<SendersBranchReference>
 							<xsl:value-of select="TradeSimpleHeader/SendersBranchReference"/>
 						</SendersBranchReference>
@@ -60,6 +74,17 @@
 				
 					<xsl:if test="PurchaseOrderConfirmationHeader/ShipTo/ShipToName != '' or PurchaseOrderConfirmationHeader/ShipTo/ShipToAddress/AddressLine1 != '' or PurchaseOrderConfirmationHeader/ShipTo/ShipToAddress/AddressLine2 != '' or PurchaseOrderConfirmationHeader/ShipTo/ShipToAddress/AddressLine3 != '' or PurchaseOrderConfirmationHeader/ShipTo/ShipToAddress/AddressLine4 != '' or PurchaseOrderConfirmationHeader/ShipTo/ShipToAddress/PostCode != '' or PurchaseOrderConfirmationHeader/ShipTo/ContactName != ''">
 						<ShipTo>
+							<xsl:if test="contains('HILTON',TradeSimpleHeader/SendersBranchReference)">
+								<ShipToLocationID>
+									<!--GLN/-->
+									<BuyersCode>
+										<xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/>
+									</BuyersCode>
+									<SuppliersCode>
+										<xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/>
+									</SuppliersCode>
+								</ShipToLocationID>
+							</xsl:if>
 							<xsl:if test="PurchaseOrderConfirmationHeader/ShipTo/ShipToName != ''">
 								<ShipToName>
 									<xsl:value-of select="PurchaseOrderConfirmationHeader/ShipTo/ShipToName"/>
