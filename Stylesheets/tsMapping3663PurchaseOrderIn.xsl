@@ -13,7 +13,7 @@
  23/02/2009  | R Cambridge  | 2758 Ensure ordered quantity of 0 is stored as 0 not blank
 												 If pack size or quantity are not numeric then pass through whatever value is provided
 *****************************************************************************************
-             |              | 
+ 29/06/2008  | J Pollard | 2970 Ensure any quotes arround ship to details are removed. 
 ***************************************************************************************-->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 	<xsl:output method="xml" encoding="utf-8"/>
@@ -155,6 +155,31 @@
 		
 		<xsl:value-of select="concat(substring($input,1,4),'-',substring($input,5,2),'-',substring($input,7,2))"/>
 		
+	</xsl:template>
+	
+	<!-- strip quotes from text fields -->
+	<xsl:template match="ShipToName | AddressLine1 | AddressLine2 | AddressLine3 | AddressLine4 | Postcode">
+	
+		<xsl:copy>
+			<xsl:call-template name="stripQuotes">
+				<xsl:with-param name="sInput" select="."/>	
+			</xsl:call-template>	
+		</xsl:copy>		
+
+	</xsl:template>
+
+	<xsl:template name="stripQuotes">
+		<xsl:param name="sInput"/>
+	
+		<xsl:choose>
+			<xsl:when test="starts-with($sInput,'&quot;') and substring($sInput,string-length($sInput),1) = '&quot;'">
+				<xsl:value-of select="substring($sInput,2,string-length($sInput)-2)"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$sInput"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	
 	</xsl:template>
 	
 </xsl:stylesheet>
