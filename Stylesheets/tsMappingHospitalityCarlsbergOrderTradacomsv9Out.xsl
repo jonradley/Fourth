@@ -13,6 +13,8 @@
 	12/07/2007	| Nigel Emsen		| Created from Bunzl Tradacoms mapper. FB: 1214.
 						|							| Dependant on FB: 1298.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	30/06/2009 | Lee Boyton              | FB2974. Handle new Orchid - Black Pubs Ltd company.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript" xmlns:vb="http://www.abs-ltd.com/dummynamespaces/vbscript" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
@@ -39,6 +41,9 @@
 		</xsl:variable>
 		<xsl:variable name="sORPCode">
 			<xsl:text>CCAR005</xsl:text>
+		</xsl:variable>
+		<xsl:variable name="sBPLCode">
+			<xsl:text>CCAR001</xsl:text>
 		</xsl:variable>
 		<xsl:variable name="sFileGenerationDate" select="vb:msFileGenerationDate()"/>
 		<xsl:text>STX=</xsl:text>
@@ -117,6 +122,10 @@
 			<!-- Orient Resturanent Pubs -->
 			<xsl:when test="$sORPCode = $sSCFR">
 				<xsl:text>5999998145710</xsl:text>
+			</xsl:when>
+			<!-- Orchid Black Pubs Limited -->
+			<xsl:when test="$sBPLCode = $sSCFR">
+				<xsl:text>5999996145710</xsl:text>
 			</xsl:when>
 			<!-- all other cases -->
 			<xsl:otherwise>
