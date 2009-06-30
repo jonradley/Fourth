@@ -23,10 +23,17 @@
 				xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 				xmlns:fo="http://www.w3.org/1999/XSL/Format" 
 				xmlns:script="http://mycompany.com/mynamespace" 
-				xmlns:msxsl="urn:schemas-microsoft-com:xslt">
-	<xsl:output method="xml"/>
+				xmlns:msxsl="urn:schemas-microsoft-com:xslt"
+				xmlns="http://www.eanucc.org/2002/Pay/FoodService/FoodService/UK/EanUcc/Pay"
+				xmlns:cc="http://www.ean-ucc.org/2002/gsmp/schemas/CoreComponents" 
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				exclude-result-prefixes="fo script msxsl">
+	<!--xsl:output method="xml" /-->
 	<xsl:template match="/">
 		<Invoice>
+			<xsl:attribute name="xsi:schemaLocation">
+				<xsl:text>http://www.eanucc.org/2002/Pay/FoodService/FoodService/UK/EanUcc/Pay X:\HOME\COMMON\projects\TSFOOD~1\ebXML\Invoice\0.8\Invoicev0.8.xsd</xsl:text>
+			</xsl:attribute>
 			<InvoiceDocumentDetails>
 				<InvoiceDocumentDate format="YYYY-MM-DDThh:mm:ss:TZD"><xsl:value-of select="/Invoice/InvoiceHeader/InvoiceReferences/InvoiceDate"/>T00:00:00</InvoiceDocumentDate>
 				<InvoiceDocumentNumber scheme="OTHER"><xsl:value-of select="/Invoice/InvoiceHeader/InvoiceReferences/InvoiceReference"/></InvoiceDocumentNumber>
