@@ -29,7 +29,7 @@
 		</xsl:variable>
 
 		<xsl:variable name="sRecordSep">			
-			<xsl:text>~&#13;&#10;</xsl:text>			
+			<xsl:text>~</xsl:text>			
 		</xsl:variable>		
 
 		<!-- ISA Interchange Control Header -->
@@ -59,7 +59,7 @@
 		<xsl:value-of select="$sFieldSep"/>
 		<xsl:text>00401</xsl:text>
 		<xsl:value-of select="$sFieldSep"/>
-		<xsl:value-of select="PurchaseOrderHeader/FileGenerationNumber"/>
+		<xsl:value-of select="format-number(PurchaseOrderHeader/FileGenerationNumber,'000000000')"/>
 		<xsl:value-of select="$sFieldSep"/>
 		<xsl:text>0</xsl:text>
 		<xsl:value-of select="$sFieldSep"/>		
@@ -130,7 +130,6 @@
 		<xsl:value-of select="js:msSafeText(string(TradeSimpleHeader/RecipientsCodeForSender),6)"/>					
 		<xsl:value-of select="$sRecordSep"/>
 		
-		
 		<xsl:for-each select="PurchaseOrderDetail/PurchaseOrderLine">
 			<!-- PO1 Baseline Item Data -->
 			<xsl:text>PO1</xsl:text>
@@ -139,7 +138,16 @@
 			<xsl:value-of select="$sFieldSep"/>
 			<xsl:value-of select="number(OrderedQuantity)"/>
 			<xsl:value-of select="$sFieldSep"/>
-			<xsl:value-of select="OrderedQuantity/@UnitOfMeasure"/>
+
+			<!-- UOM is set to CA when the last character of the product code is s or S. It will be EA in all other cases -->
+			<xsl:choose>
+				<xsl:when test="translate(substring(ProductID/SuppliersProductCode,string-length(ProductID/SuppliersProductCode),1),'S','s') = 's'">
+					<xsl:text>CA</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:text>EA</xsl:text>
+				</xsl:otherwise>
+			</xsl:choose>
 			<xsl:value-of select="$sFieldSep"/>
 			<xsl:value-of select="$sFieldSep"/>
 			<xsl:value-of select="$sFieldSep"/>
@@ -192,7 +200,7 @@
 		<xsl:value-of select="$sFieldSep"/>
 		<xsl:text>1</xsl:text>
 		<xsl:value-of select="$sFieldSep"/>
-		<xsl:value-of select="PurchaseOrderHeader/FileGenerationNumber"/>		
+		<xsl:value-of select="format-number(PurchaseOrderHeader/FileGenerationNumber,'000000000')"/>
 		<xsl:value-of select="$sRecordSep"/>
 		
 	</xsl:template>
