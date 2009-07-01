@@ -273,7 +273,7 @@ Lee Boyton        | 2009-04-28 | 2867. Translate product codes for SSP
 						</xsl:choose>
 					</xsl:variable>
 				
-					<xsl:value-of select="concat(.,'~',$UOM)"/>
+					<xsl:value-of select="concat(.,'-',$UOM)"/>
 										
 				</xsl:when>
 				<xsl:otherwise>
