@@ -41,6 +41,9 @@
 				<ffsTradesimple>¬Q</ffsTradesimple>
 				<ffsLiteral>?</ffsLiteral>
 			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>"</ffsNative>
+			</ffsEscapeChar>
 		</ffsEscapeChars>
 		<ffsFieldSeparators>
 			<ffsFieldSeparator>*</ffsFieldSeparator>
