@@ -116,7 +116,7 @@ Rave Tech     	|  19/05/2009 | Created Module
 					<xsl:element name="ProductID">
 						<xsl:element name="SuppliersProductCode">
 							<xsl:choose>
-								<xsl:when test="ConfirmedQuantity/@UnitOfMeasure = 'EA'">
+								<xsl:when test="OrderedQuantity/@UnitOfMeasure = 'EA'">
 									<xsl:value-of select="ProductID/SuppliersProductCode"/>
 								</xsl:when>
 								<xsl:otherwise>
