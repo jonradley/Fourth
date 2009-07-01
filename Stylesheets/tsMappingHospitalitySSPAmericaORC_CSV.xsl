@@ -112,9 +112,20 @@ Rave Tech     	|  19/05/2009 | Created Module
 						<xsl:value-of select="jscript:nGetLineNumber()"/>
 					</xsl:element>
 			
-					<!--Copy ProductID node-->
-					<xsl:apply-templates select="ProductID"/>
-			
+					<!--Populate ProductID node-->
+					<xsl:element name="ProductID">
+						<xsl:element name="SuppliersProductCode">
+							<xsl:choose>
+								<xsl:when test="ConfirmedQuantity/@UnitOfMeasure = 'EA'">
+									<xsl:value-of select="ProductID/SuppliersProductCode"/>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="ProductID/SuppliersProductCode"/><xsl:text>S</xsl:text> 
+								</xsl:otherwise> 
+							</xsl:choose>
+						</xsl:element>
+					</xsl:element>
+
 					<!--Populate SubstitutedProductID-->
 					<xsl:if test="@LineStatus = 'IS'">
 						<xsl:element name="SubstitutedProductID">
