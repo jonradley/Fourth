@@ -6,6 +6,8 @@ Name			|  Date		  | Change
 **********************************************************************
 Rave Tech     	|  19/05/2009 | Created Module
 **********************************************************************
+Steve Hewitt     	|  02/07/2009 | UAT bug fixes
+**********************************************************************
 				|			  |				
 *********************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com" xmlns:vbscript="http://abs-Ltd.com">
@@ -37,7 +39,17 @@ Rave Tech     	|  19/05/2009 | Created Module
 			<xsl:apply-templates/>
 		</xsl:copy>
 	</xsl:template>
-	
+
+	<xsl:template match="PurchaseOrderConfirmation">
+		<!-- Copy the node and add BatchRoot elements -->
+		<BatchRoot>
+			<xsl:copy>
+				<!-- Then within this node, continue processing children -->
+				<xsl:apply-templates/>
+			</xsl:copy>
+		</BatchRoot>
+	</xsl:template>
+
 	<!-- GENERIC ATTRIBUTE HANDLER to copy unchanged attributes, will be overridden by any attribute-specific templates below-->
 	<xsl:template match="@*">
 		<!--Copy the attribute unchanged-->
@@ -217,7 +229,7 @@ Rave Tech     	|  19/05/2009 | Created Module
 				</xsl:element> <!--End tag of PurchaseOrderConfirmationLine-->
 				
 				<!--Add an extra rejected line when substituted product found and folliowing line status is not IQ or IR -->
-                           <xsl:if test="(SubstitutedProductID/SuppliersProductCode != ProductID/SuppliersProductCode) and (@LineStatus = 'IS') ">                           
+                           <xsl:if test="(SubstitutedProductID/SuppliersProductCode != ProductID/SuppliersProductCode) and (@LineStatus = 'IS')">                           
 					<xsl:if test="(position() = last()) or (following-sibling::PurchaseOrderConfirmationLine[1]/@LineStatus != 'IQ' and following-sibling::PurchaseOrderConfirmationLine[1]/@LineStatus != 'IS')">
 	
 						<xsl:element name="PurchaseOrderConfirmationLine">
@@ -226,7 +238,6 @@ Rave Tech     	|  19/05/2009 | Created Module
 							<xsl:element name="ProductID">
 								<xsl:element name="SuppliersProductCode"><xsl:value-of select="SubstitutedProductID/SuppliersProductCode"/></xsl:element>
 							</xsl:element>
-							<xsl:element name="SubstitutedProductID"><xsl:element name="SuppliersProductCode"/></xsl:element>
 							<xsl:element name="ProductDescription"><xsl:value-of select="ProductDescription"/></xsl:element>
 							<xsl:element name="OrderedQuantity">
 								<xsl:attribute name="UnitOfMeasure">
@@ -240,9 +251,7 @@ Rave Tech     	|  19/05/2009 | Created Module
 								</xsl:attribute>
 								<xsl:text>0.00</xsl:text> 
 							</xsl:element>	
-							<xsl:apply-templates select="UnitValueExclVAT"/>
-							<xsl:element name="ConfirmedDeliveryDetailsLineLevel"><xsl:element name="DeliveryDate"/></xsl:element>
-							<xsl:element name="Narrative"/>						
+							<xsl:apply-templates select="UnitValueExclVAT"/>					
 						</xsl:element>
 						
 					</xsl:if>
@@ -250,7 +259,7 @@ Rave Tech     	|  19/05/2009 | Created Module
 		       </xsl:for-each>
 	       </xsl:element> <!--End tag of PurchaseOrderConfirmationDetail-->
 	</xsl:template>
-
+	
 	<msxsl:script language="JScript" implements-prefix="jscript"><![CDATA[
 		var nLineNumber;
 		nLineNumber = 0;
