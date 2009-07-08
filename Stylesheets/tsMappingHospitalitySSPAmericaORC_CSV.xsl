@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!--******************************************************************
 SSP America Purchase Order Confirmation Flat file mapper.
 **********************************************************************
@@ -8,7 +8,7 @@ Rave Tech     	|  19/05/2009 | Created Module
 **********************************************************************
 Steve Hewitt     	|  02/07/2009 | UAT bug fixes
 **********************************************************************
-				|			  |				
+Lee Boyton		|  08/07/2009 | FB2890. Corrected Product code translation.
 *********************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com" xmlns:vbscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
@@ -129,11 +129,11 @@ Steve Hewitt     	|  02/07/2009 | UAT bug fixes
 						<xsl:element name="SuppliersProductCode">
 							<xsl:choose>
 								<xsl:when test="OrderedQuantity/@UnitOfMeasure = 'EA'">
-									<xsl:value-of select="ProductID/SuppliersProductCode"/>
+									<xsl:value-of select="ProductID/SuppliersProductCode"/><xsl:text>S</xsl:text>
 								</xsl:when>
 								<xsl:otherwise>
-									<xsl:value-of select="ProductID/SuppliersProductCode"/><xsl:text>S</xsl:text> 
-								</xsl:otherwise> 
+									<xsl:value-of select="ProductID/SuppliersProductCode"/>
+								</xsl:otherwise>
 							</xsl:choose>
 						</xsl:element>
 					</xsl:element>

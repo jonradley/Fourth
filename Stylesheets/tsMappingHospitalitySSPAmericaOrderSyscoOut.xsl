@@ -13,6 +13,8 @@
 ==========================================================================================
  19/05/2009	| Rave Tech					|	Created module.FB 2890
 ==========================================================================================
+ 08/07/2009	| Lee Boyton				|	FB2890. Corrected UOM translation.
+==========================================================================================
 -->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -139,13 +141,13 @@
 			<xsl:value-of select="number(OrderedQuantity)"/>
 			<xsl:value-of select="$sFieldSep"/>
 
-			<!-- UOM is set to CA when the last character of the product code is s or S. It will be EA in all other cases -->
+			<!-- UOM is set to EA when the last character of the product code is s or S. It will be CA in all other cases -->
 			<xsl:choose>
 				<xsl:when test="translate(substring(ProductID/SuppliersProductCode,string-length(ProductID/SuppliersProductCode),1),'S','s') = 's'">
-					<xsl:text>CA</xsl:text>
+					<xsl:text>EA</xsl:text>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:text>EA</xsl:text>
+					<xsl:text>CA</xsl:text>
 				</xsl:otherwise>
 			</xsl:choose>
 			<xsl:value-of select="$sFieldSep"/>
