@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--******************************************************************
 SSP America Purchase Order Confirmation Flat file mapper.
 **********************************************************************
@@ -129,7 +129,15 @@ Lee Boyton		|  08/07/2009 | FB2890. Corrected Product code translation.
 						<xsl:element name="SuppliersProductCode">
 							<xsl:choose>
 								<xsl:when test="OrderedQuantity/@UnitOfMeasure = 'EA'">
-									<xsl:value-of select="ProductID/SuppliersProductCode"/><xsl:text>S</xsl:text>
+									<!-- Only add the S if it is not already present -->
+									<xsl:choose>
+										<xsl:when test="translate(substring(ProductID/SuppliersProductCode,string-length(ProductID/SuppliersProductCode),1),'S','s') != 's'">
+											<xsl:value-of select="ProductID/SuppliersProductCode"/><xsl:text>S</xsl:text>
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:value-of select="ProductID/SuppliersProductCode"/>
+										</xsl:otherwise>
+									</xsl:choose>
 								</xsl:when>
 								<xsl:otherwise>
 									<xsl:value-of select="ProductID/SuppliersProductCode"/>
