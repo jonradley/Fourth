@@ -62,7 +62,7 @@ K O'Shaughnessy	| 2009-05-18		| 2889 Created Modele
 				</PurchaseOrderReference>
 				
 				<RequiredDate>
-					<xsl:value-of select="PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderDate"/>
+					<xsl:value-of select="/PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate"/>
 				</RequiredDate>
 			
 			</PurchaseOrderHeader>
