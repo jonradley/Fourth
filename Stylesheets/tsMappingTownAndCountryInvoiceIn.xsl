@@ -19,349 +19,318 @@ Takes the TownandCountry version of a Invoice and map it  into the internal xml 
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 	<xsl:output method="xml" encoding="UTF-8"/>
-	<xsl:template match="/">				
-			<xsl:element name="Invoice">
-				<xsl:element name="TradeSimpleHeader">
-					<xsl:element name="SendersCodeForRecipient">
-						<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='shipTo']/@addressID"/>
-					</xsl:element>
-					<xsl:if test="//InvoiceDetailOrder/InvoiceDetailOrderInfo/MasterAgreementReference/@agreementID">
-						<xsl:element name="SendersBranchReference">
-							<xsl:value-of select="//InvoiceDetailOrder/InvoiceDetailOrderInfo/MasterAgreementReference/@agreementID"/>
-						</xsl:element>
-					</xsl:if>
-					<!-- TestFlag -->
-					<!-- <xsl:element name="TestFlag">
-						<xsl:value-of select="TradeSimpleHeader/TestFlag"/>
-					</xsl:element>	-->
-				</xsl:element>
-				<!-- InvoiceHeader -->
-				<xsl:element name="InvoiceHeader">
-					<!-- 	Document Status -->
-					<!-- <xsl:element name="DocumentStatus">
-						<xsl:value-of select="InvoiceHeader/DocumentStatus"/>
-					</xsl:element> -->
-					<!-- Buyer -->
-					<xsl:element name="Buyer">
-						<xsl:element name="BuyersLocationID">
-							<!-- <xsl:element name="GLN">
-								<xsl:value-of select="InvoiceHeader/Buyer/BuyersLocationID/GLN"/>
-							</xsl:element> -->
-							<xsl:if test="//InvoiceDetailShipping/Contact[@Role='billTo']/@addressID">
-								<xsl:element name="SuppliersCode">
-									<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='billTo']/@addressID"/>
-								</xsl:element>
-							</xsl:if>
-						</xsl:element>
-						<!-- BuyersName -->
-						<xsl:if test="//InvoiceDetailShipping/Contact[@Role='billTo']/Name">
-							<xsl:element name="BuyersName">
-								<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='billTo']/Name"/>
-							</xsl:element>
-						</xsl:if>
-						<!-- BuyersAddress-->
-						<xsl:element name="BuyersAddress">
-							<xsl:element name="AddressLine1">
-								<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='billTo']/PostalAddress/Street"/>
-							</xsl:element>
-							<xsl:element name="AddressLine2">
-								<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='billTo']/PostalAddress/City"/>
-							</xsl:element>
-							<xsl:element name="AddressLine3">
-								<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='billTo']/PostalAddress/Country"/>
-							</xsl:element>
-							<xsl:element name="PostCode">
-								<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='billTo']/PostalAddress/PostalCode"/>
-							</xsl:element>
-						</xsl:element>
-					</xsl:element>
-					<!-- Supplier -->
-					<xsl:element name="Supplier">
-						<xsl:element name="SuppliersLocationID">
-							<!-- <xsl:element name="GLN">
-								<xsl:value-of select="InvoiceHeader/Supplier/SuppliersLocationID/GLN"/>
-							</xsl:element> -->
-							<!-- SuppliersCode -->
-							<xsl:if test="//InvoiceDetailShipping/Contact[@Role='from']/@addressID">
-								<xsl:element name="SuppliersCode">
-									<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='from']/@addressID"/>
-								</xsl:element>
-							</xsl:if>
-						</xsl:element>
-						<!-- SuppliersName -->
-						<xsl:if test="//InvoiceDetailShipping/Contact[@Role='from']/Name">
-							<xsl:element name="SuppliersName">
-								<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='from']/Name"/>
-							</xsl:element>
-						</xsl:if>
-						<!-- SuppliersAddress -->
-						<xsl:element name="SuppliersAddress">
-							<xsl:element name="AddressLine1">
-								<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='from']/PostalAddress/Street"/>
-							</xsl:element>
-							<xsl:element name="AddressLine2">
-								<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='from']/PostalAddress/City"/>
-							</xsl:element>
-							<xsl:element name="AddressLine3">
-								<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='from']/PostalAddress/Country"/>
-							</xsl:element>
-							<xsl:element name="PostCode">
-								<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='from']/PostalAddress/PostalCode"/>
-							</xsl:element>
-						</xsl:element>
-					</xsl:element>
-					<!-- ShipTo -->
-					<xsl:element name="ShipTo">
-						<xsl:element name="ShipToLocationID">
-							<!-- <xsl:element name="GLN">
-								<xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/GLN"/>
-							</xsl:element> -->
-							<!-- SuppliersCode -->
-							<xsl:if test="//InvoiceDetailShipping/Contact[@Role='shipTo']/@addressID">
-								<xsl:element name="SuppliersCode">
+	<xsl:template match="/">	
+		<BatchRoot>
+			<Batch>
+				<BatchDocuments>
+					<BatchDocument>			
+						<xsl:element name="Invoice">
+							<xsl:element name="TradeSimpleHeader">
+								<xsl:element name="SendersCodeForRecipient">
 									<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='shipTo']/@addressID"/>
 								</xsl:element>
-							</xsl:if>
-						</xsl:element>
-						<!-- ShipToName -->
-						<xsl:if test="//InvoiceDetailShipping/Contact[@Role='shipTo']/Name">
-							<xsl:element name="ShipToName">
-								<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='shipTo']/Name"/>
-							</xsl:element>
-						</xsl:if>
-						<!-- ShipToAddress -->
-						<xsl:element name="ShipToAddress">
-							<xsl:element name="AddressLine1">
-								<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='shipTo']/PostalAddress/Street"/>
-							</xsl:element>
-							<xsl:if test="//InvoiceDetailShipping/Contact[@Role='shipTo']/PostalAddress/City">
-								<xsl:element name="AddressLine2">
-									<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='shipTo']/PostalAddress/City"/>
-								</xsl:element>
-							</xsl:if>
-							<xsl:if test="//InvoiceDetailShipping/Contact[@Role='shipTo']/PostalAddress/Country">
-								<xsl:element name="AddressLine3">
-									<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='shipto']/PostalAddress/Country"/>
-								</xsl:element>
-							</xsl:if>
-							<xsl:if test="//InvoiceDetailShipping/Contact[@Role='shipTo']/PostalAddress/PostalCode">
-								<xsl:element name="PostCode">
-									<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='shipTo']/PostalAddress/PostalCode"/>
-								</xsl:element>
-							</xsl:if>
-						</xsl:element>
-					</xsl:element>
-					<!-- Invoice References-->
-					<xsl:element name="InvoiceReferences">
-						<xsl:element name="InvoiceReference">
-							<xsl:value-of select="/cXML/Request/InvoiceDetailRequest/InvoiceDetailRequestHeader/@invoiceID"/>
-						</xsl:element>
-						<xsl:element name="InvoiceDate">
-							<xsl:value-of select="substring-before(/cXML/Request/InvoiceDetailRequest/InvoiceDetailRequestHeader/@invoiceDate,'T')"/>
-						</xsl:element>
-						<xsl:if test="/cXML/Request/InvoiceDetailRequest/InvoiceDetailRequestHeader/@invoiceDate">
-							<xsl:element name="TaxPointDate">
-								<xsl:value-of select="substring-before(/cXML/Request/InvoiceDetailRequest/InvoiceDetailRequestHeader/@invoiceDate,'T')"/>
-							</xsl:element>
-						</xsl:if>
-						<!-- 	
-						<xsl:if test="InvoiceHeader/InvoiceReferences/VATRegNo">
-							<xsl:element name="VATRegNo">
-								<xsl:value-of select="InvoiceHeader/InvoiceReferences/VATRegNo"/>
-							</xsl:element>
-						</xsl:if>	 -->
-					</xsl:element>
-					<!-- Currency -->
-					<xsl:element name="Currency">
-						<xsl:text>GBP</xsl:text>
-					</xsl:element>
-				</xsl:element>
-				<!-- Invoice  Details-->
-				<xsl:element name="InvoiceDetail">
-					<xsl:for-each select="/cXML/Request/InvoiceDetailRequest/InvoiceDetailOrder">
-						<xsl:element name="InvoiceLine">
-							<!-- LineNumber -->
-							<xsl:element name="LineNumber">
-								<xsl:value-of select="InvoiceDetailItem/InvoiceDetailItemReference/@lineNumber"/>
-							</xsl:element>
-							<!-- PurchaseOrderReferences-->
-							<xsl:if test="InvoiceDetailOrderInfo/OrderIDInfo/@orderID">
-								<xsl:element name="PurchaseOrderReferences">
-									<xsl:element name="PurchaseOrderReference">
-										<xsl:value-of select="InvoiceDetailOrderInfo/OrderIDInfo/@orderID"/>
+								<xsl:if test="//InvoiceDetailOrder/InvoiceDetailOrderInfo/MasterAgreementReference/@agreementID">
+									<xsl:element name="SendersBranchReference">
+										<xsl:value-of select="//InvoiceDetailOrder/InvoiceDetailOrderInfo/MasterAgreementReference/@agreementID"/>
 									</xsl:element>
-									<xsl:element name="PurchaseOrderDate">
-										<xsl:value-of select="substring-before(InvoiceDetailOrderInfo/OrderIDInfo/@orderDate,'T')"/>
-									</xsl:element>
-									<xsl:if test="InvoiceDetailOrderInfo/MasterAgreementReference/@agreementID">
-										<xsl:element name="TradeAgreement">
-											<xsl:element name="ContractReference">
-												<xsl:value-of select="InvoiceDetailOrderInfo/MasterAgreementReference/@agreementID"/>
+								</xsl:if>					
+							</xsl:element>
+							<!-- InvoiceHeader -->
+							<xsl:element name="InvoiceHeader">					
+								<!-- Buyer -->
+								<xsl:element name="Buyer">
+									<xsl:element name="BuyersLocationID">							
+										<xsl:if test="//InvoiceDetailShipping/Contact[@Role='billTo']/@addressID">
+											<xsl:element name="SuppliersCode">
+												<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='billTo']/@addressID"/>
 											</xsl:element>
+										</xsl:if>
+									</xsl:element>
+									<!-- BuyersName -->
+									<xsl:if test="//InvoiceDetailShipping/Contact[@Role='billTo']/Name">
+										<xsl:element name="BuyersName">
+											<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='billTo']/Name"/>
 										</xsl:element>
 									</xsl:if>
-								</xsl:element>
-							</xsl:if>
-							<!-- DeliveryNoteReferences-->
-							<xsl:if test="//InvoiceDetailRequestHeader/InvoiceDetailShipping/ShipmentIdentifier">
-								<xsl:element name="DeliveryNoteReferences">
-									<xsl:element name="DeliveryNoteReference">
-										<xsl:value-of select="//InvoiceDetailRequestHeader/InvoiceDetailShipping/ShipmentIdentifier"/>
+									<!-- BuyersAddress-->
+									<xsl:element name="BuyersAddress">
+										<xsl:element name="AddressLine1">
+											<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='billTo']/PostalAddress/Street"/>
+										</xsl:element>
+										<xsl:element name="AddressLine2">
+											<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='billTo']/PostalAddress/City"/>
+										</xsl:element>
+										<xsl:element name="AddressLine3">
+											<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='billTo']/PostalAddress/Country"/>
+										</xsl:element>
+										<xsl:element name="PostCode">
+											<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='billTo']/PostalAddress/PostalCode"/>
+										</xsl:element>
 									</xsl:element>
-									<xsl:element name="DeliveryNoteDate">
-										<xsl:value-of select="substring-before(//InvoiceDetailRequestHeader/InvoiceDetailShipping/shippingDate,'T')"/>
+								</xsl:element>
+								<!-- Supplier -->
+								<xsl:element name="Supplier">
+									<xsl:element name="SuppliersLocationID">							
+										<!-- SuppliersCode -->
+										<xsl:if test="//InvoiceDetailShipping/Contact[@Role='from']/@addressID">
+											<xsl:element name="SuppliersCode">
+												<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='from']/@addressID"/>
+											</xsl:element>
+										</xsl:if>
 									</xsl:element>
-									<xsl:element name="DespatchDate">
-										<xsl:value-of select="substring-before(//InvoiceDetailRequestHeader/InvoiceDetailShipping/shippingDate,'T')"/>
+									<!-- SuppliersName -->
+									<xsl:if test="//InvoiceDetailShipping/Contact[@Role='from']/Name">
+										<xsl:element name="SuppliersName">
+											<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='from']/Name"/>
+										</xsl:element>
+									</xsl:if>
+									<!-- SuppliersAddress -->
+									<xsl:element name="SuppliersAddress">
+										<xsl:element name="AddressLine1">
+											<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='from']/PostalAddress/Street"/>
+										</xsl:element>
+										<xsl:element name="AddressLine2">
+											<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='from']/PostalAddress/City"/>
+										</xsl:element>
+										<xsl:element name="AddressLine3">
+											<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='from']/PostalAddress/Country"/>
+										</xsl:element>
+										<xsl:element name="PostCode">
+											<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='from']/PostalAddress/PostalCode"/>
+										</xsl:element>
 									</xsl:element>
 								</xsl:element>
-							</xsl:if>
-							<!-- ProductID-->
-							<xsl:element name="ProductID">
-								<xsl:element name="GTIN">
-									<xsl:value-of select="ProductID/GTIN"/>
-								</xsl:element>
-								<xsl:if test="InvoiceDetailItem/InvoiceDetailItemReference/ItemID/SupplierPartID">
-									<xsl:element name="SuppliersProductCode">
-										<xsl:value-of select="InvoiceDetailItem/InvoiceDetailItemReference/ItemID/SupplierPartID"/>
+								<!-- ShipTo -->
+								<xsl:element name="ShipTo">
+									<xsl:element name="ShipToLocationID">							
+										<!-- SuppliersCode -->
+										<xsl:if test="//InvoiceDetailShipping/Contact[@Role='shipTo']/@addressID">
+											<xsl:element name="SuppliersCode">
+												<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='shipTo']/@addressID"/>
+											</xsl:element>
+										</xsl:if>
 									</xsl:element>
-								</xsl:if>
-							</xsl:element>
-							<!-- ProductDescription -->
-							<xsl:element name="ProductDescription">
-								<xsl:value-of select="InvoiceDetailItem/InvoiceDetailItemReference/Description"/>
-							</xsl:element>
-							<!-- InvoicedQuantity-->
-							<xsl:element name="InvoicedQuantity">
-								<!--<xsl:attribute name="UnitOfMeasure">
-									<xsl:value-of select="InvoicedQuantity/@UnitOfMeasure"/>
-								</xsl:attribute> -->
-								<xsl:value-of select="InvoiceDetailItem/@quantity"/>
-							</xsl:element>
-							<!-- UnitValueExclVAT-->
-							<xsl:element name="UnitValueExclVAT">
-								<xsl:value-of select="format-number(InvoiceDetailItem/UnitPrice/Money,'0.00')"/>
-							</xsl:element>
-							<!-- LineValueExclVAT-->
-							<xsl:element name="LineValueExclVAT">
-								<xsl:value-of select="format-number(InvoiceDetailItem/SubtotalAmount/Money,'0.00')"/>
-							</xsl:element>
-							<!-- VATCode-->
-							<xsl:element name="VATCode">
-								<xsl:choose>
-									<xsl:when test="InvoiceDetailItem/Tax/TaxDetail/@percentageRate = '15' or InvoiceDetailItem/Tax/TaxDetail/@percentageRate = '17.5'">
-										<xsl:text>S</xsl:text>
-									</xsl:when>
-									<xsl:otherwise>
-										<xsl:text>Z</xsl:text>
-									</xsl:otherwise>
-								</xsl:choose>							
-							</xsl:element>												
-							<!-- VATRate-->
-							<xsl:element name="VATRate">
-								<xsl:value-of select="InvoiceDetailItem/Tax/TaxDetail/@percentageRate"/>
-							</xsl:element>
-						</xsl:element>
-					</xsl:for-each>
-				</xsl:element>
-				
-				<!-- InvoiceTrailer -->
-				<xsl:element name="InvoiceTrailer">
-					<!-- <xsl:element name="NumberOfLines">
-						<xsl:value-of select="count(/cXML/Request/InvoiceDetailRequest/InvoiceDetailOrder)"/>
-					</xsl:element>
-					<xsl:element name="NumberOfItems">
-						<xsl:value-of select="sum(/cXML/Request/InvoiceDetailRequest/InvoiceDetailOrder/InvoiceDetailItem/@quantity)"/>
-					</xsl:element>
-					<xsl:element name="NumberOfDeliveries">
-						<xsl:value-of select="1"/>
-					</xsl:element>
-					<xsl:element name="DocumentDiscountRate">
-						<xsl:value-of select="0"/>
-					</xsl:element>
-					<xsl:element name="SettlementDiscountRate">
-						<xsl:value-of select="0"/>
-					</xsl:element> -->
-					
-					<!-- VATSubTotals -->
-					<xsl:element name="VATSubTotals">
-						<xsl:for-each select="/cXML/Request/InvoiceDetailRequest/InvoiceDetailSummary/Tax/TaxDetail">
-							<!-- store the VATRate and VATCode in variables as we use them more than once below -->
-							<xsl:variable name="currentVATCode">
-								<xsl:choose>
-									<xsl:when test="@percentageRate = '15' or @percentageRate = '17.5'">
-										<xsl:text>S</xsl:text>
-									</xsl:when>
-									<xsl:otherwise>
-										<xsl:text>Z</xsl:text>
-									</xsl:otherwise>
-								</xsl:choose>
-							</xsl:variable>
-							<xsl:variable name="currentVATRate">
-								<xsl:value-of select="@percentageRate"/>
-							</xsl:variable>
-												
-							<xsl:element name="VATSubTotal">
-								<xsl:attribute name="VATCode"><xsl:value-of select="$currentVATCode"/></xsl:attribute>							
-								<xsl:attribute name="VATRate"><xsl:value-of select="format-number($currentVATRate,'0.00')"/></xsl:attribute>
-								
-								<!-- <xsl:element name="NumberOfLinesAtRate">								
-									 <xsl:value-of select="count(//InvoiceDetailOrder[format-number(InvoiceDetailItem/Tax/TaxDetail/@percentageRate, '0.00') = format-number($currentVATRate, '0.00')])"/>
-								</xsl:element> -->
-								<!-- <xsl:element name="NumberOfItemsAtRate">								
-								</xsl:element>-->
-								<xsl:element name="DiscountedLinesTotalExclVATAtRate">
-									<xsl:value-of select="format-number(TaxableAmount,'0.00')"/>
+									<!-- ShipToName -->
+									<xsl:if test="//InvoiceDetailShipping/Contact[@Role='shipTo']/Name">
+										<xsl:element name="ShipToName">
+											<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='shipTo']/Name"/>
+										</xsl:element>
+									</xsl:if>
+									<!-- ShipToAddress -->
+									<xsl:element name="ShipToAddress">
+										<xsl:element name="AddressLine1">
+											<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='shipTo']/PostalAddress/Street"/>
+										</xsl:element>
+										<xsl:if test="//InvoiceDetailShipping/Contact[@Role='shipTo']/PostalAddress/City">
+											<xsl:element name="AddressLine2">
+												<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='shipTo']/PostalAddress/City"/>
+											</xsl:element>
+										</xsl:if>
+										<xsl:if test="//InvoiceDetailShipping/Contact[@Role='shipTo']/PostalAddress/Country">
+											<xsl:element name="AddressLine3">
+												<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='shipto']/PostalAddress/Country"/>
+											</xsl:element>
+										</xsl:if>
+										<xsl:if test="//InvoiceDetailShipping/Contact[@Role='shipTo']/PostalAddress/PostalCode">
+											<xsl:element name="PostCode">
+												<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='shipTo']/PostalAddress/PostalCode"/>
+											</xsl:element>
+										</xsl:if>
+									</xsl:element>
 								</xsl:element>
-								<xsl:element name="DocumentDiscountAtRate">
+								<!-- Invoice References-->
+								<xsl:element name="InvoiceReferences">
+									<xsl:element name="InvoiceReference">
+										<xsl:value-of select="/cXML/Request/InvoiceDetailRequest/InvoiceDetailRequestHeader/@invoiceID"/>
+									</xsl:element>
+									<xsl:element name="InvoiceDate">
+										<xsl:value-of select="substring-before(/cXML/Request/InvoiceDetailRequest/InvoiceDetailRequestHeader/@invoiceDate,'T')"/>
+									</xsl:element>
+									<xsl:if test="/cXML/Request/InvoiceDetailRequest/InvoiceDetailRequestHeader/@invoiceDate">
+										<xsl:element name="TaxPointDate">
+											<xsl:value-of select="substring-before(/cXML/Request/InvoiceDetailRequest/InvoiceDetailRequestHeader/@invoiceDate,'T')"/>
+										</xsl:element>
+									</xsl:if>						
+								</xsl:element>
+								<!-- Currency -->
+								<xsl:element name="Currency">
+									<xsl:text>GBP</xsl:text>
+								</xsl:element>
+							</xsl:element>
+							<!-- Invoice  Details-->
+							<xsl:element name="InvoiceDetail">
+								<xsl:for-each select="/cXML/Request/InvoiceDetailRequest/InvoiceDetailOrder">
+									<xsl:element name="InvoiceLine">
+										<!-- LineNumber -->
+										<xsl:element name="LineNumber">
+											<xsl:value-of select="InvoiceDetailItem/@InvoiceLineNumber"/>
+										</xsl:element>
+										<!-- PurchaseOrderReferences-->
+										<xsl:if test="InvoiceDetailOrderInfo/OrderIDInfo/@orderID">
+											<xsl:element name="PurchaseOrderReferences">
+												<xsl:element name="PurchaseOrderReference">
+													<xsl:value-of select="InvoiceDetailOrderInfo/OrderIDInfo/@orderID"/>
+												</xsl:element>
+												<xsl:element name="PurchaseOrderDate">
+													<xsl:value-of select="substring-before(InvoiceDetailOrderInfo/OrderIDInfo/@orderDate,'T')"/>
+												</xsl:element>
+												<xsl:if test="InvoiceDetailOrderInfo/MasterAgreementReference/@agreementID">
+													<xsl:element name="TradeAgreement">
+														<xsl:element name="ContractReference">
+															<xsl:value-of select="InvoiceDetailOrderInfo/MasterAgreementReference/@agreementID"/>
+														</xsl:element>
+													</xsl:element>
+												</xsl:if>
+											</xsl:element>
+										</xsl:if>
+										<!-- DeliveryNoteReferences-->
+										<xsl:if test="//InvoiceDetailRequestHeader/InvoiceDetailShipping/ShipmentIdentifier">
+											<xsl:element name="DeliveryNoteReferences">
+												<xsl:element name="DeliveryNoteReference">
+													<xsl:value-of select="//InvoiceDetailRequestHeader/InvoiceDetailShipping/ShipmentIdentifier"/>
+												</xsl:element>
+												<xsl:element name="DeliveryNoteDate">
+													<xsl:value-of select="substring-before(//InvoiceDetailRequestHeader/InvoiceDetailShipping/shippingDate,'T')"/>
+												</xsl:element>
+												<xsl:element name="DespatchDate">
+													<xsl:value-of select="substring-before(//InvoiceDetailRequestHeader/InvoiceDetailShipping/shippingDate,'T')"/>
+												</xsl:element>
+											</xsl:element>
+										</xsl:if>
+										<!-- ProductID-->
+										<xsl:element name="ProductID">
+											<xsl:element name="GTIN">
+												<xsl:value-of select="ProductID/GTIN"/>
+											</xsl:element>
+											<xsl:if test="InvoiceDetailItem/InvoiceDetailItemReference/ItemID/SupplierPartID">
+												<xsl:element name="SuppliersProductCode">
+													<xsl:value-of select="InvoiceDetailItem/InvoiceDetailItemReference/ItemID/SupplierPartID"/>
+												</xsl:element>
+											</xsl:if>
+										</xsl:element>
+										<!-- ProductDescription -->
+										<xsl:element name="ProductDescription">
+											<xsl:value-of select="InvoiceDetailItem/InvoiceDetailItemReference/Description"/>
+										</xsl:element>
+										<!-- InvoicedQuantity-->
+										<xsl:element name="InvoicedQuantity">
+											<xsl:attribute name="UnitOfMeasure">
+												<xsl:value-of select="InvoiceDetailItem/UnitOfMeasure"/>
+											</xsl:attribute>
+											<xsl:value-of select="InvoiceDetailItem/@quantity"/>
+										</xsl:element>
+										<!-- UnitValueExclVAT-->
+										<xsl:element name="UnitValueExclVAT">
+											<xsl:value-of select="format-number(InvoiceDetailItem/UnitPrice/Money,'0.00')"/>
+										</xsl:element>
+										<!-- LineValueExclVAT-->
+										<xsl:element name="LineValueExclVAT">
+											<xsl:value-of select="format-number(InvoiceDetailItem/SubtotalAmount/Money,'0.00')"/>
+										</xsl:element>
+										<!-- VATCode-->
+										<xsl:element name="VATCode">
+											<xsl:choose>
+												<xsl:when test="InvoiceDetailItem/Tax/TaxDetail/@percentageRate = '15' or InvoiceDetailItem/Tax/TaxDetail/@percentageRate = '17.5'">
+													<xsl:text>S</xsl:text>
+												</xsl:when>
+												<xsl:otherwise>
+													<xsl:text>Z</xsl:text>
+												</xsl:otherwise>
+											</xsl:choose>							
+										</xsl:element>												
+										<!-- VATRate-->
+										<xsl:element name="VATRate">
+											<xsl:value-of select="InvoiceDetailItem/Tax/TaxDetail/@percentageRate"/>
+										</xsl:element>
+									</xsl:element>
+								</xsl:for-each>
+							</xsl:element>
+							
+							<!-- InvoiceTrailer -->
+							<xsl:element name="InvoiceTrailer">					
+								<!-- VATSubTotals -->
+								<xsl:element name="VATSubTotals">
+									<xsl:for-each select="/cXML/Request/InvoiceDetailRequest/InvoiceDetailSummary/Tax/TaxDetail">
+										<!-- store the VATRate and VATCode in variables as we use them more than once below -->
+										<xsl:variable name="currentVATCode">
+											<xsl:choose>
+												<xsl:when test="@percentageRate = '15' or @percentageRate = '17.5'">
+													<xsl:text>S</xsl:text>
+												</xsl:when>
+												<xsl:otherwise>
+													<xsl:text>Z</xsl:text>
+												</xsl:otherwise>
+											</xsl:choose>
+										</xsl:variable>
+										<xsl:variable name="currentVATRate">
+											<xsl:value-of select="@percentageRate"/>
+										</xsl:variable>
+															
+										<xsl:element name="VATSubTotal">
+											<xsl:attribute name="VATCode"><xsl:value-of select="$currentVATCode"/></xsl:attribute>							
+											<xsl:attribute name="VATRate"><xsl:value-of select="format-number($currentVATRate,'0.00')"/></xsl:attribute>
+											
+											<!-- <xsl:element name="NumberOfLinesAtRate">								
+												 <xsl:value-of select="count(//InvoiceDetailOrder[format-number(InvoiceDetailItem/Tax/TaxDetail/@percentageRate, '0.00') = format-number($currentVATRate, '0.00')])"/>
+											</xsl:element> -->
+											<!-- <xsl:element name="NumberOfItemsAtRate">								
+											</xsl:element>-->
+											<xsl:element name="DiscountedLinesTotalExclVATAtRate">
+												<xsl:value-of select="format-number(TaxableAmount,'0.00')"/>
+											</xsl:element>
+											<xsl:element name="DocumentDiscountAtRate">
+												<xsl:value-of select="0"/>
+											</xsl:element>
+											<xsl:element name="DocumentTotalExclVATAtRate">
+												<xsl:value-of select="format-number(TaxableAmount,'0.00')"/>
+											</xsl:element>
+											<xsl:element name="SettlementDiscountAtRate">
+												<xsl:value-of select="format-number(TaxableAmount,'0.00')"/>
+											</xsl:element>
+											<xsl:element name="SettlementTotalExclVATAtRate">
+												<xsl:value-of select="format-number(TaxableAmount,'0.00')"/>
+											</xsl:element>
+											<xsl:element name="VATAmountAtRate">
+												<xsl:value-of select="format-number(TaxAmount,'0.00')"/>
+											</xsl:element>
+											<xsl:element name="DocumentTotalInclVATAtRate">
+												<xsl:value-of select="format-number(number(TaxableAmount) + number(TaxAmount),'0.00')"/>								
+											</xsl:element>
+											<xsl:element name="SettlementTotalInclVATAtRate">
+												<xsl:value-of select="format-number(number(TaxableAmount) + number(TaxAmount),'0.00')"/>
+											</xsl:element>							
+										</xsl:element>
+									</xsl:for-each>
+								</xsl:element>
+								<xsl:element name="DiscountedLinesTotalExclVAT">
+									<xsl:value-of select="format-number(/cXML/Request/InvoiceDetailRequest/InvoiceDetailSummary/SubtotalAmount,'0.00')"/>
+								</xsl:element>
+								<xsl:element name="DocumentDiscount">
 									<xsl:value-of select="0"/>
 								</xsl:element>
-								<xsl:element name="DocumentTotalExclVATAtRate">
-									<xsl:value-of select="format-number(TaxableAmount,'0.00')"/>
+								<xsl:element name="DocumentTotalExclVAT">
+									<xsl:value-of select="format-number(/cXML/Request/InvoiceDetailRequest/InvoiceDetailSummary/SubtotalAmount,'0.00')"/>
 								</xsl:element>
-								<xsl:element name="SettlementDiscountAtRate">
-									<xsl:value-of select="format-number(TaxableAmount,'0.00')"/>
+								<xsl:element name="SettlementDiscount">
+									<xsl:value-of select="0"/>
 								</xsl:element>
-								<xsl:element name="SettlementTotalExclVATAtRate">
-									<xsl:value-of select="format-number(TaxableAmount,'0.00')"/>
+								<xsl:element name="SettlementTotalExclVAT">
+									<xsl:value-of select="format-number(/cXML/Request/InvoiceDetailRequest/InvoiceDetailSummary/NetAmount/Money,'0.00')"/>
 								</xsl:element>
-								<xsl:element name="VATAmountAtRate">
-									<xsl:value-of select="format-number(TaxAmount,'0.00')"/>
+								<!-- <xsl:element name="VATAmount">
+									<xsl:value-of select="format-number(sum(/cXML/Request/InvoiceDetailRequest/InvoiceDetailSummary/Tax/TaxDetail/TaxAmount), '0.00')"/>
+								</xsl:element> -->
+								<xsl:element name="DocumentTotalInclVAT">
+									<xsl:value-of select="format-number(/cXML/Request/InvoiceDetailRequest/InvoiceDetailSummary/GrossAmount/Money,'0.00')"/>
 								</xsl:element>
-								<xsl:element name="DocumentTotalInclVATAtRate">
-									<xsl:value-of select="format-number(number(TaxableAmount) + number(TaxAmount),'0.00')"/>								
+								<xsl:element name="SettlementTotalInclVAT">
+									<xsl:value-of select="format-number(/cXML/Request/InvoiceDetailRequest/InvoiceDetailSummary/DueAmount/Money,'0.00')"/>
 								</xsl:element>
-								<xsl:element name="SettlementTotalInclVATAtRate">
-									<xsl:value-of select="format-number(number(TaxableAmount) + number(TaxAmount),'0.00')"/>
-								</xsl:element>							
 							</xsl:element>
-						</xsl:for-each>
-					</xsl:element>
-					<xsl:element name="DiscountedLinesTotalExclVAT">
-						<xsl:value-of select="format-number(/cXML/Request/InvoiceDetailRequest/InvoiceDetailSummary/SubtotalAmount,'0.00')"/>
-					</xsl:element>
-					<xsl:element name="DocumentDiscount">
-						<xsl:value-of select="0"/>
-					</xsl:element>
-					<xsl:element name="DocumentTotalExclVAT">
-						<xsl:value-of select="format-number(/cXML/Request/InvoiceDetailRequest/InvoiceDetailSummary/SubtotalAmount,'0.00')"/>
-					</xsl:element>
-					<xsl:element name="SettlementDiscount">
-						<xsl:value-of select="0"/>
-					</xsl:element>
-					<xsl:element name="SettlementTotalExclVAT">
-						<xsl:value-of select="format-number(/cXML/Request/InvoiceDetailRequest/InvoiceDetailSummary/NetAmount/Money,'0.00')"/>
-					</xsl:element>
-					<!-- <xsl:element name="VATAmount">
-						<xsl:value-of select="format-number(sum(/cXML/Request/InvoiceDetailRequest/InvoiceDetailSummary/Tax/TaxDetail/TaxAmount), '0.00')"/>
-					</xsl:element> -->
-					<xsl:element name="DocumentTotalInclVAT">
-						<xsl:value-of select="format-number(/cXML/Request/InvoiceDetailRequest/InvoiceDetailSummary/GrossAmount/Money,'0.00')"/>
-					</xsl:element>
-					<xsl:element name="SettlementTotalInclVAT">
-						<xsl:value-of select="format-number(/cXML/Request/InvoiceDetailRequest/InvoiceDetailSummary/DueAmount/Money,'0.00')"/>
-					</xsl:element>
-				</xsl:element>
-			</xsl:element>
+						</xsl:element>
+						</BatchDocument>
+				</BatchDocuments>
+			</Batch>
+		</BatchRoot>
 	</xsl:template>
 </xsl:stylesheet>
