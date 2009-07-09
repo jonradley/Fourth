@@ -67,21 +67,18 @@
 				<DocumentStatus RecordPos="GS" LPos="3"/>
 				<Buyer>
 					<BuyersLocationID>
-						<SuppliersCode RecordPos="GS" LPos="3"/>
+						<SuppliersCode RecordPos="GS" LPos="4"/>
 					</BuyersLocationID>
-					<BuyersName RecordPos="GS" LPos="4"/>
 				</Buyer>
 				<Supplier>
 					<SuppliersLocationID>
 						<SuppliersCode RecordPos="GS" LPos="3"/>
 					</SuppliersLocationID>
-					<SuppliersName RecordPos="GS" LPos="4"/>
 				</Supplier>
 				<ShipTo>
 					<ShipToLocationID>
-						<SuppliersCode RecordPos="GS" LPos="3"/>
+						<SuppliersCode RecordPos="N1" LPos="5"/>
 					</ShipToLocationID>
-					<ShipToName RecordPos="GS" LPos="4"/>
 				</ShipTo>
 				<PurchaseOrderReferences>
 					<PurchaseOrderReference RecordPos="BAK" LPos="4"/>
