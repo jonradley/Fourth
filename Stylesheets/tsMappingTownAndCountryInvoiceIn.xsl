@@ -19,8 +19,7 @@ Takes the TownandCountry version of a Invoice and map it  into the internal xml 
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 	<xsl:output method="xml" encoding="UTF-8"/>
-	<xsl:template match="/">	
-		<BatchRoot>
+	<xsl:template match="/">
 			<Batch>
 				<BatchDocuments>
 					<BatchDocument>			
@@ -199,9 +198,6 @@ Takes the TownandCountry version of a Invoice and map it  into the internal xml 
 										</xsl:if>
 										<!-- ProductID-->
 										<xsl:element name="ProductID">
-											<xsl:element name="GTIN">
-												<xsl:value-of select="ProductID/GTIN"/>
-											</xsl:element>
 											<xsl:if test="InvoiceDetailItem/InvoiceDetailItemReference/ItemID/SupplierPartID">
 												<xsl:element name="SuppliersProductCode">
 													<xsl:value-of select="InvoiceDetailItem/InvoiceDetailItemReference/ItemID/SupplierPartID"/>
@@ -214,9 +210,6 @@ Takes the TownandCountry version of a Invoice and map it  into the internal xml 
 										</xsl:element>
 										<!-- InvoicedQuantity-->
 										<xsl:element name="InvoicedQuantity">
-											<xsl:attribute name="UnitOfMeasure">
-												<xsl:value-of select="InvoiceDetailItem/UnitOfMeasure"/>
-											</xsl:attribute>
 											<xsl:value-of select="InvoiceDetailItem/@quantity"/>
 										</xsl:element>
 										<!-- UnitValueExclVAT-->
@@ -240,7 +233,7 @@ Takes the TownandCountry version of a Invoice and map it  into the internal xml 
 										</xsl:element>												
 										<!-- VATRate-->
 										<xsl:element name="VATRate">
-											<xsl:value-of select="InvoiceDetailItem/Tax/TaxDetail/@percentageRate"/>
+											<xsl:value-of select="format-number(InvoiceDetailItem/Tax/TaxDetail/@percentageRate,'0.00')"/>
 										</xsl:element>
 									</xsl:element>
 								</xsl:for-each>
@@ -267,14 +260,8 @@ Takes the TownandCountry version of a Invoice and map it  into the internal xml 
 										</xsl:variable>
 															
 										<xsl:element name="VATSubTotal">
-											<xsl:attribute name="VATCode"><xsl:value-of select="$currentVATCode"/></xsl:attribute>							
-											<xsl:attribute name="VATRate"><xsl:value-of select="format-number($currentVATRate,'0.00')"/></xsl:attribute>
-											
-											<!-- <xsl:element name="NumberOfLinesAtRate">								
-												 <xsl:value-of select="count(//InvoiceDetailOrder[format-number(InvoiceDetailItem/Tax/TaxDetail/@percentageRate, '0.00') = format-number($currentVATRate, '0.00')])"/>
-											</xsl:element> -->
-											<!-- <xsl:element name="NumberOfItemsAtRate">								
-											</xsl:element>-->
+											<xsl:attribute name="VATCode"><xsl:value-of select="$currentVATCode"/></xsl:attribute>
+											<xsl:attribute name="VATRate"><xsl:value-of select="format-number($currentVATRate,'0.00')"/></xsl:attribute>										
 											<xsl:element name="DiscountedLinesTotalExclVATAtRate">
 												<xsl:value-of select="format-number(TaxableAmount,'0.00')"/>
 											</xsl:element>
@@ -317,9 +304,6 @@ Takes the TownandCountry version of a Invoice and map it  into the internal xml 
 								<xsl:element name="SettlementTotalExclVAT">
 									<xsl:value-of select="format-number(/cXML/Request/InvoiceDetailRequest/InvoiceDetailSummary/NetAmount/Money,'0.00')"/>
 								</xsl:element>
-								<!-- <xsl:element name="VATAmount">
-									<xsl:value-of select="format-number(sum(/cXML/Request/InvoiceDetailRequest/InvoiceDetailSummary/Tax/TaxDetail/TaxAmount), '0.00')"/>
-								</xsl:element> -->
 								<xsl:element name="DocumentTotalInclVAT">
 									<xsl:value-of select="format-number(/cXML/Request/InvoiceDetailRequest/InvoiceDetailSummary/GrossAmount/Money,'0.00')"/>
 								</xsl:element>
@@ -331,6 +315,5 @@ Takes the TownandCountry version of a Invoice and map it  into the internal xml 
 						</BatchDocument>
 				</BatchDocuments>
 			</Batch>
-		</BatchRoot>
 	</xsl:template>
 </xsl:stylesheet>
