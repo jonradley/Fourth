@@ -37,6 +37,8 @@
 ******************************************************************************************
 27/11/2008		| Rave Tech   	| Case 2592: Handled vat rate changing from 17.5 to 15 
 ******************************************************************************************
+02/07/2009	 	| R Cambridge  	| Case 2980: Ensure PL account codes are captured         
+******************************************************************************************
 	          	|              	|	                                                            
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
@@ -78,9 +80,9 @@
 									</xsl:choose>
 								</SendersCodeForRecipient>
 								<!-- SBR used to pick out the PL Account code to be used in the trading relationship set up. This could be Buyer or Supplier value. -->
-								<xsl:if test="string(/Invoice/TradeAgreementReference/ContractReferenceNumber) != '' ">
+								<xsl:if test="string(/Invoice/Seller/BuyerAssigned) != '' ">
 									<SendersBranchReference>
-										<xsl:value-of select="/Invoice/TradeAgreementReference/ContractReferenceNumber"/>
+										<xsl:value-of select="/Invoice/Seller/BuyerAssigned"/>
 									</SendersBranchReference>
 								</xsl:if>
 								<!-- SendersName, Address1 - 4 and PostCode will be populated by subsequent processors  -->

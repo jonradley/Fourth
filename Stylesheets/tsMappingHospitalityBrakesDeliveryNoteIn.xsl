@@ -13,6 +13,8 @@ R Cambrdige	| 2008-03-27		| 2099 Logistics delivery reference should be the PO n
 **********************************************************************
 Lee Boyton	| 2008-07-18		| 2358 Use the buyer's code for shipto if the seller's code is missing.				
 **********************************************************************
+R Cambridge	| 2009-07-02	  	| 2980 Ensure PL account codes are captured         
+**********************************************************************
 				|						|				
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -57,10 +59,27 @@ Lee Boyton	| 2008-07-18		| 2358 Use the buyer's code for shipto if the seller's 
 										</xsl:otherwise>
 									</xsl:choose>									
 								</SendersCodeForRecipient>
+								
+								<xsl:for-each select="shipFrom/additionalPartyIdentification[additionalPartyIdentificationType='BUYER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue[1]">
+									<SendersBranchReference>
+										<xsl:value-of select="."/>
+									</SendersBranchReference>
+								</xsl:for-each>								
+								
 							</TradeSimpleHeader>
 							
 							<DeliveryNoteHeader>
 								
+								<Buyer>
+									<BuyersLocationID>
+										<xsl:for-each select="/sh:StandardBusinessDocument/sh:StandardBusinessDocumentHeader/sh:Receiver/sh:Identifier[1]">
+											<GLN><xsl:value-of select="."/></GLN>
+										</xsl:for-each>
+										<xsl:for-each select="/sh:StandardBusinessDocument/sh:StandardBusinessDocumentHeader/sh:Receiver/sh:Identifier[1]">
+											<SuppliersCode><xsl:value-of select="."/></SuppliersCode>
+										</xsl:for-each>
+									</BuyersLocationID>
+								</Buyer>
 
 								<Supplier>
 									<SuppliersLocationID>

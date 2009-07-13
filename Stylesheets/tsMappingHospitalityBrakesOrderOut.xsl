@@ -8,6 +8,9 @@ R Cambridge	| 2007-07-26		| 1332 Created Modele
 **********************************************************************
 Lee Boyton	| 19/07/2007     | 1332 Changes following acceptance testing.
 **********************************************************************
+R Cambridge	| 2009-07-06	  	| 2980 Send SBR / PL account code as buyer's code for seller
+											    Add some sorry logic to populate //sh:Receiver/sh:Identifier
+**********************************************************************
 				|						|
 **********************************************************************
 				|						|				
@@ -41,7 +44,27 @@ Lee Boyton	| 19/07/2007     | 1332 Changes following acceptance testing.
 				<sh:Receiver>
 					<sh:Identifier>
 						<xsl:attribute name="Authority">EAN.UCC</xsl:attribute>
-						<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersName"/>
+						
+						<xsl:choose>
+							
+							<!-- Frozen for Aramark -->
+							<xsl:when test="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN[.='5036036000009'] and PurchaseOrderHeader/Buyer/BuyersLocationID/GLN[.='5027615900013']">
+								<xsl:text>Brakes Frozen</xsl:text>
+							</xsl:when>
+							
+							<!-- Grocery for Aramark -->
+							<xsl:when test="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN[.='5013546062482'] and PurchaseOrderHeader/Buyer/BuyersLocationID/GLN[.='5027615900013']">
+								<xsl:text>Brakes Grocery</xsl:text>
+							</xsl:when>
+							
+							<!-- All other suppliers/customers -->
+							<xsl:otherwise>
+								<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersName"/>
+							</xsl:otherwise>
+							
+						</xsl:choose>				
+						
+						
 					</sh:Identifier>
 				</sh:Receiver>
 				<sh:DocumentIdentification>
@@ -128,11 +151,20 @@ Lee Boyton	| 19/07/2007     | 1332 Changes following acceptance testing.
 									</gln>
 									<additionalPartyIdentification>
 										<additionalPartyIdentificationValue>
-											<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/BuyersCode"/>
+											<xsl:choose>
+												<xsl:when test="TradeSimpleHeader/RecipientsBranchReference">
+													<xsl:value-of select="TradeSimpleHeader/RecipientsBranchReference"/>
+												</xsl:when>
+												<xsl:otherwise>
+													<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/BuyersCode"/>
+												</xsl:otherwise>
+											</xsl:choose>	
+											
 										</additionalPartyIdentificationValue>
 										<additionalPartyIdentificationType>BUYER_ASSIGNED_IDENTIFIER_FOR_A_PARTY</additionalPartyIdentificationType>
 									</additionalPartyIdentification>
 								</seller>
+								
 								<buyer>
 									<gln>
 										<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/>
