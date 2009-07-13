@@ -13,6 +13,8 @@ R Cambridge	| 2008-01-03		| 1686 revised rejection codes
 R cambridge	| 2008-11-24		| 2587 revised rejection narratives
 												 for substitute lines set status to 'Add' and make rejected line explicit
 **********************************************************************
+R Cambridge	| 2009-07-02	  	| 2980 Ensure PL account codes are captured   
+**********************************************************************
 				|						|				
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -42,23 +44,28 @@ R cambridge	| 2008-11-24		| 2587 revised rejection narratives
 					<SendersCodeForRecipient>
 						<xsl:value-of select="buyer/additionalPartyIdentification[additionalPartyIdentificationType='SELLER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue[1]"/>
 					</SendersCodeForRecipient>
+					
+					<xsl:for-each select="seller/additionalPartyIdentification[additionalPartyIdentificationType='BUYER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue[1]">
+						<SendersBranchReference>
+							<xsl:value-of select="."/>
+						</SendersBranchReference>
+					</xsl:for-each>
+					
+					
 				</TradeSimpleHeader>
 				
 				<PurchaseOrderConfirmationHeader>
 					
-					<!--Buyer>
+					<Buyer>
 						<BuyersLocationID>
 							<xsl:for-each select="buyer/gln[1]">
 								<GLN><xsl:value-of select="."/></GLN>
 							</xsl:for-each>
-							<xsl:for-each select="buyer/additionalPartyIdentification[additionalPartyIdentificationType='BUYER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue[1]">
-								<BuyersCode><xsl:value-of select="."/></BuyersCode>
-							</xsl:for-each>
-							<xsl:for-each select="buyer/additionalPartyIdentification[additionalPartyIdentificationType='SELLER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue[1]">
+							<xsl:for-each select="buyer/gln[1]">
 								<SuppliersCode><xsl:value-of select="."/></SuppliersCode>
 							</xsl:for-each>
 						</BuyersLocationID>
-					</Buyer-->
+					</Buyer>
 					
 					<Supplier>
 						<SuppliersLocationID>

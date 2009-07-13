@@ -1,40 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-'******************************************************************************************
-' Overview
-'
-' Maps EAN UCC format (OFSCI) Credit Notes into the King internal format
-' The following details must be populated by subsequent processors:
-' 	TradeSimpleHeader : 
-'						Senders Name, Address1-4 and PostCode
-'						RecipientsCodeForSender, RecipientsBranchReference, RecipientsName, Address1-4
-'						TestFlag
-'	CreditNoteHeader :
-'						Buyer/BuyersName, Address1-4 and PostCode
-'						Seller/SellersName, Address1-4 and PostCode
-'						ShipTo/ShipToName, Address1-4 and PostCode
-'	CreditNoteLine :
-' 						ProductDescription
-'						PackSize
-'
-'
-' © Alternative Business Solutions Ltd., 2005.
-'******************************************************************************************
-' Module History
-'******************************************************************************************
-' Date             | Name              | Description of modification
-'******************************************************************************************
-' 20/04/2005  | Steven Hewitt | Created
-'******************************************************************************************
-' 26/07/2005  | A Sheppard    | 2344. Bug fix.
-'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-'26/01/2007	 | Nigel Emsen	| Case 710: Fairfax Adoption for Aramark. XPaths adjusted.
-'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-'31/01/2007	| Lee Boyton      | Case 767: Cater for an empty ContractReferenceNumber element.
-'******************************************************************************************
-'27/11/2008	| Rave Tech      |	Case 2592: Handled vat rate changing from 17.5 to 15 
-'******************************************************************************************
--->
+<!--**************************************************************************************
+ Overview
+
+ Maps EAN UCC format (OFSCI) Credit Notes into the King internal format
+ The following details must be populated by subsequent processors:
+ 	TradeSimpleHeader : 
+						Senders Name, Address1-4 and PostCode
+						RecipientsCodeForSender, RecipientsBranchReference, RecipientsName, Address1-4
+						TestFlag
+	CreditNoteHeader :
+						Buyer/BuyersName, Address1-4 and PostCode
+						Seller/SellersName, Address1-4 and PostCode
+						ShipTo/ShipToName, Address1-4 and PostCode
+	CreditNoteLine :
+ 						ProductDescription
+						PackSize
+
+
+ © Alternative Business Solutions Ltd., 2005.
+******************************************************************************************
+ Module History
+******************************************************************************************
+ Date				| Name              | Description of modification
+******************************************************************************************
+ 20/04/2005  	| Steven Hewitt 	| Created
+******************************************************************************************
+ 26/07/2005  	| A Sheppard    	| 2344. Bug fix.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+26/01/2007	 	| Nigel Emsen		| Case 710: Fairfax Adoption for Aramark. XPaths adjusted.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+31/01/2007		| Lee Boyton    	| Case 767: Cater for an empty ContractReferenceNumber element.
+******************************************************************************************
+27/11/2008		| Rave Tech      | Case 2592: Handled vat rate changing from 17.5 to 15 
+******************************************************************************************
+02/07/2009	 	| R Cambridge  	| Case 2980: Ensure PL account codes are captured         
+******************************************************************************************
+	          	|              	|	                                                     
+***************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	<xsl:output method="xml"/>
 	<!-- we use constants for most default values -->
@@ -72,9 +74,9 @@
 									</xsl:choose>
 								</SendersCodeForRecipient>
 								<!-- SBR used to pick out the PL Account code to be used in the trading relationship set up. This could be Buyer or Supplier value. -->
-								<xsl:if test="string(/CreditNote/TradeAgreementReference/ContractReferenceNumber) != '' ">
+								<xsl:if test="string(/CreditNote/Seller/BuyerAssigned) != ''">
 									<SendersBranchReference>
-										<xsl:value-of select="/CreditNote/TradeAgreementReference/ContractReferenceNumber"/>
+										<xsl:value-of select="/CreditNote/Seller/BuyerAssigned"/>
 									</SendersBranchReference>
 								</xsl:if>
 								<!-- SendersName, Address1 - 4 and PostCode will be populated by subsequent processors  -->
