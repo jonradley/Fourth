@@ -446,6 +446,13 @@ Takes the internal version of a Invoice and map it directly into the same format
 							</xsl:attribute>
 							<xsl:value-of select="InvoicedQuantity"/>																			
 						</xsl:element>						
+
+						<!-- PackSize -->
+						<xsl:if test="PackSize != ''">						
+							<xsl:element name="PackSize">
+								<xsl:value-of select="PackSize"/>
+							</xsl:element>	
+						</xsl:if>
 						
 						<!-- UnitValueExclVAT-->						
 						<xsl:element name="UnitValueExclVAT">
