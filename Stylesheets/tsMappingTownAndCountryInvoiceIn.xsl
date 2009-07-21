@@ -20,6 +20,7 @@ Takes the TownandCountry version of a Invoice and map it  into the internal xml 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 	<xsl:output method="xml" encoding="UTF-8"/>
 	<xsl:template match="/">
+		<BatchRoot>
 			<Batch>
 				<BatchDocuments>
 					<BatchDocument>			
@@ -315,5 +316,6 @@ Takes the TownandCountry version of a Invoice and map it  into the internal xml 
 						</BatchDocument>
 				</BatchDocuments>
 			</Batch>
+		</BatchRoot>
 	</xsl:template>
 </xsl:stylesheet>
