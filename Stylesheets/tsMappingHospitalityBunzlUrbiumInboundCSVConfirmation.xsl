@@ -19,6 +19,9 @@
 '******************************************************************************************
 ' 08/05/2007  | Nigel Emsen  | Copied for Bunzl. FB: 791.
 '******************************************************************************************
+' 21/07/2009  | Lee Boyton   | FB3016 - Do not map the ShipTo Buyers Code for
+'                                            | non-Hilton confirmations, let the in-filler do it.
+'******************************************************************************************
 -->
 <xsl:stylesheet  version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt"  xmlns:vbscript="http://abs-Ltd.com">
 
@@ -74,7 +77,7 @@
 				
 					<xsl:if test="PurchaseOrderConfirmationHeader/ShipTo/ShipToName != '' or PurchaseOrderConfirmationHeader/ShipTo/ShipToAddress/AddressLine1 != '' or PurchaseOrderConfirmationHeader/ShipTo/ShipToAddress/AddressLine2 != '' or PurchaseOrderConfirmationHeader/ShipTo/ShipToAddress/AddressLine3 != '' or PurchaseOrderConfirmationHeader/ShipTo/ShipToAddress/AddressLine4 != '' or PurchaseOrderConfirmationHeader/ShipTo/ShipToAddress/PostCode != '' or PurchaseOrderConfirmationHeader/ShipTo/ContactName != ''">
 						<ShipTo>
-							<xsl:if test="contains('HILTON',TradeSimpleHeader/SendersBranchReference)">
+							<xsl:if test="string(TradeSimpleHeader/SendersBranchReference) != '' and contains('HILTON',TradeSimpleHeader/SendersBranchReference)">
 								<ShipToLocationID>
 									<!--GLN/-->
 									<BuyersCode>
