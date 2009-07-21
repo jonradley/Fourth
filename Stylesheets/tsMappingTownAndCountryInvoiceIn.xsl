@@ -10,11 +10,11 @@ Takes the TownandCountry version of a Invoice and map it  into the internal xml 
 ******************************************************************************************
  Version     | 
 ******************************************************************************************
- Date            | Name                       | Description of modification
+ Date        | Name             | Description of modification
 ******************************************************************************************
 08/07/2009  | Rave Tech			| FB2994 Created stylesheet
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                    |                   |                                                                               
+******************************************************************************************
+21/07/2009  | R Cambridge			| FB2994 shuffle up blank address details                                                                            
 ******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
@@ -40,21 +40,21 @@ Takes the TownandCountry version of a Invoice and map it  into the internal xml 
 								<!-- Buyer -->
 								<xsl:element name="Buyer">
 									<xsl:element name="BuyersLocationID">							
-										<xsl:if test="//InvoiceDetailShipping/Contact[@Role='billTo']/@addressID">
+										<xsl:if test="//InvoicePartner/Contact[@Role='billTo']/@addressID">
 											<xsl:element name="SuppliersCode">
-												<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='billTo']/@addressID"/>
+												<xsl:value-of select="//InvoicePartner/Contact[@Role='billTo']/@addressID"/>
 											</xsl:element>
 										</xsl:if>
 									</xsl:element>
 									<!-- BuyersName -->
-									<xsl:if test="//InvoiceDetailShipping/Contact[@Role='billTo']/Name">
+									<xsl:if test="//InvoicePartner/Contact[@Role='billTo']/Name">
 										<xsl:element name="BuyersName">
-											<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='billTo']/Name"/>
+											<xsl:value-of select="//InvoicePartner/Contact[@Role='billTo']/Name"/>
 										</xsl:element>
 									</xsl:if>
 									<!-- BuyersAddress-->
 									<xsl:element name="BuyersAddress">
-										<xsl:element name="AddressLine1">
+										<!--xsl:element name="AddressLine1">
 											<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='billTo']/PostalAddress/Street"/>
 										</xsl:element>
 										<xsl:element name="AddressLine2">
@@ -62,9 +62,16 @@ Takes the TownandCountry version of a Invoice and map it  into the internal xml 
 										</xsl:element>
 										<xsl:element name="AddressLine3">
 											<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='billTo']/PostalAddress/Country"/>
-										</xsl:element>
+										</xsl:element-->
+										
+										<xsl:for-each select="//InvoicePartner/Contact[@Role='billTo']/PostalAddress/*[name()='Street' or name()='City' or name()='Country'][. != '']">
+											<xsl:element name="{concat('AddressLine', string(position()))}">
+												<xsl:value-of select="."/>											
+											</xsl:element>											
+										</xsl:for-each>
+										
 										<xsl:element name="PostCode">
-											<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='billTo']/PostalAddress/PostalCode"/>
+											<xsl:value-of select="//InvoicePartner/Contact[@Role='billTo']/PostalAddress/PostalCode"/>
 										</xsl:element>
 									</xsl:element>
 								</xsl:element>
@@ -72,21 +79,21 @@ Takes the TownandCountry version of a Invoice and map it  into the internal xml 
 								<xsl:element name="Supplier">
 									<xsl:element name="SuppliersLocationID">							
 										<!-- SuppliersCode -->
-										<xsl:if test="//InvoiceDetailShipping/Contact[@Role='from']/@addressID">
+										<xsl:if test="//InvoicePartner/Contact[@Role='from']/@addressID">
 											<xsl:element name="SuppliersCode">
-												<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='from']/@addressID"/>
+												<xsl:value-of select="//InvoicePartner/Contact[@Role='from']/@addressID"/>
 											</xsl:element>
 										</xsl:if>
 									</xsl:element>
 									<!-- SuppliersName -->
-									<xsl:if test="//InvoiceDetailShipping/Contact[@Role='from']/Name">
+									<xsl:if test="//InvoicePartner/Contact[@Role='from']/Name">
 										<xsl:element name="SuppliersName">
-											<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='from']/Name"/>
+											<xsl:value-of select="//InvoicePartner/Contact[@Role='from']/Name"/>
 										</xsl:element>
 									</xsl:if>
 									<!-- SuppliersAddress -->
 									<xsl:element name="SuppliersAddress">
-										<xsl:element name="AddressLine1">
+										<!--xsl:element name="AddressLine1">
 											<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='from']/PostalAddress/Street"/>
 										</xsl:element>
 										<xsl:element name="AddressLine2">
@@ -94,9 +101,15 @@ Takes the TownandCountry version of a Invoice and map it  into the internal xml 
 										</xsl:element>
 										<xsl:element name="AddressLine3">
 											<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='from']/PostalAddress/Country"/>
-										</xsl:element>
+										</xsl:element-->
+										<xsl:for-each select="//InvoicePartner/Contact[@Role='from']/PostalAddress/*[name()='Street' or name()='City' or name()='Country'][. != '']">
+											<xsl:element name="{concat('AddressLine', string(position()))}">
+												<xsl:value-of select="."/>											
+											</xsl:element>											
+										</xsl:for-each>
+										
 										<xsl:element name="PostCode">
-											<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='from']/PostalAddress/PostalCode"/>
+											<xsl:value-of select="//InvoicePartner/Contact[@Role='from']/PostalAddress/PostalCode"/>
 										</xsl:element>
 									</xsl:element>
 								</xsl:element>
@@ -118,7 +131,7 @@ Takes the TownandCountry version of a Invoice and map it  into the internal xml 
 									</xsl:if>
 									<!-- ShipToAddress -->
 									<xsl:element name="ShipToAddress">
-										<xsl:element name="AddressLine1">
+										<!--xsl:element name="AddressLine1">
 											<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='shipTo']/PostalAddress/Street"/>
 										</xsl:element>
 										<xsl:if test="//InvoiceDetailShipping/Contact[@Role='shipTo']/PostalAddress/City">
@@ -130,7 +143,14 @@ Takes the TownandCountry version of a Invoice and map it  into the internal xml 
 											<xsl:element name="AddressLine3">
 												<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='shipto']/PostalAddress/Country"/>
 											</xsl:element>
-										</xsl:if>
+										</xsl:if-->
+										
+										<xsl:for-each select="//InvoiceDetailShipping/Contact[@Role='shipTo']/PostalAddress/*[name()='Street' or name()='City' or name()='Country'][. != '']">
+											<xsl:element name="{concat('AddressLine', string(position()))}">
+												<xsl:value-of select="."/>											
+											</xsl:element>											
+										</xsl:for-each>
+										
 										<xsl:if test="//InvoiceDetailShipping/Contact[@Role='shipTo']/PostalAddress/PostalCode">
 											<xsl:element name="PostCode">
 												<xsl:value-of select="//InvoiceDetailShipping/Contact[@Role='shipTo']/PostalAddress/PostalCode"/>
