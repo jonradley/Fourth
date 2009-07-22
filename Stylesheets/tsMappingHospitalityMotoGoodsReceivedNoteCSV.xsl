@@ -32,7 +32,7 @@ Rave Tech	| 02/01/2008| Created Module
 				<xsl:when test="$SCR= '504375'">50001</xsl:when>
 				<xsl:when test="$SCR= '504351'">50003</xsl:when>
 				<xsl:when test="$SCR= '504352'">50003</xsl:when>
-				<xsl:when test="$SCR= '503353'">50003</xsl:when>
+				<xsl:when test="$SCR= '504353'">50003</xsl:when>
 				<xsl:when test="$SCR= '304637'">50004</xsl:when>
 				<xsl:when test="$SCR= '506114'">50641</xsl:when>
 				<xsl:when test="$SCR= '506214'">50810</xsl:when>
