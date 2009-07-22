@@ -8,7 +8,7 @@ Rave Tech     	|  02/01/2009 | Created Module
 **********************************************************************
 				|			  |				
 *********************************************************************-->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com" xmlns:vbscript="http://abs-Ltd.com">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com/jscript" xmlns:vbscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
 	
 	<xsl:variable name="DefaultVATRate" select="'15'"/>
@@ -243,7 +243,7 @@ Rave Tech     	|  02/01/2009 | Created Module
 	</xsl:template>
 
 	<xsl:template match="//NumberOfDeliveries">
-		<NumberOfDeliveries>1</NumberOfDeliveries>
+		<NumberOfDeliveries><xsl:value-of select="jscript:mlNoDistinctValues(../../InvoiceDetail/InvoiceLine/DeliveryNoteReferences/DeliveryNoteReference)" /></NumberOfDeliveries>
 	</xsl:template>
 
 	<!--Calculate @VATRate-->
@@ -266,4 +266,33 @@ Rave Tech     	|  02/01/2009 | Created Module
 	End Function
 	]]></msxsl:script>
 	
+	<msxsl:script language="JScript" implements-prefix="jscript"><![CDATA[  
+		/*=========================================================================================
+		' Routine       	 : mlNoDistinctValues
+		' Description 	 : Gets the number of distinct values in the node list
+		' Inputs          	 : List of nodes
+		' Outputs       	 : None
+		' Returns       	 : Number of distinct values
+		' Author       		 : A Sheppard, 25/10/2004.
+		' Alterations   	 : 
+		'========================================================================================*/
+		function mlNoDistinctValues(vcolNodeList)
+		{
+		var sValues = '';
+		var lCounter = 0;
+		
+			if(vcolNodeList.length > 0)
+			{
+				for(var n1=0; n1<vcolNodeList.length; n1++)
+				{
+					if(sValues.indexOf('¬' + vcolNodeList(n1).text + '¬') == -1)
+					{
+						sValues += '¬' + vcolNodeList(n1).text + '¬';
+						lCounter += 1;
+					}
+				}
+			}
+			return lCounter;
+		}
+	]]></msxsl:script>	
 </xsl:stylesheet>
