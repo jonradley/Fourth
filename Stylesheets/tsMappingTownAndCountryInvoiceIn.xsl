@@ -244,7 +244,7 @@ Takes the TownandCountry version of a Invoice and map it  into the internal xml 
 										<!-- VATCode-->
 										<xsl:element name="VATCode">
 											<xsl:choose>
-												<xsl:when test="InvoiceDetailItem/Tax/TaxDetail/@percentageRate = '15' or InvoiceDetailItem/Tax/TaxDetail/@percentageRate = '17.5'">
+												<xsl:when test="number(InvoiceDetailItem/Tax/TaxDetail/@percentageRate) = 15 or number(InvoiceDetailItem/Tax/TaxDetail/@percentageRate) = 17.5">
 													<xsl:text>S</xsl:text>
 												</xsl:when>
 												<xsl:otherwise>
@@ -268,7 +268,7 @@ Takes the TownandCountry version of a Invoice and map it  into the internal xml 
 										<!-- store the VATRate and VATCode in variables as we use them more than once below -->
 										<xsl:variable name="currentVATCode">
 											<xsl:choose>
-												<xsl:when test="@percentageRate = '15' or @percentageRate = '17.5'">
+												<xsl:when test="number(@percentageRate) = 15 or number(@percentageRate) = 17.5">
 													<xsl:text>S</xsl:text>
 												</xsl:when>
 												<xsl:otherwise>
