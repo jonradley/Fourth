@@ -451,8 +451,16 @@
 								</DocumentDiscountRate>
 								<SettlementDiscountRate>
 									<xsl:choose>
-										<xsl:when test="/Invoice/InvoiceTotals/SettlementDiscountRate">
-											<xsl:value-of select="format-number(/Invoice/InvoiceTotals/SettlementDiscountRate, '0.00')"/>
+										<xsl:when test="/Invoice/InvoiceTotals/SettlementDiscountRate">											
+											<!-- Frozen and Grocery invoices to Aramark should have zero settlement discount - ignore any value provided -->
+											<xsl:choose>
+												<xsl:when test="(/Invoice/Buyer/BuyerGLN = '5027615900013') and (/Invoice/Seller/SellerGLN = '5036036000009' or /Invoice/Seller/SellerGLN = '5013546062482')">
+													<xsl:text>0.00</xsl:text>
+												</xsl:when>
+												<xsl:otherwise>
+													<xsl:value-of select="format-number(/Invoice/InvoiceTotals/SettlementDiscountRate, '0.00')"/>
+												</xsl:otherwise>
+											</xsl:choose>											
 										</xsl:when>
 										<xsl:otherwise>
 											<xsl:value-of select="format-number($defaultSettlementDiscountRate, '0.00')"/>

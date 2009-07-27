@@ -34,6 +34,9 @@ R Cambridge	| 2009-07-06	  	| 2980 Send SBR / PL account code as buyer's code fo
 							<xsl:when test="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN = '5060166760274'">
 								<xsl:text>J.W. Lees</xsl:text>
 							</xsl:when>
+							<xsl:when test="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN = '5027615900013'">
+								<xsl:text>Aramark</xsl:text>
+							</xsl:when>
 							<xsl:otherwise>
 								<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersName"/>
 							</xsl:otherwise>
