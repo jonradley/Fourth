@@ -14,6 +14,8 @@ Takes the internal version of a Invoice and map it directly into the same format
 ******************************************************************************************
 07/07/2009  | Rave Tech			| FB2989 Created stylesheet
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+28/07/2009  | Steve Hewitt		| FB2989 LineExtraData was missing AccountCode
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                     |                   |                                                                               
 ******************************************************************************************
 -->
@@ -517,6 +519,13 @@ Takes the internal version of a Invoice and map it directly into the same format
 										<xsl:value-of select="LineExtraData/SuppliersOriginalVATCode"/>
 									</xsl:element>
 								</xsl:if>	
+
+								<xsl:if test="LineExtraData/AccountCode">
+									<xsl:element name="AccountCode">
+										<xsl:value-of select="LineExtraData/AccountCode"/>
+									</xsl:element>
+								</xsl:if>
+																
 								<xsl:if test="LineExtraData/IsStockProduct">
 									<xsl:element name="IsStockProduct">
 										<xsl:value-of select="LineExtraData/IsStockProduct"/>
