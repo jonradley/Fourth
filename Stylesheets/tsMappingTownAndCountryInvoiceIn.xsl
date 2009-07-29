@@ -293,7 +293,7 @@ Takes the TownandCountry version of a Invoice and map it  into the internal xml 
 												<xsl:value-of select="format-number(TaxableAmount,'0.00')"/>
 											</xsl:element>
 											<xsl:element name="SettlementDiscountAtRate">
-												<xsl:value-of select="format-number(TaxableAmount,'0.00')"/>
+												<xsl:value-of select="0"/>
 											</xsl:element>
 											<xsl:element name="SettlementTotalExclVATAtRate">
 												<xsl:value-of select="format-number(TaxableAmount,'0.00')"/>
