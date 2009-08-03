@@ -16,6 +16,8 @@ Takes the internal version of a Invoice and map it directly into the same format
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 28/07/2009  | Steve Hewitt		| FB2989 LineExtraData was missing AccountCode
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+30/07/2009  | Rave Tech			| FB2989 IsStockProduct,CataloguePrice,CataloguePackSize nodes should always be added.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                     |                   |                                                                               
 ******************************************************************************************
 -->
@@ -525,24 +527,19 @@ Takes the internal version of a Invoice and map it directly into the same format
 										<xsl:value-of select="LineExtraData/AccountCode"/>
 									</xsl:element>
 								</xsl:if>
-																
-								<xsl:if test="LineExtraData/IsStockProduct">
-									<xsl:element name="IsStockProduct">
-										<xsl:value-of select="LineExtraData/IsStockProduct"/>
-									</xsl:element>
-								</xsl:if>	
 								
-								<xsl:if test="LineExtraData/CataloguePrice">
-									<xsl:element name="CataloguePrice">
-										<xsl:value-of select="LineExtraData/CataloguePrice"/>
-									</xsl:element>
-								</xsl:if>	
+								<xsl:element name="IsStockProduct">
+									<xsl:value-of select="LineExtraData/IsStockProduct"/>
+								</xsl:element>								
 								
-								<xsl:if test="LineExtraData/CataloguePackSize">
-									<xsl:element name="CataloguePackSize">
-										<xsl:value-of select="LineExtraData/CataloguePackSize"/>
-									</xsl:element>
-								</xsl:if>	
+								<xsl:element name="CataloguePrice">
+									<xsl:value-of select="LineExtraData/CataloguePrice"/>
+								</xsl:element>								
+								
+								
+								<xsl:element name="CataloguePackSize">
+									<xsl:value-of select="LineExtraData/CataloguePackSize"/>
+								</xsl:element>								
 																																
 							</xsl:element>
 						</xsl:if>	
