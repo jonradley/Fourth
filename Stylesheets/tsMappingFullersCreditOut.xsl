@@ -14,6 +14,8 @@ Takes the internal version of a Credit Note and map it directly into the same fo
 ******************************************************************************************
 08/07/2009  | Rave Tech			| FB2989 Created stylesheet
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+30/07/2009  | Rave Tech			| FB2989 InvoiceReferences should always be added.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                     |                   |                                                                               
 ******************************************************************************************
 -->
@@ -337,33 +339,27 @@ Takes the internal version of a Credit Note and map it directly into the same fo
 					</xsl:element>													
 				</xsl:element>
 				
-				<!--InvoiceReferences-->
-				<xsl:if test="CreditNoteHeader/InvoiceReferences">				
-					<xsl:element name="InvoiceReferences">					
-						<xsl:element name="InvoiceReference">
-							<xsl:value-of select="CreditNoteHeader/InvoiceReferences/InvoiceReference"/>
-						</xsl:element>
-						
-						<!-- InvoiceDate-->										
-						<xsl:element name="InvoiceDate">
-							<xsl:value-of select="CreditNoteHeader/InvoiceReferences/InvoiceDate"/>
-						</xsl:element>
-						
-						<!-- TaxPointDate-->	
-						<xsl:if test="CreditNoteHeader/InvoiceReferences/TaxPointDate">				
-							<xsl:element name="TaxPointDate">
-								<xsl:value-of select="CreditNoteHeader/InvoiceReferences/TaxPointDate"/>
-							</xsl:element>
-						</xsl:if>	
-												
-						<!-- VATRegNo-->
-						<xsl:if test="CreditNoteHeader/InvoiceReferences/VATRegNo">					
-							<xsl:element name="VATRegNo">
-								<xsl:value-of select="CreditNoteHeader/InvoiceReferences/VATRegNo"/>
-							</xsl:element>
-						</xsl:if>																
+				<!--InvoiceReferences-->								
+				<xsl:element name="InvoiceReferences">					
+					<xsl:element name="InvoiceReference">
+						<xsl:value-of select="CreditNoteHeader/InvoiceReferences/InvoiceReference"/>
 					</xsl:element>
-				</xsl:if>
+					
+					<!-- InvoiceDate-->										
+					<xsl:element name="InvoiceDate">
+						<xsl:value-of select="CreditNoteHeader/InvoiceReferences/InvoiceDate"/>
+					</xsl:element>
+					
+					<!-- TaxPointDate-->									
+					<xsl:element name="TaxPointDate">
+						<xsl:value-of select="CreditNoteHeader/InvoiceReferences/TaxPointDate"/>
+					</xsl:element>					
+											
+					<!-- VATRegNo-->										
+					<xsl:element name="VATRegNo">
+						<xsl:value-of select="CreditNoteHeader/InvoiceReferences/VATRegNo"/>
+					</xsl:element>																			
+				</xsl:element>				
 							
 				<!-- CreditNote References-->				
 				<xsl:element name="CreditNoteReferences">					
