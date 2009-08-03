@@ -24,6 +24,8 @@
 ==========================================================================================
  26/05/2009	| Rave Tech  		| 2719 Fixed nested substitution line inside the substituted line issue.
 ==========================================================================================
+30/07/2009	| Rave Tech  		| 3024 Removed nesting of substituted products.
+==========================================================================================
 			|					|
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
@@ -121,22 +123,20 @@
                                                <xsl:text>True</xsl:text>
                                         </xsl:when>
                                         <xsl:otherwise>
-                                               <xsl:variable name="nSumQuantity" select="sum(//PurchaseOrderConfirmationDetail/PurchaseOrderConfirmationLine[.!=$objCurrentLine and ProductID/SuppliersProductCode = 			$objCurrentLine/ProductID/SuppliersProductCode][@LineStatus='Added' and ($sLineStatus='Accepted' or $sLineStatus='Changed' or $sLineStatus='Rejected')]/ConfirmedQuantity ) + $nQuantity"/>
+                                               <xsl:variable name="nSumQuantity" select="sum(//PurchaseOrderConfirmationDetail/PurchaseOrderConfirmationLine[.!=$objCurrentLine and ProductID/SuppliersProductCode = $objCurrentLine/ProductID/SuppliersProductCode][@LineStatus='Added' and ($sLineStatus='Accepted' or $sLineStatus='Changed' or $sLineStatus='Rejected')]/ConfirmedQuantity ) + $nQuantity"/>
                                                <xsl:text>XML to process</xsl:text>
                                                <OrderItem>
                                                       <xsl:call-template name="WriteLine2">
                                                              <xsl:with-param name="vQuantity"><xsl:value-of select="$nSumQuantity"/></xsl:with-param>
                                                              <xsl:with-param name="vUnitValue"><xsl:value-of select="$nUnitValue"/></xsl:with-param>
-                                                      </xsl:call-template>
-                                                      
-							  	<!-- write the details of the lines that say they are substitions for this line -->
-								<xsl:for-each select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationDetail/PurchaseOrderConfirmationLine[SubstitutedProductID/SuppliersProductCode = current()/ProductID/SuppliersProductCode]">
-									<OrderItem>
-										<xsl:call-template name="writeLine"/>
-									</OrderItem>
-								</xsl:for-each>
-
+                                                      </xsl:call-template>				
                                                </OrderItem>
+                                              	<!-- write the details of the lines that say they are substitions for this line -->
+							<xsl:for-each select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationDetail/PurchaseOrderConfirmationLine[SubstitutedProductID/SuppliersProductCode = current()/ProductID/SuppliersProductCode]">
+								<OrderItem>
+									<xsl:call-template name="writeLine"/> 
+								</OrderItem>
+							</xsl:for-each>
 
                                         </xsl:otherwise>
                                  </xsl:choose>
@@ -151,14 +151,14 @@
 				<xsl:if test="$SkipLine = ''">
 					<!-- write the details of this line -->
 					<OrderItem>
-						<xsl:call-template name="writeLine"/>
-						<!-- write the details of the lines that say they are substitions for this line -->
-						<xsl:for-each select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationDetail/PurchaseOrderConfirmationLine[SubstitutedProductID/SuppliersProductCode = current()/ProductID/SuppliersProductCode]">
-							<OrderItem>
-								<xsl:call-template name="writeLine"/>	
-							</OrderItem>	
-						</xsl:for-each>
-					</OrderItem>	
+						<xsl:call-template name="writeLine"/>						
+					</OrderItem>
+					<!-- write the details of the lines that say they are substitions for this line -->
+					<xsl:for-each select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationDetail/PurchaseOrderConfirmationLine[SubstitutedProductID/SuppliersProductCode = current()/ProductID/SuppliersProductCode]">
+						<OrderItem>
+							<xsl:call-template name="writeLine"/>	
+						</OrderItem>	
+					</xsl:for-each>
 				</xsl:if>
 			</xsl:for-each>
 		</Order>
