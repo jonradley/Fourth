@@ -16,8 +16,12 @@ Takes the TownandCountry version of a Invoice and map it  into the internal xml 
 ******************************************************************************************
 21/07/2009  | R Cambridge			| FB2994 shuffle up blank address details                                                                            
 ******************************************************************************************
+04/08/2009  | R Cambridge			| FB2994 Loop through all lines                                                       
+******************************************************************************************
+            |            			|                                                                             
+******************************************************************************************
 -->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="xml" encoding="UTF-8"/>
 	<xsl:template match="/">
 		<BatchRoot>
@@ -179,25 +183,25 @@ Takes the TownandCountry version of a Invoice and map it  into the internal xml 
 							</xsl:element>
 							<!-- Invoice  Details-->
 							<xsl:element name="InvoiceDetail">
-								<xsl:for-each select="/cXML/Request/InvoiceDetailRequest/InvoiceDetailOrder">
+								<xsl:for-each select="/cXML/Request/InvoiceDetailRequest/InvoiceDetailOrder/InvoiceDetailItem">
 									<xsl:element name="InvoiceLine">
 										<!-- LineNumber -->
 										<xsl:element name="LineNumber">
-											<xsl:value-of select="InvoiceDetailItem/@InvoiceLineNumber"/>
+											<xsl:value-of select="@InvoiceLineNumber"/>
 										</xsl:element>
 										<!-- PurchaseOrderReferences-->
-										<xsl:if test="InvoiceDetailOrderInfo/OrderIDInfo/@orderID">
+										<xsl:if test="../InvoiceDetailOrderInfo/OrderIDInfo/@orderID">
 											<xsl:element name="PurchaseOrderReferences">
 												<xsl:element name="PurchaseOrderReference">
-													<xsl:value-of select="InvoiceDetailOrderInfo/OrderIDInfo/@orderID"/>
+													<xsl:value-of select="../InvoiceDetailOrderInfo/OrderIDInfo/@orderID"/>
 												</xsl:element>
 												<xsl:element name="PurchaseOrderDate">
 													<xsl:value-of select="substring-before(InvoiceDetailOrderInfo/OrderIDInfo/@orderDate,'T')"/>
 												</xsl:element>
-												<xsl:if test="InvoiceDetailOrderInfo/MasterAgreementReference/@agreementID">
+												<xsl:if test="../InvoiceDetailOrderInfo/MasterAgreementReference/@agreementID">
 													<xsl:element name="TradeAgreement">
 														<xsl:element name="ContractReference">
-															<xsl:value-of select="InvoiceDetailOrderInfo/MasterAgreementReference/@agreementID"/>
+															<xsl:value-of select="../InvoiceDetailOrderInfo/MasterAgreementReference/@agreementID"/>
 														</xsl:element>
 													</xsl:element>
 												</xsl:if>
@@ -219,32 +223,32 @@ Takes the TownandCountry version of a Invoice and map it  into the internal xml 
 										</xsl:if>
 										<!-- ProductID-->
 										<xsl:element name="ProductID">
-											<xsl:if test="InvoiceDetailItem/InvoiceDetailItemReference/ItemID/SupplierPartID">
+											<xsl:if test="InvoiceDetailItemReference/ItemID/SupplierPartID">
 												<xsl:element name="SuppliersProductCode">
-													<xsl:value-of select="InvoiceDetailItem/InvoiceDetailItemReference/ItemID/SupplierPartID"/>
+													<xsl:value-of select="InvoiceDetailItemReference/ItemID/SupplierPartID"/>
 												</xsl:element>
 											</xsl:if>
 										</xsl:element>
 										<!-- ProductDescription -->
 										<xsl:element name="ProductDescription">
-											<xsl:value-of select="InvoiceDetailItem/InvoiceDetailItemReference/Description"/>
+											<xsl:value-of select="InvoiceDetailItemReference/Description"/>
 										</xsl:element>
 										<!-- InvoicedQuantity-->
 										<xsl:element name="InvoicedQuantity">
-											<xsl:value-of select="InvoiceDetailItem/@quantity"/>
+											<xsl:value-of select="@quantity"/>
 										</xsl:element>
 										<!-- UnitValueExclVAT-->
 										<xsl:element name="UnitValueExclVAT">
-											<xsl:value-of select="format-number(InvoiceDetailItem/UnitPrice/Money,'0.00')"/>
+											<xsl:value-of select="format-number(UnitPrice/Money,'0.00')"/>
 										</xsl:element>
 										<!-- LineValueExclVAT-->
 										<xsl:element name="LineValueExclVAT">
-											<xsl:value-of select="format-number(InvoiceDetailItem/SubtotalAmount/Money,'0.00')"/>
+											<xsl:value-of select="format-number(SubtotalAmount/Money,'0.00')"/>
 										</xsl:element>
 										<!-- VATCode-->
 										<xsl:element name="VATCode">
 											<xsl:choose>
-												<xsl:when test="number(InvoiceDetailItem/Tax/TaxDetail/@percentageRate) = 15 or number(InvoiceDetailItem/Tax/TaxDetail/@percentageRate) = 17.5">
+												<xsl:when test="number(Tax/TaxDetail/@percentageRate) = 15 or number(Tax/TaxDetail/@percentageRate) = 17.5">
 													<xsl:text>S</xsl:text>
 												</xsl:when>
 												<xsl:otherwise>
@@ -254,7 +258,7 @@ Takes the TownandCountry version of a Invoice and map it  into the internal xml 
 										</xsl:element>												
 										<!-- VATRate-->
 										<xsl:element name="VATRate">
-											<xsl:value-of select="format-number(InvoiceDetailItem/Tax/TaxDetail/@percentageRate,'0.00')"/>
+											<xsl:value-of select="format-number(Tax/TaxDetail/@percentageRate,'0.00')"/>
 										</xsl:element>
 									</xsl:element>
 								</xsl:for-each>
