@@ -18,6 +18,8 @@ Takes the TownandCountry version of a Invoice and map it  into the internal xml 
 ******************************************************************************************
 04/08/2009  | R Cambridge			| FB2994 Loop through all lines                                                       
 ******************************************************************************************
+05/08/2009  | H Mahbub      		| FB2994 Corrected X path for PO date  
+******************************************************************************************  
             |            			|                                                                             
 ******************************************************************************************
 -->
@@ -196,7 +198,7 @@ Takes the TownandCountry version of a Invoice and map it  into the internal xml 
 													<xsl:value-of select="../InvoiceDetailOrderInfo/OrderIDInfo/@orderID"/>
 												</xsl:element>
 												<xsl:element name="PurchaseOrderDate">
-													<xsl:value-of select="substring-before(InvoiceDetailOrderInfo/OrderIDInfo/@orderDate,'T')"/>
+													<xsl:value-of select="substring-before(../InvoiceDetailOrderInfo/OrderIDInfo/@orderDate,'T')"/>
 												</xsl:element>
 												<xsl:if test="../InvoiceDetailOrderInfo/MasterAgreementReference/@agreementID">
 													<xsl:element name="TradeAgreement">
