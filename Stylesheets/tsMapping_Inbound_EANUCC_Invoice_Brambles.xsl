@@ -168,7 +168,7 @@
 										</xsl:if>
 									</SuppliersAddress>
 								</Supplier>
-								<ShipTo>
+								<ShipTo>	
 									<ShipToLocationID>
 										<xsl:if test="string(/Invoice/ShipTo/ShipToGLN)">
 											<GLN>
@@ -179,11 +179,6 @@
 											<BuyersCode>
 												<xsl:value-of select="substring-after(/Invoice/ShipTo/BuyerAssigned,'/')"/>
 											</BuyersCode>
-										</xsl:if>
-										<xsl:if test="string(/Invoice/ShipTo/SellerAssigned)">
-											<SuppliersCode>
-												<xsl:value-of select="/Invoice/ShipTo/SellerAssigned"/>
-											</SuppliersCode>
 										</xsl:if>
 									</ShipToLocationID>
 									<!-- ShipTo name and address will be populated by subsequent processors -->
