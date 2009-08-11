@@ -17,6 +17,9 @@
  21/10/2008	| R Cambridge     	| 2524 temporary fix to ignore split pack info for some suppliers
 ==========================================================================================
  13/05/2009	| Rave Tech 		| 2878 Removed MaxSplits logic to implement CaseSize logic in processor.
+==========================================================================================
+ 11/08/2009	| J Pollard 			| FB3059. DeliveryNoteReference and GoodsReceivedNoteReference are now 
+ 								| pulled from SupplierReference  the inbound as oposed to UserReference.
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
@@ -55,12 +58,12 @@
 					
 					
 					<DeliveryNoteReferences>
-						<DeliveryNoteReference><xsl:value-of select="@UserReference"/></DeliveryNoteReference>
+						<DeliveryNoteReference><xsl:value-of select="@SupplierReference"/></DeliveryNoteReference>
 						<DeliveryNoteDate><xsl:value-of select="substring-before(@DateEntered,'T')"/></DeliveryNoteDate>
 					</DeliveryNoteReferences>					
 					
 					<GoodsReceivedNoteReferences>
-						<GoodsReceivedNoteReference><xsl:value-of select="@UserReference"/></GoodsReceivedNoteReference>
+						<GoodsReceivedNoteReference><xsl:value-of select="@SupplierReference"/></GoodsReceivedNoteReference>
 						<GoodsReceivedNoteDate><xsl:value-of select="substring-before(@DateEntered,'T')"/></GoodsReceivedNoteDate>
 					</GoodsReceivedNoteReferences>
 					
