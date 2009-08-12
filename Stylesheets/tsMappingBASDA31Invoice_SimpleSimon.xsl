@@ -247,7 +247,7 @@ R Cambridge	| 2008-12-02		| 2600 Created Module (based on tsMappingHospitalityIn
 										</ProductDescription>
 										<InvoicedQuantity>
 											<!--xsl:attribute name="UnitOfMeasure"><xsl:value-of select="InvoiceQuantity/@unitCode"/></xsl:attribute-->
-											<xsl:value-of select="format-number(Quantity/Amount, '0.000')"/>
+											<xsl:value-of select="format-number(Quantity/Packsize, '0.000')"/>
 										</InvoicedQuantity>
 										<!-- Pack Size is populated by subsequent processors -->
 										<UnitValueExclVAT>
