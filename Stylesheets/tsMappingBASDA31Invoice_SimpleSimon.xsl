@@ -274,7 +274,7 @@ R Cambridge	| 2008-12-02		| 2600 Created Module (based on tsMappingHospitalityIn
 									<xsl:value-of select="count(//InvoiceLine)"/>
 								</NumberOfLines>
 								<NumberOfItems>
-									<xsl:value-of select="sum(//InvoiceLine/Quantity/Amount)"/>
+									<xsl:value-of select="sum(//InvoiceLine/Quantity/Packsize)"/>
 								</NumberOfItems>
 								<!-- EAN.UCC only allows for one delivery per Invoice -->
 								<NumberOfDeliveries>
