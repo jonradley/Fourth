@@ -246,7 +246,13 @@ R Cambridge	| 2008-12-02		| 2600 Created Module (based on tsMappingHospitalityIn
 													<xsl:value-of select="Product/Description"/>
 										</ProductDescription>
 										<InvoicedQuantity>
-											<!--xsl:attribute name="UnitOfMeasure"><xsl:value-of select="InvoiceQuantity/@unitCode"/></xsl:attribute-->
+											<xsl:attribute name="UnitOfMeasure">
+												<xsl:call-template name="decodeUoM">
+													<xsl:with-param name="sInput">
+													<xsl:value-of select="Price/@UOMCode"/>
+													</xsl:with-param>
+												</xsl:call-template>
+											</xsl:attribute>
 											<xsl:value-of select="format-number(Quantity/Packsize, '0.000')"/>
 										</InvoicedQuantity>
 										<!-- Pack Size is populated by subsequent processors -->
@@ -424,5 +430,19 @@ R Cambridge	| 2008-12-02		| 2600 Created Module (based on tsMappingHospitalityIn
 		</xsl:choose>	
 	
 	</xsl:template>
+	
+	<xsl:template name="decodeUoM">
+		<xsl:param name="sInput"/>
+
+			 <xsl:choose>
+			 	<xsl:when test="$sInput ='CASE'">CS</xsl:when>
+				<xsl:when test="$sInput = 'EACH'">EA</xsl:when>
+				<xsl:otherwise>
+						<xsl:value-of select="$sInput"></xsl:value-of>
+				</xsl:otherwise>
+			</xsl:choose>
+
+	</xsl:template>
+
 	
 </xsl:stylesheet>
