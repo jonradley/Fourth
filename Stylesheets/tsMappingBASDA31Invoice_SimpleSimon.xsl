@@ -6,7 +6,7 @@ Name			| Date				| Change
 **********************************************************************
 R Cambridge	| 2008-12-02		| 2600 Created Module (based on tsMappingHospitalityInverarity_Inbound_BASDA_Invoice.xsl)
 **********************************************************************
-				|						|
+K O'shaughnessy|	2009-08-13	| 3062 change to pick up invoiced quanity from pack size not amount
 **********************************************************************
 				|						|				
 *******************************************************************-->
@@ -436,7 +436,13 @@ R Cambridge	| 2008-12-02		| 2600 Created Module (based on tsMappingHospitalityIn
 
 			 <xsl:choose>
 			 	<xsl:when test="$sInput ='CASE'">CS</xsl:when>
-				<xsl:when test="$sInput = 'EACH'">EA</xsl:when>
+				<xsl:when test="$sInput ='EACH'">EA</xsl:when>
+				<xsl:when test="$sInput ='BLOCK'">EA</xsl:when>
+				<xsl:when test="$sInput ='BOX'">CS</xsl:when>
+				<xsl:when test="$sInput ='BUCKE'">EA</xsl:when>
+				<xsl:when test="$sInput ='PACK'">CS</xsl:when>
+				<xsl:when test="$sInput ='TRAY'">EA</xsl:when>
+				<xsl:when test="$sInput ='TUB'">EA</xsl:when>
 				<xsl:otherwise>
 						<xsl:value-of select="$sInput"></xsl:value-of>
 				</xsl:otherwise>
