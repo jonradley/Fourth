@@ -280,7 +280,7 @@ K O'shaughnessy|	2009-08-13	| 3062 change to pick up invoiced quanity from pack 
 									<xsl:value-of select="count(//InvoiceLine)"/>
 								</NumberOfLines>
 								<NumberOfItems>
-									<xsl:value-of select="sum(//InvoiceLine/Quantity/Packsize)"/>
+									<xsl:value-of select="sum(//InvoiceLine/Price/Units)"/>
 								</NumberOfItems>
 								<!-- EAN.UCC only allows for one delivery per Invoice -->
 								<NumberOfDeliveries>
