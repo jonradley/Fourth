@@ -253,7 +253,7 @@ K O'shaughnessy|	2009-08-13	| 3062 change to pick up invoiced quanity from pack 
 													</xsl:with-param>
 												</xsl:call-template>
 											</xsl:attribute>
-											<xsl:value-of select="format-number(InvoiceLine/Price/Units, '0.000')"/>
+											<xsl:value-of select="format-number(Price/Units, '0.000')"/>
 										</InvoicedQuantity>
 										<!-- Pack Size is populated by subsequent processors -->
 										<UnitValueExclVAT>
