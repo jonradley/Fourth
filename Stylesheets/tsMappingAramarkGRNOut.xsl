@@ -20,6 +20,9 @@
  ******************************************************************************************
  14/05/2009	| Rave Tech		| 2880. summed the line values to show in  Field #41 and formatted to show - sign in case of negative number.              
 ******************************************************************************************
+ 18/08/2009	| Rave Tech		| 3047. Handle negative value totals       
+******************************************************************************************
+
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -215,7 +218,7 @@
 		' Outputs       	 : None
 		' Returns       	 : The string padded/truncated as necessary
 		' Author       		 : A Sheppard, 07/05/2008
-		' Alterations   	 : 
+		' Alterations   	 : Rave Tech,   18/08/2009 FB3047 Handle negative value totals.
 		'========================================================================================*/
 		function msPadNumber(vvNumber, vlLength, vlDPs)
 		{
@@ -241,7 +244,15 @@
 			
 			if(sNumber.indexOf('.') != -1)
 			{
-				var lDPs = sNumber.length - sNumber.indexOf('.') - 1;
+				var lDPs;
+				if(neg) 
+				{
+				     lDPs = sNumber.length - sNumber.indexOf('.') - 2;
+				 }
+				 else
+				 {
+				     lDPs = sNumber.length - sNumber.indexOf('.') - 1;
+				 } 
 				
 				if(lDPs > vlDPs)
 				{
