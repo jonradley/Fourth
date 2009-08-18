@@ -13,7 +13,9 @@ R Cambridge	| 2009-07-07		| 2991 Created Module
 				|						|
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-	<xsl:output method="xml" encoding="UTF-8"/>
+	<xsl:output method="xml" encoding="ISO-8859-1"/>
+	
+	<xsl:variable name="SITE_CODE_SEPARATOR" select="' '"/>
 	
 	<xsl:template match="/PurchaseOrder">
 		
@@ -75,10 +77,24 @@ R Cambridge	| 2009-07-07		| 2991 Created Module
 			
 				<Customer>
 				
+					<xsl:variable name="primaryCodeForSite" 
+						select="substring-before(concat(PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode, $SITE_CODE_SEPARATOR), $SITE_CODE_SEPARATOR)"/>
+					
+					<xsl:variable name="secondaryCodeForSite" 
+						select="substring-after(PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode, $SITE_CODE_SEPARATOR)"/>
+									
 					<xsl:attribute name="CustomerID">
 						<!-- 25 -->
-						<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode"/>
+						<xsl:value-of select="$primaryCodeForSite"/>
 					</xsl:attribute> 
+					
+					<xsl:if test="$secondaryCodeForSite != ''">
+						<xsl:attribute name="CustomerSecondaryID">
+							<!-- 25 -->
+							<xsl:value-of select="$secondaryCodeForSite"/>
+						</xsl:attribute>
+					</xsl:if>
+					
 					<xsl:attribute name="SupplierClientID">
 						<!-- 1024 -->
 						<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>

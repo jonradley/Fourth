@@ -13,7 +13,7 @@ R Cambridge	| 2009-07-07		| 2991 Created Module
 				|						|
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-	<xsl:output method="xml" encoding="UTF-8"/>
+	<xsl:output method="xml" encoding="ISO-8859-1"/>
 	
 	<xsl:variable name="SITE_CODE_SEPARATOR" select="' '"/>
 	
