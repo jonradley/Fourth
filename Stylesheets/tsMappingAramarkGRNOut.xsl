@@ -22,6 +22,8 @@
 ******************************************************************************************
  18/08/2009	| Rave Tech		| 3047. Handle negative value totals       
 ******************************************************************************************
+ 18/08/2009	| Rave Tech		| 3066. TotalExclVAT value for  Field #41    
+******************************************************************************************
 
 -->
 <xsl:stylesheet version="1.0"
@@ -99,7 +101,7 @@
 			<xsl:value-of select="script:msPad('', 40)"/>
 			<xsl:value-of select="script:msPad(/GoodsReceivedNote/GoodsReceivedNoteHeader/PurchaseOrderReferences/PurchaseOrderReference, 22)"/>
 			<xsl:value-of select="/GoodsReceivedNote/GoodsReceivedNoteHeader/PurchaseOrderReferences/PurchaseOrderDate"/>
-			<xsl:value-of select="script:msPadNumber(sum(//LineValueExclVAT), 12, 2)"/>
+			<xsl:value-of select="script:msPadNumber(/GoodsReceivedNote/GoodsReceivedNoteTrailer/TotalExclVAT, 12, 2)"/>
 			<xsl:value-of select="script:msPad('', 3)"/>
 			<xsl:value-of select="/GoodsReceivedNote/GoodsReceivedNoteHeader/ReceivedDeliveryDetails/DeliveryDate"/>
 			<xsl:variable name="PaddedPLAccountNumber">
