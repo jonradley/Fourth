@@ -13,7 +13,7 @@ R Cambridge	| 2009-07-07		| 2991 Created Module
 				|						|
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-	<xsl:output method="xml" encoding="UTF-8"/>
+	<xsl:output method="xml" encoding="ISO-8859-1"/>
 	
 	<xsl:variable name="SITE_CODE_SEPARATOR" select="' '"/>
 	
@@ -81,47 +81,47 @@ R Cambridge	| 2009-07-07		| 2991 Created Module
 				
 			</Supplier>
 			
+			<Client>
 			
+				<xsl:for-each select="DebitNoteHeader/Buyer/BuyersLocationID/BuyersCode">
+					<xsl:attribute name="ClientID">
+						<xsl:value-of select="."/>
+					</xsl:attribute>
+				</xsl:for-each> 
+				<xsl:attribute name="SupplierClientID">
+					<!-- 525 -->
+					<xsl:value-of select="DebitNoteHeader/Buyer/BuyersLocationID/SuppliersCode[1]"/>
+				</xsl:attribute> 
+				<xsl:attribute name="CIF">
+					<!--xsl:value-of select="DebitNoteHeader/InvoiceReferences/VATRegNo"/-->
+				</xsl:attribute>
+				<xsl:attribute name="Company">
+					<!-- Bebidas y Refrescos, S.A. -->
+					<xsl:value-of select="DebitNoteHeader/Buyer/BuyersName"/>
+				</xsl:attribute> 
+				<xsl:attribute name="Address">
+					<!-- Av. Diagonal, 23 -->
+					<xsl:value-of select="DebitNoteHeader/Buyer/BuyersAddress/AddressLine1"/>
+				</xsl:attribute> 
+				<xsl:attribute name="City">
+					<!-- Barcelona -->
+					<xsl:value-of select="DebitNoteHeader/Buyer/BuyersAddress/AddressLine2"/>
+				</xsl:attribute> 
+				<xsl:attribute name="PC">
+					<!-- 08012 -->
+					<xsl:value-of select="DebitNoteHeader/Buyer/BuyersAddress/PostCode"/>
+				</xsl:attribute> 
+				<xsl:attribute name="Province">
+					<!-- Barcelona -->
+					<xsl:value-of select="DebitNoteHeader/Buyer/BuyersAddress/AddressLine3"/>
+				</xsl:attribute> 
+				<xsl:attribute name="Country">ESP</xsl:attribute>
+			
+			</Client>
+
 			
 			<Customers>
 			
-				<Client>
-				
-					<xsl:for-each select="DebitNoteHeader/Buyer/BuyersLocationID/SuppliersCode[1]">
-						<xsl:attribute name="SupplierID">
-							<xsl:value-of select="."/>
-						</xsl:attribute>
-					</xsl:for-each> 
-					<xsl:attribute name="CustomerSupplierID">
-						<!-- 525 -->
-						<xsl:value-of select="DebitNoteHeader/Buyer/BuyersLocationID/BuyersCode"/>
-					</xsl:attribute> 
-					<xsl:attribute name="CIF">
-						<xsl:value-of select="DebitNoteHeader/InvoiceReferences/VATRegNo"/>
-					</xsl:attribute>
-					<xsl:attribute name="Company">
-						<!-- Bebidas y Refrescos, S.A. -->
-						<xsl:value-of select="DebitNoteHeader/Buyer/BuyersName"/>
-					</xsl:attribute> 
-					<xsl:attribute name="Address">
-						<!-- Av. Diagonal, 23 -->
-						<xsl:value-of select="DebitNoteHeader/Buyer/BuyersAddress/AddressLine1"/>
-					</xsl:attribute> 
-					<xsl:attribute name="City">
-						<!-- Barcelona -->
-						<xsl:value-of select="DebitNoteHeader/Buyer/BuyersAddress/AddressLine2"/>
-					</xsl:attribute> 
-					<xsl:attribute name="PC">
-						<!-- 08012 -->
-						<xsl:value-of select="DebitNoteHeader/Buyer/BuyersAddress/PostCode"/>
-					</xsl:attribute> 
-					<xsl:attribute name="Province">
-						<!-- Barcelona -->
-						<xsl:value-of select="DebitNoteHeader/Buyer/BuyersAddress/AddressLine3"/>
-					</xsl:attribute> 
-					<xsl:attribute name="Country">ESP</xsl:attribute>
-				
-				</Client>
 			
 				<Customer>
 				
