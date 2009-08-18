@@ -13,7 +13,7 @@ R Cambridge	| 2009-08-11		| 2991 Created Module
 				|						|
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
-	<xsl:output method="text" encoding="utf-8"/>
+	<xsl:output method="text" encoding="ISO-8859-1"/>
 	
 	<xsl:variable name="SITE_CODE_SEPARATOR" select="' '"/>
 	
@@ -25,7 +25,13 @@ R Cambridge	| 2009-08-11		| 2991 Created Module
 					<Ref>
 						<xsl:value-of select="InvoiceHeader/InvoiceReferences/InvoiceReference | DebitNoteHeader/InvoiceReferences/InvoiceReference"/>
 					</Ref>
-					<Type>FacturaComercial</Type>
+					<Type>
+						<xsl:choose>
+							<xsl:when test="InvoiceHeader">FacturaComercial</xsl:when>
+							<xsl:when test="DebitNoteHeader">AutofacturaComercial</xsl:when>
+						</xsl:choose>
+					
+					</Type>
 					<Date>
 						<xsl:value-of select="InvoiceHeader/InvoiceReferences/InvoiceDate | DebitNoteHeader/InvoiceReferences/InvoiceDate"/>
 					</Date>
@@ -45,9 +51,6 @@ R Cambridge	| 2009-08-11		| 2991 Created Module
 			<xsl:with-param name="xmlData">
 				<Supplier>
 					<Record>Proveedor</Record>
-					<SupplierID>
-						<xsl:value-of select="InvoiceHeader/Supplier/SuppliersLocationID/SuppliersCode | DebitNoteHeader/Supplier/SuppliersLocationID/SuppliersCode"/>
-					</SupplierID>
 					<CustomerSupplierID>
 						<xsl:value-of select="InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode | DebitNoteHeader/Supplier/SuppliersLocationID/BuyersCode"/>
 					</CustomerSupplierID>
@@ -112,10 +115,11 @@ R Cambridge	| 2009-08-11		| 2991 Created Module
 		<xsl:call-template name="writeRecord">
 			<xsl:with-param name="xmlData">
 				<Customer>
-					<Record>Estab</Record>
+					<Record>Establecimientos</Record>
 					<SupplierClientID>
 						<xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode | DebitNoteHeader/ShipTo/ShipToLocationID/BuyersCode"/>
 					</SupplierClientID>
+					<Something/>
 					<SupplierCustomerID>
 						<xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/SuppliersCode | DebitNoteHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
 					</SupplierCustomerID>
@@ -153,7 +157,7 @@ R Cambridge	| 2009-08-11		| 2991 Created Module
 					<InvoiceRef>
 						<xsl:value-of select="InvoiceHeader/InvoiceReferences/InvoiceReference | DebitNoteHeader/InvoiceReferences/InvoiceReference"/>
 					</InvoiceRef>
-					<DNRefDate>
+					<!--DNRefDate>
 						<xsl:value-of select="(InvoiceHeader/DeliveryNoteReferences | InvoiceDetail/InvoiceLine/DeliveryNoteReferences | DebitNoteHeader/DeliveryNoteReferences | DebitNoteDetail/DebitNoteLine/DeliveryNoteReferences)/DeliveryNoteDate"/>
 					</DNRefDate>
 					<PORefDate>
@@ -161,7 +165,7 @@ R Cambridge	| 2009-08-11		| 2991 Created Module
 					</PORefDate>
 					<InvoiceRefDate>
 						<xsl:value-of select="InvoiceHeader/InvoiceReferences/InvoiceDate | DebitNoteHeader/InvoiceReferences/InvoiceDate"/>
-					</InvoiceRefDate>
+					</InvoiceRefDate-->
 				</References>
 			</xsl:with-param>
 		</xsl:call-template>
@@ -189,18 +193,18 @@ R Cambridge	| 2009-08-11		| 2991 Created Module
 								<xsl:with-param name="tsUoM" select="(InvoicedQuantity/@UnitOfMeasure | DebitNotedQuantity/@UnitOfMeasure)[last()]"/>
 							</xsl:call-template>
 						</MU>
-						<UE/>
+						<!--UE/>
 						<UC/>
-						<Peso/>						
+						<Peso/-->						
 						<UP>
 							<xsl:value-of select="UnitValueExclVAT"/>
 						</UP>
 						<Total>
 							<xsl:value-of select="LineValueExclVAT"/>
 						</Total>
-						<Discount>
+						<!--Discount>
 							<xsl:value-of select="LineDiscountValue"/>
-						</Discount>
+						</Discount-->
 					</Product>
 				</xsl:with-param>
 			</xsl:call-template>
@@ -237,7 +241,7 @@ R Cambridge	| 2009-08-11		| 2991 Created Module
 				</xsl:with-param>
 			</xsl:call-template>
 			
-			<xsl:call-template name="writeRecord">
+			<!--xsl:call-template name="writeRecord">
 				<xsl:with-param name="xmlData">
 					<References>
 						<Record>Referencias</Record>
@@ -261,7 +265,7 @@ R Cambridge	| 2009-08-11		| 2991 Created Module
 						</InvoiceRefDate>
 					</References>
 				</xsl:with-param>
-			</xsl:call-template>
+			</xsl:call-template-->
 			
 		</xsl:for-each>
 		
@@ -289,13 +293,13 @@ R Cambridge	| 2009-08-11		| 2991 Created Module
 			
 		</xsl:for-each>
 		
-		<xsl:call-template name="writeRecord">
+		<!--xsl:call-template name="writeRecord">
 			<xsl:with-param name="xmlData">
 				<payment>
 					<Record>Vencimientos</Record>
 				</payment>
 			</xsl:with-param>
-		</xsl:call-template>
+		</xsl:call-template-->
 		
 		<xsl:call-template name="writeRecord">
 			<xsl:with-param name="xmlData">

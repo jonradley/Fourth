@@ -18,39 +18,40 @@ R Cambridge	| 2009-07-08		| 2991 Created Module
 	<!-- Start point - ensure required outer BatchRoot tag is applied -->
 	<xsl:template match="/Transaction">
 		
-
-		<PurchaseOrderAcknowledgement>
-			<TradeSimpleHeader>
-				<SendersCodeForRecipient><xsl:value-of select="ReturnReceipt/@RecID"/></SendersCodeForRecipient>
-				<SendersBranchReference><xsl:value-of select="ReturnReceipt/@SenderID"/></SendersBranchReference>					
-			</TradeSimpleHeader>
-			<PurchaseOrderAcknowledgementHeader>
-
-				<ShipTo>
-					<ShipToLocationID>
-						<SuppliersCode><xsl:value-of select="ReturnReceipt/@RecID"/></SuppliersCode>
+		<BatchRoot>
+	
+			<PurchaseOrderAcknowledgement>
+				<TradeSimpleHeader>
+					<SendersCodeForRecipient><xsl:value-of select="ReturnReceipt/@RecID"/></SendersCodeForRecipient>
+					<SendersBranchReference><xsl:value-of select="ReturnReceipt/@SenderID"/></SendersBranchReference>					
+				</TradeSimpleHeader>
+				<PurchaseOrderAcknowledgementHeader>
+	
+					<ShipTo>
+						<ShipToLocationID>
+							<SuppliersCode><xsl:value-of select="ReturnReceipt/@RecID"/></SuppliersCode>
+						
+							<!-- Secondary codes? -->
+						
+						</ShipToLocationID>
+					</ShipTo>					
 					
-						<!-- Secondary codes? -->
+					<PurchaseOrderReferences>
+						<PurchaseOrderReference><xsl:value-of select="ReturnReceipt/@DocRef"/></PurchaseOrderReference>
+						<PurchaseOrderDate><xsl:value-of select="ReturnReceipt/@DeliveryDate"/></PurchaseOrderDate>
+					</PurchaseOrderReferences>					
 					
-					</ShipToLocationID>
-				</ShipTo>					
+					<PurchaseOrderAcknowledgementReferences>
+						<PurchaseOrderAcknowledgementReference><xsl:value-of select="ReturnReceipt/@DocRef"/></PurchaseOrderAcknowledgementReference>
+						<PurchaseOrderAcknowledgementDate><xsl:value-of select="ReturnReceipt/@DeliveryDate"/></PurchaseOrderAcknowledgementDate>
+	
+					</PurchaseOrderAcknowledgementReferences>
 				
-				<PurchaseOrderReferences>
-					<PurchaseOrderReference><xsl:value-of select="ReturnReceipt/@DocRef"/></PurchaseOrderReference>
-					<PurchaseOrderDate><xsl:value-of select="ReturnReceipt/@DeliveryDate"/></PurchaseOrderDate>
-				</PurchaseOrderReferences>					
+				</PurchaseOrderAcknowledgementHeader>				
 				
-				<PurchaseOrderAcknowledgementReferences>
-					<PurchaseOrderAcknowledgementReference><xsl:value-of select="ReturnReceipt/@DocRef"/></PurchaseOrderAcknowledgementReference>
-					<PurchaseOrderAcknowledgementDate><xsl:value-of select="ReturnReceipt/@DeliveryDate"/></PurchaseOrderAcknowledgementDate>
+			</PurchaseOrderAcknowledgement>
 
-				</PurchaseOrderAcknowledgementReferences>
-			
-			</PurchaseOrderAcknowledgementHeader>				
-			
-		</PurchaseOrderAcknowledgement>
-
-
+		</BatchRoot>
 	
 	</xsl:template>
 
