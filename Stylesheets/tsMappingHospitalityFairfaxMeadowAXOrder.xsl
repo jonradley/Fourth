@@ -13,7 +13,11 @@
 ******************************************************************************************
  27/01/2009  	| R Cambridge   	| 2666 Extra fields for 3663 orders
 ******************************************************************************************
-	          	|              	|	                                                            
+           Loads of stuff it seems
+******************************************************************************************
+ 19/08/2009   	| R Cambridge   	| 3021 Add delivery instructions                    
+******************************************************************************************
+	          	|              	|	                                                        
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 	<xsl:output method="text" encoding="UTF-8"/>
@@ -261,9 +265,11 @@
 			
 		</xsl:choose>
 		
-	
+		<xsl:text>,</xsl:text>
+		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions"/>	
 
 		<xsl:text>&#13;&#10;</xsl:text>
+		
 		
 		<xsl:for-each select="PurchaseOrderDetail/PurchaseOrderLine">
 			<!-- Row Type -->
@@ -326,5 +332,7 @@
 			<xsl:value-of select="LineExtraData/CustomerLineNumber"/>
 			<xsl:text>&#13;&#10;</xsl:text>
 		</xsl:for-each>
+		
 	</xsl:template>
+	
 </xsl:stylesheet>
