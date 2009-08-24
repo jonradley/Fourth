@@ -266,7 +266,13 @@
 		</xsl:choose>
 		
 		<xsl:text>,</xsl:text>
-		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions"/>	
+		<xsl:if test="PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions">		
+			<xsl:text>&quot;</xsl:text>
+			<xsl:call-template name="msQuotes">
+				<xsl:with-param name="vs" select="PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions"/>
+			</xsl:call-template>
+			<xsl:text>&quot;</xsl:text>			
+		</xsl:if>
 
 		<xsl:text>&#13;&#10;</xsl:text>
 		
@@ -333,6 +339,41 @@
 			<xsl:text>&#13;&#10;</xsl:text>
 		</xsl:for-each>
 		
+	</xsl:template>
+
+<!--=======================================================================================
+  Routine        : msQuotes
+  Description    : Recursively searches for " and replaces it with ""
+  Inputs         : A string
+  Outputs        : 
+  Returns        : A string
+  Author         : Robert Cambridge
+  Version        : 1.0
+  Alterations    : (none)
+ =======================================================================================-->
+	<xsl:template name="msQuotes">
+		<xsl:param name="vs"/>
+		
+		<xsl:choose>
+		
+			<xsl:when test="$vs=''"/><!-- base case-->
+			
+			<xsl:when test="substring($vs,1,1)='&quot;'"><!-- " found -->
+				<xsl:value-of select="substring($vs,1,1)"/>
+				<xsl:value-of select="'&quot;'"/>				
+				<xsl:call-template name="msQuotes">
+					<xsl:with-param name="vs" select="substring($vs,2)"/>
+				</xsl:call-template>
+			</xsl:when>
+			
+			<xsl:otherwise><!-- other character -->
+				<xsl:value-of select="substring($vs,1,1)"/>
+				<xsl:call-template name="msQuotes">
+					<xsl:with-param name="vs" select="substring($vs,2)"/>
+				</xsl:call-template>
+			</xsl:otherwise>
+		</xsl:choose>
+
 	</xsl:template>
 	
 </xsl:stylesheet>
