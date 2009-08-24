@@ -85,7 +85,7 @@
 				<xsl:value-of select="SendersCodeForRecipient"/>
 			</SendersCodeForRecipient>
 			<!-- detect for Orchid account with the ANA, if orchid do not create -->
-			<xsl:if test="string(SendersBranchReference) !='5999998145710' and string(SendersBranchReference) !='5999999145710' ">
+			<xsl:if test="string(SendersBranchReference) !='5999998145710' and string(SendersBranchReference) !='5999999145710'  and string(SendersBranchReference) !='5999996145710'">
 				<SendersBranchReference>
 					<xsl:value-of select="SendersBranchReference"/>
 				</SendersBranchReference>
