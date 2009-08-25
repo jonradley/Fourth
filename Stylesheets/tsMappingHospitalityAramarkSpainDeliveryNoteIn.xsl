@@ -154,9 +154,9 @@ R Cambridge	| 2009-07-08		| 2991 Created Module
 		<xsl:param name="voxelUoM"/>
 	
 		<xsl:choose>
-			<xsl:when test="$voxelUoM = 'Unidades'">EA</xsl:when>
-			<xsl:when test="$voxelUoM = 'Cajas'">CS</xsl:when>
-			<xsl:when test="$voxelUoM = 'Kgs'">KGM</xsl:when>
+			<xsl:when test="translate($voxelUoM, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = 'unidades'">EA</xsl:when>
+			<xsl:when test="translate($voxelUoM, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = 'cajas'">CS</xsl:when>
+			<xsl:when test="translate($voxelUoM, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = 'kgs'">KGM</xsl:when>
 		</xsl:choose>
 	
 	</xsl:template>
