@@ -93,7 +93,7 @@ R Cambridge	| 2009-07-07		| 2991 Created Module
 					<xsl:value-of select="DebitNoteHeader/Buyer/BuyersLocationID/SuppliersCode[1]"/>
 				</xsl:attribute> 
 				<xsl:attribute name="CIF">
-					<!--xsl:value-of select="DebitNoteHeader/InvoiceReferences/VATRegNo"/-->
+					<xsl:value-of select="DebitNoteHeader/InvoiceReferences/BuyersVATRegNo"/>
 				</xsl:attribute>
 				<xsl:attribute name="Company">
 					<!-- Bebidas y Refrescos, S.A. -->

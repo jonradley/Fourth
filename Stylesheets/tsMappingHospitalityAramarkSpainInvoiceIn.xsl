@@ -110,6 +110,7 @@ R Cambridge	| 2009-07-07		| 2991 Created Module
 										<TaxPointDate><xsl:value-of select="."/></TaxPointDate>
 									</xsl:for-each>
 									<VATRegNo><xsl:value-of select="Supplier/@CIF"/></VATRegNo>
+									<BuyersVATRegNo><xsl:value-of select="Client/@CIF"/></BuyersVATRegNo>
 								</InvoiceReferences>
 								<Currency>
 									<xsl:choose>

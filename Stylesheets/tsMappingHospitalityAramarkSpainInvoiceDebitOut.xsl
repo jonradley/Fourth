@@ -90,7 +90,7 @@ R Cambridge	| 2009-08-11		| 2991 Created Module
 					</IDCliProv>
 					<IDCentroCli/>
 					<CIF>
-						<xsl:value-of select="InvoiceHeader/InvoiceReferences/VATRegNo | DebitNoteHeader/InvoiceReferences/VATRegNo"/>
+						<xsl:value-of select="InvoiceHeader/InvoiceReferences/BuyersVATRegNo | DebitNoteHeader/InvoiceReferences/BuyersVATRegNo"/>
 					</CIF>					
 					<Company>
 						<xsl:value-of select="InvoiceHeader/Buyer/BuyersName | DebitNoteHeader/Buyer/BuyersName"/>
