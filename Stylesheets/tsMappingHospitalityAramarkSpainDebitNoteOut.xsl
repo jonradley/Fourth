@@ -179,26 +179,30 @@ R Cambridge	| 2009-07-07		| 2991 Created Module
 			
 	
 			<References>
+			
+				<Reference>
 				
-				<xsl:attribute name="DNRef">
-					<xsl:value-of select="(DebitNoteHeader/DeliveryNoteReferences/DeliveryNoteReference | DebitNoteDetail/DebitNoteLine/DeliveryNoteReferences/DeliveryNoteReference)"/>
-				</xsl:attribute>
-				<xsl:attribute name="PORef">
-					<xsl:value-of select="(DebitNoteHeader/PurchaseOrderReferences/PurchaseOrderReference | DebitNoteDetail/DebitNoteLine/PurchaseOrderReferences/PurchaseOrderReference)"/>
-				</xsl:attribute>
-				<xsl:attribute name="InvoiceRef">
-					<xsl:value-of select="DebitNoteHeader/InvoiceReferences/InvoiceReference"/>
-				</xsl:attribute>
-				
-				<xsl:attribute name="DNRefDate">
-					<xsl:value-of select="(DebitNoteHeader/DeliveryNoteReferences/DeliveryNoteDate | DebitNoteDetail/DebitNoteLine/DeliveryNoteReferences/DeliveryNoteDate)"/>
-				</xsl:attribute>
-				<xsl:attribute name="PORefDate">
-					<xsl:value-of select="(DebitNoteHeader/PurchaseOrderReferences/PurchaseOrderDate | DebitNoteDetail/DebitNoteLine/PurchaseOrderReferences/PurchaseOrderDate)"/>
-				</xsl:attribute> 
-				<xsl:attribute name="InvoiceRefDate">
-					<xsl:value-of select="DebitNoteHeader/InvoiceReferences/InvoiceDate"/>
-				</xsl:attribute>
+					<xsl:attribute name="DNRef">
+						<xsl:value-of select="(DebitNoteHeader/DeliveryNoteReferences/DeliveryNoteReference | DebitNoteDetail/DebitNoteLine/DeliveryNoteReferences/DeliveryNoteReference)"/>
+					</xsl:attribute>
+					<xsl:attribute name="PORef">
+						<xsl:value-of select="(DebitNoteHeader/PurchaseOrderReferences/PurchaseOrderReference | DebitNoteDetail/DebitNoteLine/PurchaseOrderReferences/PurchaseOrderReference)"/>
+					</xsl:attribute>
+					<xsl:attribute name="InvoiceRef">
+						<xsl:value-of select="DebitNoteHeader/InvoiceReferences/InvoiceReference"/>
+					</xsl:attribute>
+					
+					<xsl:attribute name="DNRefDate">
+						<xsl:value-of select="(DebitNoteHeader/DeliveryNoteReferences/DeliveryNoteDate | DebitNoteDetail/DebitNoteLine/DeliveryNoteReferences/DeliveryNoteDate)"/>
+					</xsl:attribute>
+					<xsl:attribute name="PORefDate">
+						<xsl:value-of select="(DebitNoteHeader/PurchaseOrderReferences/PurchaseOrderDate | DebitNoteDetail/DebitNoteLine/PurchaseOrderReferences/PurchaseOrderDate)"/>
+					</xsl:attribute> 
+					<xsl:attribute name="InvoiceRefDate">
+						<xsl:value-of select="DebitNoteHeader/InvoiceReferences/InvoiceDate"/>
+					</xsl:attribute>
+					
+				</Reference>
 			
 			</References>
 			
@@ -236,26 +240,30 @@ R Cambridge	| 2009-07-07		| 2991 Created Module
 						</xsl:attribute>						
 						
 						<References>	
-									
-							<xsl:attribute name="DNRef">
-								<xsl:value-of select="DeliveryNoteReferences/DeliveryNoteReference"/>
-							</xsl:attribute>
-							<xsl:attribute name="PORef">
-								<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderReference"/>
-							</xsl:attribute>
-							<xsl:attribute name="InvoiceRef">
-								<xsl:value-of select="../../DebitNoteHeader/InvoiceReferences/InvoiceReference"/>
-							</xsl:attribute>
+						
+							<Reference>
+										
+								<xsl:attribute name="DNRef">
+									<xsl:value-of select="DeliveryNoteReferences/DeliveryNoteReference"/>
+								</xsl:attribute>
+								<xsl:attribute name="PORef">
+									<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderReference"/>
+								</xsl:attribute>
+								<xsl:attribute name="InvoiceRef">
+									<xsl:value-of select="../../DebitNoteHeader/InvoiceReferences/InvoiceReference"/>
+								</xsl:attribute>
+								
+								<xsl:attribute name="DNRefDate">
+									<xsl:value-of select="DeliveryNoteReferences/DeliveryNoteDate"/>
+								</xsl:attribute>
+								<xsl:attribute name="PORefDate">
+									<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderDate"/>
+								</xsl:attribute> 
+								<xsl:attribute name="InvoiceRefDate">
+									<xsl:value-of select="../../DebitNoteHeader/InvoiceReferences/InvoiceDate"/>
+								</xsl:attribute>	
 							
-							<xsl:attribute name="DNRefDate">
-								<xsl:value-of select="DeliveryNoteReferences/DeliveryNoteDate"/>
-							</xsl:attribute>
-							<xsl:attribute name="PORefDate">
-								<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderDate"/>
-							</xsl:attribute> 
-							<xsl:attribute name="InvoiceRefDate">
-								<xsl:value-of select="../../DebitNoteHeader/InvoiceReferences/InvoiceDate"/>
-							</xsl:attribute>	
+							</Reference>
 											
 						</References>			
 						
