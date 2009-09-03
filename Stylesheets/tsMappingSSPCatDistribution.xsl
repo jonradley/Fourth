@@ -14,6 +14,8 @@
 ******************************************************************************************
  27/10/2008 | Rave Tech	 | Created module.
 ******************************************************************************************
+ 03/09/2009 | Rave Tech	 | 3071 Handle commas in section name.
+******************************************************************************************
  
 -->
 <xsl:stylesheet version="1.0"
@@ -73,13 +75,34 @@
 			<xsl:text>,</xsl:text>  
 			<xsl:variable name="SectionID"><xsl:value-of select="SectionID"/></xsl:variable>
 			<xsl:choose>
-				<xsl:when test="//Section[@ID=$SectionID]/../@ID">					
-						<xsl:value-of select="//Section[@ID=$SectionID]/../@Name"/>
-					       <xsl:text>,</xsl:text>					
-						<xsl:value-of select="//Section[@ID=$SectionID]/@Name"/>					
+				<xsl:when test="//Section[@ID=$SectionID]/../@ID">
+						<xsl:choose>
+							<xsl:when test="contains(//Section[@ID=$SectionID]/../@Name,',')">
+									<xsl:text>"</xsl:text><xsl:value-of select="//Section[@ID=$SectionID]/../@Name"/><xsl:text>"</xsl:text>
+							</xsl:when>
+							<xsl:otherwise>
+									<xsl:value-of select="//Section[@ID=$SectionID]/../@Name"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					       <xsl:text>,</xsl:text>
+						<xsl:choose>
+							<xsl:when test="contains(//Section[@ID=$SectionID]/@Name,',')">
+									<xsl:text>"</xsl:text><xsl:value-of select="//Section[@ID=$SectionID]/@Name"/><xsl:text>"</xsl:text>
+							</xsl:when>
+							<xsl:otherwise>
+									<xsl:value-of select="//Section[@ID=$SectionID]/@Name"/>
+							</xsl:otherwise>
+						</xsl:choose>					
 				</xsl:when>
-				<xsl:otherwise>						
-						<xsl:value-of select="//Section[@ID=$SectionID]/@Name"/>
+				<xsl:otherwise>	
+						<xsl:choose>
+							<xsl:when test="contains(//Section[@ID=$SectionID]/@Name,',')">
+									<xsl:text>"</xsl:text><xsl:value-of select="//Section[@ID=$SectionID]/@Name"/><xsl:text>"</xsl:text>
+							</xsl:when>
+							<xsl:otherwise>
+									<xsl:value-of select="//Section[@ID=$SectionID]/@Name"/>
+							</xsl:otherwise>
+						</xsl:choose>
 						<xsl:text>,</xsl:text>						 					
 				</xsl:otherwise>
 			</xsl:choose>
