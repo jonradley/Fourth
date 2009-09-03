@@ -39,6 +39,8 @@
 ******************************************************************************************
 02/07/2009	 	| R Cambridge  	| Case 2980: Ensure PL account codes are captured         
 ******************************************************************************************
+01/09/2008		| Rave Tech		| 3091. Ignore any discount amount provided on each line.
+******************************************************************************************
 	          	|              	|	                                                            
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
@@ -365,11 +367,6 @@
 												<xsl:value-of select="format-number(LineItemDiscount/DiscountRate, '0.00')"/>
 											</LineDiscountRate>
 										</xsl:if>
-										<xsl:if test="LineItemDiscount/DiscountValue">
-											<LineDiscountValue>
-												<xsl:value-of select="format-number(LineItemDiscount/DiscountValue, '0.00')"/>
-											</LineDiscountValue>
-										</xsl:if>
 										<!-- we default VATCode and Rate if not found in the EAN.UCC document -->
 										<VATCode>
 											<xsl:choose>
@@ -615,14 +612,7 @@
 								</DiscountedLinesTotalExclVAT>
 								<!-- DocumentDiscount is mandatory in our schema but not EAN.UCC. If we find none then just default the value -->
 								<DocumentDiscount>
-									<xsl:choose>
-										<xsl:when test="count(//VATRateTotals/DocumentDiscountValue) &gt; 0">
-											<xsl:value-of select="format-number(sum(//VATRateTotals/DocumentDiscountValue),'0.00')"/>
-										</xsl:when>
-										<xsl:otherwise>
-											<xsl:value-of select="format-number($defaultDocumentDiscountValue,'0.00')"/>
-										</xsl:otherwise>
-									</xsl:choose>
+									<xsl:value-of select="format-number($defaultDocumentDiscountValue,'0.00')"/>
 								</DocumentDiscount>
 								<DocumentTotalExclVAT>
 									<xsl:value-of select="format-number(/Invoice/InvoiceTotals/InvoiceSubTotal, '0.00')"/>
