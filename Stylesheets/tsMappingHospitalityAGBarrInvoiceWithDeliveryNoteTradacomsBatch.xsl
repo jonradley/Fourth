@@ -3,12 +3,16 @@
 **********************************************************************
 Alterations
 **********************************************************************
-Name			| Date				| Change
+Name				| Date				| Change
 **********************************************************************
 Moty Dimant 	| 15/01/2009 		| Created
 **********************************************************************
+R Cambridge 	| 07/09/2009 		| Use DN ref as PO ref when no PO ref provided
+**********************************************************************
+            	|            		|        
+**********************************************************************
 -->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:vbscript="http://abs-Ltd.com">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:vbscript="http://abs-Ltd.com">
 <xsl:output method="xml" encoding="UTF-8"/>
 <!-- Start point - ensure required outer BatchRoot tag is applied -->
 <xsl:template match="/">
@@ -119,19 +123,19 @@ Moty Dimant 	| 15/01/2009 		| Created
 								<InvoiceDetail>
 									<xsl:for-each select="InvoiceDetail/InvoiceLine">
 										<InvoiceLine>
-											<xsl:if test="PurchaseOrderReferences/PurchaseOrderReference != '' and PurchaseOrderReferences/PurchaseOrderDate != ''">
-												<PurchaseOrderReferences>
-													<PurchaseOrderReference>
-														<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderReference"/>
-													</PurchaseOrderReference>
-													<xsl:variable name="sPODate">
-														<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderDate"/>
-													</xsl:variable>
-													<PurchaseOrderDate>
-														<xsl:value-of select="concat('20',substring($sPODate,1,2),'-',substring($sPODate,3,2),'-',substring($sPODate,5,2))"/>
-													</PurchaseOrderDate>
-												</PurchaseOrderReferences>
-											</xsl:if>
+											
+											<PurchaseOrderReferences>
+												<PurchaseOrderReference>
+													<xsl:value-of select="(PurchaseOrderReferences/PurchaseOrderReference | DeliveryNoteReferences/DeliveryNoteReference)[1]"/>
+												</PurchaseOrderReference>
+												<xsl:variable name="sPODate">
+													<xsl:value-of select="(PurchaseOrderReferences/PurchaseOrderDate | DeliveryNoteReferences/DeliveryNoteDate)[1]"/>
+												</xsl:variable>
+												<PurchaseOrderDate>
+													<xsl:value-of select="concat('20',substring($sPODate,1,2),'-',substring($sPODate,3,2),'-',substring($sPODate,5,2))"/>
+												</PurchaseOrderDate>
+											</PurchaseOrderReferences>
+											
 											<DeliveryNoteReferences>
 												<DeliveryNoteReference>
 													<xsl:value-of select="DeliveryNoteReferences/DeliveryNoteReference"/>
@@ -321,23 +325,20 @@ Moty Dimant 	| 15/01/2009 		| Created
 									<xsl:copy-of select="InvoiceHeader/Buyer"/>
 									<xsl:copy-of select="InvoiceHeader/Supplier"/>
 									<xsl:copy-of select="InvoiceHeader/ShipTo"/>
-									<xsl:if test="InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderReference != '' and InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderDate != ''">
-										<PurchaseOrderReferences>
-											<xsl:if test="InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderReference != ''">
-												<PurchaseOrderReference>
-													<xsl:value-of select="InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderReference"/>
-												</PurchaseOrderReference>
-											</xsl:if>
-											<xsl:if test="InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderDate != ''">
-												<xsl:variable name="sDPODate">
-													<xsl:value-of select="InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderDate"/>
-												</xsl:variable>
-												<PurchaseOrderDate>
-													<xsl:value-of select="concat('20',substring($sDPODate,1,2),'-',substring($sDPODate,3,2),'-',substring($sDPODate,5,2))"/>
-												</PurchaseOrderDate>
-											</xsl:if>
-										</PurchaseOrderReferences>
-									</xsl:if>
+									
+									<PurchaseOrderReferences>									
+										<PurchaseOrderReference>
+											<xsl:value-of select="(InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderReference | InvoiceDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteReference)[1]"/>
+										</PurchaseOrderReference>
+										<xsl:variable name="sDPODate">
+											<xsl:value-of select="(InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderDate | InvoiceDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteDate)[1]"/>
+										</xsl:variable>
+										<PurchaseOrderDate>
+											<xsl:value-of select="concat('20',substring($sDPODate,1,2),'-',substring($sDPODate,3,2),'-',substring($sDPODate,5,2))"/>
+										</PurchaseOrderDate>
+									</PurchaseOrderReferences>
+
+									
 									<DeliveryNoteReferences>
 										<DeliveryNoteReference>
 											<xsl:value-of select="InvoiceDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteReference"/>
