@@ -22,7 +22,7 @@
                 exclude-result-prefixes="#default xsl msxsl script">
 	<xsl:output method="text"/>	
 	
-	<xsl:template match="/">
+	<xsl:template match="/GoodsReceivedNote">
 
 		<xsl:variable name="NewLine">
 			<xsl:text>&#13;&#10;</xsl:text>
@@ -33,34 +33,33 @@
 		<xsl:text>,</xsl:text>
 		
 		<!-- GRN Reference -->
-		<xsl:value-of select="substring(/GoodsReceivedNote/GoodsReceivedNoteHeader/GoodsReceivedNoteReferences/GoodsReceivedNoteReference,1,20)"/>
+		<xsl:value-of select="substring(GoodsReceivedNoteHeader/GoodsReceivedNoteReferences/GoodsReceivedNoteReference,1,20)"/>
 		<xsl:text>,</xsl:text>
 		
 		<!-- Order Reference -->
-		<xsl:value-of select="substring(/GoodsReceivedNote/GoodsReceivedNoteHeader/PurchaseOrderReferences/PurchaseOrderReference,1,13)"/>
+		<xsl:value-of select="substring(GoodsReceivedNoteHeader/PurchaseOrderReferences/PurchaseOrderReference,1,13)"/>
 		<xsl:text>,</xsl:text>
 		
 		<!-- Supplier Code -->
 		<xsl:choose>
-			<xsl:when test="contains(/GoodsReceivedNote/TradeSimpleHeader/RecipientsCodeForSender,'#')">
-				<xsl:value-of select="substring(substring-after(/GoodsReceivedNote/TradeSimpleHeader/RecipientsCodeForSender,'#'),1,10)"/>
+			<xsl:when test="contains(TradeSimpleHeader/RecipientsCodeForSender,'#')">
+				<xsl:value-of select="substring(substring-after(TradeSimpleHeader/RecipientsCodeForSender,'#'),1,10)"/>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:value-of select="substring(/GoodsReceivedNote/TradeSimpleHeader/RecipientsCodeForSender,1,10)"/>
+				<xsl:value-of select="substring(TradeSimpleHeader/RecipientsCodeForSender,1,10)"/>
 			</xsl:otherwise>
 		</xsl:choose>		
 		<xsl:text>,</xsl:text>		
 
 		<!-- Delivery Date -->
-		<xsl:value-of select="script:msFormatDate(/GoodsReceivedNote/GoodsReceivedNoteHeader/DeliveredDeliveryDetails/DeliveryDate)"/>
+		<xsl:value-of select="script:msFormatDate(GoodsReceivedNoteHeader/DeliveredDeliveryDetails/DeliveryDate)"/>
 		<xsl:text>,</xsl:text>		
 		
 		<!-- Unit Code -->
-		<xsl:value-of select="substring(/GoodsReceivedNote/TradeSimpleHeader/RecipientsBranchReference,1,10)"/>
-		<xsl:text>,</xsl:text>		
+		<xsl:value-of select="substring(TradeSimpleHeader/RecipientsBranchReference,1,10)"/>			
 
 		<!--### ITEM LINES ###-->
-		<xsl:for-each select="(/GoodsReceivedNote/GoodsReceivedNoteDetail/GoodsReceivedNoteLine)">
+		<xsl:for-each select="(GoodsReceivedNoteDetail/GoodsReceivedNoteLine)">
 
 			<xsl:value-of select="$NewLine"/>
 			<xsl:text>INVITEM,</xsl:text>
