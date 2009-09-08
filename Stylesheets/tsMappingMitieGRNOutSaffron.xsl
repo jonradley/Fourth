@@ -62,7 +62,7 @@
 		<xsl:for-each select="(GoodsReceivedNoteDetail/GoodsReceivedNoteLine)">
 
 			<xsl:value-of select="$NewLine"/>
-			<xsl:text>INVITEM,</xsl:text>
+			<xsl:text>GRNITEM,</xsl:text>
 			
 			<!-- GRN Reference -->			
 			<xsl:value-of select="substring(/GoodsReceivedNote/GoodsReceivedNoteHeader/GoodsReceivedNoteReferences/GoodsReceivedNoteReference,1,20)"/>
