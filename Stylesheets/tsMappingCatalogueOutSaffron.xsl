@@ -11,6 +11,10 @@
  Date       	| Name       		| Description of modification
 ******************************************************************************************
  02/02/2009	| Rave Tech		| Created Module
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 09/09/2009 | Steve Hewitt    | FB3109 : Removed the group and sub-group, renamed as it is now used for Harrisons and Mitie
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 ******************************************************************************************
 -->
 <xsl:stylesheet version="1.0"
@@ -54,12 +58,6 @@
 			<xsl:text>,</xsl:text>
 
 			<xsl:value-of select="substring(PriceCatDetail/ListOfKeyVal/KeyVal[@Keyword='PackSize'],1,20)"/>
-			<xsl:text>,</xsl:text>
-
-			<xsl:value-of select="substring(PriceCatDetail/ListOfKeyVal/KeyVal[@Keyword='Group'],1,10)"/>
-			<xsl:text>,</xsl:text>
-
-			<xsl:value-of select="substring(PriceCatDetail/ListOfKeyVal/KeyVal[@Keyword='SubGroup'],1,10)"/>
 		</xsl:for-each>
 
 	</xsl:template>
