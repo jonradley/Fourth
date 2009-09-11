@@ -33,7 +33,12 @@ Takes the internal version of a Credit Note and map it directly into the same fo
 				<xsl:element name="SendersCodeForRecipient">
 					<xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/>
 				</xsl:element>
-				
+
+				<!-- SendersBranchReference -->				
+				<xsl:element name="SendersBranchReference">
+					<xsl:value-of select="TradeSimpleHeader/SendersBranchReference"/>
+				</xsl:element>
+								
 				<!-- Senders Name -->				
 				<xsl:element name="SendersName">
 					<xsl:value-of select="TradeSimpleHeader/SendersName"/>
@@ -221,9 +226,6 @@ Takes the internal version of a Credit Note and map it directly into the same fo
 						
 						<!-- SuppliersCode -->
 						<xsl:element name="SuppliersCode">
-							<xsl:attribute name="ValidationResult">
-							    <xsl:value-of select="CreditNoteHeader/ShipTo/ShipToLocationID/SuppliersCode/@ValidationResult"/>
-							</xsl:attribute>
 							<xsl:value-of select="CreditNoteHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
 						</xsl:element>
 					</xsl:element>	
@@ -250,7 +252,10 @@ Takes the internal version of a Credit Note and map it directly into the same fo
 						<xsl:element name="PostCode">
 							<xsl:value-of select="CreditNoteHeader/ShipTo/ShipToAddress/PostCode"/>
 						</xsl:element>
-					</xsl:element>													
+					</xsl:element>	
+					<xsl:element name="ContactName">
+						<xsl:value-of select="CreditNoteHeader/ShipTo/ContactName"/>
+					</xsl:element>												
 				</xsl:element>
 				
 				<!--InvoiceReferences-->								
@@ -273,6 +278,11 @@ Takes the internal version of a Credit Note and map it directly into the same fo
 					<xsl:element name="VATRegNo">
 						<xsl:value-of select="CreditNoteHeader/InvoiceReferences/VATRegNo"/>
 					</xsl:element>																			
+
+					<!-- VATRegNo-->										
+					<xsl:element name="BuyersVATRegNo">
+						<xsl:value-of select="CreditNoteHeader/InvoiceReferences/BuyersVATRegNo"/>
+					</xsl:element>	
 				</xsl:element>				
 							
 				<!-- CreditNote References-->				
@@ -329,6 +339,28 @@ Takes the internal version of a Credit Note and map it directly into the same fo
 						<xsl:element name="LineNumber">
 							<xsl:value-of select="LineNumber"/>
 						</xsl:element>
+
+						<!-- CreditRequestReferences -->
+						<xsl:element name="CreditRequestReferences">								
+							<xsl:element name="CreditRequestReference">
+								<xsl:value-of select="CreditRequestReferences/CreditRequestReference"/>
+							</xsl:element>								
+							<xsl:element name="CreditRequestDate">
+								<xsl:value-of select="CreditRequestReferences/CreditRequestDate"/>
+							</xsl:element>
+							<xsl:element name="VATRegNo">
+								<xsl:value-of select="CreditRequestReferences/VATRegNo"/>
+							</xsl:element>
+							<xsl:element name="ContactName">
+								<xsl:value-of select="CreditRequestReferences/ContactName"/>
+							</xsl:element>								
+							<xsl:element name="SuppliersName">
+								<xsl:value-of select="CreditRequestReferences/SuppliersName"/>
+							</xsl:element>
+							<xsl:element name="CreditRequestStatus">
+								<xsl:value-of select="CreditRequestReferences/CreditRequestStatus"/>
+							</xsl:element>
+						</xsl:element>
 							
 						<!-- PurchaseOrderReferences-->
 						<xsl:element name="PurchaseOrderReferences">								
@@ -341,6 +373,20 @@ Takes the internal version of a Credit Note and map it directly into the same fo
 							<xsl:element name="PurchaseOrderTime">
 								<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderTime"/>
 							</xsl:element>
+							<xsl:element name="TradeAgreement">
+								<xsl:element name="ContractReference">
+									<xsl:value-of select="PurchaseOrderReferences/TradeAgreement/ContractReference"/>
+								</xsl:element>								
+								<xsl:element name="ContractDate">
+									<xsl:value-of select="PurchaseOrderReferences/TradeAgreement/ContractDate"/>
+								</xsl:element>							
+							</xsl:element>
+							<xsl:element name="CustomerPurchaseOrderReference">
+								<xsl:value-of select="PurchaseOrderReferences/CustomerPurchaseOrderReference"/>
+							</xsl:element>
+							<xsl:element name="JobNumber">
+								<xsl:value-of select="PurchaseOrderReferences/JobNumber"/>
+							</xsl:element>							
 						</xsl:element>
 						
 						<!-- PurchaseOrderConfirmationReferences-->
@@ -365,17 +411,27 @@ Takes the internal version of a Credit Note and map it directly into the same fo
 								<xsl:value-of select="DeliveryNoteReferences/DespatchDate"/>
 							</xsl:element>																										
 						</xsl:element>
-						
+
+						<!-- GoodsReceivedNoteReferences-->
+						<xsl:element name="GoodsReceivedNoteReferences">								
+							<xsl:element name="GoodsReceivedNoteReference">
+								<xsl:value-of select="GoodsReceivedNoteReferences/GoodsReceivedNoteReference"/>
+							</xsl:element>								
+							<xsl:element name="GoodsReceivedNoteDate">
+								<xsl:value-of select="GoodsReceivedNoteReferences/GoodsReceivedNoteDate"/>
+							</xsl:element>																																		
+						</xsl:element>
+												
 						<!-- ProductID-->						
 						<xsl:element name="ProductID">							
 							<xsl:element name="GTIN">
 								<xsl:value-of select="ProductID/GTIN"/>
 							</xsl:element>							
 							<xsl:element name="SuppliersProductCode">
-								<xsl:attribute name="ValidationResult">
-									<xsl:value-of select="ProductID/SuppliersProductCode/@ValidationResult"/>
-								</xsl:attribute>
 								<xsl:value-of select="ProductID/SuppliersProductCode"/>
+							</xsl:element>
+							<xsl:element name="BuyersProductCode">
+								<xsl:value-of select="ProductID/BuyersProductCode"/>
 							</xsl:element>
 						</xsl:element>							
 						
@@ -384,21 +440,37 @@ Takes the internal version of a Credit Note and map it directly into the same fo
 							<xsl:value-of select="ProductDescription"/>
 						</xsl:element>
 						
-						<!-- OrderedQuantity-->
+						<!-- Quantities-->	
 						<xsl:element name="OrderedQuantity">								
 							<xsl:attribute name="UnitOfMeasure">
 								<xsl:value-of select="OrderedQuantity/@UnitOfMeasure"/>
 							</xsl:attribute>
 							<xsl:value-of select="OrderedQuantity"/>																			
 						</xsl:element>
-						
-						<!-- CreditNotedQuantity-->						
+						<xsl:element name="ConfirmedQuantity">								
+							<xsl:attribute name="UnitOfMeasure">
+								<xsl:value-of select="ConfirmedQuantity/@UnitOfMeasure"/>
+							</xsl:attribute>
+							<xsl:value-of select="ConfirmedQuantity"/>																			
+						</xsl:element>	
+						<xsl:element name="DeliveredQuantity">								
+							<xsl:attribute name="UnitOfMeasure">
+								<xsl:value-of select="DeliveredQuantity/@UnitOfMeasure"/>
+							</xsl:attribute>
+							<xsl:value-of select="DeliveredQuantity"/>																			
+						</xsl:element>																									
+						<xsl:element name="InvoicedQuantity">								
+							<xsl:attribute name="UnitOfMeasure">
+								<xsl:value-of select="InvoicedQuantity/@UnitOfMeasure"/>
+							</xsl:attribute>
+							<xsl:value-of select="InvoicedQuantity"/>																			
+						</xsl:element>	
 						<xsl:element name="CreditedQuantity">								
 							<xsl:attribute name="UnitOfMeasure">
 								<xsl:value-of select="CreditedQuantity/@UnitOfMeasure"/>
 							</xsl:attribute>
 							<xsl:value-of select="CreditedQuantity"/>																			
-						</xsl:element>
+						</xsl:element>	
 						
 						<!-- PackSize-->
 						<xsl:element name="PackSize">
@@ -433,12 +505,25 @@ Takes the internal version of a Credit Note and map it directly into the same fo
 						<!-- VATRate-->						
 						<xsl:element name="VATRate">
 							<xsl:value-of select="VATRate"/>
-						</xsl:element>						
+						</xsl:element>		
+						
+						<xsl:element name="Narrative">
+							<xsl:attribute name="Code">
+								<xsl:value-of select="Narrative/@Code"/>
+							</xsl:attribute>
+							<xsl:value-of select="Narrative"/>
+						</xsl:element>				
 						
 						<!-- Measure-->
 						<xsl:element name="Measure">
 							<xsl:element name="UnitsInPack">
 								<xsl:value-of select="Measure/UnitsInPack"/>
+							</xsl:element>
+							<xsl:element name="OrderingMeasure">
+								<xsl:value-of select="Measure/OrderingMeasure"/>
+							</xsl:element>
+							<xsl:element name="MeasureIndicator">
+								<xsl:value-of select="Measure/MeasureIndicator"/>
 							</xsl:element>
 							<xsl:element name="TotalMeasure">
 								<xsl:value-of select="Measure/TotalMeasure"/>
@@ -489,6 +574,9 @@ Takes the internal version of a Credit Note and map it directly into the same fo
 					<xsl:value-of select="CreditNoteTrailer/DocumentDiscountRate"/>
 				</xsl:element>
 				<xsl:element name="SettlementDiscountRate">
+					<xsl:attribute name="SettlementDiscountDays">
+						<xsl:value-of select="CreditNoteTrailer/SettlementDiscountRate/@SettlementDiscountDays"/>
+					</xsl:attribute>
 					<xsl:value-of select="CreditNoteTrailer/SettlementDiscountRate"/>
 				</xsl:element>	
 				<!-- VATSubTotals -->

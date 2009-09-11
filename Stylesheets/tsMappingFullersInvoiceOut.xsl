@@ -28,10 +28,15 @@ Takes the internal version of a Invoice and map it directly into the same format
 <xsl:output method="xml" encoding="UTF-8"/>
 	<xsl:template match="Invoice">
 		<xsl:element name="Invoice">
-			<xsl:element name="TradeSimpleHeader">				
+			<xsl:element name="TradeSimpleHeader">	
+			
+				<!-- Sender Details -->			
 				<xsl:element name="SendersCodeForRecipient">
 					<xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/>
 				</xsl:element>				
+				<xsl:element name="SendersBranchReference">
+					<xsl:value-of select="TradeSimpleHeader/SendersBranchReference"/>
+				</xsl:element>	
 				<xsl:element name="SendersName">
 					<xsl:value-of select="TradeSimpleHeader/SendersName"/>
 				</xsl:element>
@@ -52,21 +57,17 @@ Takes the internal version of a Invoice and map it directly into the same format
 						<xsl:value-of select="TradeSimpleHeader/SendersAddress/PostCode"/>
 					</xsl:element>
 				</xsl:element>
+				
+				<!-- Recipient Details -->
 				<xsl:element name="RecipientsCodeForSender">
 					<xsl:value-of select="TradeSimpleHeader/RecipientsCodeForSender"/>
 				</xsl:element>
-				
-				<!-- RecipientsBranchReference -->
 				<xsl:element name="RecipientsBranchReference">
 					<xsl:value-of select="TradeSimpleHeader/RecipientsBranchReference"/>
 				</xsl:element>
-				
-				<!-- RecipientsName -->
 				<xsl:element name="RecipientsName">
 					<xsl:value-of select="TradeSimpleHeader/RecipientsName"/>
 				</xsl:element>
-				
-				<!-- RecipientsAddress -->	
 				<xsl:element name="RecipientsAddress">						
 					<xsl:element name="AddressLine1">
 						<xsl:value-of select="TradeSimpleHeader/RecipientsAddress/AddressLine1"/>
@@ -212,9 +213,6 @@ Takes the internal version of a Invoice and map it directly into the same format
 							<xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode"/>
 						</xsl:element>
 						<xsl:element name="SuppliersCode">
-							<xsl:attribute name="ValidationResult">
-							    <xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/SuppliersCode/@ValidationResult"/>
-							</xsl:attribute>
 							<xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
 						</xsl:element>
 					</xsl:element>							
@@ -240,24 +238,28 @@ Takes the internal version of a Invoice and map it directly into the same format
 							<xsl:value-of select="InvoiceHeader/ShipTo/ShipToAddress/PostCode"/>
 						</xsl:element>
 					</xsl:element>
-													
+
+					<xsl:element name="ContactName">
+						<xsl:value-of select="InvoiceHeader/ShipTo/ContactName"/>
+					</xsl:element>													
 				</xsl:element>
 							
 				<!-- Invoice References-->				
 				<xsl:element name="InvoiceReferences">					
 					<xsl:element name="InvoiceReference">
 						<xsl:value-of select="InvoiceHeader/InvoiceReferences/InvoiceReference"/>
-					</xsl:element>
-										
+					</xsl:element>		
 					<xsl:element name="InvoiceDate">
 						<xsl:value-of select="InvoiceHeader/InvoiceReferences/InvoiceDate"/>
 					</xsl:element>
-					
 					<xsl:element name="TaxPointDate">
 						<xsl:value-of select="InvoiceHeader/InvoiceReferences/TaxPointDate"/>
 					</xsl:element>
 					<xsl:element name="VATRegNo">
 						<xsl:value-of select="InvoiceHeader/InvoiceReferences/VATRegNo"/>
+					</xsl:element>
+					<xsl:element name="BuyersVATRegNo">
+						<xsl:value-of select="InvoiceHeader/InvoiceReferences/BuyersVATRegNo"/>
 					</xsl:element>
 				</xsl:element>
 				
@@ -289,6 +291,7 @@ Takes the internal version of a Invoice and map it directly into the same format
 			<xsl:element name="InvoiceDetail">
 				<xsl:for-each select="InvoiceDetail/InvoiceLine">
 					<xsl:element name="InvoiceLine">
+					
 						<!-- LineNumber -->						
 						<xsl:element name="LineNumber">
 							<xsl:value-of select="LineNumber"/>
@@ -302,6 +305,33 @@ Takes the internal version of a Invoice and map it directly into the same format
 							<xsl:element name="PurchaseOrderDate">
 								<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderDate"/>
 							</xsl:element>																										
+							<xsl:element name="PurchaseOrderTime">
+								<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderTime"/>
+							</xsl:element>	
+							<xsl:element name="TradeAgreement">
+								<xsl:element name="ContractReference">
+									<xsl:value-of select="PurchaseOrderReferences/TradeAgreement/ContractReference"/>
+								</xsl:element>
+								<xsl:element name="ContractDate">
+									<xsl:value-of select="PurchaseOrderReferences/TradeAgreement/ContractDate"/>
+								</xsl:element>							
+							</xsl:element>	
+							<xsl:element name="CustomerPurchaseOrderReference">
+								<xsl:value-of select="PurchaseOrderReferences/CustomerPurchaseOrderReference"/>
+							</xsl:element>	
+							<xsl:element name="JobNumber">
+								<xsl:value-of select="PurchaseOrderReferences/JobNumber"/>
+							</xsl:element>	
+						</xsl:element>
+						
+						<!-- PurchaseOrderConfirmationReferences -->
+						<xsl:element name="PurchaseOrderConfirmationReferences">
+							<xsl:element name="PurchaseOrderConfirmationReference">
+								<xsl:value-of select="PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationReference"/>
+							</xsl:element>																										
+							<xsl:element name="PurchaseOrderConfirmationDate">
+								<xsl:value-of select="PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationDate"/>
+							</xsl:element>							
 						</xsl:element>
 						
 						<!-- DeliveryNoteReferences-->
@@ -316,17 +346,27 @@ Takes the internal version of a Invoice and map it directly into the same format
 								<xsl:value-of select="DeliveryNoteReferences/DespatchDate"/>
 							</xsl:element>																										
 						</xsl:element>
-						
+
+						<!-- GoodsReceivedNoteReferences-->
+						<xsl:element name="GoodsReceivedNoteReferences">								
+							<xsl:element name="GoodsReceivedNoteReference">
+								<xsl:value-of select="GoodsReceivedNoteReferences/GoodsReceivedNoteReference"/>
+							</xsl:element>								
+							<xsl:element name="GoodsReceivedNoteDate">
+								<xsl:value-of select="GoodsReceivedNoteReferences/GoodsReceivedNoteDate"/>
+							</xsl:element>																																
+						</xsl:element>
+												
 						<!-- ProductID-->						
 						<xsl:element name="ProductID">							
 							<xsl:element name="GTIN">
 								<xsl:value-of select="ProductID/GTIN"/>
 							</xsl:element>							
 							<xsl:element name="SuppliersProductCode">
-								<xsl:attribute name="ValidationResult">
-									<xsl:value-of select="ProductID/SuppliersProductCode/@ValidationResult"/>
-								</xsl:attribute>
 								<xsl:value-of select="ProductID/SuppliersProductCode"/>
+							</xsl:element>
+							<xsl:element name="BuyersProductCode">
+								<xsl:value-of select="ProductID/BuyersProductCode"/>
 							</xsl:element>
 						</xsl:element>							
 						
@@ -335,7 +375,25 @@ Takes the internal version of a Invoice and map it directly into the same format
 							<xsl:value-of select="ProductDescription"/>
 						</xsl:element>							
 						
-						<!-- InvoicedQuantity-->						
+						<!-- Quantities-->	
+						<xsl:element name="OrderedQuantity">								
+							<xsl:attribute name="UnitOfMeasure">
+								<xsl:value-of select="OrderedQuantity/@UnitOfMeasure"/>
+							</xsl:attribute>
+							<xsl:value-of select="OrderedQuantity"/>																			
+						</xsl:element>
+						<xsl:element name="ConfirmedQuantity">								
+							<xsl:attribute name="UnitOfMeasure">
+								<xsl:value-of select="ConfirmedQuantity/@UnitOfMeasure"/>
+							</xsl:attribute>
+							<xsl:value-of select="ConfirmedQuantity"/>																			
+						</xsl:element>	
+						<xsl:element name="DeliveredQuantity">								
+							<xsl:attribute name="UnitOfMeasure">
+								<xsl:value-of select="DeliveredQuantity/@UnitOfMeasure"/>
+							</xsl:attribute>
+							<xsl:value-of select="DeliveredQuantity"/>																			
+						</xsl:element>																									
 						<xsl:element name="InvoicedQuantity">								
 							<xsl:attribute name="UnitOfMeasure">
 								<xsl:value-of select="InvoicedQuantity/@UnitOfMeasure"/>
@@ -377,11 +435,17 @@ Takes the internal version of a Invoice and map it directly into the same format
 						<xsl:element name="VATRate">
 							<xsl:value-of select="VATRate"/>
 						</xsl:element>						
-						
+							
 						<!-- Measure-->
 						<xsl:element name="Measure">
 							<xsl:element name="UnitsInPack">
 								<xsl:value-of select="Measure/UnitsInPack"/>
+							</xsl:element>
+							<xsl:element name="OrderingMeasure">
+								<xsl:value-of select="Measure/OrderingMeasure"/>
+							</xsl:element>
+							<xsl:element name="MeasureIndicator">
+								<xsl:value-of select="Measure/MeasureIndicator"/>
 							</xsl:element>
 							<xsl:element name="TotalMeasure">
 								<xsl:value-of select="Measure/TotalMeasure"/>
@@ -432,6 +496,9 @@ Takes the internal version of a Invoice and map it directly into the same format
 					<xsl:value-of select="InvoiceTrailer/DocumentDiscountRate"/>
 				</xsl:element>
 				<xsl:element name="SettlementDiscountRate">
+					<xsl:attribute name="SettlementDiscountDays">
+						<xsl:value-of select="InvoiceTrailer/SettlementDiscountRate/@SettlementDiscountDays"/>
+					</xsl:attribute>
 					<xsl:value-of select="InvoiceTrailer/SettlementDiscountRate"/>
 				</xsl:element>	
 				<!-- VATSubTotals -->
