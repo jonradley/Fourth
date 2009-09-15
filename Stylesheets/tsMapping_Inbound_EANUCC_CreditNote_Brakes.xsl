@@ -37,6 +37,8 @@
 ******************************************************************************************
 01/09/2008		| Rave Tech		| 3091. Ignore any discount amount provided on each line.
 ******************************************************************************************
+15/09/2008		| Rave Tech		| 3091. Ignore SettlementDiscountRate.
+******************************************************************************************
 	          	|              	|	                                                     
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
@@ -416,14 +418,7 @@
 									</xsl:choose>
 								</DocumentDiscountRate>
 								<SettlementDiscountRate>
-									<xsl:choose>
-										<xsl:when test="/CreditNote/CreditTotals/SettlementDiscountRate">
-											<xsl:value-of select="format-number(/CreditNote/CreditTotals/SettlementDiscountRate, '0.00')"/>
-										</xsl:when>
-										<xsl:otherwise>
-											<xsl:value-of select="format-number($defaultSettlementDiscountRate, '0.00')"/>
-										</xsl:otherwise>
-									</xsl:choose>
+									<xsl:value-of select="format-number($defaultSettlementDiscountRate, '0.00')"/>
 								</SettlementDiscountRate>
 								<!-- VATRateTotals are not mandatory in EAN.UCC but we have to assume at least some details will exist
 					       to stand any chance at all of filling in any of our mandatory details -->

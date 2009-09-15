@@ -41,6 +41,8 @@
 ******************************************************************************************
 01/09/2008		| Rave Tech		| 3091. Ignore any discount amount provided on each line.
 ******************************************************************************************
+15/09/2008		| Rave Tech		| 3091. Ignore SettlementDiscountRate.
+******************************************************************************************
 	          	|              	|	                                                            
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
@@ -446,23 +448,8 @@
 										</xsl:otherwise>
 									</xsl:choose>
 								</DocumentDiscountRate>
-								<SettlementDiscountRate>
-									<xsl:choose>
-										<xsl:when test="/Invoice/InvoiceTotals/SettlementDiscountRate">											
-											<!-- Frozen and Grocery invoices to Aramark should have zero settlement discount - ignore any value provided -->
-											<xsl:choose>
-												<xsl:when test="(/Invoice/Buyer/BuyerGLN = '5027615900013') and (/Invoice/Seller/SellerGLN = '5036036000009' or /Invoice/Seller/SellerGLN = '5013546062482')">
-													<xsl:text>0.00</xsl:text>
-												</xsl:when>
-												<xsl:otherwise>
-													<xsl:value-of select="format-number(/Invoice/InvoiceTotals/SettlementDiscountRate, '0.00')"/>
-												</xsl:otherwise>
-											</xsl:choose>											
-										</xsl:when>
-										<xsl:otherwise>
-											<xsl:value-of select="format-number($defaultSettlementDiscountRate, '0.00')"/>
-										</xsl:otherwise>
-									</xsl:choose>
+								<SettlementDiscountRate>								
+									<xsl:value-of select="format-number($defaultSettlementDiscountRate, '0.00')"/>										
 								</SettlementDiscountRate>
 								<!-- VATRateTotals are not mandatory in EAN.UCC but we have to assume at least some details will exist
 					       to stand any chance at all of filling in any of our mandatory details -->
