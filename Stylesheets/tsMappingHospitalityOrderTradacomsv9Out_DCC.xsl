@@ -153,7 +153,7 @@
 
 		
 		<xsl:text>CLO=</xsl:text>
-			<!--xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/GLN"/-->
+			<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/GLN"/>
 			<xsl:text>:</xsl:text>
 			<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode"/>
 			<xsl:text>:</xsl:text>
