@@ -6,7 +6,7 @@ Name			| Date				| Change
 **********************************************************************
 R Cambridge	| 2009-07-08		| 2991 Created Module
 **********************************************************************
-				|						|				
+R Cambridge	| 2009-07-08		| 2991 Meaning of @SenderID and @RecID has swapped around
 **********************************************************************
 				|						|
 **********************************************************************
@@ -22,14 +22,14 @@ R Cambridge	| 2009-07-08		| 2991 Created Module
 	
 			<PurchaseOrderAcknowledgement>
 				<TradeSimpleHeader>
-					<SendersCodeForRecipient><xsl:value-of select="ReturnReceipt/@RecID"/></SendersCodeForRecipient>
-					<SendersBranchReference><xsl:value-of select="ReturnReceipt/@SenderID"/></SendersBranchReference>					
+					<SendersCodeForRecipient><xsl:value-of select="ReturnReceipt/@SenderID"/></SendersCodeForRecipient>
+					<SendersBranchReference><xsl:value-of select="ReturnReceipt/@RecID"/></SendersBranchReference>					
 				</TradeSimpleHeader>
 				<PurchaseOrderAcknowledgementHeader>
 	
 					<ShipTo>
 						<ShipToLocationID>
-							<SuppliersCode><xsl:value-of select="ReturnReceipt/@RecID"/></SuppliersCode>
+							<SuppliersCode><xsl:value-of select="ReturnReceipt/@SenderID"/></SuppliersCode>
 						
 							<!-- Secondary codes? -->
 						
