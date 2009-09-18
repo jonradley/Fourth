@@ -32,6 +32,10 @@
  														 YOU MAY NEED TO MAKE YOUR CHANGE IN 
  														 tsMappingHospitalityBunzlLockhartOrderTradacomsv9Out.xsl
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 	08/09/2009	| R Cambridge		|	3121 - Set MITIE code in CDT/CIDN/2
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	          	|            		|	
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	          	|            		|	
 =======================================================================================-->
 
@@ -168,7 +172,11 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:when>
-				<!-- '/' IS NOT present -->
+				<!-- Check for other PL accounts -->
+				<xsl:when test="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN = '5060166760311'">
+					<!-- MITIE's PL account -->
+					<xsl:text>MITIE</xsl:text>
+				</xsl:when>			
 				<xsl:otherwise>
 					<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
 				</xsl:otherwise>	
