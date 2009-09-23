@@ -28,11 +28,15 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	23/08/2008	| Lee Boyton		|	FB2280 - Map out special delivery instructions.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- 	14/04/2009	| R Cambridge		|	FB2839 - NB THERE IS A BRANCH OF THIS MAPPER FOR LOCKHARTS -
- 														 YOU MAY NEED TO MAKE YOUR CHANGE IN 
- 														 tsMappingHospitalityBunzlLockhartOrderTradacomsv9Out.xsl
+ 	14/04/2009	| R Cambridge		|	FB2839 - NB THERE IS A BRANCH OF THIS MAPPER FOR LOCKHARTS -  YOU MAY NEED TO MAKE YOUR CHANGE IN tsMappingHospitalityBunzlLockhartOrderTradacomsv9Out.xsl
+ 														  
+														- 23rd Spet 09: the lockhart's branch is no longer needed. 
+														- This is the only version that needs to be maintained.
+ 														 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  	08/09/2009	| R Cambridge		|	3121 - Set MITIE code in CDT/CIDN/2
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 	23/09/2009	| R Cambridge		|	2839 - removed supplier's ANA/GLN overide added in April 09 (and removed branch for Lockharts too)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	          	|            		|	
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -112,12 +116,7 @@
 		
 		<xsl:text>SDT=</xsl:text>
 			<!--xsl:text>5013546009230</xsl:text-->
-			<xsl:choose>
-				<xsl:when test="PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN != '5555555555555'">
-					<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN"/>
-				</xsl:when>
-				<xsl:otherwise>5013546009230</xsl:otherwise>
-			</xsl:choose>
+			<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN"/>
 			<xsl:text>:</xsl:text>
 			<!-- required to strip before the '/' on the Aramark orders as Bunzl require 'ARAMARK'. But Orchid does not have any '/'
 					in the trading relationship so we have to test for it first -->
@@ -130,7 +129,8 @@
 				<xsl:otherwise>
 					<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
 				</xsl:otherwise>	
-			</xsl:choose>			<xsl:text>+</xsl:text>
+			</xsl:choose>
+			<xsl:text>+</xsl:text>
 			<!-- truncate to 40 SNAM = 3060 = AN..40-->
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersName),40)"/>
 			<xsl:text>+</xsl:text>
