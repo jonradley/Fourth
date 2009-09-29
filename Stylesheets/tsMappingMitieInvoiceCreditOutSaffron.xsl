@@ -33,7 +33,68 @@
 	
 	<!-- define keys (think of them a bit like database indexes) to be used for finding distinct line information.-->
 	<xsl:key name="keyLinesByVATCode" match="InvoiceTrailer/VATSubTotals/VATSubTotal | CreditNoteTrailer/VATSubTotals/VATSubTotal" use="concat(@VATCode,number(@VATRate),generate-id(../../..))"/>
-	
+
+  <!--=======================================================================================
+  Routine        : msCSV()
+  Description    : Puts " around a string if it contains a comma and replaces " with ""
+  Inputs         : A string
+  Outputs        : 
+  Returns        : A string
+  Author         : Robert Cambridge
+  Version        : 1.0
+  Alterations    : (none)
+ =======================================================================================-->
+  <xsl:template name="msCSV">
+    <xsl:param name="vs"/>
+    <xsl:if test="contains($vs,',') or contains($vs,'&quot;')">
+      <xsl:text>"</xsl:text>
+    </xsl:if>
+    <xsl:call-template name="msQuotes">
+      <xsl:with-param name="vs" select="$vs"/>
+    </xsl:call-template>
+    <xsl:if test="contains($vs,',') or contains($vs,'&quot;')">
+      <xsl:text>"</xsl:text>
+    </xsl:if>
+  </xsl:template>
+
+  <!--=======================================================================================
+  Routine        : msQuotes
+  Description    : Recursively searches for " and replaces it with ""
+  Inputs         : A string
+  Outputs        : 
+  Returns        : A string
+  Author         : Robert Cambridge
+  Version        : 1.0
+  Alterations    : (none)
+ =======================================================================================-->
+  <xsl:template name="msQuotes">
+    <xsl:param name="vs"/>
+
+    <xsl:choose>
+
+      <xsl:when test="$vs=''"/>
+      <!-- base case-->
+
+      <xsl:when test="substring($vs,1,1)='&quot;'">
+        <!-- " found -->
+        <xsl:value-of select="substring($vs,1,1)"/>
+        <xsl:value-of select="'&quot;'"/>
+        <xsl:call-template name="msQuotes">
+          <xsl:with-param name="vs" select="substring($vs,2)"/>
+        </xsl:call-template>
+      </xsl:when>
+
+      <xsl:otherwise>
+        <!-- other character -->
+        <xsl:value-of select="substring($vs,1,1)"/>
+        <xsl:call-template name="msQuotes">
+          <xsl:with-param name="vs" select="substring($vs,2)"/>
+        </xsl:call-template>
+      </xsl:otherwise>
+    </xsl:choose>
+
+  </xsl:template>
+  
 	<xsl:template match="/BatchRoot/Invoice | /BatchRoot/CreditNote">
 
 		<xsl:variable name="NewLine">
@@ -218,7 +279,9 @@
 			</xsl:choose>
 			<xsl:text>,</xsl:text>
 
-			<xsl:value-of select="substring(ProductDescription,1,50)"/>
+      <xsl:call-template name="msCSV">
+        <xsl:with-param name="vs" select="substring(ProductDescription,1,50)"/>
+      </xsl:call-template>
 			<xsl:text>,</xsl:text>
 
 			<xsl:value-of select="substring(normalize-space(PackSize),1,20)"/>
