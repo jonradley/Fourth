@@ -132,11 +132,6 @@
 						<xsl:value-of select="substring($VATCode,1,1)"/>
 					</xsl:otherwise>
 				</xsl:choose>
-				<xsl:choose>
-					<xsl:when test="number($VATRate) = 17.5">17.5</xsl:when>
-					<xsl:when test="number($VATRate) = 15">15</xsl:when>
-					<xsl:when test="number($VATRate) = 5">5</xsl:when>
-				</xsl:choose>
 				<xsl:text>,</xsl:text>
 	
 				<xsl:choose>
@@ -220,11 +215,6 @@
 				<xsl:otherwise>
 					<xsl:value-of select="substring(VATCode,1,1)"/>
 				</xsl:otherwise>
-			</xsl:choose>
-			<xsl:choose>
-				<xsl:when test="number(VATRate) = 17.5">17.5</xsl:when>
-				<xsl:when test="number(VATRate) = 15">15</xsl:when>
-				<xsl:when test="number(VATRate) = 5">5</xsl:when>
 			</xsl:choose>
 			<xsl:text>,</xsl:text>
 
