@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--******************************************************************
+Alterations
+**********************************************************************
+Name			| Date			| Change
+**********************************************************************
+     ?    	|     ?     	| ?
+**********************************************************************
+R Cambridge	| 29/09/2009	| 3142 read units codes into SCR and Supplier's code for ship to
+**********************************************************************
+          	|           	| 
+**********************************************************************
+				|					|
+*******************************************************************-->
 <ffsFlatFileSchema>
 	<ffsSettings>
 		<ffsRecordPositionType>named</ffsRecordPositionType>
@@ -54,7 +67,7 @@
 				<BatchDocument>
 					<Invoice>
 						<TradeSimpleHeader>
-							<SendersCodeForRecipient RecordPos="HEAD" LPos="4"/>
+							<SendersCodeForRecipient RecordPos="HEAD" LPos="24"/>
 							<!--SendersBranchReference RecordPos="SUPPLIER" LPos="2"/-->
 						</TradeSimpleHeader>
 						<InvoiceHeader>
@@ -68,7 +81,7 @@
 							<!--/BatchInformation-->
 							<Buyer>
 								<BuyersLocationID>
-									<SuppliersCode RecordPos="HEAD" LPos="4"/>
+									<SuppliersCode RecordPos="HEAD" LPos="3"/>
 								</BuyersLocationID>
 								<BuyersName RecordPos="HEAD" LPos="17"/>
 								<!--BuyersAddress>
@@ -94,7 +107,7 @@
 							</Supplier-->
 							<ShipTo>
 								<ShipToLocationID>
-									<SuppliersCode RecordPos="HEAD" LPos="4"/>
+									<SuppliersCode RecordPos="HEAD" LPos="24"/>
 								</ShipToLocationID>
 								<ShipToName RecordPos="HEAD" LPos="17"/>
 								<!--ShipToAddress>
