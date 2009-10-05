@@ -42,11 +42,11 @@
 		
 		<!-- Supplier Code -->
 		<xsl:choose>
-			<xsl:when test="contains(/GoodsReceivedNote/GoodsReceivedNoteHeader/Supplier/SuppliersLocationID/BuyersCode,'#')">
-				<xsl:value-of select="substring(substring-after(TradeSimpleHeader/RecipientsCodeForSender,'#'),1,10)"/>
+			<xsl:when test="contains(/GoodsReceivedNote/TradeSimpleHeader/SendersCodeForRecipient,'#')">
+				<xsl:value-of select="substring(substring-after(/GoodsReceivedNote/TradeSimpleHeader/SendersCodeForRecipient,'#'),1,10)"/>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:value-of select="substring(/GoodsReceivedNote/GoodsReceivedNoteHeader/Supplier/SuppliersLocationID/BuyersCode,1,10)"/>
+				<xsl:value-of select="substring(/GoodsReceivedNote/TradeSimpleHeader/SendersCodeForRecipient,1,10)"/>
 			</xsl:otherwise>
 		</xsl:choose>		
 		<xsl:text>,</xsl:text>		
