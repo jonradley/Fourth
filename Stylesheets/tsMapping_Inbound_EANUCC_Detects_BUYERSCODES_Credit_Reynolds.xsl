@@ -14,7 +14,7 @@
 '******************************************************************************************
 '27/11/2008	  | Rave Tech     | 2592 Handled vat rate changing from 17.5 to 15 
 '******************************************************************************************
-'	           |              |	
+' 05/10/2009   | R Cambridge  | 3155 Handle PL accounts for customers other than SSP (logic copied from tsMapping_Inbound_EANUCC_Detects_BUYERSCODES_Invoice_Reynolds.xsl)
 '******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
@@ -89,7 +89,13 @@
 									</xsl:choose>
 								</SendersCodeForRecipient>
 								<!-- SBR used to pick out the PL Account code to be used in the trading relationship set up. This could be Buyer or Supplier value. -->
-								
+								<!-- Detect if not a SSP invoice and there is a contract reference number -->
+								<xsl:if test="string(/CreditNote/TradeAgreementReference/ContractReferenceNumber) != '' and string($sCheckFlag) !='1' ">
+									<SendersBranchReference>
+										<xsl:value-of select="normalize-space(/CreditNote/TradeAgreementReference/ContractReferenceNumber)"/>
+									</SendersBranchReference>
+								</xsl:if>
+								<!-- Detect if a SSP invoice -->
 								<xsl:if test="string($sCheckFlag) ='1' ">
 									<SendersBranchReference>
 										<xsl:value-of select="normalize-space(/CreditNote/Seller/BuyerAssigned)"/>
