@@ -60,7 +60,9 @@ R Cambridge	| 2009-07-07		| 2991 Created Module
 								<Supplier>
 									<SuppliersLocationID>
 										<BuyersCode><xsl:value-of select="Supplier/@CustomerSupplierID"/></BuyersCode>
-										<SuppliersCode><xsl:value-of select="Supplier/@SupplierID"/></SuppliersCode>
+										<xsl:for-each select="Supplier/@SupplierID[. != ''][1]">
+											<SuppliersCode><xsl:value-of select="."/></SuppliersCode>
+										</xsl:for-each>
 									</SuppliersLocationID>
 									<SuppliersName><xsl:value-of select="Supplier/@Company"/></SuppliersName>
 									<SuppliersAddress>
