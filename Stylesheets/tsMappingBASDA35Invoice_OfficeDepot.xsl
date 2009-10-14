@@ -6,7 +6,7 @@ Name			| Date				| Change
 **********************************************************************
 R Cambridge	| 2008-12-02		| 2600 Created Module (based on tsMappingHospitalityInverarity_Inbound_BASDA_Invoice.xsl)
 **********************************************************************
-				|						|
+Lee Boyton  	| 2009-10-14		| 3178. Senders branch reference sourced from different inbound field.
 **********************************************************************
 				|						|				
 *******************************************************************-->
@@ -43,7 +43,7 @@ R Cambridge	| 2008-12-02		| 2600 Created Module (based on tsMappingHospitalityIn
 										<xsl:value-of select="Invoice/Buyer/BuyerReferences/SuppliersCodeForBuyer"/>
 								</SendersCodeForRecipient>
 								<SendersBranchReference>
-									<xsl:value-of select="Invoice/Buyer/BuyerReferences/SuppliersCodeForBuyer"/>
+									<xsl:value-of select="Invoice/InvoiceTo/InvoiceToReferences/SuppliersCodeForInvoiceTo"/>
 								</SendersBranchReference>
 
 							</TradeSimpleHeader>
