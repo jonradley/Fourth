@@ -21,6 +21,29 @@
                 xmlns:msxsl="urn:schemas-microsoft-com:xslt"
                 exclude-result-prefixes="#default xsl msxsl script">
 	<xsl:output method="text"/>	
+
+  <!--=======================================================================================
+  Routine        : msCSV()
+  Description    : Puts " around a string if it contains a comma and replaces " with ""
+  Inputs         : A string
+  Outputs        : 
+  Returns        : A string
+  Author         : Robert Cambridge
+  Version        : 1.0
+  Alterations    : (none)
+ =======================================================================================-->
+  <xsl:template name="msCSV">
+    <xsl:param name="vs"/>
+    <xsl:if test="contains($vs,',') or contains($vs,'&quot;')">
+      <xsl:text>"</xsl:text>
+    </xsl:if>
+    <xsl:call-template name="msQuotes">
+      <xsl:with-param name="vs" select="$vs"/>
+    </xsl:call-template>
+    <xsl:if test="contains($vs,',') or contains($vs,'&quot;')">
+      <xsl:text>"</xsl:text>
+    </xsl:if>
+  </xsl:template>
 	
 	<xsl:template match="/GoodsReceivedNote">
 
@@ -73,7 +96,9 @@
 			<xsl:text>,</xsl:text>
 			
 			<!-- Product Description -->			
-			<xsl:value-of select="substring(ProductDescription,1,50)"/>
+      <xsl:call-template name="msCSV">
+        <xsl:with-param name="vs" select="substring(ProductDescription,1,50)"/>
+      </xsl:call-template>
 			<xsl:text>,</xsl:text>
 			
 			<!-- Product Pack Size -->
