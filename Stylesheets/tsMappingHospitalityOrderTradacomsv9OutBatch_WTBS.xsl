@@ -273,7 +273,7 @@
 			<xsl:value-of select="$sRecordSep"/>
 			
 			<xsl:text>MTR=</xsl:text>
-				<xsl:value-of select="6 + count(PurchaseOrderDetail/PurchaseOrderLine)"/>
+				<xsl:value-of select="7 + (2 * count(PurchaseOrderDetail/PurchaseOrderLine))"/>
 			<xsl:value-of select="$sRecordSep"/>
 			
 		</xsl:for-each>
