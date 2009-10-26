@@ -30,14 +30,16 @@
 ******************************************************************************************
 29/01/2009  |	Rave Tech | 2713. Added document type for Electronic Invoices/Credit Notes/Debit Notes.
 ******************************************************************************************
+26/10/2009  | 	Lee Boyton | 3152. Cater for missing Recipient's Branch Reference. It is mandatory.
+******************************************************************************************
 		  |						| 
 ******************************************************************************************
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-		   xmlns:script="http://mycompany.com/mynamespace"
+                xmlns:user="http://mycompany.com/mynamespace"
                 xmlns:msxsl="urn:schemas-microsoft-com:xslt"
-                exclude-result-prefixes="#default xsl msxsl script">
+                exclude-result-prefixes="#default xsl msxsl">
 
 	<xsl:output method="text" encoding="ISO-8859-1"/>
 	
@@ -120,6 +122,11 @@
 			</xsl:choose>
 		</xsl:variable>
 
+		<!-- validate we have the unit code - raise an error if not -->
+		<xsl:if test="$UnitCode = ''">
+			<xsl:value-of select="user:mRaiseErrorAsMissingUnitCode()"/>
+		</xsl:if>
+		
 		<!-- store the Invoice/Debit Number-->
 		<xsl:variable name="DocumentReference">
 			<xsl:choose>
@@ -364,4 +371,9 @@
 		      floor($y div 4) - floor($y div 100) + floor($y div 400) - 
 		      32045"/>		
 	</xsl:template>
+
+	<msxsl:script language="JScript" implements-prefix="user"><![CDATA[ 
+		function mRaiseErrorAsMissingUnitCode()
+		{}
+	]]></msxsl:script>	
 </xsl:stylesheet>
