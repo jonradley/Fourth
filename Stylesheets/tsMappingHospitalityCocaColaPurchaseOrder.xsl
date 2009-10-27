@@ -26,7 +26,7 @@ Overview
 ******************************************************************************************
  21/05/2009		| Lee Boyton     | 2900 Translate the GLN for SSP and Moto.
 ******************************************************************************************
-			  		|                |
+26/10/2009	| Katherine O'Shaughnessy | 3200 Translate the Esporta GLN - FH orders
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" 
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -116,6 +116,7 @@ Overview
 			<xsl:variable name="NewSSPGLN" select="'5013546200266'"/>
 			<xsl:variable name="SCBMoto" select="'MOTO'"/>
 			<xsl:variable name="SCBSSP" select="'5013546200266'"/>
+			<xsl:variable name="EsportaGLN" select="'5060166760144'"/>
 			
 			<Buyer>
 				<BuyerGLN scheme="GLN">
@@ -132,6 +133,9 @@ Overview
 									<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/>
 								</xsl:otherwise>
 							</xsl:choose>
+						</xsl:when>
+						<xsl:when test="substring(/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersName,1,7) = 'Esporta'">
+							<xsl:value-of select="$EsportaGLN"/>							
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/>						
