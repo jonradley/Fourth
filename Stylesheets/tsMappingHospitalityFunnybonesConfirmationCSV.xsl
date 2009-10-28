@@ -40,7 +40,7 @@
 						<xsl:otherwise>
 							<xsl:choose>
 
-								<xsl:when test="TradeSimpleHeader/SendersBranchReference = 'R023' or TradeSimpleHeader/SendersBranchReference = 'J501'">
+								<xsl:when test="TradeSimpleHeader/SendersBranchReference = 'I046/S' or TradeSimpleHeader/SendersBranchReference = 'J501'">
 								</xsl:when>
 								<xsl:otherwise>
 									<xsl:choose>
@@ -279,11 +279,11 @@
 							</NumberOfLines>	
 						</xsl:if-->
 						
-						<xsl:if test="PurchaseOrderConfirmationTrailer/TotalExclVAT != ''">
+						<!--xsl:if test="PurchaseOrderConfirmationTrailer/TotalExclVAT != ''">
 							<TotalExclVAT>
 								<xsl:value-of select="PurchaseOrderConfirmationTrailer/TotalExclVAT"/>
 							</TotalExclVAT>
-						</xsl:if>
+						</xsl:if-->
 				
 					</PurchaseOrderConfirmationTrailer>
 				</xsl:if>
