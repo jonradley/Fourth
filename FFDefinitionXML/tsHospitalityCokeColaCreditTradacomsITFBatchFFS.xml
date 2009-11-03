@@ -122,7 +122,7 @@ R Cambridge	| 05/11/2008	| 2548 get SBR from SDT record (not CDT)
 					<CreditNote>
 						<TradeSimpleHeader>
 							<!-- MANDATORY Sender’s code for recipient, MANDATORY, CREDIT – CLO – CLOC(2), You must provide this code.  It is your internal identifier for the company that is to receive the document. It must match the code that you have entered on the trading relationship you have with the other company -->
-							<SendersCodeForRecipient RecordPos="CLO=" LPos="1" SFPos="2"/>
+							<SendersCodeForRecipient RecordPos="CLO=" LPos="1" SFPos="3"/>
 							<!-- OPTIONAL Sender’s Branch Reference, MANDATORY, CREHDR – CDT – CIDN(2), Depending on your particular relationship with the company, you must provide this code.  It is your internal identifier for the “contract” that the receiving company belongs to. It must match the code that you have provided to ABS on set-up -->
 							<SendersBranchReference RecordPos="SDT=" LPos="1" SFPos="2"/>
 						</TradeSimpleHeader>
