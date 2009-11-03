@@ -21,7 +21,7 @@
 ******************************************************************************************
 24/09/2009 | Steve Hewitt | 3137. Branch for Mitie and change reference location.
 ******************************************************************************************
-
+ 03/10/2009	| Lee Boyton	| 3215. Use credit note reference if delivery note reference is missing.
 ******************************************************************************************
 -->
 <xsl:stylesheet version="1.0"
@@ -228,7 +228,15 @@
 			<xsl:value-of select="substring(PurchaseOrderReferences/PurchaseOrderReference,1,13)"/>
 			<xsl:text>,</xsl:text>
 
-			<xsl:value-of select="substring(DeliveryNoteReferences/DeliveryNoteReference | DeliveryNoteReferences/DeliveryNoteReference,1,20)"/>
+			<!-- The delivery note reference is mandatory in Saffron. It is optional in our internal schema. If it is missing then send the document reference -->
+			<xsl:choose>
+				<xsl:when test="DeliveryNoteReferences/DeliveryNoteReference != ''">
+					<xsl:value-of select="substring(DeliveryNoteReferences/DeliveryNoteReference,1,20)"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="substring(../../InvoiceHeader/InvoiceReferences/InvoiceReference | ../../CreditNoteHeader/CreditNoteReferences/CreditNoteReference,1,20)"/>
+				</xsl:otherwise>
+			</xsl:choose>
 			<xsl:text>,</xsl:text>
 
 			<xsl:value-of select="substring(ProductID/SuppliersProductCode,1,20)"/>
