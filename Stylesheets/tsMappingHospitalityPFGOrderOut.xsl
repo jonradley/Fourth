@@ -34,7 +34,14 @@ R Cambridge	| 2009-09-11		| 3119 Created Module
 					<CustomersPONumber type:ALPHA="" Length="15"><xsl:value-of select="PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/></CustomersPONumber>
 					
 					<!-- Format MM/DD/YY, with slashes (or dashes).  If the delivery date is blank the next available delivery date for this customer will be used. -->
-					<DeliveryDate type:ALPHA="" Length="8"><xsl:value-of select="PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate"/></DeliveryDate>
+					<!--DeliveryDate type:ALPHA="" Length="8"><xsl:value-of select="PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate"/></DeliveryDate-->
+					<DeliveryDate type:ALPHA="" Length="8">
+						<xsl:value-of select="substring(PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate,6,2)"/>
+						<xsl:text>/</xsl:text>
+						<xsl:value-of select="substring(PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate,9,2)"/>
+						<xsl:text>/</xsl:text>
+						<xsl:value-of select="substring(PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate,3,2)"/>
+					</DeliveryDate>
 					
 					<!-- Special shipping instructions that will appear on the invoice. -->
 					<SpecialInstructions1 type:ALPHA="" Length="50"><xsl:value-of select="PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions"/></SpecialInstructions1>
