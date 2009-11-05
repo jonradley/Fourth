@@ -22,6 +22,8 @@
  29/09/2006	|	Nigel Emsen		|	Case 398: spiceal delivery address
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  03/01/2008	|	R Cambridge		|	1687 move from SKU in OLD/SPRO to EAN in SACU
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 05/11/2009| K O'Shaughnessy	| 3224 Amend STX to include the GLN code
 ==========================================================================================
 -->
 
@@ -98,6 +100,8 @@
 			<xsl:text>:</xsl:text>
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersName), 35)"/>
 			<xsl:text>+</xsl:text>
+			<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN"/>
+			<xsl:text>:</xsl:text>
 			<xsl:value-of select="$sFileGenerationDate"/><xsl:text>:</xsl:text><xsl:value-of select="vb:msFileGenerationTime()"/>
 			<xsl:text>+</xsl:text>
 			<xsl:value-of select="PurchaseOrderHeader/FileGenerationNumber"/>
