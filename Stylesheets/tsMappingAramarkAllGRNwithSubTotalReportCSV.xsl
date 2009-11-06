@@ -13,6 +13,8 @@
 ******************************************************************************************
  30/06/2009 | Rave Tech	  | 2965 Created module.
 ******************************************************************************************
+ 06/11/2009 | Rave Tech	  | 3226 Added Stock Amount(id=10) & Non Stock Amount(id=11) columns.
+ ******************************************************************************************
 -->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 	
@@ -83,10 +85,15 @@
 										<xsl:text> Total</xsl:text>
 									</Column>
 									<Column ID="7"></Column>
-									<Column ID="8"></Column>
-									<Column ID="9"></Column>
+									<Column ID="8"></Column>									
+									<Column ID="9">
+										<xsl:value-of select="sum(/Report/LineDetails/LineDetail[Columns/Column[@ID = 6] = $GRNRef]/Columns/Column[@ID = 9])"/>
+									</Column>
 									<Column ID="10">
 										<xsl:value-of select="sum(/Report/LineDetails/LineDetail[Columns/Column[@ID = 6] = $GRNRef]/Columns/Column[@ID = 10])"/>
+									</Column>
+									<Column ID="11">
+										<xsl:value-of select="sum(/Report/LineDetails/LineDetail[Columns/Column[@ID = 6] = $GRNRef]/Columns/Column[@ID = 11])"/>
 									</Column>
 								</Columns>
 							</LineDetail>				
