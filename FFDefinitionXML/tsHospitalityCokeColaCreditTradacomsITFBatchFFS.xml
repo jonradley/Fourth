@@ -174,7 +174,7 @@ R Cambridge	| 05/11/2008	| 2548 get SBR from SDT record (not CDT)
 							<ShipTo>
 								<ShipToLocationID>
 									<!--CREHDR-CLO-(1)2)-->
-									<SuppliersCode RecordPos="CLO=" LPos="1" SFPos="2"/>
+									<SuppliersCode RecordPos="CLO=" LPos="1" SFPos="3"/>
 								</ShipToLocationID>
 								<!-- OPTIONAL Delivery Location Name, OPTIONAL, CREDIT – CLO – CNAM -->
 								<ShipToName RecordPos="CLO=" LPos="2"/>
