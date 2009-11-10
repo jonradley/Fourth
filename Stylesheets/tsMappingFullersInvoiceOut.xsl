@@ -20,6 +20,8 @@ Takes the internal version of a Invoice and map it directly into the same format
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 13/08/2009  | Steve Hewitt		| FB2989 Always add all nodes, even if empty
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+08/10/2009  | Steve Hewitt		| FB3169 Format numbers and the test flag consistently
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                     |                   |                                                                               
 ******************************************************************************************
 -->
@@ -86,9 +88,19 @@ Takes the internal version of a Invoice and map it directly into the same format
 					</xsl:element>
 				</xsl:element>
 				
-				<!-- TestFlag -->				
+				<!-- TestFlag must always be true or false. Make sure we convert 1 and 0 -->				
 				<xsl:element name="TestFlag">
-					<xsl:value-of select="TradeSimpleHeader/TestFlag"/>
+					<xsl:choose>
+						<xsl:when test="TradeSimpleHeader/TestFlag = '1'">
+							<xsl:text>true</xsl:text>
+						</xsl:when>
+						<xsl:when test="TradeSimpleHeader/TestFlag = '0'">
+							<xsl:text>false</xsl:text>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="TradeSimpleHeader/TestFlag"/>
+						</xsl:otherwise>
+					</xsl:choose>
 				</xsl:element>								
 			</xsl:element>
 			
@@ -380,25 +392,33 @@ Takes the internal version of a Invoice and map it directly into the same format
 							<xsl:attribute name="UnitOfMeasure">
 								<xsl:value-of select="OrderedQuantity/@UnitOfMeasure"/>
 							</xsl:attribute>
-							<xsl:value-of select="OrderedQuantity"/>																			
+							<xsl:if test="OrderedQuantity">
+								<xsl:value-of select="format-number(OrderedQuantity,'0.0000')"/>																			
+							</xsl:if>
 						</xsl:element>
 						<xsl:element name="ConfirmedQuantity">								
 							<xsl:attribute name="UnitOfMeasure">
 								<xsl:value-of select="ConfirmedQuantity/@UnitOfMeasure"/>
 							</xsl:attribute>
-							<xsl:value-of select="ConfirmedQuantity"/>																			
+							<xsl:if test="ConfirmedQuantity">
+								<xsl:value-of select="format-number(ConfirmedQuantity,'0.0000')"/>
+							</xsl:if>
 						</xsl:element>	
 						<xsl:element name="DeliveredQuantity">								
 							<xsl:attribute name="UnitOfMeasure">
 								<xsl:value-of select="DeliveredQuantity/@UnitOfMeasure"/>
 							</xsl:attribute>
-							<xsl:value-of select="DeliveredQuantity"/>																			
+							<xsl:if test="DeliveredQuantity">
+								<xsl:value-of select="format-number(DeliveredQuantity,'0.0000')"/>
+							</xsl:if>
 						</xsl:element>																									
 						<xsl:element name="InvoicedQuantity">								
 							<xsl:attribute name="UnitOfMeasure">
 								<xsl:value-of select="InvoicedQuantity/@UnitOfMeasure"/>
 							</xsl:attribute>
-							<xsl:value-of select="InvoicedQuantity"/>																			
+							<xsl:if test="InvoicedQuantity">
+								<xsl:value-of select="format-number(InvoicedQuantity,'0.0000')"/>
+							</xsl:if>
 						</xsl:element>						
 
 						<!-- PackSize -->
@@ -407,23 +427,31 @@ Takes the internal version of a Invoice and map it directly into the same format
 						</xsl:element>	
 						
 						<!-- UnitValueExclVAT-->						
-						<xsl:element name="UnitValueExclVAT">
-							<xsl:value-of select="UnitValueExclVAT"/>
+						<xsl:element name="UnitValueExclVAT">			
+							<xsl:if test="UnitValueExclVAT">
+								<xsl:value-of select="format-number(UnitValueExclVAT, '0.00')"/>
+							</xsl:if>				
 						</xsl:element>						
 						
 						<!-- LineValueExclVAT-->						
 						<xsl:element name="LineValueExclVAT">
-							<xsl:value-of select="LineValueExclVAT"/>
+							<xsl:if test="LineValueExclVAT">
+								<xsl:value-of select="format-number(LineValueExclVAT, '0.00')"/>
+							</xsl:if>				
 						</xsl:element>						
 						
 						<!-- LineDiscountRate-->
 						<xsl:element name="LineDiscountRate">
-							<xsl:value-of select="LineDiscountRate"/>
+							<xsl:if test="LineDiscountRate">
+								<xsl:value-of select="format-number(LineDiscountRate, '0.00')"/>
+							</xsl:if>				
 						</xsl:element>
 						
 						<!-- LineDiscountValue-->
 						<xsl:element name="LineDiscountValue">
-							<xsl:value-of select="LineDiscountValue"/>
+							<xsl:if test="LineDiscountValue">
+								<xsl:value-of select="format-number(LineDiscountValue, '0.00')"/>
+							</xsl:if>				
 						</xsl:element>
 						
 						<!-- VATCode-->						
@@ -433,7 +461,9 @@ Takes the internal version of a Invoice and map it directly into the same format
 						
 						<!-- VATRate-->						
 						<xsl:element name="VATRate">
-							<xsl:value-of select="VATRate"/>
+							<xsl:if test="VATRate">
+								<xsl:value-of select="format-number(VATRate, '0.00')"/>
+							</xsl:if>		
 						</xsl:element>						
 							
 						<!-- Measure-->
@@ -493,13 +523,17 @@ Takes the internal version of a Invoice and map it directly into the same format
 					<xsl:value-of select="InvoiceTrailer/NumberOfDeliveries"/>
 				</xsl:element>
 				<xsl:element name="DocumentDiscountRate">
-					<xsl:value-of select="InvoiceTrailer/DocumentDiscountRate"/>
+					<xsl:if test="InvoiceTrailer/DocumentDiscountRate">
+						<xsl:value-of select="format-number(InvoiceTrailer/DocumentDiscountRate, '0.00')"/>
+					</xsl:if>
 				</xsl:element>
 				<xsl:element name="SettlementDiscountRate">
 					<xsl:attribute name="SettlementDiscountDays">
 						<xsl:value-of select="InvoiceTrailer/SettlementDiscountRate/@SettlementDiscountDays"/>
 					</xsl:attribute>
-					<xsl:value-of select="InvoiceTrailer/SettlementDiscountRate"/>
+					<xsl:if test="InvoiceTrailer/SettlementDiscountRate">
+						<xsl:value-of select="format-number(InvoiceTrailer/SettlementDiscountRate, '0.00')"/>
+					</xsl:if>
 				</xsl:element>	
 				<!-- VATSubTotals -->
 				<xsl:element name="VATSubTotals">
@@ -509,7 +543,9 @@ Takes the internal version of a Invoice and map it directly into the same format
 								<xsl:value-of select="@VATCode"/>
 							</xsl:attribute>
 							<xsl:attribute name="VATRate">
-								<xsl:value-of select="@VATRate"/>
+								<xsl:if test="@VATRate">
+									<xsl:value-of select="@VATRate"/>
+								</xsl:if>
 							</xsl:attribute>
 							<xsl:element name="NumberOfLinesAtRate">
 								<xsl:value-of select="NumberOfLinesAtRate"/>
@@ -518,28 +554,44 @@ Takes the internal version of a Invoice and map it directly into the same format
 								<xsl:value-of select="NumberOfItemsAtRate"/>
 							</xsl:element>
 							<xsl:element name="DiscountedLinesTotalExclVATAtRate">
-								<xsl:value-of select="DiscountedLinesTotalExclVATAtRate"/>
+								<xsl:if test="DiscountedLinesTotalExclVATAtRate">
+									<xsl:value-of select="format-number(DiscountedLinesTotalExclVATAtRate, '0.00')"/>
+								</xsl:if>
 							</xsl:element>
 							<xsl:element name="DocumentDiscountAtRate">
-								<xsl:value-of select="DocumentDiscountAtRate"/>
+								<xsl:if test="DocumentDiscountAtRate">
+									<xsl:value-of select="format-number(DocumentDiscountAtRate, '0.00')"/>
+								</xsl:if>							
 							</xsl:element>
 							<xsl:element name="DocumentTotalExclVATAtRate">
-								<xsl:value-of select="DocumentTotalExclVATAtRate"/>
+								<xsl:if test="DocumentTotalExclVATAtRate">
+									<xsl:value-of select="format-number(DocumentTotalExclVATAtRate, '0.00')"/>
+								</xsl:if>									
 							</xsl:element>
 							<xsl:element name="SettlementDiscountAtRate">
-								<xsl:value-of select="SettlementDiscountAtRate"/>
+								<xsl:if test="SettlementDiscountAtRate">
+									<xsl:value-of select="format-number(SettlementDiscountAtRate, '0.00')"/>
+								</xsl:if>			
 							</xsl:element>
 							<xsl:element name="SettlementTotalExclVATAtRate">
-								<xsl:value-of select="SettlementTotalExclVATAtRate"/>
+								<xsl:if test="SettlementTotalExclVATAtRate">
+									<xsl:value-of select="format-number(SettlementTotalExclVATAtRate, '0.00')"/>
+								</xsl:if>		
 							</xsl:element>
 							<xsl:element name="VATAmountAtRate">
-								<xsl:value-of select="VATAmountAtRate"/>
+								<xsl:if test="VATAmountAtRate">
+									<xsl:value-of select="format-number(VATAmountAtRate, '0.00')"/>
+								</xsl:if>		
 							</xsl:element>
 							<xsl:element name="DocumentTotalInclVATAtRate">
-								<xsl:value-of select="DocumentTotalInclVATAtRate"/>
+								<xsl:if test="DocumentTotalInclVATAtRate">
+									<xsl:value-of select="format-number(DocumentTotalInclVATAtRate, '0.00')"/>
+								</xsl:if>		
 							</xsl:element>
 							<xsl:element name="SettlementTotalInclVATAtRate">
-								<xsl:value-of select="SettlementTotalInclVATAtRate"/>
+								<xsl:if test="SettlementTotalInclVATAtRate">
+									<xsl:value-of select="format-number(SettlementTotalInclVATAtRate, '0.00')"/>
+								</xsl:if>		
 							</xsl:element>
 							<xsl:element name="VATTrailerExtraData">
 								<xsl:element name="SuppliersOriginalVATCode">
@@ -550,30 +602,45 @@ Takes the internal version of a Invoice and map it directly into the same format
 					</xsl:for-each>
 				</xsl:element>
 				<xsl:element name="DiscountedLinesTotalExclVAT">
-					<xsl:value-of select="InvoiceTrailer/DiscountedLinesTotalExclVAT"/>
+					<xsl:if test="InvoiceTrailer/DiscountedLinesTotalExclVAT">
+						<xsl:value-of select="format-number(InvoiceTrailer/DiscountedLinesTotalExclVAT, '0.00')"/>
+					</xsl:if>		
 				</xsl:element>
 				<xsl:element name="DocumentDiscount">
-					<xsl:value-of select="InvoiceTrailer/DocumentDiscount"/>
+					<xsl:if test="InvoiceTrailer/DocumentDiscount">
+						<xsl:value-of select="format-number(InvoiceTrailer/DocumentDiscount, '0.00')"/>
+					</xsl:if>							
 				</xsl:element>
 				<xsl:element name="DocumentTotalExclVAT">
-					<xsl:value-of select="InvoiceTrailer/DocumentTotalExclVAT"/>
+					<xsl:if test="InvoiceTrailer/DocumentTotalExclVAT">
+						<xsl:value-of select="format-number(InvoiceTrailer/DocumentTotalExclVAT, '0.00')"/>
+					</xsl:if>		
 				</xsl:element>
 				<xsl:element name="SettlementDiscount">
-					<xsl:value-of select="InvoiceTrailer/SettlementDiscount"/>
+					<xsl:if test="InvoiceTrailer/SettlementDiscount">
+						<xsl:value-of select="format-number(InvoiceTrailer/SettlementDiscount, '0.00')"/>
+					</xsl:if>		
 				</xsl:element>
 				<xsl:element name="SettlementTotalExclVAT">
-					<xsl:value-of select="InvoiceTrailer/SettlementTotalExclVAT"/>
+					<xsl:if test="InvoiceTrailer/SettlementTotalExclVAT">
+						<xsl:value-of select="format-number(InvoiceTrailer/SettlementTotalExclVAT, '0.00')"/>
+					</xsl:if>		
 				</xsl:element>
 				<xsl:element name="VATAmount">
-					<xsl:value-of select="InvoiceTrailer/VATAmount"/>
+					<xsl:if test="InvoiceTrailer/VATAmount">
+						<xsl:value-of select="format-number(InvoiceTrailer/VATAmount, '0.00')"/>
+					</xsl:if>		
 				</xsl:element>
 				<xsl:element name="DocumentTotalInclVAT">
-					<xsl:value-of select="InvoiceTrailer/DocumentTotalInclVAT"/>
+					<xsl:if test="InvoiceTrailer/DocumentTotalInclVAT">
+						<xsl:value-of select="format-number(InvoiceTrailer/DocumentTotalInclVAT, '0.00')"/>
+					</xsl:if>		
 				</xsl:element>
 				<xsl:element name="SettlementTotalInclVAT">
-					<xsl:value-of select="InvoiceTrailer/SettlementTotalInclVAT"/>
-				</xsl:element>
-								
+					<xsl:if test="InvoiceTrailer/SettlementTotalInclVAT">
+						<xsl:value-of select="format-number(InvoiceTrailer/SettlementTotalInclVAT, '0.00')"/>
+					</xsl:if>		
+				</xsl:element>	
 			</xsl:element>
 		</xsl:element>
 	</xsl:template>
