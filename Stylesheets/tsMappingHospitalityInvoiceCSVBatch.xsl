@@ -30,9 +30,11 @@
 		<xsl:variable name="DeliveryNoteDate" select="string(./DeliveryNoteDate)"/>
 		<xsl:copy>
 			<xsl:apply-templates/>
-			<xsl:element name="DespatchDate">
-				<xsl:value-of select="concat(substring($DeliveryNoteDate, 1, 4), '-', substring($DeliveryNoteDate, 5, 2), '-', substring($DeliveryNoteDate, 7, 2))"/>
-			</xsl:element>
+			<xsl:if test="$DeliveryNoteDate != ''">
+				<xsl:element name="DespatchDate">
+					<xsl:value-of select="concat(substring($DeliveryNoteDate, 1, 4), '-', substring($DeliveryNoteDate, 5, 2), '-', substring($DeliveryNoteDate, 7, 2))"/>
+				</xsl:element>
+			</xsl:if>
 		</xsl:copy>
 	</xsl:template>
 	
