@@ -296,7 +296,7 @@
 		<xsl:value-of select="$sRecordSep"/>
 	
 		<xsl:text>END=</xsl:text>
-			<xsl:text>3</xsl:text>	
+			<xsl:value-of select="format-number(count(/BatchRoot/PurchaseOrder) + 2,'0')"/>
 		<xsl:value-of select="$sRecordSep"/>
 		
 	</xsl:template>
