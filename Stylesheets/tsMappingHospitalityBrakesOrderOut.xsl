@@ -11,7 +11,7 @@ Lee Boyton	| 19/07/2007     | 1332 Changes following acceptance testing.
 R Cambridge	| 2009-07-06	  	| 2980 Send SBR / PL account code as buyer's code for seller
 											    Add some sorry logic to populate //sh:Receiver/sh:Identifier
 **********************************************************************
-				|						|
+A Barber		| 2009-11-17		| Fixed UOM to "EA" if order from MacDonald Hotels or Mercure GLN.
 **********************************************************************
 				|						|				
 *******************************************************************-->
@@ -259,7 +259,19 @@ R Cambridge	| 2009-07-06	  	| 2980 Send SBR / PL account code as buyer's code fo
 										
 										<unitOfMeasure>
 											<measurementUnitCodeValue>
-												<xsl:value-of select="OrderedQuantity/@UnitOfMeasure"/>
+												<xsl:choose>
+													<!--MacDonald Hotels-->
+													<xsl:when test="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN = 5060166760021">
+														<xsl:text>EA</xsl:text>
+													</xsl:when>
+													<!--Mercure-->
+													<xsl:when test="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN = 5027615900020">
+														<xsl:text>EA</xsl:text>
+													</xsl:when>
+													<xsl:otherwise>
+														<xsl:value-of select="OrderedQuantity/@UnitOfMeasure"/>
+													</xsl:otherwise>
+												</xsl:choose>
 											</measurementUnitCodeValue>
 										</unitOfMeasure>
 										
