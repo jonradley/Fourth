@@ -7,7 +7,7 @@ Name			| Date			| Change
 **********************************************************************
 Moty Dimant	| 06/03/2009	| Created FSS
 **********************************************************************
-				|					|
+Andrew Barber	| 17/11/2009 | Added ProductDescription (Len=40)
 **********************************************************************
 -->
 <ffsFlatFileSchema>
@@ -59,6 +59,8 @@ Moty Dimant	| 06/03/2009	| Created FSS
 								<ProductID>
 									<SuppliersProductCode RecordPos="DTL" LPos="6" UPos="35"/>
 								</ProductID>
+								<!--Added Product Description-->
+								<ProductDescription RecordPos="DTL" LPos="273" UPos="313"/>
 								<CreditedQuantity RecordPos="DTL" LPos="76" UPos="85"/>
 								<UnitValueExclVAT RecordPos="DTL" LPos="101" UPos="110"/>
 								<LineValueExclVAT RecordPos="DTL" LPos="127" UPos="136"/>
