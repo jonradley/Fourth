@@ -12,6 +12,7 @@ Andrew Barber			| 2009-11-05		| Created
 	<xsl:output method="xml" encoding="UTF-8"/>
 	<!-- Start point - ensure required outer BatchRoot tag is applied -->
 	<xsl:template match="/">
+	<BatchRoot>
 		<PurchaseOrder>
 			<TradeSimpleHeader>
 				<SendersCodeForRecipient>
@@ -349,5 +350,6 @@ Andrew Barber			| 2009-11-05		| Created
 				<TrailerExtraData></TrailerExtraData>-->
 			</PurchaseOrderTrailer>
 		</PurchaseOrder>
+	</BatchRoot>
 	</xsl:template>
 </xsl:stylesheet>
