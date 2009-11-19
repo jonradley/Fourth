@@ -15,10 +15,24 @@ Andrew Barber			| 2009-11-05		| Created
 		<PurchaseOrder>
 			<TradeSimpleHeader>
 				<SendersCodeForRecipient>
-					<xsl:if test="/Supplier_Orders/SupplierOrder/Order/Header/Seller/PartyIds/Identifier/@type='Buyer'">
-						<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Seller/PartyIds/Identifier[@type='Buyer']/@value"/>
-					</xsl:if>
+					<!--<xsl:choose>
+						<xsl:when test="/Supplier_Orders/SupplierOrder/Order/Header/Seller/PartyIds/Identifier/@type='Buyer'">
+							<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Seller/PartyIds/Identifier[@type='Buyer']/@value"/>
+						</xsl:when>							
+						<xsl:when test="/Supplier_Orders/SupplierOrder/Order/Header/Seller/PartyIds/Identifier/@type='ABN'">
+							<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Seller/PartyIds/Identifier[@type='DUNS']/@value"/>
+						</xsl:when>
+						<xsl:otherwise test="/Supplier_Orders/SupplierOrder/Order/Header/Seller/PartyIds/Identifier/@type='DUNS'">
+							<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Seller/PartyIds/Identifier[@type='ABN']/@value"/>
+						</xsl:when>
+					</xsl:choose>-->
+					<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Seller/PartyIds/Identifier[@type='Buyer']/@value"/>
 				</SendersCodeForRecipient>
+				<!--SendersBranchReference not used.
+				<SendersBranchReference></SendersBranchReference>-->
+				
+				<!--Should the senders details be fixed as Marketboomer?-->
+				
 				<SendersName>
 					<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/BillTo/Name"/>
 				</SendersName>
@@ -29,13 +43,34 @@ Andrew Barber			| 2009-11-05		| Created
 					<AddressLine2>
 						<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/BillTo/Address/AddressLine2"/>
 					</AddressLine2>
-					<AddressLine3/>
-					<AddressLine4>
+					<AddressLine3>
 						<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/BillTo/Address/City"/>
+					</AddressLine3>
+					<AddressLine4>
+						<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/BillTo/Address/@country-code"/>
 					</AddressLine4>
-					<PostCode/>
+					<!--Postcode datatype in Marketboomer xsd = positiveInteger, therefore not consistent with UK postcodes, not mapped.
+					<PostCode></PostCode>-->
 				</SendersAddress>
-				<RecipientsCodeForSender></RecipientsCodeForSender>
+				
+				<!--Should the recipients details be fixed as Fairfax?-->
+				
+				<RecipientsCodeForSender>
+					<!--<xsl:choose>
+						<xsl:when test="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/BillTo/PartyIds/Identifier/@type='Seller'">
+							<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/BillTo/PartyIds/Identifier[@type='Seller']/@value"/>
+						</xsl:when>
+						<xsl:when test="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/BillTo/PartyIds/Identifier/@type='ABN'">
+							<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/BillTo/PartyIds/Identifier[@type=ABN']/@value"/>
+						</xsl:when>
+						<xsl:when test="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/BillTo/PartyIds/Identifier/@type='ABN'">
+							<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/BillTo/PartyIds/Identifier[@type='DUNS']/@value"/>
+						</xsl:when>
+					</xsl:choose>-->
+					<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/BillTo/PartyIds/Identifier[@type='Seller']/@value"/>
+				</RecipientsCodeForSender>
+				<!--RecipientsBranchReference not used.
+				<RecipientsBranchReference></RecipientsBranchReference>-->
 				<RecipientsName>
 					<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Seller/Name"/>
 				</RecipientsName>
@@ -46,11 +81,14 @@ Andrew Barber			| 2009-11-05		| Created
 					<AddressLine2>
 						<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Seller/Address/AddressLine2"/>
 					</AddressLine2>
-					<AddressLine3/>
-					<AddressLine4>
+					<AddressLine3>
 						<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Seller/Address/City"/>
+					</AddressLine3>
+					<AddressLine4>
+						<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Seller/Address/@country-code"/>
 					</AddressLine4>
-					<PostCode/>
+					<!--Postcode datatype in Marketboomer xsd = positiveInteger, therefore not consistent with UK postcodes, not mapped.
+					<PostCode></PostCode>-->
 				</RecipientsAddress>
 				<TestFlag>
 					<xsl:text>true</xsl:text>
@@ -66,26 +104,28 @@ Andrew Barber			| 2009-11-05		| Created
 							<!--No GLN's provided in Marketboomer PO's-->
 							<xsl:text>5555555555555</xsl:text>
 						</GLN>
+						<!--What should the BuyersCode and SuppliersCode values be set to?-->
 						<BuyersCode></BuyersCode>
 						<SuppliersCode></SuppliersCode>
 					</BuyersLocationID>
 					<BuyersName>
-						<xsl:if test="@role='Creator'">
-								<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Role/Contacts/Contact[@role='Creator']/@role"/>
-						</xsl:if>
+						<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/BillTo/Name"/>
 					</BuyersName>
 					<BuyersAddress>
 						<AddressLine1>
-							<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Marketplace/Address/AddressLine1"/>
+							<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/BillTo/Address/AddressLine1"/>
 						</AddressLine1>
 						<AddressLine2>
-							<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Marketplace/Address/AddressLine2"/>
+							<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/BillTo/Address/AddressLine2"/>
 						</AddressLine2>
-						<AddressLine3/>
+						<AddressLine3>
+							<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/BillTo/Address/City"/>
+						</AddressLine3>
 						<AddressLine4>
-							<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Marketplace/Address/City"/>
+							<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/BillTo/Address/@country-code"/>
 						</AddressLine4>
-						<PostCode/>
+						<!--Postcode datatype in Marketboomer xsd = positiveInteger, therefore not consistent with UK postcodes, not mapped.
+						<PostCode></PostCode>-->
 					</BuyersAddress>
 				</Buyer>
 				<Supplier>
@@ -94,10 +134,13 @@ Andrew Barber			| 2009-11-05		| Created
 							<!--No GLN's provided in Marketboomer PO's-->
 							<xsl:text>5555555555555</xsl:text>
 						</GLN>
+						<!--What should the BuyersCode and SuppliersCode values be set to?-->
 						<BuyersCode></BuyersCode>
 						<SuppliersCode></SuppliersCode>
 					</SuppliersLocationID>
-					<SuppliersName></SuppliersName>
+					<SuppliersName>
+						<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Seller/Name"/>
+					</SuppliersName>
 					<SuppliersAddress>
 						<AddressLine1>
 							<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Seller/Address/AddressLine1"/>
@@ -105,11 +148,14 @@ Andrew Barber			| 2009-11-05		| Created
 						<AddressLine2>
 							<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Seller/Address/AddressLine2"/>
 						</AddressLine2>
-						<AddressLine3/>
-						<AddressLine4>
+						<AddressLine3>
 							<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Seller/Address/City"/>
+						</AddressLine3>
+						<AddressLine4>
+							<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Seller/Address/@country-code"/>
 						</AddressLine4>
-						<PostCode/>
+						<!--Postcode datatype in Marketboomer xsd = positiveInteger, therefore not consistent with UK postcodes, not mapped.
+						<PostCode></PostCode>-->
 					</SuppliersAddress>
 				</Supplier>
 				<ShipTo>
@@ -118,10 +164,12 @@ Andrew Barber			| 2009-11-05		| Created
 							<!--No GLN's provided in Marketboomer PO's-->
 							<xsl:text>5555555555555</xsl:text>
 						</GLN>
+						<!--What should the BuyersCode and SuppliersCode values be set to?-->
 						<BuyersCode></BuyersCode>
 						<SuppliersCode></SuppliersCode>
 					</ShipToLocationID>
-					<ShipToName></ShipToName>
+					<!--Ship to name provided as "[DEFAULT]" in Marketboomer order file, not mapped.
+					<ShipToName></ShipToName>-->
 					<ShipToAddress>
 						<AddressLine1>
 							<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/ShipTo/Location/Address/AddressLine1"/>
@@ -129,19 +177,22 @@ Andrew Barber			| 2009-11-05		| Created
 						<AddressLine2>
 							<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/ShipTo/Location/Address/AddressLine2"/>
 						</AddressLine2>
-						<AddressLine3/>
-						<AddressLine4>
+						<AddressLine3>
 							<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/ShipTo/Location/Address/City"/>
+						</AddressLine3>
+						<AddressLine4>
+							<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/ShipTo/Location/Address/@country-code"/>
 						</AddressLine4>
-						<PostCode/>
+						<!--Postcode datatype in Marketboomer xsd = positiveInteger, therefore not consistent with UK postcodes, not mapped.
+						<PostCode></PostCode>-->
 					</ShipToAddress>
-					<ContactName></ContactName>
+					<ContactName>
+						<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/BillTo/Contacts/Contact[@role='Creator']/Name"/>
+					</ContactName>
 				</ShipTo>
 				<PurchaseOrderReferences>
 					<PurchaseOrderReference>
-						<xsl:if test="/Supplier_Orders/SupplierOrder/Order/DocIds/Identifier/@type='ORDER_NUMBER'">
 							<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/DocIds/Identifier[@type='ORDER_NUMBER']/@value"/>
-						</xsl:if>
 					</PurchaseOrderReference>
 					<PurchaseOrderDate>
 						<!--Get date component from datetime value-->
@@ -151,15 +202,15 @@ Andrew Barber			| 2009-11-05		| Created
 						<!--Get time component from datetime value-->
 						<xsl:value-of select ="substring(/Supplier_Orders/SupplierOrder/Order/@date,12,19)"/>
 					</PurchaseOrderTime>
+					<!--TradeAgreement reference not used
 					<TradeAgreement>
 						<ContractReference></ContractReference>
 						<ContractDate></ContractDate>
-					</TradeAgreement>
-					<CustomerPurchaseOrderReference></CustomerPurchaseOrderReference>
-					
+					</TradeAgreement>-->
+					<!--CustomerPurchaseOrderReference not used.
+					<CustomerPurchaseOrderReference></CustomerPurchaseOrderReference>-->
 					<!-- JobNumber not used.
-					<JobNumber></JobNumber>-->
-					
+					<JobNumber></JobNumber>-->	
 				</PurchaseOrderReferences>
 				<OrderedDeliveryDetails>
 					<DeliveryType>
@@ -168,58 +219,78 @@ Andrew Barber			| 2009-11-05		| Created
 					<DeliveryDate>
 						<xsl:value-of select="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/ShipTo/DeliveryDay"/>
 					</DeliveryDate>
+					<!--Text comment in inbound file, mapped to SpecialDeliveryInstructions.
+					<DeliverySlot
+						<SlotStart></SlotStart>
+						<SlotEnd></SlotEnd>
+					</DeliverySlot>-->
+					<!--Text comment in inbound file, mapped to SpecialDeliveryInstructions.
 					<DeliveryCutOffDate></DeliveryCutOffDate>
-					<DeliveryCutOffTime></DeliveryCutOffTime>
-					<SpecialDeliveryInstructions></SpecialDeliveryInstructions>
+					<DeliveryCutOffTime></DeliveryCutOffTime>-->
+					<SpecialDeliveryInstructions>
+						<xsl:value-of select="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/ShipTo/DeliveryInstructions"/>
+						<!--Add cost centre here?
+						<xsl:text> : </xsl:text>
+						<xsl:value-of select="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/CostCentre"/>-->
+						<xsl:text> : </xsl:text>
+						<xsl:value-of select="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/ConfirmInstructions"/>
+						<xsl:text> : </xsl:text>
+						<xsl:value-of select="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/Comment"/>
+					</SpecialDeliveryInstructions>
 				</OrderedDeliveryDetails>
-				<OrderID></OrderID>
-				
-				<!--		???
-				<FileGenerationNumber>
-				</FileGenerationNumber>-->
-				
-				<SequenceNumber />
+				<!--OrderID not used.
+				<OrderID></OrderID>-->
+				<!--SequenceNumber not used.
+				<SequenceNumber></SequenceNumber>-->
 				<!--HeaderExtraData not used.
-				<HeaderExtraData />-->
-				
+				<HeaderExtraData></HeaderExtraData-->
 			</PurchaseOrderHeader>
-
-			<!--Order Lines-->
-			
 			<PurchaseOrderDetail>
 				<xsl:for-each select="/Supplier_Orders/SupplierOrder/Order/Body/Line">
 					<PurchaseOrderLine>
-						<!--How to generate line number??-->
+						<!--How to generate line number? Is this done by the infiller?-->
 						<LineNumber/>
 						<ProductID>
 							<GTIN>
 								<!--No GTIN's provided in Marketboomer PO's-->
 								<xsl:text>5555555555555</xsl:text>
 							</GTIN>
-							<SuppliersProductCode>
-								<xsl:if test="Product/Identifiers/Identifier/@type='Seller'">
-									<xsl:value-of select ="Product/Identifiers/Identifier[@type='Seller']/@value"/>
-								</xsl:if>
-							</SuppliersProductCode>
-							<BuyersProductCode>
-								<xsl:if test="Product/Identifiers/Identifier/@type='Buyer'">
-									<xsl:value-of select ="Product/Identifiers/Identifier[@type='Buyer']/@value"/>
-								</xsl:if>
-							</BuyersProductCode>
+							<xsl:if test="Product/Identifiers/Identifier[@type='Seller']/@value != ''">
+								<SuppliersProductCode>
+										<xsl:value-of select ="Product/Identifiers/Identifier[@type='Seller']/@value"/>
+								</SuppliersProductCode>
+							</xsl:if>
+							<xsl:if test="Product/Identifiers/Identifier[@type='Buyer']/@value != ''">
+								<BuyersProductCode>
+										<xsl:value-of select ="Product/Identifiers/Identifier[@type='Buyer']/@value"/>
+								</BuyersProductCode>
+							</xsl:if>
 						</ProductID>
 						<ProductDescription>
 							<xsl:value-of select ="Product/Description"/>
 						</ProductDescription>
 						<OrderedQuantity>
 							<xsl:attribute name="UnitOfMeasure">
-  								<xsl:if test="Product/Unit/@measure='kg'">KGM</xsl:if>
-  								<xsl:if test="Product/Unit/@measure='each'">EA</xsl:if>
+								<xsl:choose>
+									<xsl:when test="Product/Unit/@measure='kg'">KGM</xsl:when>
+									<xsl:when test="Product/Unit/@measure='each'">EA</xsl:when>
+									<xsl:otherwise>EA</xsl:otherwise>
+								</xsl:choose>
   								<!--More UOM's?-->
  							</xsl:attribute>
-							<xsl:value-of select ="Quantity"/>
+ 							<xsl:choose>
+								<xsl:when test="Product/Unit/@measure='kg'">
+									<xsl:value-of select ="(Quantity)*(Product/Unit/@size)"/>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select ="Quantity"/>
+								</xsl:otherwise>
+							</xsl:choose>
+							<!--<xsl:value-of select ="Quantity"/>-->
 						</OrderedQuantity>
 						<PackSize>
 							<xsl:value-of select ="Product/Package/@size"/>
+							<xsl:text> </xsl:text>
 							<xsl:value-of select ="Product/Package/@name"/>
 						</PackSize>
 						<UnitValueExclVAT>
@@ -232,24 +303,41 @@ Andrew Barber			| 2009-11-05		| Created
 							<DeliveryDate>
 								<xsl:value-of select="Quantity/@delivery_date"/>
 							</DeliveryDate>
-							
-							<!--Delivery slot data in text despcription line in Marketboomer file... Not mapped.
+							<!--Delivery slot specified in text description at order header level, mapped to SpecialDeliveryInstructions.
 							<DeliverySlot>
 								<SlotStart></SlotStart>
 								<SlotEnd></SlotEnd>
-							</DeliverySlot>-->
-													
+							</DeliverySlot>-->				
 						</OrderedDeliveryDetailsLineLevel>
-						
 						<!--LineExtraData not used.
-						<LineExtraData/>-->
-						
+						<LineExtraData></LineExtraData>-->
 					</PurchaseOrderLine>
 				</xsl:for-each>
 			</PurchaseOrderDetail>
-
-			<!--Trailer details-->
-			
+			<!--Promotions detail not used in Marketboomer file.
+			<PromotionsDetail>
+				<PurchaseOrderLine>
+					<LineNumber></LineNumber>
+					<ProductID>
+						<GTIN></GTIN>
+						<SuppliersProductCode></SuppliersProductCode>
+						<BuyersProductCode></BuyersProductCode>
+					</ProductID>
+					<ProductDescription></ProductDescription>
+					<OrderedQuantity UnitOfMeasure=""></OrderedQuantity>
+					<PackSize></PackSize>
+					<UnitValueExclVAT></UnitValueExclVAT>
+					<LineValueExclVAT></LineValueExclVAT>
+					<OrderedDeliveryDetailsLineLevel>
+						<DeliveryDate></DeliveryDate>
+						<DeliverySlot>
+							<SlotStart></SlotStart>
+							<SlotEnd></SlotEnd>
+						</DeliverySlot>
+					</OrderedDeliveryDetailsLineLevel>
+					<LineExtraData/>
+				</PurchaseOrderLine>
+			</PromotionsDetail>-->
 			<PurchaseOrderTrailer>
 				<NumberOfLines>
 					<xsl:value-of select ="count(//Line)"/>
@@ -257,10 +345,8 @@ Andrew Barber			| 2009-11-05		| Created
 				<TotalExclVAT>
 					<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Financials/OrderValue"/>
 				</TotalExclVAT>
-				
 				<!--TrailerExtraData not used.
-				<TrailerExtraData/>-->
-
+				<TrailerExtraData></TrailerExtraData>-->
 			</PurchaseOrderTrailer>
 		</PurchaseOrder>
 	</xsl:template>
