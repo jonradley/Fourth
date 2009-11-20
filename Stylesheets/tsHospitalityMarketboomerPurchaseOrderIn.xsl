@@ -181,8 +181,10 @@ Andrew Barber			| 2009-11-05		| Created
 							<xsl:text>5555555555555</xsl:text>
 						</GLN>
 						<!--What should the BuyersCode and SuppliersCode values be set to?-->
-						<!--<BuyersCode></BuyersCode>
-						<SuppliersCode></SuppliersCode>-->
+						<!--<BuyersCode></BuyersCode>-->
+						<SuppliersCode>
+							<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/BillTo/Name"/>
+						</SuppliersCode>
 					</ShipToLocationID>
 					<!--Ship to name provided as "[DEFAULT]" in Marketboomer order file, mapped BillTo/Name-->
 					<ShipToName>
