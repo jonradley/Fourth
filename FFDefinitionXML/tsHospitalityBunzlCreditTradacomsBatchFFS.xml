@@ -11,6 +11,8 @@ S Jefford		| 22/08/2005		| GTIN field now sourced from CLD/SPRO(1).
 02/10/2006	|	Nigel Emsen	|	Ready for delivery
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 10/01/2007	|	Nigel Emsen	|	Ready for delivery
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+17/11/2009	| K O'sh			| Change to where we pick up the PO reference
 **********************************************************************
 -->
 <ffsFlatFileSchema>
@@ -204,8 +206,7 @@ S Jefford		| 22/08/2005		| GTIN field now sourced from CLD/SPRO(1).
 							<CreditNoteLine>
 								<LineNumber RecordPos="CLD=" LPos="1"/>
 								<PurchaseOrderReferences>
-									<!-- OIR LPos 5 OPTIONAL Purchase Order Reference, OPTIONAL, CREDIT – OIR – ORNO(1), Should be set to the customer’s order reference.  If the order has been generated without a customer reference then the seller’s order reference may be used -->
-									<PurchaseOrderReference RecordPos="CLD=" LPos="23" SFPos="1"/>
+									<PurchaseOrderReference RecordPos="CRF=" LPos="4"/>
 									<!-- OIR LPos 5 OPTIONAL Purchase Order Date, OPTIONAL, CREDIT – OIR – ORNO(3), YYMMDD, Must be valid date, and should be set to the order date associated with the reference above -->
 									<PurchaseOrderDate RecordPos="CLD=" LPos="23" SFPos="3"/>
 								</PurchaseOrderReferences>
