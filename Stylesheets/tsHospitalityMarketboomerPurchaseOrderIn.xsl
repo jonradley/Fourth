@@ -104,7 +104,8 @@ Andrew Barber			| 2009-11-05		| Created
 						</GLN>
 						<!--What should the BuyersCode and SuppliersCode values be set to?-->
 						<BuyersCode>
-							<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/BillTo/PartyIds/Identifier[@type='Seller']/@value"/>
+							<!--<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/BillTo/PartyIds/Identifier[@type='Seller']/@value"/>-->
+							<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/BillTo/Name"/>
 						</BuyersCode>
 						<!--<SuppliersCode></SuppliersCode>-->
 					</BuyersLocationID>
@@ -142,7 +143,8 @@ Andrew Barber			| 2009-11-05		| Created
 						</GLN>
 						<!--What should the BuyersCode and SuppliersCode values be set to?-->
 						<BuyersCode>
-							<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Seller/PartyIds/Identifier[@type='Buyer']/@value"/>
+							<!--<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Seller/PartyIds/Identifier[@type='Buyer']/@value"/>-->
+							<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Seller/Name"/>
 						</BuyersCode>
 						<!--<SuppliersCode></SuppliersCode>-->
 					</SuppliersLocationID>
@@ -182,10 +184,32 @@ Andrew Barber			| 2009-11-05		| Created
 						<!--<BuyersCode></BuyersCode>
 						<SuppliersCode></SuppliersCode>-->
 					</ShipToLocationID>
-					<!--Ship to name provided as "[DEFAULT]" in Marketboomer order file, not mapped.
-					<ShipToName></ShipToName>-->
+					<!--Ship to name provided as "[DEFAULT]" in Marketboomer order file, mapped BillTo/Name-->
+					<ShipToName>
+						<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/BillTo/Name"/>
+					</ShipToName>
 					<ShipToAddress>
 						<AddressLine1>
+							<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/BillTo/Address/AddressLine1"/>
+						</AddressLine1>
+						<xsl:if test="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/BillTo/Address/AddressLine2 != ''">
+							<AddressLine2>
+								<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/BillTo/Address/AddressLine2"/>
+							</AddressLine2>
+						</xsl:if>
+						<xsl:if test="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/BillTo/Address/City != ''">
+							<AddressLine3>
+								<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/BillTo/Address/City"/>
+							</AddressLine3>
+						</xsl:if>
+						<xsl:if test="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/BillTo/Address/@country-code != ''">
+							<AddressLine4>
+								<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/BillTo/Address/@country-code"/>
+							</AddressLine4>
+						</xsl:if>
+						<!--Postcode datatype in Marketboomer xsd = positiveInteger, therefore not consistent with UK postcodes, not mapped.
+						<PostCode></PostCode>-->
+						<!--<AddressLine1>
 							<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/ShipTo/Location/Address/AddressLine1"/>
 						</AddressLine1>
 						<xsl:if test="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/ShipTo/Location/Address/AddressLine2 != ''">
@@ -203,7 +227,7 @@ Andrew Barber			| 2009-11-05		| Created
 								<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/ShipTo/Location/Address/@country-code"/>
 							</AddressLine4>
 						</xsl:if>
-						<!--Postcode datatype in Marketboomer xsd = positiveInteger, therefore not consistent with UK postcodes, not mapped.
+						Postcode datatype in Marketboomer xsd = positiveInteger, therefore not consistent with UK postcodes, not mapped.
 						<PostCode></PostCode>-->
 					</ShipToAddress>
 					<ContactName>
