@@ -115,15 +115,21 @@ Andrew Barber			| 2009-11-05		| Created
 						<AddressLine1>
 							<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/BillTo/Address/AddressLine1"/>
 						</AddressLine1>
-						<AddressLine2>
-							<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/BillTo/Address/AddressLine2"/>
-						</AddressLine2>
-						<AddressLine3>
-							<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/BillTo/Address/City"/>
-						</AddressLine3>
-						<AddressLine4>
-							<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/BillTo/Address/@country-code"/>
-						</AddressLine4>
+						<xsl:if test="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/BillTo/Address/AddressLine2 != ''">
+							<AddressLine2>
+								<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/BillTo/Address/AddressLine2"/>
+							</AddressLine2>
+						</xsl:if>
+						<xsl:if test="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/BillTo/Address/City != ''">
+							<AddressLine3>
+								<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/BillTo/Address/City"/>
+							</AddressLine3>
+						</xsl:if>
+						<xsl:if test="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/BillTo/Address/@country-code != ''">
+							<AddressLine4>
+								<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/BillTo/Address/@country-code"/>
+							</AddressLine4>
+						</xsl:if>
 						<!--Postcode datatype in Marketboomer xsd = positiveInteger, therefore not consistent with UK postcodes, not mapped.
 						<PostCode></PostCode>-->
 					</BuyersAddress>
@@ -147,15 +153,21 @@ Andrew Barber			| 2009-11-05		| Created
 						<AddressLine1>
 							<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Seller/Address/AddressLine1"/>
 						</AddressLine1>
-						<AddressLine2>
-							<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Seller/Address/AddressLine2"/>
-						</AddressLine2>
-						<AddressLine3>
-							<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Seller/Address/City"/>
-						</AddressLine3>
-						<AddressLine4>
-							<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Seller/Address/@country-code"/>
-						</AddressLine4>
+						<xsl:if test="/Supplier_Orders/SupplierOrder/Order/Header/Seller/Address/AddressLine2 != ''">
+							<AddressLine2>
+								<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Seller/Address/AddressLine2"/>
+							</AddressLine2>
+						</xsl:if>
+						<xsl:if test="/Supplier_Orders/SupplierOrder/Order/Header/Seller/Address/City != ''">
+							<AddressLine3>
+								<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Seller/Address/City"/>
+							</AddressLine3>
+						</xsl:if>
+						<xsl:if test="/Supplier_Orders/SupplierOrder/Order/Header/Seller/Address/@country-code != ''">
+							<AddressLine4>
+								<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Seller/Address/@country-code"/>
+							</AddressLine4>
+						</xsl:if>
 						<!--Postcode datatype in Marketboomer xsd = positiveInteger, therefore not consistent with UK postcodes, not mapped.
 						<PostCode></PostCode>-->
 					</SuppliersAddress>
@@ -176,15 +188,21 @@ Andrew Barber			| 2009-11-05		| Created
 						<AddressLine1>
 							<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/ShipTo/Location/Address/AddressLine1"/>
 						</AddressLine1>
-						<AddressLine2>
-							<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/ShipTo/Location/Address/AddressLine2"/>
-						</AddressLine2>
-						<AddressLine3>
-							<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/ShipTo/Location/Address/City"/>
-						</AddressLine3>
-						<AddressLine4>
-							<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/ShipTo/Location/Address/@country-code"/>
-						</AddressLine4>
+						<xsl:if test="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/ShipTo/Location/Address/AddressLine2 != ''">
+							<AddressLine2>
+								<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/ShipTo/Location/Address/AddressLine2"/>
+							</AddressLine2>
+						</xsl:if>
+						<xsl:if test="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/ShipTo/Location/Address/City != ''">
+							<AddressLine3>
+								<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/ShipTo/Location/Address/City"/>
+							</AddressLine3>
+						</xsl:if>
+						<xsl:if test="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/ShipTo/Location/Address/@country-code != ''">
+							<AddressLine4>
+								<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/ShipTo/Location/Address/@country-code"/>
+							</AddressLine4>
+						</xsl:if>
 						<!--Postcode datatype in Marketboomer xsd = positiveInteger, therefore not consistent with UK postcodes, not mapped.
 						<PostCode></PostCode>-->
 					</ShipToAddress>
