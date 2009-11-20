@@ -251,7 +251,7 @@ Andrew Barber			| 2009-11-05		| Created
 				<xsl:for-each select="/Supplier_Orders/SupplierOrder/Order/Body/Line">
 					<PurchaseOrderLine>
 						<!--How to generate line number? Is this done by the infiller?-->
-						<LineNumber/>
+						<!--<LineNumber/>-->
 						<ProductID>
 							<GTIN>
 								<!--No GTIN's provided in Marketboomer PO's-->
