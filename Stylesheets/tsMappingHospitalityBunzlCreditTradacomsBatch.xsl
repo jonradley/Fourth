@@ -9,9 +9,9 @@ N Emsen	| 14/09/2006	| Not tested against any Brakes credit notes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 17/11/2006	|	Nigel Emsen	| Case: 476, changes required for AS2 Orders
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-13/10/2009	| R Cambridge	| Case: 3121 Don't prefix PL account codes for non-Aramark PL accounts
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-           	|            	| 
+10/11/2009	| K O'Sh			| case 2976, we have changed where we pick up
+									the PO reference from
+
 **********************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
@@ -253,7 +253,7 @@ N Emsen	| 14/09/2006	| Not tested against any Brakes credit notes
 	<!-- Check for pairing of Purchase Order Date & Purchase Order Reference -->
 	<xsl:template match="//PurchaseOrderReferences">
 		<xsl:variable name="sPORefDate" select="translate(PurchaseOrderDate,' ','')"/>
-		<xsl:variable name="sPORefReference" select="translate(PurchaseOrderReference,' ','')"/>
+		<xsl:variable name="sPORefReference" select="translate(../../CreditNoteLine[1]/PurchaseOrderReferences/PurchaseOrderReference,' ','')"/>
 		<xsl:if test="string($sPORefDate) !='' and string($sPORefReference) != '' ">
 			<PurchaseOrderReferences>
 				<PurchaseOrderReference>
@@ -269,22 +269,11 @@ N Emsen	| 14/09/2006	| Not tested against any Brakes credit notes
 	<!-- template to concat sendersbranchreference to build new trading relationahip value -->
 	<xsl:template match="SendersBranchReference">
 		<SendersBranchReference>
-			
-			<xsl:choose>
-				<xsl:when test="starts-with(../../*/Buyer/BuyersLocationID/SuppliersCode, 'ARAM')">
-					<!-- Get the Buyer name, e.g. ARAMARK from CDT(1) and concat with
-							the current SendersBranchReference value, PL Account Number. -->
-					<xsl:variable name="sBuyerName" select="translate(//Buyer/BuyersLocationID/SuppliersCode,' ','')"/>
-					<xsl:variable name="sPLAccountNo" select="translate(//TradeSimpleHeader/SendersBranchReference,' ','')"/>
-					<xsl:value-of select="concat($sBuyerName,'/',$sPLAccountNo)"/>
-				</xsl:when>
-				
-				<xsl:otherwise>
-					<!-- Non-Aramark PL account users -->					
-					<xsl:value-of select="."/>
-				</xsl:otherwise>
-			</xsl:choose>
-			
+			<!-- Get the Buyer name, e.g. ARAMARK from CDT(1) and concat with
+					the current SendersBranchReference value, PL Account Number. -->
+			<xsl:variable name="sBuyerName" select="translate(//Buyer/BuyersLocationID/SuppliersCode,' ','')"/>
+			<xsl:variable name="sPLAccountNo" select="translate(//TradeSimpleHeader/SendersBranchReference,' ','')"/>
+			<xsl:value-of select="concat($sBuyerName,'/',$sPLAccountNo)"/>
 		</SendersBranchReference>
 	</xsl:template>
 
