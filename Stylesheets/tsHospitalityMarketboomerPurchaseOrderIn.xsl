@@ -179,8 +179,8 @@ Andrew Barber			| 2009-11-05		| Created
 							<xsl:text>5555555555555</xsl:text>
 						</GLN>
 						<!--What should the BuyersCode and SuppliersCode values be set to?-->
-						<BuyersCode></BuyersCode>
-						<SuppliersCode></SuppliersCode>
+						<!--<BuyersCode></BuyersCode>
+						<SuppliersCode></SuppliersCode>-->
 					</ShipToLocationID>
 					<!--Ship to name provided as "[DEFAULT]" in Marketboomer order file, not mapped.
 					<ShipToName></ShipToName>-->
