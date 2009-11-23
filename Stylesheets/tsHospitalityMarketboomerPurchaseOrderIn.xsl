@@ -8,7 +8,10 @@ Name					| Date				| Change
 Andrew Barber			| 2009-11-05		| Created
 *******************************************************************-->
 
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0"
+		xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+		xmlns:script="http://mycompany.com/mynamespace"
+		xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	<xsl:output method="xml" encoding="UTF-8"/>
 	<!-- Start point - ensure required outer BatchRoot tag is applied -->
 	<xsl:template match="/">
@@ -112,7 +115,7 @@ Andrew Barber			| 2009-11-05		| Created
 					<BuyersName>
 						<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/BillTo/Name"/>
 					</BuyersName>
-					<BuyersAddress>
+					<!--<BuyersAddress>
 						<AddressLine1>
 							<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/BillTo/Address/AddressLine1"/>
 						</AddressLine1>
@@ -131,9 +134,9 @@ Andrew Barber			| 2009-11-05		| Created
 								<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/BillTo/Address/@country-code"/>
 							</AddressLine4>
 						</xsl:if>
-						<!--Postcode datatype in Marketboomer xsd = positiveInteger, therefore not consistent with UK postcodes, not mapped.
-						<PostCode></PostCode>-->
-					</BuyersAddress>
+						Postcode datatype in Marketboomer xsd = positiveInteger, therefore not consistent with UK postcodes, not mapped.
+						<PostCode></PostCode>
+					</BuyersAddress>-->
 				</Buyer>
 				<Supplier>
 					<SuppliersLocationID>
@@ -263,7 +266,14 @@ Andrew Barber			| 2009-11-05		| Created
 						<xsl:text>Delivery</xsl:text>
 					</DeliveryType>
 					<DeliveryDate>
-						<xsl:value-of select="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/ShipTo/DeliveryDay"/>
+						<xsl:choose>
+							<xsl:when test="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/ShipTo/DeliveryDay='Next Delivery Run'">
+								<xsl:value-of select="script:msGetCurrentDate()"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/ShipTo/DeliveryDay"/>
+							</xsl:otherwise>
+						</xsl:choose>
 					</DeliveryDate>
 					<!--Text comment in inbound file, mapped to SpecialDeliveryInstructions.
 					<DeliverySlot
@@ -397,4 +407,40 @@ Andrew Barber			| 2009-11-05		| Created
 		</PurchaseOrder>
 	</BatchRoot>
 	</xsl:template>
+	
+	<msxsl:script language="JScript" implements-prefix="script"><![CDATA[ 
+
+		/*=========================================================================================
+		' Routine       	 : msGetCurrentDate
+		' Description 	 : Gets the current date + 1 in the format "yyyy-mm-dd"
+		' Inputs          	 : String
+		' Outputs       	 : None
+		' Returns       	 : String
+		' Author       		 : A Sheppard, 07/05/2008
+		' Alterations   	 : A Barber, 23/11/2009, modified to return current date + 1 for next day deliveries.
+		'========================================================================================*/
+		function msGetCurrentDate()
+		{
+			var dtDate = new Date();
+			var sReturn = '';
+			
+			sReturn = dtDate.getYear() + '-';
+			
+			if(dtDate.getMonth() < 9)
+			{
+				sReturn += '0';
+			}
+			
+			sReturn += (dtDate.getMonth() + 1) + '-';
+			
+			if(dtDate.getDate() < 10)
+			{
+				sReturn += '0';
+			}
+			sReturn += (dtDate.getDate() + 1);
+
+			return sReturn;
+		}
+
+	]]></msxsl:script>
 </xsl:stylesheet>
