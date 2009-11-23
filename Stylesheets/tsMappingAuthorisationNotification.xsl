@@ -22,6 +22,8 @@
 ******************************************************************************************
  10/06/2008 | A Sheppard | 2269. Genericised
 ******************************************************************************************
+ 23/11/2009 | Rave Tech   | 3207.Validate the username and password should non-blank.
+ ******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:user="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl user">
 	<xsl:output method="html"/>
@@ -109,7 +111,7 @@
 				}
 			</style>
 			<body>			
-				<form name="frmMain" method="post">
+				<form name="frmMain" method="post" onsubmit="return mbValidateDocument();">
 					<xsl:attribute name="action">
 						<xsl:choose>
 							<xsl:when test="//AuthorisationURL">
@@ -580,5 +582,35 @@
 				</form>
 			</body>
 		</html>
+		<script language="javascript"><![CDATA[ 			
+			function trim(s) 
+			{ 
+			    return s.replace(/^\s+/,"").replace(/\s+$/,""); 
+			} 
+			
+			function mbValidateDocument()
+			{
+				var sValidationError = '';
+							
+				// must specify a username and password
+				if(trim(document.all.txtUsername.value) == '' || trim(document.all.txtPassword.value) == '')
+				{
+					sValidationError = sValidationError + '\nA username and password must be entered.';
+				}
+								
+				if(sValidationError == '')
+				{				
+					return true;				
+				}	
+				else
+				{
+					alert('Validation Error:' + sValidationError);
+					return false;
+				}
+			}		
+
+
+		]]></script>
+
 	</xsl:template>
 </xsl:stylesheet>
