@@ -6,7 +6,8 @@ Name			| Date				| Change
 **********************************************************************
 R Cambridge	| 2009-07-07		| 2991 Created Module
 **********************************************************************
-				|						|				
+R Cambridge	| 2009-11-24		| 3260 Pilot / UAT changes 
+											Add discounts into unit price + line value (as Aramark Es have already included any discount in the catalogue unit price)
 **********************************************************************
 				|						|
 **********************************************************************
@@ -166,19 +167,37 @@ R Cambridge	| 2009-07-07		| 2991 Created Module
 											<xsl:value-of select="@Qty"/>
 										</InvoicedQuantity>
 										
-										<UnitValueExclVAT><xsl:value-of select="@UP"/></UnitValueExclVAT>
-										<LineValueExclVAT><xsl:value-of select="@Total"/></LineValueExclVAT>
-										<!--xsl:for-each select="Discounts/Discount/@Rate[. != ''][1]">
-											<LineDiscountRate><xsl:value-of select="."/></LineDiscountRate>
-										</xsl:for-each-->
-										<!--xsl:for-each select="@NetAmount[. != ''][1]">
-											<LineDiscountValue><xsl:value-of select="format-number(../@Total - ., '0.00')"/></LineDiscountValue>
-										</xsl:for-each-->
+																		
+										<!--
+											New logic for unit price, reflects the fact that Aramark Es have already included any discount in the catalogue unit price
+										-->	
 										
-										<xsl:if test="Discounts/Discount/@Amount">
+										<xsl:choose>
+											
+											<xsl:when test="Discounts/Discount/@Amount">
+												
+												<UnitValueExclVAT><xsl:value-of select="format-number((@Total - Discounts/Discount/@Amount) div @Qty, '0.00')"/></UnitValueExclVAT>
+												
+												<LineValueExclVAT><xsl:value-of select="format-number(@Total - Discounts/Discount/@Amount, '0.00')"/></LineValueExclVAT>
+												
+											</xsl:when>
+											
+											<xsl:otherwise>
+												
+												<UnitValueExclVAT><xsl:value-of select="@UP"/></UnitValueExclVAT>	
+												
+												<LineValueExclVAT><xsl:value-of select="@Total"/></LineValueExclVAT>
+												
+											</xsl:otherwise>
+											
+										</xsl:choose>																			
+										
+										
+										
+										<!--xsl:if test="Discounts/Discount/@Amount">
 											<LineDiscountRate><xsl:value-of select="format-number(100 * Discounts/Discount/@Amount div @Total, '0.00')"/></LineDiscountRate>
 											<LineDiscountValue><xsl:value-of select="Discounts/Discount/@Amount"/></LineDiscountValue>
-										</xsl:if>
+										</xsl:if-->
 										
 										<VATCode><xsl:value-of select="Taxes/Tax/@Type"/></VATCode>
 										<VATRate><xsl:value-of select="format-number(Taxes/Tax/@Rate, '0.00')"/></VATRate>
