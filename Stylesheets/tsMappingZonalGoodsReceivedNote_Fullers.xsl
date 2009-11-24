@@ -21,6 +21,8 @@
  14/03/2008	| A Sheppard	| 2071. Cater for Ullage credits
  ******************************************************************************************
  19/06/2009	| Rave Tech		| 2950. Set OrderNo as PO Ref rather than DN ref for 2 Brakes suppliers.
+ ******************************************************************************************
+ 24/11/2009	| Lee Boyton	| 3261. Truncate the OrderNo field to the maximum length of 15 characters.
 ******************************************************************************************
 -->
 <xsl:stylesheet 	version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -58,10 +60,10 @@
 			<!--Set OrderNo as PO Ref rather than DN ref for BrakesFrozen and BrakesGrocery suppliers-->
 			<xsl:choose>
 				<xsl:when test="$SCR = 'BRAKESFROZEN' or $SCR = 'BRAKESGROCERY'">
-					<xsl:attribute name="OrderNo"><xsl:value-of select="//GoodsReceivedNoteHeader/PurchaseOrderReferences/PurchaseOrderReference | //CreditNoteReference"/></xsl:attribute>
+					<xsl:attribute name="OrderNo"><xsl:value-of select="substring(//GoodsReceivedNoteHeader/PurchaseOrderReferences/PurchaseOrderReference | //CreditNoteReference,1,15)"/></xsl:attribute>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:attribute name="OrderNo"><xsl:value-of select="//GoodsReceivedNoteHeader/DeliveryNoteReferences/DeliveryNoteReference | //CreditNoteReference"/></xsl:attribute>
+					<xsl:attribute name="OrderNo"><xsl:value-of select="substring(//GoodsReceivedNoteHeader/DeliveryNoteReferences/DeliveryNoteReference | //CreditNoteReference,1,15)"/></xsl:attribute>
 				</xsl:otherwise>
 			</xsl:choose>
 			
