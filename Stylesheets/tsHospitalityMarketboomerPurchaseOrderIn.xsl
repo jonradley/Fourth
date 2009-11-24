@@ -334,15 +334,15 @@ Andrew Barber			| 2009-11-05		| Created
 								</xsl:choose>
   								<!--More UOM's?-->
  							</xsl:attribute>
- 							<xsl:choose>
+ 							<!--<xsl:choose>
 								<xsl:when test="Product/Unit/@measure='kg'">
 									<xsl:value-of select ="(Quantity)*(Product/Unit/@size)"/>
 								</xsl:when>
 								<xsl:otherwise>
 									<xsl:value-of select ="Quantity"/>
 								</xsl:otherwise>
-							</xsl:choose>
-							<!--<xsl:value-of select ="Quantity"/>-->
+							</xsl:choose>-->
+							<xsl:value-of select ="Quantity"/>
 						</OrderedQuantity>
 						<PackSize>
 							<xsl:value-of select ="Product/Package/@size"/>
