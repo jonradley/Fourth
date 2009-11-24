@@ -53,7 +53,14 @@
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Buyer/BuyersName), 35)"/>
 			<xsl:text>+</xsl:text>
 			<!--Your mailbox reference-->
-			<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN"/>
+			<xsl:choose>
+				<xsl:when test="PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN = '5555555555555'">
+					<xsl:text>5013546016595</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN" />
+				</xsl:otherwise>
+			</xsl:choose>
 			<xsl:text>:</xsl:text>
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersName), 35)"/>
 			<xsl:text>+</xsl:text>
@@ -84,7 +91,14 @@
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:text>SDT=</xsl:text>
-			<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN"/>
+			<xsl:choose>
+				<xsl:when test="PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN = '5555555555555'">
+					<xsl:text>5013546016595</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN" />
+				</xsl:otherwise>
+			</xsl:choose>
 			<xsl:text>:</xsl:text>
 			<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/BuyersCode"/>
 			<xsl:text>+</xsl:text>
