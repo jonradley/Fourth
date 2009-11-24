@@ -268,7 +268,7 @@ Andrew Barber			| 2009-11-05		| Created
 					<DeliveryDate>
 						<xsl:choose>
 							<xsl:when test="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/ShipTo/DeliveryDay='Next Delivery Run'">
-								<xsl:value-of select="script:msGetCurrentDate()"/>
+								<xsl:value-of select="script:msNextDayDate()"/>
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:value-of select="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/ShipTo/DeliveryDay"/>
@@ -408,39 +408,25 @@ Andrew Barber			| 2009-11-05		| Created
 	</BatchRoot>
 	</xsl:template>
 	
-	<msxsl:script language="JScript" implements-prefix="script"><![CDATA[ 
-
-		/*=========================================================================================
-		' Routine       	 : msGetCurrentDate
-		' Description 	 : Gets the current date + 1 in the format "yyyy-mm-dd"
+	<msxsl:script language="vbscript" implements-prefix="script"><![CDATA[ 
+	
+		'=========================================================================================
+		' Routine       	 : msNextDayDate
+		' Description 	 : Gets the next day date in the format "yyyy-mm-dd"
 		' Inputs          	 : String
 		' Outputs       	 : None
 		' Returns       	 : String
-		' Author       		 : A Sheppard, 07/05/2008
-		' Alterations   	 : A Barber, 23/11/2009, modified to return current date + 1 for next day deliveries.
-		'========================================================================================*/
-		function msGetCurrentDate()
-		{
-			var dtDate = new Date();
-			var sReturn = '';
+		' Author       		 : Andrew Barber, 2009-11-24
+		' Alterations   	 :
+		'=========================================================================================
+		
+		Function msNextDayDate()
 			
-			sReturn = dtDate.getYear() + '-';
+			getNextDayDate=CStr(DateAdd("d",1,Date()))
+			msNextDayDate=Right(getNextDayDate,4) & "-" & Mid(getNextDayDate,4,2) & "-" & Left(getNextDayDate,2)
 			
-			if(dtDate.getMonth() < 9)
-			{
-				sReturn += '0';
-			}
-			
-			sReturn += (dtDate.getMonth() + 1) + '-';
-			
-			if(dtDate.getDate() < 10)
-			{
-				sReturn += '0';
-			}
-			sReturn += (dtDate.getDate() + 1);
-
-			return sReturn;
-		}
-
+		End Function
+	
 	]]></msxsl:script>
+	
 </xsl:stylesheet>
