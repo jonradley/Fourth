@@ -7,6 +7,7 @@
 14 July 08 - R Cambridge - FB1291: Credit note needs to handle catchweight products
 09 April 09 - R Cambridge - 2838: Only manipulate SCR/Suppliers-code-for-ShipTo on documents produced by Crystal (ie those with /8 or /A in the SCR)
 12 May 09 - R Cambridge - 2882: Set UoMs based on type of quantity and optional product code suffix 
+25 Nov 09 - R Cambridge - 2838: Ship To code manipulation as per rules from 3663
 
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
@@ -95,24 +96,73 @@
 	<xsl:template name="Combine3663DocRefAndCLOC2">
 		<xsl:param name="DocRef"/>
 		<xsl:param name="CLOC2"/>
+		
+		<xsl:variable name="locationWithoutSuffix">
+			<xsl:variable name="CLOC2Fragment" select="substring-before(translate(concat($CLOC2, '?'), '/', '?'), '?')"/>
+			<!-- Now create left pad string with enough zeroes to make final CLOC2 Fragment 6 chars: if fragment was length 0, copy starts at posn 1 to end - 6 chars, if length was 6 copy starts at posn 7 - 0 chars -->
+			<xsl:variable name="CLOC2LeadingZeroString" select="substring('000000', 1 + string-length($CLOC2Fragment))"/>
+			<!-- Now create our always 6 character CLOC2Fragment -->
+			<xsl:value-of select="concat($CLOC2LeadingZeroString, $CLOC2Fragment)"/>
+		</xsl:variable>
+		
+		<xsl:variable name="locationCodeLength" select="string-length($locationWithoutSuffix)"/>
+		
+		<xsl:variable name="suffixCode" select="substring-after(translate(concat($CLOC2, '?'), '/', '?'), '?')"/>
+		
+		<xsl:variable name="depotCode">
+			<xsl:choose>
+				<!-- 8 digit codes should start with a depot code -->
+				<xsl:when test="string-length($CLOC2) = 8">
+					<xsl:value-of select="substring($CLOC2,1,2)"/>
+				</xsl:when>
+				
+				<!-- 6 digit codes don't -->
+				<xsl:otherwise/>
+			</xsl:choose>
+		
+		</xsl:variable>
 
 		<!-- 2838 -->
 		<xsl:choose>
-			<xsl:when test="contains($CLOC2,'?') or contains($CLOC2,'/')">		
-
-				<!-- Concat a ? to the end of CLOC2, convert all / in CLOC2 to ?, then get the substring before the first ? - which also means before the first / or the whole thing if no / or ? found -->
-				<xsl:variable name="CLOC2Fragment" select="substring-before(translate(concat($CLOC2, '?'), '/', '?'), '?')"/>
-				<!-- Now create left pad string with enough zeroes to make final CLOC2 Fragment 6 chars: if fragment was length 0, copy starts at posn 1 to end - 6 chars, if length was 6 copy starts at posn 7 - 0 chars -->
-				<xsl:variable name="CLOC2LeadingZeroString" select="substring('000000', 1 + string-length($CLOC2Fragment))"/>
-				<!-- Now create our always 6 character CLOC2Fragment -->
-				<xsl:variable name="CLOC2Fragment6Char" select="concat($CLOC2LeadingZeroString, $CLOC2Fragment)"/>
-				<!-- Finally, concat first two chars of DocRef with this value -->
-				<xsl:value-of select="concat(substring($DocRef,1,2), $CLOC2Fragment6Char)"/>
+		
+			<!-- Check which 3663 system this code relates to derive the location code accordingly -->
+			
+			<xsl:when test="string-length($CLOC2) = 6 and suffixCode = '8'">
+				<!-- Frozen codes used on the Crystal system -->
+				<!-- ======================================= -->
+				<!-- Recover the 6 digit code needed for ordering -->
+				
+				<xsl:value-of select="$locationWithoutSuffix"/>
 			
 			</xsl:when>
 			
-			<xsl:otherwise>
+			<xsl:when test="string-length($CLOC2) = 6 and suffixCode = 'A'">
+				<!-- Multi-temp codes used on the Crystal system -->
+				<!-- =========================================== -->
+				<!-- Recover the 8 digit code needed for ordering -->
+				
+				<xsl:value-of select="$depotCode"/>
+				<xsl:value-of select="$locationWithoutSuffix"/>
 			
+			</xsl:when>
+			
+			<xsl:when test="$locationCodeLength = 8 and $depotCode = '00'">
+				<!-- Frozen codes migrated from Crystal to the AX system -->
+				<!-- =================================================== -->
+				<!-- Recover the 6 digit code needed for ordering -->
+				
+				<xsl:value-of select="substring-after($locationWithoutSuffix, '00')"/>
+				
+			</xsl:when>
+			
+			<xsl:otherwise>
+				<!-- MT codes migrated from Crystal to the AX system -->
+				<!--  and codes newly created on the AX system -->		
+				<!-- =============================================== -->		
+				<!-- Don't change the code -->
+				
+				<!-- (NB 3663 haven't confirmed how new AX codes should be set up when ordering on Frozen) -->	
+						
 				<xsl:value-of select="$CLOC2"/>
 			
 			</xsl:otherwise>
