@@ -6,6 +6,7 @@
 02 June 05 - Andy T - H433 3663-Elior: fix to ensure unique FGNs
 09 April 09 - R Cambridge - 2838: Only manipulate SCR/Suppliers-code-for-ShipTo on documents produced by Crystal (ie those with /8 or /A in the SCR)
 12 May 09 - R Cambridge - 2882: Set UoMs based on type of quantity and optional product code suffix 
+25 Nov 09 - R Cambridge - 2838: Ship To code manipulation as per rules from 3663
 
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
