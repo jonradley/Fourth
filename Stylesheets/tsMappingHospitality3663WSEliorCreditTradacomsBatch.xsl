@@ -112,8 +112,8 @@
 		<xsl:variable name="depotCode">
 			<xsl:choose>
 				<!-- 8 digit codes should start with a depot code -->
-				<xsl:when test="string-length($CLOC2) = 8">
-					<xsl:value-of select="substring($CLOC2,1,2)"/>
+				<xsl:when test="string-length($DocRef) = 8">
+					<xsl:value-of select="substring($DocRef,1,2)"/>
 				</xsl:when>
 				
 				<!-- 6 digit codes don't -->
