@@ -123,16 +123,6 @@
 		</xsl:variable>
 		
 
-		<!--xsl:text>_</xsl:text>
-		<xsl:value-of select="$locationWithoutSuffix"/>
-		<xsl:text>_</xsl:text>
-		<xsl:value-of select="$locationCodeLength"/>
-		<xsl:text>_</xsl:text>
-		<xsl:value-of select="$suffixCode"/>
-		<xsl:text>_</xsl:text>
-		<xsl:value-of select="$depotCode"/>
-		<xsl:text>_</xsl:text-->
-
 		<!-- 2838 -->
 		<xsl:choose>
 		

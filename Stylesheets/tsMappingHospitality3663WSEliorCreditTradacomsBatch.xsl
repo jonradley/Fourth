@@ -107,7 +107,9 @@
 		
 		<xsl:variable name="locationCodeLength" select="string-length($locationWithoutSuffix)"/>
 		
-		<xsl:variable name="suffixCode" select="substring-after(translate(concat($CLOC2, '?'), '/', '?'), '?')"/>
+		<!--xsl:variable name="suffixCode" select="substring-after(translate(concat($CLOC2, '?'), '/', '?'), '?')"/-->
+		<xsl:variable name="suffixCode" select="substring-after(translate($CLOC2, '/', '?'), '?')"/>
+
 		
 		<xsl:variable name="depotCode">
 			<xsl:choose>
@@ -121,13 +123,14 @@
 			</xsl:choose>
 		
 		</xsl:variable>
-
+		
+		
 		<!-- 2838 -->
 		<xsl:choose>
 		
 			<!-- Check which 3663 system this code relates to derive the location code accordingly -->
 			
-			<xsl:when test="string-length($CLOC2) = 6 and suffixCode = '8'">
+			<xsl:when test="$locationCodeLength = 6 and $suffixCode = '8'">
 				<!-- Frozen codes used on the Crystal system -->
 				<!-- ======================================= -->
 				<!-- Recover the 6 digit code needed for ordering -->
@@ -136,7 +139,7 @@
 			
 			</xsl:when>
 			
-			<xsl:when test="string-length($CLOC2) = 6 and suffixCode = 'A'">
+			<xsl:when test="$locationCodeLength = 6 and $suffixCode = 'A'">
 				<!-- Multi-temp codes used on the Crystal system -->
 				<!-- =========================================== -->
 				<!-- Recover the 8 digit code needed for ordering -->
