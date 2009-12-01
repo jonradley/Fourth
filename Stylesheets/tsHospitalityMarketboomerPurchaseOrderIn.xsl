@@ -19,7 +19,7 @@ Andrew Barber			| 2009-11-05		| Created
 		<PurchaseOrder>
 			<TradeSimpleHeader>
 				<SendersCodeForRecipient>
-					<xsl:text>TEST</xsl:text>
+					<xsl:text>FAIRFAX</xsl:text>
 				</SendersCodeForRecipient>
 			</TradeSimpleHeader>
 			<PurchaseOrderHeader>
