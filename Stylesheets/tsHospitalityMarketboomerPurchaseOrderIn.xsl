@@ -28,10 +28,6 @@ Andrew Barber			| 2009-11-05		| Created
 				</DocumentStatus>
 				<Buyer>
 					<BuyersLocationID>
-						<GLN>
-							<!--No GLN's provided in Marketboomer PO's-->
-							<xsl:text>5555555555555</xsl:text>
-						</GLN>
 						<BuyersCode>
 							<!--Change to specify location_code as part of relationship code where location_code != '[DEFAULT]'-->
 							<xsl:choose>
@@ -53,10 +49,6 @@ Andrew Barber			| 2009-11-05		| Created
 				</Buyer>
 				<Supplier>
 					<SuppliersLocationID>
-						<GLN>
-							<!--No GLN's provided in Marketboomer PO's-->
-							<xsl:text>5555555555555</xsl:text>
-						</GLN>
 						<BuyersCode>
 							<xsl:value-of select ="/Supplier_Orders/SupplierOrder/Order/Header/Seller/Name"/>
 						</BuyersCode>
@@ -89,10 +81,6 @@ Andrew Barber			| 2009-11-05		| Created
 				</Supplier>
 				<ShipTo>
 					<ShipToLocationID>
-						<GLN>
-							<!--No GLN's provided in Marketboomer PO's-->
-							<xsl:text>5555555555555</xsl:text>
-						</GLN>
 						<SuppliersCode>
 							<!--Change to specify location_code as part of relationship code where location_code != '[DEFAULT]'-->
 							<xsl:choose>
@@ -179,10 +167,6 @@ Andrew Barber			| 2009-11-05		| Created
 					<PurchaseOrderLine>
 						<!--<LineNumber/>-->
 						<ProductID>
-							<GTIN>
-								<!--No GTIN's provided in Marketboomer PO's-->
-								<xsl:text>5555555555555</xsl:text>
-							</GTIN>
 							<xsl:if test="Product/Identifiers/Identifier[@type='Seller']/@value != ''">
 								<SuppliersProductCode>
 										<xsl:value-of select ="Product/Identifiers/Identifier[@type='Seller']/@value"/>
