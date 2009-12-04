@@ -16,7 +16,7 @@
 '******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:data="blah">
-	<xsl:output method="xml"/>
+	<xsl:output method="xml" encoding="utf-8"/>
 	<!-- Buyers Code detection function and lookup table -->
 	<xsl:include href="tsMapping_LookupBuyersANA_Table.xsl"/>
 	<!-- we use constants for default values -->
@@ -53,44 +53,22 @@
 							     ~~~~~~~~~~~~~~~~~~~~~~~ -->
 							<TradeSimpleHeader>
 								<!-- SCR comes from Sellers code for buyer if there, else it comes from Buyer GLN -->
-								
 								<SendersCodeForRecipient>
-									<!-- Detect if a SSP invoice -->
 									<xsl:choose>
-										<!-- Buyers Code to be used. -->
-										<xsl:when test="$sCheckFlag ='1' ">
-											<!-- SSP amendment - ensure leading country code (usually '8') in 8 character codes are removed -->
-											<xsl:value-of select="substring(normalize-space(/Invoice/ShipTo/BuyerAssigned),string-length(normalize-space(/Invoice/ShipTo/BuyerAssigned))-6)"/>
+										<xsl:when test="string(/Invoice/ShipTo/SellerAssigned)">
+											<xsl:value-of select="/Invoice/ShipTo/SellerAssigned"/>
 										</xsl:when>
-										<!-- Sellers code to be used if present. -->
 										<xsl:otherwise>
-											<xsl:choose>
-												<xsl:when test="string(/Invoice/ShipTo/BuyerAssigned)">
-													<xsl:value-of select="normalize-space(/Invoice/ShipTo/BuyerAssigned)"/>
-												</xsl:when>
-												<xsl:otherwise>
-													<xsl:value-of select="normalize-space(/Invoice/Buyer/BuyerGLN)"/>
-												</xsl:otherwise>
-											</xsl:choose>
-											<!--End of IS NOT a SSP Invoice -->
+											<xsl:value-of select="/Invoice/Buyer/BuyerGLN"/>
 										</xsl:otherwise>
-										<!-- End of Detect if a SSP invoice -->
 									</xsl:choose>
 								</SendersCodeForRecipient>
 								<!-- SBR used to pick out the PL Account code to be used in the trading relationship set up. This could be Buyer or Supplier value. -->
-								<!-- Detect if not a SSP invoice and there is a contract reference number -->
-								<xsl:if test="string(/Invoice/TradeAgreementReference/ContractReferenceNumber) != '' and string($sCheckFlag) !='1' ">
+								<xsl:if test="string(/Invoice/TradeAgreementReference/ContractReferenceNumber) != '' ">
 									<SendersBranchReference>
-										<xsl:value-of select="normalize-space(/Invoice/TradeAgreementReference/ContractReferenceNumber)"/>
+										<xsl:value-of select="/Invoice/TradeAgreementReference/ContractReferenceNumber"/>
 									</SendersBranchReference>
 								</xsl:if>
-								<!-- Detect if a SSP invoice -->
-								<xsl:if test="string($sCheckFlag) ='1' ">
-									<SendersBranchReference>
-										<xsl:value-of select="normalize-space(/Invoice/Seller/BuyerAssigned)"/>
-									</SendersBranchReference>
-								</xsl:if>
-								
 								<!-- SendersName, Address1 - 4 and PostCode will be populated by subsequent processors  -->
 								<!-- Recipients Code for Sender, Recipients Branch Reference, Name, Address1 - 4, PostCode will be populated by subsequent 	processors -->
 								<!-- the TestFlag will be populated by subsequent processors -->
