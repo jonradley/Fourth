@@ -66,43 +66,21 @@
 							<TradeSimpleHeader>
 								<!-- SCR comes from Sellers code for buyer if there, else it comes from Buyer GLN -->
 								<SendersCodeForRecipient>
-									<!-- Detect if a SSP invoice -->
 									<xsl:choose>
-										<!-- Buyers Code to be used. -->
-										<xsl:when test="$sCheckFlag ='1' ">
-											<!-- SSP amendment - ensure leading country code (usually '8') in 8 character codes are removed -->
-											<xsl:value-of select="substring(normalize-space(/CreditNote/ShipTo/BuyerAssigned),string-length(normalize-space(/CreditNote/ShipTo/BuyerAssigned))-6)"/>										
+										<xsl:when test="string(/CreditNote/ShipTo/SellerAssigned)">
+											<xsl:value-of select="/CreditNote/ShipTo/SellerAssigned"/>
 										</xsl:when>
-										<!-- Sellers code to be used if present. -->
 										<xsl:otherwise>
-											<xsl:choose>
-												<xsl:when test="string(/CreditNote/ShipTo/SellerAssigned)">
-													<xsl:value-of select="normalize-space(/CreditNote/ShipTo/BuyerAssigned)"/>
-												</xsl:when>
-												<xsl:otherwise>
-													<xsl:value-of select="normalize-space(/CreditNote/Buyer/BuyerGLN)"/>
-												</xsl:otherwise>
-											</xsl:choose>
-											<!--End of IS NOT a SSP Invoice -->
+											<xsl:value-of select="/CreditNote/Buyer/BuyerGLN"/>
 										</xsl:otherwise>
-										<!-- End of Detect if a SSP invoice -->
 									</xsl:choose>
 								</SendersCodeForRecipient>
 								<!-- SBR used to pick out the PL Account code to be used in the trading relationship set up. This could be Buyer or Supplier value. -->
-								<!-- Detect if not a SSP invoice and there is a contract reference number -->
-								<xsl:if test="string(/CreditNote/TradeAgreementReference/ContractReferenceNumber) != '' and string($sCheckFlag) !='1' ">
+								<xsl:if test="string(/CreditNote/TradeAgreementReference/ContractReferenceNumber) != '' ">
 									<SendersBranchReference>
-										<xsl:value-of select="normalize-space(/CreditNote/TradeAgreementReference/ContractReferenceNumber)"/>
+										<xsl:value-of select="/CreditNote/TradeAgreementReference/ContractReferenceNumber"/>
 									</SendersBranchReference>
 								</xsl:if>
-								<!-- Detect if a SSP invoice -->
-								<xsl:if test="string($sCheckFlag) ='1' ">
-									<SendersBranchReference>
-										<xsl:value-of select="normalize-space(/CreditNote/Seller/BuyerAssigned)"/>
-									</SendersBranchReference>
-								</xsl:if>
-								
-								
 								<!-- SendersName, Address1 - 4 and PostCode will be populated by subsequent processors  -->
 								<!-- Recipients Code for Sender, Recipients Branch Reference, Name, Address1 - 4, PostCode will be populated by subsequent 	processors -->
 								<!-- the TestFlag will be populated by subsequent processors -->
