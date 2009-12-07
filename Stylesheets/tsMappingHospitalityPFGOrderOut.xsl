@@ -172,8 +172,15 @@ R Cambridge	| 2009-09-11		| 3119 Created Module
 			<xsl:with-param name="width" select="$length - string-length($data)"/>			
 		</xsl:call-template>	
 		
-		<xsl:value-of select="substring($data,1,$length)"/>
-
+		<xsl:choose>
+			<xsl:when test="string-length($data) &gt; $length">
+				<xsl:value-of select="substring($data,string-length($data) - $length + 1,$length)"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="substring($data,1,$length)"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	
 	</xsl:template>
 	
 	<!--=======================================================================================
