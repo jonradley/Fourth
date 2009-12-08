@@ -122,7 +122,7 @@
 		
 		</xsl:variable>
 		
-
+		
 		<!-- 2838 -->
 		<xsl:choose>
 		
@@ -147,7 +147,7 @@
 			
 			</xsl:when>
 			
-			<xsl:when test="$locationCodeLength = 8 and $depotCode = '00'">
+			<xsl:when test="$locationCodeLength = 8 and starts-with($locationWithoutSuffix, '00')">
 				<!-- Frozen codes migrated from Crystal to the AX system -->
 				<!-- =================================================== -->
 				<!-- Recover the 6 digit code needed for ordering -->
