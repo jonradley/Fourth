@@ -12,7 +12,7 @@
 ' 16/10/2007   | R Cambridge  | 1520 branched from tsMapping_Inbound_EANUCC_Detects_BUYERSCODES_Invoice.xsl 
 '													use buyers code for shipto
 '******************************************************************************************
-' 07/11/2007 |S Sehgal  	| Case 3286 Added back code for VAT rate change from 17.5 to 15 and adapted to handle VAT changing back to 17.5% from 1-Jan-2010
+' 11/12/2009 |S Sehgal  	| Case 3286 Added back code for VAT rate change from 17.5 to 15 and adapted to handle VAT changing back to 17.5% from 1-Jan-2010
 '******************************************************************************************
 '
 '******************************************************************************************
