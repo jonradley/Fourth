@@ -43,6 +43,8 @@
 ******************************************************************************************
 15/09/2008		| Rave Tech		| 3091. Ignore SettlementDiscountRate.
 ******************************************************************************************
+14/12/2009 |S Sehgal  	| Case 3286 Changed to handle VAT changing back to 17.5% from 1-Jan-2010
+'******************************************************************************************
 	          	|              	|	                                                            
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
@@ -389,7 +391,7 @@
 													<xsl:choose>
 														<xsl:when test="/Invoice/TaxPointDateTime !=''">
 															<xsl:choose>
-																<xsl:when test="translate(substring-before(/Invoice/TaxPointDateTime, 'T'),'-','')  &lt;= translate('2008-11-30','-','')">
+																<xsl:when test="translate(substring-before(/Invoice/TaxPointDateTime, 'T'),'-','')  &lt;= translate('2008-11-30','-','') or translate(substring-before(/Invoice/TaxPointDateTime, 'T'),'-','')  &gt;= translate('2010-01-01','-','') ">
 																	 <xsl:value-of select="format-number($defaultTaxRate, '0.00')"/> 								
 																</xsl:when>
 																<xsl:otherwise>
@@ -399,7 +401,7 @@
 														</xsl:when>
 														<xsl:when test="/Invoice/InvoiceDocumentDetails/InvoiceDocumentDate !=''">
 															<xsl:choose>
-																<xsl:when test="translate(substring-before(/Invoice/InvoiceDocumentDetails/InvoiceDocumentDate, 'T'),'-','')  &lt;= translate('2008-11-30','-','')">
+																<xsl:when test="translate(substring-before(/Invoice/InvoiceDocumentDetails/InvoiceDocumentDate, 'T'),'-','')  &lt;= translate('2008-11-30','-','') or translate(substring-before(/Invoice/InvoiceDocumentDetails/InvoiceDocumentDate, 'T'),'-','')  &gt;= translate('2010-01-01','-','')">
 																	<xsl:value-of select="format-number($defaultTaxRate, '0.00')"/>
 																</xsl:when>
 																<xsl:otherwise>
@@ -409,7 +411,7 @@
 														</xsl:when>
 														<xsl:otherwise>
 															<xsl:choose>
-																<xsl:when test="translate($CurrentDate,'-','')  &lt;= translate('2008-11-30','-','')">
+																<xsl:when test="translate($CurrentDate,'-','')  &lt;= translate('2008-11-30','-','') or translate($CurrentDate,'-','')  &gt;= translate('2010-01-01','-','')">
 																	<xsl:value-of select="format-number($defaultTaxRate, '0.00')"/>
 																</xsl:when>
 																<xsl:otherwise>
@@ -476,7 +478,7 @@
 														<xsl:choose>
 															<xsl:when test="/Invoice/TaxPointDateTime !=''">
 																<xsl:choose>
-																	<xsl:when test="translate(substring-before(/Invoice/TaxPointDateTime, 'T'),'-','')  &lt;= translate('2008-11-30','-','')">
+																	<xsl:when test="translate(substring-before(/Invoice/TaxPointDateTime, 'T'),'-','')  &lt;= translate('2008-11-30','-','') or translate(substring-before(/Invoice/TaxPointDateTime, 'T'),'-','')  &gt;= translate('2010-01-01','-','')">
 																		 <xsl:value-of select="format-number($defaultTaxRate, '0.00')"/> 								
 																	</xsl:when>
 																	<xsl:otherwise>
@@ -486,7 +488,7 @@
 															</xsl:when>
 															<xsl:when test="/Invoice/InvoiceDocumentDetails/InvoiceDocumentDate !=''">
 																<xsl:choose>
-																	<xsl:when test="translate(substring-before(/Invoice/InvoiceDocumentDetails/InvoiceDocumentDate, 'T'),'-','')  &lt;= translate('2008-11-30','-','')">
+																	<xsl:when test="translate(substring-before(/Invoice/InvoiceDocumentDetails/InvoiceDocumentDate, 'T'),'-','')  &lt;= translate('2008-11-30','-','') or translate(substring-before(/Invoice/InvoiceDocumentDetails/InvoiceDocumentDate, 'T'),'-','')  &gt;= translate('2010-01-01','-','')">
 																		<xsl:value-of select="format-number($defaultTaxRate, '0.00')"/>
 																	</xsl:when>
 																	<xsl:otherwise>
@@ -496,7 +498,7 @@
 															</xsl:when>
 															<xsl:otherwise>
 																<xsl:choose>
-																	<xsl:when test="translate($CurrentDate,'-','')  &lt;= translate('2008-11-30','-','')">
+																	<xsl:when test="translate($CurrentDate,'-','')  &lt;= translate('2008-11-30','-','') or translate($CurrentDate,'-','')  &gt;= translate('2010-01-01','-','')">
 																		<xsl:value-of select="format-number($defaultTaxRate, '0.00')"/>
 																	</xsl:when>
 																	<xsl:otherwise>
