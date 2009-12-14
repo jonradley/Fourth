@@ -34,6 +34,8 @@
 '******************************************************************************************
 '27/11/2008	  | Rave Tech    |	 2592 Handled vat rate changing from 17.5 to 15 
 '******************************************************************************************
+'14/12/2009 |S Sehgal  	| Case 3286 Changed to handle VAT changing back to 17.5% from 1-Jan-2010
+'******************************************************************************************
 '	           |              |	
 '******************************************************************************************
 -->
@@ -522,7 +524,7 @@
 													<xsl:choose>
 															<xsl:when test="/CreditNote/TaxPointDateTime !=''">
 																<xsl:choose>
-																	<xsl:when test="translate($taxDate,'-','')  &lt;= translate('2008-11-30','-','')">
+																	<xsl:when test="translate($taxDate,'-','')  &lt;= translate('2008-11-30','-','') or translate($taxDate,'-','')  &gt;= translate('2010-01-01','-','')">
 																		 <xsl:value-of select="format-number($defaultTaxRate, '0.00')"/> 								
 																	</xsl:when>
 																	<xsl:otherwise>
@@ -532,7 +534,7 @@
 															</xsl:when>
 															<xsl:when test="/CreditNote/CreditNoteDocumentDetails/CreditNoteDocumentDate !=''">
 																<xsl:choose>
-																	<xsl:when test="translate($docDate,'-','')  &lt;= translate('2008-11-30','-','')">
+																	<xsl:when test="translate($docDate,'-','')  &lt;= translate('2008-11-30','-','') or translate($docDate,'-','')  &gt;= translate('2010-01-01','-','')">
 																		<xsl:value-of select="format-number($defaultTaxRate, '0.00')"/>
 																	</xsl:when>
 																	<xsl:otherwise>
@@ -542,7 +544,7 @@
 															</xsl:when>
 															<xsl:otherwise>
 																<xsl:choose>
-																	<xsl:when test="translate($CurrentDate,'-','')  &lt;= translate('2008-11-30','-','')">
+																	<xsl:when test="translate($CurrentDate,'-','')  &lt;= translate('2008-11-30','-','') or translate($CurrentDate,'-','')  &gt;= translate('2010-01-01','-','')">
 																		<xsl:value-of select="format-number($defaultTaxRate, '0.00')"/>
 																	</xsl:when>
 																	<xsl:otherwise>
@@ -636,7 +638,7 @@
 														<xsl:choose>
 															<xsl:when test="/CreditNote/TaxPointDateTime !=''">
 																<xsl:choose>
-																	<xsl:when test="translate($taxDate,'-','')  &lt;= translate('2008-11-30','-','')">
+																	<xsl:when test="translate($taxDate,'-','')  &lt;= translate('2008-11-30','-','') or translate($taxDate,'-','')  &gt;= translate('2010-01-01','-','') ">
 																		 <xsl:value-of select="format-number($defaultTaxRate, '0.00')"/> 								
 																	</xsl:when>
 																	<xsl:otherwise>
@@ -646,7 +648,7 @@
 															</xsl:when>
 															<xsl:when test="/CreditNote/CreditNoteDocumentDetails/CreditNoteDocumentDate !=''">
 																<xsl:choose>
-																	<xsl:when test="translate($docDate,'-','')  &lt;= translate('2008-11-30','-','')">
+																	<xsl:when test="translate($docDate,'-','')  &lt;= translate('2008-11-30','-','') or translate($docDate,'-','')  &gt;= translate('2010-01-01','-','')">
 																		<xsl:value-of select="format-number($defaultTaxRate, '0.00')"/>
 																	</xsl:when>
 																	<xsl:otherwise>
@@ -656,7 +658,7 @@
 															</xsl:when>
 															<xsl:otherwise>
 																<xsl:choose>
-																	<xsl:when test="translate($CurrentDate,'-','')  &lt;= translate('2008-11-30','-','')">
+																	<xsl:when test="translate($CurrentDate,'-','')  &lt;= translate('2008-11-30','-','') or translate($CurrentDate,'-','')  &gt;= translate('2010-01-01','-','')">
 																		<xsl:value-of select="format-number($defaultTaxRate, '0.00')"/>
 																	</xsl:when>
 																	<xsl:otherwise>
