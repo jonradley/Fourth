@@ -2,34 +2,23 @@
 ******************************************************************************************
  Overview
 
- This XSL file is used to transform XML for an authorisation notification into an HTML page
+ This XSL file is used to transform XML for Acknowledgement notification into an HTML page
 
- © Alternative Business Solutions Ltd., 2004.
+ © Alternative Business Solutions Ltd., 2009.
 ******************************************************************************************
  Module History
 ******************************************************************************************
  Date            | Name           | Description of modification
 ******************************************************************************************
- 18/04/2004 | A Sheppard | Created module.
+ 03/12/2009 | Rave Tech   | Created module.
 ****************************************************************************************** 
- 04/05/2006 | Lee Boyton | H588. Minor formatting changes.
+ 15/12/2009 | Sandeep Sehgal   | 3270 Changed to pick up URL from document based on DocTypeTo and also renamed the file
 ****************************************************************************************** 
- 26/05/2006 | Lee Boyton | H588. Removed use of Javascript to workaround security issues.
-****************************************************************************************** 
- 05/06/2006 | Lee Boyton | H588. Added missing authorisation comment text.
-******************************************************************************************
- 14/02/2008 | A Sheppard | Cater for budget data being in header extra data
-******************************************************************************************
- 10/06/2008 | A Sheppard | 2269. Genericised
-******************************************************************************************
- 23/11/2009 | Rave Tech   | 3207.Validate the username and password should non-blank.
- ******************************************************************************************
-  15/12/2009 | Sandeep Sehgal  | 3270.Form Action pulled from DocBuilder based on DocTypeTo attribute 
- ******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:user="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl user">
 	<xsl:output method="html"/>
 	<xsl:include href="HospitalityInclude.xsl"/>
+	<xsl:param name="MessageID" select="'0'"/>
 	<xsl:template match="/">
 		<html>
 			<style>
@@ -115,25 +104,20 @@
 			<body>			
 				<form name="frmMain" method="post" onsubmit="return mbValidateDocument();">
 					<xsl:attribute name="action">
-						<xsl:choose>
-							<xsl:when test="//AuthorisationURL">
-								<xsl:value-of select="//AuthorisationURL"/>
-							</xsl:when>
-							<xsl:otherwise>
-								<!-- read POST url added by pre-map out processor -->
-								<xsl:value-of select="/PurchaseOrder/DocBuilder/Url[@DocTypeTo=167]"/>
-								<xsl:text>OrderID=</xsl:text>
-								<xsl:value-of select="//PurchaseOrder/PurchaseOrderHeader/OrderID"/>
-							</xsl:otherwise>
-						</xsl:choose>
+						<xsl:value-of select="/PurchaseOrder/DocBuilder/Url[@DocTypeTo=84]"/>
 					</xsl:attribute>
+
+					<input type="hidden">
+						<xsl:attribute name="name">txtMessageID</xsl:attribute>
+						<xsl:attribute name="value"><xsl:value-of select="$MessageID"/></xsl:attribute>
+					</input>					
 					<table class="DocumentSurround">
 						<!--Header-->
 						<tr>
 							<td align="center" colspan="2">
 								<table width="100%">
 									<tr>
-										<th align="center">Purchase Order Authorisation Request</th>
+										<th align="center">Purchase Order Acknowledgement Request</th>
 									</tr>
 								</table>
 							</td>
@@ -358,7 +342,7 @@
 												<xsl:value-of select="//PurchaseOrder/PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions"/>
 											</td>
 										</tr>
-									</xsl:if>
+									</xsl:if>									
 								</table>
 							</td>
 						</tr>
@@ -393,7 +377,7 @@
 												<xsl:value-of select="//PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/CustomerPurchaseOrderReference"/>
 											</td>
 										</tr>
-									</xsl:if>
+									</xsl:if>									
 								</table>
 							</td>
 							<td valign="top" width="50%">
@@ -550,34 +534,23 @@
 									<xsl:text>Authorisation comment: </xsl:text>
 									<xsl:value-of select="//AuthorisationComments"/>
 									<br/><br/>
-								</xsl:if>
-								<xsl:text>To approve this order:</xsl:text>
+								</xsl:if>							
+								<xsl:text>To acknowledge this order:</xsl:text>
 								<br/>
 								<xsl:text>1. Please enter your username and password.</xsl:text>
 								<br/>
-								<xsl:text>2. Click on the Approve button.</xsl:text>
-								<br/><br/>
-								<xsl:text>To reject this order and return the order to the unit for amendment:</xsl:text>
-								<br/>
-								<xsl:text>1. Please enter your username and password.</xsl:text>
-								<br/>
-								<xsl:text>2. Please enter a comment to be displayed to the unit.</xsl:text>
-								<br/>
-								<xsl:text>3. Click on the Reject button.</xsl:text>
+								<xsl:text>2. Click on the Acknowledge button.</xsl:text>								
 							</td>
 						</tr>
 						<tr>
 							<td colspan="2" align="center">
 								Username <input type="text" name="txtUsername"/>
 								Password <input type="password" name="txtPassword"/>
-								Rejection Comment <input type="text" name="txtRejectionComment"/>
 							</td>
 						</tr>
 						<tr>
-							<td colspan="2" align="center">
-								<input type="hidden" name="txtExtraQueryString" value=""/>
-								<input type="submit" name="btnAction" value="Approve" onclick="document.getElementById('txtExtraQueryString').value = '&amp;Action=Approve&amp;Comment=' + document.getElementById('txtRejectionComment').value"/>
-								<input type="submit" name="btnAction" value="Reject" onclick="document.getElementById('txtExtraQueryString').value = '&amp;Action=Reject&amp;Comment=' + document.getElementById('txtRejectionComment').value"/>
+							<td colspan="2" align="center">								
+								<input type="submit" name="btnAction" value="Acknowledge"/>				
 							</td>
 						</tr>
 					</table>					
