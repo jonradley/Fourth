@@ -20,6 +20,8 @@
 ******************************************************************************************
 31/03/2009  | Natalie Dry	      | Remove 'X' if it's contained in the trading partner code - it shouldn't be, but it might occur occassionally as the result of the trading partner 'switch' we had to manage with the use of an 'X'
 ******************************************************************************************
+16/12/2009  | Moty Dimant		| 3286. Insert V1 after 01/01/2010
+******************************************************************************************
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -41,6 +43,9 @@
 		</xsl:variable>
 		
 		<xsl:variable name="CompanyVATCode" select="/Invoice/InvoiceHeader/HeaderExtraData/CompanyCode"/>
+		
+		<!--  We add a 'T' to the end of the date/time and will remove it later -->
+		<xsl:variable name="CompanyTaxPointDate" select="translate(substring-before(concat((/Invoice/InvoiceHeader/InvoiceReferences | /CreditNote/CreditNoteHeader/CreditNoteReferences)/TaxPointDate,'T'), 'T'),'-','')"/>
 		
 		<!-- Header Line-->
 		<xsl:text>H</xsl:text>
@@ -106,8 +111,12 @@
 				<xsl:text>,</xsl:text>
 				<xsl:value-of select="substring(//Supplier/SuppliersName,0,21)"/>
 				<xsl:text>,</xsl:text>
+				<!-- In 2010 VAT code goes back to 17.5% and MDH need this to be V1 again -->
 				<xsl:choose>
-					<xsl:when test="$VATCode = 'S'">
+					<xsl:when test="$VATCode = 'S' and $CompanyTaxPointDate  &lt;= translate('2008-11-30','-','') or $CompanyTaxPointDate  &gt;= translate('2010-01-01','-','')">
+						<xsl:text>V1</xsl:text>
+					</xsl:when>
+					<xsl:when test="$VATCode = 'S' and $CompanyTaxPointDate  &gt;= translate('2008-11-30','-','') or $CompanyTaxPointDate  &lt;= translate('2010-01-01','-','')">
 						<xsl:text>V2</xsl:text>
 					</xsl:when>
 					<xsl:otherwise>
