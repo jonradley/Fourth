@@ -19,7 +19,10 @@ Overview
  26/02/2008	| M Dimant       | Maps as confirmation when *Delivered* Quantity is zero
 '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ' 26/11/2008 | Rave Tech  | 2592 - Handled VAT rate change from 17.5% to 15%.
-***************************************************************************************-->
+***************************************************************************************
+' 15/12/2009 |S Sehgal  	| Case 3286 Changed to handle VAT changing back to 17.5% from 1-Jan-2010
+***************************************************************************************
+-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	<xsl:output method="xml" encoding="UTF-8"/>
 	<xsl:variable name="CurrentDate" select="script:msGetTodaysDate()"/>
@@ -134,7 +137,7 @@ Overview
 																<xsl:choose>
 																	<xsl:when test="/Batch/BatchDocuments/BatchDocument/Invoice/InvoiceHeader/InvoiceReferences/TaxPointDate !=''">
 																		<xsl:choose>
-																			<xsl:when test="translate(substring(/Batch/BatchDocuments/BatchDocument/Invoice/InvoiceHeader/InvoiceReferences/TaxPointDate,1,10),'-','') &lt;= translate('2008-11-30','-','')">
+																			<xsl:when test="translate(substring(/Batch/BatchDocuments/BatchDocument/Invoice/InvoiceHeader/InvoiceReferences/TaxPointDate,1,10),'-','') &lt;= translate('2008-11-30','-','') or translate(substring(/Batch/BatchDocuments/BatchDocument/Invoice/InvoiceHeader/InvoiceReferences/TaxPointDate,1,10),'-','') &gt;= translate('2010-01-01','-','')">
 																				<VATRate>17.5</VATRate>
 																			</xsl:when>
 																			<xsl:otherwise>
@@ -144,7 +147,7 @@ Overview
 																	</xsl:when>
 																	<xsl:when test="/Batch/BatchDocuments/BatchDocument/InvoiceHeader/InvoiceReferences/InvoiceDate !=''">
 																		<xsl:choose>
-																			<xsl:when test="translate(substring(/Batch/BatchDocuments/BatchDocument/InvoiceHeader/InvoiceReferences/InvoiceDate,1,10),'-','') &lt;= translate('2008-11-30','-','')">
+																			<xsl:when test="translate(substring(/Batch/BatchDocuments/BatchDocument/InvoiceHeader/InvoiceReferences/InvoiceDate,1,10),'-','') &lt;= translate('2008-11-30','-','') or translate(substring(/Batch/BatchDocuments/BatchDocument/InvoiceHeader/InvoiceReferences/InvoiceDate,1,10),'-','') &gt;= translate('2010-01-01','-','')">
 																				<VATRate>17.5</VATRate>
 																			</xsl:when>
 																			<xsl:otherwise>
@@ -154,7 +157,7 @@ Overview
 																	</xsl:when>
 																	<xsl:otherwise>
 																		<xsl:choose>
-																			<xsl:when test="translate($CurrentDate,'-','')  &lt;= translate('2008-11-30','-','')">
+																			<xsl:when test="translate($CurrentDate,'-','')  &lt;= translate('2008-11-30','-','') or translate($CurrentDate,'-','')  &gt;= translate('2010-01-01','-','')">
 																				<VATRate>17.5</VATRate>
 																			</xsl:when>
 																			<xsl:otherwise>
