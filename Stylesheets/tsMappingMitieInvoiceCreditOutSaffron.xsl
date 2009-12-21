@@ -23,6 +23,8 @@
 ******************************************************************************************
  03/10/2009	| Lee Boyton	| 3215. Use credit note reference if delivery note reference is missing.
 ******************************************************************************************
+ 21/12/2009	| Sandeep Sehgal| 3286. Changed to handle VAT rate reverting back to 17.5% wef 1-Jan-2010. Retuns S17.5 or S15 instead of S as at present
+******************************************************************************************
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -30,7 +32,7 @@
                 xmlns:msxsl="urn:schemas-microsoft-com:xslt"
                 exclude-result-prefixes="#default xsl msxsl script">
 	<xsl:output method="text"/>
-	
+	<xsl:variable name="CurrentDate" select="script:msGetTodaysDate()"/>
 	<!-- define keys (think of them a bit like database indexes) to be used for finding distinct line information.-->
 	<xsl:key name="keyLinesByVATCode" match="InvoiceTrailer/VATSubTotals/VATSubTotal | CreditNoteTrailer/VATSubTotals/VATSubTotal" use="concat(@VATCode,number(@VATRate),generate-id(../../..))"/>
 
@@ -188,9 +190,56 @@
 				<xsl:text>,</xsl:text>
 				
 				<xsl:choose>
-					<xsl:when test="substring($VATCode,1,1) = 'L'">S</xsl:when>
+					<xsl:when test="substring($VATCode,1,1) = 'L'">
+						<xsl:choose>
+						<xsl:when test="../../../InvoiceHeader/InvoiceReferences/TaxPointDate!='' or ../../../CreditNoteHeader/InvoiceReferences/TaxPointDate!='' ">
+							<xsl:choose>
+								<xsl:when test="translate(substring(../../../InvoiceHeader/InvoiceReferences/TaxPointDate,1,10),'-','') &lt;= translate('2008-11-30','-','') or translate(substring(../../../InvoiceHeader/InvoiceReferences/TaxPointDate,1,10),'-','') &gt;= translate('2010-01-01','-','') or translate(substring(../../../CreditNoteHeader/InvoiceReferences/TaxPointDate,1,10),'-','') &lt;= translate('2008-11-30','-','') or translate(substring(../../../CreditNoteHeader/InvoiceReferences/TaxPointDate,1,10),'-','') &gt;= translate('2010-01-01','-','')">S17.5</xsl:when>
+								<xsl:otherwise>S15</xsl:otherwise>
+							</xsl:choose>
+						</xsl:when>
+						<xsl:when test="../../../InvoiceHeader/InvoiceReferences/InvoiceDate!='' or ../../../CreditNoteHeader/InvoiceReferences/InvoiceDate!=''">
+							<xsl:choose>
+								<xsl:when test="translate(substring(../../../InvoiceHeader/InvoiceReferences/InvoiceDate,1,10),'-','') &lt;= translate('2008-11-30','-','') or translate(substring(../../../InvoiceHeader/InvoiceReferences/InvoiceDate,1,10),'-','') &gt;= translate('2010-01-01','-','') or translate(substring(../../../CreditNoteHeader/InvoiceReferences/InvoiceDate,1,10),'-','') &lt;= translate('2008-11-30','-','') or translate(substring(../../../CreditNoteHeader/InvoiceReferences/InvoiceDate,1,10),'-','') &gt;= translate('2010-01-01','-','')">S17.5</xsl:when>
+								<xsl:otherwise>S15</xsl:otherwise>
+							</xsl:choose>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:choose>
+								<xsl:when test="translate($CurrentDate,'-','')  &lt;= translate('2008-11-30','-','') or translate($CurrentDate,'-','')  &gt;= translate('2010-01-01','-','')">S17.5</xsl:when>
+								<xsl:otherwise>S15</xsl:otherwise>
+							</xsl:choose>
+						</xsl:otherwise>												
+					</xsl:choose>	
+					</xsl:when>
 					<xsl:otherwise>
-						<xsl:value-of select="substring($VATCode,1,1)"/>
+						<xsl:choose>
+							<xsl:when test="substring($VATCode,1,1) = 'S'">
+								<xsl:choose>
+									<xsl:when test="../../../InvoiceHeader/InvoiceReferences/TaxPointDate!='' or ../../../CreditNoteHeader/InvoiceReferences/TaxPointDate!='' ">
+										<xsl:choose>
+											<xsl:when test="translate(substring(../../../InvoiceHeader/InvoiceReferences/TaxPointDate,1,10),'-','') &lt;= translate('2008-11-30','-','') or translate(substring(../../../InvoiceHeader/InvoiceReferences/TaxPointDate,1,10),'-','') &gt;= translate('2010-01-01','-','') or translate(substring(../../../CreditNoteHeader/InvoiceReferences/TaxPointDate,1,10),'-','') &lt;= translate('2008-11-30','-','') or translate(substring(../../../CreditNoteHeader/InvoiceReferences/TaxPointDate,1,10),'-','') &gt;= translate('2010-01-01','-','')">S17.5</xsl:when>
+											<xsl:otherwise>S15</xsl:otherwise>
+										</xsl:choose>
+									</xsl:when>
+									<xsl:when test="../../../InvoiceHeader/InvoiceReferences/InvoiceDate!='' or ../../../CreditNoteHeader/InvoiceReferences/InvoiceDate!=''">
+										<xsl:choose>
+											<xsl:when test="translate(substring(../../../InvoiceHeader/InvoiceReferences/InvoiceDate,1,10),'-','') &lt;= translate('2008-11-30','-','') or translate(substring(../../../InvoiceHeader/InvoiceReferences/InvoiceDate,1,10),'-','') &gt;= translate('2010-01-01','-','') or translate(substring(../../../CreditNoteHeader/InvoiceReferences/InvoiceDate,1,10),'-','') &lt;= translate('2008-11-30','-','') or translate(substring(../../../CreditNoteHeader/InvoiceReferences/InvoiceDate,1,10),'-','') &gt;= translate('2010-01-01','-','')">S17.5</xsl:when>
+											<xsl:otherwise>S15</xsl:otherwise>
+										</xsl:choose>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:choose>
+											<xsl:when test="translate($CurrentDate,'-','')  &lt;= translate('2008-11-30','-','') or translate($CurrentDate,'-','')  &gt;= translate('2010-01-01','-','')">S17.5</xsl:when>
+											<xsl:otherwise>S15</xsl:otherwise>
+										</xsl:choose>
+									</xsl:otherwise>												
+								</xsl:choose>	
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="substring($VATCode,1,1)"/>
+							</xsl:otherwise>
+						</xsl:choose>
 					</xsl:otherwise>
 				</xsl:choose>
 				<xsl:text>,</xsl:text>
@@ -280,9 +329,56 @@
 			<xsl:text>,</xsl:text>
 
 			<xsl:choose>
-				<xsl:when test="substring(VATCode,1,1) = 'L'">S</xsl:when>
+				<xsl:when test="substring(VATCode,1,1) = 'L'">
+					<xsl:choose>
+						<xsl:when test="../../InvoiceHeader/InvoiceReferences/TaxPointDate!='' or ../../CreditNoteHeader/InvoiceReferences/TaxPointDate!=''">
+							<xsl:choose>
+								<xsl:when test="translate(substring(../../InvoiceHeader/InvoiceReferences/TaxPointDate,1,10),'-','') &lt;= translate('2008-11-30','-','') or translate(substring(../../InvoiceHeader/InvoiceReferences/TaxPointDate,1,10),'-','') &gt;= translate('2010-01-01','-','') or translate(substring(../../CreditNoteHeader/InvoiceReferences/TaxPointDate,1,10),'-','') &lt;= translate('2008-11-30','-','') or translate(substring(../../CreditNoteHeader/InvoiceReferences/TaxPointDate,1,10),'-','') &gt;= translate('2010-01-01','-','')">S17.5</xsl:when>
+								<xsl:otherwise>aS15</xsl:otherwise>
+							</xsl:choose>
+						</xsl:when>
+						<xsl:when test="../../InvoiceHeader/InvoiceReferences/InvoiceDate!='' or ../../CreditNoteHeader/InvoiceReferences/InvoiceDate!=''">
+							<xsl:choose>
+								<xsl:when test="translate(substring(../../InvoiceHeader/InvoiceReferences/InvoiceDate,1,10),'-','') &lt;= translate('2008-11-30','-','') or translate(substring(../../InvoiceHeader/InvoiceReferences/InvoiceDate,1,10),'-','') &gt;= translate('2010-01-01','-','') or translate(substring(../../CreditNoteHeader/InvoiceReferences/InvoiceDate,1,10),'-','') &lt;= translate('2008-11-30','-','') or translate(substring(../../CreditNoteHeader/InvoiceReferences/InvoiceDate,1,10),'-','') &gt;= translate('2010-01-01','-','')">S17.5</xsl:when>
+								<xsl:otherwise>bS15</xsl:otherwise>
+							</xsl:choose>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:choose>
+								<xsl:when test="translate($CurrentDate,'-','')  &lt;= translate('2008-11-30','-','') or translate($CurrentDate,'-','')  &gt;= translate('2010-01-01','-','')">S17.5</xsl:when>
+								<xsl:otherwise>S15</xsl:otherwise>
+							</xsl:choose>
+						</xsl:otherwise>												
+					</xsl:choose>		
+				</xsl:when>
 				<xsl:otherwise>
-					<xsl:value-of select="substring(VATCode,1,1)"/>
+					<xsl:choose>
+						<xsl:when test="substring(VATCode,1,1) = 'S'">
+							<xsl:choose>
+								<xsl:when test="../../InvoiceHeader/InvoiceReferences/TaxPointDate!='' or ../../CreditNoteHeader/InvoiceReferences/TaxPointDate!=''">
+									<xsl:choose>
+										<xsl:when test="translate(substring(../../InvoiceHeader/InvoiceReferences/TaxPointDate,1,10),'-','') &lt;= translate('2008-11-30','-','') or translate(substring(../../InvoiceHeader/InvoiceReferences/TaxPointDate,1,10),'-','') &gt;= translate('2010-01-01','-','') or translate(substring(../../CreditNoteHeader/InvoiceReferences/TaxPointDate,1,10),'-','') &lt;= translate('2008-11-30','-','') or translate(substring(../../CreditNoteHeader/InvoiceReferences/TaxPointDate,1,10),'-','') &gt;= translate('2010-01-01','-','')">S17.5</xsl:when>
+										<xsl:otherwise>aS15</xsl:otherwise>
+									</xsl:choose>
+								</xsl:when>
+								<xsl:when test="../../InvoiceHeader/InvoiceReferences/InvoiceDate!='' or ../../CreditNoteHeader/InvoiceReferences/InvoiceDate!=''">
+									<xsl:choose>
+										<xsl:when test="translate(substring(../../InvoiceHeader/InvoiceReferences/InvoiceDate,1,10),'-','') &lt;= translate('2008-11-30','-','') or translate(substring(../../InvoiceHeader/InvoiceReferences/InvoiceDate,1,10),'-','') &gt;= translate('2010-01-01','-','') or translate(substring(../../CreditNoteHeader/InvoiceReferences/InvoiceDate,1,10),'-','') &lt;= translate('2008-11-30','-','') or translate(substring(../../CreditNoteHeader/InvoiceReferences/InvoiceDate,1,10),'-','') &gt;= translate('2010-01-01','-','')">S17.5</xsl:when>
+										<xsl:otherwise>bS15</xsl:otherwise>
+									</xsl:choose>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:choose>
+										<xsl:when test="translate($CurrentDate,'-','')  &lt;= translate('2008-11-30','-','') or translate($CurrentDate,'-','')  &gt;= translate('2010-01-01','-','')">S17.5</xsl:when>
+										<xsl:otherwise>S15</xsl:otherwise>
+									</xsl:choose>
+								</xsl:otherwise>												
+							</xsl:choose>	
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="substring(VATCode,1,1)"/>
+						</xsl:otherwise>
+					</xsl:choose>
 				</xsl:otherwise>
 			</xsl:choose>
 			<xsl:text>,</xsl:text>
@@ -321,6 +417,38 @@
 				return '';
 			}
 		}
+		
+		/*=========================================================================================
+		' Routine       	 : msGetTodaysDate
+		' Description 	 : Gets todays date, formatted to yyyy-mm-dd
+		' Inputs          	 : None
+		' Outputs       	 : None
+		' Returns       	 : Class of row
+		' Author       		 : Rave Tech, 26/11/2008
+		' Alterations   	 : 
+		'========================================================================================*/
+		function msGetTodaysDate()
+		{
+			var dtDate = new Date();
+			
+			var sDate = dtDate.getDate();
+			if(sDate<10)
+			{
+				sDate = '0' + sDate;
+			}
+			
+			var sMonth = dtDate.getMonth() + 1;
+			if(sMonth<10)
+			{
+				sMonth = '0' + sMonth;
+			}
+						
+			var sYear  = dtDate.getYear() ;
+			
+		
+			return sYear + '-'+ sMonth +'-'+ sDate;
+		}
+
 
 	]]></msxsl:script>
 </xsl:stylesheet>
