@@ -334,13 +334,13 @@
 						<xsl:when test="../../InvoiceHeader/InvoiceReferences/TaxPointDate!='' or ../../CreditNoteHeader/InvoiceReferences/TaxPointDate!=''">
 							<xsl:choose>
 								<xsl:when test="translate(substring(../../InvoiceHeader/InvoiceReferences/TaxPointDate,1,10),'-','') &lt;= translate('2008-11-30','-','') or translate(substring(../../InvoiceHeader/InvoiceReferences/TaxPointDate,1,10),'-','') &gt;= translate('2010-01-01','-','') or translate(substring(../../CreditNoteHeader/InvoiceReferences/TaxPointDate,1,10),'-','') &lt;= translate('2008-11-30','-','') or translate(substring(../../CreditNoteHeader/InvoiceReferences/TaxPointDate,1,10),'-','') &gt;= translate('2010-01-01','-','')">S17.5</xsl:when>
-								<xsl:otherwise>aS15</xsl:otherwise>
+								<xsl:otherwise>S15</xsl:otherwise>
 							</xsl:choose>
 						</xsl:when>
 						<xsl:when test="../../InvoiceHeader/InvoiceReferences/InvoiceDate!='' or ../../CreditNoteHeader/InvoiceReferences/InvoiceDate!=''">
 							<xsl:choose>
 								<xsl:when test="translate(substring(../../InvoiceHeader/InvoiceReferences/InvoiceDate,1,10),'-','') &lt;= translate('2008-11-30','-','') or translate(substring(../../InvoiceHeader/InvoiceReferences/InvoiceDate,1,10),'-','') &gt;= translate('2010-01-01','-','') or translate(substring(../../CreditNoteHeader/InvoiceReferences/InvoiceDate,1,10),'-','') &lt;= translate('2008-11-30','-','') or translate(substring(../../CreditNoteHeader/InvoiceReferences/InvoiceDate,1,10),'-','') &gt;= translate('2010-01-01','-','')">S17.5</xsl:when>
-								<xsl:otherwise>bS15</xsl:otherwise>
+								<xsl:otherwise>S15</xsl:otherwise>
 							</xsl:choose>
 						</xsl:when>
 						<xsl:otherwise>
@@ -358,13 +358,13 @@
 								<xsl:when test="../../InvoiceHeader/InvoiceReferences/TaxPointDate!='' or ../../CreditNoteHeader/InvoiceReferences/TaxPointDate!=''">
 									<xsl:choose>
 										<xsl:when test="translate(substring(../../InvoiceHeader/InvoiceReferences/TaxPointDate,1,10),'-','') &lt;= translate('2008-11-30','-','') or translate(substring(../../InvoiceHeader/InvoiceReferences/TaxPointDate,1,10),'-','') &gt;= translate('2010-01-01','-','') or translate(substring(../../CreditNoteHeader/InvoiceReferences/TaxPointDate,1,10),'-','') &lt;= translate('2008-11-30','-','') or translate(substring(../../CreditNoteHeader/InvoiceReferences/TaxPointDate,1,10),'-','') &gt;= translate('2010-01-01','-','')">S17.5</xsl:when>
-										<xsl:otherwise>aS15</xsl:otherwise>
+										<xsl:otherwise>S15</xsl:otherwise>
 									</xsl:choose>
 								</xsl:when>
 								<xsl:when test="../../InvoiceHeader/InvoiceReferences/InvoiceDate!='' or ../../CreditNoteHeader/InvoiceReferences/InvoiceDate!=''">
 									<xsl:choose>
 										<xsl:when test="translate(substring(../../InvoiceHeader/InvoiceReferences/InvoiceDate,1,10),'-','') &lt;= translate('2008-11-30','-','') or translate(substring(../../InvoiceHeader/InvoiceReferences/InvoiceDate,1,10),'-','') &gt;= translate('2010-01-01','-','') or translate(substring(../../CreditNoteHeader/InvoiceReferences/InvoiceDate,1,10),'-','') &lt;= translate('2008-11-30','-','') or translate(substring(../../CreditNoteHeader/InvoiceReferences/InvoiceDate,1,10),'-','') &gt;= translate('2010-01-01','-','')">S17.5</xsl:when>
-										<xsl:otherwise>bS15</xsl:otherwise>
+										<xsl:otherwise>S15</xsl:otherwise>
 									</xsl:choose>
 								</xsl:when>
 								<xsl:otherwise>
