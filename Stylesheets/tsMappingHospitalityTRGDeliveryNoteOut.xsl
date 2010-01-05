@@ -42,7 +42,7 @@
 			</xsl:attribute-->
 			
 			<xsl:attribute name="UserReference">
-				<xsl:value-of select="DeliveryNoteHeader/DeliveryNoteReferences/DeliveryNoteReference"/>
+				<xsl:value-of select="DeliveryNoteHeader/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationReference"/>
 			</xsl:attribute>
 			<xsl:attribute name="Description">
 				<xsl:value-of select="'tradesimple'"/>
