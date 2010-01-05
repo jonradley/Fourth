@@ -13,6 +13,8 @@ R Cambridge	| 2009-07-06	  	| 2980 Send SBR / PL account code as buyer's code fo
 **********************************************************************
 A Barber		| 2009-11-17		| Fixed UOM to "EA" if order from MacDonald Hotels or Mercure GLN.
 **********************************************************************
+R Cambridge |	2010-01-04		| 3110 handle MITIE PL accounts in //sh:Receiver/sh:Identifier
+**********************************************************************
 				|						|				
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:sh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" xmlns:eanucc="urn:ean.ucc:2" xmlns:order="urn:ean.ucc:order:2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" >
@@ -57,6 +59,16 @@ A Barber		| 2009-11-17		| Fixed UOM to "EA" if order from MacDonald Hotels or Me
 							
 							<!-- Grocery for Aramark -->
 							<xsl:when test="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN[.='5013546062482'] and PurchaseOrderHeader/Buyer/BuyersLocationID/GLN[.='5027615900013']">
+								<xsl:text>Brakes Grocery</xsl:text>
+							</xsl:when>
+							
+							<!-- Frozen for MITIE -->
+							<xsl:when test="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN[.='5036036000009'] and PurchaseOrderHeader/Buyer/BuyersLocationID/GLN[.='5060166760311']">
+								<xsl:text>Brakes Frozen</xsl:text>
+							</xsl:when>
+							
+							<!-- Grocery for MITIE -->
+							<xsl:when test="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN[.='5013546062482'] and PurchaseOrderHeader/Buyer/BuyersLocationID/GLN[.='5060166760311']">
 								<xsl:text>Brakes Grocery</xsl:text>
 							</xsl:when>
 							
