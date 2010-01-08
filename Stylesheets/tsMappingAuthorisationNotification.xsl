@@ -26,6 +26,8 @@
  ******************************************************************************************
   15/12/2009 | Sandeep Sehgal  | 3270.Form Action pulled from DocBuilder based on DocTypeTo attribute 
  ******************************************************************************************
+  08/01/2009 | Steve Hewitt        | 2269. Rolled out the changes made under 2269, they were incorrect and not needed
+ ******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:user="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl user">
 	<xsl:output method="html"/>
@@ -532,32 +534,24 @@
 						</tr>
 						<tr>
 							<td colspan="2" align="center">
-								<xsl:choose>
-									<xsl:when test="//AuthorisationType = 'Budget'">
-										<xsl:text>Current spend with </xsl:text><xsl:value-of select="//SuppliersName"/><xsl:text> for this period (</xsl:text><xsl:value-of select="substring(//Period,5)"/><xsl:text>/</xsl:text><xsl:value-of select="substring(//Period,1,4)"/><xsl:text>) including this order is £</xsl:text><xsl:value-of select="format-number(//SpendValue, '#,##0.00')"/><xsl:text>*.</xsl:text>
-										<br/><br/>
-										<xsl:text>This is £</xsl:text><xsl:value-of select="format-number(//Overspend, '#,##0.00')"/><xsl:text> more than their budget of £</xsl:text><xsl:value-of select="format-number(//BudgetValue, '#,##0.00')"/><xsl:text>.</xsl:text>
-										<br/><br/>
-										<xsl:text>*Note that this information was correct at the time of sending (</xsl:text><xsl:value-of select="//BudgetCalculationTime"/><xsl:text>).</xsl:text>
-									</xsl:when>
-									<xsl:when test="//AuthorisationType = 'NonStandardDelivery'">
-										<xsl:text>This order was placed with an off-day delivery date</xsl:text>
-									</xsl:when>
-								</xsl:choose>
-								
+								<xsl:text>Current spend with </xsl:text><xsl:value-of select="//SuppliersName"/><xsl:text> for this period (</xsl:text><xsl:value-of select="substring(//Period,5)"/><xsl:text>/</xsl:text><xsl:value-of select="substring(//Period,1,4)"/><xsl:text>) including this order is £</xsl:text><xsl:value-of select="format-number(//SpendValue, '#,##0.00')"/><xsl:text>*.</xsl:text>
+								<br/><br/>
+								<xsl:text>This is £</xsl:text><xsl:value-of select="format-number(//Overspend, '#,##0.00')"/><xsl:text> more than their budget of £</xsl:text><xsl:value-of select="format-number(//BudgetValue, '#,##0.00')"/><xsl:text>.</xsl:text>
+								<br/><br/>
+								<xsl:text>*Note that this information was correct at the time of sending (</xsl:text><xsl:value-of select="//BudgetCalculationTime"/><xsl:text>).</xsl:text>
 								<br/><br/>
 								<xsl:if test="//AuthorisationComments">
 									<xsl:text>Authorisation comment: </xsl:text>
 									<xsl:value-of select="//AuthorisationComments"/>
 									<br/><br/>
 								</xsl:if>
-								<xsl:text>To approve this order:</xsl:text>
+								<xsl:text>To approve this overspend:</xsl:text>
 								<br/>
 								<xsl:text>1. Please enter your username and password.</xsl:text>
 								<br/>
 								<xsl:text>2. Click on the Approve button.</xsl:text>
 								<br/><br/>
-								<xsl:text>To reject this order and return the order to the unit for amendment:</xsl:text>
+								<xsl:text>To deny this overspend and return the order to the unit for amendment:</xsl:text>
 								<br/>
 								<xsl:text>1. Please enter your username and password.</xsl:text>
 								<br/>
