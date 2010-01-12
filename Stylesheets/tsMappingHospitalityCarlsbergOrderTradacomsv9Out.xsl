@@ -45,6 +45,9 @@
 		<xsl:variable name="sBPLCode">
 			<xsl:text>CCAR001</xsl:text>
 		</xsl:variable>
+		<xsl:variable name="sORPBRCode">
+			<xsl:text>CCAR002</xsl:text>
+		</xsl:variable>
 		<xsl:variable name="sFileGenerationDate" select="vb:msFileGenerationDate()"/>
 		<xsl:text>STX=</xsl:text>
 		<xsl:text>ANA:1+</xsl:text>
@@ -126,6 +129,10 @@
 			<!-- Orchid Black Pubs Limited -->
 			<xsl:when test="$sBPLCode = $sSCFR">
 				<xsl:text>5999996145710</xsl:text>
+			</xsl:when>
+			<!-- Orchid Premium Bars-->
+			<xsl:when test="$sORPBRCode = $sSCFR">>
+				<xsl:text>5999995145710</xsl:text>
 			</xsl:when>
 			<!-- all other cases -->
 			<xsl:otherwise>
