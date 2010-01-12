@@ -44,6 +44,7 @@
 
 
 	<xsl:template match="//CreditNoteLine[not(DeliveryNoteReferences/DeliveryNoteReference)]">
+		<CreditNoteLine>
 			<xsl:copy-of select="LineNumber"/>
 			<xsl:copy-of select="CreditRequestReferences"/>
 			<xsl:copy-of select="PurchaseOrderReferences"/>
@@ -74,7 +75,6 @@
 					</xsl:choose>
 				</DespatchDate>
 			</DeliveryNoteReferences>
-
 			<xsl:copy-of select="GoodsReceivedNoteReferences"/>
 			<xsl:copy-of select="ProductID"/>
 			<xsl:copy-of select="ProductDescription"/>
@@ -95,6 +95,7 @@
 			<xsl:copy-of select="NetPriceFlag"/>
 			<xsl:copy-of select="Measure"/>
 			<xsl:copy-of select="LineExtraData"/>
+		</CreditNoteLine>
 	</xsl:template>
 	
 </xsl:stylesheet>
