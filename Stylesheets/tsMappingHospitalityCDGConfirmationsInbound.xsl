@@ -60,12 +60,16 @@
 											<xsl:value-of select="LineNumber"/>
 										</LineNumber>
 										<ProductID>
-											<SuppliersProductCode>
-												<xsl:value-of select="Product/BuyersProductCode "/>
-											</SuppliersProductCode>											
-											<BuyersProductCode>
-												<xsl:value-of select="Product/SuppliersProductCode"/>
-											</BuyersProductCode>										
+											<xsl:if test="Product/BuyersProductCode !=''">
+												<SuppliersProductCode>
+													<xsl:value-of select="Product/BuyersProductCode "/>
+												</SuppliersProductCode>	
+											</xsl:if>
+											<xsl:if test="Product/SuppliersProductCode!=''">										
+												<BuyersProductCode>
+													<xsl:value-of select="Product/SuppliersProductCode"/>
+												</BuyersProductCode>	
+											</xsl:if>									
 										</ProductID>
 										<ProductDescription>
 											<xsl:value-of select="Product/Description"/>
