@@ -20,6 +20,8 @@
 ==========================================================================================
  13/05/2009	| Rave Tech  		| 2878 Removed MaxSplits logic and implemented CaseSize logic.
 ==========================================================================================
+15/01/2010	| Rave Tech  		| 3329 Populate the description field with a <Supplier Name> - <Supplier PO Number>.
+==========================================================================================
            	|                 	|
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl">
@@ -45,7 +47,7 @@
 				<xsl:value-of select="DeliveryNoteHeader/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationReference"/>
 			</xsl:attribute>
 			<xsl:attribute name="Description">
-				<xsl:value-of select="'tradesimple'"/>
+				<xsl:value-of select="DeliveryNoteHeader/Supplier/SuppliersName"/> - <xsl:value-of select="DeliveryNoteHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
 			</xsl:attribute>
 			
 			<xsl:attribute name="Total">

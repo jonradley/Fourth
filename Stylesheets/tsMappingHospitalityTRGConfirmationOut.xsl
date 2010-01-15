@@ -26,6 +26,8 @@
 ==========================================================================================
 30/07/2009	| Rave Tech  		| 3024 Removed nesting of substituted products.
 ==========================================================================================
+15/01/2010	| Rave Tech  		| 3329 Populate the description field with a <Supplier Name> - <Supplier PO Number>.
+==========================================================================================
 			|					|
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
@@ -46,7 +48,7 @@
 				<xsl:value-of select="PurchaseOrderConfirmationHeader/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationReference"/>
 			</xsl:attribute>
 			<xsl:attribute name="Description">
-				<xsl:value-of select="'tradesimple'"/>
+				<xsl:value-of select="PurchaseOrderConfirmationHeader/Supplier/SuppliersName"/> - <xsl:value-of select="PurchaseOrderConfirmationHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
 			</xsl:attribute>
 			
 			<xsl:attribute name="Total">
