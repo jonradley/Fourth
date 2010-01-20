@@ -27,6 +27,8 @@
   15/12/2009 | Sandeep Sehgal  | 3270.Form Action pulled from DocBuilder based on DocTypeTo attribute 
  ******************************************************************************************
   08/01/2009 | Steve Hewitt        | 2269. Rolled out the changes made under 2269, they were incorrect and not needed
+   ******************************************************************************************
+14/01/2010 | Sandeep Sehgal  |  3328 Added option for amedning the order
  ******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:user="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl user">
@@ -572,6 +574,7 @@
 								<input type="hidden" name="txtExtraQueryString" value=""/>
 								<input type="submit" name="btnAction" value="Approve" onclick="document.getElementById('txtExtraQueryString').value = '&amp;Action=Approve&amp;Comment=' + document.getElementById('txtRejectionComment').value"/>
 								<input type="submit" name="btnAction" value="Reject" onclick="document.getElementById('txtExtraQueryString').value = '&amp;Action=Reject&amp;Comment=' + document.getElementById('txtRejectionComment').value"/>
+								<input type="submit" name="btnAction" value="Amend" onclick="document.getElementById('txtExtraQueryString').value = '&amp;Action=Amend&amp;Comment=' + document.getElementById('txtRejectionComment').value"/>
 							</td>
 						</tr>
 					</table>					
