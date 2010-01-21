@@ -155,14 +155,14 @@
 												<xsl:value-of select="/CreditNote/ShipTo/SellerAssigned"/>
 											</SuppliersCode>
 										</xsl:if>-->
-										<xsl:if test="string(/Invoice/ShipTo/ShipToGLN)">
+										<xsl:if test="string(/CreditNote/ShipTo/ShipToGLN)">
 											<GLN>
-												<xsl:value-of select="/Invoice/ShipTo/ShipToGLN"/>
+												<xsl:value-of select="/CreditNote/ShipTo/ShipToGLN"/>
 											</GLN>
 										</xsl:if>
-										<xsl:if test="string(/Invoice/ShipTo/BuyerAssigned)">
+										<xsl:if test="string(/CreditNote/ShipTo/BuyerAssigned)">
 											<BuyersCode>
-												<xsl:value-of select="substring-after(/Invoice/ShipTo/BuyerAssigned,'/')"/>
+												<xsl:value-of select="substring-after(/CreditNote/ShipTo/BuyerAssigned,'/')"/>
 											</BuyersCode>
 										</xsl:if>
 									</ShipToLocationID>
