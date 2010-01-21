@@ -73,11 +73,11 @@
 								</SendersCodeForRecipient>-->
 								
 								<SendersCodeForRecipient>
-									<xsl:value-of select="substring-after(/CreditNote/ShipTo/BuyerAssigned,'/')"/>
+									<xsl:value-of select="substring-after(/CreditNote/ShipTo/SellerAssigned,'/')"/>
 								</SendersCodeForRecipient>
 								
 								<SendersBranchReference>
-									<xsl:value-of select="substring-before(/CreditNote/ShipTo/BuyerAssigned,'/')"/>
+									<xsl:value-of select="substring-before(/CreditNote/ShipTo/SellerAssigned,'/')"/>
 								</SendersBranchReference>	
 								
 								<!-- SBR used to pick out the PL Account code to be used in the trading relationship set up. This could be Buyer or Supplier value. -->
@@ -162,7 +162,7 @@
 										</xsl:if>
 										<xsl:if test="string(/CreditNote/ShipTo/BuyerAssigned)">
 											<BuyersCode>
-												<xsl:value-of select="substring-after(/CreditNote/ShipTo/BuyerAssigned,'/')"/>
+												<xsl:value-of select="substring-after(/CreditNote/ShipTo/SellerAssigned,'/')"/>
 											</BuyersCode>
 										</xsl:if>
 									</ShipToLocationID>
