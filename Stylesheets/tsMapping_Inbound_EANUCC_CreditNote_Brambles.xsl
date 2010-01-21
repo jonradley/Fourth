@@ -136,7 +136,30 @@
 											</SuppliersCode>
 										</xsl:if>
 									</SuppliersLocationID>
-									<!-- Suppliers name and address will be populated by subsequent processors -->
+									<SuppliersAddress>
+										<AddressLine1>
+											<xsl:value-of select="normalize-space(/CreditNote/Seller/Address/BuildingIdentifier)"/>
+										</AddressLine1>
+										<xsl:if test="string(/CreditNote/Seller/Address/StreetName)">
+											<AddressLine2>
+												<xsl:value-of select="/CreditNote/Seller/Address/StreetName"/>
+											</AddressLine2>
+										</xsl:if>
+										<xsl:if test="string(/CreditNote/Seller/Address/City)">
+											<AddressLine3>
+												<xsl:value-of select="/CreditNote/Seller/Address/City"/>
+											</AddressLine3>
+										</xsl:if>
+										<AddressLine4>
+											<xsl:text>GB</xsl:text>
+										</AddressLine4>
+										<xsl:if test="string(/CreditNote/Seller/Address/PostCode)">
+											<PostCode>
+												<xsl:value-of select="/CreditNote/Seller/Address/PostCode"/>
+											</PostCode>
+										</xsl:if>
+									</SuppliersAddress>
+									<!-- X -> Suppliers name and address will be populated by subsequent processors -->
 								</Supplier>
 								<ShipTo>
 									<ShipToLocationID>
