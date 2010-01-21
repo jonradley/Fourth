@@ -235,14 +235,14 @@
 														<xsl:value-of select="/CreditNote/OrderReference/PurchaseOrderNumber"/>
 													</PurchaseOrderReference>
 												</xsl:if>
-												<xsl:if test="/CreditNote/OrderReference/PurchaseOrderNumber">
+												<!--<xsl:if test="/CreditNote/OrderReference/PurchaseOrderNumber">
 													<PurchaseOrderDate>
 														<xsl:value-of select="substring-before(/CreditNote/OrderReference/PurchaseOrderDate,'T')"/>
 													</PurchaseOrderDate>
 													<PurchaseOrderTime>
 														<xsl:value-of select="substring-after(/CreditNote/OrderReference/PurchaseOrderDate,'T')"/>
 													</PurchaseOrderTime>
-												</xsl:if>
+												</xsl:if>-->
 												<xsl:if test="/CreditNote/TradeAgreementReference/ContractReferenceNumber != ''">
 													<TradeAgreement>
 														<ContractReference>
