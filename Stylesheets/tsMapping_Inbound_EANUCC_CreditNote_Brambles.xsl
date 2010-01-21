@@ -61,7 +61,7 @@
 				      ~~~~~~~~~~~~~~~~~~~~~~~ -->
 							<TradeSimpleHeader>
 								<!-- SCR comes from Sellers code for buyer if there, else it comes from Buyer GLN -->
-								<SendersCodeForRecipient>
+								<!--<SendersCodeForRecipient>
 									<xsl:choose>
 										<xsl:when test="string(/CreditNote/ShipTo/SellerAssigned)">
 											<xsl:value-of select="/CreditNote/ShipTo/SellerAssigned"/>
@@ -70,7 +70,16 @@
 											<xsl:value-of select="/CreditNote/Buyer/BuyerGLN"/>
 										</xsl:otherwise>
 									</xsl:choose>
+								</SendersCodeForRecipient>-->
+								
+								<SendersCodeForRecipient>
+									<xsl:value-of select="substring-after(/CreditNote/ShipTo/BuyerAssigned,'/')"/>
 								</SendersCodeForRecipient>
+								
+								<SendersBranchReference>
+									<xsl:value-of select="substring-before(/CreditNote/ShipTo/BuyerAssigned,'/')"/>
+								</SendersBranchReference>	
+								
 								<!-- SBR used to pick out the PL Account code to be used in the trading relationship set up. This could be Buyer or Supplier value. -->
 								<xsl:if test="string(/CreditNote/TradeAgreementReference/ContractReferenceNumber) != '' ">
 									<SendersBranchReference>
@@ -131,7 +140,7 @@
 								</Supplier>
 								<ShipTo>
 									<ShipToLocationID>
-										<xsl:if test="string(/CreditNote/ShipTo/ShipToGLN)">
+										<!--<xsl:if test="string(/CreditNote/ShipTo/ShipToGLN)">
 											<GLN>
 												<xsl:value-of select="/CreditNote/ShipTo/ShipToGLN"/>
 											</GLN>
@@ -145,6 +154,16 @@
 											<SuppliersCode>
 												<xsl:value-of select="/CreditNote/ShipTo/SellerAssigned"/>
 											</SuppliersCode>
+										</xsl:if>-->
+										<xsl:if test="string(/Invoice/ShipTo/ShipToGLN)">
+											<GLN>
+												<xsl:value-of select="/Invoice/ShipTo/ShipToGLN"/>
+											</GLN>
+										</xsl:if>
+										<xsl:if test="string(/Invoice/ShipTo/BuyerAssigned)">
+											<BuyersCode>
+												<xsl:value-of select="substring-after(/Invoice/ShipTo/BuyerAssigned,'/')"/>
+											</BuyersCode>
 										</xsl:if>
 									</ShipToLocationID>
 									<!-- ShipTo name and address will be populated by subsequent processors -->
