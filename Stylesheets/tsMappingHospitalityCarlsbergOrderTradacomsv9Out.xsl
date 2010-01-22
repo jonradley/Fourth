@@ -131,7 +131,7 @@
 				<xsl:text>5999996145710</xsl:text>
 			</xsl:when>
 			<!-- Orchid Premium Bars-->
-			<xsl:when test="$sORPBRCode = $sSCFR">>
+			<xsl:when test="$sORPBRCode = $sSCFR">
 				<xsl:text>5999995145710</xsl:text>
 			</xsl:when>
 			<!-- all other cases -->
