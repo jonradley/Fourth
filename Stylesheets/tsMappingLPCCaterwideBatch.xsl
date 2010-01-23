@@ -85,7 +85,7 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"  xmlns:msxsl="urn:schemas-microsoft-com:xslt">
     <xsl:output method="text" encoding="utf-8"/>
-   <xsl:key name="keyLinesByDeliveryNoteSuffix" match="GoodsReceivedNoteLine" use="LineExtraData/DeliveryNoteSuffix"/>  
+    <xsl:key name="keyLinesByDeliveryNoteSuffix" match="GoodsReceivedNoteLine" use="LineExtraData/DeliveryNoteSuffix"/>  
     <xsl:key name="keyLinesByProductGroup" match="GoodsReceivedNoteLine" use="LineExtraData/ProductGroup"/>
   
 
@@ -99,10 +99,9 @@
 		<xsl:if test="/GoodsReceivedNote | /*/*/HeaderExtraData[StockSystemIdentifier='CW']">		
 			
 			<!-- consolidate all Food stock lines into a single Caterwide line -->			
-			<xsl:for-each select="(/GoodsReceivedNote/GoodsReceivedNoteDetail/GoodsReceivedNoteLine)[generate-id() = generate-id(key('keyLinesByDeliveryNoteSuffix',LineExtraData/DeliveryNoteSuffix)[1])]">
+			<xsl:for-each select="(/GoodsReceivedNote/GoodsReceivedNoteDetail/GoodsReceivedNoteLine)[generate-id() = generate-id(key('keyLinesByDeliveryNoteSuffix',LineExtraData/DeliveryNoteSuffix))]">
 				<xsl:sort select="LineExtraData/DeliveryNoteSuffix" data-type="text"/>
-				<xsl:variable name="sDeliveryNoteSuffix" select="LineExtraData/DeliveryNoteSuffix"/>						
-
+				<xsl:variable name="sDeliveryNoteSuffix" select="normalize-space(LineExtraData/DeliveryNoteSuffix)"/>						
 				<xsl:variable name="sHeaderFood">
 				
 				<!-- From section 4.1.1.3	 
@@ -172,11 +171,11 @@
 					</xsl:variable>
 					<!-- trim the delivery reference to a maximum of 7 characters so that adding /F does not exceed the maximum of 9 characters -->
 					<xsl:choose>
-						<xsl:when test="LineExtraData/DeliveryNoteSuffix and  LineExtraData/DeliveryNoteSuffix != ''">
-							<xsl:value-of select="concat(substring($DNRef,1,7),concat('/',LineExtraData/DeliveryNoteSuffix))"/>
+						<xsl:when test="normalize-space(LineExtraData/DeliveryNoteSuffix) = ''">
+							<xsl:value-of select="substring($DNRef,1,7)"/>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:value-of select="substring($DNRef,1,7)"/>
+							<xsl:value-of select="concat(substring($DNRef,1,7),concat('/',LineExtraData/DeliveryNoteSuffix))"/>
 						</xsl:otherwise>
 					</xsl:choose>				
 					
@@ -209,7 +208,8 @@
 				</xsl:call-template>
 				
 				<!-- Line Details -->				
-				 <xsl:for-each select="(/GoodsReceivedNote/GoodsReceivedNoteDetail/GoodsReceivedNoteLine | /Invoice/InvoiceDetail/InvoiceLine | /CreditNote/CreditNoteDetail/CreditNoteLine | /DebitNote/DebitNoteDetail/DebitNoteLine | /DeliveryNote/DeliveryNoteDetail/DeliveryNoteLine)[LineExtraData/IsStockProduct[.='true' or .='1'] and LineExtraData/DeliveryNoteSuffix = $sDeliveryNoteSuffix and  LineExtraData/IsFoodStockProduct[.='true' or .='1']][generate-id() = generate-id(key('keyLinesByProductGroup',LineExtraData/ProductGroup)[1])]">		
+				 <xsl:for-each select="(/GoodsReceivedNote/GoodsReceivedNoteDetail/GoodsReceivedNoteLine | /Invoice/InvoiceDetail/InvoiceLine | /CreditNote/CreditNoteDetail/CreditNoteLine | /DebitNote/DebitNoteDetail/DebitNoteLine | /DeliveryNote/DeliveryNoteDetail/DeliveryNoteLine)[LineExtraData/IsStockProduct[.='true' or .='1'] and normalize-space(LineExtraData/DeliveryNoteSuffix) = normalize-space($sDeliveryNoteSuffix) and  LineExtraData/IsFoodStockProduct[.='true' or .='1']][generate-id() = generate-id(key('keyLinesByProductGroup',LineExtraData/ProductGroup))]">		
+				 <!--xsl:for-each select="(/GoodsReceivedNote/GoodsReceivedNoteDetail/GoodsReceivedNoteLine | /Invoice/InvoiceDetail/InvoiceLine | /CreditNote/CreditNoteDetail/CreditNoteLine | /DebitNote/DebitNoteDetail/DebitNoteLine | /DeliveryNote/DeliveryNoteDetail/DeliveryNoteLine)[LineExtraData/IsStockProduct[.='true' or .='1'] and normalize-space(LineExtraData/DeliveryNoteSuffix) = normalize-space($sDeliveryNoteSuffix) and  LineExtraData/IsFoodStockProduct[.='true' or .='1']]"-->		
 					<xsl:sort select="LineExtraData/ProductGroup" data-type="text"/>
 					<xsl:variable name="sProductGroup" select="LineExtraData/ProductGroup"/>				 	
 					<xsl:variable name="DeliveryNoteSuffix" select="LineExtraData/DeliveryNoteSuffix"/>
@@ -255,7 +255,8 @@
 				
 				
 				<!-- all stock lines which are not also food stock lines are output individually -->				
-				 <xsl:for-each select="(/GoodsReceivedNote/GoodsReceivedNoteDetail/GoodsReceivedNoteLine | /Invoice/InvoiceDetail/InvoiceLine | /CreditNote/CreditNoteDetail/CreditNoteLine | /DebitNote/DebitNoteDetail/DebitNoteLine | /DeliveryNote/DeliveryNoteDetail/DeliveryNoteLine)[LineExtraData/IsStockProduct[.='true' or .='1'] and LineExtraData/DeliveryNoteSuffix = $sDeliveryNoteSuffix and (not(LineExtraData/IsFoodStockProduct) or LineExtraData/IsFoodStockProduct[.='false' or .='0'])][generate-id() = generate-id(key('keyLinesByProductGroup',LineExtraData/ProductGroup)[1])]"> 
+				 <!--xsl:for-each select="(/GoodsReceivedNote/GoodsReceivedNoteDetail/GoodsReceivedNoteLine | /Invoice/InvoiceDetail/InvoiceLine | /CreditNote/CreditNoteDetail/CreditNoteLine | /DebitNote/DebitNoteDetail/DebitNoteLine | /DeliveryNote/DeliveryNoteDetail/DeliveryNoteLine)[LineExtraData/IsStockProduct[.='true' or .='1'] and normalize-space(LineExtraData/DeliveryNoteSuffix) = normalize-space($sDeliveryNoteSuffix) and (not(LineExtraData/IsFoodStockProduct) or LineExtraData/IsFoodStockProduct[.='false' or .='0'])][generate-id() = generate-id(key('keyLinesByProductGroup',LineExtraData/ProductGroup))]"--> 
+				 <xsl:for-each select="(/GoodsReceivedNote/GoodsReceivedNoteDetail/GoodsReceivedNoteLine | /Invoice/InvoiceDetail/InvoiceLine | /CreditNote/CreditNoteDetail/CreditNoteLine | /DebitNote/DebitNoteDetail/DebitNoteLine | /DeliveryNote/DeliveryNoteDetail/DeliveryNoteLine)[LineExtraData/IsStockProduct[.='true' or .='1'] and normalize-space(LineExtraData/DeliveryNoteSuffix) = normalize-space($sDeliveryNoteSuffix) and (not(LineExtraData/IsFoodStockProduct) or LineExtraData/IsFoodStockProduct[.='false' or .='0'])]"> 
 					<xsl:sort select="LineExtraData/ProductGroup" data-type="text"/>
 					<xsl:variable name="sProductGroup" select="LineExtraData/ProductGroup"/>
 					<xsl:variable name="DeliveryNoteSuffix" select="LineExtraData/DeliveryNoteSuffix"/>
