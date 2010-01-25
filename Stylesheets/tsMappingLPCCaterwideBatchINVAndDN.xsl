@@ -79,16 +79,11 @@
  30/03/2009		| Lee Boyton	| Hack Alert. Ignore Waverly GLN, and use ANA number instead.
 =========================================================================================
  24/06/2009		| Lee Boyton	| 2959. /FD is too long for Caterwide now, needs to be just /F.
- =========================================================================================
- 22/01/2010		| Rave Tech		| 3334.Added Caterwide Delivery Note Suffix logic.
 =======================================================================================-->
 
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"  xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:output method="text" encoding="utf-8"/>
-    <xsl:key name="keyLinesByDeliveryNoteSuffix" match="GoodsReceivedNoteLine" use="LineExtraData/DeliveryNoteSuffix"/>  
-    <xsl:key name="keyLinesByProductGroup" match="GoodsReceivedNoteLine" use="LineExtraData/ProductGroup"/>
-  
-
+	
 	<!--
 	4	Appendix A – Caterwide File Format.
 	4.1.1.1	The file is an ASCII text file, with comma separated fields and cr-lf separated lines.
@@ -96,12 +91,11 @@
 	-->
 	<xsl:template match="/GoodsReceivedNote[GoodsReceivedNoteDetail/GoodsReceivedNoteLine/LineExtraData/IsStockProduct[.='true' or .='1'] or GoodsReceivedNoteDetail/GoodsReceivedNoteLine/LineExtraData/IsFoodStockProduct[.='true' or .='1']] | /*[*/HeaderExtraData[StockSystemIdentifier='CW'] | */HeaderExtraData[StockSystemIdentifier='ZZ']][*/*/LineExtraData[IsStockProduct[.='true' or .='1'] or IsFoodStockProduct[.='true' or .='1']]]">
 	
-		<xsl:if test="/GoodsReceivedNote | /*/*/HeaderExtraData[StockSystemIdentifier='CW']">		
-			
-			<!-- consolidate all Food stock lines into a single Caterwide line -->			
-			<xsl:for-each select="(/GoodsReceivedNote/GoodsReceivedNoteDetail/GoodsReceivedNoteLine)[generate-id() = generate-id(key('keyLinesByDeliveryNoteSuffix',LineExtraData/DeliveryNoteSuffix))]">
-				<xsl:sort select="LineExtraData/DeliveryNoteSuffix" data-type="text"/>
-				<xsl:variable name="sDeliveryNoteSuffix" select="normalize-space(LineExtraData/DeliveryNoteSuffix)"/>						
+		<xsl:if test="/GoodsReceivedNote | /*/*/HeaderExtraData[StockSystemIdentifier='CW']">
+		
+			<!-- consolidate all Food stock lines into a single Caterwide line -->
+			<xsl:if test="//LineExtraData/IsFoodStockProduct[.='true' or .='1']">
+
 				<xsl:variable name="sHeaderFood">
 				
 				<!-- From section 4.1.1.3	 
@@ -132,7 +126,7 @@
 		                        Line.Stock Product = ‘Y’ and 
 		                        Document.Stock System Identifier = {blank} or ‘CL’. 
 				-->
-					
+				
 					<xsl:text>1,</xsl:text>
 								
 					<!-- Cater for old documents that do not have a Buyers code, by using the Suppliers code instead -->
@@ -170,15 +164,7 @@
 						</xsl:call-template>
 					</xsl:variable>
 					<!-- trim the delivery reference to a maximum of 7 characters so that adding /F does not exceed the maximum of 9 characters -->
-					<xsl:choose>
-						<xsl:when test="normalize-space(LineExtraData/DeliveryNoteSuffix) = ''">
-							<xsl:value-of select="substring($DNRef,1,7)"/>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="concat(substring($DNRef,1,7),concat('/',LineExtraData/DeliveryNoteSuffix))"/>
-						</xsl:otherwise>
-					</xsl:choose>				
-					
+					<xsl:value-of select="concat(substring($DNRef,1,7),'/F')"/>
 					<xsl:text>,</xsl:text>
 					
 					<xsl:call-template name="msFormatDate">
@@ -206,61 +192,143 @@
 				<xsl:call-template name="msPad">
 					<xsl:with-param name="vsText" select="$sHeaderFood"/>
 				</xsl:call-template>
-				
-				<!-- Line Details -->				
-				 <xsl:for-each select="(/GoodsReceivedNote/GoodsReceivedNoteDetail/GoodsReceivedNoteLine | /Invoice/InvoiceDetail/InvoiceLine | /CreditNote/CreditNoteDetail/CreditNoteLine | /DebitNote/DebitNoteDetail/DebitNoteLine | /DeliveryNote/DeliveryNoteDetail/DeliveryNoteLine)[LineExtraData/IsStockProduct[.='true' or .='1'] and normalize-space(LineExtraData/DeliveryNoteSuffix) = normalize-space($sDeliveryNoteSuffix) and  LineExtraData/IsFoodStockProduct[.='true' or .='1']][generate-id() = generate-id(key('keyLinesByProductGroup',LineExtraData/ProductGroup))]">		
-				 <!--xsl:for-each select="(/GoodsReceivedNote/GoodsReceivedNoteDetail/GoodsReceivedNoteLine | /Invoice/InvoiceDetail/InvoiceLine | /CreditNote/CreditNoteDetail/CreditNoteLine | /DebitNote/DebitNoteDetail/DebitNoteLine | /DeliveryNote/DeliveryNoteDetail/DeliveryNoteLine)[LineExtraData/IsStockProduct[.='true' or .='1'] and normalize-space(LineExtraData/DeliveryNoteSuffix) = normalize-space($sDeliveryNoteSuffix) and  LineExtraData/IsFoodStockProduct[.='true' or .='1']]"-->		
-					<xsl:sort select="LineExtraData/ProductGroup" data-type="text"/>
-					<xsl:variable name="sProductGroup" select="LineExtraData/ProductGroup"/>				 	
-					<xsl:variable name="DeliveryNoteSuffix" select="LineExtraData/DeliveryNoteSuffix"/>
-						
-					<xsl:variable name="sLine">
+			
+				<xsl:variable name="sLine">
 					
-						<xsl:text>2,</xsl:text>
-										
-						<xsl:value-of select="translate(//PurchaseOrderReferences[1]/PurchaseOrderReference,',','')"/>
-						<xsl:text>,</xsl:text>
-						<xsl:choose>
-							<xsl:when test="//ProductGroup[../IsFoodStockProduct[.='true' or .='1']]"><xsl:value-of select="$sProductGroup"/></xsl:when>
-							<xsl:otherwise><xsl:text>WFOOD</xsl:text></xsl:otherwise>
-						</xsl:choose>
-						
-						<xsl:text>,</xsl:text>
-						
-						<xsl:text>DRY RECIPE COSTING</xsl:text>
-						<xsl:text>,</xsl:text>
-						
-						<xsl:text>,</xsl:text>							
-	
-						<!-- just the food stock lines need to be summed -->
-						<xsl:choose>
-							<xsl:when test="/Invoice or /GoodsReceivedNote">										
-								<xsl:value-of select="round(sum(//LineValueExclVAT[../LineExtraData[ProductGroup[.=$sProductGroup] and DeliveryNoteSuffix [.=$sDeliveryNoteSuffix] and IsFoodStockProduct[.='true' or .='1']]]))"/>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:value-of select="-1 * round(sum(//LineValueExclVAT[../LineExtraData[ProductGroup[.=$sProductGroup] and DeliveryNoteSuffix [.=$sDeliveryNoteSuffix] and IsFoodStockProduct[.='true' or .='1']]]))"/>
-							</xsl:otherwise>
-						</xsl:choose>
-								
-					</xsl:variable>
-					
-					<xsl:text>&#13;&#10;</xsl:text>
-					
-					<xsl:call-template name="msPad">
-						<xsl:with-param name="vsText" select="$sLine"/>
-					</xsl:call-template>
+					<xsl:text>2,</xsl:text>
 									
-				</xsl:for-each>		
-				
-				
-				
-				<!-- all stock lines which are not also food stock lines are output individually -->				
-				 <!--xsl:for-each select="(/GoodsReceivedNote/GoodsReceivedNoteDetail/GoodsReceivedNoteLine | /Invoice/InvoiceDetail/InvoiceLine | /CreditNote/CreditNoteDetail/CreditNoteLine | /DebitNote/DebitNoteDetail/DebitNoteLine | /DeliveryNote/DeliveryNoteDetail/DeliveryNoteLine)[LineExtraData/IsStockProduct[.='true' or .='1'] and normalize-space(LineExtraData/DeliveryNoteSuffix) = normalize-space($sDeliveryNoteSuffix) and (not(LineExtraData/IsFoodStockProduct) or LineExtraData/IsFoodStockProduct[.='false' or .='0'])][generate-id() = generate-id(key('keyLinesByProductGroup',LineExtraData/ProductGroup))]"--> 
-				 <xsl:for-each select="(/GoodsReceivedNote/GoodsReceivedNoteDetail/GoodsReceivedNoteLine | /Invoice/InvoiceDetail/InvoiceLine | /CreditNote/CreditNoteDetail/CreditNoteLine | /DebitNote/DebitNoteDetail/DebitNoteLine | /DeliveryNote/DeliveryNoteDetail/DeliveryNoteLine)[LineExtraData/IsStockProduct[.='true' or .='1'] and normalize-space(LineExtraData/DeliveryNoteSuffix) = normalize-space($sDeliveryNoteSuffix) and (not(LineExtraData/IsFoodStockProduct) or LineExtraData/IsFoodStockProduct[.='false' or .='0'])]"> 
-					<xsl:sort select="LineExtraData/ProductGroup" data-type="text"/>
-					<xsl:variable name="sProductGroup" select="LineExtraData/ProductGroup"/>
-					<xsl:variable name="DeliveryNoteSuffix" select="LineExtraData/DeliveryNoteSuffix"/>
+					<xsl:value-of select="translate(//PurchaseOrderReferences[1]/PurchaseOrderReference,',','')"/>
+					<xsl:text>,</xsl:text>
+					<xsl:choose>
+						<xsl:when test="//ProductGroup[../IsFoodStockProduct[.='true' or .='1']]"><xsl:value-of select="//ProductGroup[../IsFoodStockProduct[.='true' or .='1']][1]"/></xsl:when>
+						<xsl:otherwise><xsl:text>WFOOD</xsl:text></xsl:otherwise>
+					</xsl:choose>
 					
+					<xsl:text>,</xsl:text>
+					
+					<xsl:text>DRY RECIPE COSTING</xsl:text>
+					<xsl:text>,</xsl:text>
+					
+					<xsl:text>,</xsl:text>
+				
+					<!-- just the food stock lines need to be summed -->
+					<xsl:choose>
+						<xsl:when test="/Invoice or /GoodsReceivedNote">
+							<xsl:value-of select="round(sum(//LineValueExclVAT[../LineExtraData[IsFoodStockProduct[.='true' or .='1']]]))"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="-1 * round(sum(//LineValueExclVAT[../LineExtraData[IsFoodStockProduct[.='true' or .='1']]]))"/>
+						</xsl:otherwise>
+					</xsl:choose>
+								
+				</xsl:variable>
+				
+				<xsl:text>&#13;&#10;</xsl:text>
+				
+				<xsl:call-template name="msPad">
+					<xsl:with-param name="vsText" select="$sLine"/>
+				</xsl:call-template>				
+			</xsl:if>
+
+			<xsl:if test="(/GoodsReceivedNote/GoodsReceivedNoteDetail/GoodsReceivedNoteLine | /Invoice/InvoiceDetail/InvoiceLine | /CreditNote/CreditNoteDetail/CreditNoteLine | /DebitNote/DebitNoteDetail/DebitNoteLine | /DeliveryNote/DeliveryNoteDetail/DeliveryNoteLine)[LineExtraData/IsStockProduct[.='true' or .='1'] and (not(LineExtraData/IsFoodStockProduct) or LineExtraData/IsFoodStockProduct[.='false' or .='0'])]">
+
+				<xsl:if test="//LineExtraData/IsFoodStockProduct[.='true' or .='1']">
+					<xsl:text>&#13;&#10;</xsl:text>
+				</xsl:if>
+
+				<xsl:variable name="sHeader">
+				
+				<!-- From section 4.1.1.3	 
+				
+				
+				Record Type 1 – Document header record
+				
+				Caterwide Field	Type (Max Length)				EDI Invoice Service Field(s)		Mand or Opt	Notes
+				~~~~~~~~~~~~~~~	~~~~~~~~~~~~~~~~~		~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	~~~~~~~~~~~	~~~~~
+				
+				Record Type		A (1)						-								M		Fixed as ‘1’
+				House Code			A (7)						Delivery Location (House) Code	M
+				House Name		A (30)						Delivery Location (House) Name	O		Leave empty if not provided.
+				Purchase Order 	A (??)						Purchase Order Number			O		Leave empty if not provided.
+				  Reference	
+				Purchase Order 	D							Purchase Order Date			O		DD/MM/YYYY
+				  Date
+				Delivery Note 		30							Delivery Note Number			O	
+				  Number	
+				Delivery/Credit 		D							Delivery/Credit Date				O		DD/MM/YYYY (credit note date for credit, delivery date for invoice)
+				  Date
+				Empty 1				
+				Empty 2				
+				Empty 3				
+				Empty 4				
+		
+		    	    	3.4.1.1    The ... Batch Processor will ... create a file that contains all document lines where 
+		                        Line.Stock Product = ‘Y’ and 
+		                        Document.Stock System Identifier = {blank} or ‘CL’. 
+				-->
+				
+					<xsl:text>1,</xsl:text>
+								
+					<!-- Cater for old documents that do not have a Buyers code, by using the Suppliers code instead -->
+					<xsl:choose>
+						<xsl:when test="/*/*/ShipTo/ShipToLocationID/BuyersCode">
+							<xsl:value-of select="/*/*/ShipTo/ShipToLocationID/BuyersCode"/>
+						</xsl:when>
+						<xsl:when test="/GoodsReceivedNote/TradeSimpleHeader/RecipientsBranchReference">
+							<xsl:value-of select="/GoodsReceivedNote/TradeSimpleHeader/RecipientsBranchReference"/>
+						</xsl:when>					
+						<xsl:otherwise>
+							<xsl:value-of select="/*/*/ShipTo/ShipToLocationID/SuppliersCode"/>
+						</xsl:otherwise>
+					</xsl:choose>															
+					<xsl:text>,</xsl:text>
+					
+					<xsl:value-of select="substring(translate(/*/*/ShipTo/ShipToName,',',''), 1, 30)"/>
+					<xsl:text>,</xsl:text>
+					
+					<xsl:value-of select="translate((/*/*/InvoiceLine | /*/*/CreditNoteLine | /*/*/DebitNoteLine | /GoodsReceivedNote/GoodsReceivedNoteHeader)/PurchaseOrderReferences/PurchaseOrderReference,',','')"/>
+					<xsl:text>,</xsl:text>
+					
+					<xsl:if test="(/*/*/InvoiceLine | /*/*/CreditNoteLine | /*/*/DebitNoteLine | /GoodsReceivedNote/GoodsReceivedNoteHeader)/PurchaseOrderReferences/PurchaseOrderDate">
+						<xsl:call-template name="msFormatDate">
+							<xsl:with-param name="vsDate" select="(/*/*/InvoiceLine | /*/*/CreditNoteLine | /*/*/DebitNoteLine | /GoodsReceivedNote/GoodsReceivedNoteHeader)/PurchaseOrderReferences/PurchaseOrderDate"/>
+						</xsl:call-template>
+					</xsl:if>
+					<xsl:text>,</xsl:text>
+					
+					<xsl:call-template name="msStripLeadingZeros">
+						<xsl:with-param name="vsDNRef" select="translate((/*/*/InvoiceLine | /*/*/CreditNoteLine | /*/*/DebitNoteLine | /DeliveryNote/DeliveryNoteHeader | /GoodsReceivedNote/GoodsReceivedNoteHeader)/DeliveryNoteReferences/DeliveryNoteReference,',','')"/>
+					</xsl:call-template>
+					<xsl:text>,</xsl:text>
+					
+					<xsl:call-template name="msFormatDate">
+						<xsl:with-param name="vsDate" select="(/Invoice/InvoiceDetail/InvoiceLine/DeliveryNoteReferences/DeliveryNoteDate | /CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteDate | /DebitNote/DebitNoteHeader/DebitNoteReferences/DebitNoteDate | /DeliveryNote/DeliveryNoteHeader/DeliveryNoteReferences/DeliveryNoteDate | /GoodsReceivedNote/GoodsReceivedNoteHeader/ReceivedDeliveryDetails/DeliveryDate)"/>
+					</xsl:call-template>
+					<xsl:text>,</xsl:text>
+		
+					<!-- Take the ANA number from the GLN if it is not the default 13 5's otherwise use the SuppliersCode for Supplier -->
+					<xsl:choose>
+						<xsl:when test="/*/*/Supplier/SuppliersLocationID/GLN and /*/*/Supplier/SuppliersLocationID/GLN != '5555555555555' and /*/*/Supplier/SuppliersLocationID/GLN != '5014748111116' and /*/*/Supplier/SuppliersLocationID/GLN != '5010118000026'">
+							<xsl:value-of select="/*/*/Supplier/SuppliersLocationID/GLN"/>						
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="/*/*/Supplier/SuppliersLocationID/SuppliersCode"/>
+						</xsl:otherwise>
+					</xsl:choose>	
+					<xsl:text>,</xsl:text>
+					
+					<xsl:text>,</xsl:text>
+					
+					<xsl:text>,</xsl:text>
+					
+				</xsl:variable>
+			
+				<xsl:call-template name="msPad">
+					<xsl:with-param name="vsText" select="$sHeader"/>
+				</xsl:call-template>
+								
+				<!-- all stock lines which are not also food stock lines are output individually -->						
+				<xsl:for-each select="(/GoodsReceivedNote/GoodsReceivedNoteDetail/GoodsReceivedNoteLine | /Invoice/InvoiceDetail/InvoiceLine | /CreditNote/CreditNoteDetail/CreditNoteLine | /DebitNote/DebitNoteDetail/DebitNoteLine | /DeliveryNote/DeliveryNoteDetail/DeliveryNoteLine)[LineExtraData/IsStockProduct[.='true' or .='1'] and (not(LineExtraData/IsFoodStockProduct) or LineExtraData/IsFoodStockProduct[.='false' or .='0'])]">
 					<!-- From section 4.1.1.3
 				
 						Record Type 2 - Detail line record
@@ -275,9 +343,7 @@
 						Description			A (??)						Product Description			M	
 						Product Type																O		Leave empty
 						Quantity Invoiced	??							Quantity Invoiced			M		Will be negative for credit notes and for credit lines on invoices.
-					-->					
-
-									
+					-->	
 					<xsl:variable name="sLine">
 					
 						<xsl:text>2,</xsl:text>
@@ -308,17 +374,17 @@
 							<xsl:when test="self::DeliveryNoteLine/DespatchedQuantity"><xsl:value-of select="DespatchedQuantity"/></xsl:when>
 							<xsl:when test="self::GoodsReceivedNoteLine/AcceptedQuantity"><xsl:value-of select="AcceptedQuantity"/></xsl:when>
 						</xsl:choose>
-					</xsl:variable>							
+					</xsl:variable>
 					
 					<xsl:text>&#13;&#10;</xsl:text>
+					
 					<xsl:call-template name="msPad">
 						<xsl:with-param name="vsText" select="$sLine"/>
-					</xsl:call-template>	
+					</xsl:call-template>
 				
 				</xsl:for-each>
-				<xsl:text>&#13;&#10;</xsl:text>				
-			</xsl:for-each>			
-				
+			
+			</xsl:if>									
 		</xsl:if>
 	</xsl:template>
 
