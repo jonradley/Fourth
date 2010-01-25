@@ -95,11 +95,11 @@
 	4.1.1.2	Each line is padded with spaces to a length of 201 characters.
 	-->
 	<xsl:template match="/GoodsReceivedNote[GoodsReceivedNoteDetail/GoodsReceivedNoteLine/LineExtraData/IsStockProduct[.='true' or .='1'] or GoodsReceivedNoteDetail/GoodsReceivedNoteLine/LineExtraData/IsFoodStockProduct[.='true' or .='1']] | /*[*/HeaderExtraData[StockSystemIdentifier='CW'] | */HeaderExtraData[StockSystemIdentifier='ZZ']][*/*/LineExtraData[IsStockProduct[.='true' or .='1'] or IsFoodStockProduct[.='true' or .='1']]]">
-	
-		<xsl:if test="/GoodsReceivedNote | /*/*/HeaderExtraData[StockSystemIdentifier='CW']">		
+
+		<xsl:if test="/GoodsReceivedNote | /*/*/HeaderExtraData[StockSystemIdentifier='CW'] ">		
 			
 			<!-- consolidate all Food stock lines into a single Caterwide line -->			
-			<xsl:for-each select="(/GoodsReceivedNote/GoodsReceivedNoteDetail/GoodsReceivedNoteLine)[generate-id() = generate-id(key('keyLinesByDeliveryNoteSuffix',LineExtraData/DeliveryNoteSuffix))]">
+			<xsl:for-each select="(/GoodsReceivedNote/GoodsReceivedNoteDetail/GoodsReceivedNoteLine | /DeliveryNote/DeliveryNoteDetail/DeliveryNoteLine | /Invoice/InvoiceDetail/InvoiceLine)[generate-id() = generate-id(key('keyLinesByDeliveryNoteSuffix',LineExtraData/DeliveryNoteSuffix))] | /DeliveryNote/DeliveryNoteDetail/DeliveryNoteLine | /Invoice/InvoiceDetail/InvoiceLine">
 				<xsl:sort select="LineExtraData/DeliveryNoteSuffix" data-type="text"/>
 				<xsl:variable name="sDeliveryNoteSuffix" select="normalize-space(LineExtraData/DeliveryNoteSuffix)"/>						
 				<xsl:variable name="sHeaderFood">
@@ -132,7 +132,9 @@
 		                        Line.Stock Product = ‘Y’ and 
 		                        Document.Stock System Identifier = {blank} or ‘CL’. 
 				-->
-					
+					<xsl:if test="position() != 1">
+				<xsl:text>&#13;&#10;</xsl:text>				
+					</xsl:if>
 					<xsl:text>1,</xsl:text>
 								
 					<!-- Cater for old documents that do not have a Buyers code, by using the Suppliers code instead -->
@@ -316,7 +318,6 @@
 					</xsl:call-template>	
 				
 				</xsl:for-each>
-				<xsl:text>&#13;&#10;</xsl:text>				
 			</xsl:for-each>			
 				
 		</xsl:if>
