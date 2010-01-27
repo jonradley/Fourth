@@ -48,7 +48,7 @@
 				<xsl:value-of select="PurchaseOrderConfirmationHeader/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationReference"/>
 			</xsl:attribute>
 			<xsl:attribute name="Description">
-				<xsl:value-of select="PurchaseOrderConfirmationHeader/Supplier/SuppliersName"/> - <xsl:value-of select="PurchaseOrderConfirmationHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
+				<xsl:value-of select="PurchaseOrderConfirmationHeader/Supplier/SuppliersName"/> - <xsl:value-of select="PurchaseOrderConfirmationHeader/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationReference"/>
 			</xsl:attribute>
 			
 			<xsl:attribute name="Total">
