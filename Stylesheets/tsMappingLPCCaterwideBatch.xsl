@@ -85,7 +85,7 @@
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"  xmlns:msxsl="urn:schemas-microsoft-com:xslt">
     <xsl:output method="text" encoding="utf-8"/>
-    <xsl:key name="keyLinesByDeliveryNoteSuffix" match="GoodsReceivedNoteLine" use="LineExtraData/DeliveryNoteSuffix"/>  
+    <xsl:key name="keyLinesByDeliveryNoteSuffix" match="GoodsReceivedNoteLine[LineExtraData/IsStockProduct = 'true']" use="LineExtraData/DeliveryNoteSuffix"/>  
     <xsl:key name="keyLinesByProductGroup" match="GoodsReceivedNoteLine" use="LineExtraData/ProductGroup"/>
   
 
@@ -99,7 +99,8 @@
 		<xsl:if test="/GoodsReceivedNote | /*/*/HeaderExtraData[StockSystemIdentifier='CW'] ">		
 			
 			<!-- consolidate all Food stock lines into a single Caterwide line -->			
-			<xsl:for-each select="(/GoodsReceivedNote/GoodsReceivedNoteDetail/GoodsReceivedNoteLine | /DeliveryNote/DeliveryNoteDetail/DeliveryNoteLine | /Invoice/InvoiceDetail/InvoiceLine)[generate-id() = generate-id(key('keyLinesByDeliveryNoteSuffix',LineExtraData/DeliveryNoteSuffix))] | /DeliveryNote/DeliveryNoteDetail/DeliveryNoteLine | /Invoice/InvoiceDetail/InvoiceLine">
+			<!--xsl:for-each select="(/GoodsReceivedNote/GoodsReceivedNoteDetail/GoodsReceivedNoteLine[LineExtraData/IsStockProduct = 'true'] | /DeliveryNote/DeliveryNoteDetail/DeliveryNoteLine | /Invoice/InvoiceDetail/InvoiceLine)[generate-id() = generate-id(key('keyLinesByDeliveryNoteSuffix',LineExtraData/DeliveryNoteSuffix))] | /DeliveryNote/DeliveryNoteDetail/DeliveryNoteLine | /Invoice/InvoiceDetail/InvoiceLine"-->
+			<xsl:for-each select="(/GoodsReceivedNote/GoodsReceivedNoteDetail/GoodsReceivedNoteLine[LineExtraData/IsStockProduct = 'true'])[generate-id() = generate-id(key('keyLinesByDeliveryNoteSuffix',LineExtraData/DeliveryNoteSuffix))] ">
 				<xsl:sort select="LineExtraData/DeliveryNoteSuffix" data-type="text"/>
 				<xsl:variable name="sDeliveryNoteSuffix" select="normalize-space(LineExtraData/DeliveryNoteSuffix)"/>						
 				<xsl:variable name="sHeaderFood">
@@ -133,7 +134,7 @@
 		                        Document.Stock System Identifier = {blank} or ‘CL’. 
 				-->
 					<xsl:if test="position() != 1">
-				<xsl:text>&#13;&#10;</xsl:text>				
+						<xsl:text>&#13;&#10;</xsl:text>
 					</xsl:if>
 					<xsl:text>1,</xsl:text>
 								
@@ -204,10 +205,12 @@
 					<xsl:text>,</xsl:text>
 					
 				</xsl:variable>
-			
+
+
 				<xsl:call-template name="msPad">
 					<xsl:with-param name="vsText" select="$sHeaderFood"/>
 				</xsl:call-template>
+
 				
 				<!-- Line Details -->				
 				 <xsl:for-each select="(/GoodsReceivedNote/GoodsReceivedNoteDetail/GoodsReceivedNoteLine | /Invoice/InvoiceDetail/InvoiceLine | /CreditNote/CreditNoteDetail/CreditNoteLine | /DebitNote/DebitNoteDetail/DebitNoteLine | /DeliveryNote/DeliveryNoteDetail/DeliveryNoteLine)[LineExtraData/IsStockProduct[.='true' or .='1'] and normalize-space(LineExtraData/DeliveryNoteSuffix) = normalize-space($sDeliveryNoteSuffix) and  LineExtraData/IsFoodStockProduct[.='true' or .='1']][generate-id() = generate-id(key('keyLinesByProductGroup',LineExtraData/ProductGroup))]">		
