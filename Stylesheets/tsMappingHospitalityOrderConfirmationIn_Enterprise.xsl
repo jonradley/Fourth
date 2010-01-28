@@ -4,16 +4,9 @@ Alterations
 **********************************************************************
 Name			| Date				| Change
 **********************************************************************
-R Cambridge	| 2007-07-26		| 1332 Created Modue
+H Mahbub   	| 2009-12-08		| 3235 copy of tsMappingHospitalityBrakesOrderConfirmationIn.xsl
 **********************************************************************
-R Cambridge	| 2007-11-13		| 1332 no info to populate Buyer tag
-**********************************************************************
-R Cambridge	| 2008-01-03		| 1686 revised rejection codes
-**********************************************************************
-R cambridge	| 2008-11-24		| 2587 revised rejection narratives
-												 for substitute lines set status to 'Add' and make rejected line explicit
-**********************************************************************
-R Cambridge	| 2009-07-02	  	| 2980 Ensure PL account codes are captured   
+R Cambridge	| 2010-01-28		| 2325 remove line statuses				
 **********************************************************************
 				|						|				
 *******************************************************************-->
