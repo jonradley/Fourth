@@ -185,13 +185,7 @@ R Cambridge	| 2009-07-02	  	| 2980 Ensure PL account codes are captured
 							
 								<xsl:call-template name="writeConfLine">
 								
-									<xsl:with-param name="lineStatus">
-										<xsl:choose>
-											<xsl:when test="number(modifiedOrderInformation/requestedQuantity/value) = 0">Rejected</xsl:when>
-											<xsl:when test="substituteItemIdentification">Added</xsl:when>
-											<xsl:otherwise>Changed</xsl:otherwise>
-										</xsl:choose>
-									</xsl:with-param>
+									<!-- Enteprise won't be sending meaningful line statuses -->
 									
 									<xsl:with-param name="productID" select="modifiedOrderInformation/tradeItemIdentification"/>
 									
@@ -235,8 +229,6 @@ R Cambridge	| 2009-07-02	  	| 2980 Ensure PL account codes are captured
 									<!-- Previous line was an Add, now reject the substituted product -->
 									<xsl:call-template name="writeConfLine">
 									
-										<xsl:with-param name="lineStatus">Rejected</xsl:with-param>
-										
 										<xsl:with-param name="productID" select="substituteItemIdentification"/>
 										
 										<xsl:with-param name="subProductID" select="ShouldntMatchAnythingEver"/>
@@ -275,7 +267,6 @@ R Cambridge	| 2009-07-02	  	| 2980 Ensure PL account codes are captured
 	
 	
 	<xsl:template name="writeConfLine">
-		<xsl:param name="lineStatus"/>
 		<xsl:param name="productID"/>
 		<xsl:param name="subProductID"/>
 		<xsl:param name="quantityOrdered" select="''"/>
@@ -286,9 +277,7 @@ R Cambridge	| 2009-07-02	  	| 2980 Ensure PL account codes are captured
 	
 	
 		<PurchaseOrderConfirmationLine>
-			<xsl:attribute name="LineStatus">
-				<xsl:value-of select="$lineStatus"/>
-			</xsl:attribute>
+
 				
 			<ProductID>
 				<xsl:if test="string($productID/gtin)!=''">
