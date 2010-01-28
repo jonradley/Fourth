@@ -43,6 +43,16 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from CLD/SPRO(1).
 	</xsl:template>
 	<!-- END of GENERIC HANDLERS -->
 	
+	<!-- This is so we dont duplicate block Carlsberg's Credit notes's on FGN -->
+	<xsl:template match="Invoice/InvoiceHeader/BatchInformation/FileGenerationNo">
+		<xsl:copy>
+			<xsl:value-of select="."/>
+			<xsl:text> (</xsl:text>
+			<xsl:value-of select="../../Buyer/BuyersLocationID/SuppliersCode"/>
+			<xsl:text>)</xsl:text>
+		</xsl:copy>
+	</xsl:template>		
+	
 	<!-- InvoiceLine/ProductID/BuyersProductCode is used as a placeholder for INVOIC-ILD-CRLI and should not be copied over -->
 	<xsl:template match="BuyersProductCode"/>
 	
