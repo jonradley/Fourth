@@ -14,7 +14,7 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from CLD/SPRO(1).
 <ffsFlatFileSchema>
 	<ffsSettings>
 		<ffsRecordPositionType>named</ffsRecordPositionType>
-		<ffsRecordSeparator>chr(13)chr(10)</ffsRecordSeparator>
+		<ffsRecordSeparator>chr(10)</ffsRecordSeparator>
 		<ffsEscapeChars>
 			<!--ffsEscapeChar>
 				<ffsNative>chr(13)</ffsNative>
