@@ -13,7 +13,9 @@ R Cambridge	| 2009-07-06	  	| 2980 Send SBR / PL account code as buyer's code fo
 **********************************************************************
 A Barber		| 2009-11-17		| Fixed UOM to "EA" if order from MacDonald Hotels or Mercure GLN.
 **********************************************************************
-R Cambridge |	2010-01-04		| 3110 handle MITIE PL accounts in //sh:Receiver/sh:Identifier
+R Cambridge	| 2010-01-04		| 3110 handle MITIE PL accounts in //sh:Receiver/sh:Identifier
+**********************************************************************
+R Cambridge	| 2010-02-01		| 3310 set sh:Sender and sh:Receiver according to GLN of the relevant party
 **********************************************************************
 				|						|				
 *******************************************************************-->
@@ -32,59 +34,29 @@ R Cambridge |	2010-01-04		| 3110 handle MITIE PL accounts in //sh:Receiver/sh:Id
 				<sh:Sender>
 					<sh:Identifier>
 						<xsl:attribute name="Authority">EAN.UCC</xsl:attribute>
-						<xsl:choose>
-							<xsl:when test="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN = '5060166760274'">
-								<xsl:text>J.W. Lees</xsl:text>
-							</xsl:when>
-							<xsl:when test="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN = '5027615900013'">
-								<xsl:text>Aramark</xsl:text>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersName"/>
-							</xsl:otherwise>
-						</xsl:choose>
+						
+						<!-- 3310 moved senderID logic into template -->
+						<xsl:call-template name="determineSenderID">
+							<xsl:with-param name="senderGLN" select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/>
+						</xsl:call-template>					
+						
 					</sh:Identifier>
 				</sh:Sender>
 				<!--Target Vendor  - Description-->
 				<sh:Receiver>
 					<sh:Identifier>
 						<xsl:attribute name="Authority">EAN.UCC</xsl:attribute>
-						
-						<xsl:choose>
-							
-							<!-- Frozen for Aramark -->
-							<xsl:when test="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN[.='5036036000009'] and PurchaseOrderHeader/Buyer/BuyersLocationID/GLN[.='5027615900013']">
-								<xsl:text>Brakes Frozen</xsl:text>
-							</xsl:when>
-							
-							<!-- Grocery for Aramark -->
-							<xsl:when test="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN[.='5013546062482'] and PurchaseOrderHeader/Buyer/BuyersLocationID/GLN[.='5027615900013']">
-								<xsl:text>Brakes Grocery</xsl:text>
-							</xsl:when>
-							
-							<!-- Frozen for MITIE -->
-							<xsl:when test="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN[.='5036036000009'] and PurchaseOrderHeader/Buyer/BuyersLocationID/GLN[.='5060166760311']">
-								<xsl:text>Brakes Frozen</xsl:text>
-							</xsl:when>
-							
-							<!-- Grocery for MITIE -->
-							<xsl:when test="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN[.='5013546062482'] and PurchaseOrderHeader/Buyer/BuyersLocationID/GLN[.='5060166760311']">
-								<xsl:text>Brakes Grocery</xsl:text>
-							</xsl:when>
-							
-							<!-- All other suppliers/customers -->
-							<xsl:otherwise>
-								<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersName"/>
-							</xsl:otherwise>
-							
-						</xsl:choose>				
-						
+												
+						<!-- 3310 moved vendorID logic into template -->
+						<xsl:call-template name="determineVendorID">
+							<xsl:with-param name="vendorGLN" select="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN"/>						
+						</xsl:call-template>							
 						
 					</sh:Identifier>
 				</sh:Receiver>
 				<sh:DocumentIdentification>
 					<sh:Standard>"http://www.w3.org/2001/XMLSchema-instance"</sh:Standard>
-					<!--GS1 - Purchase Order vaersion reference - Fixed value-->
+					<!--GS1 - Purchase Order version reference - Fixed value-->
 					<sh:TypeVersion>2.1</sh:TypeVersion>
 					<!--Message Instance identifier set by Vendor-->
 					<sh:InstanceIdentifier>1111</sh:InstanceIdentifier>
@@ -328,5 +300,103 @@ R Cambridge |	2010-01-04		| 3110 handle MITIE PL accounts in //sh:Receiver/sh:Id
 		</sh:StandardBusinessDocument>
 
 	</xsl:template>
+	
+	
+	
+	
+<!--=======================================================================================
+  Routine        : determineSenderID
+  Description    : Uses customer GLN to determine SenderID needed by Kewill (Brakes' system provider)
+  							
+  							Customer set up before 2010-02-01 used //PurchaseOrderHeader/Buyer/BuyersName
+  							 (but any changes to BP_Directory..Member.Name will cause issues at Kewill)
+  							
+  							Customers set up after 2010-02-01 should use the GLN
+  
+  Inputs         : Node containing a GLN
+  Returns        : A string with a GLN or code/name
+  Author         : Robert Cambridge	2010-01-05
+  Alterations    : 
+ =======================================================================================-->
+	<xsl:template name="determineSenderID">
+		<xsl:param name="senderGLN"/>
+
+		<xsl:choose>
+		
+			<!-- Customers set up before 2010-02-01 :-
+					Use value of BP_Directory..Member.Name as of 2010-02-01			
+			 -->
+		
+			<xsl:when test="$senderGLN = '5013546120137'">Woodward Foodservice Limited</xsl:when>
+			<xsl:when test="$senderGLN = '5027615900013'">Aramark</xsl:when>
+			<xsl:when test="$senderGLN = '5027615900020'">Mercure</xsl:when>
+			<xsl:when test="$senderGLN = '5060166760014'">Orchid Pubs</xsl:when>
+			<xsl:when test="$senderGLN = '5060166760021'">Macdonald Hotels</xsl:when>
+			
+			<xsl:when test="$senderGLN = '5060166760045'">Bay Restaurant Group</xsl:when>
+			<!-- Preceding entry is probably never used as InvoiceToAddress flag is set in extrainfo of  
+			     2 Bay child members, corresponding to the next two entries... -->			
+			<xsl:when test="$senderGLN = '5060166760243'">Town and City</xsl:when>			
+			<xsl:when test="$senderGLN = '5060166760250'">Bay Restaurants</xsl:when> 		
+			
+			<xsl:when test="$senderGLN = '5060166760083'">Fullers Inns</xsl:when>
+			<xsl:when test="$senderGLN = '5060166760106'">Tattershall Castle Group</xsl:when>
+			<xsl:when test="$senderGLN = '5060166760113'">The Restaurant Group</xsl:when>
+			<xsl:when test="$senderGLN = '5060166760120'">Massarella</xsl:when>
+			<xsl:when test="$senderGLN = '5060166760236'">Crerar Hotels</xsl:when>	
+			<xsl:when test="$senderGLN = '5060166760274'">J.W. Lees</xsl:when>		
+			<xsl:when test="$senderGLN = '5060166760311'">MITIE Catering Services Ltd</xsl:when>
+			
+			
+			<!-- Customers set up after 2010-02-01 :-
+					Use GLN			
+			 -->			
+			 
+			<xsl:otherwise>
+				<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/>
+			</xsl:otherwise>
+			
+		</xsl:choose>	
+		
+	</xsl:template>
+	
+
+
+
+<!--=======================================================================================
+  Routine        : determineVendorID
+  Description    : Uses supplier's GLN to determine VendorID needed by Kewill (Brakes' system provider)
+  
+  							Previously this used //PurchaseOrderHeader/Supplier/SuppliersName but any changes 
+  							to BP_Directory..Member.Name will caused issues at Kewill. 
+  							Also, PL account orders had the wrong name in this field
+  							
+  							For PL account customers, provided the PL account GLN is set correctly, the correct name/code will be returned  
+  
+  Inputs         : Node containing a GLN
+  Returns        : A string with a code/name
+  Author         : Robert Cambridge	2010-01-05
+  Alterations    : 
+ =======================================================================================-->	
+	<xsl:template name="determineVendorID">
+		<xsl:param name="vendorGLN"/>
+
+		<xsl:choose>
+			<xsl:when test="$vendorGLN = '5013546026886'">MJ Seafoods Wholesale Ltd</xsl:when><!-- 'M&J Seafood Ltd' on live -->
+			<xsl:when test="$vendorGLN = '5013546062482'">Brakes Grocery</xsl:when>
+			<xsl:when test="$vendorGLN = '5036036000009'">Brakes Frozen</xsl:when>
+			<xsl:when test="$vendorGLN = '5036036000030'">Brakes Logistics</xsl:when>
+			<xsl:when test="$vendorGLN = '5013546120137'">Woodward Foodservice Limited</xsl:when>
+			<xsl:otherwise>
+				<xsl:text>??? no code found for </xsl:text>
+				<xsl:value-of select="$vendorGLN"/>
+				<xsl:text> (</xsl:text>
+				<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersName"/>
+				<xsl:text>)</xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>	
+		
+	</xsl:template>
+	
 	
 </xsl:stylesheet>
