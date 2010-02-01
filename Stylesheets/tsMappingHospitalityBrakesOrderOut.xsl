@@ -13,7 +13,7 @@ R Cambridge	| 2009-07-06	  	| 2980 Send SBR / PL account code as buyer's code fo
 **********************************************************************
 A Barber		| 2009-11-17		| Fixed UOM to "EA" if order from MacDonald Hotels or Mercure GLN.
 **********************************************************************
-R Cambridge	| 2010-01-04		| 3110 handle MITIE PL accounts in //sh:Receiver/sh:Identifier
+R Cambridge	| 2010-01-04		| 3310 handle MITIE PL accounts in //sh:Receiver/sh:Identifier
 **********************************************************************
 R Cambridge	| 2010-02-01		| 3310 set sh:Sender and sh:Receiver according to GLN of the relevant party
 **********************************************************************
