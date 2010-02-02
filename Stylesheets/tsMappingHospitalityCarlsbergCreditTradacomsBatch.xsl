@@ -8,7 +8,7 @@ Name		| Date			| Change
 S Jefford	| 22/08/2005	| GTIN field now sourced from CLD/SPRO(1).
 			|				| CLD/DRLI now stored in BuyersProductCode
 **********************************************************************
-			|				| ready for live
+	KO		|28/01/2010	| a change so we wont duplicate block on FGN by putting the GLN in the FGN tag
 **********************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
@@ -44,14 +44,14 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from CLD/SPRO(1).
 	<!-- END of GENERIC HANDLERS -->
 	
 	<!-- This is so we dont duplicate block Carlsberg's Credit notes's on FGN -->
-	<xsl:template match="Invoice/InvoiceHeader/BatchInformation/FileGenerationNo">
+	<xsl:template match="CreditNote/CreditNoteHeader/BatchInformation/FileGenerationNo">
 		<xsl:copy>
 			<xsl:value-of select="."/>
 			<xsl:text> (</xsl:text>
 			<xsl:value-of select="../../Buyer/BuyersLocationID/SuppliersCode"/>
 			<xsl:text>)</xsl:text>
 		</xsl:copy>
-	</xsl:template>		
+	</xsl:template>	
 	
 	<!-- InvoiceLine/ProductID/BuyersProductCode is used as a placeholder for INVOIC-ILD-CRLI and should not be copied over -->
 	<xsl:template match="BuyersProductCode"/>
