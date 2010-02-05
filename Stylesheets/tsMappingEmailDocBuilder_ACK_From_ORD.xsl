@@ -18,7 +18,6 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:user="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl user">
 	<xsl:output method="html"/>
 	<xsl:include href="HospitalityInclude.xsl"/>
-	<xsl:param name="MessageID" select="'0'"/>
 	<xsl:template match="/">
 		<html>
 			<style>
@@ -109,7 +108,7 @@
 
 					<input type="hidden">
 						<xsl:attribute name="name">txtMessageID</xsl:attribute>
-						<xsl:attribute name="value"><xsl:value-of select="$MessageID"/></xsl:attribute>
+						<xsl:attribute name="value"><xsl:value-of select="/PurchaseOrder/DocBuilder/MessageID"/></xsl:attribute>
 					</input>					
 					<table class="DocumentSurround">
 						<!--Header-->
