@@ -12,11 +12,15 @@
 '******************************************************************************************
 ' Date       | Name    		| Description of modification
 '******************************************************************************************
-' 18/11/2009 | S Sehgal | Created
-'            |               |
+' 18/11/2009 | S Sehgal 		| Created
+'******************************************************************************************
+' 26/11/2009 | R Cambridge   | 3250 Added encoding attribute
+'******************************************************************************************
+' 				 |               |
 '******************************************************************************************
 -->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="fo msxsl xsl">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+	<xsl:output encoding="utf-8"/>
 	<xsl:template match="@*|node()">
 		<xsl:copy>
 			<xsl:apply-templates select="@*|node()"/>
