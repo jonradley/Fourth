@@ -147,6 +147,24 @@
 								<xsl:attribute name="Name">IgnorePriceChange</xsl:attribute>
 								<xsl:value-of select="PriceCatDetail/ListOfKeyVal/KeyVal[@Keyword = 'IgnorePriceChange']"/>
 							</Item>
+							<xsl:if test="PriceCatDetail/ListOfKeyVal/KeyVal[@Keyword = 'InvoicePrice'] != ''">
+								<Item>
+									<xsl:attribute name="Name">InvoicePrice</xsl:attribute>
+									<xsl:value-of select="PriceCatDetail/ListOfKeyVal/KeyVal[@Keyword = 'InvoicePrice']"/>
+								</Item>
+							</xsl:if>
+							<xsl:if test="PriceCatDetail/ListOfKeyVal/KeyVal[@Keyword = 'InvoicePriceUOM'] != ''">
+								<Item>
+									<xsl:attribute name="Name">InvoicePriceUOM</xsl:attribute>
+									<xsl:value-of select="PriceCatDetail/ListOfKeyVal/KeyVal[@Keyword = 'InvoicePriceUOM']"/>
+								</Item>
+							</xsl:if>
+							<xsl:if test="PriceCatDetail/ListOfKeyVal/KeyVal[@Keyword = 'Average Weight'] != ''">
+								<Item>
+									<xsl:attribute name="Name">Average Weight</xsl:attribute>
+									<xsl:value-of select="PriceCatDetail/ListOfKeyVal/KeyVal[@Keyword = 'Average Weight']"/>
+								</Item>
+							</xsl:if>
 						</ExtraData>
 					</Product>
 				</xsl:for-each>
