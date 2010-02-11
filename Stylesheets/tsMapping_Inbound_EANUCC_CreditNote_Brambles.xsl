@@ -60,15 +60,28 @@
 				      TRADESIMPLE HEADER
 				      ~~~~~~~~~~~~~~~~~~~~~~~ -->
 							<TradeSimpleHeader>
-								
+								<!-- SCR comes from Sellers code for buyer if there, else it comes from Buyer GLN -->
 								<SendersCodeForRecipient>
-									<xsl:value-of select="substring-after(/CreditNote/ShipTo/SellerAssigned,'/')"/>
+									<xsl:choose>
+										<xsl:when test="string(/CreditNote/ShipTo/SellerAssigned)">
+											<!--<xsl:value-of select="/CreditNote/ShipTo/SellerAssigned"/>-->
+											<xsl:value-of select="substring-after(/CreditNote/ShipTo/SellerAssigned,'/')"/>
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:value-of select="/CreditNote/Buyer/BuyerGLN"/>
+										</xsl:otherwise>
+									</xsl:choose>
 								</SendersCodeForRecipient>
-								
-								<SendersBranchReference>
-									<xsl:value-of select="substring-before(/CreditNote/ShipTo/SellerAssigned,'/')"/>
-								</SendersBranchReference>	
-
+								<!-- SBR used to pick out the PL Account code to be used in the trading relationship set up. This could be Buyer or Supplier value. -->
+								<xsl:if test="string(/CreditNote/TradeAgreementReference/ContractReferenceNumber) != '' ">
+									<SendersBranchReference>
+										<!--<xsl:value-of select="/CreditNote/TradeAgreementReference/ContractReferenceNumber"/>-->
+										<xsl:value-of select="substring-before(/CreditNote/ShipTo/SellerAssigned,'/')"/>
+									</SendersBranchReference>
+								</xsl:if>
+								<!-- SendersName, Address1 - 4 and PostCode will be populated by subsequent processors  -->
+								<!-- Recipients Code for Sender, Recipients Branch Reference, Name, Address1 - 4, PostCode will be populated by subsequent 	processors -->
+								<!-- the TestFlag will be populated by subsequent processors -->
 							</TradeSimpleHeader>
 							<!-- ~~~~~~~~~~~~~~~~~~~~~~~
 				      CREDIT NOTE HEADER
@@ -76,18 +89,18 @@
 							<CreditNoteHeader>
 								<!-- the document status is always Original -->
 								<DocumentStatus>
-									<xsl:text>Original</xsl:text>
+									<xsl:value-of select="$defaultDocumentStatus"/>
 								</DocumentStatus>
 								<Buyer>
 									<BuyersLocationID>
-										<xsl:if test="string(/CreditNote/Buyer/BuyerGLN) != '' ">
+										<xsl:if test="string(/CreditNote/Buyer/BuyerGLN) !='' ">
 											<GLN>
 												<xsl:value-of select="/CreditNote/Buyer/BuyerGLN"/>
 											</GLN>
 										</xsl:if>
 										<xsl:if test="string(/CreditNote/Buyer/BuyerAssigned)">
 											<BuyersCode>
-												<xsl:value-of select="normalize-space(/CreditNote/Buyer/BuyerAssigned)"/>
+												<xsl:value-of select="/CreditNote/Buyer/BuyerAssigned"/>
 											</BuyersCode>
 										</xsl:if>
 										<xsl:if test="string(/CreditNote/Buyer/SellerAssigned)">
@@ -96,30 +109,8 @@
 											</SuppliersCode>
 										</xsl:if>
 									</BuyersLocationID>
-									<BuyersAddress>
-										<AddressLine1>
-											<xsl:value-of select="/CreditNote/Buyer/Address/BuildingIdentifier"/>
-										</AddressLine1>
-										<xsl:if test="string(/CreditNote/Buyer/Address/StreetName)">
-											<AddressLine2>
-												<xsl:value-of select="/CreditNote/Buyer/Address/StreetName"/>
-											</AddressLine2>
-										</xsl:if>
-										<xsl:if test="string(/CreditNote/Buyer/Address/City)">
-											<AddressLine3>
-												<xsl:value-of select="/CreditNote/Buyer/Address/City"/>
-											</AddressLine3>
-										</xsl:if>
-										<AddressLine4>
-											<xsl:text>GB</xsl:text>
-										</AddressLine4>
-										<xsl:if test="string(/CreditNote/Buyer/Address/PostCode)">
-											<PostCode>
-												<xsl:value-of select="/CreditNote/Buyer/Address/PostCode"/>
-											</PostCode>
-										</xsl:if>
-									</BuyersAddress>
-								</Buyer>								
+									<!-- Buyers name and address will be populated by subsequent processors -->
+								</Buyer>
 								<Supplier>
 									<SuppliersLocationID>
 										<xsl:if test="string(/CreditNote/Seller/SellerGLN)">
@@ -138,29 +129,7 @@
 											</SuppliersCode>
 										</xsl:if>
 									</SuppliersLocationID>
-									<SuppliersAddress>
-										<AddressLine1>
-											<xsl:value-of select="normalize-space(/CreditNote/Seller/Address/BuildingIdentifier)"/>
-										</AddressLine1>
-										<xsl:if test="string(/CreditNote/Seller/Address/StreetName)">
-											<AddressLine2>
-												<xsl:value-of select="/CreditNote/Seller/Address/StreetName"/>
-											</AddressLine2>
-										</xsl:if>
-										<xsl:if test="string(/CreditNote/Seller/Address/City)">
-											<AddressLine3>
-												<xsl:value-of select="/CreditNote/Seller/Address/City"/>
-											</AddressLine3>
-										</xsl:if>
-										<AddressLine4>
-											<xsl:text>GB</xsl:text>
-										</AddressLine4>
-										<xsl:if test="string(/CreditNote/Seller/Address/PostCode)">
-											<PostCode>
-												<xsl:value-of select="/CreditNote/Seller/Address/PostCode"/>
-											</PostCode>
-										</xsl:if>
-									</SuppliersAddress>
+									<!-- Suppliers name and address will be populated by subsequent processors -->
 								</Supplier>
 								<ShipTo>
 									<ShipToLocationID>
@@ -171,8 +140,14 @@
 										</xsl:if>
 										<xsl:if test="string(/CreditNote/ShipTo/BuyerAssigned)">
 											<BuyersCode>
-												<xsl:value-of select="substring-after(/CreditNote/ShipTo/SellerAssigned,'/')"/>
+												<xsl:value-of select="/CreditNote/ShipTo/BuyerAssigned"/>
 											</BuyersCode>
+										</xsl:if>
+										<xsl:if test="string(/CreditNote/ShipTo/SellerAssigned)">
+											<SuppliersCode>
+												<!--<xsl:value-of select="/CreditNote/ShipTo/SellerAssigned"/>-->
+												<xsl:value-of select="substring-after(/CreditNote/ShipTo/SellerAssigned,'/')"/>
+											</SuppliersCode>
 										</xsl:if>
 									</ShipToLocationID>
 									<!-- ShipTo name and address will be populated by subsequent processors -->
@@ -235,14 +210,14 @@
 														<xsl:value-of select="/CreditNote/OrderReference/PurchaseOrderNumber"/>
 													</PurchaseOrderReference>
 												</xsl:if>
-												<!--<xsl:if test="/CreditNote/OrderReference/PurchaseOrderNumber">
+												<xsl:if test="/CreditNote/OrderReference/PurchaseOrderNumber">
 													<PurchaseOrderDate>
 														<xsl:value-of select="substring-before(/CreditNote/OrderReference/PurchaseOrderDate,'T')"/>
 													</PurchaseOrderDate>
 													<PurchaseOrderTime>
 														<xsl:value-of select="substring-after(/CreditNote/OrderReference/PurchaseOrderDate,'T')"/>
 													</PurchaseOrderTime>
-												</xsl:if>-->
+												</xsl:if>
 												<xsl:if test="/CreditNote/TradeAgreementReference/ContractReferenceNumber != ''">
 													<TradeAgreement>
 														<ContractReference>
