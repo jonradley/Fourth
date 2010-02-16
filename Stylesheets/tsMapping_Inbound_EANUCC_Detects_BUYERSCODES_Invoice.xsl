@@ -35,9 +35,12 @@
 '******************************************************************************************
 '14/12/2009 |S Sehgal  	| Case 3286 Changed to handle VAT changing back to 17.5% from 1-Jan-2010
 '******************************************************************************************
+'16/02/2010 |  J Cahill  	| Case 3343 Amended to check if UnitPrice > 0 and LineItemPrice > 0
+'******************************************************************************************
 '
 '******************************************************************************************
 -->
+<?xml-stylesheet type="text/xsl" href="C:\Documents and Settings\jcahill\My Documents\TradeSimpleCode\hospitality\trunk\Stylesheets\tsMapping_Inbound_EANUCC_Detects_BUYERSCODES_Invoice.xsl"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:data="blah">
 	<xsl:output method="xml"/>
 	<!-- Buyers Code detection function and lookup table -->
@@ -63,22 +66,19 @@
 				<BatchDocuments>
 					<BatchDocument>
 						<Invoice>
-						
-						<!-- Check Value, We will use he GLN as this is unique. Before golive we will need to 
+							<!-- Check Value, We will use he GLN as this is unique. Before golive we will need to 
 										check that the quoted compass GLN is in facts SSPs. -->
-								<xsl:variable name="sBuyersGLN" select="normalize-space(/Invoice/Buyer/BuyerGLN)"/>
-								<xsl:variable name="sCheckFlag">
-									<xsl:call-template name="msDetectBuyersANA">
-										<xsl:with-param name="sANA" select="$sBuyersGLN"/>
-									</xsl:call-template>
-								</xsl:variable>
-						
+							<xsl:variable name="sBuyersGLN" select="normalize-space(/Invoice/Buyer/BuyerGLN)"/>
+							<xsl:variable name="sCheckFlag">
+								<xsl:call-template name="msDetectBuyersANA">
+									<xsl:with-param name="sANA" select="$sBuyersGLN"/>
+								</xsl:call-template>
+							</xsl:variable>
 							<!-- ~~~~~~~~~~~~~~~~~~~~~~~
 				      				TRADESIMPLE HEADER
-							     ~~~~~~~~~~~~~~~~~~~~~~~ -->							  
+							     ~~~~~~~~~~~~~~~~~~~~~~~ -->
 							<TradeSimpleHeader>
 								<!-- SCR comes from Sellers code for buyer if there, else it comes from Buyer GLN -->
-								
 								<SendersCodeForRecipient>
 									<!-- Detect if a SSP invoice -->
 									<xsl:choose>
@@ -115,7 +115,6 @@
 										<xsl:value-of select="normalize-space(/Invoice/Seller/BuyerAssigned)"/>
 									</SendersBranchReference>
 								</xsl:if>
-								
 								<!-- SendersName, Address1 - 4 and PostCode will be populated by subsequent processors  -->
 								<!-- Recipients Code for Sender, Recipients Branch Reference, Name, Address1 - 4, PostCode will be populated by subsequent 	processors -->
 								<!-- the TestFlag will be populated by subsequent processors -->
@@ -139,23 +138,20 @@
 											<BuyersCode>
 												<xsl:value-of select="normalize-space(/Invoice/Buyer/BuyerAssigned)"/>
 											</BuyersCode>
-										</xsl:if>										
+										</xsl:if>
 										<xsl:if test="string(/Invoice/Buyer/SellerAssigned) != '' or string(/Invoice/Buyer/BuyerGLN != '')">
 											<SuppliersCode>
 												<xsl:choose>
 													<!-- Only use suppliers code for buyer if it is definitely a GLN -->
-													<xsl:when test="string(/Invoice/Buyer/SellerAssigned) != '' and (string-length(/Invoice/Buyer/SellerAssigned)=14 and translate(/Invoice/Buyer/SellerAssigned ,'1234567890','')='')" >
+													<xsl:when test="string(/Invoice/Buyer/SellerAssigned) != '' and (string-length(/Invoice/Buyer/SellerAssigned)=14 and translate(/Invoice/Buyer/SellerAssigned ,'1234567890','')='')">
 														<xsl:value-of select="normalize-space(/Invoice/Buyer/SellerAssigned)"/>
 													</xsl:when>
 													<xsl:otherwise>
 														<xsl:value-of select="normalize-space(/Invoice/Buyer/BuyerGLN)"/>
 													</xsl:otherwise>
 												</xsl:choose>
-												
 											</SuppliersCode>
 										</xsl:if>
-
-										
 									</BuyersLocationID>
 									<BuyersAddress>
 										<AddressLine1>
@@ -230,7 +226,7 @@
 												<xsl:value-of select="normalize-space(/Invoice/ShipTo/ShipToGLN)"/>
 											</GLN>
 										</xsl:if>
-										<xsl:if test="string(/Invoice/ShipTo/BuyerAssigned)">										
+										<xsl:if test="string(/Invoice/ShipTo/BuyerAssigned)">
 											<BuyersCode>
 												<!-- Detect if a SSP invoice -->
 												<xsl:choose>
@@ -313,19 +309,18 @@
 													<PurchaseOrderTime>
 														<xsl:value-of select="normalize-space(substring-after(/Invoice/OrderReference/PurchaseOrderDate,'T'))"/>
 													</PurchaseOrderTime>
-												
-												<xsl:if test="/Invoice/TradeAgreementReference/ContractReferenceNumber != ''">
-													<TradeAgreement>
-														<ContractReference>
-															<xsl:value-of select="normalize-space(/Invoice/TradeAgreementReference/ContractReferenceNumber)"/>
-														</ContractReference>
-														<xsl:if test="/Invoice/TradeAgreementReference/ContractReferenceDate != ''">
-															<ContractDate>
-																<xsl:value-of select="normalize-space(substring-before(/Invoice/TradeAgreementReference/ContractReferenceDate, 'T'))"/>
-															</ContractDate>
-														</xsl:if>
-													</TradeAgreement>
-												</xsl:if>
+													<xsl:if test="/Invoice/TradeAgreementReference/ContractReferenceNumber != ''">
+														<TradeAgreement>
+															<ContractReference>
+																<xsl:value-of select="normalize-space(/Invoice/TradeAgreementReference/ContractReferenceNumber)"/>
+															</ContractReference>
+															<xsl:if test="/Invoice/TradeAgreementReference/ContractReferenceDate != ''">
+																<ContractDate>
+																	<xsl:value-of select="normalize-space(substring-before(/Invoice/TradeAgreementReference/ContractReferenceDate, 'T'))"/>
+																</ContractDate>
+															</xsl:if>
+														</TradeAgreement>
+													</xsl:if>
 												</PurchaseOrderReferences>
 											</xsl:if>
 										</xsl:if>
@@ -387,29 +382,37 @@
 											</OrderedQuantity>
 										</xsl:if>
 										<xsl:if test="InvoiceQuantity">
-										<InvoicedQuantity>
-											<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="normalize-space(InvoiceQuantity/@unitCode)"/></xsl:attribute>
-											<xsl:choose>
-												<xsl:when test="InvoiceQuantity">
-													<!--if CreditLineIndicator is '2', make the InvoiceQuantity a negative number-->
-													<xsl:if test="CreditLineIndicator = '2'"><xsl:text>-</xsl:text></xsl:if>
-													<xsl:value-of select="format-number(InvoiceQuantity, '0.000')"/>
-												</xsl:when>
-												<xsl:otherwise>
-													<xsl:value-of select="format-number($defaultInvoiceQuantity, '0.000')"/>
-												</xsl:otherwise>
-											</xsl:choose> 
-										</InvoicedQuantity>
+											<InvoicedQuantity>
+												<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="normalize-space(InvoiceQuantity/@unitCode)"/></xsl:attribute>
+												<xsl:choose>
+													<xsl:when test="InvoiceQuantity">
+														<!--if CreditLineIndicator is '2', make the InvoiceQuantity a negative number-->
+														<xsl:if test="CreditLineIndicator = '2'">
+															<xsl:text>-</xsl:text>
+														</xsl:if>
+														<xsl:value-of select="format-number(InvoiceQuantity, '0.000')"/>
+													</xsl:when>
+													<xsl:otherwise>
+														<xsl:value-of select="format-number($defaultInvoiceQuantity, '0.000')"/>
+													</xsl:otherwise>
+												</xsl:choose>
+											</InvoicedQuantity>
 										</xsl:if>
 										<!-- Pack Size is populated by subsequent processors -->
-										<UnitValueExclVAT>
-											<xsl:value-of select="format-number(UnitPrice, '0.00')"/>
-										</UnitValueExclVAT>
+										<xsl:if test="UnitPrice>0">
+											<UnitValueExclVAT>
+												<xsl:value-of select="format-number(UnitPrice, '0.00')"/>
+											</UnitValueExclVAT>
+										</xsl:if>
 										<!--if CreditLineIndicator is '2', make the lineitemprice a negative number-->
-										<LineValueExclVAT>
-											<xsl:if test="CreditLineIndicator = '2'"><xsl:text>-</xsl:text></xsl:if>
-											<xsl:value-of select="format-number(LineItemPrice, '0.00')"/>
-										</LineValueExclVAT>
+										<xsl:if test="LineItemPrice>0">
+											<LineValueExclVAT>
+												<xsl:if test="CreditLineIndicator = '2'">
+													<xsl:text>-</xsl:text>
+												</xsl:if>
+												<xsl:value-of select="format-number(LineItemPrice, '0.00')"/>
+											</LineValueExclVAT>
+										</xsl:if>
 										<xsl:if test="LineItemDiscount/DiscountRate">
 											<LineDiscountRate>
 												<xsl:value-of select="format-number(LineItemDiscount/DiscountRate, '0.00')"/>
@@ -422,7 +425,7 @@
 										</xsl:if>
 										<!-- we default VATCode and Rate if not found in the EAN.UCC document -->
 										<VATCode>
-											<xsl:choose> 
+											<xsl:choose>
 												<xsl:when test="VATDetails/TaxCategory">
 													<xsl:value-of select="normalize-space(VATDetails/TaxCategory)"/>
 												</xsl:when>
@@ -436,12 +439,12 @@
 												<xsl:when test="VATDetails/TaxRate">
 													<xsl:value-of select="format-number(VATDetails/TaxRate, '0.00')"/>
 												</xsl:when>
-												<xsl:otherwise> 
+												<xsl:otherwise>
 													<xsl:choose>
 														<xsl:when test="/Invoice/TaxPointDateTime  !=''">
 															<xsl:choose>
 																<xsl:when test="translate(normalize-space(substring-before(/Invoice/TaxPointDateTime, 'T')),'-','')  &lt;= translate('2008-11-30','-','') or translate(normalize-space(substring-before(/Invoice/TaxPointDateTime, 'T')),'-','')  &gt;= translate('2010-01-01','-','')">
-																	 <xsl:value-of select="format-number($defaultTaxRate, '0.00')"/> 								
+																	<xsl:value-of select="format-number($defaultTaxRate, '0.00')"/>
 																</xsl:when>
 																<xsl:otherwise>
 																	<xsl:value-of select="format-number($defaultNewTaxRate, '0.00')"/>
@@ -467,8 +470,8 @@
 																	<xsl:value-of select="format-number($defaultNewTaxRate, '0.00')"/>
 																</xsl:otherwise>
 															</xsl:choose>
-														</xsl:otherwise>												
-													</xsl:choose>													
+														</xsl:otherwise>
+													</xsl:choose>
 												</xsl:otherwise>
 											</xsl:choose>
 										</VATRate>
@@ -532,37 +535,37 @@
 													</xsl:when>
 													<xsl:otherwise>
 														<xsl:choose>
-														<xsl:when test="/Invoice/TaxPointDateTime  !=''">
-															<xsl:choose>
+															<xsl:when test="/Invoice/TaxPointDateTime  !=''">
+																<xsl:choose>
 																	<xsl:when test="translate(normalize-space(substring-before(/Invoice/TaxPointDateTime, 'T')),'-','')  &lt;= translate('2008-11-30','-','') or translate(normalize-space(substring-before(/Invoice/TaxPointDateTime, 'T')),'-','')  &gt;= translate('2010-01-01','-','')">
-																		 <xsl:value-of select="format-number($defaultTaxRate, '0.00')"/> 								
+																		<xsl:value-of select="format-number($defaultTaxRate, '0.00')"/>
 																	</xsl:when>
 																	<xsl:otherwise>
 																		<xsl:value-of select="format-number($defaultNewTaxRate, '0.00')"/>
 																	</xsl:otherwise>
-															</xsl:choose>
-														</xsl:when>
-														<xsl:when test="/Invoice/InvoiceDocumentDetails/InvoiceDocumentDate !=''">
-														<xsl:choose>
-																<xsl:when test="translate(normalize-space(substring-before(/Invoice/InvoiceDocumentDetails/InvoiceDocumentDate, 'T')),'-','')  &lt;= translate('2008-11-30','-','') or translate(normalize-space(substring-before(/Invoice/InvoiceDocumentDetails/InvoiceDocumentDate, 'T')),'-','')  &gt;= translate('2010-01-01','-','')">
-																	<xsl:value-of select="format-number($defaultTaxRate, '0.00')"/>
-																</xsl:when>
-																<xsl:otherwise>
-																	<xsl:value-of select="format-number($defaultNewTaxRate, '0.00')"/>
-																</xsl:otherwise>
+																</xsl:choose>
+															</xsl:when>
+															<xsl:when test="/Invoice/InvoiceDocumentDetails/InvoiceDocumentDate !=''">
+																<xsl:choose>
+																	<xsl:when test="translate(normalize-space(substring-before(/Invoice/InvoiceDocumentDetails/InvoiceDocumentDate, 'T')),'-','')  &lt;= translate('2008-11-30','-','') or translate(normalize-space(substring-before(/Invoice/InvoiceDocumentDetails/InvoiceDocumentDate, 'T')),'-','')  &gt;= translate('2010-01-01','-','')">
+																		<xsl:value-of select="format-number($defaultTaxRate, '0.00')"/>
+																	</xsl:when>
+																	<xsl:otherwise>
+																		<xsl:value-of select="format-number($defaultNewTaxRate, '0.00')"/>
+																	</xsl:otherwise>
+																</xsl:choose>
+															</xsl:when>
+															<xsl:otherwise>
+																<xsl:choose>
+																	<xsl:when test="translate($CurrentDate,'-','')  &lt;= translate('2008-11-30','-','') or translate($CurrentDate,'-','')  &gt;= translate('2010-01-01','-','')">
+																		<xsl:value-of select="format-number($defaultTaxRate, '0.00')"/>
+																	</xsl:when>
+																	<xsl:otherwise>
+																		<xsl:value-of select="format-number($defaultNewTaxRate, '0.00')"/>
+																	</xsl:otherwise>
+																</xsl:choose>
+															</xsl:otherwise>
 														</xsl:choose>
-														</xsl:when>
-														<xsl:otherwise>
-															<xsl:choose>
-																<xsl:when test="translate($CurrentDate,'-','')  &lt;= translate('2008-11-30','-','') or translate($CurrentDate,'-','')  &gt;= translate('2010-01-01','-','')">
-																	<xsl:value-of select="format-number($defaultTaxRate, '0.00')"/>
-																</xsl:when>
-																<xsl:otherwise>
-																	<xsl:value-of select="format-number($defaultNewTaxRate, '0.00')"/>
-																</xsl:otherwise>
-															</xsl:choose>
-													</xsl:otherwise>												
-													</xsl:choose>														
 													</xsl:otherwise>
 												</xsl:choose>
 											</xsl:variable>
