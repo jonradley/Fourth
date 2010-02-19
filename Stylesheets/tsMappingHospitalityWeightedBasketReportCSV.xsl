@@ -12,6 +12,10 @@
 ******************************************************************************************
  23/10/2009 | RaveTech    | 3195. Created module.
 ******************************************************************************************
+19/02/2010  | Steve Hewitt | 3195  Bug fix - display the header details as well
+******************************************************************************************
+
+******************************************************************************************
 -->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 	
@@ -22,11 +26,15 @@
 	<xsl:template match="/">
 
 		<xsl:value-of select="script:msFormatForCSV(/Report/ReportName)"/><xsl:text> - </xsl:text><xsl:value-of select="script:msFormatDate(/Report/ReportDate)"/>
-
 		<xsl:text>&#xD;</xsl:text>
 		<xsl:text>&#xD;</xsl:text>
+		
+		<xsl:for-each select="/Report/HeaderDetails/HeaderDetail">		
+			<xsl:value-of select="script:msFormatForCSV(Description)"/><xsl:text>,</xsl:text><xsl:value-of select="script:msFormatForCSV(Value)"/>
+			<xsl:text>&#xD;</xsl:text>
+		</xsl:for-each>
 		<xsl:text>&#xD;</xsl:text>
-
+		
 		<!--Header Details-->
 		<xsl:text>Suppliers Product Code,Description,Pack Size,Now,Old,Change +/-,% Change,4 Week Volume,Old Spend,Weighted Change,</xsl:text>
 			
