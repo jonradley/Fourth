@@ -40,7 +40,6 @@
 '
 '******************************************************************************************
 -->
-<?xml-stylesheet type="text/xsl" href="C:\Documents and Settings\jcahill\My Documents\TradeSimpleCode\hospitality\trunk\Stylesheets\tsMapping_Inbound_EANUCC_Detects_BUYERSCODES_Invoice.xsl"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:data="blah">
 	<xsl:output method="xml"/>
 	<!-- Buyers Code detection function and lookup table -->
