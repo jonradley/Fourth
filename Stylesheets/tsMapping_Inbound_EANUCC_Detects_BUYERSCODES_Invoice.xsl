@@ -398,13 +398,13 @@
 											</InvoicedQuantity>
 										</xsl:if>
 										<!-- Pack Size is populated by subsequent processors -->
-										<xsl:if test="UnitPrice>0">
+										<xsl:if test="UnitPrice>=0">
 											<UnitValueExclVAT>
 												<xsl:value-of select="format-number(UnitPrice, '0.00')"/>
 											</UnitValueExclVAT>
 										</xsl:if>
 										<!--if CreditLineIndicator is '2', make the lineitemprice a negative number-->
-										<xsl:if test="LineItemPrice>0">
+										<xsl:if test="LineItemPrice>=0">
 											<LineValueExclVAT>
 												<xsl:if test="CreditLineIndicator = '2'">
 													<xsl:text>-</xsl:text>
