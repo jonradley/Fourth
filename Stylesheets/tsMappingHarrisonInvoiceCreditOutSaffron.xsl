@@ -19,6 +19,9 @@
  24/06/2009	| Lee Boyton	| 2957. Strip newline characters from packsize field,
                                 | as these cause an additional blank line to appear in final output
 ******************************************************************************************
+ 26/02/2010	| Graham Neicho | 3383. Removed hard coded X suffix to product code for when invoice price is more than 50% different from catalogue price.
+******************************************************************************************
+
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -172,20 +175,6 @@
 			<xsl:text>,</xsl:text>
 
 			<xsl:value-of select="substring(ProductID/SuppliersProductCode,1,20)"/>
-
-			<!--Suffix 'X' to product code when invoice price is 50% different (more or less) from Catalogue price-->
-			<xsl:if test="LineExtraData/CataloguePrice">
-				<xsl:variable name="FiftyPercentCP">
-					<xsl:value-of select="0.5 * LineExtraData/CataloguePrice"/>
-				</xsl:variable>
-				<xsl:variable name="OneFiftyPercentCP">
-					<xsl:value-of select="1.5 * LineExtraData/CataloguePrice"/>
-				</xsl:variable>
-
-				<xsl:if test="UnitValueExclVAT &lt; $FiftyPercentCP or UnitValueExclVAT &gt; $OneFiftyPercentCP">
-					<xsl:text>X</xsl:text>
-				</xsl:if>
-			</xsl:if>
 			<xsl:text>,</xsl:text>
 
 			<xsl:choose>
