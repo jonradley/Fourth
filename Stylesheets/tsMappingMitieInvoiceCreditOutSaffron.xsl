@@ -25,6 +25,8 @@
 ******************************************************************************************
  21/12/2009	| Sandeep Sehgal| 3286. Changed to handle VAT rate reverting back to 17.5% wef 1-Jan-2010. Retuns S17.5 or S15 instead of S as at present
 ******************************************************************************************
+ 26/02/2010	| Graham Neicho | 3383. Removed hard coded X suffix to product code for when invoice price is more than 50% different from catalogue price.
+******************************************************************************************
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -289,20 +291,6 @@
 			<xsl:text>,</xsl:text>
 
 			<xsl:value-of select="substring(ProductID/SuppliersProductCode,1,20)"/>
-
-			<!--Suffix 'X' to product code when invoice price is 50% different (more or less) from Catalogue price-->
-			<xsl:if test="LineExtraData/CataloguePrice">
-				<xsl:variable name="FiftyPercentCP">
-					<xsl:value-of select="0.5 * LineExtraData/CataloguePrice"/>
-				</xsl:variable>
-				<xsl:variable name="OneFiftyPercentCP">
-					<xsl:value-of select="1.5 * LineExtraData/CataloguePrice"/>
-				</xsl:variable>
-
-				<xsl:if test="UnitValueExclVAT &lt; $FiftyPercentCP or UnitValueExclVAT &gt; $OneFiftyPercentCP">
-					<xsl:text>X</xsl:text>
-				</xsl:if>
-			</xsl:if>
 			<xsl:text>,</xsl:text>
 
 			<xsl:choose>
