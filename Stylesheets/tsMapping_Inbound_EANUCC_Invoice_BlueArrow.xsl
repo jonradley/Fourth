@@ -12,11 +12,7 @@ Blue Arrow specific OFSCI map (worker name and job description added to product 
 ******************************************************************************************
  07/11/2007 |R Cambridge  	| Case 1587
 ******************************************************************************************
-26/11/2008	| Rave Tech    	| Case 2592 Handled vat rate changing from 17.5 to 15 
-'******************************************************************************************
- 07/11/2007 |S Sehgal  	| Case 3286 Added back code for VAT rate change from 17.5 to 15 and adapted to handle VAT changing back to 17.5% from 1-Jan-2010
-******************************************************************************************
-	         |              	|	                                                            
+02/03/2010 | A Barber  	| Case 3392: Use invoice number as order number.                                              
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"  xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	<xsl:output method="xml"/>
@@ -33,8 +29,6 @@ Blue Arrow specific OFSCI map (worker name and job description added to product 
 	<xsl:variable name="defaultSettlementDiscountValue" select="'0'"/>
 	<xsl:variable name="creditLineIndicator" select="'2'"/>
 	<xsl:variable name="invoiceLineIndicator" select="'1'"/>
-	<xsl:variable name="defaultNewTaxRate" select="'15'"/>
-	<xsl:variable name="CurrentDate" select="script:msGetTodaysDate()"/>
 	<xsl:template match="/">
 		<BatchRoot>
 			<Batch>
@@ -202,9 +196,9 @@ Blue Arrow specific OFSCI map (worker name and job description added to product 
 										</LineNumber>
 										<xsl:if test="(/Invoice/OrderReference and  and /Invoice/OrderReference/PurchaseOrderNumber != '') or /Invoice/TradeAgreementReference/ContractReferenceNumber != ''">
 											<PurchaseOrderReferences>
-												<xsl:if test="/Invoice/OrderReference/PurchaseOrderNumber and /Invoice/OrderReference/PurchaseOrderNumber != ''">
+												<xsl:if test="/Invoice/InvoiceDocumentDetails/InvoiceDocumentNumber != ''">
 													<PurchaseOrderReference>
-														<xsl:value-of select="/Invoice/OrderReference/PurchaseOrderNumber"/>
+														<xsl:value-of select="/Invoice/InvoiceDocumentDetails/InvoiceDocumentNumber"/>
 													</PurchaseOrderReference>
 												</xsl:if>
 												<xsl:if test="/Invoice/OrderReference/PurchaseOrderNumber and /Invoice/OrderReference/PurchaseOrderNumber != ''">
@@ -232,7 +226,7 @@ Blue Arrow specific OFSCI map (worker name and job description added to product 
 										<xsl:if test="/Invoice/OrderConfirmationReference">
 											<PurchaseOrderConfirmationReferences>
 												<PurchaseOrderConfirmationReference>
-													<xsl:value-of select="/Invoice/OrderConfirmationReference/PurchaseOrderConfirmationNumber"/>
+													<xsl:value-of select="/Invoice/InvoiceDocumentDetails/InvoiceDocumentNumber"/>
 												</PurchaseOrderConfirmationReference>
 												<xsl:if test="/Invoice/OrderConfirmationReference/PurchaseOrderConfirmationDate">
 													<PurchaseOrderConfirmationDate>
@@ -347,38 +341,7 @@ Blue Arrow specific OFSCI map (worker name and job description added to product 
 													<xsl:value-of select="format-number(VATDetails/TaxRate, '0.00')"/>
 												</xsl:when>
 												<xsl:otherwise>
-													<xsl:choose>
-														<xsl:when test="/Invoice/TaxPointDateTime !=''">
-															<xsl:choose>
-																<xsl:when test="translate(substring-before(/Invoice/TaxPointDateTime, 'T'),'-','')  &lt;= translate('2008-11-30','-','') or translate(substring-before(/Invoice/TaxPointDateTime, 'T'),'-','')  &gt;= translate('2010-01-01','-','') ">
-																	 <xsl:value-of select="format-number($defaultTaxRate, '0.00')"/> 								
-																</xsl:when>
-																<xsl:otherwise>
-																	<xsl:value-of select="format-number($defaultNewTaxRate, '0.00')"/>
-																</xsl:otherwise>
-															</xsl:choose>
-														</xsl:when>
-														<xsl:when test="/Invoice/InvoiceDocumentDetails/InvoiceDocumentDate !=''">
-															<xsl:choose>
-																<xsl:when test="translate(substring-before(/Invoice/InvoiceDocumentDetails/InvoiceDocumentDate, 'T'),'-','')  &lt;= translate('2008-11-30','-','') or translate(substring-before(/Invoice/InvoiceDocumentDetails/InvoiceDocumentDate, 'T'),'-','')  &gt;= translate('2010-01-01','-','')">
-																	<xsl:value-of select="format-number($defaultTaxRate, '0.00')"/>
-																</xsl:when>
-																<xsl:otherwise>
-																	<xsl:value-of select="format-number($defaultNewTaxRate, '0.00')"/>
-																</xsl:otherwise>
-															</xsl:choose>
-														</xsl:when>
-														<xsl:otherwise>
-															<xsl:choose>
-																<xsl:when test="translate($CurrentDate,'-','')  &lt;= translate('2008-11-30','-','') or translate($CurrentDate,'-','')  &gt;= translate('2010-01-01','-','')">
-																	 <xsl:value-of select="format-number($defaultTaxRate, '0.00')"/>												
-																</xsl:when>
-																<xsl:otherwise>
-																	<xsl:value-of select="format-number($defaultNewTaxRate, '0.00')"/>
-																</xsl:otherwise>
-															</xsl:choose>
-														</xsl:otherwise>												
-													</xsl:choose>		
+													<xsl:value-of select="format-number($defaultTaxRate, '0.00')"/>
 												</xsl:otherwise>
 											</xsl:choose>
 										</VATRate>
@@ -441,38 +404,7 @@ Blue Arrow specific OFSCI map (worker name and job description added to product 
 														<xsl:value-of select="VATDetails/TaxRate"/>
 													</xsl:when>
 													<xsl:otherwise>
-														<xsl:choose>
-															<xsl:when test="/Invoice/TaxPointDateTime !=''">
-																<xsl:choose>
-																	<xsl:when test="translate(substring-before(/Invoice/TaxPointDateTime, 'T'),'-','')  &lt;= translate('2008-11-30','-','') or translate(substring-before(/Invoice/TaxPointDateTime, 'T'),'-','')  &gt;= translate('2010-01-01','-','')">
-																		 <xsl:value-of select="format-number($defaultTaxRate, '0.00')"/> 								
-																	</xsl:when>
-																	<xsl:otherwise>
-																		<xsl:value-of select="format-number($defaultNewTaxRate, '0.00')"/>
-																	</xsl:otherwise>
-																</xsl:choose>
-															</xsl:when>
-															<xsl:when test="/Invoice/InvoiceDocumentDetails/InvoiceDocumentDate !=''">
-																<xsl:choose>
-																	<xsl:when test="translate(substring-before(/Invoice/InvoiceDocumentDetails/InvoiceDocumentDate, 'T'),'-','')  &lt;= translate('2008-11-30','-','') or translate(substring-before(/Invoice/InvoiceDocumentDetails/InvoiceDocumentDate, 'T'),'-','')  &gt;= translate('2010-01-01','-','')">
-																		<xsl:value-of select="format-number($defaultTaxRate, '0.00')"/>
-																	</xsl:when>
-																	<xsl:otherwise>
-																		<xsl:value-of select="format-number($defaultNewTaxRate, '0.00')"/>
-																	</xsl:otherwise>
-																</xsl:choose>
-															</xsl:when>
-															<xsl:otherwise>
-																<xsl:choose>
-																	<xsl:when test="translate($CurrentDate,'-','')  &lt;= translate('2008-11-30','-','') or translate($CurrentDate,'-','')  &gt;= translate('2010-01-01','-','')">
-																		<xsl:value-of select="format-number($defaultTaxRate, '0.00')"/>
-																	</xsl:when>
-																	<xsl:otherwise>
-																		<xsl:value-of select="format-number($defaultNewTaxRate, '0.00')"/>
-																	</xsl:otherwise>
-																</xsl:choose>
-																</xsl:otherwise>												
-															</xsl:choose>
+														<xsl:value-of select="$defaultTaxRate"/>
 													</xsl:otherwise>
 												</xsl:choose>
 											</xsl:variable>
@@ -648,29 +580,7 @@ Blue Arrow specific OFSCI map (worker name and job description added to product 
 		
 	
 	End Function
-		
-	Function msGetTodaysDate()
-		Dim dtDate 
-		Dim sDate
-		Dim sMonth
-		Dim sYear
-
-		dtDate = Date()
-		sDate = Day(dtDate)
-		If (sDate<10) Then 			
-			sDate ="0" & sDate
-		End If 
-		
-		sMonth = Month(dtDate)
-		If (sMonth<10) Then 
-			sMonth ="0" & sMonth
-		End If 
-					
-		sYear  = Year(dtDate)
-		
-		msGetTodaysDate = sYear & "-" & sMonth &"-"& sDate
-	End Function
-		
+	
 	]]></msxsl:script>
 
 	
