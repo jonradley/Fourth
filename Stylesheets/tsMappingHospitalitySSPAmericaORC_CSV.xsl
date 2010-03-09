@@ -11,6 +11,8 @@ Steve Hewitt     	|  02/07/2009 | UAT bug fixes
 Lee Boyton		|  08/07/2009 | FB2890. Corrected Product code translation.
 **********************************************************************
 Lee Boyton		|  09/07/2009 | FB2890. Always use lower case 's' for splits.
+**********************************************************************
+Calum Scott		|  09/03/2010 | FB2890. Always use lower case 's' for splits.
 *********************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com" xmlns:vbscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
@@ -131,14 +133,14 @@ Lee Boyton		|  09/07/2009 | FB2890. Always use lower case 's' for splits.
 						<xsl:element name="SuppliersProductCode">
 							<xsl:choose>
 								<xsl:when test="OrderedQuantity/@UnitOfMeasure = 'EA'">
-									<!-- Only add the 's' if it is not already present, and translate upper case 'S' to lower case -->
+									<!-- Only add the 's' if it is not already present, and translate lower case 'S' to upper case -->
 									<xsl:choose>
-										<xsl:when test="translate(substring(ProductID/SuppliersProductCode,string-length(ProductID/SuppliersProductCode),1),'S','s') != 's'">
-											<xsl:value-of select="ProductID/SuppliersProductCode"/><xsl:text>s</xsl:text>
+										<xsl:when test="translate(substring(ProductID/SuppliersProductCode,string-length(ProductID/SuppliersProductCode),1),'s','S') != 'S'">
+											<xsl:value-of select="ProductID/SuppliersProductCode"/><xsl:text>S</xsl:text>
 										</xsl:when>
 										<xsl:otherwise>
 											<xsl:value-of select="substring(ProductID/SuppliersProductCode,1,string-length(ProductID/SuppliersProductCode)-1)"/>
-											<xsl:value-of select="translate(substring(ProductID/SuppliersProductCode,string-length(ProductID/SuppliersProductCode),1),'S','s')"/>
+											<xsl:value-of select="translate(substring(ProductID/SuppliersProductCode,string-length(ProductID/SuppliersProductCode),1),'s','S')"/>
 										</xsl:otherwise>
 									</xsl:choose>
 								</xsl:when>
