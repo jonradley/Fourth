@@ -8,6 +8,8 @@ R Cambridge	| 26/06/2006	| Created
 **********************************************************************
 R Cambridge	| 01/02/2007	| 770 added quantity UoMs
 **********************************************************************
+Graham Neicho	| 30/03/2010	| FB3436 Added OriginalPurchaseOrderReference
+**********************************************************************
 				|					|
 *******************************************************************-->
 <ffsFlatFileSchema>
@@ -25,7 +27,7 @@ R Cambridge	| 01/02/2007	| 770 added quantity UoMs
 				<SendersBranchReference RecordPos="H" LPos="19"/>
 				<TestFlag RecordPos="H" LPos="3"/>
 			</TradeSimpleHeader>
-			<DeliveryNoteHeader>				
+			<DeliveryNoteHeader>
 				<Buyer>
 					<BuyersLocationID>
 						<SuppliersCode RecordPos="H" LPos="20"/>
@@ -48,6 +50,7 @@ R Cambridge	| 01/02/2007	| 770 added quantity UoMs
 				<PurchaseOrderReferences>
 					<PurchaseOrderReference RecordPos="H" LPos="4"/>
 					<PurchaseOrderDate RecordPos="H" LPos="5"/>
+					<OriginalPurchaseOrderReference RecordPos="H" LPos="21"/>
 				</PurchaseOrderReferences>
 				<DeliveryNoteReferences>
 					<DeliveryNoteReference RecordPos="H" LPos="6"/>
