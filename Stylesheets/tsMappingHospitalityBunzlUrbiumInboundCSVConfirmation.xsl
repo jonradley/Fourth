@@ -22,6 +22,8 @@
 ' 21/07/2009  | Lee Boyton   | FB3016 - Do not map the ShipTo Buyers Code for
 '                                            | non-Hilton confirmations, let the in-filler do it.
 '******************************************************************************************
+' 30/10/2010  | Graham Neicho  | FB3436 Added BackOrderQuantity
+'******************************************************************************************
 -->
 <xsl:stylesheet  version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt"  xmlns:vbscript="http://abs-Ltd.com">
 
@@ -300,6 +302,12 @@
 								<LineValueExclVAT>
 									<xsl:value-of select="LineValueExclVAT"/>
 								</LineValueExclVAT>
+							</xsl:if>
+
+							<xsl:if test="BackOrderQuantity != ''">
+								<BackOrderQuantity>
+									<xsl:value-of select="BackOrderQuantity"/>
+								</BackOrderQuantity>
 							</xsl:if>
 							
 							<xsl:if test="Narrative != ''">
