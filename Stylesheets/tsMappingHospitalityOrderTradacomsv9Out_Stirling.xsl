@@ -18,6 +18,10 @@
  23/05/2007	|	Nigel Emsen			|	FB 972: Amendments to handle Marstons promotions.
 ==========================================================================================
  07/01/2008	| R Cambridge			|	1556 don't truncate product description
+ ==========================================================================================
+ 31/03/2010	| H Mahbub   			|	3440 Adding special delivery instuctions
+==========================================================================================
+ 	| 			|	
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -197,6 +201,12 @@
 				<xsl:with-param name="vsUTCDate" select="PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate"/>
 			</xsl:call-template>
 			<xsl:text>+</xsl:text>
+			<xsl:text>+</xsl:text>
+			<!--Below is because stirling have a 60 character limit/-->
+			<xsl:value-of select="js:msSafeText(substring(PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions,1,30),40)"/>
+			<xsl:text>:</xsl:text>
+			<xsl:value-of select="js:msSafeText(substring(PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions,31,30),40)"/>
+			
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<!--
