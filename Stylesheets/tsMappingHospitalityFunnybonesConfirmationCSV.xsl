@@ -16,6 +16,7 @@
 '******************************************************************************************
 ' 14/10/2005  | Lee Boyton   | H515. Added BatchRoot element required by inbound xsl
 '                            | transform processor. Translate the LineStatus to internal values.
+' 01/04/2010  | John Cahill    | 3442. Strip out SendersBranchReference for P840/S
 '******************************************************************************************
 '             |              | 
 '******************************************************************************************
@@ -40,7 +41,7 @@
 						<xsl:otherwise>
 							<xsl:choose>
 
-								<xsl:when test="TradeSimpleHeader/SendersBranchReference = 'I046/S' or TradeSimpleHeader/SendersBranchReference = 'J501'">
+								<xsl:when test="TradeSimpleHeader/SendersBranchReference = 'I046/S' or TradeSimpleHeader/SendersBranchReference = 'P840/S' or TradeSimpleHeader/SendersBranchReference = 'J501'">
 								</xsl:when>
 								<xsl:otherwise>
 									<xsl:choose>
