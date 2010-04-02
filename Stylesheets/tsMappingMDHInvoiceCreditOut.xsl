@@ -144,7 +144,7 @@
 			<xsl:text>,</xsl:text>
 			<xsl:text>VAT</xsl:text>
 			<xsl:text>,</xsl:text>
-			<xsl:text>V2</xsl:text>
+			<xsl:text>V1</xsl:text>
 			<xsl:text>,</xsl:text>
 			<xsl:text>V</xsl:text>
 			<xsl:text>,</xsl:text>
