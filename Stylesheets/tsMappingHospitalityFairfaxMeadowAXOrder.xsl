@@ -17,6 +17,8 @@
 ******************************************************************************************
  19/08/2009   	| R Cambridge   	| 3021 Add delivery instructions                    
 ******************************************************************************************
+ 09/04/2010		| R Cambridge  	| 3455 Added Distribution depot code for 3663 Greene King
+******************************************************************************************
 	          	|              	|	                                                        
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
@@ -155,6 +157,7 @@
 				<xsl:text>RBS</xsl:text>
 			</xsl:when>
 			
+			
 			<xsl:otherwise>
 				<xsl:value-of select="TradeSimpleHeader/RecipientsBranchReference"/>
 			</xsl:otherwise>
@@ -175,6 +178,9 @@
 			<xsl:when test="'PM' = PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode">
 				<!-- get the 'TH' bit -->
 				<xsl:value-of select="PurchaseOrderHeader/HeaderExtraData/DistDepotCode"/>
+			</xsl:when>
+			<xsl:when test="'GK' = PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode">
+				<xsl:value-of select="PurchaseOrderHeader/HeaderExtraData/DistributionDepotCode"/>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="/PurchaseOrder/TradeSimpleHeader/SendersBranchReference"/>		
