@@ -1,24 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--**************************************************************************************
- Overview
-
- Inbound orders from FnB Manager 
- 
-******************************************************************************************
- Module History
-******************************************************************************************
- Date        | Name         	| Description of modification
-******************************************************************************************
-    ?        |      ?      	|           ?
-******************************************************************************************
-  23/09/2009 | R Cambridge 	| 2839 Don't create elements that can be reasonably added by the infiller
-******************************************************************************************
-  12/04/2010 | R Cambridge 	| 3414 replace particular character sequence with commas (caused by line break in underlying FnB data)
-******************************************************************************************
-  12/04/2010 | R Cambridge 	| 3272 redoing FnB - tradesimple interface, created internal XML as Batch
-******************************************************************************************
-             |             	|           
-***************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
 	
@@ -63,18 +43,33 @@
 	</xsl:template>
 
 	
+	<!-- Add Document Status -->
+	<xsl:template match="PurchaseOrderHeader">
+		<xsl:element name="PurchaseOrderHeader">
+			<xsl:element name="DocumentStatus">Original</xsl:element>
+			<xsl:apply-templates select="./*"/>
+			<!--xsl:copy-of select="./*"/-->
+		</xsl:element>
+	</xsl:template>
+
+
+
 	<!-- Buyer GLN -->
+	<!-- 3272 - Temporaily get the buyers code from the ShipTo element
+					 FnB will begin sending the Organisation Code in ShipToLocationID/BuyersCode
+					 But this should be hidden from the suppliers until the re-worked FnB/ts interface is ready
+	 -->
 	<xsl:template match="BuyersLocationID">
 		<xsl:element name="BuyersLocationID">
-			<!--xsl:element name="GLN">5555555555555</xsl:element-->
-			<xsl:copy-of select="BuyersCode"/>
+			<xsl:element name="GLN">5555555555555</xsl:element>
+			<xsl:copy-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode"/>
 		</xsl:element>
 	</xsl:template>
 	
 	<!-- Seller GLN -->
 	<xsl:template match="SuppliersLocationID">
 		<xsl:element name="SuppliersLocationID">
-			<!--xsl:element name="GLN">5555555555555</xsl:element-->
+			<xsl:element name="GLN">5555555555555</xsl:element>
 			<xsl:copy-of select="BuyersCode"/>
 		</xsl:element>
 	</xsl:template>
@@ -82,8 +77,17 @@
 	<!-- Ship-to GLN -->
 	<xsl:template match="ShipToLocationID">
 		<xsl:element name="ShipToLocationID">
-			<!--xsl:element name="GLN">5555555555555</xsl:element-->
+			<xsl:element name="GLN">5555555555555</xsl:element>
 			<xsl:copy-of select="BuyersCode"/>
+		</xsl:element>
+	</xsl:template>
+	
+	<!-- Add Delivery Type -->
+	<xsl:template match="OrderedDeliveryDetails">
+		<xsl:element name="OrderedDeliveryDetails">
+			<xsl:element name="DeliveryType">Delivery</xsl:element>
+			<!--xsl:copy-of select="./*"/-->
+			<xsl:apply-templates select="./*"/>
 		</xsl:element>
 	</xsl:template>
 	
@@ -111,11 +115,20 @@
 			</xsl:call-template>	
 		</xsl:copy>
 	</xsl:template>
-		
+	
+	
 	<!-- Remove OrderID -->
 	<xsl:template match="OrderID">
 	</xsl:template>
 	
+	<!-- Product GTIN -->
+	<xsl:template match="ProductID">
+		<xsl:element name="ProductID">
+			<xsl:element name="GTIN">55555555555555</xsl:element>
+			<xsl:copy-of select="./*"/>
+		</xsl:element>
+	</xsl:template>
+
 	<!-- Remove Line Value and Total Value-->
 	<xsl:template match="LineValueExclVAT">
 	</xsl:template>
@@ -143,6 +156,5 @@
 		</xsl:choose>
 	</xsl:template>
 
-	
 	
 </xsl:stylesheet>
