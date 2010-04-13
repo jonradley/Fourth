@@ -36,6 +36,7 @@
 '******************************************************************************************
 '07/09/2009		| R Cambridge 		| Case 2669: Branched from tsMapping_Inbound_EANUCC_Invoice.xsl
 '																Try to get ship-to code from buyer assigned if no seller assigned is present
+'13/04/2010		| A Barber	 		| Case 3458: Pick up product description from invoice rather than using product data lookup.
 '******************************************************************************************
 
 -->
@@ -297,7 +298,12 @@
 												</SuppliersProductCode>
 											</xsl:if>
 										</ProductID>
-										<!-- Product Description is populated by subsequent processors -->
+										<!-- Product Description picked up from invoice rather than populated by subsequent processors -->
+										<xsl:if test="ItemDescription != ''">
+											<ProductDescription>
+												<xsl:value-of select="ItemDescription"/>
+											</ProductDescription>
+										</xsl:if>
 										<xsl:if test="OrderedQuantity">
 											<OrderedQuantity>
 												<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="OrderedQuantity/@unitCode"/></xsl:attribute>

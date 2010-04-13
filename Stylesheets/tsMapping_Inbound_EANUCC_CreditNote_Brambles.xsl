@@ -22,20 +22,19 @@
 '******************************************************************************************
 ' Module History
 '******************************************************************************************
-' Date             | Name              	| Description of modification
+' Date             | Name              | Description of modification
 '******************************************************************************************
-' 20/04/2005  | Steven Hewitt 	| Created
+' 20/04/2005  | Steven Hewitt | Created
 '******************************************************************************************
-' 26/07/2005  | A Sheppard    	| 2344. Bug fix.
+' 26/07/2005  | A Sheppard    | 2344. Bug fix.
+'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+'26/01/2007  | Nigel Emsen	| Case 710: Fairfax Adoption for Aramark. XPaths adjusted.
+'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+'31/01/2007	| Lee Boyton      | Case 767: Cater for an empty ContractReferenceNumber element.
 '******************************************************************************************
-'26/01/2007  | Nigel Emsen		| Case 710: Fairfax Adoption for Aramark. XPaths adjusted.
+'26/11/2008	| Rave Tech      |	 Case 2592 Handled vat rate changing from 17.5 to 15 
 '******************************************************************************************
-'31/01/2007	| Lee Boyton      		| Case 767: Cater for an empty ContractReferenceNumber element.
-'******************************************************************************************
-'26/11/2008	| Rave Tech      		| Case 2592 Handled vat rate changing from 17.5 to 15 
-'******************************************************************************************
-'11/02/2010	| Andrew Barber	| Updated recipient code select for Brambles.
-								| Removed 15% VAT rate insertion if no VAT rate specified.
+'13/04/2010	| Andrew Barber	| Case 3458: Pick up product description from credit rather than using product data lookup.
 '******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
@@ -51,7 +50,7 @@
 	<xsl:variable name="defaultDiscountedLinesTotalExclVAT" select="'0'"/>
 	<xsl:variable name="defaultDocumentDiscountValue" select="'0'"/>
 	<xsl:variable name="defaultSettlementDiscountValue" select="'0'"/>
-	<!--<xsl:variable name="defaultNewTaxRate" select="'15'"/>-->
+	<xsl:variable name="defaultNewTaxRate" select="'15'"/>
 	<xsl:variable name="CurrentDate" select="script:msGetTodaysDate()"/>
 	<xsl:template match="/">
 		<BatchRoot>
@@ -67,8 +66,7 @@
 								<SendersCodeForRecipient>
 									<xsl:choose>
 										<xsl:when test="string(/CreditNote/ShipTo/SellerAssigned)">
-											<!--<xsl:value-of select="/CreditNote/ShipTo/SellerAssigned"/>-->
-											<xsl:value-of select="substring-after(/CreditNote/ShipTo/SellerAssigned,'/')"/>
+											<xsl:value-of select="/CreditNote/ShipTo/SellerAssigned"/>
 										</xsl:when>
 										<xsl:otherwise>
 											<xsl:value-of select="/CreditNote/Buyer/BuyerGLN"/>
@@ -78,8 +76,7 @@
 								<!-- SBR used to pick out the PL Account code to be used in the trading relationship set up. This could be Buyer or Supplier value. -->
 								<xsl:if test="string(/CreditNote/TradeAgreementReference/ContractReferenceNumber) != '' ">
 									<SendersBranchReference>
-										<!--<xsl:value-of select="/CreditNote/TradeAgreementReference/ContractReferenceNumber"/>-->
-										<xsl:value-of select="substring-before(/CreditNote/ShipTo/SellerAssigned,'/')"/>
+										<xsl:value-of select="/CreditNote/TradeAgreementReference/ContractReferenceNumber"/>
 									</SendersBranchReference>
 								</xsl:if>
 								<!-- SendersName, Address1 - 4 and PostCode will be populated by subsequent processors  -->
@@ -148,8 +145,7 @@
 										</xsl:if>
 										<xsl:if test="string(/CreditNote/ShipTo/SellerAssigned)">
 											<SuppliersCode>
-												<!--<xsl:value-of select="/CreditNote/ShipTo/SellerAssigned"/>-->
-												<xsl:value-of select="substring-after(/CreditNote/ShipTo/SellerAssigned,'/')"/>
+												<xsl:value-of select="/CreditNote/ShipTo/SellerAssigned"/>
 											</SuppliersCode>
 										</xsl:if>
 									</ShipToLocationID>
@@ -291,7 +287,12 @@
 												</SuppliersProductCode>
 											</xsl:if>
 										</ProductID>
-										<!-- Product Description is populated by subsequent processors -->
+										<!-- Product Description picked up from credit rather than populated by subsequent processors -->
+										<xsl:if test="ItemDescription != ''">
+											<ProductDescription>
+												<xsl:value-of select="ItemDescription"/>
+											</ProductDescription>
+										</xsl:if>
 										<xsl:if test="InvoiceQuantity">
 											<InvoicedQuantity>
 												<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="InvoiceQuantity/@unitCode"/></xsl:attribute>
@@ -344,7 +345,7 @@
 													<xsl:value-of select="format-number(VATDetails/TaxRate, '0.00')"/>
 												</xsl:when>
 												<xsl:otherwise>
-													<!--<xsl:choose>
+													<xsl:choose>
 														<xsl:when test="/CreditNote/TaxPointDateTime !=''">
 															<xsl:choose>
 																<xsl:when test="translate(substring-before(/CreditNote/TaxPointDateTime, 'T'),'-','')  &lt;= translate('2008-11-30','-','')">
@@ -374,11 +375,10 @@
 																	<xsl:value-of select="format-number($defaultNewTaxRate, '0.00')"/>
 																</xsl:otherwise>
 															</xsl:choose>
-														</xsl:otherwise>												
-													</xsl:choose>-->
-													<xsl:value-of select="format-number($defaultTaxRate, '0.00')"/>
-												</xsl:otherwise>
-											</xsl:choose>
+													</xsl:otherwise>												
+												</xsl:choose>												
+											</xsl:otherwise>
+										</xsl:choose>
 										</VATRate>
 										<!-- the reason code is omitted if not one af a load of valid numbers -->
 										<xsl:if test="@ChangeReasonCoded = '1' or @ChangeReasonCoded = '2' or @ChangeReasonCoded = '3' or 	@ChangeReasonCoded = '4' or @ChangeReasonCoded = '5' or 
@@ -449,7 +449,7 @@
 														<xsl:value-of select="VATDetails/TaxRate"/>
 													</xsl:when>
 													<xsl:otherwise>
-														<!--<xsl:choose>
+														<xsl:choose>
 															<xsl:when test="/CreditNote/TaxPointDateTime !=''">
 																<xsl:choose>
 																	<xsl:when test="translate(substring-before(/CreditNote/TaxPointDateTime, 'T'),'-','')  &lt;= translate('2008-11-30','-','')">
@@ -471,18 +471,17 @@
 																</xsl:choose>
 															</xsl:when>
 															<xsl:otherwise>
-																<xsl:choose>
-																		<xsl:when test="translate($CurrentDate,'-','')  &lt;= translate('2008-11-30','-','')">
-																			<xsl:value-of select="format-number($defaultTaxRate, '0.00')"/>
-																		</xsl:when>
-																		<xsl:otherwise>
-																			<xsl:value-of select="format-number($defaultNewTaxRate, '0.00')"/>
-																		</xsl:otherwise>
-																</xsl:choose>
-															</xsl:otherwise>												
-														</xsl:choose>-->
-														<xsl:value-of select="format-number($defaultTaxRate, '0.00')"/>
-													</xsl:otherwise>
+															<xsl:choose>
+																	<xsl:when test="translate($CurrentDate,'-','')  &lt;= translate('2008-11-30','-','')">
+																		<xsl:value-of select="format-number($defaultTaxRate, '0.00')"/>
+																	</xsl:when>
+																	<xsl:otherwise>
+																		<xsl:value-of select="format-number($defaultNewTaxRate, '0.00')"/>
+																	</xsl:otherwise>
+															</xsl:choose>
+														</xsl:otherwise>												
+													</xsl:choose>
+												</xsl:otherwise>
 												</xsl:choose>
 											</xsl:variable>
 											<xsl:attribute name="VATCode"><xsl:value-of select="$currentVATCode"/></xsl:attribute>
