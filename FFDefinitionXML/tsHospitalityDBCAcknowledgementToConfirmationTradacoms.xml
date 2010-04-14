@@ -166,8 +166,8 @@
 						<BuyersProductCode RecordPos="ALD=" LPos="4" SFPos="2"/>
 					</ProductID>
 					<ProductDescription RecordPos="ALD=" LPos="9" SFPos="1"/>
-					<OrderedQuantity RecordPos="ALD=" LPos="6" SFPos="2"/>
-					<ConfirmedQuantity RecordPos="ALD" LPos="6" SFPos="2"/>
+					<OrderedQuantity RecordPos="ALD=" LPos="6" SFPos="1"/>
+					<ConfirmedQuantity RecordPos="ALD" LPos="6" SFPos="1"/>
 					<!--PackSize RecordPos="D" LPos="6"/-->
 					<UnitValueExclVAT RecordPos="ALD=" LPos="7" SFPos="1"/>
 					<!--LineValueExclVAT /-->
