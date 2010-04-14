@@ -304,16 +304,16 @@
 								</LineValueExclVAT>
 							</xsl:if>
 
-							<xsl:if test="BackOrderQuantity != ''">
-								<BackOrderQuantity>
-									<xsl:value-of select="BackOrderQuantity"/>
-								</BackOrderQuantity>
-							</xsl:if>
-							
 							<xsl:if test="Narrative != ''">
 								<Narrative>
 									<xsl:value-of select="Narrative"/>
 								</Narrative>
+							</xsl:if>
+
+							<xsl:if test="BackOrderQuantity != ''">
+								<BackOrderQuantity>
+									<xsl:value-of select="BackOrderQuantity"/>
+								</BackOrderQuantity>
 							</xsl:if>
 						
 						</PurchaseOrderConfirmationLine>
