@@ -170,6 +170,9 @@
 						<xsl:when test="substring(PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN,1,13) = $supplierGLN_BK">
 							<xsl:value-of select="$buyerGLN_SSPBK"/>
 						</xsl:when>
+						<xsl:when test="substring(TradeSimpleHeader/RecipientsName,9) = 'esporta'">
+							<xsl:text>5060166760335</xsl:text>
+						</xsl:when>
 						<xsl:otherwise>
 							<xsl:choose>
 								<xsl:when test="PurchaseOrderHeader/Buyer/BuyersLocationID/GLN = '0000000000000'">
