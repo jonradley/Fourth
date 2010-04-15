@@ -64,7 +64,7 @@
 	<ffsRoot>
 		<PurchaseOrderConfirmation>
 			<TradeSimpleHeader>
-				<SendersCodeForRecipient RecordPos="CLO=" LPos="1" SFPos="2"/>
+				<SendersCodeForRecipient RecordPos="CLO=" LPos="1" SFPos="3"/>
 			</TradeSimpleHeader>
 			<PurchaseOrderConfirmationHeader>
 				<!--DocumentStatus RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/-->
