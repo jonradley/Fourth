@@ -156,6 +156,10 @@
 				<!-- If this order is from 3663 add the price file code (there's only no agreement so no PL account TR to store this in) -->
 				<xsl:text>RBS</xsl:text>
 			</xsl:when>
+			<xsl:when test="'GK' = PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode">
+				<!-- If this order is from 3663 for Greene King add the price file code -->
+				<xsl:text>HGK</xsl:text>
+			</xsl:when>
 			
 			
 			<xsl:otherwise>
