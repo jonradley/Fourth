@@ -187,10 +187,10 @@
 		<xsl:text>,</xsl:text>
 		
 		<!-- Invoice Date -->
-		<!--<xsl:value-of select="translate(CreditRequestHeader/InvoiceReferences/InvoiceDate,'-','')"/>-->
-		<xsl:value-of select="concat(substring(CreditRequestHeader/InvoiceReferences/InvoiceDate,7,4),
+		<xsl:value-of select="translate(CreditRequestHeader/InvoiceReferences/InvoiceDate,'-','')"/>
+		<!--<xsl:value-of select="concat(substring(CreditRequestHeader/InvoiceReferences/InvoiceDate,7,4),
 									substring(CreditRequestHeader/InvoiceReferences/InvoiceDate,4,2),
-									substring(CreditRequestHeader/InvoiceReferences/InvoiceDate,1,2))"/>
+									substring(CreditRequestHeader/InvoiceReferences/InvoiceDate,1,2))"/>-->
 		<xsl:text>,</xsl:text>
 		
 		<!-- Delivery Note Reference -->
@@ -204,10 +204,10 @@
 		<xsl:text>,</xsl:text>
 		
 		<!-- Delivery Note Date -->
-		<!--<xsl:value-of select="translate(CreditRequestHeader/DeliveryNoteReferences/DeliveryNoteDate,'-','')"/>-->
-		<xsl:value-of select="concat(substring(CreditRequestHeader/DeliveryNoteReferences/DeliveryNoteDate,7,4),
+		<xsl:value-of select="translate(CreditRequestHeader/DeliveryNoteReferences/DeliveryNoteDate,'-','')"/>
+		<!--<xsl:value-of select="concat(substring(CreditRequestHeader/DeliveryNoteReferences/DeliveryNoteDate,7,4),
 									substring(CreditRequestHeader/DeliveryNoteReferences/DeliveryNoteDate,4,2),
-									substring(CreditRequestHeader/DeliveryNoteReferences/DeliveryNoteDate,1,2))"/>
+									substring(CreditRequestHeader/DeliveryNoteReferences/DeliveryNoteDate,1,2))"/>-->
 		<xsl:text>,</xsl:text>
 		
 		<!-- Currency -->
@@ -354,7 +354,7 @@
 			<xsl:text>,</xsl:text>
 			
 			<!-- Unit Price Excl VAT -->
-			<xsl:value-of select="format-number((UnitValueExclVAT div PackSize), '0.00')"/>
+			<xsl:value-of select="format-number((UnitValueExclVAT div PackSize), '0.0000')"/>
 			<xsl:text>,</xsl:text>
 			
 			<!-- Line Value Excl VAT -->

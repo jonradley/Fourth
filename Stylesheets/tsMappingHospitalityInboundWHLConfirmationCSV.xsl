@@ -261,7 +261,7 @@
 							
 							<xsl:if test="UnitValueExclVAT != ''">
 								<UnitValueExclVAT>
-									<xsl:value-of select="format-number((UnitValueExclVAT*PackSize), '0.00')"/>
+									<xsl:value-of select="format-number((UnitValueExclVAT*PackSize), '0.0000')"/>
 								</UnitValueExclVAT>
 							</xsl:if>
 							
