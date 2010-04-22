@@ -201,7 +201,7 @@
 			<xsl:text>,</xsl:text>
 			
 			<!-- Quantity -->
-			-<xsl:value-of select="format-number((OrderedQuantity*PackSize), '0')"/>			
+			<xsl:value-of select="format-number((OrderedQuantity*PackSize), '0')"/>			
 			<xsl:text>,</xsl:text>
 			
 			<!-- Unit Price Excl VAT -->
@@ -210,11 +210,6 @@
 			
 			<!-- Line Value Excl VAT -->
 			<xsl:value-of select="LineValueExclVAT"/>
-			
-			<!-- XXX 
-			<xsl:variable name="in" select="'TUV0062'"/>
-  			<xsl:value-of select="replace($in,'[^0-9]','')"/>-->
-
 			
 			<xsl:value-of select="replace(PackSize,'[^0-9]','')"/>
 			<xsl:text>&#13;&#10;</xsl:text>
