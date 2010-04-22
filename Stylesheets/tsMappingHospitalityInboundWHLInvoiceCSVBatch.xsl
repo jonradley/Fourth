@@ -106,7 +106,7 @@
 	
 	<xsl:template match="UnitValueExclVAT">
 		<xsl:element name="{name()}">
-			<xsl:value-of select="format-number((.) * ../PackSize, '0.00')"/>
+			<xsl:value-of select="format-number((.) * ../PackSize, '0.0000')"/>
 		</xsl:element>
 	</xsl:template>
 	
