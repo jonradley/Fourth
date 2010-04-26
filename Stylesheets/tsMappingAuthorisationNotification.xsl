@@ -560,6 +560,14 @@
 								<xsl:text>2. Please enter a comment to be displayed to the unit.</xsl:text>
 								<br/>
 								<xsl:text>3. Click on the Reject button.</xsl:text>
+                                                                <br/><br/>
+         							<xsl:text>To amend this overspend prior to approval: </xsl:text>
+								<br/>
+								<xsl:text>1. Please enter your username and password.</xsl:text>
+								<br/>
+								<xsl:text>2. Click on the Amend button.</xsl:text>
+								<br/>
+								<xsl:text>3. On the page to which you are taken, amend quantities as necessary and click the Approve button on that page.</xsl:text>
 							</td>
 						</tr>
 						<tr>
