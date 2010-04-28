@@ -66,6 +66,17 @@ N Emsen		|	24/01/2007	|	Case 751
 		<InvoiceLine>
 		<xsl:copy-of select="LineNumber"/>
 		
+			
+			<PurchaseOrderReferences>
+				<PurchaseOrderReference>
+					<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderReference"/>
+				</PurchaseOrderReference>
+				<PurchaseOrderDate>
+					<xsl:value-of select="concat('20', substring(DeliveryNoteReferences/DeliveryNoteDate, 1, 2), '-', substring(DeliveryNoteReferences/DeliveryNoteDate, 3, 2), '-', substring(DeliveryNoteReferences/DeliveryNoteDate, 5, 2))"/>
+				</PurchaseOrderDate>
+			</PurchaseOrderReferences>
+
+		
 		<!-- DeliveryNoteReferences -->
 		<DeliveryNoteReferences>
 			<DeliveryNoteReference>
@@ -283,21 +294,6 @@ N Emsen		|	24/01/2007	|	Case 751
 	</xsl:template>
 	<!-- END of MHDSegment HANDLER -->
 	
-	<!-- NE - Check for pairing of Purchase Order Date & Purchase Order Reference -->
-	<xsl:template match="//PurchaseOrderReferences">
-		<xsl:variable name="sPORefDate" select="translate(PurchaseOrderDate,' ','')"/>
-		<xsl:variable name="sPORefReference" select="translate(PurchaseOrderReference,' ','')"/>
-		<xsl:if test="string($sPORefDate) !='' and string($sPORefReference) != '' ">
-			<PurchaseOrderReferences>
-				<PurchaseOrderReference>
-					<xsl:value-of select="$sPORefReference"/>
-				</PurchaseOrderReference>
-				<PurchaseOrderDate>
-					<xsl:value-of select="concat('20',substring($sPORefDate,1,2),'-',substring($sPORefDate,3,2),'-',substring($sPORefDate,5,2))"/>
-				</PurchaseOrderDate>
-			</PurchaseOrderReferences>
-		</xsl:if>
-	</xsl:template>	
 	
 	<msxsl:script language="JScript" implements-prefix="jscript"><![CDATA[ 
 		function toUpperCase(vs) {
