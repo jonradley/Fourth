@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 **********************************************************************
 Alterations
@@ -181,9 +181,9 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from CLD/SPRO(1).
 							</ShipTo>
 							<InvoiceReferences>
 								<!-- OPTIONAL Original Invoice Number, OPTIONAL, CREDIT – OIR – INVN, A unique invoice number for the date, if applicable -->
-								<InvoiceReference RecordPos="OIR=" LPos="2"/>
+								<InvoiceReference RecordPos="OIR=" LPos="5"/>
 								<!-- OPTIONAL Original Invoice Date, OPTIONAL, CREDIT – OIR – IVDT, YYMMDD, The date the invoice was issued, if applicable -->
-								<InvoiceDate RecordPos="OIR=" LPos="3"/>
+								<InvoiceDate RecordPos="CRF=" LPos="2"/>
 								<!-- Fix -->
 								<VATRegNo RecordPos="SDT=" LPos="4"/>
 							</InvoiceReferences>
