@@ -181,7 +181,7 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from CLD/SPRO(1).
 							</ShipTo>
 							<InvoiceReferences>
 								<!-- OPTIONAL Original Invoice Number, OPTIONAL, CREDIT – OIR – INVN, A unique invoice number for the date, if applicable -->
-								<InvoiceReference RecordPos="OIR=" LPos="5"/>
+								<InvoiceReference RecordPos="OIR=" LPos="5" SFPos="1"/>
 								<!-- OPTIONAL Original Invoice Date, OPTIONAL, CREDIT – OIR – IVDT, YYMMDD, The date the invoice was issued, if applicable -->
 								<InvoiceDate RecordPos="CRF=" LPos="2"/>
 								<!-- Fix -->
