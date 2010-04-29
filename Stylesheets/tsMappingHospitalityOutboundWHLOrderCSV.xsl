@@ -211,7 +211,6 @@
 			<!-- Line Value Excl VAT -->
 			<xsl:value-of select="LineValueExclVAT"/>
 			
-			<xsl:value-of select="replace(PackSize,'[^0-9]','')"/>
 			<xsl:text>&#13;&#10;</xsl:text>
 			
 		</xsl:for-each>
