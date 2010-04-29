@@ -66,15 +66,16 @@ N Emsen		|	24/01/2007	|	Case 751
 		<InvoiceLine>
 		<xsl:copy-of select="LineNumber"/>
 		
-			
+		
 			<PurchaseOrderReferences>
 				<PurchaseOrderReference>
-					<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderReference"/>
+					<xsl:value-of select="//PurchaseOrderReferences/PurchaseOrderReference"/>
 				</PurchaseOrderReference>
 				<PurchaseOrderDate>
 					<xsl:value-of select="concat('20', substring(DeliveryNoteReferences/DeliveryNoteDate, 1, 2), '-', substring(DeliveryNoteReferences/DeliveryNoteDate, 3, 2), '-', substring(DeliveryNoteReferences/DeliveryNoteDate, 5, 2))"/>
 				</PurchaseOrderDate>
 			</PurchaseOrderReferences>
+		
 
 		
 		<!-- DeliveryNoteReferences -->
