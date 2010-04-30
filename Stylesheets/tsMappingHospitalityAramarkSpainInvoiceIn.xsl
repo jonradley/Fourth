@@ -9,7 +9,7 @@ R Cambridge	| 2009-07-07		| 2991 Created Module
 R Cambridge	| 2009-11-24		| 3260 Pilot / UAT changes 
 											Add discounts into unit price + line value (as Aramark Es have already included any discount in the catalogue unit price)
 **********************************************************************
-				|						|
+R Cambridge	| 2010-04-30		| 3495 Omit any time part provided in Invoice date
 **********************************************************************
 				|						|
 *******************************************************************-->
@@ -108,7 +108,7 @@ R Cambridge	| 2009-11-24		| 3260 Pilot / UAT changes
 								</ShipTo>
 								<InvoiceReferences>
 									<InvoiceReference><xsl:value-of select="GeneralData/@Ref"/></InvoiceReference>
-									<InvoiceDate><xsl:value-of select="GeneralData/@Date"/></InvoiceDate>
+									<InvoiceDate><xsl:value-of select="substring-before(concat(GeneralData/@Date,'T'), 'T')"/></InvoiceDate>
 									<xsl:for-each select="GeneralData/@BeginDate[. != ''][1]">
 										<TaxPointDate><xsl:value-of select="."/></TaxPointDate>
 									</xsl:for-each>
