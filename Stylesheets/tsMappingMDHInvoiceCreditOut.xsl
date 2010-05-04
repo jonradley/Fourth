@@ -22,6 +22,8 @@
 ******************************************************************************************
 16/12/2009  | Moty Dimant		| 3286. Insert V1 after 01/01/2010
 ******************************************************************************************
+04/05/2010  | John Cahill			| 3498. Date parts of test condition should be bracketed together: ie "$VATCode = 'S' and ($CompanyTaxPointDate  &lt;= translate('2008-11-30','-','') or $CompanyTaxPointDate  &gt;= translate('2010-01-01','-',''))"
+******************************************************************************************
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -113,10 +115,10 @@
 				<xsl:text>,</xsl:text>
 				<!-- In 2010 VAT code goes back to 17.5% and MDH need this to be V1 again -->
 				<xsl:choose>
-					<xsl:when test="$VATCode = 'S' and $CompanyTaxPointDate  &lt;= translate('2008-11-30','-','') or $CompanyTaxPointDate  &gt;= translate('2010-01-01','-','')">
+					<xsl:when test="$VATCode = 'S' and ($CompanyTaxPointDate  &lt;= translate('2008-11-30','-','') or $CompanyTaxPointDate  &gt;= translate('2010-01-01','-',''))">
 						<xsl:text>V1</xsl:text>
 					</xsl:when>
-					<xsl:when test="$VATCode = 'S' and $CompanyTaxPointDate  &gt;= translate('2008-11-30','-','') or $CompanyTaxPointDate  &lt;= translate('2010-01-01','-','')">
+					<xsl:when test="$VATCode = 'S' and ($CompanyTaxPointDate  &gt;= translate('2008-11-30','-','') or $CompanyTaxPointDate  &lt;= translate('2010-01-01','-',''))">
 						<xsl:text>V2</xsl:text>
 					</xsl:when>
 					<xsl:otherwise>
