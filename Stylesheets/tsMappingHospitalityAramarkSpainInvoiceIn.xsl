@@ -11,6 +11,8 @@ R Cambridge	| 2009-11-24		| 3260 Pilot / UAT changes
 **********************************************************************
 R Cambridge	| 2010-04-30		| 3495 Omit any time part provided in Invoice date
 **********************************************************************
+R Cambridge	| 2010-05-11		| 3513 Only create line level tax elements when data is provided in inbound file
+**********************************************************************
 				|						|
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" >
@@ -199,8 +201,14 @@ R Cambridge	| 2010-04-30		| 3495 Omit any time part provided in Invoice date
 											<LineDiscountValue><xsl:value-of select="Discounts/Discount/@Amount"/></LineDiscountValue>
 										</xsl:if-->
 										
-										<VATCode><xsl:value-of select="Taxes/Tax/@Type"/></VATCode>
-										<VATRate><xsl:value-of select="format-number(Taxes/Tax/@Rate, '0.00')"/></VATRate>
+										
+										<xsl:for-each select="Taxes/Tax/@Type[1]">
+											<VATCode><xsl:value-of select="."/></VATCode>
+										</xsl:for-each>
+										
+										<xsl:for-each select="Taxes/Tax/@Rate[1]">
+											<VATRate><xsl:value-of select="format-number(., '0.00')"/></VATRate>
+										</xsl:for-each>
 										
 										<!-- Fees -->
 										
