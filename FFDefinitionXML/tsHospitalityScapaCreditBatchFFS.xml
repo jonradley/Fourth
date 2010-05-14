@@ -120,7 +120,8 @@
 								</ProductID>
 								<ProductDescription RecordPos="D" LPos="9"/>
 								<CreditedQuantity RecordPos="D" LPos="11">
-									<ffsAttribute1 name="UnitOfMeasure" RecordPos="D" LPos="17"/>
+									<!-- UnitOfMeasure to be populate by subsequent processors
+									<ffsAttribute1 name="UnitOfMeasure" RecordPos="D" LPos="17"/>-->
 								</CreditedQuantity>
 								<PackSize RecordPos="D" LPos="10"/>
 								<UnitValueExclVAT RecordPos="D" LPos="12"/>
