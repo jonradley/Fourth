@@ -201,12 +201,12 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from CLD/SPRO(1).
 						<CreditNoteDetail>
 							<CreditNoteLine>
 								<LineNumber RecordPos="CLD=" LPos="1"/>
+								<!--
 								<PurchaseOrderReferences>
-									<!-- OIR LPos 5 OPTIONAL Purchase Order Reference, OPTIONAL, CREDIT – OIR – ORNO(1), Should be set to the customer’s order reference.  If the order has been generated without a customer reference then the seller’s order reference may be used -->
 									<PurchaseOrderReference RecordPos="CLD=" LPos="23" SFPos="1"/>
-									<!-- OIR LPos 5 OPTIONAL Purchase Order Date, OPTIONAL, CREDIT – OIR – ORNO(3), YYMMDD, Must be valid date, and should be set to the order date associated with the reference above -->
 									<PurchaseOrderDate RecordPos="CLD=" LPos="23" SFPos="3"/>
 								</PurchaseOrderReferences>
+								-->
 								<ProductID>
 									<!-- MANDATORY GTIN, INVOIC - CLD - SPRO(1) -->
 									<GTIN RecordPos="CLD=" LPos="2" SFPos="1"/>
@@ -228,7 +228,7 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from CLD/SPRO(1).
 								<!-- MANDATORY VAT Rate, MANDATORY, CREDIT – CLD - VATP, 3 d.p. implied, A percentage rate with up to two decimals.  Must be greater or equal to zero -->
 								<VATRate RecordPos="CLD=" LPos="10"/>
 								<!-- OPTIONAL Reason for Credit, OPTIONAL, CREDIT – CLD – CRRE(3), If possible you should provide a reason as to why you are issuing the credit -->
-								<Narrative RecordPos="CLD=" LPos="11" SFPos="3"/>
+								<!--Narrative RecordPos="CLD=" LPos="11" SFPos="3"/-->
 								<Measure>
 									<!-- CREDIT-CLD-UNOR(1)  -->
 									<UnitsInPack RecordPos="CLD=" LPos="5" SFPos="1"/>
