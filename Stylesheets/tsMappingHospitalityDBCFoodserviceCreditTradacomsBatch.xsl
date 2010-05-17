@@ -139,8 +139,7 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from CLD/SPRO(1).
 	<!-- END of SIMPLE CONVERSIONS-->
 
 	<!-- DATE CONVERSION YYMMDD to xsd:date -->
-	<xsl:template match="PurchaseOrderReferences/PurchaseOrderDate | 
-						CreditNoteReferences/CreditNoteDate |
+	<xsl:template match="CreditNoteReferences/CreditNoteDate |
 						BatchInformation/FileCreationDate |
 						InvoiceReferences/InvoiceDate |
 						CreditNoteReferences/TaxPointDate">
