@@ -1,13 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--******************************************************************
+Alterations
+
+	Bibendum confirmations
+
+**********************************************************************
+Name			| Date				| Change
+**********************************************************************
+     ?     	|       ?    		| Created Module
+**********************************************************************
+H Mahbub	|	2010-05-17		| Created file
+**********************************************************************
+ 			|						|				
+*******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output encoding="utf-8"/>
+		
+	<!-- The structure of the interal XML varries depending on who the customer is -->
+	
+	<!-- All documents in the batch will be for the same customer/agreement -->	
+	<xsl:variable name="COMPASS" select="'COMPASS'"/>
+	<xsl:variable name="TESCO" select="'TESCO'"/>
+	<xsl:variable name="ARAMARK" select="'ARAMARK'"/>
+	<xsl:variable name="BEACON_PURCHASING" select="'BEACON_PURCHASING'"/>
+	<xsl:variable name="SSP" select="'SSP'"/>
+	
+	<xsl:variable name="CustomerFlag">
+		<xsl:variable name="accountCode" select="string(//PurchaseOrderConfirmation/TradeSimpleHeader/SendersBranchReference)"/>
+	
+		<xsl:choose>
+			<xsl:when test="$accountCode = 'MIL14T'"><xsl:value-of select="$COMPASS"/></xsl:when>
+			<xsl:when test="$accountCode = 'FMC01T'"><xsl:value-of select="$COMPASS"/></xsl:when>
+			
+			<xsl:when test="$accountCode = 'TES01T'"><xsl:value-of select="$TESCO"/></xsl:when>
+			<xsl:when test="$accountCode = 'TES08T'"><xsl:value-of select="$TESCO"/></xsl:when>
+			<xsl:when test="$accountCode = 'TES12T'"><xsl:value-of select="$TESCO"/></xsl:when>
+			<xsl:when test="$accountCode = 'TES15T'"><xsl:value-of select="$TESCO"/></xsl:when>
+			<xsl:when test="$accountCode = 'TES25T'"><xsl:value-of select="$TESCO"/></xsl:when>
+			<xsl:when test="$accountCode = 'ARA02T'"><xsl:value-of select="$ARAMARK"/></xsl:when>
+			<xsl:when test="$accountCode = 'BEACON'"><xsl:value-of select="$BEACON_PURCHASING"/></xsl:when>
+			<xsl:when test="$accountCode = 'SSP25T'"><xsl:value-of select="$SSP"/></xsl:when>
+			<xsl:otherwise></xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>	
+	
+	<!-- Start point - ensure required outer BatchRoot tag is applied -->
 	<xsl:template match="/">
 		<BatchRoot>
 			<PurchaseOrderConfirmation>
 				<TradeSimpleHeader>
+					<SendersCodeForRecipient>
+						<xsl:choose>
+							<!--xsl:when test="SendersBranchReference = 'MIL14T'">MIL14T</xsl:when>
+							<xsl:when test="SendersBranchReference = 'FMC01T'">FMC01T</xsl:when>
+							<xsl:when test="SendersBranchReference = 'TES01T'">TES01T</xsl:when>					
+							<xsl:when test="SendersBranchReference = 'TES08T'">TES08T</xsl:when>					
+							<xsl:when test="SendersBranchReference = 'TES12T'">TES12T</xsl:when>					
+							<xsl:when test="SendersBranchReference = 'TES15T'">TES15T</xsl:when>					
+							<xsl:when test="SendersBranchReference = 'TES25T'">TES25T</xsl:when-->	
+					
+						<xsl:when test="$CustomerFlag = $COMPASS or $CustomerFlag = $TESCO or $CustomerFlag = $BEACON_PURCHASING">
+						<xsl:value-of select="/PurchaseOrderConfirmation/TradeSimpleHeader/SendersBranchReference"/>
+						</xsl:when>			
+									
+						<xsl:otherwise>
+							<xsl:value-of select="/PurchaseOrderConfirmation/TradeSimpleHeader/SendersCodeForRecipient"/>
+						</xsl:otherwise>
+					
+					</xsl:choose>
+				</SendersCodeForRecipient>
+			
+				<!--xsl:if test="SendersBranchReference = 'MIL14T' or SendersBranchReference = 'FMC01T' or SendersBranchReference = 'TES01T'"-->
+				<!--xsl:if test="SendersBranchReference">
+					<xsl:if test="contains('MIL14T~FMC01T~TES01T~TES08T~TES12T~TES15T~TES25T',SendersBranchReference)"-->
+				<xsl:if test="$CustomerFlag = $COMPASS or $CustomerFlag = $TESCO or $CustomerFlag = $ARAMARK">
+					<SendersBranchReference>
+						<xsl:value-of select="/PurchaseOrderConfirmation/TradeSimpleHeader/SendersBranchReference"/>
+					</SendersBranchReference>
+				</xsl:if>
+				<!--/xsl:if>
+				</xsl:if-->
+			</TradeSimpleHeader>		
+				<!--<TradeSimpleHeader>
 					<xsl:copy-of select="/PurchaseOrderConfirmation/TradeSimpleHeader/SendersCodeForRecipient"/>
 					<xsl:copy-of select="/PurchaseOrderConfirmation/TradeSimpleHeader/SendersBranchReference"/>
-				</TradeSimpleHeader>
+				</TradeSimpleHeader-->
 				<PurchaseOrderConfirmationHeader>
 					<DocumentStatus>Original</DocumentStatus>
 					<Buyer>
