@@ -18,6 +18,8 @@
 ==========================================================================================
  12/05/2010	| Sandeep Sehgal| FB3516. Group output by  LineExtraData/AccountCode  
 ==========================================================================================
+ 25/05/2010	| Sandeep Sehgal| FB3516. Updated as per the Spec ver 1.2  
+==========================================================================================
            	|                 	|
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -66,20 +68,29 @@
 			<xsl:text>,</xsl:text>
 			<xsl:value-of select="$valBuyersCode"/>
 			<xsl:text>,</xsl:text>
-			<xsl:value-of select="$valSettlementTotalExclVAT"/>
-			<xsl:text>,</xsl:text>
-			<xsl:value-of select="$valVATAmount"/>
-			<xsl:text>,</xsl:text>
-			<xsl:value-of select="$valSettlementTotalInclVAT"/>
-			<xsl:text>,</xsl:text>
-			<xsl:value-of select="$valRecipientsCodeForSender"/>
-			<xsl:text>,</xsl:text>
                <xsl:value-of select="$AccountCode"/>
 			<xsl:text>,</xsl:text>
 			<xsl:value-of select="format-number((sum(//InvoiceLine[LineExtraData/AccountCode = $AccountCode]/LineValueExclVAT)-sum(//InvoiceLine[LineExtraData/AccountCode = $AccountCode]/LineDiscountValue)),'0.00')"/>
+			<xsl:text>,</xsl:text>
+			<xsl:value-of select="$valRecipientsCodeForSender"/>
 			<xsl:text>&#13;&#10;</xsl:text>	
 		</xsl:for-each>
+		<xsl:if test="$valVATAmount&gt;0">
+			<xsl:value-of select="$varInvoiceDate"/>
+			<xsl:text>,</xsl:text>
+			<xsl:value-of select="$valInvoiceReference"/>
+			<xsl:text>,</xsl:text>
+			<!-- blank -->
+			<xsl:text>,</xsl:text>
+			<xsl:value-of select="$valBuyersCode"/>
+			<xsl:text>,9531,</xsl:text>
+               <xsl:value-of select="$valVATAmount"/>
+			<xsl:text>,</xsl:text>
+			<xsl:value-of select="$valRecipientsCodeForSender"/>
+			<xsl:text>&#13;&#10;</xsl:text>				
+		</xsl:if>		
 	</xsl:template>
+	
 	
 	<xsl:template match="/CreditNote">	
 	
@@ -124,30 +135,33 @@
 			<xsl:text>,</xsl:text>
 			<xsl:value-of select="$valInvoiceReference"/>
 			<xsl:text>,</xsl:text>
-			<xsl:value-of select="$valBuyersCode"/>
-			<xsl:text>,</xsl:text>
-			<xsl:value-of select="$valSettlementTotalExclVAT"/>
-			<xsl:text>,</xsl:text>
-			<xsl:value-of select="$valVATAmount"/>
-			<xsl:text>,</xsl:text>
-			<xsl:value-of select="$valSettlementTotalInclVAT"/>
-			<xsl:text>,</xsl:text>
-			<xsl:value-of select="$valRecipientsCodeForSender"/>
+			<xsl:value-of select="$valBuyersCode"/>			
 			<xsl:text>,</xsl:text>
                <xsl:value-of select="$AccountCode"/>
 			<xsl:text>,</xsl:text>
 			<xsl:value-of select="format-number( -1 * (sum(//CreditNoteLine[LineExtraData/AccountCode = $AccountCode]/LineValueExclVAT)-sum(//CreditNoteLine[LineExtraData/AccountCode = $AccountCode]/LineDiscountValue)),'0.00')"/>
+			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$valRecipientsCodeForSender"/>
 			<xsl:text>&#13;&#10;</xsl:text>	
 		</xsl:for-each>
-
+		<xsl:if test="$valVATAmount&lt;0">
+			<xsl:value-of select="$varCreditNoteDate"/>
+			<xsl:text>,</xsl:text>
+			<xsl:value-of select="$valCreditNoteReference"/>
+			<xsl:text>,</xsl:text>
+			<xsl:value-of select="$valInvoiceReference"/>
+			<xsl:text>,</xsl:text>
+			<xsl:value-of select="$valBuyersCode"/>			
+			<xsl:text>,9531,</xsl:text>             
+			<xsl:value-of select="$valVATAmount"/>	
+			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$valRecipientsCodeForSender"/>
+			<xsl:text>&#13;&#10;</xsl:text>	
+		</xsl:if>
 	</xsl:template>
 	
 	<xsl:template name="formatDate">
-		<xsl:param name="utcFormat"/>
-		
+		<xsl:param name="utcFormat"/>		
 		<xsl:value-of select="concat(substring($utcFormat,9,2),'/',substring($utcFormat,6,2),'/',substring($utcFormat,3,2))"/>
-	
 	</xsl:template>
-	
-		
 </xsl:stylesheet>
