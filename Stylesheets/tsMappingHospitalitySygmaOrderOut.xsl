@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--******************************************************************
+Alterations
+**********************************************************************
+Name			| Date				| Change
+**********************************************************************
+Calum Scott	|   ??????? 		| 3541 Created Module
+**********************************************************************
+M Hordern	| 2010-05-27		| 3541 added fixed email address
+**********************************************************************
+				|						|				
+*******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:user="http://abs-Ltd.com">
 	<xsl:output method="text"/>
 	<xsl:template match="PurchaseOrder">
