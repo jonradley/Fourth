@@ -13,7 +13,7 @@
 		<xsl:text>&#13;&#10;</xsl:text>
 		<xsl:text>DHC</xsl:text>
 		<xsl:value-of select="substring(concat('0000000000',TradeSimpleHeader/RecipientsCodeForSender),string-length(TradeSimpleHeader/RecipientsCodeForSender)+1,10)"/>
-		<xsl:value-of select="user:spaces(75)"/>
+		<xsl:value-of select="substring(concat('joseph.maca@foodtravelexperts.com',user:spaces(75)),1,75)"/>
 		<xsl:value-of select="user:spaces(15)"/>
 		<xsl:for-each select="PurchaseOrderDetail/PurchaseOrderLine">
 			<xsl:text>&#13;&#10;</xsl:text>
