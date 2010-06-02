@@ -111,6 +111,10 @@
 			</xsl:call-template>	
 		</xsl:copy>
 	</xsl:template>
+			
+	<!-- Remove Customer Order REf -->
+	<xsl:template match="CustomerPurchaseOrderReference">
+	</xsl:template>
 		
 	<!-- Remove OrderID -->
 	<xsl:template match="OrderID">
