@@ -8,7 +8,7 @@ Calum Scott	|   ??????? 		| 3541 Created Module
 **********************************************************************
 M Hordern	| 2010-05-27		| 3541 added fixed email address
 **********************************************************************
-				|						|				
+A Barber	| 2010-06-03		| 3541: Updated fixed email address.				
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:user="http://abs-Ltd.com">
 	<xsl:output method="text"/>
@@ -24,7 +24,7 @@ M Hordern	| 2010-05-27		| 3541 added fixed email address
 		<xsl:text>&#13;&#10;</xsl:text>
 		<xsl:text>DHC</xsl:text>
 		<xsl:value-of select="substring(concat('0000000000',TradeSimpleHeader/RecipientsCodeForSender),string-length(TradeSimpleHeader/RecipientsCodeForSender)+1,10)"/>
-		<xsl:value-of select="substring(concat('joseph.maca@foodtravelexperts.com',user:spaces(75)),1,75)"/>
+		<xsl:value-of select="substring(concat('Naomi.Reece@foodtravelexperts.com',user:spaces(75)),1,75)"/>
 		<xsl:value-of select="user:spaces(15)"/>
 		<xsl:for-each select="PurchaseOrderDetail/PurchaseOrderLine">
 			<xsl:text>&#13;&#10;</xsl:text>
