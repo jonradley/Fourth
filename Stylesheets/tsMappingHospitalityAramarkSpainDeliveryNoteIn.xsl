@@ -6,6 +6,10 @@ Name			| Date				| Change
 **********************************************************************
 R Cambridge	| 2009-07-08		| 2991 Created Module
 **********************************************************************
+R Cambridge	| 2010-06-01		| 3551 Handle non-pl customers by using Supplier/@CustomerSupplierID as BuyersLocationID/SuppliersCode
+													(this is infact the customer's code for the supplier - the wrong direction - 
+													but it fits with what's set up and simplifies the set up of Voxel related relationships)
+**********************************************************************
 				|						|				
 **********************************************************************
 				|						|
@@ -42,7 +46,7 @@ R Cambridge	| 2009-07-08		| 2991 Created Module
 							<xsl:for-each select="Client/@ClientID[. != ''][1]">
 								<BuyersCode><xsl:value-of select="."/></BuyersCode>
 							</xsl:for-each>
-							<xsl:for-each select="Client/@SupplierClientID[. != ''][1]">
+							<xsl:for-each select="Supplier/@CustomerSupplierID[. != ''][1]">
 								<SuppliersCode><xsl:value-of select="."/></SuppliersCode>
 							</xsl:for-each>
 						</BuyersLocationID>

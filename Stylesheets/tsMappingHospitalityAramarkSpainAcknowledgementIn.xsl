@@ -8,6 +8,10 @@ R Cambridge	| 2009-07-08		| 2991 Created Module
 **********************************************************************
 R Cambridge	| 2009-07-08		| 2991 Meaning of @SenderID and @RecID has swapped around
 **********************************************************************
+R Cambridge	| 2010-06-01		| 3551 Handle non-pl customers by using ReturnReceipt/@RecID as BuyersLocationID/SuppliersCode
+													(this is infact the customer's code for the supplier - the wrong direction - 
+													but it fits with what's set up and simplifies the set up of Voxel related relationships)
+**********************************************************************
 				|						|
 **********************************************************************
 				|						|
@@ -26,6 +30,14 @@ R Cambridge	| 2009-07-08		| 2991 Meaning of @SenderID and @RecID has swapped aro
 					<SendersBranchReference><xsl:value-of select="ReturnReceipt/@RecID"/></SendersBranchReference>					
 				</TradeSimpleHeader>
 				<PurchaseOrderAcknowledgementHeader>
+	
+					<Buyer>
+						<BuyersLocationID>
+							<xsl:for-each select="ReturnReceipt/@RecID[. != ''][1]">
+								<SuppliersCode><xsl:value-of select="."/></SuppliersCode>
+							</xsl:for-each>
+						</BuyersLocationID>
+					</Buyer>
 	
 					<ShipTo>
 						<ShipToLocationID>
