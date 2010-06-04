@@ -13,6 +13,10 @@ R Cambridge	| 2010-04-30		| 3495 Omit any time part provided in Invoice date
 **********************************************************************
 R Cambridge	| 2010-05-11		| 3513 Only create line level tax elements when data is provided in inbound file
 **********************************************************************
+R Cambridge	| 2010-06-01		| 3551 Handle non-pl customers by using Supplier/@CustomerSupplierID as BuyersLocationID/SuppliersCode
+													(this is infact the customer's code for the supplier - the wrong direction - 
+													but it fits with what's set up and simplifies the set up of Voxel related relationships)
+**********************************************************************
 				|						|
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" >
@@ -44,7 +48,7 @@ R Cambridge	| 2010-05-11		| 3513 Only create line level tax elements when data i
 										<xsl:for-each select="Client/@ClientID[. != ''][1]">
 											<BuyersCode><xsl:value-of select="."/></BuyersCode>
 										</xsl:for-each>
-										<xsl:for-each select="Client/@SupplierClientID[. != ''][1]">
+										<xsl:for-each select="Supplier/@CustomerSupplierID[. != ''][1]">
 											<SuppliersCode><xsl:value-of select="."/></SuppliersCode>
 										</xsl:for-each>
 									</BuyersLocationID>
