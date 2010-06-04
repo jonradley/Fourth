@@ -11,7 +11,7 @@
 ******************************************************************************************
  16/01/2008  | R Cambridge  | Created
 ******************************************************************************************
-             |              | 
+04/06/2010   | M Dimant       | Insert MC's GLN becuase it is needed for Bay GRNs
 ***************************************************************************************-->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 version="1.0">
@@ -28,9 +28,8 @@
 	     otherwise remove the Seller/SellerAssigned element if not -->
 	<xsl:template match="Seller[not(SellerAssigned)]">
 		<xsl:copy>
-			<SellerGLN scheme="GLN">
-				<xsl:value-of select="SellerGLN"/>
-			</SellerGLN>
+			<!-- GLN is hardcoded becuase the OFSCII processor does not automatically fill in the GLN if it is empty-->
+				<SellerGLN scheme="GLN">5013546103352</SellerGLN>
 			<xsl:if test="//TradeAgreementReference/ContractReferenceNumber != ''">
 				<SellerAssigned scheme="OTHER">
 					<xsl:value-of select="//TradeAgreementReference/ContractReferenceNumber"/>
@@ -45,6 +44,7 @@
 			</SellerAssigned>
 		</xsl:if>
 	</xsl:template>	
+
 
 	<!--identity transformation -->
 	<xsl:template match="@*|node()">
