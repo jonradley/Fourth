@@ -13,7 +13,7 @@
 '******************************************************************************************
 ' 12/04/2005  | Steven Hewitt | Created
 '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-'			  |                         |
+' 03/06/2010  | M Dimant       | Matthew Clark require Seller/GLN to always be 5555555555555
 '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 '			  |                         |
 '******************************************************************************************
@@ -124,9 +124,8 @@
 			    SELLER
 			      ~~~~~~~~~~~~~~~~~~~~~~~-->
 			<Seller>
-				<SellerGLN scheme="GLN">
-					<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN"/>
-				</SellerGLN>
+			<!-- Matthew Clark expect this GLN to always be 5555555555555 for routing purposes-->
+				<SellerGLN scheme="GLN">5555555555555</SellerGLN>
 			
 				<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/SuppliersCode">
 					<SellerAssigned scheme="OTHER">
