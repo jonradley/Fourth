@@ -65,7 +65,9 @@ R Cambridge	| 2010-06-01		| 3551 Handle non-pl customers by using Supplier/@Cust
 					<Supplier>
 						<SuppliersLocationID>
 							<BuyersCode><xsl:value-of select="Supplier/@CustomerSupplierID"/></BuyersCode>
-							<SuppliersCode><xsl:value-of select="Supplier/@SupplierID"/></SuppliersCode>
+							<xsl:for-each select="Supplier/@SupplierID[. != ''][1]">
+								<SuppliersCode><xsl:value-of select="."/></SuppliersCode>
+							</xsl:for-each>						
 						</SuppliersLocationID>
 						<SuppliersName><xsl:value-of select="Supplier/@Company"/></SuppliersName>
 						<SuppliersAddress>
@@ -108,7 +110,7 @@ R Cambridge	| 2010-06-01		| 3551 Handle non-pl customers by using Supplier/@Cust
 	
 					<DeliveryNoteReferences>
 						<DeliveryNoteReference><xsl:value-of select="GeneralData/@Ref"/></DeliveryNoteReference>
-						<DeliveryNoteDate><xsl:value-of select="GeneralData/@Date"/></DeliveryNoteDate>
+						<DeliveryNoteDate><xsl:value-of select="substring-before(concat(GeneralData/@Date,'T'), 'T')"/></DeliveryNoteDate>									
 					</DeliveryNoteReferences>	
 				
 				</DeliveryNoteHeader>	
