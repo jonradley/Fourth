@@ -13,6 +13,9 @@
 ==========================================================================================
  15/01/2009	| R Cambridge			|	Created module from tsMappingHospitalityOrderTradacomsv9Out.xsl (CDT/1/2 to be the same as CLO/1/3)
 ==========================================================================================
+ 16/06/2010	| R Cambrigde			|	3586 Hardcoded supplier GLN as 5s to avoid discussing with Penta/Freeway how real GLNs will affect Penta's system
+ 														(The only orders received up to this point are from FnB which until now has meant GLNs would always 5s in any case)
+==========================================================================================
 				|							|
 =======================================================================================-->
 
@@ -81,7 +84,7 @@
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:text>SDT=</xsl:text>
-			<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN"/>
+			<xsl:text>5555555555555</xsl:text>
 			<xsl:text>:</xsl:text>
 			<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
 			<xsl:text>+</xsl:text>
