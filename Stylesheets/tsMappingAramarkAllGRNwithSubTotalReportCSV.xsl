@@ -17,6 +17,8 @@
  ******************************************************************************************
  24/05/2010 | Sandeep Sehgal| 3536| Internationalisation for Aramark Spain
  ******************************************************************************************
+  21/06/2010 | Sandeep Sehgal | FB3536 For Spanish Reports use semi-colon as record separator
+******************************************************************************************
 -->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 	
@@ -32,6 +34,7 @@
 	<xsl:param name="LocaleID">
 		<xsl:value-of select = "/Report/@LocaleID"></xsl:value-of>
 	</xsl:param>
+	<xsl:param name="CommaCharacter"><xsl:if test="$LocaleID=1034">;</xsl:if><xsl:if test="$LocaleID=2057">,</xsl:if></xsl:param>
 	
 	<xsl:template match="/">
 		<xsl:choose>
@@ -42,7 +45,7 @@
 				<!--Header Details-->
 				<xsl:if test="/Report/HeaderDetails">
 					<xsl:for-each select="/Report/HeaderDetails/HeaderDetail">
-						<xsl:call-template name="SelectString"><xsl:with-param name="InputString" select="Description"/></xsl:call-template><xsl:text>,</xsl:text><xsl:call-template name="SelectString"><xsl:with-param name="InputString" select="Value"/></xsl:call-template><xsl:text>&#xD;</xsl:text>
+						<xsl:call-template name="SelectString"><xsl:with-param name="InputString" select="Description"/></xsl:call-template><xsl:value-of select="$CommaCharacter"></xsl:value-of><xsl:call-template name="SelectString"><xsl:with-param name="InputString" select="Value"/></xsl:call-template><xsl:text>&#xD;</xsl:text>
 					</xsl:for-each>
 				</xsl:if>
 				<!--Line Details-->
@@ -72,11 +75,11 @@
 								<xsl:text>&#xD;</xsl:text>				
 								<xsl:for-each select="../Columns/Column">
 									<xsl:choose>
-										<xsl:when test="@DataType = 6">
-											<xsl:text>"</xsl:text><xsl:value-of select="script:gsFormatNumberByLocale(.,2,number($LocaleID),0)"/><xsl:text>",</xsl:text>
+										<xsl:when test="@DataType = 6 or @DataType=14 or @DataType=5 or @DataType=131">
+											<xsl:value-of select="script:gsFormatNumberByLocale(.,2,number($LocaleID),0)"/><xsl:value-of select="$CommaCharacter"></xsl:value-of>
 										</xsl:when>
 										<xsl:otherwise>
-											<xsl:call-template name="SelectString"><xsl:with-param name="InputString" select="script:msFormatForCSV(.)"/></xsl:call-template><xsl:text>,</xsl:text>
+											<xsl:call-template name="SelectString"><xsl:with-param name="InputString" select="script:msFormatForCSV(.)"/></xsl:call-template><xsl:value-of select="$CommaCharacter"></xsl:value-of>
 										</xsl:otherwise>
 									</xsl:choose>
 								</xsl:for-each>
@@ -84,11 +87,11 @@
 							<xsl:text>&#xD;</xsl:text>
 							<xsl:for-each select="Columns/Column">
 								<xsl:choose>
-									<xsl:when test="@DataType = 6">
-										<xsl:text>"</xsl:text><xsl:value-of select="script:gsFormatNumberByLocale(.,2,number($LocaleID),0)"/><xsl:text>",</xsl:text>
+									<xsl:when test="@DataType = 6 or @DataType=14 or @DataType=5 or @DataType=131">
+										<xsl:value-of select="script:gsFormatNumberByLocale(.,2,number($LocaleID),0)"/><xsl:value-of select="$CommaCharacter"></xsl:value-of>
 									</xsl:when>
 									<xsl:otherwise>
-										<xsl:call-template name="SelectString"><xsl:with-param name="InputString" select="script:msFormatForCSV(.)"/></xsl:call-template><xsl:text>,</xsl:text>
+										<xsl:call-template name="SelectString"><xsl:with-param name="InputString" select="script:msFormatForCSV(.)"/></xsl:call-template><xsl:value-of select="$CommaCharacter"></xsl:value-of>
 									</xsl:otherwise>
 								</xsl:choose>
 							</xsl:for-each>
@@ -128,11 +131,11 @@
 								
 								<xsl:for-each select="msxsl:node-set($summaryLine)/LineDetail/Columns/Column">
 								<xsl:choose>
-									<xsl:when test="@DataType = 6">
-										<xsl:text>"</xsl:text><xsl:value-of select="script:gsFormatNumberByLocale(.,2,number($LocaleID),0)"/><xsl:text>",</xsl:text>
+									<xsl:when test="@DataType = 6 or @DataType=14 or @DataType=5 or @DataType=131">
+										<xsl:value-of select="script:gsFormatNumberByLocale(.,2,number($LocaleID),0)"/><xsl:value-of select="$CommaCharacter"></xsl:value-of>
 									</xsl:when>
 									<xsl:otherwise>
-										<xsl:call-template name="SelectString"><xsl:with-param name="InputString" select="script:msFormatForCSV(.)"/></xsl:call-template><xsl:text>,</xsl:text>
+										<xsl:call-template name="SelectString"><xsl:with-param name="InputString" select="script:msFormatForCSV(.)"/></xsl:call-template><xsl:value-of select="$CommaCharacter"></xsl:value-of>
 									</xsl:otherwise>
 								</xsl:choose>
 								</xsl:for-each>				
@@ -146,7 +149,7 @@
 				<!--Trailer Details-->
 				<xsl:if test="/Report/TrailerDetails">
 					<xsl:for-each select="/Report/TrailerDetails/TrailerDetail">
-						<xsl:value-of select="script:msFormatForCSV(Description)"/><xsl:text>,</xsl:text><xsl:value-of select="script:msFormatForCSV(Value)"/><xsl:text>&#xD;</xsl:text>
+						<xsl:value-of select="script:msFormatForCSV(Description)"/><xsl:value-of select="$CommaCharacter"></xsl:value-of><xsl:value-of select="script:gsFormatNumberByLocale(Value,2,number($LocaleID),0)"/><xsl:text>&#xD;</xsl:text>
 					</xsl:for-each>
 				</xsl:if>
 			</xsl:when>
