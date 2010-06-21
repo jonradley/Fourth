@@ -73,15 +73,8 @@
 		             
 							<xsl:if test="script:mbNeedHeader(../Columns/Column[@GroupBy = '1' or @GroupBy = 'true'])">
 								<xsl:text>&#xD;</xsl:text>				
-								<xsl:for-each select="../Columns/Column">
-									<xsl:choose>
-										<xsl:when test="@DataType = 6 or @DataType=14 or @DataType=5 or @DataType=131">
-											<xsl:value-of select="script:gsFormatNumberByLocale(.,2,number($LocaleID),0)"/><xsl:value-of select="$CommaCharacter"></xsl:value-of>
-										</xsl:when>
-										<xsl:otherwise>
-											<xsl:call-template name="SelectString"><xsl:with-param name="InputString" select="script:msFormatForCSV(.)"/></xsl:call-template><xsl:value-of select="$CommaCharacter"></xsl:value-of>
-										</xsl:otherwise>
-									</xsl:choose>
+								<xsl:for-each select="../Columns/Column">									
+									<xsl:call-template name="SelectString"><xsl:with-param name="InputString" select="script:msFormatForCSV(.)"/></xsl:call-template><xsl:value-of select="$CommaCharacter"></xsl:value-of>
 								</xsl:for-each>
 							</xsl:if>
 							<xsl:text>&#xD;</xsl:text>
