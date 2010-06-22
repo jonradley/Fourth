@@ -58,6 +58,12 @@
 		</xsl:element>
 	</xsl:template>
 	
+		<xsl:template match="SlotStart">
+		<xsl:element name="{name()}">
+			<xsl:value-of select="concat(substring(., 1, 2), ':', substring(., 3, 2))"/>
+		</xsl:element>
+	</xsl:template>
+	
 		<xsl:template match="SlotEnd">
 		<xsl:element name="{name()}">
 			<xsl:value-of select="concat(substring(., 1, 2), ':', substring(., 3, 2))"/>
