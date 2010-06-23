@@ -45,6 +45,22 @@ R Cambridge	| 27/03/2007	| FB941 Handle catchweight items (derived from
 	</xsl:template>
 	<!-- END of GENERIC HANDLERS -->
 
+
+	<!-- Create unique file generation numbers by PL account -->
+	<xsl:template match="InvoiceHeader/BatchInformation/FileGenerationNo">
+		<FileGenerationNo>
+			<xsl:choose>
+				<xsl:when test="../../../TradeSimpleHeader/SendersBranchReference != ''">
+					<xsl:value-of select="concat((../../../TradeSimpleHeader/SendersBranchReference),'-',(.))"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="."/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</FileGenerationNo>
+	</xsl:template>
+	
+	
 	<!-- InvoiceLine/ProductID/BuyersProductCode is used as a placeholder for INVOIC-ILD-CRLI and should not be copied over -->
 	<xsl:template match="BuyersProductCode"/>
 	
