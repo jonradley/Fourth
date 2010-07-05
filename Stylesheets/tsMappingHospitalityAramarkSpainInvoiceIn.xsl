@@ -17,6 +17,8 @@ R Cambridge	| 2010-06-01		| 3551 Handle non-pl customers by using Supplier/@Cust
 													(this is infact the customer's code for the supplier - the wrong direction - 
 													but it fits with what's set up and simplifies the set up of Voxel related relationships)
 **********************************************************************
+R Cambridge	| 2010-07-05		| 3723 Unit and line value calculations adjusted to accommodate multiple charges and discounts 
+**********************************************************************
 				|						|
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" >
@@ -181,10 +183,14 @@ R Cambridge	| 2010-06-01		| 3551 Handle non-pl customers by using Supplier/@Cust
 										<xsl:choose>
 											
 											<xsl:when test="Discounts/Discount/@Amount">
+											
+												<xsl:variable name="lineDiscounts" select="sum(Discounts/Discount[@Qualifier='Descuento']/@Amount)"/>
+													
+												<xsl:variable name="lineCharges" select="sum(Discounts/Discount[@Qualifier='Cargo']/@Amount)"/>
 												
-												<UnitValueExclVAT><xsl:value-of select="format-number((@Total - Discounts/Discount/@Amount) div @Qty, '0.00')"/></UnitValueExclVAT>
+												<UnitValueExclVAT><xsl:value-of select="format-number((@Total - $lineDiscounts + $lineCharges) div @Qty, '0.00')"/></UnitValueExclVAT>
 												
-												<LineValueExclVAT><xsl:value-of select="format-number(@Total - Discounts/Discount/@Amount, '0.00')"/></LineValueExclVAT>
+												<LineValueExclVAT><xsl:value-of select="format-number(@Total - $lineDiscounts + $lineCharges, '0.00')"/></LineValueExclVAT>
 												
 											</xsl:when>
 											
