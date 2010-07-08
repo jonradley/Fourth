@@ -21,6 +21,8 @@
 ******************************************************************************************
   08/07/2010 | Steve Hewitt  | FB3536 The path to the translations files cannot access a web box
 ******************************************************************************************
+  08/07/2010 | Sandeep Sehgal  | FB3739 CommaCharacter param changed to a variable
+******************************************************************************************
 -->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 	
@@ -36,7 +38,7 @@
 	<xsl:param name="LocaleID">
 		<xsl:value-of select = "/Report/@LocaleID"></xsl:value-of>
 	</xsl:param>
-	<xsl:param name="CommaCharacter"><xsl:if test="$LocaleID=1034">;</xsl:if><xsl:if test="$LocaleID=2057">,</xsl:if></xsl:param>
+	<xsl:variable name="CommaCharacter"><xsl:if test="$LocaleID=1034">;</xsl:if><xsl:if test="$LocaleID=2057">,</xsl:if></xsl:variable >
 	
 	<xsl:template match="/">
 		<xsl:choose>

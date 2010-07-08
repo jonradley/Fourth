@@ -20,6 +20,8 @@
 ******************************************************************************************
   08/07/2010 | Steve Hewitt  | FB3536 The path to the translations files cannot access a web box and branched into hosp
 ******************************************************************************************
+  08/07/2010 | Sandeep Sehgal  | FB3739 CommaCharacter param changed to a variable
+******************************************************************************************
 
 ******************************************************************************************
 -->
@@ -40,7 +42,7 @@
 	<xsl:variable name="ReportID">
 		<xsl:value-of select = "/Report/@ReportID"></xsl:value-of>
 	</xsl:variable>	
-	<xsl:param name="CommaCharacter"><xsl:if test="$LocaleID=1034">;</xsl:if><xsl:if test="$LocaleID=2057">,</xsl:if></xsl:param>
+	<xsl:variable name="CommaCharacter"><xsl:if test="$LocaleID=1034">;</xsl:if><xsl:if test="$LocaleID=2057">,</xsl:if></xsl:variable >
 	<xsl:template match="/">
 		<xsl:choose>
 			<xsl:when test="$LocaleID>0 and ($ReportID=88 or $ReportID=89 )">
