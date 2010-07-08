@@ -19,6 +19,8 @@
  ******************************************************************************************
   21/06/2010 | Sandeep Sehgal | FB3536 For Spanish Reports use semi-colon as record separator
 ******************************************************************************************
+  08/07/2010 | Steve Hewitt  | FB3536 The path to the translations files cannot access a web box
+******************************************************************************************
 -->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 	
@@ -26,8 +28,8 @@
 		       xmlns:msxsl="urn:schemas-microsoft-com:xslt"
 		      exclude-result-prefixes="#default xsl msxsl script">
 	<xsl:output method="text" encoding="utf-8"/>	 
-	<xsl:include href="HospitalityReportsInclude.xsl"/>
-	<xsl:param name="RootFolderPath" select="'../../_Implementations/Hospitality/Web/Aramark Spain'"/>	
+	<xsl:include href="Internationalisation.xsl"/>
+	<xsl:param name="RootFolderPath" select="'./Translations'"/>	
 	<xsl:variable name="TranslationFile">
 		Report<xsl:value-of select = "/Report/@ReportID"></xsl:value-of>.xml
 	</xsl:variable>	
