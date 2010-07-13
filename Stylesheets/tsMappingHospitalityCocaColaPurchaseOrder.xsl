@@ -27,6 +27,19 @@ Overview
  21/05/2009		| Lee Boyton     | 2900 Translate the GLN for SSP and Moto.
 ******************************************************************************************
 26/10/2009	| Katherine O'Shaughnessy | 3200 Translate the Esporta GLN - FH orders
+******************************************************************************************
+ 13/07/2010		| R Cambridge    | 3586 Build on previous change to ensure Esport order retain the same party data
+ 														when FnB ordering is moved to new trading relationship structures (case 3272)
+ 														
+ 													This change, and that for 3200, can be rolledback once 
+ 													CCE have confimed that changes resulting from 3272 are ok
+ 													
+ 													(changes for 3200 and 3586 are located in
+ 													     /Order/Buyer and /Order/Seller)
+ 													 													
+ 													 														
+******************************************************************************************
+            	|                | 
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" 
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -118,63 +131,121 @@ Overview
 			<xsl:variable name="SCBSSP" select="'5013546200266'"/>
 			<xsl:variable name="EsportaGLN" select="'5060166760144'"/>
 			
+			<xsl:variable name="bEsportaOrder" select="substring(/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersName,1,7) = 'Esporta'"/>
+			
 			<Buyer>
-				<BuyerGLN scheme="GLN">
-					<xsl:choose>
-						<xsl:when test="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN = $OldMotoAndSSPGLN">
+
+				<xsl:choose>
+				
+					<!-- 3586 Esporta order: temporarily fix values to mimic FnB data prior to 3272 -->
+					<xsl:when test="$bEsportaOrder">
+			
+						<BuyerGLN scheme="GLN">
+							<xsl:value-of select="$EsportaGLN"/>							
+						</BuyerGLN>
+					
+						<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode">
+							<BuyerAssigned scheme="OTHER">
+								<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode"/>
+							</BuyerAssigned>
+						</xsl:if>
+			
+						<SellerAssigned scheme="OTHER">Fourth</SellerAssigned>
+					
+					</xsl:when>
+				
+					<!-- Non Esporta logic -->
+					<xsl:otherwise>
+				
+						<BuyerGLN scheme="GLN">
 							<xsl:choose>
-								<xsl:when test="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode = $SCBMoto">
-									<xsl:value-of select="$NewMotoGLN"/>
-								</xsl:when>
-								<xsl:when test="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode = $SCBSSP">
-									<xsl:value-of select="$NewSSPGLN"/>
+								<xsl:when test="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN = $OldMotoAndSSPGLN">
+									<xsl:choose>
+										<xsl:when test="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode = $SCBMoto">
+											<xsl:value-of select="$NewMotoGLN"/>
+										</xsl:when>
+										<xsl:when test="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode = $SCBSSP">
+											<xsl:value-of select="$NewSSPGLN"/>
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/>
+										</xsl:otherwise>
+									</xsl:choose>
 								</xsl:when>
 								<xsl:otherwise>
-									<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/>
+									<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/>						
 								</xsl:otherwise>
 							</xsl:choose>
-						</xsl:when>
-						<xsl:when test="substring(/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersName,1,7) = 'Esporta'">
-							<xsl:value-of select="$EsportaGLN"/>							
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/>						
-						</xsl:otherwise>
-					</xsl:choose>
-				</BuyerGLN>
+						</BuyerGLN>
+					
+						<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/BuyersCode">
+							<BuyerAssigned scheme="OTHER">
+								<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/BuyersCode"/>
+							</BuyerAssigned>
+						</xsl:if>
 			
-				<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/BuyersCode">
-					<BuyerAssigned scheme="OTHER">
-						<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/BuyersCode"/>
-					</BuyerAssigned>
-				</xsl:if>
-	
-				<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode">
-					<SellerAssigned scheme="OTHER">
-						<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
-					</SellerAssigned>
-				</xsl:if>
+						<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode">
+							<SellerAssigned scheme="OTHER">
+								<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
+							</SellerAssigned>
+						</xsl:if>
+				
+					</xsl:otherwise>
+				
+				</xsl:choose>
+				
+				
 			</Buyer>
 		
 			<!-- ~~~~~~~~~~~~~~~~~~~~~~~
 			    SELLER
 			      ~~~~~~~~~~~~~~~~~~~~~~~-->
 			<Seller>
-				<SellerGLN scheme="GLN">
-					<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN"/>
-				</SellerGLN>
 			
-				<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/SuppliersCode">
-					<SellerAssigned scheme="OTHER">
-						<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/SuppliersCode"/>
-					</SellerAssigned>
-				</xsl:if>
-	
-				<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/BuyersCode">
-					<BuyerAssigned scheme="OTHER">
-						<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/BuyersCode"/>
-					</BuyerAssigned>
-				</xsl:if>
+				
+				<xsl:choose>
+				
+					<!-- 3586 Esporta order: temporarily fix values to mimic FnB data prior to 3272 -->
+					<xsl:when test="$bEsportaOrder">
+					
+						<SellerGLN scheme="GLN">5555555555555</SellerGLN>
+					
+						<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/SuppliersCode">
+							<SellerAssigned scheme="OTHER">
+								<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/SuppliersCode"/>
+							</SellerAssigned>
+						</xsl:if>
+			
+						<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/BuyersCode">
+							<BuyerAssigned scheme="OTHER">
+								<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/BuyersCode"/>
+							</BuyerAssigned>
+						</xsl:if>
+					
+					</xsl:when>
+					
+					<xsl:otherwise>
+					
+						<SellerGLN scheme="GLN">
+							<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN"/>
+						</SellerGLN>
+					
+						<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/SuppliersCode">
+							<SellerAssigned scheme="OTHER">
+								<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/SuppliersCode"/>
+							</SellerAssigned>
+						</xsl:if>
+			
+						<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/BuyersCode">
+							<BuyerAssigned scheme="OTHER">
+								<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/BuyersCode"/>
+							</BuyerAssigned>
+						</xsl:if>
+					
+					</xsl:otherwise>
+			
+				</xsl:choose>
+			
 			</Seller>
 
 			<!-- ~~~~~~~~~~~~~~~~~~~~~~~
