@@ -127,9 +127,9 @@ Overview
 			
 			<Buyer>
 				<BuyerGLN scheme="GLN">5555555555555</BuyerGLN>			
-				<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/BuyersCode">
+				<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode">
 					<BuyerAssigned scheme="OTHER">
-						<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/BuyersCode"/>
+						<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode"/>
 					</BuyerAssigned>
 				</xsl:if>
 				<SellerAssigned scheme="OTHER">FOURTH</SellerAssigned>
