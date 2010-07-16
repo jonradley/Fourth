@@ -23,6 +23,8 @@
 ******************************************************************************************
   08/07/2010 | Sandeep Sehgal  | FB3739 CommaCharacter param changed to a variable
 ******************************************************************************************
+  16/07/2010 | Sandeep Sehgal  | FB3758 Decimal separator for Subtotals now formated as per locale
+******************************************************************************************
 -->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 	
@@ -114,27 +116,20 @@
 											<Column ID="7"></Column>
 											<Column ID="8"></Column>									
 											<Column ID="9">
-												<xsl:value-of select="sum(/Report/LineDetails/LineDetail[Columns/Column[@ID = 6] = $GRNRef]/Columns/Column[@ID = 9])"/>
+												<xsl:value-of select="script:gsFormatNumberByLocale(sum(/Report/LineDetails/LineDetail[Columns/Column[@ID = 6] = $GRNRef]/Columns/Column[@ID = 9]),2,number($LocaleID),0)"/>
 											</Column>
 											<Column ID="10">
-												<xsl:value-of select="sum(/Report/LineDetails/LineDetail[Columns/Column[@ID = 6] = $GRNRef]/Columns/Column[@ID = 10])"/>
+												<xsl:value-of select="script:gsFormatNumberByLocale(sum(/Report/LineDetails/LineDetail[Columns/Column[@ID = 6] = $GRNRef]/Columns/Column[@ID = 10]),2,number($LocaleID),0)"/>
 											</Column>
 											<Column ID="11">
-												<xsl:value-of select="sum(/Report/LineDetails/LineDetail[Columns/Column[@ID = 6] = $GRNRef]/Columns/Column[@ID = 11])"/>
+												<xsl:value-of select="script:gsFormatNumberByLocale(sum(/Report/LineDetails/LineDetail[Columns/Column[@ID = 6] = $GRNRef]/Columns/Column[@ID = 11]),2,number($LocaleID),0)"/>
 											</Column>
 										</Columns>
 									</LineDetail>				
 								</xsl:variable>
 								
 								<xsl:for-each select="msxsl:node-set($summaryLine)/LineDetail/Columns/Column">
-								<xsl:choose>
-									<xsl:when test="@DataType = 6 or @DataType=14 or @DataType=5 or @DataType=131">
-										<xsl:value-of select="script:gsFormatNumberByLocale(.,2,number($LocaleID),0)"/><xsl:value-of select="$CommaCharacter"></xsl:value-of>
-									</xsl:when>
-									<xsl:otherwise>
-										<xsl:call-template name="SelectString"><xsl:with-param name="InputString" select="script:msFormatForCSV(.)"/></xsl:call-template><xsl:value-of select="$CommaCharacter"></xsl:value-of>
-									</xsl:otherwise>
-								</xsl:choose>
+										<xsl:call-template name="SelectString"><xsl:with-param name="InputString" select="."/></xsl:call-template><xsl:value-of select="$CommaCharacter"></xsl:value-of>
 								</xsl:for-each>				
 							
 							</xsl:if>						
@@ -146,12 +141,12 @@
 				<!--Trailer Details-->
 				<xsl:if test="/Report/TrailerDetails">
 					<xsl:for-each select="/Report/TrailerDetails/TrailerDetail">
-						<xsl:value-of select="script:msFormatForCSV(Description)"/><xsl:value-of select="$CommaCharacter"></xsl:value-of><xsl:value-of select="script:gsFormatNumberByLocale(Value,2,number($LocaleID),0)"/><xsl:text>&#xD;</xsl:text>
+					<xsl:call-template name="SelectString"><xsl:with-param name="InputString" select="Description"/></xsl:call-template><xsl:value-of select="$CommaCharacter"></xsl:value-of><xsl:value-of select="script:gsFormatNumberByLocale(Value,2,number($LocaleID),0)"/><xsl:text>&#xD;</xsl:text>
 					</xsl:for-each>
 				</xsl:if>
 			</xsl:when>
 			<xsl:otherwise>
-		          	<xsl:call-template name="SelectString"><xsl:with-param name="InputString" select="script:msFormatForCSV(Report/ReportName)"/></xsl:call-template><xsl:text> - </xsl:text><xsl:value-of select="script:gsFormatDateByLocale(/Report/ReportDate,2057)"/>
+		          	<xsl:value-of select="script:msFormatForCSV(/Report/ReportName)"/><xsl:text> - </xsl:text><xsl:value-of select="script:gsFormatDateByLocale(/Report/ReportDate,2057)"/>
 				<xsl:text>&#xD;</xsl:text>
 				<xsl:text>&#xD;</xsl:text>
 				<!--Header Details-->
