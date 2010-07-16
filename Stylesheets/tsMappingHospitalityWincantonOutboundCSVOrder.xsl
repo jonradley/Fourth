@@ -213,7 +213,7 @@
 			<xsl:text>,</xsl:text>
 			
 			<!-- Quantity -->
-			<xsl:value-of select="OrderedQuantity"/>
+			<xsl:value-of select="format-number(OrderedQuantity,0)"/>
 			<xsl:text>,</xsl:text>
 			
 			<!-- Unit Price Excl VAT -->
