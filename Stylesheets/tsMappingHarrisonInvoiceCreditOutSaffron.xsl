@@ -21,6 +21,8 @@
 ******************************************************************************************
  26/02/2010	| Graham Neicho | 3383. Removed hard coded X suffix to product code for when invoice price is more than 50% different from catalogue price.
 ******************************************************************************************
+ 14/07/2010	| Andrew Barber | 3756: Send only customer head office code from RecipientsBranchReference before '#' where exists.
+ ******************************************************************************************
 
 -->
 <xsl:stylesheet version="1.0"
@@ -69,7 +71,14 @@
 		<xsl:text>,</xsl:text>
 		
 		<!-- Unit Code -->
-		<xsl:value-of select="substring(TradeSimpleHeader/RecipientsBranchReference,1,10)"/>
+		<xsl:choose>
+			<xsl:when test="contains(TradeSimpleHeader/RecipientsBranchReference,'#')">
+				<xsl:value-of select="substring(substring-before(TradeSimpleHeader/RecipientsBranchReference,'#'),1,10)"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="substring(TradeSimpleHeader/RecipientsBranchReference,1,10)"/>
+			</xsl:otherwise>
+		</xsl:choose>
 		<xsl:text>,</xsl:text>
 
 		<!-- Number of Deliveries -->

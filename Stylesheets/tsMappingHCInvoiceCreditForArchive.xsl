@@ -16,6 +16,9 @@
 ******************************************************************************************
  25/01/2007 | A Sheppard	| 755. Post-live format changes
 ******************************************************************************************
+ 14/07/2010	| Andrew Barber | 3756: Send only customer head office code from ShipTo/../BuyersCode before '#' where exists.
+ ******************************************************************************************
+ 
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -87,7 +90,14 @@
 		<xsl:text>,</xsl:text>
 		<xsl:call-template name="convertForCSV"><xsl:with-param name="stringToConvert" select="//Supplier/SuppliersAddress/PostCode"/></xsl:call-template>
 		<xsl:text>,</xsl:text>
-		<xsl:call-template name="convertForCSV"><xsl:with-param name="stringToConvert" select="//ShipTo/ShipToLocationID/BuyersCode"/></xsl:call-template>
+		<xsl:choose>
+			<xsl:when test="contains(//ShipTo/ShipToLocationID/BuyersCode,'#')">
+				<xsl:call-template name="convertForCSV"><xsl:with-param name="stringToConvert" select="substring-before(//ShipTo/ShipToLocationID/BuyersCode,'#')"/></xsl:call-template>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:call-template name="convertForCSV"><xsl:with-param name="stringToConvert" select="//ShipTo/ShipToLocationID/BuyersCode"/></xsl:call-template>
+			</xsl:otherwise>
+		</xsl:choose>
 		<xsl:text>,</xsl:text>
 		<xsl:call-template name="convertForCSV"><xsl:with-param name="stringToConvert" select="//ShipTo/ShipToName"/></xsl:call-template>
 		<xsl:text>,</xsl:text>
