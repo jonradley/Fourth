@@ -134,15 +134,15 @@
 									<!-- MANDATORY Line Total Ex VAT at rate -->
 									<DocumentTotalExclVATAtRate RecordPos="V" LPos="6"/>
 									<!-- MANDATORY Settlement Discount at rate -->
-									<SettlementDiscountAtRate RecordPos="V" LPos="7"/>
+									<!--<SettlementDiscountAtRate RecordPos="V" LPos="7"/>-->
 									<!-- MANDATORY Taxable Amount at rate -->
 									<SettlementTotalExclVATAtRate RecordPos="V" LPos="8"/>
 									<!-- MANDATORY VAT Amount at rate -->
 									<VATAmountAtRate RecordPos="V" LPos="9"/>
 									<!-- MANDATORY Total Payable Ex Settlement Discount at rate -->
-									<DocumentTotalInclVATAtRate RecordPos="V" LPos="10"/>
+									<!--<DocumentTotalInclVATAtRate RecordPos="V" LPos="10"/>-->
 									<!-- MANDATORY Total Payable Inc Settlement Discount at rate -->
-									<SettlementTotalInclVATAtRate RecordPos="V" LPos="11"/>
+									<!--<SettlementTotalInclVATAtRate RecordPos="V" LPos="11"/>-->
 									<ffsAttribute1 name="VATCode" RecordPos="V" LPos="2"/>
 									<ffsAttribute1 name="VATRate" RecordPos="V" LPos="3"/>
 								</VATSubTotal>
@@ -156,9 +156,9 @@
 							<!-- MANDATORY VAT Amount Total -->
 							<VATAmount RecordPos="H" LPos="32"/>
 							<!-- MANDATORY Total Payable Ex Settlement Discount -->
-							<DocumentTotalInclVAT RecordPos="H" LPos="33"/>
+							<!--<DocumentTotalInclVAT RecordPos="H" LPos="33"/>-->
 							<!-- MANDATORY Total Payable Inc Settlement Discount -->
-							<SettlementTotalInclVAT RecordPos="H" LPos="34"/>
+							<!--<SettlementTotalInclVAT RecordPos="H" LPos="34"/>-->
 						</InvoiceTrailer>
 					</Invoice>
 				</BatchDocument>
