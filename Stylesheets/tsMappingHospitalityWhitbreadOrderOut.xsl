@@ -28,10 +28,8 @@ M Dimant 	|   20/07/2010		| 3776 Created Module. Builds an asterisk delimited or
 		<!--ORDER HEADER-->
 		<xsl:text>000015*ORDERS***</xsl:text>
 		<xsl:value-of select="PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
-		<xsl:text>*</xsl:text>
-		<!--ConceptCode-->
-		<xsl:text>*</xsl:text>
-		<xsl:value-of select="PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate"/>
+		<xsl:text>*CC*</xsl:text>
+		<xsl:value-of select="translate(substring(PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate,3,8),'-','')"/>
 		<xsl:text>*******</xsl:text>
 		<xsl:text>&#13;&#10;</xsl:text>
 				
@@ -47,7 +45,9 @@ M Dimant 	|   20/07/2010		| 3776 Created Module. Builds an asterisk delimited or
 			<xsl:text>&#13;&#10;</xsl:text>
 			
 			<!--DELIVERY DETAIL-->
-			<xsl:text>000025*1************</xsl:text>
+			<xsl:text>000025*1*</xsl:text>
+			<xsl:value-of select="//TradeSimpleHeader/RecipientsCodeForSender"/>
+			<xsl:text>***********</xsl:text>
 			<xsl:text>&#13;&#10;</xsl:text>
 			<xsl:text>000025*2*********</xsl:text>
 			<xsl:text>&#13;&#10;</xsl:text>
@@ -66,7 +66,9 @@ M Dimant 	|   20/07/2010		| 3776 Created Module. Builds an asterisk delimited or
 		<xsl:text>&#13;&#10;</xsl:text>
 
 		<!--ENVELOPE TRAILER-->
-		<xsl:text>000050*1*1*****</xsl:text>
+		<xsl:text>000050*1*1*</xsl:text>
+		<xsl:value-of select="sum(PurchaseOrderDetail/PurchaseOrderLine/OrderedQuantity)"/>
+		<xsl:text>****</xsl:text>
 		
 	</xsl:template>
 </xsl:stylesheet>
