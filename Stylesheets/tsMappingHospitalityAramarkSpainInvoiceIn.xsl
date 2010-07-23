@@ -19,6 +19,8 @@ R Cambridge	| 2010-06-01		| 3551 Handle non-pl customers by using Supplier/@Cust
 **********************************************************************
 R Cambridge	| 2010-07-05		| 3723 Unit and line value calculations adjusted to accommodate multiple charges and discounts 
 **********************************************************************
+R Cambridge	| 2010-07-23		| 3788 if no PO date is supplied use delivery note date
+**********************************************************************
 				|						|
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" >
@@ -142,10 +144,19 @@ R Cambridge	| 2010-07-05		| 3723 Unit and line value calculations adjusted to ac
 											<PurchaseOrderReferences>
 												<xsl:for-each select="/Transaction/References/Reference/@PORef[. != ''][1]">
 													<PurchaseOrderReference><xsl:value-of select="."/></PurchaseOrderReference>
-												</xsl:for-each>
-												<xsl:for-each select="/Transaction/References/Reference/@PORefDate[. != ''][1]">
-													<PurchaseOrderDate><xsl:value-of select="."/></PurchaseOrderDate>
-												</xsl:for-each>
+												</xsl:for-each>												
+												
+												<!-- 3788 use delivery note date if no PO date provided -->
+												<xsl:choose>
+													<xsl:when test="/Transaction/References/Reference/@PORefDate != ''">
+														<PurchaseOrderDate><xsl:value-of select="/Transaction/References/Reference/@PORefDate"/></PurchaseOrderDate>
+													</xsl:when>
+													<xsl:when test="/Transaction/References/Reference/@DNRefDate != ''">
+														<PurchaseOrderDate><xsl:value-of select="/Transaction/References/Reference/@DNRefDate"/></PurchaseOrderDate>
+													</xsl:when>
+													<xsl:otherwise/>
+												</xsl:choose>
+												
 											</PurchaseOrderReferences>
 										</xsl:if>
 										
