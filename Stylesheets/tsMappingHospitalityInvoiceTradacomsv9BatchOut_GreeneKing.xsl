@@ -31,13 +31,14 @@
 	<!-- define keys (think of them a bit like database indexes) to be used for finding distinct line information.
 	     note 1) the '::' literal is simply used as a convenient separator for the 2 values that make up the second key.
 	     note 2) the extra ¬ character is needed because PO and DN references are optional. -->
-	<xsl:key name="keyLinesByPO" match="InvoiceLine" use="concat('¬',PurchaseOrderReferences/PurchaseOrderReference)"/>
-	<xsl:key name="keyLinesByPOAndDN" match="InvoiceDetail/InvoiceLine" use="concat('¬',PurchaseOrderReferences/PurchaseOrderReference,'::¬',DeliveryNoteReferences/DeliveryNoteReference)"/>
+	<xsl:key name="keyLinesByPO" match="InvoiceLine" use="concat('¬',PurchaseOrderReferences/PurchaseOrderReference,'::¬',ancestor::Invoice/InvoiceHeader/InvoiceReferences/InvoiceReference)"/>
+	<xsl:key name="keyLinesByPOAndDN" match="InvoiceLine" use="concat('¬',PurchaseOrderReferences/PurchaseOrderReference,'::¬',DeliveryNoteReferences/DeliveryNoteReference,'::¬',ancestor::Invoice/InvoiceHeader/InvoiceReferences/InvoiceReference)"/>
 	
 	<xsl:template match="/BatchRoot[Invoice]">
 
 		<xsl:variable name="sRecordSep">
-			<xsl:text>'</xsl:text>
+			<xsl:text>'
+</xsl:text>
 			<!--xsl:text>'&#13;&#10;</xsl:text-->
 		</xsl:variable>		
 		
@@ -224,11 +225,12 @@
 	
 			<!-- use the keys for grouping Lines by PO Reference and then by DN Reference -->
 			<!-- the first loop will match the first line in each set of lines grouped by PO Reference -->
-			<xsl:for-each select="InvoiceDetail/InvoiceLine[generate-id() = generate-id(key('keyLinesByPO',concat('¬',PurchaseOrderReferences/PurchaseOrderReference))[1])]">
+			<xsl:variable name="INVReference" select="InvoiceHeader/InvoiceReferences/InvoiceReference"/>
+			<xsl:for-each select="InvoiceDetail/InvoiceLine[generate-id() = generate-id(key('keyLinesByPO',concat('¬',PurchaseOrderReferences/PurchaseOrderReference,'::¬',$INVReference))[1])]">
 				<xsl:sort select="PurchaseOrderReferences/PurchaseOrderReference" data-type="text"/>
 				<xsl:variable name="POReference" select="concat('¬',PurchaseOrderReferences/PurchaseOrderReference)"/>
 				<!-- now, given we can find all lines for the current PO reference, loop through and match the first line for each unique DN reference -->
-				<xsl:for-each select="key('keyLinesByPO',$POReference)[generate-id() = generate-id(key('keyLinesByPOAndDN',concat($POReference,'::',concat('¬',DeliveryNoteReferences/DeliveryNoteReference)))[1])]">
+				<xsl:for-each select="key('keyLinesByPO',concat('¬',PurchaseOrderReferences/PurchaseOrderReference,'::¬',$INVReference))[generate-id() = generate-id(key('keyLinesByPOAndDN',concat($POReference,'::¬',DeliveryNoteReferences/DeliveryNoteReference,'::¬',$INVReference))[1])]">
 					<xsl:sort select="DeliveryNoteReferences/DeliveryNoteReference" data-type="text"/>
 					<xsl:variable name="DNReference" select="concat('¬',DeliveryNoteReferences/DeliveryNoteReference)"/>
 					
@@ -264,7 +266,7 @@
 						<xsl:value-of select="$sRecordSep"/>
 						
 						<!-- now output all the lines for the current PO reference and DN reference combination -->
-						<xsl:for-each select="key('keyLinesByPOAndDN',concat($POReference,'::',$DNReference))">
+						<xsl:for-each select="key('keyLinesByPOAndDN',concat($POReference,'::¬',DeliveryNoteReferences/DeliveryNoteReference,'::¬',$INVReference))">
 						
 							<xsl:text>ILD=</xsl:text>
 							<xsl:value-of select="$DeliveryNumber"/>
