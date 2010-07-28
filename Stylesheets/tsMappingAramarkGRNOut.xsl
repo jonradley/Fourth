@@ -24,6 +24,8 @@
 ******************************************************************************************
  18/08/2009	| Rave Tech		| 3066. TotalExclVAT value for  Field #41    
 ******************************************************************************************
+28/07/2010	| Sandeep Sehgal		| 3792. Now handles Invoices and Crediot Notes also  
+******************************************************************************************
 
 -->
 <xsl:stylesheet version="1.0"
@@ -133,6 +135,226 @@
 			<xsl:value-of select="script:msPad('', 15)"/>
 			<xsl:value-of select="script:msPad('', 1)"/>
 			<xsl:value-of select="script:msPad(LineExtraData/PurchaseCategoryCode, 10)"/>
+			<xsl:value-of select="script:msPad('', 15)"/>
+			<xsl:value-of select="script:msPad('', 20)"/>
+			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
+			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
+			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
+			<xsl:value-of select="script:msPad('', 15)"/>
+			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
+			<xsl:value-of select="script:msPad('', 15)"/>
+			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
+			<xsl:value-of select="script:msPad('', 15)"/>
+			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
+			<xsl:value-of select="script:msPad('', 15)"/>
+			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
+			<xsl:value-of select="script:msPad('', 15)"/>
+			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
+			<xsl:value-of select="script:msPad('', 15)"/>
+			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
+			<xsl:value-of select="script:msPad('', 20)"/>
+		</xsl:for-each>
+
+		<xsl:for-each select="//InvoiceLine">
+			<xsl:if test="script:mbIsNotFirstLine()">
+				<xsl:text>&#13;&#10;</xsl:text>
+			</xsl:if>
+			<xsl:text>3</xsl:text>
+			<xsl:value-of select="script:msPad(/Invoice/InvoiceHeader/Supplier/SuppliersName, 40)"/>
+			<xsl:value-of select="script:msPad(/Invoice/InvoiceHeader/Supplier/SuppliersName, 40)"/>
+			<xsl:value-of select="script:msPad(translate(/Invoice/InvoiceHeader/ShipTo/ShipToLocationID/SuppliersCode,'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 10)"/>
+			<xsl:value-of select="script:msPad(/Invoice/InvoiceHeader/ShipTo/ShipToName, 40)"/>
+			<xsl:value-of select="script:msPad(/Invoice/InvoiceHeader/ShipTo/ShipToAddress/AddressLine1, 40)"/>
+			<xsl:value-of select="script:msPad(/Invoice/InvoiceHeader/ShipTo/ShipToAddress/AddressLine2, 40)"/>
+			<xsl:value-of select="script:msPad(/Invoice/InvoiceHeader/ShipTo/ShipToAddress/AddressLine4, 30)"/>
+			<xsl:value-of select="script:msPad('', 2)"/>
+			<xsl:value-of select="script:msPad(/Invoice/InvoiceHeader/ShipTo/ShipToAddress/PostCode, 10)"/>
+			<xsl:value-of select="script:msPad('', 30)"/>
+			<xsl:value-of select="script:msPad('United Kingdom', 30)"/>
+			<xsl:value-of select="script:msPadNumber(/Invoice/InvoiceHeader/InvoiceReferences/InvoiceReference, 15, 0)"/>		
+			<xsl:value-of select="/Invoice/InvoiceHeader/InvoiceReferences/InvoiceDate"/>
+			<xsl:value-of select="script:msPad(ProductID/SuppliersProductCode, 20)"/>
+			<xsl:value-of select="script:msPad(InvoicedQuantity/@UnitOfMeasure, 10)"/>
+			<xsl:value-of select="script:msPadNumber(0, 9, 0)"/>
+			<xsl:value-of select="script:msPad(PackSize, 15)"/>
+			<xsl:value-of select="script:msPadNumber(InvoicedQuantity* (1 - 2 * (InvoicedQuantity&lt; 0)), 7, 2)"/>
+			<xsl:value-of select="script:msPadNumber(UnitValueExclVAT * (1 - 2 * (UnitValueExclVAT &lt; 0)), 10, 4)"/>
+			<xsl:value-of select="script:msPadNumber(LineValueExclVAT * (1 - 2 * (LineValueExclVAT &lt; 0)), 9, 2)"/>
+			<xsl:value-of select="script:msPad(LineExtraData/Manufacturer, 40)"/>
+			<xsl:value-of select="script:msPad(LineExtraData/Brand, 40)"/>
+			<xsl:value-of select="script:msPad('', 20)"/>
+		  	<xsl:choose>
+				<xsl:when test="ProductID/GTIN and ProductID/GTIN != '55555555555555' and Product/GTIN != '0000000000000'">
+					<xsl:value-of select="script:msPad(ProductID/GTIN, 15)"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="script:msPad('', 15)"/>
+				</xsl:otherwise>
+			</xsl:choose>
+			<xsl:value-of select="script:msPad(ProductDescription, 75)"/>
+			<xsl:value-of select="script:msPad('', 1)"/>
+			<xsl:value-of select="script:msPad('', 15)"/>
+			<xsl:value-of select="script:msPad('', 1)"/>
+			<xsl:value-of select="script:msPad('N', 1)"/>
+			<xsl:choose>
+				<xsl:when test="LineValueExclVAT &lt; 0">
+					<xsl:value-of select="script:msPad('Y', 1)"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="script:msPad('N', 1)"/>
+				</xsl:otherwise>
+			</xsl:choose>
+			<xsl:value-of select="script:msPad('', 40)"/>
+			<xsl:value-of select="script:msGetCurrentDate()"/>
+			<xsl:value-of select="script:msPad('', 15)"/>
+			<xsl:value-of select="script:msPad('', 15)"/>
+			<xsl:value-of select="script:msPad('', 40)"/>
+			<xsl:value-of select="script:msPad('', 15)"/>
+			<xsl:value-of select="script:msPad('', 40)"/>
+			<xsl:value-of select="script:msPad(PurchaseOrderReferences/PurchaseOrderReference, 22)"/>
+			<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderDate"/>
+			<xsl:value-of select="script:msPadNumber(/Invoice/InvoiceTrailer/DocumentTotalExclVAT, 12, 2)"/>
+			<xsl:value-of select="script:msPad('', 3)"/>
+			<xsl:value-of select="DeliveryNoteReferences/DeliveryNoteDate"/>
+			<xsl:variable name="PaddedPLAccountNumber">
+				<xsl:value-of select="script:msAddPaddingPrefix(/Invoice/InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode, 7, '0')" />
+			</xsl:variable>
+			<xsl:value-of select="script:msPad(concat('019', $PaddedPLAccountNumber), 20)"/>
+			<xsl:value-of select="script:msPad(concat('019', $PaddedPLAccountNumber), 20)"/>
+			<xsl:value-of select="script:msPad('', 30)"/>
+			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
+			<xsl:value-of select="script:msPad('', 35)"/>
+			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
+			<xsl:value-of select="script:msPad('', 35)"/>
+			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
+			<xsl:value-of select="script:msPad('', 35)"/>
+			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
+			<xsl:value-of select="script:msPad('', 35)"/>
+			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
+			<xsl:value-of select="script:msPad('', 35)"/>
+			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
+			<xsl:value-of select="script:msPad('', 35)"/>
+			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
+			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
+			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
+			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
+			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
+			<xsl:value-of select="script:msPad('', 1)"/>
+			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
+			<xsl:value-of select="script:msPadNumber(LineNumber, 6, 0)"/>
+			<xsl:value-of select="script:msPad('', 15)"/>
+			<xsl:value-of select="script:msPad('', 1)"/>
+			<xsl:value-of select="script:msPad('', 10)"/>
+			<xsl:value-of select="script:msPad('', 15)"/>
+			<xsl:value-of select="script:msPad('', 20)"/>
+			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
+			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
+			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
+			<xsl:value-of select="script:msPad('', 15)"/>
+			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
+			<xsl:value-of select="script:msPad('', 15)"/>
+			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
+			<xsl:value-of select="script:msPad('', 15)"/>
+			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
+			<xsl:value-of select="script:msPad('', 15)"/>
+			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
+			<xsl:value-of select="script:msPad('', 15)"/>
+			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
+			<xsl:value-of select="script:msPad('', 15)"/>
+			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
+			<xsl:value-of select="script:msPad('', 20)"/>
+		</xsl:for-each>
+		
+		<xsl:for-each select="//CreditNoteLine">
+			<xsl:if test="script:mbIsNotFirstLine()">
+				<xsl:text>&#13;&#10;</xsl:text>
+			</xsl:if>
+			<xsl:text>3</xsl:text>
+			<xsl:value-of select="script:msPad(/CreditNote/CreditNoteHeader/Supplier/SuppliersName, 40)"/>
+			<xsl:value-of select="script:msPad(/CreditNote/CreditNoteHeader/Supplier/SuppliersName, 40)"/>
+			<xsl:value-of select="script:msPad(translate(/CreditNote/CreditNoteHeader/ShipTo/ShipToLocationID/SuppliersCode,'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 10)"/>
+			<xsl:value-of select="script:msPad(/CreditNote/CreditNoteHeader/ShipTo/ShipToName, 40)"/>
+			<xsl:value-of select="script:msPad(/CreditNote/CreditNoteHeader/ShipTo/ShipToAddress/AddressLine1, 40)"/>
+			<xsl:value-of select="script:msPad(/CreditNote/CreditNoteHeader/ShipTo/ShipToAddress/AddressLine2, 40)"/>
+			<xsl:value-of select="script:msPad(/CreditNote/CreditNoteHeader/ShipTo/ShipToAddress/AddressLine4, 30)"/>
+			<xsl:value-of select="script:msPad('', 2)"/>
+			<xsl:value-of select="script:msPad(/CreditNote/CreditNoteHeader/ShipTo/ShipToAddress/PostCode, 10)"/>
+			<xsl:value-of select="script:msPad('', 30)"/>
+			<xsl:value-of select="script:msPad('United Kingdom', 30)"/>
+			<xsl:value-of select="script:msPadNumber(/CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteReference, 15, 0)"/>		
+			<xsl:value-of select="/CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteDate"/>
+			<xsl:value-of select="script:msPad(ProductID/SuppliersProductCode, 20)"/>
+			<xsl:value-of select="script:msPad(CreditedQuantity/@UnitOfMeasure, 10)"/>
+			<xsl:value-of select="script:msPadNumber(0, 9, 0)"/>
+			<xsl:value-of select="script:msPad(PackSize, 15)"/>
+			<xsl:value-of select="script:msPadNumber(CreditedQuantity* (1 - 2 * (CreditedQuantity&lt; 0)), 7, 2)"/>
+			<xsl:value-of select="script:msPadNumber(UnitValueExclVAT * (1 - 2 * (UnitValueExclVAT &lt; 0)), 10, 4)"/>
+			<xsl:value-of select="script:msPadNumber(LineValueExclVAT * (1 - 2 * (LineValueExclVAT &lt; 0)), 9, 2)"/>
+			<xsl:value-of select="script:msPad(LineExtraData/Manufacturer, 40)"/>
+			<xsl:value-of select="script:msPad(LineExtraData/Brand, 40)"/>
+			<xsl:value-of select="script:msPad('', 20)"/>
+		  	<xsl:choose>
+				<xsl:when test="ProductID/GTIN and ProductID/GTIN != '55555555555555' and Product/GTIN != '0000000000000'">
+					<xsl:value-of select="script:msPad(ProductID/GTIN, 15)"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="script:msPad('', 15)"/>
+				</xsl:otherwise>
+			</xsl:choose>
+			<xsl:value-of select="script:msPad(ProductDescription, 75)"/>
+			<xsl:value-of select="script:msPad('', 1)"/>
+			<xsl:value-of select="script:msPad('', 15)"/>
+			<xsl:value-of select="script:msPad('', 1)"/>
+			<xsl:value-of select="script:msPad('N', 1)"/>
+			<xsl:choose>
+				<xsl:when test="LineValueExclVAT &lt; 0">
+					<xsl:value-of select="script:msPad('N', 1)"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="script:msPad('Y', 1)"/>
+				</xsl:otherwise>
+			</xsl:choose>
+			<xsl:value-of select="script:msPad('', 40)"/>
+			<xsl:value-of select="script:msGetCurrentDate()"/>
+			<xsl:value-of select="script:msPad('', 15)"/>
+			<xsl:value-of select="script:msPad('', 15)"/>
+			<xsl:value-of select="script:msPad('', 40)"/>
+			<xsl:value-of select="script:msPad('', 15)"/>
+			<xsl:value-of select="script:msPad('', 40)"/>
+			<xsl:value-of select="script:msPad(PurchaseOrderReferences/PurchaseOrderReference, 22)"/>
+			<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderDate"/>
+			<xsl:value-of select="script:msPadNumber(/CreditNote/CreditNoteTrailer/DocumentTotalExclVAT, 12, 2)"/>
+			<xsl:value-of select="script:msPad('', 3)"/>
+			<xsl:value-of select="DeliveryNoteReferences/DeliveryNoteDate"/>
+			<xsl:variable name="PaddedPLAccountNumber">
+				<xsl:value-of select="script:msAddPaddingPrefix(/CreditNote/CreditNoteHeader/Supplier/SuppliersLocationID/BuyersCode, 7, '0')" />
+			</xsl:variable>
+			<xsl:value-of select="script:msPad(concat('019', $PaddedPLAccountNumber), 20)"/>
+			<xsl:value-of select="script:msPad(concat('019', $PaddedPLAccountNumber), 20)"/>
+			<xsl:value-of select="script:msPad('', 30)"/>
+			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
+			<xsl:value-of select="script:msPad('', 35)"/>
+			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
+			<xsl:value-of select="script:msPad('', 35)"/>
+			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
+			<xsl:value-of select="script:msPad('', 35)"/>
+			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
+			<xsl:value-of select="script:msPad('', 35)"/>
+			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
+			<xsl:value-of select="script:msPad('', 35)"/>
+			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
+			<xsl:value-of select="script:msPad('', 35)"/>
+			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
+			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
+			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
+			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
+			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
+			<xsl:value-of select="script:msPad('', 1)"/>
+			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
+			<xsl:value-of select="script:msPadNumber(LineNumber, 6, 0)"/>
+			<xsl:value-of select="script:msPad('', 15)"/>
+			<xsl:value-of select="script:msPad('', 1)"/>
+			<xsl:value-of select="script:msPad('', 10)"/>
 			<xsl:value-of select="script:msPad('', 15)"/>
 			<xsl:value-of select="script:msPad('', 20)"/>
 			<xsl:value-of select="script:msPadNumber(0, 12, 0)"/>
