@@ -26,6 +26,8 @@
 ******************************************************************************************
 28/07/2010	| Sandeep Sehgal		| 3792. Now handles Invoices and Crediot Notes also  
 ******************************************************************************************
+28/07/2010	| Sandeep Sehgal		| 3792. Document Total Invoice mapping corrected for Invoice/Credit Note
+******************************************************************************************
 
 -->
 <xsl:stylesheet version="1.0"
@@ -213,7 +215,7 @@
 			<xsl:value-of select="script:msPad('', 40)"/>
 			<xsl:value-of select="script:msPad(PurchaseOrderReferences/PurchaseOrderReference, 22)"/>
 			<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderDate"/>
-			<xsl:value-of select="script:msPadNumber(/Invoice/InvoiceTrailer/DocumentTotalExclVAT, 12, 2)"/>
+			<xsl:value-of select="script:msPadNumber(/Invoice/InvoiceTrailer/SettlementTotalExclVAT, 12, 2)"/>
 			<xsl:value-of select="script:msPad('', 3)"/>
 			<xsl:value-of select="DeliveryNoteReferences/DeliveryNoteDate"/>
 			<xsl:variable name="PaddedPLAccountNumber">
@@ -323,7 +325,7 @@
 			<xsl:value-of select="script:msPad('', 40)"/>
 			<xsl:value-of select="script:msPad(PurchaseOrderReferences/PurchaseOrderReference, 22)"/>
 			<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderDate"/>
-			<xsl:value-of select="script:msPadNumber(/CreditNote/CreditNoteTrailer/DocumentTotalExclVAT, 12, 2)"/>
+			<xsl:value-of select="script:msPadNumber(/CreditNote/CreditNoteTrailer/SettlementTotalExclVAT, 12, 2)"/>
 			<xsl:value-of select="script:msPad('', 3)"/>
 			<xsl:value-of select="DeliveryNoteReferences/DeliveryNoteDate"/>
 			<xsl:variable name="PaddedPLAccountNumber">
