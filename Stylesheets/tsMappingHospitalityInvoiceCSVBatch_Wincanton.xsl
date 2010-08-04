@@ -29,6 +29,30 @@
 				<xsl:value-of select="format-number(((.) div 100),'0.00')"/>
 		</xsl:copy>
 	</xsl:template>
+	
+	<xsl:template match="InvoiceDetail/InvoiceLine/InvoicedQuantity">
+		<xsl:copy>
+				<xsl:value-of select="format-number((.),'0.00')"/>
+		</xsl:copy>
+	</xsl:template>
+	
+	<xsl:template match="InvoiceTrailer/NumberOfLines">
+		<xsl:copy>
+				<xsl:value-of select="format-number((.),'0')"/>
+		</xsl:copy>
+	</xsl:template>
+	
+	<xsl:template match="InvoiceTrailer/NumberOfItems">
+		<xsl:copy>
+				<xsl:value-of select="format-number((.),'0.00')"/>
+		</xsl:copy>
+	</xsl:template>
+	
+	<xsl:template match="InvoiceTrailer/NumberOfDeliveries">
+		<xsl:copy>
+				<xsl:value-of select="format-number((.),'0')"/>
+		</xsl:copy>
+	</xsl:template>
 
 	<xsl:template match="InvoiceTrailer/DocumentTotalExclVAT">
 		<xsl:copy>
@@ -48,6 +72,18 @@
 		</xsl:copy>
 	</xsl:template>
 	
+	<xsl:template match="InvoiceTrailer/VATSubTotals/VATSubTotal/NumberOfLinesAtRate">
+		<xsl:copy>
+				<xsl:value-of select="format-number((.),'0')"/>
+		</xsl:copy>
+	</xsl:template>
+	
+	<xsl:template match="InvoiceTrailer/VATSubTotals/VATSubTotal/NumberOfItemsAtRate">
+		<xsl:copy>
+				<xsl:value-of select="format-number((.),'0.00')"/>
+		</xsl:copy>
+	</xsl:template>
+
 	<xsl:template match="InvoiceTrailer/VATSubTotals/VATSubTotal/DocumentTotalExclVATAtRate">
 		<xsl:copy>
 				<xsl:value-of select="format-number(((.) div 100),'0.00')"/>
