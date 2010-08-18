@@ -50,8 +50,14 @@ Overview
 			<UnitValueExclVAT><xsl:value-of select="format-number(LineValueExclVAT div InvoicedQuantity,'0.00')"/></UnitValueExclVAT>
 			
 			<xsl:apply-templates select="LineValueExclVAT"/>
-			<xsl:apply-templates select="VATCode"/>
-			<xsl:apply-templates select="VATRate"/>		
+			<!--<xsl:apply-templates select="VATCode"/>-->
+			<xsl:element name="VATCode">
+				<xsl:text>S</xsl:text>
+			</xsl:element>
+			<!--<xsl:apply-templates select="VATRate"/>-->
+			<xsl:element name="VATRate">
+				<xsl:text>17.5</xsl:text>
+			</xsl:element>
 
 		</InvoiceLine>
 		
