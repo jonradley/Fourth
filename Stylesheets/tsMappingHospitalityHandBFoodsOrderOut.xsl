@@ -43,7 +43,7 @@ R Cambridge	| 2010-08-02		| 3796 Created Module
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
 		
 		<xsl:call-template name="padRight">
-			<xsl:with-param name="inputText" select="/PurchaseOrder/TradeSimpleHeader/SendersCodeForRecipient"/>
+			<xsl:with-param name="inputText" select="/PurchaseOrder/TradeSimpleHeader/RecipientsCodeForSender"/>
 			<xsl:with-param name="fieldSize" select="20"/>
 		</xsl:call-template>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
@@ -132,7 +132,7 @@ R Cambridge	| 2010-08-02		| 3796 Created Module
 		<xsl:text xml:space="preserve">              </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
 		
-		<xsl:text xml:space="preserve">               </xsl:text>
+		<xsl:text xml:space="preserve">TRADESIMPLE    </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
 		
 		<xsl:text xml:space="preserve">               </xsl:text>
@@ -221,6 +221,14 @@ R Cambridge	| 2010-08-02		| 3796 Created Module
 	
 	<xsl:template name="writePOLine">
 	
+		<xsl:variable name="sUoM">
+			<xsl:choose>
+				<xsl:when test="OrderedQuantity/@UnitOfMeasure = 'EA'">E</xsl:when>
+				<xsl:when test="OrderedQuantity/@UnitOfMeasure = 'CS'">E</xsl:when>
+				<xsl:when test="OrderedQuantity/@UnitOfMeasure = 'KGM'">K</xsl:when>
+			</xsl:choose>
+		</xsl:variable>
+	
 		<xsl:text xml:space="preserve">OLD</xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
 		
@@ -243,14 +251,7 @@ R Cambridge	| 2010-08-02		| 3796 Created Module
 		
 		<!--xsl:text xml:space="preserve">E              </xsl:text-->
 		<xsl:call-template name="padRight">
-			<xsl:with-param name="inputText" >
-				<xsl:choose>
-					<!-- Codes TBC -->
-					<xsl:when test="EA">E</xsl:when>
-					<xsl:when test="CS">C</xsl:when>
-					<xsl:when test="KGM">KG</xsl:when>
-				</xsl:choose>			
-			</xsl:with-param>
+			<xsl:with-param name="inputText" select="$sUoM"/>
 			<xsl:with-param name="fieldSize" select="15"/>
 		</xsl:call-template>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
@@ -327,7 +328,7 @@ R Cambridge	| 2010-08-02		| 3796 Created Module
 		<xsl:text xml:space="preserve"> </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
 		
-		<xsl:text xml:space="preserve">                    </xsl:text>
+		<xsl:text xml:space="preserve">TRADESIMPLE         </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
 		
 		<xsl:text xml:space="preserve">                    </xsl:text>
@@ -364,8 +365,16 @@ R Cambridge	| 2010-08-02		| 3796 Created Module
 		<xsl:text xml:space="preserve">                  </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
 		
-		<xsl:text xml:space="preserve">                  </xsl:text>
-		
+		<xsl:call-template name="padLeft">
+			<xsl:with-param name="inputText">
+				<xsl:choose>
+					<xsl:when test="$sUoM = 'K'"><xsl:value-of select="format-number(OrderedQuantity,'0.00')"/></xsl:when>
+					<xsl:otherwise> </xsl:otherwise>
+				</xsl:choose>
+			</xsl:with-param>
+			<xsl:with-param name="fieldSize" select="18"/>
+		</xsl:call-template>
+		<xsl:value-of select="$FIELD_SEPERATOR"/>
 		
 		<xsl:value-of select="$RECORD_SEPERATOR"/>
 
@@ -380,6 +389,8 @@ R Cambridge	| 2010-08-02		| 3796 Created Module
 		
 		<xsl:text xml:space="preserve">                  </xsl:text>
 		
+
+		<xsl:value-of select="$RECORD_SEPERATOR"/>
 		
 	</xsl:template>
 
