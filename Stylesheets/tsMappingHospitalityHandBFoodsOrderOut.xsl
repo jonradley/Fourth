@@ -374,7 +374,7 @@ R Cambridge	| 2010-08-02		| 3796 Created Module
 			</xsl:with-param>
 			<xsl:with-param name="fieldSize" select="18"/>
 		</xsl:call-template>
-		<xsl:value-of select="$FIELD_SEPERATOR"/>
+		
 		
 		<xsl:value-of select="$RECORD_SEPERATOR"/>
 
