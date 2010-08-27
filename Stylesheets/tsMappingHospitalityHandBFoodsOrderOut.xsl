@@ -259,10 +259,11 @@ R Cambridge	| 2010-08-02		| 3796 Created Module
 		<xsl:text xml:space="preserve">                  </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
 		
-		<xsl:call-template name="padLeft">
+		<!--xsl:call-template name="padLeft">
 			<xsl:with-param name="inputText" select="format-number(UnitValueExclVAT,'0.00')"/>
 			<xsl:with-param name="fieldSize" select="18"/>
-		</xsl:call-template>
+		</xsl:call-template-->
+		<xsl:text xml:space="preserve">                  </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
 		
 		<xsl:text xml:space="preserve">                  </xsl:text>
