@@ -28,7 +28,8 @@
 ******************************************************************************************
 28/07/2010	| Sandeep Sehgal		| 3792. Document Total Invoice mapping corrected for Invoice/Credit Note
 ******************************************************************************************
-
+24/09/2010	| Sandeep Sehgal		| 3792. If PO/DN date are missing for Inv/CN then replace with Inv/CN date
+******************************************************************************************
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -214,10 +215,17 @@
 			<xsl:value-of select="script:msPad('', 15)"/>
 			<xsl:value-of select="script:msPad('', 40)"/>
 			<xsl:value-of select="script:msPad(PurchaseOrderReferences/PurchaseOrderReference, 22)"/>
-			<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderDate"/>
+			<xsl:choose>		
+				<xsl:when test="PurchaseOrderReferences/PurchaseOrderDate"><xsl:value-of select="PurchaseOrderReferences/PurchaseOrderDate"/></xsl:when>
+				<xsl:otherwise><xsl:value-of select="/Invoice/InvoiceHeader/InvoiceReferences/InvoiceDate"/></xsl:otherwise>
+			</xsl:choose>
+
 			<xsl:value-of select="script:msPadNumber(/Invoice/InvoiceTrailer/SettlementTotalExclVAT, 12, 2)"/>
 			<xsl:value-of select="script:msPad('', 3)"/>
-			<xsl:value-of select="DeliveryNoteReferences/DeliveryNoteDate"/>
+			<xsl:choose>		
+				<xsl:when test="DeliveryNoteReferences/DeliveryNoteDate"><xsl:value-of select="DeliveryNoteReferences/DeliveryNoteDate"/></xsl:when>
+				<xsl:otherwise><xsl:value-of select="/Invoice/InvoiceHeader/InvoiceReferences/InvoiceDate"/></xsl:otherwise>
+			</xsl:choose>
 			<xsl:variable name="PaddedPLAccountNumber">
 				<xsl:value-of select="script:msAddPaddingPrefix(/Invoice/InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode, 7, '0')" />
 			</xsl:variable>
@@ -324,10 +332,16 @@
 			<xsl:value-of select="script:msPad('', 15)"/>
 			<xsl:value-of select="script:msPad('', 40)"/>
 			<xsl:value-of select="script:msPad(PurchaseOrderReferences/PurchaseOrderReference, 22)"/>
-			<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderDate"/>
+			<xsl:choose>		
+				<xsl:when test="PurchaseOrderReferences/PurchaseOrderDate"><xsl:value-of select="PurchaseOrderReferences/PurchaseOrderDate"/></xsl:when>
+				<xsl:otherwise><xsl:value-of select="/CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteDate"/></xsl:otherwise>
+			</xsl:choose>
 			<xsl:value-of select="script:msPadNumber(/CreditNote/CreditNoteTrailer/SettlementTotalExclVAT, 12, 2)"/>
 			<xsl:value-of select="script:msPad('', 3)"/>
-			<xsl:value-of select="DeliveryNoteReferences/DeliveryNoteDate"/>
+			<xsl:choose>		
+				<xsl:when test="DeliveryNoteReferences/DeliveryNoteDate"><xsl:value-of select="DeliveryNoteReferences/DeliveryNoteDate"/></xsl:when>
+				<xsl:otherwise><xsl:value-of select="/CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteDate"/></xsl:otherwise>
+			</xsl:choose>
 			<xsl:variable name="PaddedPLAccountNumber">
 				<xsl:value-of select="script:msAddPaddingPrefix(/CreditNote/CreditNoteHeader/Supplier/SuppliersLocationID/BuyersCode, 7, '0')" />
 			</xsl:variable>
