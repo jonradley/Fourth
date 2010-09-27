@@ -18,6 +18,8 @@
 '******************************************************************************************
 ' 14/06/2010	| Andrew Barber	| Amendments made for Wincanton. 
 '******************************************************************************************
+' 27/09/2010| Andrew Barver	| 3901 Corrected delivery address line 2 test.
+'******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
                               xmlns:fo="http://www.w3.org/1999/XSL/Format"
@@ -117,7 +119,7 @@
 			<xsl:text>"</xsl:text>
 		</xsl:if>
 		<xsl:value-of select="user:msEscapeQuotes(substring(PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine2,1,40))"/>
-		<xsl:if test="contains(user:msEscapeQuotes(substring(PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine1,2,40)),',')">
+		<xsl:if test="contains(user:msEscapeQuotes(substring(PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine2,2,40)),',')">
 			<xsl:text>"</xsl:text>
 		</xsl:if>
 		<xsl:text>,</xsl:text>
