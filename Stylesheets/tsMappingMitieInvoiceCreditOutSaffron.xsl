@@ -27,6 +27,8 @@
 ******************************************************************************************
  26/02/2010	| Graham Neicho | 3383. Removed hard coded X suffix to product code for when invoice price is more than 50% different from catalogue price.
 ******************************************************************************************
+27/09/2010 | Andrew Barber | 3900 Always pass credit note reference as delivery note reference for credit. Pass valid DN ref on invoice if present.
+******************************************************************************************
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -281,7 +283,7 @@
 
 			<!-- The delivery note reference is mandatory in Saffron. It is optional in our internal schema. If it is missing then send the document reference -->
 			<xsl:choose>
-				<xsl:when test="DeliveryNoteReferences/DeliveryNoteReference != ''">
+				<xsl:when test="/BatchRoot/Invoice/InvoiceDetail/InvoiceLine/DeliveryNoteReferences/DeliveryNoteReference != ''">
 					<xsl:value-of select="substring(DeliveryNoteReferences/DeliveryNoteReference,1,20)"/>
 				</xsl:when>
 				<xsl:otherwise>
