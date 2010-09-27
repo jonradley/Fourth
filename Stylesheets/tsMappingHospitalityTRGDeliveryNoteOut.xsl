@@ -22,7 +22,7 @@
 ==========================================================================================
 15/01/2010	| Rave Tech  		| 3329 Populate the description field with a <Supplier Name> - <Supplier PO Number>.
 ==========================================================================================
-           	|                 	|
+27/09/2010 	| Andrew Barber      	| 3898 Fix delivery date timestamps to 23:59:59.
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl">
 	<xsl:output method="xml" encoding="UTF-8"/>
@@ -64,7 +64,7 @@
 			</xsl:attribute>
 			<xsl:attribute name="TargetDeliveryDate">
 				<xsl:value-of select="DeliveryNoteHeader/DeliveredDeliveryDetails/DeliveryDate"/>
-				<xsl:text>T00:00:00</xsl:text>
+				<xsl:text>T23:59:59</xsl:text>
 			</xsl:attribute>
 			
 			<xsl:attribute name="SupplierId">
@@ -82,7 +82,7 @@
 			</xsl:attribute>
 			
 			<xsl:attribute name="DeliveryDateTime">
-				<xsl:value-of select="concat(/DeliveryNote/DeliveryNoteHeader/DeliveredDeliveryDetails/DeliveryDate,'T00:00:00')"/>
+				<xsl:value-of select="concat(/DeliveryNote/DeliveryNoteHeader/DeliveredDeliveryDetails/DeliveryDate,'T23:59:59')"/>
 			</xsl:attribute>
 			
 			<xsl:attribute name="LocationGuid">
