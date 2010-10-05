@@ -7,6 +7,8 @@ Date       | Name        | Change
 **********************************************************************
 17/03/2006 | Lee Boyton  | H574. Copied from tsHospitalityConfirmationTradacoms.xml
 **********************************************************************
+05/10/2010 | R Cambridge | FB3924  Line status code / narrative to be read from DNB - GNAR(2)
+**********************************************************************
            |				  |
 **********************************************************************
 -->
@@ -163,8 +165,9 @@ Date       | Name        | Change
 					<ConfirmedQuantity RecordPos="OLD=" LPos="6" SFPos="1"/>
 					<!-- OPTIONAL unit price, OPTIONAL ORDERS - OLD - OUCT -->
 					<UnitValueExclVAT RecordPos="OLD=" LPos="7" SFPos="1"/>
-					<!-- SN specific MANDATORY line action for confirmation line, OPTIONAL ORDERS - DNB - GNAR(1) -->
-					<Narrative RecordPos="DNB=" LPos="5" SFPos="1"/>
+					<!-- Narrative now read from DNB - GNAR(2) -->
+					<!-- SN specific MANDATORY line action for confirmation line, OPTIONAL ORDERS - DNB - GNAR(2) -->
+					<Narrative RecordPos="DNB=" LPos="5" SFPos="2"/>
 				</PurchaseOrderConfirmationLine>
 			</PurchaseOrderConfirmationDetail>
 		</PurchaseOrderConfirmation>
