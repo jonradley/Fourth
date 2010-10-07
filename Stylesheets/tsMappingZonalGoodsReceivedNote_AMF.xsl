@@ -72,15 +72,19 @@ and tsMappingZonalGoodsReceivedNote_Fullers.xsl
 				 -->
 				
 				<xsl:choose>
-			     <xsl:when test="contains(/GoodsReceivedNote/TradeSimpleHeader/SendersCodeForRecipient,'/-')">			      
-			         <xsl:value-of select="substring-before(/GoodsReceivedNote/TradeSimpleHeader/SendersCodeForRecipient,'/-')"/>			     
-			     </xsl:when>
-			     <xsl:when test="contains(/GoodsReceivedNote/TradeSimpleHeader/SendersCodeForRecipient,'-')">			      
-			         <xsl:value-of select="substring-before(/GoodsReceivedNote/TradeSimpleHeader/SendersCodeForRecipient,'-')"/>			     
-			     </xsl:when>
-			     <xsl:otherwise>
-			        <xsl:value-of select="/GoodsReceivedNote/TradeSimpleHeader/SendersCodeForRecipient"/>
-			     </xsl:otherwise>
+				
+					<xsl:when test="/GoodsReceivedNote/TradeSimpleHeader/SendersCodeForRecipient = 'THR001/d'">THR001/c</xsl:when>
+					<xsl:when test="/GoodsReceivedNote/TradeSimpleHeader/SendersCodeForRecipient = 'THR001/e'">THR001</xsl:when>
+					
+					<xsl:when test="contains(/GoodsReceivedNote/TradeSimpleHeader/SendersCodeForRecipient,'/-')">			      
+						<xsl:value-of select="substring-before(/GoodsReceivedNote/TradeSimpleHeader/SendersCodeForRecipient,'/-')"/>			     
+					</xsl:when>
+					<xsl:when test="contains(/GoodsReceivedNote/TradeSimpleHeader/SendersCodeForRecipient,'-')">			      
+						<xsl:value-of select="substring-before(/GoodsReceivedNote/TradeSimpleHeader/SendersCodeForRecipient,'-')"/>			     
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="/GoodsReceivedNote/TradeSimpleHeader/SendersCodeForRecipient"/>
+					</xsl:otherwise>
 				</xsl:choose>
 				
 			</xsl:attribute>
