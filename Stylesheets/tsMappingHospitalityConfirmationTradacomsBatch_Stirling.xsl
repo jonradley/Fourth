@@ -59,7 +59,7 @@ H Mahbub	|	2010-05-17		| Created file
 							<xsl:when test="SendersBranchReference = 'TES15T'">TES15T</xsl:when>					
 							<xsl:when test="SendersBranchReference = 'TES25T'">TES25T</xsl:when-->	
 					
-						<xsl:when test="$CustomerFlag = $COMPASS or $CustomerFlag = $TESCO or $CustomerFlag = $BEACON_PURCHASING">
+						<xsl:when test="$CustomerFlag = $COMPASS or $CustomerFlag = $TESCO or $CustomerFlag = $BEACON_PURCHASING ">
 						<xsl:value-of select="/PurchaseOrderConfirmation/TradeSimpleHeader/SendersBranchReference"/>
 						</xsl:when>			
 									
