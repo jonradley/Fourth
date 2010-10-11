@@ -12,27 +12,84 @@ R Cambridge	| 29/10/2007	| 1556 Create module
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="xml" encoding="utf-8"/>
-
-	<xsl:template match="/">
-
-		<BatchRoot>
 	
-			<Batch>
-				
-				<BatchDocuments>
-				
-				
+	<!-- The structure of the interal XML varries depending on who the customer is -->
+	
+	<!-- All documents in the batch will be for the same customer/agreement -->	
+	<xsl:variable name="COMPASS" select="'COMPASS'"/>
+	<xsl:variable name="TESCO" select="'TESCO'"/>
+	<xsl:variable name="ARAMARK" select="'ARAMARK'"/>
+	<xsl:variable name="BEACON_PURCHASING" select="'BEACON_PURCHASING'"/>
+	<xsl:variable name="SSP" select="'SSP'"/>
+	
+	<xsl:variable name="CustomerFlag">
+		<xsl:variable name="accountCode" select="string(//DeliveryNote/TradeSimpleHeader/SendersBranchReference)"/>
+	
+		<xsl:choose>
+			<xsl:when test="$accountCode = 'MIL14T'"><xsl:value-of select="$COMPASS"/></xsl:when>
+			<xsl:when test="$accountCode = 'FMC01T'"><xsl:value-of select="$COMPASS"/></xsl:when>
+			
+			<xsl:when test="$accountCode = 'TES01T'"><xsl:value-of select="$TESCO"/></xsl:when>
+			<xsl:when test="$accountCode = 'TES08T'"><xsl:value-of select="$TESCO"/></xsl:when>
+			<xsl:when test="$accountCode = 'TES12T'"><xsl:value-of select="$TESCO"/></xsl:when>
+			<xsl:when test="$accountCode = 'TES15T'"><xsl:value-of select="$TESCO"/></xsl:when>
+			<xsl:when test="$accountCode = 'TES25T'"><xsl:value-of select="$TESCO"/></xsl:when>
+			<xsl:when test="$accountCode = 'ARA02T'"><xsl:value-of select="$ARAMARK"/></xsl:when>
+			<xsl:when test="$accountCode = 'BEACON'"><xsl:value-of select="$BEACON_PURCHASING"/></xsl:when>
+			<xsl:when test="$accountCode = 'SSP25T'"><xsl:value-of select="$SSP"/></xsl:when>
+			<xsl:otherwise></xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>	
+
+<!-- Start point - ensure required outer BatchRoot tag is applied -->
+	<xsl:template match="/">
+		<BatchRoot>	
+			<Batch>				
+				<BatchDocuments>				
 					<xsl:for-each select="/Batch/BatchDocuments/BatchDocument/DeliveryNote">
 				
 						<BatchDocument>
 							<xsl:attribute name="DocumentTypeNo">7</xsl:attribute>
 							<DeliveryNote>
 								<TradeSimpleHeader>
+									<SendersCodeForRecipient>
+										<xsl:choose>
+											<!--xsl:when test="SendersBranchReference = 'MIL14T'">MIL14T</xsl:when>
+											<xsl:when test="SendersBranchReference = 'FMC01T'">FMC01T</xsl:when>
+											<xsl:when test="SendersBranchReference = 'TES01T'">TES01T</xsl:when>					
+											<xsl:when test="SendersBranchReference = 'TES08T'">TES08T</xsl:when>					
+											<xsl:when test="SendersBranchReference = 'TES12T'">TES12T</xsl:when>					
+											<xsl:when test="SendersBranchReference = 'TES15T'">TES15T</xsl:when>					
+											<xsl:when test="SendersBranchReference = 'TES25T'">TES25T</xsl:when-->	
+					
+										<xsl:when test="$CustomerFlag = $COMPASS or $CustomerFlag = $TESCO or $CustomerFlag = $BEACON_PURCHASING ">
+										<xsl:value-of select="TradeSimpleHeader/SendersBranchReference"/>
+										</xsl:when>			
+									
+										<xsl:otherwise>
+											<xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/>
+										</xsl:otherwise>
+					
+										</xsl:choose>
+								</SendersCodeForRecipient>
+			
+										<!--xsl:if test="SendersBranchReference = 'MIL14T' or SendersBranchReference = 'FMC01T' or SendersBranchReference = 'TES01T'"-->
+										<!--xsl:if test="SendersBranchReference">
+										<xsl:if test="contains('MIL14T~FMC01T~TES01T~TES08T~TES12T~TES15T~TES25T',SendersBranchReference)"-->
+										<xsl:if test="$CustomerFlag = $COMPASS or $CustomerFlag = $TESCO or $CustomerFlag = $ARAMARK">
+								<SendersBranchReference>
+									<xsl:value-of select="TradeSimpleHeader/SendersBranchReference"/>
+								</SendersBranchReference>
+										</xsl:if>
+										<!--/xsl:if>
+										</xsl:if-->
+							</TradeSimpleHeader>	
+								<!--TradeSimpleHeader>
 									<SendersCodeForRecipient><xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/></SendersCodeForRecipient>
 									<xsl:for-each select="TradeSimpleHeader/SendersBranchReference[1]">
 										<SendersBranchReference><xsl:value-of select="."/></SendersBranchReference>
 									</xsl:for-each>
-								</TradeSimpleHeader>
+								</TradeSimpleHeader-->
 								<DeliveryNoteHeader>
 								
 									<Buyer>
