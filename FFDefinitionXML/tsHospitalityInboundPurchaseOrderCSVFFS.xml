@@ -35,7 +35,7 @@ M Dimant  | 12/10/2010 | Created.
 		<PurchaseOrder>
 			<TradeSimpleHeader>
 				<SendersCodeForRecipient RecordPos="H" LPos="2"/>
-				<SendersBranchReference RecordPos="H" LPos="20"/>
+				<SendersBranchReference RecordPos="H" LPos="19"/>
 				<TestFlag RecordPos="H" LPos="3"/>
 			</TradeSimpleHeader>
 			<PurchaseOrderHeader>
