@@ -222,13 +222,32 @@
 			</xsl:choose>
 			<xsl:text>,</xsl:text>
 
-			<xsl:value-of select="substring(ProductDescription,1,50)"/>
+			<xsl:call-template name="characterStrip">
+				<xsl:with-param name="inputText" select="substring(ProductDescription,1,50)"/>
+			</xsl:call-template>
 			<xsl:text>,</xsl:text>
 
 			<xsl:value-of select="substring(normalize-space(PackSize),1,20)"/>
 			
 		</xsl:for-each>
 		<xsl:value-of select="$NewLine"/>	
+	</xsl:template>
+	
+	<!-- Harrisons have asked us to remove spurious characters in the product description exluding the character defined in the template-->
+	<xsl:template name="characterStrip">
+		<xsl:param name="inputText"/>
+		<xsl:choose>
+			<xsl:when test="$inputText = ''"></xsl:when>
+			<xsl:otherwise>
+				<xsl:variable name="firstCharacter" select="substring($inputText,1,1)"/>
+				<xsl:if test="translate($firstCharacter,'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890()','') = ''">
+					<xsl:value-of select="$firstCharacter"/>
+				</xsl:if>
+				<xsl:call-template name="characterStrip">
+					<xsl:with-param name="inputText" select="substring($inputText,2)"/>
+				</xsl:call-template>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 		
 	<msxsl:script language="JScript" implements-prefix="script"><![CDATA[ 
