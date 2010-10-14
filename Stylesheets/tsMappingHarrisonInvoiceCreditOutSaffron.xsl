@@ -23,6 +23,8 @@
 ******************************************************************************************
  14/07/2010	| Andrew Barber | 3756: Send only customer head office code from RecipientsBranchReference before '#' where exists.
  ******************************************************************************************
+ 13/10/2010	| KO | 3950: Strip out spurious characters from the product description
+******************************************************************************************
 
 -->
 <xsl:stylesheet version="1.0"
@@ -240,9 +242,14 @@
 			<xsl:when test="$inputText = ''"></xsl:when>
 			<xsl:otherwise>
 				<xsl:variable name="firstCharacter" select="substring($inputText,1,1)"/>
-				<xsl:if test="translate($firstCharacter,'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890()','') = ''">
-					<xsl:value-of select="$firstCharacter"/>
-				</xsl:if>
+					<xsl:choose>
+						<xsl:when test="translate($firstCharacter,'-/','') = ''">
+							<xsl:text> </xsl:text>
+						</xsl:when>
+						<xsl:when test="translate($firstCharacter,'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890() ','') = ''">
+							<xsl:value-of select="$firstCharacter"/>
+						</xsl:when>
+					</xsl:choose>
 				<xsl:call-template name="characterStrip">
 					<xsl:with-param name="inputText" select="substring($inputText,2)"/>
 				</xsl:call-template>
