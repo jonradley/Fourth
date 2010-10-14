@@ -35,7 +35,14 @@
 				<PurchaseOrderDate format="YYYY-MM-DDThh:mm:ss:TZD">
 					<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderDate"/>
 					<xsl:text>T</xsl:text>
-					<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderTime"/>
+					<xsl:choose>
+						<xsl:when test="/PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderTime">
+							<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderTime"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:text>00:00:00</xsl:text>
+						</xsl:otherwise>
+					</xsl:choose>
 				</PurchaseOrderDate>
 				
 				<PurchaseOrderNumber scheme="OTHER">
