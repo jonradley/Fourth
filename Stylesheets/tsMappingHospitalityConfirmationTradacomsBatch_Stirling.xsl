@@ -156,7 +156,19 @@ H Mahbub	|	2010-05-17		| Created file
 										<xsl:value-of select="BuyersProductCode"/>
 									</BuyersProductCode>
 								</xsl:if-->
-								<xsl:apply-templates select="ProductID/*"/>
+								<!--xsl:apply-templates select="ProductID/*"/-->
+								
+								<SuppliersProductCode>
+									<xsl:value-of select="ProductID/SuppliersProductCode"/>
+									<xsl:if test="$CustomerFlag = $SSP">
+										<xsl:choose>
+											<xsl:when test="translate(PackSize,' ','') ='1x1kg'">-EA</xsl:when>
+											<xsl:when test="contains(PackSize,'x')">-CS</xsl:when>
+											<xsl:otherwise>-EA</xsl:otherwise>
+										</xsl:choose>												
+									</xsl:if>	
+								</SuppliersProductCode>
+								
 							</ProductID>
 							<ProductDescription>
 								<xsl:value-of select="ProductDescription"/>
@@ -167,6 +179,11 @@ H Mahbub	|	2010-05-17		| Created file
 							<ConfirmedQuantity>
 								<xsl:value-of select="format-number(ConfirmedQuantity div 1000,'0.00')"/>
 							</ConfirmedQuantity>
+							
+							<xsl:for-each select="PackSize[1]">
+								<PackSize><xsl:value-of select="."/></PackSize>
+							</xsl:for-each>
+							
 						</PurchaseOrderConfirmationLine>
 					</xsl:for-each>
 				</PurchaseOrderConfirmationDetail>
