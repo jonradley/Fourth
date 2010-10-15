@@ -187,10 +187,20 @@ R Cambridge	| 29/10/2007	| 1556 Create module
 								
 									<xsl:for-each select="DeliveryNoteDetail/DeliveryNoteLine">								
 									
+
 										<DeliveryNoteLine>
 										
 											<ProductID>
-												<SuppliersProductCode><xsl:value-of select="ProductID/SuppliersProductCode"/></SuppliersProductCode>
+												<SuppliersProductCode>
+													<xsl:value-of select="ProductID/SuppliersProductCode"/>
+													<xsl:if test="$CustomerFlag = $SSP">
+														<xsl:choose>
+															<xsl:when test="translate(PackSize,' ','') ='1x1kg'">-EA</xsl:when>
+															<xsl:when test="contains(PackSize,'x')">-CS</xsl:when>
+															<xsl:otherwise>-EA</xsl:otherwise>
+														</xsl:choose>												
+													</xsl:if>	
+												</SuppliersProductCode>
 											</ProductID>
 											
 											<xsl:for-each select="ProductDescription[1]">
