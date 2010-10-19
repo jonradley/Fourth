@@ -133,7 +133,7 @@ Rave Tech     	|  02/01/2009 | Created Module
 			<xsl:if test="..//LineExtraData/CodaVATCode = 'Y'">
 				<xsl:text>-</xsl:text>
 			</xsl:if> 
-			<xsl:value-of select="format-number(../InvoicedQuantity, '0.00')"></xsl:value-of>
+			<xsl:value-of select="format-number(../InvoicedQuantity, '0.000')"></xsl:value-of>
 		</xsl:element>
 	</xsl:template>
 
@@ -151,7 +151,7 @@ Rave Tech     	|  02/01/2009 | Created Module
 					<xsl:otherwise>CS</xsl:otherwise>
 				</xsl:choose>
 			</xsl:attribute>
-			<xsl:value-of select="format-number(../CreditedQuantity, '0.00')"></xsl:value-of>
+			<xsl:value-of select="format-number(../CreditedQuantity, '0.000')"></xsl:value-of>
 		</xsl:element>
 	</xsl:template>
 
@@ -164,10 +164,10 @@ Rave Tech     	|  02/01/2009 | Created Module
 			</xsl:if> 
 			<xsl:choose>
 				<xsl:when test="../CreditedQuantity != 0">
-					<xsl:value-of select="format-number(../CreditedQuantity * ../UnitValueExclVAT, '0.00')"/>
+					<xsl:value-of select="format-number(../CreditedQuantity * ../UnitValueExclVAT, '0.000')"/>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:value-of select="format-number(../InvoicedQuantity * ../UnitValueExclVAT, '0.00')"/>
+					<xsl:value-of select="format-number(../InvoicedQuantity * ../UnitValueExclVAT, '0.000')"/>
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:element>
@@ -182,7 +182,7 @@ Rave Tech     	|  02/01/2009 | Created Module
 		<xsl:element name="VATRate">
 			<xsl:choose>
 				<xsl:when test="../VATCode='Z'">0</xsl:when>
-				<xsl:otherwise><xsl:value-of select="format-number($DefaultVATRate, '0.00')"/></xsl:otherwise>
+				<xsl:otherwise><xsl:value-of select="format-number($DefaultVATRate, '0.000')"/></xsl:otherwise>
 			</xsl:choose>
 		</xsl:element>
 	</xsl:template>
@@ -242,7 +242,7 @@ Rave Tech     	|  02/01/2009 | Created Module
 		<xsl:attribute name="{name()}">
 			<xsl:choose>
 				<xsl:when test="../@VATCode='Z'">0</xsl:when>
-				<xsl:otherwise><xsl:value-of select="format-number($DefaultVATRate, '0.00')"/></xsl:otherwise>
+				<xsl:otherwise><xsl:value-of select="format-number($DefaultVATRate, '0.000')"/></xsl:otherwise>
 			</xsl:choose>
 		</xsl:attribute>
 	</xsl:template>
