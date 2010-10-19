@@ -16,7 +16,7 @@
 '******************************************************************************************
 ' 10/10/2005  | Lee Boyton   | Corrected delivery date element name.
 '******************************************************************************************
-'             |              | 
+' 18/10/2010  | Andrew Barber | FB:XXXX - Convert PackSize to always be number for Quantity and UnitValueExclVAT calculation to singles.
 '******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -201,11 +201,13 @@
 			<xsl:text>,</xsl:text>
 			
 			<!-- Quantity -->
-			<xsl:value-of select="format-number((OrderedQuantity*PackSize), '0')"/>			
+			<!--<xsl:value-of select="format-number((OrderedQuantity*PackSize), '0')"/>-->
+			<xsl:value-of select="format-number((OrderedQuantity* (translate(PackSize, translate(PackSize,'0123456789', ''), '')) ), '0')"/>
 			<xsl:text>,</xsl:text>
 			
 			<!-- Unit Price Excl VAT -->
-			<xsl:value-of select="format-number((UnitValueExclVAT div PackSize), '0.0000')"/>
+			<!--<xsl:value-of select="format-number((UnitValueExclVAT div PackSize), '0.0000')"/>-->
+			<xsl:value-of select="format-number((UnitValueExclVAT div (translate(PackSize, translate(PackSize,'0123456789', ''), '')) ), '0.0000')"/>
 			<xsl:text>,</xsl:text>
 			
 			<!-- Line Value Excl VAT -->
