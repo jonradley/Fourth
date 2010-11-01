@@ -30,6 +30,8 @@
 ******************************************************************************************
 24/09/2010	| Sandeep Sehgal		| 3792. If PO/DN date are missing for Inv/CN then replace with Inv/CN date
 ******************************************************************************************
+01/11/2010	| Sandeep Sehgal		| 3989. Mapping for Invoice and CN Ref corrected. Changed from padding '0' to space
+******************************************************************************************
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -174,7 +176,7 @@
 			<xsl:value-of select="script:msPad(/Invoice/InvoiceHeader/ShipTo/ShipToAddress/PostCode, 10)"/>
 			<xsl:value-of select="script:msPad('', 30)"/>
 			<xsl:value-of select="script:msPad('United Kingdom', 30)"/>
-			<xsl:value-of select="script:msPadNumber(/Invoice/InvoiceHeader/InvoiceReferences/InvoiceReference, 15, 0)"/>		
+			<xsl:value-of select="script:msPad(/Invoice/InvoiceHeader/InvoiceReferences/InvoiceReference, 15)"/>		
 			<xsl:value-of select="/Invoice/InvoiceHeader/InvoiceReferences/InvoiceDate"/>
 			<xsl:value-of select="script:msPad(ProductID/SuppliersProductCode, 20)"/>
 			<xsl:value-of select="script:msPad(InvoicedQuantity/@UnitOfMeasure, 10)"/>
@@ -291,7 +293,7 @@
 			<xsl:value-of select="script:msPad(/CreditNote/CreditNoteHeader/ShipTo/ShipToAddress/PostCode, 10)"/>
 			<xsl:value-of select="script:msPad('', 30)"/>
 			<xsl:value-of select="script:msPad('United Kingdom', 30)"/>
-			<xsl:value-of select="script:msPadNumber(/CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteReference, 15, 0)"/>		
+			<xsl:value-of select="script:msPad(/CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteReference, 15)"/>		
 			<xsl:value-of select="/CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteDate"/>
 			<xsl:value-of select="script:msPad(ProductID/SuppliersProductCode, 20)"/>
 			<xsl:value-of select="script:msPad(CreditedQuantity/@UnitOfMeasure, 10)"/>
