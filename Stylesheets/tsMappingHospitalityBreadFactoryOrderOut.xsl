@@ -7,7 +7,7 @@ Name			| Date				| Change
 R Cambridge	| 2010-10-12		| 3943 Created Module, based on XML defined in 
 													http://bakery.adsgrp.com/client/BreadFactoryServices/StandingOrder.asmx?op=AmendOrder
 **********************************************************************
-				|						|				
+R Cambridge	| 2010-11-02		| 3943 Replace account id and key with Cnumber
 **********************************************************************
 				|						|				
 *******************************************************************-->
@@ -24,11 +24,8 @@ R Cambridge	| 2010-10-12		| 3943 Created Module, based on XML defined in
 				<AmendOrder xmlns="http://www.breadltd.co.uk/standingorder/">
 					
 					<StandingOrderAmendRequest>
-						<!-- Misspelling of account is deliberate -->
-						<Accout>
-							<ID><xsl:value-of select="substring-before(TradeSimpleHeader/RecipientsCodeForSender,'/')"/></ID>
-							<Key><xsl:value-of select="substring-after(TradeSimpleHeader/RecipientsCodeForSender,'/')"/></Key>
-						</Accout>
+						
+						<Cnumber><xsl:value-of select="TradeSimpleHeader/RecipientsCodeForSender"/></Cnumber>
 						
 						<DeliveryDate><xsl:value-of select="PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate"/></DeliveryDate>
 						<!-- Trip element not required -->
