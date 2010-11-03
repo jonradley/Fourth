@@ -78,18 +78,18 @@ K Oshaughnessy| 19/10/2010	|
 						<Buyer>
 							<BuyersLocationID>
 								<GLN RecordPos="CDT=" LPos="1" SFPos="1"/>
-								<SuppliersCode RecordPos="CDT=" LPos="1" SFPos="1"/>
+								<SuppliersCode RecordPos="CDT=" LPos="1" SFPos="2"/>
 							</BuyersLocationID>
 						</Buyer>
 						<Supplier>
 							<SuppliersLocationID>
 								<GLN RecordPos="SDT=" LPos="1" SFPos="1"/>
-								<SuppliersCode RecordPos="CDT=" LPos="1" SFPos="1"/>
+								<SuppliersCode RecordPos="CDT=" LPos="1" SFPos="2"/>
 							</SuppliersLocationID>
 						</Supplier>
 						<ShipTo>
 							<ShipToLocationID>
-								<SuppliersCode RecordPos="CLO=" LPos="1" SFPos="2"/>
+								<SuppliersCode RecordPos="CLO=" LPos="1" SFPos="3"/>
 							</ShipToLocationID>
 							<ShipToName RecordPos="CLO=" LPos="2" SFPos="1"/>
 							<ShipToAddress>
