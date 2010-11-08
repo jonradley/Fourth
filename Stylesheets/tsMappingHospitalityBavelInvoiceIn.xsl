@@ -23,6 +23,8 @@ R Cambridge	| 2010-07-23		| 3788 if no PO date is supplied use delivery note dat
 **********************************************************************
 R Cambridge	| 2010-10-14		| 3951 Created generic Bavel version from Aramark Spain version
 **********************************************************************
+R Cambridge	| 2010-11-08		| 4012 Voxel invoices faling validation - DiscountedLinesTotalExclVAT not provided			|						|
+**********************************************************************
 				|						|
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" >
@@ -300,7 +302,10 @@ R Cambridge	| 2010-10-14		| 3951 Created generic Bavel version from Aramark Spai
 									</xsl:for-each>
 										
 								</VATSubTotals>
-								<DiscountedLinesTotalExclVAT><xsl:value-of select="TotalSummary/@NetAmount"/></DiscountedLinesTotalExclVAT>
+								<!-- 4012 Only create element if @NetAmount is provided-->
+								<xsl:for-each select="TotalSummary/@NetAmount">
+									<DiscountedLinesTotalExclVAT><xsl:value-of select="."/></DiscountedLinesTotalExclVAT>
+								</xsl:for-each>
 								<xsl:for-each select="TotalSummary/@Discounts[. != ''][1]">
 									<DocumentDiscount><xsl:value-of select="."/></DocumentDiscount>
 								</xsl:for-each>
