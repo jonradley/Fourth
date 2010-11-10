@@ -66,7 +66,7 @@ M Dimant  | 15/10/2010 | Created.
 
 	<xsl:template match="PurchaseOrderDate | DeliveryDate">
 		<xsl:element name="{name()}">
-			<xsl:value-of select="concat(substring(., 7,4), '-', substring(., 4,2), '-', substring(., 1,2))"/>
+			<xsl:value-of select="concat(substring(., 1, 4), '-', substring(., 5, 2), '-', substring(., 7, 2))"/>
 		</xsl:element>
 	</xsl:template>
 			
