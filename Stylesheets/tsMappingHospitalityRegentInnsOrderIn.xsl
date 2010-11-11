@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--******************************************************************
+Alterations
+**********************************************************************
+Name			| Date				| Change
+**********************************************************************
+		?		|			?			| Created Module
+**********************************************************************
+R Cambridge	| 2010-11-10		| 4019 trasnslate "EACH" UoMs into EA
+**********************************************************************
+				|						|
+**********************************************************************
+				|						|
+*******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 	<xsl:template match="iPOS/Orders">
 		<BatchRoot>
@@ -48,6 +61,7 @@
 									<xsl:attribute name="UnitOfMeasure">
 										<xsl:choose>
 											<xsl:when test="ItemUOM = ''">EA</xsl:when>
+											<xsl:when test="ItemUOM = 'EACH'">EA</xsl:when>
 											<xsl:when test="ItemUOM = 'PACK'">CS</xsl:when>
 											<xsl:when test="ItemUOM = 'CASE'">CS</xsl:when>
 											<xsl:otherwise>
