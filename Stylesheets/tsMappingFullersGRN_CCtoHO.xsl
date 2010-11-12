@@ -166,7 +166,7 @@
 					<xsl:value-of select="GoodsReceivedNote/GoodsReceivedNoteHeader/DeliveryNoteReferences/DeliveryNoteReference"/>
 				</DeliveryNoteReference>
 				<DeliveryNoteDate>
-					<xsl:value-of select="GoodsReceivedNote/GoodsReceivedNoteHeader/DeliveryNoteReferences/DeliveryNoteReference"/>
+					<xsl:value-of select="GoodsReceivedNote/GoodsReceivedNoteHeader/DeliveryNoteReferences/DeliveryNoteDate"/>
 				</DeliveryNoteDate>
 				<DespatchDate>
 					<xsl:value-of select="GoodsReceivedNote/GoodsReceivedNoteHeader/DeliveryNoteReferences/DespatchDate"/>
@@ -247,7 +247,7 @@
 						<xsl:value-of select="AcceptedQuantity"/>
 					</AcceptedQuantity>
 					<UnitValueExclVAT>
-						<xsl:value-of select="/UnitValueExclVAT"/>
+						<xsl:value-of select="UnitValueExclVAT"/>
 					</UnitValueExclVAT>
 					<LineValueExclVAT>
 						<xsl:value-of select="LineValueExclVAT"/>
