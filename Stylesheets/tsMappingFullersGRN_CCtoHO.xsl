@@ -54,7 +54,17 @@
 				</PostCode>
 			</RecipientsAddress>
 			<TestFlag>
-					<xsl:value-of select="GoodsReceivedNote/TradeSimpleHeader/TestFlag"/>
+				<xsl:choose>
+					<xsl:when test="GoodsReceivedNote/TradeSimpleHeader/TestFlag = 'true'">
+						<xsl:text>true</xsl:text>
+					</xsl:when>
+					<xsl:when test="GoodsReceivedNote/TradeSimpleHeader/TestFlag = '1'">
+						<xsl:text>true</xsl:text>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>false</xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>
 			</TestFlag>
 		</TradeSimpleHeader>
 		<GoodsReceivedNoteHeader>
