@@ -282,14 +282,19 @@
 			<xsl:text>,</xsl:text>
 
 			<!-- The delivery note reference is mandatory in Saffron. It is optional in our internal schema. If it is missing then send the document reference -->
-			<xsl:choose>
+			<!--<xsl:choose>
 				<xsl:when test="/Invoice/InvoiceDetail/InvoiceLine/DeliveryNoteReferences/DeliveryNoteReference != ''">
 					<xsl:value-of select="substring(DeliveryNoteReferences/DeliveryNoteReference,1,20)"/>
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:value-of select="substring(../../InvoiceHeader/InvoiceReferences/InvoiceReference | ../../CreditNoteHeader/CreditNoteReferences/CreditNoteReference,1,20)"/>
 				</xsl:otherwise>
-			</xsl:choose>
+			</xsl:choose>-->
+			<!--Always provide invoice reference for delivery invoices, to revert to above when ordering implemented-->
+			<xsl:value-of select="substring(../../InvoiceHeader/InvoiceReferences/InvoiceReference | ../../CreditNoteHeader/CreditNoteReferences/CreditNoteReference,1,20)"/>
+			<xsl:text>,</xsl:text>
+
+			<xsl:value-of select="substring(ProductID/SuppliersProductCode,1,20)"/>
 			<xsl:text>,</xsl:text>
 
 			<xsl:value-of select="substring(ProductID/SuppliersProductCode,1,20)"/>
