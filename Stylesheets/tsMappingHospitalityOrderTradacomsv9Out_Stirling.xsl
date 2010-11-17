@@ -9,7 +9,7 @@
 ==========================================================================================
  Version		| 
 ==========================================================================================
- Date      	| Name 						|	Description of modification
+ Date      	| Name 					|	Description of modification
 ==========================================================================================
  13/02/2006	| R Cambridge			|	Created module
 ==========================================================================================
@@ -18,10 +18,13 @@
  23/05/2007	|	Nigel Emsen			|	FB 972: Amendments to handle Marstons promotions.
 ==========================================================================================
  07/01/2008	| R Cambridge			|	1556 don't truncate product description
- ==========================================================================================
+==========================================================================================
  31/03/2010	| H Mahbub   			|	3440 Adding special delivery instuctions
 ==========================================================================================
- 	| 			|	
+ 15/11/2010	| R Cambridge			|	3956 Product code manipulation (remove UoM indicator if present)
+ 													  If UoM indicator is present use UoM inplace of PackSize (Bibendum's system will lookup pack size)
+==========================================================================================
+			 	|				 			|	
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -228,6 +231,19 @@
 				<xsl:call-template name="msCheckField">
 					<xsl:with-param name="vobjNode" select="ProductID/SuppliersProductCode"/>
 					<xsl:with-param name="vnLength" select="30"/>
+					<xsl:with-param name="vsModifiedValue">
+						<xsl:choose>
+							<xsl:when test="substring-before(ProductID/SuppliersProductCode,'-EA') != ''">
+								<xsl:value-of select="substring-before(ProductID/SuppliersProductCode,'-EA')"/>
+							</xsl:when>
+							<xsl:when test="substring-before(ProductID/SuppliersProductCode,'-CS') != ''">
+								<xsl:value-of select="substring-before(ProductID/SuppliersProductCode,'-CS')"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="ProductID/SuppliersProductCode"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:with-param>
 				</xsl:call-template>
 				<xsl:text>+</xsl:text>
 				<xsl:text>+</xsl:text>
@@ -237,7 +253,14 @@
 					<xsl:with-param name="vnLength" select="30"/>
 				</xsl:call-template>				
 				<xsl:text>+</xsl:text>
-				<xsl:value-of select="PackSize"/>
+				<xsl:choose>
+					<xsl:when test="substring-before(ProductID/SuppliersProductCode,'-EA') != '' or substring-before(ProductID/SuppliersProductCode,'-CS') != ''">
+						<xsl:value-of select="OrderedQuantity/@UnitOfMeasure"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="PackSize"/>
+					</xsl:otherwise>
+				</xsl:choose>				
 				<xsl:text>::</xsl:text>
 				<xsl:value-of select="OrderedQuantity/@UnitOfMeasure"/>
 				<xsl:text>+</xsl:text>
@@ -374,6 +397,7 @@
   						  Raises an error if it will.
   Inputs         : vobjNode, the element, 
 						  vnLength, the length of the tradacoms field
+						  vsModifiedValue, optional string containing modified version of contents of vobjNode
   Outputs        : 
   Returns        : A string
   Author         : Robert Cambridge
@@ -383,8 +407,15 @@
 	<xsl:template name="msCheckField">
 		<xsl:param name="vobjNode"/>
 		<xsl:param name="vnLength"/>
+		<xsl:param name="vsModifiedValue"/>
 		
-		<xsl:variable name="sEscapedField" select="js:msEscape(string($vobjNode))"/>
+		<xsl:variable name="sEscapedField">
+			<xsl:choose>
+				<xsl:when test="$vsModifiedValue != ''"><xsl:value-of select="js:msEscape(string($vsModifiedValue))"/></xsl:when>
+				<xsl:otherwise><xsl:value-of select="js:msEscape(string($vobjNode))"/></xsl:otherwise>
+			</xsl:choose>
+		
+		</xsl:variable>
 		
 		<xsl:choose>
 		
