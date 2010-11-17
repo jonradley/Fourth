@@ -254,9 +254,8 @@
 				</xsl:call-template>				
 				<xsl:text>+</xsl:text>
 				<xsl:choose>
-					<xsl:when test="substring-before(ProductID/SuppliersProductCode,'-EA') != '' or substring-before(ProductID/SuppliersProductCode,'-CS') != ''">
-						<xsl:value-of select="OrderedQuantity/@UnitOfMeasure"/>
-					</xsl:when>
+					<xsl:when test="substring-before(ProductID/SuppliersProductCode,'-EA') != ''">EA</xsl:when>
+					<xsl:when test="substring-before(ProductID/SuppliersProductCode,'-CS') != ''">CS</xsl:when>
 					<xsl:otherwise>
 						<xsl:value-of select="PackSize"/>
 					</xsl:otherwise>
