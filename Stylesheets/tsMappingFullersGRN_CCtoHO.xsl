@@ -268,7 +268,8 @@
 					<LineDiscountValue>
 						<xsl:value-of select="LineDiscountValue"/>
 					</LineDiscountValue>
-					<LineExtraData/>
+					<!--Line Extra Data Insertion-->
+					<xsl:copy-of select="LineExtraData"/>
 				</GoodsReceivedNoteLine>
 			</xsl:for-each>
 		</GoodsReceivedNoteDetail>
