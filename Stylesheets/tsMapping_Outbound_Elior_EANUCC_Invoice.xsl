@@ -18,7 +18,7 @@
 ******************************************************************************************
 06 Nov 2008| N Dry            | 2555 - Elior Invoice batches - based on standard OFSCI mapper, with a few extras (prod description etc)
 ******************************************************************************************
-			  	|               |
+27/10/2010  	| M Dimant    | Based on previous mapper, turned into Elior's new format xml
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" 
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -180,7 +180,7 @@
 					
 						<xsl:if test="InvoiceHeader/Buyer/BuyersLocationID/BuyersCode">
 							<BuyerAssigned scheme="OTHER">
-								<xsl:value-of select="InvoiceHeader/HeaderExtraData/SupaNameLegalEntity"/>
+								<xsl:value-of select="InvoiceHeader/Buyer/BuyersLocationID/BuyersCode"/>
 							</BuyerAssigned>
 						</xsl:if>
 		
@@ -231,15 +231,16 @@
 							<xsl:value-of select="InvoiceHeader/Supplier/SuppliersLocationID/GLN"/>
 						</SellerGLN>
 					
-						<xsl:if test="InvoiceHeader/Supplier/SuppliersLocationID/SuppliersCode">
+						<!--Elior require each supplier to insert their company name in SellerAssigned -->
+						<xsl:if test="TradeSimpleHeader/SendersName">
 							<SellerAssigned scheme="OTHER">
-								<xsl:value-of select="InvoiceHeader/HeaderExtraData/CorporateName"/>
+								<xsl:value-of select="TradeSimpleHeader/SendersName"/>
 							</SellerAssigned>
 						</xsl:if>
 						
 						<xsl:if test="InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode">
 							<BuyerAssigned scheme="OTHER">
-								<xsl:value-of select="InvoiceHeader/HeaderExtraData/GroupCode"/>
+								<xsl:value-of select="InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode"/>
 							</BuyerAssigned>
 						</xsl:if>
 		
@@ -288,9 +289,9 @@
 							<xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/GLN"/>
 						</ShipToGLN>
 					
-						<xsl:if test="InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode">				
+						<xsl:if test="InvoiceHeader/ShipTo/ShipToLocationID/SuppliersCode">				
 							<BuyerAssigned scheme="OTHER">
-								<xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode"/>
+								<xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
 							</BuyerAssigned>
 						</xsl:if>
 						
