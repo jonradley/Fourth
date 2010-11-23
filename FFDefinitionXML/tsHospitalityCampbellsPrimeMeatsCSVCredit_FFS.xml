@@ -62,6 +62,7 @@ R Cambridge	| 29/09/2009	| 3142 read units codes into SCR and Supplier's code fo
 						<CreditNoteHeader>
 							<Buyer>
 								<BuyersLocationID>
+									<BuyersCode RecordPos="HEAD" LPos="23"/>
 									<SuppliersCode RecordPos="HEAD" LPos="3"/>
 								</BuyersLocationID>
 								<BuyersName RecordPos="HEAD" LPos="17"/>
