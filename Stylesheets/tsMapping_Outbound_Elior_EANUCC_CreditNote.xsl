@@ -2,7 +2,7 @@
 <!--***************************************************************************************
  Overview
 
- Maps Hospitality internal Invoices into the EAN UCC format (OFSCI)
+ Maps Hospitality internal Credits into Elior format xml
  
  © Alternative Business Solutions Ltd., 2008.
 ******************************************************************************************
@@ -16,7 +16,7 @@
 ******************************************************************************************
 06 Nov 2008| N Dry            | 2555 - Elior CreditNote batches - based on standard OFSCI mapper, with a few extras (prod description etc)
 ******************************************************************************************
-			  	|               |
+27/10/2010  	| M Dimant    | Based on previous mapper, turned into Elior's new format xml
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" 
 				xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -96,19 +96,32 @@
 					<!-- ~~~~~~~~~~~~~~~~~~~~~~~
 					    ORDER REFERENCE
 					      ~~~~~~~~~~~~~~~~~~~~~~~-->
-					<!-- If PurchaseOrderReferences exists then both date and reference must also exist -->	      			
-					<xsl:if test="CreditNoteDetail/ICreditNoteLine[1]/PurchaseOrderReferences">
-						<OrderReference>
+					<!-- PurchaseOrderReferences contains a mandatory set of fields. If it doesn't exist then it needs to be populated with some sort of data. -->	     			
+						<OrderReference>							
 							<PurchaseOrderDate format="YYYY-MM-DDThh:mm:ss:TZD">
-								<xsl:value-of select="CreditNoteDetail/ICreditNoteLine[1]/PurchaseOrderReferences/PurchaseOrderDate"/>
-								<xsl:text>T00:00:00</xsl:text>
+								<xsl:choose>
+									<xsl:when test="CreditNoteDetail/ICreditNoteLine[1]/PurchaseOrderReferences/PurchaseOrderDate">
+										<xsl:value-of select="CreditNoteDetail/ICreditNoteLine[1]/PurchaseOrderReferences/PurchaseOrderDate"/>
+										<xsl:text>T00:00:00</xsl:text>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:text>2000-01-01T00:00:00</xsl:text>
+									</xsl:otherwise>
+								</xsl:choose>									
 							</PurchaseOrderDate>
 			
 							<PurchaseOrderNumber scheme="OTHER">
-								<xsl:value-of select="CreditNoteDetail/ICreditNoteLine[1]/PurchaseOrderReferences/PurchaseOrderReference"/>
+								<xsl:choose>
+									<xsl:when test="CreditNoteDetail/ICreditNoteLine[1]/PurchaseOrderReferences/PurchaseOrderReference">
+										<xsl:value-of select="CreditNoteDetail/ICreditNoteLine[1]/PurchaseOrderReferences/PurchaseOrderReference"/>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:text>0</xsl:text>
+									</xsl:otherwise>
+								</xsl:choose>								
 							</PurchaseOrderNumber>				
 						</OrderReference> 
-					</xsl:if>
+				
 		
 					<!-- ~~~~~~~~~~~~~~~~~~~~~~~
 					    ORDER CONFIRMATION REFERENCE
@@ -179,7 +192,7 @@
 					
 						<xsl:if test="CreditNoteHeader/Buyer/BuyersLocationID/BuyersCode">
 							<BuyerAssigned scheme="OTHER">
-								<xsl:value-of select="CreditNoteHeader/HeaderExtraData/SupaNameLegalEntity"/>
+								<xsl:value-of select="CreditNoteHeader/Buyer/BuyersLocationID/BuyersCode"/>
 							</BuyerAssigned>
 						</xsl:if>
 						
@@ -230,15 +243,16 @@
 							<xsl:value-of select="CreditNoteHeader/Supplier/SuppliersLocationID/GLN"/>
 						</SellerGLN>
 					
-						<xsl:if test="CreditNoteHeader/Supplier/SuppliersLocationID/SuppliersCode">
+						<!--Elior require each supplier to insert their company name in SellerAssigned -->
+						<xsl:if test="//TradeSimpleHeader/SendersName">
 							<SellerAssigned scheme="OTHER">
-								<xsl:value-of select="CreditNoteHeader/HeaderExtraData/CorporateName"/>
+								<xsl:value-of select="//TradeSimpleHeader/SendersName"/>
 							</SellerAssigned>
 						</xsl:if>
 						
 						<xsl:if test="CreditNoteHeader/Supplier/SuppliersLocationID/BuyersCode">
 							<BuyerAssigned scheme="OTHER">
-								<xsl:value-of select="CreditNoteHeader/HeaderExtraData/GroupCode"/>
+								<xsl:value-of select="CreditNoteHeader/Supplier/SuppliersLocationID/BuyersCode"/>
 							</BuyerAssigned>
 						</xsl:if>
 		
@@ -288,9 +302,9 @@
 							<xsl:value-of select="CreditNoteHeader/ShipTo/ShipToLocationID/GLN"/>
 						</ShipToGLN>
 						
-						<xsl:if test="CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode">
+						<xsl:if test="CreditNoteHeader/ShipTo/ShipToLocationID/SuppliersCode">
 							<BuyerAssigned scheme="OTHER">
-								<xsl:value-of select="CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode"/>
+								<xsl:value-of select="CreditNoteHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
 							</BuyerAssigned>
 						</xsl:if>
 						
