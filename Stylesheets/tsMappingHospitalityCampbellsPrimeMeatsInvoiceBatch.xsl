@@ -38,6 +38,29 @@
 		</xsl:copy>
 	</xsl:template-->
 
+
+	<xsl:template match="Buyer">
+
+		<Buyer>
+			<BuyersLocationID>
+				<xsl:if test="BuyersLocationID/BuyersCode">
+					<BuyersCode><xsl:value-of select="substring-before(BuyersLocationID/BuyersCode,'/')"/></BuyersCode>
+				</xsl:if>
+				<SuppliersCode><xsl:value-of select="BuyersLocationID/SuppliersCode"/></SuppliersCode>
+			</BuyersLocationID>
+			<BuyersName><xsl:value-of select="BuyersName"/></BuyersName>
+		</Buyer>
+		
+		<xsl:if test="BuyersLocationID/BuyersCode">
+			<Supplier>
+				<SuppliersLocationID>
+					<BuyersCode><xsl:value-of select="substring-after(BuyersLocationID/BuyersCode,'/')"/></BuyersCode>
+				</SuppliersLocationID>
+			</Supplier>
+		</xsl:if>
+	</xsl:template>		
+
+
 	<xsl:template match="InvoiceLine">
 		<InvoiceLine>
 			<PurchaseOrderReferences>
@@ -58,6 +81,7 @@
 			</DeliveryNoteReferences>
 			<xsl:copy-of select="ProductID"/>
 			<xsl:copy-of select="ProductDescription"/>
+			<xsl:copy-of select="OrderedQuantity"/>
 			<InvoicedQuantity>
 				<xsl:choose>
 					<xsl:when test="InvoicedQuantity != ''">
@@ -128,18 +152,25 @@
 	<!-- Decodes and lookups -->
 	<!-- Decode the VATCodes -->
 	<xsl:template name="decodeVATCodes">
-		<xsl:param name="sVATCode"/>
+	<xsl:param name="sVATCode"/>
 		<xsl:choose>
 			<xsl:when test="$sVATCode = 'S0'">Z</xsl:when>
+			<xsl:when test="$sVATCode = 'S1'">S</xsl:when>
 			<xsl:otherwise> </xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+	
 
-	<xsl:template name="lookupVATRate"	>
+	
+	<xsl:template name="lookupVATRate">
 		<xsl:param name="sVATCode"/>
+		<xsl:variable name="sInvDate" select="ancestor::Invoice/InvoiceHeader/InvoiceReferences/InvoiceDate"/>
+		<xsl:variable name="sVATDate" select="number(concat(substring($sInvDate,7,4),substring($sInvDate,4,2),substring($sInvDate,1,2)))"/>
 		<xsl:choose>
 			<xsl:when test="$sVATCode = 'S0'">0.00</xsl:when>
-			<xsl:otherwise> </xsl:otherwise>
+			<xsl:when test="$sVATCode = 'S1' and $sVATDate &gt; 20110104">20.00</xsl:when>
+			<xsl:when test="$sVATCode = 'S1' and $sVATDate &lt; 20110104">17.50</xsl:when>
+			<xsl:otherwise><xsl:value-of select="$sVATDate"/></xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
 
