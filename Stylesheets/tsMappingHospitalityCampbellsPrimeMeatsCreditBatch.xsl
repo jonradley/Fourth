@@ -25,6 +25,26 @@
 		<xsl:copy/>
 	</xsl:template>
 	<!-- END of GENERIC HANDLERS -->
+	
+	<xsl:template match="Buyer">
+		<Buyer>
+			<BuyersLocationID>
+				<xsl:if test="BuyersLocationID/BuyersCode">
+					<BuyersCode><xsl:value-of select="substring-before(BuyersLocationID/BuyersCode,'/')"/></BuyersCode>
+				</xsl:if>
+				<SuppliersCode><xsl:value-of select="BuyersLocationID/SuppliersCode"/></SuppliersCode>
+			</BuyersLocationID>
+			<BuyersName><xsl:value-of select="BuyersName"/></BuyersName>
+		</Buyer>
+		
+		<xsl:if test="BuyersLocationID/BuyersCode">
+			<Supplier>
+				<SuppliersLocationID>
+					<BuyersCode><xsl:value-of select="substring-after(BuyersLocationID/BuyersCode,'/')"/></BuyersCode>
+				</SuppliersLocationID>
+			</Supplier>
+		</xsl:if>
+	</xsl:template>		
 
 	<!-- insert VAT Rates -->
 	<xsl:template match="InvoiceLine">
@@ -82,13 +102,14 @@
 		</xsl:element>
 	</xsl:template>
 
+<!--
 	<xsl:template match="InvoiceReferences">
 		<xsl:if test="InvoiceReference != 'NONE'">
 			<xsl:copy/>
 			<xsl:apply-templates/>
 		</xsl:if>
 	</xsl:template>
-
+-->
 	<!--xsl:template match="CreditNoteHeader">
 		<xsl:element name="CreditNoteHeader">
 			<xsl:copy-of select="Buyer"/>
@@ -114,14 +135,17 @@
 		<xsl:param name="sVATCode"/>
 		<xsl:choose>
 			<xsl:when test="$sVATCode = 'S0'">Z</xsl:when>
+			<xsl:when test="$sVATCode = 'S1'">S</xsl:when>
 			<xsl:otherwise> </xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
 
-	<xsl:template name="lookupVATRate"	>
+
+	<xsl:template name="lookupVATRate">
 		<xsl:param name="sVATCode"/>
 		<xsl:choose>
 			<xsl:when test="$sVATCode = 'S0'">0.00</xsl:when>
+			<xsl:when test="$sVATCode = 'S1'">20.00</xsl:when>
 			<xsl:otherwise> </xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
