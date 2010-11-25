@@ -24,14 +24,16 @@
 		       xmlns:msxsl="urn:schemas-microsoft-com:xslt"
 		      exclude-result-prefixes="#default xsl msxsl user">
 	<xsl:output method="html"/>
-	<xsl:include href="HospitalityIncludeVB.xsl"/>
+	<xsl:include href="Internationalisation.xsl"/>
 	
 	<!-- constants for default values -->
 	<xsl:variable name="changedLineClass" select="'Changed'"/>
 	<xsl:param name="HideMoneyValues" select="'0'"/>	
-	<xsl:param name="LocaleID" select="1034"/>	
 	<xsl:param name="RootFolderPath" select="'Translations'"/>	
 	<xsl:param name="TranslationFile" select="'HospitalityPurchaseOrderAcknowledgement.xml'"/>	
+	
+	<!-- LocaleID to be supplied when calling DocTransform method in processor. English is default -->
+	<xsl:param name="LocaleID" select="'2057'"/>
 	
 	<xsl:template match="/">
 		<html>
@@ -351,7 +353,7 @@
 								<tr>
 									<!-- Delivery Date -->
 									<th width="50%"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="12"/></xsl:call-template></th>
-									<td><xsl:value-of select="user:gsFormatDate(/PurchaseOrderAcknowledgement/PurchaseOrderAcknowledgementHeader/OrderedDeliveryDetails/DeliveryDate,$LocaleID)"/></td>
+									<td><xsl:value-of select="user:gsFormatDateByLocale(/PurchaseOrderAcknowledgement/PurchaseOrderAcknowledgementHeader/OrderedDeliveryDetails/DeliveryDate,$LocaleID)"/></td>
 								</tr>
 								<xsl:if test="/PurchaseOrderAcknowledgement/PurchaseOrderAcknowledgementHeader/OrderedDeliveryDetails/DeliverySlot">
 									<tr>
@@ -394,7 +396,7 @@
 								<tr>
 									<!-- PO Ack Date -->
 									<th width="50%"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="18"/></xsl:call-template></th>
-									<td><xsl:value-of select="user:gsFormatDate(/PurchaseOrderAcknowledgement/PurchaseOrderAcknowledgementHeader/PurchaseOrderAcknowledgementReferences/PurchaseOrderAcknowledgementDate,$LocaleID)"/></td>
+									<td><xsl:value-of select="user:gsFormatDateByLocale(/PurchaseOrderAcknowledgement/PurchaseOrderAcknowledgementHeader/PurchaseOrderAcknowledgementReferences/PurchaseOrderAcknowledgementDate,$LocaleID)"/></td>
 								</tr>
 								<tr>
 									<!-- PO ref -->
@@ -404,7 +406,7 @@
 								<tr>
 									<!-- PO Date -->
 									<th width="50%"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="20"/></xsl:call-template></th>
-									<td><xsl:value-of select="user:gsFormatDate(/PurchaseOrderAcknowledgement/PurchaseOrderAcknowledgementHeader/PurchaseOrderReferences/PurchaseOrderDate,$LocaleID)"/></td>
+									<td><xsl:value-of select="user:gsFormatDateByLocale(/PurchaseOrderAcknowledgement/PurchaseOrderAcknowledgementHeader/PurchaseOrderReferences/PurchaseOrderDate,$LocaleID)"/></td>
 								</tr>
 								<xsl:if test="/PurchaseOrderAcknowledgement/PurchaseOrderAcknowledgementHeader/PurchaseOrderReferences/CustomerPurchaseOrderReference">
 									<tr>
@@ -433,7 +435,7 @@
 											<tr>
 												<!-- Contract Date -->
 												<th width="50%"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="24"/></xsl:call-template></th>
-												<td><xsl:value-of select="user:gsFormatDate(/PurchaseOrderAcknowledgement/PurchaseOrderAcknowledgementHeader/PurchaseOrderReferences/TradeAgreement/ContractDate,$LocaleID)"/></td>
+												<td><xsl:value-of select="user:gsFormatDateByLocale(/PurchaseOrderAcknowledgement/PurchaseOrderAcknowledgementHeader/PurchaseOrderReferences/TradeAgreement/ContractDate,$LocaleID)"/></td>
 											</tr>
 										</xsl:if>
 									</table>
@@ -469,7 +471,7 @@
 											<tr>
 												<!-- Total Excl VAT -->
 												<th width="50%"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="27"/></xsl:call-template></th>
-												<td align="right"><xsl:value-of select="user:gsFormatNumber(/PurchaseOrderAcknowledgement/PurchaseOrderAcknowledgementTrailer/TotalExclVAT, 2,$LocaleID,1)"/></td>
+												<td align="right"><xsl:value-of select="user:gsFormatNumberByLocale(/PurchaseOrderAcknowledgement/PurchaseOrderAcknowledgementTrailer/TotalExclVAT, 2,$LocaleID,1)"/></td>
 											</tr>
 										</xsl:if>
 									</xsl:if>
