@@ -168,7 +168,9 @@
 					</ProductID>
 					<ProductDescription RecordPos="ALD=" LPos="9" SFPos="1"/>
 					<OrderedQuantity RecordPos="ALD=" LPos="5" SFPos="2"/>
-					<ConfirmedQuantity RecordPos="ALD" LPos="6" SFPos="2"/>
+					<ConfirmedQuantity RecordPos="ALD=" LPos="6" SFPos="2">
+						<ffsAttribute1 name="UnitOfMeasure" RecordPos="ALD=" LPos="6" SFPos="3"/>
+					</ConfirmedQuantity>
 					<PackSize RecordPos="ALD=" LPos="6" SFPos="1"/>
 					<UnitValueExclVAT RecordPos="ALD=" LPos="7" SFPos="1"/>
 					<!--LineValueExclVAT /-->
