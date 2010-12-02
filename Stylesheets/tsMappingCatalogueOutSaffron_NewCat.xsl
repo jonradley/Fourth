@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 ******************************************************************************************
- Overview
- Maps Catalogue into a Saffron csv format for Harrison Catering.
+ Overview:
+ Maps Catalogue into a Saffron csv format from New Cat.
 
- © Alternative Business Solutions Ltd., 2008.
+ © Fourth Hospitality, 2010.
 ******************************************************************************************
  Module History
 ******************************************************************************************
- Date       	| Name       		| Description of modification
+ Date       	| Name       			| Description of modification
 ******************************************************************************************
- 02/02/2009	| Rave Tech		| Created Module
+18/10/2010	| Andrew Barber	| Copied Saffron catalouge out and amended for new cat.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- 09/09/2009 | Steve Hewitt    | FB3109 : Removed the group and sub-group, renamed as it is now used for Harrisons and Mitie
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+02/12/2010	| Andrew Barber	| FB:4068 Substring on recipients code for 3663 agreements.
 ******************************************************************************************
 -->
 <xsl:stylesheet version="1.0"
@@ -38,8 +36,16 @@
 
 		<xsl:value-of select="substring(CatalogueHeader/CatalogueName,1,50)"/>
 		<xsl:text>,</xsl:text>
-
-		<xsl:value-of select="substring(TradeSimpleHeader/RecipientsCodeForSender,1,10)"/>
+		
+		<!-- Strip the leading agreement number off for 3663 accounts -->
+		<xsl:choose>
+			<xsl:when test="contains(TradeSimpleHeader/RecipientsCodeForSender,'#')">
+				<xsl:value-of select="substring(substring-after(TradeSimpleHeader/RecipientsCodeForSender,'#'),1,10)"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="substring(TradeSimpleHeader/RecipientsCodeForSender,1,10)"/>
+			</xsl:otherwise>
+		</xsl:choose>
 		<xsl:text>,T</xsl:text>
 
 		<!--### ITEM LINES ###-->
