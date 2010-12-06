@@ -31,13 +31,15 @@
 '	26/01/2007	|	Nigel Emsen	|	Case 710: Fairfax Adoption for Aramark. XPaths adjusted.
 '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 '	31/01/2007	| Lee Boyton   |	Case 767: Cater for an empty ContractReferenceNumber element.
+'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+'	06/12/2007 | Mark Emanuel | Changed Default Tax Rate to 20%	
 '******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	<xsl:output method="xml"/>
 	<!-- we use constants for most default values -->
 	<xsl:variable name="defaultTaxCategory" select="'S'"/>
-	<xsl:variable name="defaultTaxRate" select="'17.5'"/>
+	<xsl:variable name="defaultTaxRate" select="'20.0'"/>
 	<xsl:variable name="defaultDocumentStatus" select="'Original'"/>
 	<xsl:variable name="defaultUnitOfMeasure" select="'EA'"/>
 	<xsl:variable name="defaultCreditQuantity" select="'1'"/>

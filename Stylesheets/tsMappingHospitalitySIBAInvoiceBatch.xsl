@@ -137,6 +137,9 @@ Overview
 																<xsl:choose>
 																	<xsl:when test="/Batch/BatchDocuments/BatchDocument/Invoice/InvoiceHeader/InvoiceReferences/TaxPointDate !=''">
 																		<xsl:choose>
+																			<xsl:when test="translate(substring(/Batch/BatchDocuments/BatchDocument/Invoice/InvoiceHeader/InvoiceReferences/TaxPointDate,1,10),'-','') &gt; translate('2011-01-03','-','')">
+																				<VATRate>20.0</VATRate>
+																			</xsl:when>	
 																			<xsl:when test="translate(substring(/Batch/BatchDocuments/BatchDocument/Invoice/InvoiceHeader/InvoiceReferences/TaxPointDate,1,10),'-','') &lt;= translate('2008-11-30','-','') or translate(substring(/Batch/BatchDocuments/BatchDocument/Invoice/InvoiceHeader/InvoiceReferences/TaxPointDate,1,10),'-','') &gt;= translate('2010-01-01','-','')">
 																				<VATRate>17.5</VATRate>
 																			</xsl:when>
@@ -147,6 +150,9 @@ Overview
 																	</xsl:when>
 																	<xsl:when test="/Batch/BatchDocuments/BatchDocument/InvoiceHeader/InvoiceReferences/InvoiceDate !=''">
 																		<xsl:choose>
+																			<xsl:when test="translate(substring(/Batch/BatchDocuments/BatchDocument/InvoiceHeader/InvoiceReferences/InvoiceDate,1,10),'-','') &gt; translate('2011-01-03','-','')">
+																				<VATRate>20.0</VATRate>
+																			</xsl:when>	
 																			<xsl:when test="translate(substring(/Batch/BatchDocuments/BatchDocument/InvoiceHeader/InvoiceReferences/InvoiceDate,1,10),'-','') &lt;= translate('2008-11-30','-','') or translate(substring(/Batch/BatchDocuments/BatchDocument/InvoiceHeader/InvoiceReferences/InvoiceDate,1,10),'-','') &gt;= translate('2010-01-01','-','')">
 																				<VATRate>17.5</VATRate>
 																			</xsl:when>
@@ -157,6 +163,9 @@ Overview
 																	</xsl:when>
 																	<xsl:otherwise>
 																		<xsl:choose>
+																			<xsl:when test="translate($CurrentDate,'-','')  &gt; translate('2011-01-03','-','')">
+																				<VATRate>20.0</VATRate>
+																			</xsl:when>
 																			<xsl:when test="translate($CurrentDate,'-','')  &lt;= translate('2008-11-30','-','') or translate($CurrentDate,'-','')  &gt;= translate('2010-01-01','-','')">
 																				<VATRate>17.5</VATRate>
 																			</xsl:when>

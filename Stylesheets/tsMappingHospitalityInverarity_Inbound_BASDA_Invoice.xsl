@@ -46,6 +46,7 @@
 	<xsl:output method="xml"/>
 	<!-- we use constants for default values -->
 	<xsl:variable name="defaultTaxCategory" select="'S'"/>
+	<xsl:variable name="NewTaxRate" select="'20.0'"/>
 	<xsl:variable name="defaultTaxRate" select="'17.5'"/>
 	<xsl:variable name="defaultTaxRateNew" select="'15'"/>	
 	<xsl:variable name="CurrentDate" select="script:msGetTodaysDate()"/>	
@@ -315,6 +316,9 @@
 													<xsl:choose>
 														<xsl:when test="/Invoice/TaxPointDateTime !=''">
 															<xsl:choose>
+																<xsl:when test="translate(substring(/Invoice/TaxPointDateTime,1,10),'-','')  &gt;= translate('2011-01-04','-','')">
+																	<xsl:value-of select="format-number($NewTaxRate, '0.00')"/>
+																</xsl:when>
 																<xsl:when test="translate(substring(/Invoice/TaxPointDateTime,1,10),'-','')  &lt;= translate('2008-11-30','-','') or translate(substring(/Invoice/TaxPointDateTime,1,10),'-','')  &gt;= translate('2010-01-01','-','')">
 																	<xsl:value-of select="format-number($defaultTaxRate, '0.00')"/>
 																</xsl:when>
@@ -325,6 +329,9 @@
 														</xsl:when>
 														<xsl:when test="/Invoice/InvoiceDate !=''">
 															<xsl:choose>
+																<xsl:when test="translate(substring(/Invoice/InvoiceDate,1,10),'-','')  &gt;= translate('2011-01-04','-','')">
+																	<xsl:value-of select="format-number($NewTaxRate, '0.00')"/>
+																</xsl:when>
 																<xsl:when test="translate(substring(/Invoice/InvoiceDate,1,10),'-','')  &lt;= translate('2008-11-30','-','') or translate(substring(/Invoice/InvoiceDate,1,10),'-','')  &gt;= translate('2010-01-01','-','')">
 																	<xsl:value-of select="format-number($defaultTaxRate, '0.00')"/>
 																</xsl:when>
@@ -335,6 +342,9 @@
 														</xsl:when>
 														<xsl:otherwise>
 															<xsl:choose>
+																<xsl:when test="translate($CurrentDate,'-','')  &gt;= translate('2011-01-04','-','')">
+																	<xsl:value-of select="format-number($NewTaxRate, '0.00')"/>
+																</xsl:when>
 																<xsl:when test="translate($CurrentDate,'-','')  &lt;= translate('2008-11-30','-','') or translate($CurrentDate,'-','')  &gt;= translate('2010-01-01','-','')">
 																	<xsl:value-of select="format-number($defaultTaxRate, '0.00')"/>
 																</xsl:when>

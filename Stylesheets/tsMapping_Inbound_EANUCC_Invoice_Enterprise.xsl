@@ -32,7 +32,7 @@
 '******************************************************************************************
 '	12/09/2007	| R Cambridge  |	Case 1444: Don't create buyers address lines that would blank
 '******************************************************************************************
-'	          	|              |	                                                            
+'	06/12/2007 | Mark Emanuel | Changed Default Tax Rate to 20%	          	|              |	                                                            
 '******************************************************************************************
 
 -->
@@ -40,7 +40,7 @@
 	<xsl:output method="xml"/>
 	<!-- we use constants for default values -->
 	<xsl:variable name="defaultTaxCategory" select="'S'"/>
-	<xsl:variable name="defaultTaxRate" select="'17.5'"/>
+	<xsl:variable name="defaultTaxRate" select="'20.0'"/>
 	<xsl:variable name="defaultDocumentStatus" select="'Original'"/>
 	<xsl:variable name="defaultUnitOfMeasure" select="'EA'"/>
 	<xsl:variable name="defaultInvoiceQuantity" select="'1'"/>
