@@ -27,6 +27,7 @@
 	<xsl:template match="//VATCode">
 		<xsl:copy>
 			<xsl:choose>
+				<xsl:when test="../VATCode='S' and (number(../VATRate)=20)">U</xsl:when>
 				<xsl:when test="../VATCode='S' and (number(../VATRate)=15)">T</xsl:when>
 			<xsl:otherwise><xsl:value-of select="../VATCode"></xsl:value-of></xsl:otherwise> 
 			</xsl:choose>
@@ -36,6 +37,7 @@
 	<xsl:template match="//@VATCode">
 		<xsl:attribute name="VATCode">		
 			<xsl:choose>
+				<xsl:when test="../@VATCode='S' and (number(../@VATRate)=20)">U</xsl:when>
 				<xsl:when test="../@VATCode='S' and (number(../@VATRate)=15)">T</xsl:when>
 			<xsl:otherwise><xsl:value-of select="../@VATCode"></xsl:value-of></xsl:otherwise> 
 			</xsl:choose>

@@ -55,8 +55,15 @@ Overview
 				<xsl:text>S</xsl:text>
 			</xsl:element>
 			<!--<xsl:apply-templates select="VATRate"/>-->
+			<xsl:variable name="DateConvert" select="concat(substring(../../InvoiceHeader/InvoiceReferences/InvoiceDate, 7, 4), substring(../../InvoiceHeader/InvoiceReferences/InvoiceDate, 4, 2), substring(../../InvoiceHeader/InvoiceReferences/InvoiceDate, 1, 2))"/>
 			<xsl:element name="VATRate">
-				<xsl:text>17.5</xsl:text>
+				<xsl:choose>
+					<xsl:when test="$DateConvert &gt; '20110103'">20.0</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>17.5</xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>
+				
 			</xsl:element>
 
 		</InvoiceLine>

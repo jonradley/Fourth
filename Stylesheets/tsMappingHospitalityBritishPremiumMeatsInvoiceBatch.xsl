@@ -94,6 +94,7 @@ Rave Tech  		| 26/11/2008		| 2592 - Handled VAT rate change from 17.5% to 15%.
 				<xsl:when test="number(.) = 0">Z</xsl:when>
 				<xsl:when test="number(.) = 17.5">S</xsl:when>
 				<xsl:when test="number(.) = 15">S</xsl:when>
+				<xsl:when test="number(.) = 20.0">S</xsl:when>
 				<xsl:otherwise>L</xsl:otherwise>
 			</xsl:choose>		
 		</xsl:copy>
