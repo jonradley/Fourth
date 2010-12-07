@@ -303,9 +303,6 @@
 			<xsl:value-of select="substring(ProductID/SuppliersProductCode,1,20)"/>
 			<xsl:text>,</xsl:text>
 
-			<xsl:value-of select="substring(ProductID/SuppliersProductCode,1,20)"/>
-			<xsl:text>,</xsl:text>
-
 			<xsl:choose>
 				<xsl:when test="/Invoice">
 					<xsl:value-of select="format-number(InvoicedQuantity,'0.000')"/>
