@@ -13,6 +13,8 @@
 18/10/2010	| Andrew Barber	| Copied Saffron catalouge out and amended for new cat.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 02/12/2010	| Andrew Barber	| FB:4068 Substring on recipients code for 3663 agreements.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+07/12/2010	| Andrew Barber	| FB:4077 Translate of commas in descriptive elements.
 ******************************************************************************************
 -->
 <xsl:stylesheet version="1.0"
@@ -34,7 +36,7 @@
 		<xsl:value-of select="substring(CatalogueHeader/CatalogueCode,1,10)"/>
 		<xsl:text>,</xsl:text>
 
-		<xsl:value-of select="substring(CatalogueHeader/CatalogueName,1,50)"/>
+		<xsl:value-of select="substring(translate(CatalogueHeader/CatalogueName,',',''),1,50)"/>
 		<xsl:text>,</xsl:text>
 		
 		<!-- Strip the leading agreement number off for 3663 accounts -->
@@ -60,10 +62,10 @@
 			<xsl:value-of select="substring(ProductID/SuppliersProductCode,1,20)"/>
 			<xsl:text>,</xsl:text>
 
-			<xsl:value-of select="substring(ProductDescription,1,50)"/>
+			<xsl:value-of select="substring(translate(ProductDescription,',',''),1,50)"/>
 			<xsl:text>,</xsl:text>
 
-			<xsl:value-of select="substring(PackSize,1,20)"/>
+			<xsl:value-of select="substring(translate(PackSize,',',''),1,20)"/>
 		</xsl:for-each>
 
 	</xsl:template>
