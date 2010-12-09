@@ -27,29 +27,19 @@
 ******************************************************************************************
 
 -->
-<xsl:stylesheet version="1.0"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-		   xmlns:script="http://mycompany.com/mynamespace"
-                xmlns:msxsl="urn:schemas-microsoft-com:xslt"
-                exclude-result-prefixes="#default xsl msxsl script">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl script">
 	<xsl:output method="text"/>
-	
 	<!-- define keys (think of them a bit like database indexes) to be used for finding distinct line information.-->
 	<xsl:key name="keyLinesByVATCode" match="InvoiceTrailer/VATSubTotals/VATSubTotal | CreditNoteTrailer/VATSubTotals/VATSubTotal" use="concat(@VATCode,number(@VATRate),generate-id(../../..))"/>
-	
 	<xsl:template match="/BatchRoot/Invoice | /BatchRoot/CreditNote">
-
 		<xsl:variable name="NewLine">
 			<xsl:text>&#13;&#10;</xsl:text>
 		</xsl:variable>
-
 		<!--### HEADER LINE ###-->
 		<xsl:text>INVHEAD,</xsl:text>
-		
 		<!-- Invoice Number -->
 		<xsl:value-of select="substring(InvoiceHeader/InvoiceReferences/InvoiceReference | CreditNoteHeader/CreditNoteReferences/CreditNoteReference,1,20)"/>
 		<xsl:text>,</xsl:text>
-
 		<!-- Invoice Date -->
 		<xsl:choose>
 			<xsl:when test="/BatchRoot/CreditNote">
@@ -60,7 +50,6 @@
 			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:text>,</xsl:text>
-		
 		<!-- Supplier Code -->
 		<xsl:choose>
 			<xsl:when test="contains(TradeSimpleHeader/RecipientsCodeForSender,'#')">
@@ -71,7 +60,6 @@
 			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:text>,</xsl:text>
-		
 		<!-- Unit Code -->
 		<xsl:choose>
 			<xsl:when test="contains(TradeSimpleHeader/RecipientsBranchReference,'#')">
@@ -82,11 +70,9 @@
 			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:text>,</xsl:text>
-
 		<!-- Number of Deliveries -->
 		<xsl:value-of select="InvoiceTrailer/NumberOfDeliveries | CreditNoteTrailer/NumberOfDeliveries"/>
 		<xsl:text>,</xsl:text>
-
 		<!-- Lines Total Ex VAT -->
 		<xsl:choose>
 			<xsl:when test="/BatchRoot/Invoice">
@@ -97,7 +83,6 @@
 			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:text>,</xsl:text>
-		
 		<!-- Tax Amount Total -->
 		<xsl:choose>
 			<xsl:when test="/BatchRoot/Invoice">
@@ -108,7 +93,6 @@
 			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:text>,</xsl:text>
-
 		<!-- Total Payable -->
 		<xsl:choose>
 			<xsl:when test="/BatchRoot/Invoice">
@@ -119,23 +103,19 @@
 			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:text>,</xsl:text>
-
 		<!-- Original Invoice Number -->
 		<xsl:value-of select="substring(CreditNoteHeader/InvoiceReferences/InvoiceReference,1,20)"/>
-
 		<!--### VAT LINES ###-->
 		<!-- use the keys for grouping Lines by VAT Code -->
 		<xsl:for-each select="(InvoiceTrailer/VATSubTotals/VATSubTotal | CreditNoteTrailer/VATSubTotals/VATSubTotal)">
 			<xsl:sort select="@VATCode" data-type="text"/>
 			<xsl:variable name="VATCode" select="@VATCode"/>
 			<xsl:variable name="VATRate" select="@VATRate"/>
-			<xsl:if test="generate-id() = generate-id(key('keyLinesByVATCode', concat($VATCode,number($VATRate),generate-id(../../..))))">					
+			<xsl:if test="generate-id() = generate-id(key('keyLinesByVATCode', concat($VATCode,number($VATRate),generate-id(../../..))))">
 				<xsl:value-of select="$NewLine"/>
 				<xsl:text>INVTAX,</xsl:text>
-	
 				<xsl:value-of select="substring(../../../InvoiceHeader/InvoiceReferences/InvoiceReference | 	../../../CreditNoteHeader/CreditNoteReferences/CreditNoteReference,1,20)"/>
 				<xsl:text>,</xsl:text>
-				
 				<xsl:choose>
 					<xsl:when test="substring($VATCode,1,1) = 'L'">S</xsl:when>
 					<xsl:otherwise>
@@ -149,7 +129,6 @@
 					<xsl:when test="number($VATRate) = 5">5</xsl:when>
 				</xsl:choose>
 				<xsl:text>,</xsl:text>
-	
 				<xsl:choose>
 					<xsl:when test="/BatchRoot/Invoice">
 						<xsl:value-of select="format-number(sum(../../../InvoiceTrailer/VATSubTotals/VATSubTotal[@VATCode= $VATCode and number(@VATRate) = number($VATRate)]/DocumentTotalExclVATAtRate),'0.00')"/>
@@ -159,7 +138,6 @@
 					</xsl:otherwise>
 				</xsl:choose>
 				<xsl:text>,</xsl:text>
-			
 				<xsl:choose>
 					<xsl:when test="/BatchRoot/Invoice">
 						<xsl:value-of select="format-number(sum(../../../InvoiceTrailer/VATSubTotals/VATSubTotal[@VATCode= $VATCode and number(@VATRate) = number($VATRate)]/VATAmountAtRate),'0.00')"/>
@@ -170,25 +148,18 @@
 				</xsl:choose>
 			</xsl:if>
 		</xsl:for-each>
-
 		<!--### ITEM LINES ###-->
 		<xsl:for-each select="(InvoiceDetail/InvoiceLine | CreditNoteDetail/CreditNoteLine)">
-
 			<xsl:value-of select="$NewLine"/>
 			<xsl:text>INVITEM,</xsl:text>
-
 			<xsl:value-of select="substring(../../InvoiceHeader/InvoiceReferences/InvoiceReference | ../../CreditNoteHeader/CreditNoteReferences/CreditNoteReference,1,20)"/>
 			<xsl:text>,</xsl:text>
-
 			<xsl:value-of select="substring(PurchaseOrderReferences/PurchaseOrderReference,1,13)"/>
 			<xsl:text>,</xsl:text>
-
 			<xsl:value-of select="substring(../../InvoiceHeader/InvoiceReferences/InvoiceReference | ../../CreditNoteHeader/CreditNoteReferences/CreditNoteReference,1,20)"/>
 			<xsl:text>,</xsl:text>
-
 			<xsl:value-of select="substring(ProductID/SuppliersProductCode,1,20)"/>
 			<xsl:text>,</xsl:text>
-
 			<xsl:choose>
 				<xsl:when test="/BatchRoot/Invoice">
 					<xsl:value-of select="format-number(InvoicedQuantity,'0.000')"/>
@@ -198,10 +169,8 @@
 				</xsl:otherwise>
 			</xsl:choose>
 			<xsl:text>,</xsl:text>
-
 			<xsl:value-of select="format-number(UnitValueExclVAT,'0.00')"/>
 			<xsl:text>,</xsl:text>
-
 			<xsl:choose>
 				<xsl:when test="/BatchRoot/Invoice">
 					<xsl:value-of select="format-number(LineValueExclVAT,'0.00')"/>
@@ -211,7 +180,6 @@
 				</xsl:otherwise>
 			</xsl:choose>
 			<xsl:text>,</xsl:text>
-
 			<xsl:choose>
 				<xsl:when test="substring(VATCode,1,1) = 'L'">S</xsl:when>
 				<xsl:otherwise>
@@ -219,46 +187,41 @@
 				</xsl:otherwise>
 			</xsl:choose>
 			<xsl:choose>
-				<xsl:when test="number($VATRate) = 20.0">20.0</xsl:when>
+				<xsl:when test="number(VATRate) = 20.0">20.0</xsl:when>
 				<xsl:when test="number(VATRate) = 17.5">17.5</xsl:when>
 				<xsl:when test="number(VATRate) = 15">15</xsl:when>
 				<xsl:when test="number(VATRate) = 5">5</xsl:when>
 			</xsl:choose>
 			<xsl:text>,</xsl:text>
-
 			<xsl:call-template name="characterStrip">
 				<xsl:with-param name="inputText" select="substring(ProductDescription,1,50)"/>
 			</xsl:call-template>
 			<xsl:text>,</xsl:text>
-
 			<xsl:value-of select="substring(normalize-space(PackSize),1,20)"/>
-			
 		</xsl:for-each>
-		<xsl:value-of select="$NewLine"/>	
+		<xsl:value-of select="$NewLine"/>
 	</xsl:template>
-	
 	<!-- Harrisons have asked us to remove spurious characters in the product description exluding the character defined in the template-->
 	<xsl:template name="characterStrip">
 		<xsl:param name="inputText"/>
 		<xsl:choose>
-			<xsl:when test="$inputText = ''"></xsl:when>
+			<xsl:when test="$inputText = ''"/>
 			<xsl:otherwise>
 				<xsl:variable name="firstCharacter" select="substring($inputText,1,1)"/>
-					<xsl:choose>
-						<xsl:when test="translate($firstCharacter,'-/','') = ''">
-							<xsl:text> </xsl:text>
-						</xsl:when>
-						<xsl:when test="translate($firstCharacter,'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890() ','') = ''">
-							<xsl:value-of select="$firstCharacter"/>
-						</xsl:when>
-					</xsl:choose>
+				<xsl:choose>
+					<xsl:when test="translate($firstCharacter,'-/','') = ''">
+						<xsl:text/>
+					</xsl:when>
+					<xsl:when test="translate($firstCharacter,'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890() ','') = ''">
+						<xsl:value-of select="$firstCharacter"/>
+					</xsl:when>
+				</xsl:choose>
 				<xsl:call-template name="characterStrip">
 					<xsl:with-param name="inputText" select="substring($inputText,2)"/>
 				</xsl:call-template>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-		
 	<msxsl:script language="JScript" implements-prefix="script"><![CDATA[ 
 
 		/*=========================================================================================
