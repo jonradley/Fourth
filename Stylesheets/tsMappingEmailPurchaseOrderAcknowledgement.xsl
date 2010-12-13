@@ -16,6 +16,8 @@
 18/11/2010  | J Cahill		  | Created module. 
 						  | Based on tsMappingPurchaseOrderAcknowlegement.xsl
 						  | and tsMappingEmailPurchaseOrderConfirmation.xsl						  
+13/12/2010 | Graham Neicho | FB4001. Altered LocaleID to MessagingEngineLocaleID, 
+							so this parameter name and its usage are unique
 ******************************************************************************************
 -->
 
@@ -32,8 +34,9 @@
 	<xsl:param name="RootFolderPath" select="'Translations'"/>	
 	<xsl:param name="TranslationFile" select="'HospitalityPurchaseOrderAcknowledgement.xml'"/>	
 	
-	<!-- LocaleID is supplied when calling DocTransform method in processor. English is default -->
-	<xsl:param name="LocaleID" select="'2057'"/>
+	<!-- MessagingEngineLocaleID is supplied when calling DocTransform method in processor. English is default -->
+	<xsl:param name="MessagingEngineLocaleID" select="'2057'"/>
+	<xsl:param name="LocaleID" select="$MessagingEngineLocaleID"/>
 	
 	<xsl:template match="/">
 		<html>
