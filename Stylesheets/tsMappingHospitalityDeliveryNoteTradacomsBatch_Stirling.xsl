@@ -194,10 +194,14 @@ R Cambridge	| 29/10/2007	| 1556 Create module
 												<SuppliersProductCode>
 													<xsl:value-of select="ProductID/SuppliersProductCode"/>
 													<xsl:if test="$CustomerFlag = $SSP">
-														<xsl:choose>
+														<!--xsl:choose>
 															<xsl:when test="translate(PackSize,' ','') ='1x1kg'">-EA</xsl:when>
 															<xsl:when test="contains(PackSize,'x')">-CS</xsl:when>
 															<xsl:otherwise>-EA</xsl:otherwise>
+														</xsl:choose-->	
+														<xsl:choose>
+															<xsl:when test="ConfirmedQuantity/@UnitOfMeasure = 'EA'">-EA</xsl:when>
+															<xsl:when test="ConfirmedQuantity/@UnitOfMeasure = 'CS'">-CS</xsl:when>
 														</xsl:choose>												
 													</xsl:if>	
 												</SuppliersProductCode>
