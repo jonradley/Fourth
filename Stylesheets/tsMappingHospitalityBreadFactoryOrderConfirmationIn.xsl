@@ -18,74 +18,80 @@ R Cambridge	| 2010-10-12		| 3943 Created Module
 	
 	<xsl:template match="/BatchRoot/RequestDocument/PurchaseOrder">
 
-		<PurchaseOrderConfirmation>
+		<BatchRoot>
+
+			<PurchaseOrderConfirmation>
+			
+				<TradeSimpleHeader>
+					
+					<SendersCodeForRecipient><xsl:value-of select="TradeSimpleHeader/RecipientsCodeForSender"/></SendersCodeForRecipient>
+					<xsl:for-each select="TradeSimpleHeader/RecipientsBranchReference[1]">
+						<SendersBranchReference>
+							<xsl:value-of select="."/>
+						</SendersBranchReference>
+					</xsl:for-each>
+					<SendersName><xsl:value-of select="TradeSimpleHeader/RecipientsName"/></SendersName>
+					
+					<SendersAddress>
+						<xsl:copy-of select="TradeSimpleHeader/RecipientsAddress/*"/>
+					</SendersAddress>
+					
+					<RecipientsCodeForSender><xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/></RecipientsCodeForSender>
+					<xsl:for-each select="TradeSimpleHeader/RecipientsBranchReference[1]">
+						<RecipientsBranchReference>
+							<xsl:value-of select="."/>
+						</RecipientsBranchReference>				
+					</xsl:for-each>
+					<RecipientsName><xsl:value-of select="TradeSimpleHeader/SendersName"/></RecipientsName>
+					
+					<RecipientsAddress>
+						<xsl:copy-of select="TradeSimpleHeader/SendersAddress/*"/>
+					</RecipientsAddress>
+	
+				</TradeSimpleHeader>
+				
+				<PurchaseOrderConfirmationHeader>				
+					
+					<xsl:copy-of select="PurchaseOrderHeader/Buyer"/>
+					<xsl:copy-of select="PurchaseOrderHeader/Supplier"/>
+					<xsl:copy-of select="PurchaseOrderHeader/ShipTo"/>				
+					
+					<xsl:copy-of select="PurchaseOrderHeader/PurchaseOrderReferences"/>
+					
+					<xsl:if test="/BatchRoot/ResponseDocument/soap:Envelope/soap:Body/*/*/*[local-name()='WebOrderNo'] !='0'">
+						<PurchaseOrderConfirmationReferences>
+							<PurchaseOrderConfirmationReference>
+								<xsl:value-of select="/BatchRoot/ResponseDocument/soap:Envelope/soap:Body/*/*/*[local-name()='WebOrderNo']"/>
+							</PurchaseOrderConfirmationReference>
+							<PurchaseOrderConfirmationDate>
+								<xsl:value-of select="PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderDate"/>
+							</PurchaseOrderConfirmationDate>
+						</PurchaseOrderConfirmationReferences>
+					</xsl:if>
 		
-			<TradeSimpleHeader>
+					<!--ConfirmedDeliveryDetails>
+						<DeliveryDate>
+							<xsl:value-of select=""/>
+						</DeliveryDate>					
+					</ConfirmedDeliveryDetails-->	
+	
+				</PurchaseOrderConfirmationHeader>
 				
-				<SendersCodeForRecipient><xsl:value-of select="TradeSimpleHeader/RecipientsCodeForSender"/></SendersCodeForRecipient>
-				<xsl:for-each select="TradeSimpleHeader/RecipientsBranchReference[1]">
-					<SendersBranchReference>
-						<xsl:value-of select="."/>
-					</SendersBranchReference>
-				</xsl:for-each>
-				<SendersName><xsl:value-of select="TradeSimpleHeader/RecipientsName"/></SendersName>
-				
-				<SendersAddress>
-					<xsl:copy-of select="TradeSimpleHeader/RecipientsAddress/*"/>
-				</SendersAddress>
-				
-				<RecipientsCodeForSender><xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/></RecipientsCodeForSender>
-				<xsl:for-each select="TradeSimpleHeader/RecipientsBranchReference[1]">
-					<RecipientsBranchReference>
-						<xsl:value-of select="."/>
-					</RecipientsBranchReference>				
-				</xsl:for-each>
-				<RecipientsName><xsl:value-of select="TradeSimpleHeader/SendersName"/></RecipientsName>
-				
-				<RecipientsAddress>
-					<xsl:copy-of select="TradeSimpleHeader/SendersAddress/*"/>
-				</RecipientsAddress>
-
-			</TradeSimpleHeader>
-			
-			<PurchaseOrderConfirmationHeader>				
-				
-				<xsl:copy-of select="PurchaseOrderHeader/Buyer"/>
-				<xsl:copy-of select="PurchaseOrderHeader/Supplier"/>
-				<xsl:copy-of select="PurchaseOrderHeader/ShipTo"/>				
-				
-				<xsl:copy-of select="PurchaseOrderHeader/PurchaseOrderReferences"/>
-				
-				<PurchaseOrderConfirmationReferences>
-					<PurchaseOrderConfirmationReference>
-						<xsl:value-of select="/BatchRoot/ResponseDocument/soap:Envelope/soap:Body/AmendOrderResponse/StandingOrderAmendResponse/WebOrderNo"/>
-					</PurchaseOrderConfirmationReference>
-					<PurchaseOrderConfirmationDate>
-						<xsl:value-of select="PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderDate"/>
-					</PurchaseOrderConfirmationDate>
-				</PurchaseOrderConfirmationReferences>
-
-				<ConfirmedDeliveryDetails>
-					<DeliveryDate>
-						<!--xsl:value-of select=""/-->
-					</DeliveryDate>					
-				</ConfirmedDeliveryDetails>	
-
-			</PurchaseOrderConfirmationHeader>
-			
-			<PurchaseOrderConfirmationDetail>
-				
-				<xsl:for-each select="PurchaseOrderDetail/PurchaseOrderLine">
+				<PurchaseOrderConfirmationDetail>
 					
-					<xsl:call-template name="writeConfLine">
-						<xsl:with-param name="orderLine" select="."/>
-					</xsl:call-template>
+					<xsl:for-each select="PurchaseOrderDetail/PurchaseOrderLine">
+						
+						<xsl:call-template name="writeConfLine">
+							<xsl:with-param name="orderLine" select="."/>
+						</xsl:call-template>
+						
+					</xsl:for-each>
 					
-				</xsl:for-each>
+				</PurchaseOrderConfirmationDetail>
 				
-			</PurchaseOrderConfirmationDetail>
+			</PurchaseOrderConfirmation>
 			
-		</PurchaseOrderConfirmation>
+		</BatchRoot>
 
 	</xsl:template>
 	
@@ -95,12 +101,12 @@ R Cambridge	| 2010-10-12		| 3943 Created Module
 		<!-- Determine line action, confirmed quantity and narrative -->
 		<xsl:variable name="orderedProductCode" select="$orderLine/ProductID/SuppliersProductCode"/>
 		<xsl:variable name="confirmationLine" select="/BatchRoot/ResponseDocument/soap:Envelope/soap:Body/*/*/*/*[local-name()='RequestedItem'][*[local-name()='ProductCode'][.=$orderedProductCode]]"/>
-		<xsl:variable name="confirmedStatus" select="$confirmationLine/*[local-name()='Status']"/>
+		<xsl:variable name="confirmedStatus" select="($confirmationLine/*[local-name()='Status'] | /BatchRoot/ResponseDocument/soap:Envelope/soap:Body/*/*[local-name()='StandingOrderAmendResponse']/*[local-name()='Status'])[last()]"/>
 			
 		<xsl:variable name="lineAction">
 			<xsl:choose>
-				<xsl:when test="$confirmedStatus = 'OK'">Accept</xsl:when>
-				<xsl:otherwise>Reject</xsl:otherwise>
+				<xsl:when test="$confirmedStatus = 'OK'">Accepted</xsl:when>
+				<xsl:otherwise>Rejected</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
 		
@@ -150,7 +156,7 @@ R Cambridge	| 2010-10-12		| 3943 Created Module
 				
 			</ConfirmedQuantity>
 			
-			<xsl:copy-of select="($orderLine/PackSize | $orderLine/UnitValueExclVAT | $orderLine/LineValueExclVAT)"/>			
+			<xsl:copy-of select="($orderLine/PackSize | $orderLine/UnitValueExclVAT)"/>			
 			
 			<xsl:if test="$narrative != ''">
 				<Narrative>
