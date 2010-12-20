@@ -110,7 +110,7 @@
 		<xsl:value-of select="$separator"/>
 		<xsl:value-of select="$separator"/>
 		<xsl:value-of select="$separator"/>
-		 <xsl:value-of select="translate(substring(InvoiceHeader/InvoiceReferences/InvoiceDate | CreditNoteHeader/InvoiceReferences/InvoiceDate | DebitNoteHeader/InvoiceReferences/InvoiceDate,1,7),'-','')"/>
+		<xsl:value-of select="translate(substring(InvoiceHeader/InvoiceReferences/InvoiceDate | CreditNoteHeader/InvoiceReferences/InvoiceDate | DebitNoteHeader/InvoiceReferences/InvoiceDate,1,7),'-','')"/>
 	       <xsl:choose>
 	          <xsl:when test="substring(InvoiceHeader/InvoiceReferences/InvoiceDate | CreditNoteHeader/InvoiceReferences/InvoiceDate | DebitNoteHeader/InvoiceReferences/InvoiceDate,6,2)='02'">
 	          	<xsl:text>28</xsl:text>
