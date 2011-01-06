@@ -75,12 +75,12 @@
 		<xsl:value-of select="$separator"/>
 	       <xsl:choose>	
 		       <xsl:when test="InvoiceDetail/InvoiceLine/VATCode[1]='IVA'">
-				<xsl:text>JE.ES.APXINWKB.MODELO347</xsl:text>
+				<xsl:text>JE.ES.APXIISIM.MODELO347</xsl:text>
 				<xsl:value-of select="$separator"/>
 				<xsl:text>MOD347</xsl:text>
 			</xsl:when>
 			<xsl:when test="InvoiceDetail/InvoiceLine/VATCode[1]='IGIC'">
-				<xsl:text>JE.ES.APXINWKB.MODELO415</xsl:text>
+				<xsl:text>JE.ES.APXIISIM.MODELO415</xsl:text>
 				<xsl:value-of select="$separator"/>
 				<xsl:text>MOD415</xsl:text>			
 			</xsl:when>
