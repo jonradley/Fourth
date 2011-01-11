@@ -28,6 +28,8 @@
 ******************************************************************************************
  13/03/2008 | Lee Boyton | 2066. Raise an error if any lines are missing an account code.
 ******************************************************************************************
+11/01/2011 | Graham Neicho | FB4110. Added Purchase Order Reference and Delivery Date columns.
+******************************************************************************************
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -38,12 +40,13 @@
 	<xsl:include href="HospitalityInclude.xsl"/>
 	
 	<!-- define keys (think of them a bit like database indexes) to be used for finding distinct line information.
-	     note;  the '::' literal is simply used as a convenient separator for the 2 values that make up the second key. -->
+	     note;  the '::' literal is simply used as a convenient separator for the values that make up the keys. -->
 	<xsl:key name="keyLinesByAccount" match="InvoiceLine | CreditNoteLine" use="LineExtraData/AccountCode"/>
 	<xsl:key name="keyLinesByAccountAndVAT" match="InvoiceLine | CreditNoteLine" use="concat(LineExtraData/AccountCode,'::',VATCode)"/>
+	<xsl:key name="keyLinesByAccountAndVATAndPurchaseOrderReference" match="InvoiceLine | CreditNoteLine" use="concat(LineExtraData/AccountCode,'::',VATCode,'::',PurchaseOrderReferences/PurchaseOrderReference)"/>
+	<xsl:key name="keyLinesByAccountAndVATAndPurchaseOrderReferenceAndDespatchDate" match="InvoiceLine | CreditNoteLine" use="concat(LineExtraData/AccountCode,'::',VATCode,'::',PurchaseOrderReferences/PurchaseOrderReference,'::',DeliveryNoteReferences/DespatchDate)"/>
 	
 	<xsl:template match="/Invoice | /CreditNote">
-	
 		<!--Check for missing fields-->
 		<xsl:if test="not(TradeSimpleHeader/RecipientsBranchReference)">
 			<xsl:value-of select="user:mRaiseErrorAsMissingFields()"/>
@@ -125,56 +128,63 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-
-		<!-- construct the value for the Allocation indicator as it is used on multiple lines -->
-		<xsl:variable name="Allocation">
-			<xsl:if test="/Invoice/InvoiceTrailer/TrailerExtraData/CreditRequestTotalExclVAT">
-				<xsl:text>R</xsl:text>
-			</xsl:if>
-		</xsl:variable>
 		
 		<!--Purchase Lines-->		
-		<!-- use the keys for grouping Lines by Account Code and then by VAT Code -->
-		<!-- the first loop will match the first line in each set of lines grouped by Account Code -->
+		<!-- use the keys for grouping Lines by Account Code, VAT Code, Purchase Order Reference and Despatch Date -->
 		<xsl:for-each select="(CreditNoteDetail/CreditNoteLine | InvoiceDetail/InvoiceLine)[generate-id() = generate-id(key('keyLinesByAccount',LineExtraData/AccountCode)[1])]">
 			<xsl:sort select="LineExtraData/AccountCode" data-type="text"/>
 			<xsl:variable name="AccountCode" select="LineExtraData/AccountCode"/>
-			<!-- now, given we can find all lines for the current Account Code, loop through and match the first line for each unique VAT Code -->
+
 			<xsl:for-each select="key('keyLinesByAccount',$AccountCode)[generate-id() = generate-id(key('keyLinesByAccountAndVAT',concat($AccountCode,'::',VATCode))[1])]">
 				<xsl:sort select="VATCode" data-type="text"/>
 				<xsl:variable name="VATCode" select="VATCode"/>
-				
-					<!-- now output a summary line for the current Account Code and VAT Code combination -->				
-					<xsl:value-of select="$CompanyCode"/>
-					<xsl:text>,</xsl:text>
-					<xsl:value-of select="user:glGetRowNumber()"/>
-					<xsl:text>,</xsl:text>
-					<xsl:value-of select="$DocumentDate"/>
-					<xsl:text>,</xsl:text>
-					<xsl:value-of select="$AccountCode"/>
-					<xsl:text>,</xsl:text>
-					<xsl:value-of select="$DocumentReference"/>
-					<xsl:text>,</xsl:text>
-					<xsl:value-of select="$JournalType"/>
-					<xsl:text>,</xsl:text>					
-					<xsl:value-of select="$Description"/>
-					<xsl:text>,</xsl:text>
-					<xsl:choose>
-						<xsl:when test="/Invoice">
-							<xsl:value-of select="format-number(sum(//InvoiceLine[LineExtraData/AccountCode = $AccountCode and VATCode = $VATCode]/LineValueExclVAT),'0.00')"/>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="format-number(-1 * sum(//CreditNoteLine[LineExtraData/AccountCode = $AccountCode and VATCode = $VATCode]/LineValueExclVAT),'0.00')"/>
-						</xsl:otherwise>
-					</xsl:choose>
-					<xsl:text>,</xsl:text>
-					<xsl:value-of select="$UnitCode"/>
-					<xsl:text>,</xsl:text>
-					<xsl:value-of select="LineExtraData/BuyersVATCode"/>
-					<xsl:text>,</xsl:text>
-					<xsl:value-of select="$Allocation"/>					
-					<xsl:value-of select="$NewLine"/>
-				
+
+				<xsl:for-each select="key('keyLinesByAccountAndVAT',concat($AccountCode,'::',$VATCode))[generate-id() = generate-id(key('keyLinesByAccountAndVATAndPurchaseOrderReference',concat($AccountCode,'::',$VATCode,'::',PurchaseOrderReferences/PurchaseOrderReference))[1])]">
+					<xsl:sort select="PurchaseOrderReferences/PurchaseOrderReference" data-type="text"/>
+					<xsl:variable name="PurchaseOrderReference" select="PurchaseOrderReferences/PurchaseOrderReference"/>
+
+					<xsl:for-each select="key('keyLinesByAccountAndVATAndPurchaseOrderReference',concat($AccountCode,'::',$VATCode,'::',$PurchaseOrderReference))[generate-id() = generate-id(key('keyLinesByAccountAndVATAndPurchaseOrderReferenceAndDespatchDate',concat($AccountCode,'::',$VATCode,'::',$PurchaseOrderReference,'::',DeliveryNoteReferences/DespatchDate))[1])]">
+						<xsl:sort select="DeliveryNoteReferences/DespatchDate" data-type="text"/>
+						<xsl:variable name="DespatchDate">
+							<xsl:call-template name="formatDate">
+								<xsl:with-param name="xmlDate" select="DeliveryNoteReferences/DespatchDate"/>
+							</xsl:call-template>
+						</xsl:variable>
+
+						<!-- now output a summary line for the current Account Code, VAT Code, Purchase Order Reference and Despatch Date combination -->
+						<xsl:value-of select="$CompanyCode"/>
+						<xsl:text>,</xsl:text>
+						<xsl:value-of select="user:glGetRowNumber()"/>
+						<xsl:text>,</xsl:text>
+						<xsl:value-of select="$DocumentDate"/>
+						<xsl:text>,</xsl:text>
+						<xsl:value-of select="$AccountCode"/>
+						<xsl:text>,</xsl:text>
+						<xsl:value-of select="$DocumentReference"/>
+						<xsl:text>,</xsl:text>
+						<xsl:value-of select="$JournalType"/>
+						<xsl:text>,</xsl:text>					
+						<xsl:value-of select="$Description"/>
+						<xsl:text>,</xsl:text>
+						<xsl:choose>
+							<xsl:when test="/Invoice">
+								<xsl:value-of select="format-number(sum(//InvoiceLine[LineExtraData/AccountCode = $AccountCode and VATCode = $VATCode and PurchaseOrderReferences/PurchaseOrderReference = $PurchaseOrderReference and DeliveryNoteReferences/DespatchDate = $DespatchDate]/LineValueExclVAT),'0.00')"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="format-number(-1 * sum(//CreditNoteLine[LineExtraData/AccountCode = $AccountCode and VATCode = $VATCode and PurchaseOrderReferences/PurchaseOrderReference = $PurchaseOrderReference and DeliveryNoteReferences/DespatchDate = $DespatchDate]/LineValueExclVAT),'0.00')"/>
+							</xsl:otherwise>
+						</xsl:choose>
+						<xsl:text>,</xsl:text>
+						<xsl:value-of select="$UnitCode"/>
+						<xsl:text>,</xsl:text>
+						<xsl:value-of select="LineExtraData/BuyersVATCode"/>
+						<xsl:text>,</xsl:text>
+						<xsl:value-of select="$PurchaseOrderReference"/>
+						<xsl:text>,</xsl:text>
+						<xsl:value-of select="$DespatchDate"/>
+						<xsl:value-of select="$NewLine"/>
+					</xsl:for-each>
+				</xsl:for-each>
 			</xsl:for-each>
 		</xsl:for-each>
 		
@@ -205,7 +215,8 @@
 			<xsl:text>,</xsl:text>
 			<xsl:value-of select="$UnitCode"/>
 			<xsl:text>,</xsl:text>
-			<xsl:value-of select="VATTrailerExtraData/BuyersVATCode"/>			
+			<xsl:value-of select="VATTrailerExtraData/BuyersVATCode"/>
+			<xsl:text>,</xsl:text>
 			<xsl:text>,</xsl:text>			
 			<xsl:value-of select="$NewLine"/>
 		</xsl:for-each>
@@ -237,20 +248,20 @@
 		<xsl:value-of select="$UnitCode"/>
 		<xsl:text>,</xsl:text>
 		<xsl:text>,</xsl:text>
+		<xsl:text>,</xsl:text>
 		<xsl:value-of select="$NewLine"/>
-
 	</xsl:template>
 		
 	<!-- translates a date in YYYY-MM-DD format to a date in DD/MM/YYYY format -->
 	<xsl:template name="formatDate">
 		<xsl:param name="xmlDate"/>
-		
-		<xsl:value-of select="substring($xmlDate,9,2)"/>
-		<xsl:text>/</xsl:text>
-		<xsl:value-of select="substring($xmlDate,6,2)"/>
-		<xsl:text>/</xsl:text>
-		<xsl:value-of select="substring($xmlDate,1,4)"/>
-		
+		<xsl:if test="$xmlDate != ''">
+			<xsl:value-of select="substring($xmlDate,9,2)"/>
+			<xsl:text>/</xsl:text>
+			<xsl:value-of select="substring($xmlDate,6,2)"/>
+			<xsl:text>/</xsl:text>
+			<xsl:value-of select="substring($xmlDate,1,4)"/>
+		</xsl:if>
 	</xsl:template>
 
 	<msxsl:script language="JScript" implements-prefix="user"><![CDATA[ 
