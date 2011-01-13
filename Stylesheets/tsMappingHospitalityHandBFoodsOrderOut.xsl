@@ -273,7 +273,7 @@ R Cambridge	| 2010-08-02		| 3796 Created Module
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
 		
 		<xsl:call-template name="dateYYMMDD">
-			<xsl:with-param name="dateUTC" select="/PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderDate"/>
+			<xsl:with-param name="dateUTC" select="/PurchaseOrder/PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate"/>
 		</xsl:call-template>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
 		
