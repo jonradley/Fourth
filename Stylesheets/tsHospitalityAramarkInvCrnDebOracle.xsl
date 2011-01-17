@@ -128,9 +128,9 @@
 		<xsl:value-of select="$separator"/>
 		<xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode | CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode | DebitNoteHeader/ShipTo/ShipToLocationID/BuyersCode"/>
 		<xsl:value-of select="$separator"/>			
-		<xsl:text>8100</xsl:text>
+		<xsl:text>8101</xsl:text>
 		<xsl:value-of select="$separator"/>			
-		<xsl:text>180000</xsl:text>
+		<xsl:text>184000</xsl:text>
 		<xsl:value-of select="$separator"/>					
 		<xsl:text>000</xsl:text>
 		<xsl:value-of select="$separator"/>	
@@ -163,9 +163,9 @@
 			<xsl:value-of select="LineNumber"/>
 			<xsl:value-of select="$separator"/>	
 			<xsl:text>ITEM</xsl:text>
-			<xsl:value-of select="$separator"/>	
+			<xsl:value-of select="$separator"/>
 		       <xsl:choose>	
-			       <xsl:when test="name()!='Invoice'">	
+			       <xsl:when test="name()!='InvoiceLine'">	
 					<xsl:value-of select="LineValueExclVAT*-1"/>
 				</xsl:when>
 			       <xsl:otherwise>	
@@ -247,8 +247,9 @@
 			<xsl:value-of select="$separator"/>
 			<xsl:value-of select="$separator"/>
 			<xsl:value-of select="VATCode"/>
-			<xsl:text>SOP</xsl:text>
-			<xsl:value-of select="VATRate"/>
+			<xsl:text> SOP </xsl:text>
+			<xsl:value-of select="number(VATRate)"/>
+			<xsl:text>%</xsl:text>
 		</xsl:for-each>
 	  
 	</xsl:template>
