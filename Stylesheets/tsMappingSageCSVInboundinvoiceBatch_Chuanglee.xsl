@@ -20,6 +20,8 @@
 '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ' 15/12/2009 |S Sehgal  	| Case 3286 Changed to handle VAT changing back to 17.5% from 1-Jan-2010
 '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+' 19/01/2011 |J Cahilll  	| Case 4124 Drop decimal part of VAT rate. Make it "20" instead of "20.0"
+'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 '
 '******************************************************************************************
 -->
@@ -170,7 +172,7 @@
 													<xsl:when test="$TaxPointDate !=''">
 														<xsl:choose>
 															<xsl:when test="translate($TaxPointDate,'-','') &gt; translate('2011-01-03','-','')">
-																<xsl:attribute name="VATRate">20.0</xsl:attribute>
+																<xsl:attribute name="VATRate">20</xsl:attribute>
 															</xsl:when>
 															<xsl:when test="translate($TaxPointDate,'-','') &lt;= translate('2008-11-30','-','') or translate($TaxPointDate,'-','') &gt;= translate('2010-01-01','-','')">
 																<xsl:attribute name="VATRate">17.5</xsl:attribute>
@@ -183,7 +185,7 @@
 													<xsl:when test="$InvoiceDate !=''">
 														<xsl:choose>
 															<xsl:when test="translate($InvoiceDate,'-','') &gt; translate('2011-01-03','-','')">
-																<xsl:attribute name="VATRate">20.0</xsl:attribute>
+																<xsl:attribute name="VATRate">20</xsl:attribute>
 															</xsl:when>
 															<xsl:when test="translate($InvoiceDate,'-','')  &lt;= translate('2008-11-30','-','') or translate($InvoiceDate,'-','')  &gt;= translate('2010-01-01','-','')">
 																<xsl:attribute name="VATRate">17.5</xsl:attribute>
@@ -196,7 +198,7 @@
 													<xsl:otherwise>
 														<xsl:choose>
 															<xsl:when test="translate($CurrentDate,'-','')  &gt; translate('2011-01-03','-','')">
-																<xsl:attribute name="VATRate">20.0</xsl:attribute>
+																<xsl:attribute name="VATRate">20</xsl:attribute>
 															</xsl:when>
 															<xsl:when test="translate($CurrentDate,'-','')  &lt;= translate('2008-11-30','-','') or translate($CurrentDate,'-','')  &gt;= translate('2010-01-01','-','')">
 																<xsl:attribute name="VATRate">17.5</xsl:attribute>
@@ -229,7 +231,7 @@
 													<xsl:when test="$TaxPointDate !=''">
 														<xsl:choose>
 															<xsl:when test="translate($TaxPointDate,'-','') &gt; translate('2011-01-03','-','')">
-																<xsl:attribute name="VATRate">20.0</xsl:attribute>
+																<xsl:attribute name="VATRate">20</xsl:attribute>
 															</xsl:when>
 															<xsl:when test="translate($TaxPointDate,'-','') &lt;= translate('2008-11-30','-','') or translate($TaxPointDate,'-','') &gt;= translate('2010-01-01','-','')">
 																<xsl:attribute name="VATRate">17.5</xsl:attribute>
@@ -242,7 +244,7 @@
 													<xsl:when test="$InvoiceDate !=''">
 														<xsl:choose>
 															<xsl:when test="translate($InvoiceDate,'-','') &gt; translate('2011-01-03','-','')">
-																<xsl:attribute name="VATRate">20.0</xsl:attribute>
+																<xsl:attribute name="VATRate">20</xsl:attribute>
 															</xsl:when>
 															<xsl:when test="translate($InvoiceDate,'-','') &lt;= translate('2008-11-30','-','') or translate($InvoiceDate,'-','') &gt;= translate('2010-01-01','-','')">
 																<xsl:attribute name="VATRate">17.5</xsl:attribute>
@@ -255,7 +257,7 @@
 													<xsl:otherwise>
 														<xsl:choose>
 															<xsl:when test="translate($CurrentDate,'-','')  &gt; translate('2011-01-03','-','')">
-																<xsl:attribute name="VATRate">20.0</xsl:attribute>
+																<xsl:attribute name="VATRate">20</xsl:attribute>
 															</xsl:when>
 															<xsl:when test="translate($CurrentDate,'-','')  &lt;= translate('2008-11-30','-','') or translate($CurrentDate,'-','')  &gt;= translate('2010-01-01','-','')">
 																<xsl:attribute name="VATRate">17.5</xsl:attribute>
