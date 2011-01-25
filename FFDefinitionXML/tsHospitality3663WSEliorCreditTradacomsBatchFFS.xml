@@ -130,7 +130,6 @@
 									<!-- 06/03/2007 - NE - As per FB 872 requested by Mark Sayers -->
 									<!-- SuppliersCode RecordPos="CDT=" LPos="1" SFPos="1"/ -->
 									<SuppliersCode RecordPos="STX=" LPos="3" SFPos="1"/>
-
 								</BuyersLocationID>
 								<!-- OPTIONAL Buyer Name, LEGAL MANDATORY, CREHDR – CDT - CNAM, The “invoice to” name -->
 								<BuyersName RecordPos="CDT=" LPos="2"/>
@@ -251,6 +250,10 @@
 						<CreditNoteTrailer>
 							<VATSubTotals>
 								<VATSubTotal>
+									<!-- CREDIT - CST - LVLA, Line sub-total amount (before settlement discount) -->
+									<DiscountedLinesTotalExclVATAtRate RecordPos="CST=" LPos="5"/>
+									<!-- CREDIT - CST - VLCA, Discount reclaimed for credit value -->
+									<DocumentDiscountAtRate RecordPos="CST=" LPos="7"/>
 									<!-- MANDATORY Line Total Ex VAT at rate, DERIVE, CREDIT – CST – EVLA, 2 d.p. implied, The total value of the all lines at this VAT rate -->
 									<DocumentTotalExclVATAtRate RecordPos="CST=" LPos="8"/>
 									<!-- MANDATORY Settlement Discount at rate, OPTIONAL, CREDIT – CST – SEDA, 2 d.p. implied, The value of any settlement discount applicable to the lines at this VAT rate -->
