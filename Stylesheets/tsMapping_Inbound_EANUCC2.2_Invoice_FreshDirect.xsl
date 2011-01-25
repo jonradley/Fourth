@@ -37,6 +37,9 @@
 												<xsl:value-of select="//sh:Sender/sh:Identifier"/>
 											</GLN>
 										</xsl:if>
+										<BuyerAssigned>
+											<xsl:value-of select="//pay:invoice/seller/BuyerAssigned"/>
+										</BuyerAssigned>	
 									</SuppliersLocationID>
 								</Supplier>
 								<ShipTo>
@@ -69,12 +72,22 @@
 												<xsl:value-of select="@number"/>
 											</LineNumber>
 										</xsl:if>
+										<PurchaseOrderReferences>
+										<PurchaseOrderReference>
+											<xsl:value-of select="//eanucc:documentCommand/documentCommandOperand/pay:invoice/invoiceLineItem/orderIdentification/documentReference/uniqueCreatorIdentification"/>
+										</PurchaseOrderReference>
+										</PurchaseOrderReferences>
 										<ProductID>
-											<xsl:if test="string(tradeItemIdentification/gtin) !='00000000000000'">
-												<GTIN>
-													<xsl:value-of select="tradeItemIdentification/gtin"/>
-												</GTIN>
-											</xsl:if>
+											<GTIN>
+												<xsl:choose>
+													<xsl:when test="tradeItemIdentification/gtin = ''">
+														<xsl:text>5555555555555</xsl:text>
+													</xsl:when>
+													<xsl:otherwise>
+														<xsl:value-of select="tradeItemIdentification/gtin"/>
+													</xsl:otherwise>
+												</xsl:choose>
+											</GTIN>
 											<xsl:if test="string(tradeItemIdentification/additionalTradeItemIdentification[additionalTradeItemIdentificationType='SUPPLIER_ASSIGNED']/additionalTradeItemIdentificationValue !=' ')">
 												<SuppliersProductCode>
 													<xsl:value-of select="tradeItemIdentification/additionalTradeItemIdentification[additionalTradeItemIdentificationType='SUPPLIER_ASSIGNED']/additionalTradeItemIdentificationValue"/>
