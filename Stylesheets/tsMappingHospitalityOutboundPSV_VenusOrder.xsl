@@ -89,7 +89,7 @@
 			<xsl:when test="ProductID/GTIN != '55555555555555'">
 				<xsl:value-of select="ProductID/GTIN"/>
 			</xsl:when>
-			<xsl:otherwise></xsl:otherwise>
+			<xsl:otherwise>1</xsl:otherwise>
 		</xsl:choose>
 		<xsl:text>|</xsl:text>
 		
