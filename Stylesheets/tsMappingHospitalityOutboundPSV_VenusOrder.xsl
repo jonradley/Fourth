@@ -96,7 +96,6 @@
 		<!--Quantity-->
 		<xsl:value-of select="format-number(OrderedQuantity,'0')"/>
 		<xsl:text>|</xsl:text>
-		<xsl:text>|</xsl:text>
 	
 	<xsl:text>&#13;&#10;</xsl:text>
 	
