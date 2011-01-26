@@ -30,10 +30,12 @@
 	<xsl:text>|</xsl:text>
 	
 	<!--Suppliers code for unit-->
-	<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
+	<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
 	<xsl:text>|</xsl:text>
 	
 	<!--Customer name-->
+	<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
+	<xsl:text> </xsl:text>
 	<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToName"/>
 	<xsl:text>|</xsl:text>
 	
