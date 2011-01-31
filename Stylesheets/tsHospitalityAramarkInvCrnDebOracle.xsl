@@ -16,10 +16,10 @@
 		<xsl:value-of select="$separator"/>
 	       <xsl:choose>
 	          <xsl:when test="substring(InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode | CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode | DebitNoteHeader/ShipTo/ShipToLocationID/BuyersCode,1,4)=1801">
-	          	<xsl:text>Aramark Servicios de Catering S.L.U</xsl:text>
+	          	<xsl:text>ARAMARK Servicios de Catering S.L.U</xsl:text>
 	          </xsl:when>
 	          <xsl:when test="substring(InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode | CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode | DebitNoteHeader/ShipTo/ShipToLocationID/BuyersCode,1,4)=1802">
-	          	<xsl:text>Aramark Servicios Integrales S.A.</xsl:text>
+	          	<xsl:text>ARAMARK Servicios Integrales S.A.U</xsl:text>
 	          </xsl:when>
 	          <xsl:otherwise>
 	          	<xsl:text>Unknown</xsl:text>
@@ -90,6 +90,7 @@
 				<xsl:text>Unknown</xsl:text>			
 			</xsl:otherwise>
 		</xsl:choose>
+		<xsl:value-of select="$separator"/>
 		<xsl:value-of select="$separator"/>
 		<xsl:value-of select="$separator"/>
 		<xsl:value-of select="$separator"/>
