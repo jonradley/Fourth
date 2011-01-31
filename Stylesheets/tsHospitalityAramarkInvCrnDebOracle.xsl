@@ -151,7 +151,6 @@
 		<xsl:value-of select="$separator"/>
 		<xsl:value-of select="$separator"/>
 		<xsl:value-of select="$separator"/>
-		<xsl:value-of select="$separator"/>
 		<xsl:value-of select="$separator"/>		
 		
 		<xsl:for-each select="InvoiceDetail/InvoiceLine | CreditNoteDetail/CreditNoteLine | DebitNoteDetail/DebitNoteLine">
