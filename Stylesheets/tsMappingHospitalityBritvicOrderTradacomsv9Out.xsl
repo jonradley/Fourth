@@ -250,15 +250,26 @@
 
 					DIN=060907+060907++abcdefghijklmnopqrstuvwxyzabcdefghijklmn:opqrstuvwxyzabcdefghijklmnopq’
 			-->			
-			<xsl:variable name="sSpeInstructions" select="string(//OrderedDeliveryDetails/SpecialDeliveryInstructions)"/>
-			<!--	DIN-DINS-1394 (40 Characters long) -->
-			<xsl:value-of select="substring($sSpeInstructions,1,39)"/>
-			<xsl:text>:</xsl:text>
-			<!-- DIN-DINS-1395 (29 Characters long) -->
-			<xsl:value-of select="substring($sSpeInstructions,40,28)"/>
+
+			<xsl:variable name="sSplitDelInstruct">
+			
+				<xsl:call-template name="mobjGroupText">
+					<xsl:with-param name="vsText" select="string(/PurchaseOrder/PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions)"/>
+					<xsl:with-param name="vnFieldLength" select="40"/>
+					<xsl:with-param name="vnGroupSize" select="2"/>
+				</xsl:call-template>
+			
+			</xsl:variable>
+			
+			<!-- Write delivery instructions, 4 sub fields per record -->		
+			<xsl:call-template name="writeDelInstruct">
+				<xsl:with-param name="vnCount" select="0"/>
+				<xsl:with-param name="vobjSplitText" select="msxsl:node-set($sSplitDelInstruct)"/>
+				<xsl:with-param name="sRecordSep" select="$sRecordSep"/>
+			</xsl:call-template>
 			
 		<xsl:value-of select="$sRecordSep"/>
-		
+				
 		
 		<!--
 		<xsl:text>DNA=</xsl:text>
@@ -569,10 +580,153 @@ function msEscape(vsField){
    
 ]]></msxsl:script>
 
+<!--=======================================================================================
+  Routine        : mobjGroupText()
+  Description    : Escapes vsText and passes it to msSplitText_EscapeAware()
+				  
+  Inputs         : 
+  Outputs        : 
+  Returns        : A string that will be passed into msxsl:node-set()
+  Author         : Robert Cambridge
+  Version        : 1.0
+  Alterations    : (none)
+ =======================================================================================-->	
+	<xsl:template name="mobjGroupText">
+		<xsl:param name="vsText"/>
+		<xsl:param name="vnFieldLength"/>
+		<xsl:param name="vnGroupSize"/>
+
+		<xsl:call-template name="msSplitText_EscapeAware">
+			<xsl:with-param name="vsText" select="js:msEscape($vsText)"/>
+			<xsl:with-param name="vnFieldLength" select="$vnFieldLength"/>
+			<xsl:with-param name="vnGroupSize" select="$vnGroupSize"/>
+		</xsl:call-template>	
+	
+	</xsl:template>
 
 
 
+	<!--=======================================================================================
+  Routine        : msSplitText_EscapeAware()
+  Description    : Creates and xml fragment of the form
+    			
+								<Field Group="1">blah</Field>
+								<Field Group="1">rhubarb</Field>
+								<Field Group="1">yadder</Field>
+								<Field Group="1">yak</Field>
+								<Field Group="2">guff</Field>
+	
+							The content of <Field/> is controlled by vnFieldLength
+							@Group relates <Field/> elements together, the number in each groups is controlled by vnGroupSize
+				  
+  Inputs         : 
+  Outputs        : 
+  Returns        : A string
+  Author         : Robert Cambridge
+  Version        : 1.0
+  Alterations    : (none)
+ =======================================================================================-->	
+	<xsl:template name="msSplitText_EscapeAware">
+		<xsl:param name="vsText"/>
+		<xsl:param name="vnFieldLength"/>
+		<xsl:param name="vnGroupSize"/>
+		<xsl:param name="vnCurrentGroup" select="0"/>
+		<xsl:param name="vnCount" select="0"/>
+		
+		<!-- the next group of characters, shorted if necessary so as not to break an escape sequences -->
+		<xsl:variable name="sFirstField" select="js:msTruncate($vsText, $vnFieldLength)"/>
+		
+		<xsl:choose>
+		
+			<!-- Base case, no text left to process -->
+			<xsl:when test="$sFirstField = ''"/>
+			
+			<xsl:otherwise>
+			
+				<!-- Write out this group of characters -->			
+				<Field>
+					<xsl:attribute name="Group">
+						<xsl:value-of select="$vnCurrentGroup"/>
+					</xsl:attribute>
+					
+					<xsl:value-of select="$sFirstField"/>
+				
+				</Field>
+				
+				<!-- Process the rest of the input -->
+				<xsl:call-template name="msSplitText_EscapeAware">
+					<xsl:with-param name="vsText" select="substring-after($vsText, $sFirstField)"/>
+					<xsl:with-param name="vnFieldLength" select="$vnFieldLength"/>
+					<xsl:with-param name="vnGroupSize" select="$vnGroupSize"/>
+					<xsl:with-param name="vnCurrentGroup">
+						<xsl:choose>
+							<xsl:when test="$vnCount + 1 = $vnGroupSize">
+								<xsl:value-of select="$vnCurrentGroup + 1"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="$vnCurrentGroup"/>
+							</xsl:otherwise>
+						</xsl:choose>					
+					</xsl:with-param>
+					<xsl:with-param name="vnCount">
+						<xsl:choose>
+							<xsl:when test="$vnCount + 1 = $vnGroupSize">0</xsl:when>							
+							<xsl:otherwise>
+								<xsl:value-of select="$vnCount + 1"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					
+					</xsl:with-param>
+				</xsl:call-template>
+			
+			</xsl:otherwise>
+			
+		</xsl:choose>
+	
+	</xsl:template>
+	
+	<!--=======================================================================================
+  Routine        : writeDelInstruct()
+  Description    : Takes xml fragment of the form
+    			
+								<Field Group="1">blah</Field>
+								<Field Group="1">rhubarb</Field>
+								<Field Group="1">yadder</Field>
+								<Field Group="1">yak</Field>
+								<Field Group="2">guff</Field>
+	
+							and writes all <Field/> elements in the same group into one record
+							recusring until noi more records are required
+				  
+  Inputs         : 
+  Outputs        : 
+  Returns        : A string
+  Author         : Robert Cambridge
+  Version        : 1.0
+  Alterations    : (none)
+ =======================================================================================-->	
+	<xsl:template name="writeDelInstruct">
+		<xsl:param name="vnCount"/>
+		<xsl:param name="vobjSplitText"/>
+		<xsl:param name="sRecordSep"/>
 
+		<xsl:choose>
+			<!-- No work left ot do -->
+			<xsl:when test="count($vobjSplitText/Field[@Group = $vnCount]) = 0"/>
+			
+			<!-- Write this group into a sequence of subfields of field 4 -->
+			<xsl:otherwise>
+				
+					<xsl:for-each select="$vobjSplitText/Field[@Group = $vnCount]">
+						<xsl:value-of select="."/>
+						<xsl:if test="position() != last()">
+							<xsl:text>:</xsl:text>			
+						</xsl:if>
+					</xsl:for-each>
+			</xsl:otherwise>
+		</xsl:choose>
+	
+	</xsl:template>
 
 
 </xsl:stylesheet>
