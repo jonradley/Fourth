@@ -88,18 +88,15 @@
 		<xsl:text>|</xsl:text>
 		
 		<!--Pack size-->
-		<!--xsl:call-template name="characterStrip">
-			<xsl:with-param name="inputText" select="substring-before(PackSize,'x')"/>
-		</xsl:call-template-->
-		<xsl:text>|</xsl:text>
-		
-		<!--Barcode-->
 		<xsl:choose>
 			<xsl:when test="ProductID/GTIN != '55555555555555'">
 				<xsl:value-of select="ProductID/GTIN"/>
 			</xsl:when>
 			<xsl:otherwise>1</xsl:otherwise>
 		</xsl:choose>
+		<xsl:text>|</xsl:text>
+		
+		<!--Barcode-->
 		<xsl:text>|</xsl:text>
 		
 		<!--Quantity-->
