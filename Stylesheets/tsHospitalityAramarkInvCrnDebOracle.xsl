@@ -42,10 +42,10 @@
 		<xsl:value-of select="$separator"/>
 	       <xsl:choose>	
 		       <xsl:when test="name()!='Invoice'">	
-				<xsl:value-of select="format-number(number(InvoiceTrailer/DocumentTotalExclVAT | CreditNoteTrailer/DocumentTotalExclVAT | DebitNoteTrailer/DocumentTotalExclVAT)*-1,'0.00')"/>
+				<xsl:value-of select="format-number(number(InvoiceTrailer/DocumentTotalInclVAT | CreditNoteTrailer/DocumentTotalInclVAT | DebitNoteTrailer/DocumentTotalInclVAT)*-1,'0.00')"/>
 			</xsl:when>
 		       <xsl:otherwise>	
-				<xsl:value-of select="format-number(InvoiceTrailer/DocumentTotalExclVAT | CreditNoteTrailer/DocumentTotalExclVAT | DebitNoteTrailer/DocumentTotalExclVAT,'0.00')"/>
+				<xsl:value-of select="format-number(InvoiceTrailer/DocumentTotalInclVAT | CreditNoteTrailer/DocumentTotalInclVAT | DebitNoteTrailer/DocumentTotalInclVAT,'0.00')"/>
 			</xsl:otherwise>
 	       </xsl:choose>
 		<xsl:value-of select="$separator"/>
