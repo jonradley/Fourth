@@ -8,7 +8,7 @@ R Cambridge	| 2008-12-02		| 2600 Created Module (based on tsMappingHospitalityIn
 **********************************************************************
 K O'shaughnessy|	2009-08-13	| 3062 change to pick up invoiced quanity from pack size not amount
 **********************************************************************
-				|						|				
+M Dimant			|	2011-02-08	| 4213 change to reflect new location of  UOM			
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	<xsl:output method="xml"/>
@@ -249,7 +249,7 @@ K O'shaughnessy|	2009-08-13	| 3062 change to pick up invoiced quanity from pack 
 											<xsl:attribute name="UnitOfMeasure">
 												<xsl:call-template name="decodeUoM">
 													<xsl:with-param name="sInput">
-													<xsl:value-of select="Price/@UOMCode"/>
+													<xsl:value-of select="Price/@UOMDescription"/>
 													</xsl:with-param>
 												</xsl:call-template>
 											</xsl:attribute>
