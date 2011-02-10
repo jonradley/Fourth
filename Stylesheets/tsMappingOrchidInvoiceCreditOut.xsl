@@ -145,11 +145,7 @@
 
 					<xsl:for-each select="key('keyLinesByAccountAndVATAndPurchaseOrderReference',concat($AccountCode,'::',$VATCode,'::',$PurchaseOrderReference))[generate-id() = generate-id(key('keyLinesByAccountAndVATAndPurchaseOrderReferenceAndDespatchDate',concat($AccountCode,'::',$VATCode,'::',$PurchaseOrderReference,'::',DeliveryNoteReferences/DespatchDate))[1])]">
 						<xsl:sort select="DeliveryNoteReferences/DespatchDate" data-type="text"/>
-						<xsl:variable name="DespatchDate">
-							<xsl:call-template name="formatDate">
-								<xsl:with-param name="xmlDate" select="DeliveryNoteReferences/DespatchDate"/>
-							</xsl:call-template>
-						</xsl:variable>
+						<xsl:variable name="DespatchDate" select="DeliveryNoteReferences/DespatchDate"/>
 
 						<!-- now output a summary line for the current Account Code, VAT Code, Purchase Order Reference and Despatch Date combination -->
 						<xsl:value-of select="$CompanyCode"/>
@@ -181,7 +177,9 @@
 						<xsl:text>,</xsl:text>
 						<xsl:value-of select="$PurchaseOrderReference"/>
 						<xsl:text>,</xsl:text>
-						<xsl:value-of select="$DespatchDate"/>
+						<xsl:call-template name="formatDate">
+							<xsl:with-param name="xmlDate" select="$DespatchDate"/>
+						</xsl:call-template>
 						<xsl:value-of select="$NewLine"/>
 					</xsl:for-each>
 				</xsl:for-each>
