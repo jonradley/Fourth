@@ -164,10 +164,10 @@
 						<xsl:text>,</xsl:text>
 						<xsl:choose>
 							<xsl:when test="/Invoice">
-								<xsl:value-of select="format-number(sum(//InvoiceLine[LineExtraData/AccountCode = $AccountCode and VATCode = $VATCode and PurchaseOrderReferences/PurchaseOrderReference = $PurchaseOrderReference and DeliveryNoteReferences/DespatchDate = $DespatchDate]/LineValueExclVAT),'0.00')"/>
+								<xsl:value-of select="format-number(sum(//InvoiceLine[LineExtraData/AccountCode = $AccountCode and VATCode = $VATCode and (PurchaseOrderReferences/PurchaseOrderReference = $PurchaseOrderReference or not(PurchaseOrderReferences/PurchaseOrderReference)) and (DeliveryNoteReferences/DespatchDate = $DespatchDate or not(DeliveryNoteReferences/DespatchDate))]/LineValueExclVAT),'0.00')"/>
 							</xsl:when>
 							<xsl:otherwise>
-								<xsl:value-of select="format-number(-1 * sum(//CreditNoteLine[LineExtraData/AccountCode = $AccountCode and VATCode = $VATCode and PurchaseOrderReferences/PurchaseOrderReference = $PurchaseOrderReference and DeliveryNoteReferences/DespatchDate = $DespatchDate]/LineValueExclVAT),'0.00')"/>
+								<xsl:value-of select="format-number(-1 * sum(//CreditNoteLine[LineExtraData/AccountCode = $AccountCode and VATCode = $VATCode and (PurchaseOrderReferences/PurchaseOrderReference = $PurchaseOrderReference or not(PurchaseOrderReferences/PurchaseOrderReference)) and (DeliveryNoteReferences/DespatchDate = $DespatchDate or not(DeliveryNoteReferences/DespatchDate))]/LineValueExclVAT),'0.00')"/>
 							</xsl:otherwise>
 						</xsl:choose>
 						<xsl:text>,</xsl:text>
