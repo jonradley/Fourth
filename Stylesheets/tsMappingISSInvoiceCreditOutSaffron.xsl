@@ -102,7 +102,7 @@
 
   </xsl:template>
   
-	<xsl:template match="/BatchRoot/Invoice | /BatchRoot/CreditNote">
+	<xsl:template match="/Invoice | /CreditNote">
 
 		<xsl:variable name="NewLine">
 			<xsl:text>&#13;&#10;</xsl:text>
@@ -117,7 +117,7 @@
 
 		<!-- Invoice Date -->
 		<xsl:choose>
-			<xsl:when test="/BatchRoot/CreditNote">
+			<xsl:when test="/CreditNote">
 				<xsl:value-of select="script:msFormatDate(CreditNoteHeader/CreditNoteReferences/CreditNoteDate)"/>
 			</xsl:when>
 			<xsl:otherwise>
@@ -147,7 +147,7 @@
 
 		<!-- Lines Total Ex VAT -->
 		<xsl:choose>
-			<xsl:when test="/BatchRoot/Invoice">
+			<xsl:when test="/Invoice">
 				<xsl:value-of select="format-number(InvoiceTrailer/DocumentTotalExclVAT,'0.00')"/>
 			</xsl:when>
 			<xsl:otherwise>
@@ -158,7 +158,7 @@
 		
 		<!-- Tax Amount Total -->
 		<xsl:choose>
-			<xsl:when test="/BatchRoot/Invoice">
+			<xsl:when test="/Invoice">
 				<xsl:value-of select="format-number(InvoiceTrailer/VATAmount,'0.00')"/>
 			</xsl:when>
 			<xsl:otherwise>
@@ -169,7 +169,7 @@
 
 		<!-- Total Payable -->
 		<xsl:choose>
-			<xsl:when test="/BatchRoot/Invoice">
+			<xsl:when test="/Invoice">
 				<xsl:value-of select="format-number(InvoiceTrailer/DocumentTotalInclVAT,'0.00')"/>
 			</xsl:when>
 			<xsl:otherwise>
@@ -256,7 +256,7 @@
 				<xsl:text>,</xsl:text>
 	
 				<xsl:choose>
-					<xsl:when test="/BatchRoot/Invoice">
+					<xsl:when test="/Invoice">
 						<xsl:value-of select="format-number(sum(../../../InvoiceTrailer/VATSubTotals/VATSubTotal[@VATCode= $VATCode and number(@VATRate) = number($VATRate)]/DocumentTotalExclVATAtRate),'0.00')"/>
 					</xsl:when>
 					<xsl:otherwise>
@@ -266,7 +266,7 @@
 				<xsl:text>,</xsl:text>
 			
 				<xsl:choose>
-					<xsl:when test="/BatchRoot/Invoice">
+					<xsl:when test="/Invoice">
 						<xsl:value-of select="format-number(sum(../../../InvoiceTrailer/VATSubTotals/VATSubTotal[@VATCode= $VATCode and number(@VATRate) = number($VATRate)]/VATAmountAtRate),'0.00')"/>
 					</xsl:when>
 					<xsl:otherwise>
@@ -290,7 +290,7 @@
 
 			<!-- The delivery note reference is mandatory in Saffron. It is optional in our internal schema. If it is missing then send the document reference -->
 			<xsl:choose>
-				<xsl:when test="/BatchRoot/Invoice/InvoiceDetail/InvoiceLine/DeliveryNoteReferences/DeliveryNoteReference != ''">
+				<xsl:when test="/Invoice/InvoiceDetail/InvoiceLine/DeliveryNoteReferences/DeliveryNoteReference != ''">
 					<xsl:value-of select="substring(DeliveryNoteReferences/DeliveryNoteReference,1,20)"/>
 				</xsl:when>
 				<xsl:otherwise>
@@ -303,7 +303,7 @@
 			<xsl:text>,</xsl:text>
 
 			<xsl:choose>
-				<xsl:when test="/BatchRoot/Invoice">
+				<xsl:when test="/Invoice">
 					<xsl:value-of select="format-number(InvoicedQuantity,'0.000')"/>
 				</xsl:when>
 				<xsl:otherwise>
@@ -316,7 +316,7 @@
 			<xsl:text>,</xsl:text>
 
 			<xsl:choose>
-				<xsl:when test="/BatchRoot/Invoice">
+				<xsl:when test="/Invoice">
 					<xsl:value-of select="format-number(LineValueExclVAT,'0.00')"/>
 				</xsl:when>
 				<xsl:otherwise>
