@@ -115,8 +115,8 @@
 		<!-- Strore the Reciepient Code for Sender-->
 		<xsl:variable name="valRecipientsCodeForSender">
 			<xsl:choose>
-				<xsl:when test="contains(TradeSimpleHeader/RecipientsCodeForSender,'-')">
-					<xsl:value-of select="substring-before(TradeSimpleHeader/RecipientsCodeForSender,'-')" />
+				<xsl:when test="substring(TradeSimpleHeader/RecipientsCodeForSender,1,3) = '670'">
+					<xsl:text>V009000</xsl:text>
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:value-of select="TradeSimpleHeader/RecipientsCodeForSender" />
