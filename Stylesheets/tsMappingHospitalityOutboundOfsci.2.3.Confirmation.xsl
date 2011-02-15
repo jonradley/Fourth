@@ -89,9 +89,7 @@
 			</xsl:attribute>
 		
 			<responseIdentification>
-				<uniqueCreatorIdentification>
-					<xsl:value-of select="PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationReference"/>
-				</uniqueCreatorIdentification>
+				<uniqueCreatorIdentification/>
 				<contentOwner>
 					<xsl:value-of select="PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/Supplier/SuppliersLocationID/GLN"/>
 				</contentOwner>
