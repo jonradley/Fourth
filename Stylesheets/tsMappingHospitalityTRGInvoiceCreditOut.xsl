@@ -20,7 +20,7 @@
 ==========================================================================================
  25/05/2010	| Sandeep Sehgal| FB3516. Updated as per the Spec ver 1.2  
 ==========================================================================================
-           	|                 	|
+15/02/2010  | Andrew Barber | Hard coded RecipientsCodeForSender match on substring of '670' to 'V009000'.
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="text" encoding="UTF-8"/>
@@ -47,8 +47,8 @@
 		<!-- Strore the Reciepient Code for Sender-->
 		<xsl:variable name="valRecipientsCodeForSender">
 			<xsl:choose>
-				<xsl:when test="contains(TradeSimpleHeader/RecipientsCodeForSender,'/')">
-					<xsl:value-of select="substring-before(TradeSimpleHeader/RecipientsCodeForSender,'/')" />
+				<xsl:when test="substring(TradeSimpleHeader/RecipientsCodeForSender,1,3) = '670'">
+					<xsl:text>V009000</xsl:text>
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:value-of select="TradeSimpleHeader/RecipientsCodeForSender" />
@@ -115,8 +115,8 @@
 		<!-- Strore the Reciepient Code for Sender-->
 		<xsl:variable name="valRecipientsCodeForSender">
 			<xsl:choose>
-				<xsl:when test="contains(TradeSimpleHeader/RecipientsCodeForSender,'/')">
-					<xsl:value-of select="substring-before(TradeSimpleHeader/RecipientsCodeForSender,'/')" />
+				<xsl:when test="contains(TradeSimpleHeader/RecipientsCodeForSender,'-')">
+					<xsl:value-of select="substring-before(TradeSimpleHeader/RecipientsCodeForSender,'-')" />
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:value-of select="TradeSimpleHeader/RecipientsCodeForSender" />
