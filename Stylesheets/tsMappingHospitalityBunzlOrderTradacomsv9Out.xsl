@@ -38,7 +38,7 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  	23/09/2009	| R Cambridge		|	2839 - removed supplier's ANA/GLN overide added in April 09 (and removed branch for Lockharts too)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	          	|            		|	
+ 	17/02/2011	| R Cambridge		|	4238 - CDT/CIDN/2 to read Aramark for Lockhart orders from Aramark
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	          	|            		|	
 =======================================================================================-->
@@ -163,7 +163,7 @@
 					<!-- check value -->
 					<xsl:choose>
 						<!-- spotting for Aramark -->
-						<xsl:when test="contains($sTradingRelationshipValue,'ARAM') ">
+						<xsl:when test="contains($sTradingRelationshipValue,'ARAM') or contains($sTradingRelationshipValue,'ARAK')">
 							<xsl:text>ARAMARK</xsl:text>
 						</xsl:when>
 						<!-- Any other value -->
