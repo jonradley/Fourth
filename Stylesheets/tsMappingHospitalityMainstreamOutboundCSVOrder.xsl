@@ -16,7 +16,7 @@
 '******************************************************************************************
 ' 10/10/2005  | Lee Boyton   | Corrected delivery date element name.
 '******************************************************************************************
-'             |              | 
+' 18/02/2011  | KO              | Bugfix FB 4254 
 '******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -117,7 +117,7 @@
 			<xsl:text>"</xsl:text>
 		</xsl:if>
 		<xsl:value-of select="user:msEscapeQuotes(substring(PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine2,1,40))"/>
-		<xsl:if test="contains(user:msEscapeQuotes(substring(PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine1,2,40)),',')">
+		<xsl:if test="contains(user:msEscapeQuotes(substring(PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine2,1,40)),',')">
 			<xsl:text>"</xsl:text>
 		</xsl:if>
 		<xsl:text>,</xsl:text>
