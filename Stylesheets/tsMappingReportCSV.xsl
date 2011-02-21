@@ -71,7 +71,7 @@
 						<xsl:text>&#xD;</xsl:text>
 						<xsl:for-each select="Columns/Column[(@GroupBy != '1' and @GroupBy != 'true') or not(@GroupBy)]">
 							<xsl:choose>
-								<xsl:when test="@DataType = 6 or @DataType=14 or @DataType=5 or @DataType=131">
+								<xsl:when test="(@DataType = 6 or @DataType=14 or @DataType=5 or @DataType=131) and . != ''">
 									<xsl:value-of select="script:gsFormatNumberByLocale(.,2,number($LocaleID),0)"/><xsl:value-of select="$CommaCharacter"></xsl:value-of>
 								</xsl:when>								
 								<xsl:otherwise>
