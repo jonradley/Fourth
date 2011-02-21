@@ -93,7 +93,7 @@
 				<!--Trailer Details-->
 				<xsl:if test="/Report/TrailerDetails">
 					<xsl:for-each select="/Report/TrailerDetails/TrailerDetail">
-						<xsl:call-template name="SelectString"><xsl:with-param name="InputString" select="script:msFormatForCSV(Description)"/><xsl:with-param name="ReportID" select="$ReportID"/></xsl:call-template><xsl:value-of select="$CommaCharacter"></xsl:value-of><xsl:value-of select="script:gsFormatNumberByLocale(Value,2,number($LocaleID),0)"/><xsl:text>&#xD;</xsl:text>
+						<xsl:call-template name="SelectString"><xsl:with-param name="InputString" select="script:msFormatForCSV(Description)"/><xsl:with-param name="ReportID" select="$ReportID"/></xsl:call-template><xsl:value-of select="$CommaCharacter"></xsl:value-of><xsl:if test="Value != ''"><xsl:value-of select="script:gsFormatNumberByLocale(Value,2,number($LocaleID),0)"/></xsl:if><xsl:text>&#xD;</xsl:text>
 					</xsl:for-each>
 				</xsl:if>
 			
