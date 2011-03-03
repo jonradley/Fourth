@@ -20,16 +20,10 @@
 ******************************************************************************************
  14/02/2008 | A Sheppard | Cater for budget data being in header extra data
 ******************************************************************************************
- 10/06/2008 | A Sheppard | 2269. Genericised
+10/12/2009 | Steve Hewitt | Branched for live to include FB3207 but exclude 2269
 ******************************************************************************************
- 23/11/2009 | Rave Tech   | 3207.Validate the username and password should non-blank.
- ******************************************************************************************
-  15/12/2009 | Sandeep Sehgal  | 3270.Form Action pulled from DocBuilder based on DocTypeTo attribute 
- ******************************************************************************************
-  08/01/2009 | Steve Hewitt        | 2269. Rolled out the changes made under 2269, they were incorrect and not needed
-   ******************************************************************************************
-14/01/2010 | Sandeep Sehgal  |  3328 Added option for amedning the order
- ******************************************************************************************
+03/03/2010 | Steve Hewitt | Branch file turned into live. Rolled out 3270 and 3328. 2269 was already gone as changes were unnecessary.
+******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:user="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl user">
 	<xsl:output method="html"/>
@@ -125,7 +119,7 @@
 							</xsl:when>
 							<xsl:otherwise>
 								<!-- read POST url added by pre-map out processor -->
-								<xsl:value-of select="/PurchaseOrder/DocBuilder/Url[@DocTypeTo=167]"/>
+								<xsl:value-of select="//PurchaseOrder/DocBuilder/Url"/>
 								<xsl:text>OrderID=</xsl:text>
 								<xsl:value-of select="//PurchaseOrder/PurchaseOrderHeader/OrderID"/>
 							</xsl:otherwise>
@@ -560,14 +554,15 @@
 								<xsl:text>2. Please enter a comment to be displayed to the unit.</xsl:text>
 								<br/>
 								<xsl:text>3. Click on the Reject button.</xsl:text>
-                                                                <br/><br/>
-         							<xsl:text>To amend this overspend prior to approval: </xsl:text>
+								<br/><br/>
+								<xsl:text>To amend this overspend prior to approval: </xsl:text>
 								<br/>
 								<xsl:text>1. Please enter your username and password.</xsl:text>
 								<br/>
 								<xsl:text>2. Click on the Amend button.</xsl:text>
 								<br/>
 								<xsl:text>3. On the page to which you are taken, amend quantities as necessary and click the Approve button on that page.</xsl:text>
+
 							</td>
 						</tr>
 						<tr>
@@ -617,7 +612,6 @@
 			}		
 
 
-		]]></script>
-
+		]]></script>		
 	</xsl:template>
 </xsl:stylesheet>
