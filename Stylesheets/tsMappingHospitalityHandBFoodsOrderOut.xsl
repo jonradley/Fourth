@@ -8,6 +8,8 @@ R Cambridge	| 2010-08-02		| 3796 Created Module
 **********************************************************************
 R Cambridge	| 2011-02-23		| 4260 added delivery instructions support
 **********************************************************************
+R Cambridge	| 2011-03-09		| 4260 don't write blank delivery instruction records
+**********************************************************************
 				|						|
 **********************************************************************
 				|						|				
@@ -19,7 +21,7 @@ R Cambridge	| 2011-02-23		| 4260 added delivery instructions support
 	<xsl:variable name="FIELD_SEPERATOR" select="'|'"/>
 	<xsl:variable name="RECORD_SEPERATOR" select="'&#13;&#10;'"/>
 	<xsl:variable name="DELIVERY_TEXT_LENGTH" select="50"/>
-	<xsl:variable name="TEXT_BREAK_CHARACTERS" select="',. '"/>
+	<xsl:variable name="TEXT_BREAK_CHARACTERS" select="' ,.'"/>
 	
 	
 
@@ -421,13 +423,13 @@ R Cambridge	| 2011-02-23		| 4260 added delivery instructions support
 		
 		<xsl:variable name="xmlDeliveryInstructions">
 			<xsl:call-template name="xmlSplitText">
-				<xsl:with-param name="inputText" select="/PurchaseOrder/PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions"/>
+				<xsl:with-param name="inputText" select="string(/PurchaseOrder/PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions)"/>
 				<xsl:with-param name="fieldSize" select="$DELIVERY_TEXT_LENGTH"/>	
 				<xsl:with-param name="acceptableBreakChars" select="$TEXT_BREAK_CHARACTERS"/>		
 			</xsl:call-template>		
 		</xsl:variable>
 		
-		<!--xsl:copy-of select="count(msxsl:node-set($xmlDeliveryInstructions)/TextBlock)"/-->		
+		<!--xsl:copy-of select="msxsl:node-set($xmlDeliveryInstructions)/TextBlock"/>	-->	
 		<xsl:for-each select="msxsl:node-set($xmlDeliveryInstructions)/TextBlock">
 		
 			<xsl:text xml:space="preserve">CLD</xsl:text>
@@ -636,7 +638,8 @@ R Cambridge	| 2011-02-23		| 4260 added delivery instructions support
 				<xsl:call-template name="getTextBlock">
 					<xsl:with-param name="inputText" select="$inputText"/>
 					<xsl:with-param name="candidateEndPosition" select="$candidateEndPosition - 1"/>
-					<xsl:with-param name="maxEndPosition" select="$maxEndPosition"/>					
+					<xsl:with-param name="maxEndPosition" select="$maxEndPosition"/>
+					<xsl:with-param name="acceptableBreakChars" select="$acceptableBreakChars"/>			
 				</xsl:call-template>
 			</xsl:otherwise>
 			
