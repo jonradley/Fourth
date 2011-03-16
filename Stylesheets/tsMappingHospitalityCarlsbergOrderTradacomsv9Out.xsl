@@ -48,6 +48,9 @@
 		<xsl:variable name="sORPBRCode">
 			<xsl:text>CCAR002</xsl:text>
 		</xsl:variable>
+		<xsl:variable name="sBAYCode">
+			<xsl:text>S67900581201</xsl:text>
+		</xsl:variable>		
 		<xsl:variable name="sFileGenerationDate" select="vb:msFileGenerationDate()"/>
 		<xsl:text>STX=</xsl:text>
 		<xsl:text>ANA:1+</xsl:text>
@@ -134,6 +137,9 @@
 			<xsl:when test="$sORPBRCode = $sSCFR">
 				<xsl:text>5999995145710</xsl:text>
 			</xsl:when>
+			<xsl:when test="$sBAYCode = $sSCFR">
+				<xsl:text>5060166760243</xsl:text>
+			</xsl:when>		
 			<!-- all other cases -->
 			<xsl:otherwise>
 				<xsl:value-of select="PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/>
