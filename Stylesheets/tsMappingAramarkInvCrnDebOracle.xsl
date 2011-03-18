@@ -148,7 +148,7 @@
 		<xsl:value-of select="$separator"/>
 		<xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode | CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode | DebitNoteHeader/ShipTo/ShipToLocationID/BuyersCode"/>
 		<xsl:value-of select="$separator"/>			
-		<xsl:text>8101</xsl:text>
+		<xsl:text>8100</xsl:text>
 		<xsl:value-of select="$separator"/>			
 		<xsl:text>184000</xsl:text>
 		<xsl:value-of select="$separator"/>					
