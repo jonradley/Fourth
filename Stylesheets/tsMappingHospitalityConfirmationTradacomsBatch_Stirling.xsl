@@ -177,10 +177,10 @@ H Mahbub	|	2010-05-17		| Created file
 							<ProductDescription>
 								<xsl:value-of select="ProductDescription"/>
 							</ProductDescription>
-							<OrderedQuantity>
+							<!--OrderedQuantity>
 								<xsl:copy-of select="ConfirmedQuantity/@UnitOfMeasure"/>
 								<xsl:value-of select="format-number(OrderedQuantity div 1000,'0.00')"/>
-							</OrderedQuantity>
+							</OrderedQuantity-->
 							<ConfirmedQuantity>
 								<xsl:copy-of select="ConfirmedQuantity/@UnitOfMeasure"/>
 								<xsl:value-of select="format-number(ConfirmedQuantity div 1000,'0.00')"/>
