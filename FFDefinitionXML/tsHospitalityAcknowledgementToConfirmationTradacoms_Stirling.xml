@@ -140,7 +140,7 @@
 				</PurchaseOrderConfirmationReferences>
 				<OrderedDeliveryDetails>
 					<!--DeliveryType RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/-->
-					<DeliveryDate RecordPos="AQD" LPos="5" SFPos="1"/>
+					<!--DeliveryDate RecordPos="AQD" LPos="5" SFPos="1"/-->
 					<!--DeliverySlot>
 						<SlotStart RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
 						<SlotEnd RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
@@ -167,7 +167,7 @@
 						<BuyersProductCode RecordPos="ALD=" LPos="4" SFPos="2"/>
 					</ProductID>
 					<ProductDescription RecordPos="ALD=" LPos="9" SFPos="1"/>
-					<OrderedQuantity RecordPos="ALD=" LPos="5" SFPos="2"/>
+					<OrderedQuantity RecordPos="ALD=" LPos="5" SFPos="1"/>
 					<ConfirmedQuantity RecordPos="ALD=" LPos="6" SFPos="2">
 						<ffsAttribute1 name="UnitOfMeasure" RecordPos="ALD=" LPos="6" SFPos="3"/>
 					</ConfirmedQuantity>
