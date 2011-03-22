@@ -56,10 +56,10 @@
 			</xsl:choose>
 		</xsl:variable>
 		
-		<xsl:for-each select="(/Invoice/InvoiceDetail/InvoiceLine)[generate-id() = generate-id(key('keyLinesByAccount',LineExtraData/AccountCode)[1])]">
-			<xsl:sort select="LineExtraData/AccountCode" data-type="text"/> 
+		<xsl:for-each select="(/Invoice/InvoiceDetail/InvoiceLine)[generate-id() = generate-id(key('keyLinesByAccount',translate(LineExtraData/AccountCode,'&quot;',''))[1])]">
+			<xsl:sort select="translate(LineExtraData/AccountCode,'&quot;','')" data-type="text"/> 
 			<!-- Strore the Account Code-->	
-			<xsl:variable name="AccountCode" select="LineExtraData/AccountCode"/> 	
+			<xsl:variable name="AccountCode" select="translate(LineExtraData/AccountCode,'&quot;','')"/> 	
 			<xsl:value-of select="$varInvoiceDate"/>
 			<xsl:text>,</xsl:text>
 			<xsl:value-of select="$valInvoiceReference"/>
@@ -70,7 +70,7 @@
 			<xsl:text>,</xsl:text>
                <xsl:value-of select="$AccountCode"/>
 			<xsl:text>,</xsl:text>
-			<xsl:value-of select="format-number((sum(//InvoiceLine[LineExtraData/AccountCode = $AccountCode]/LineValueExclVAT)-sum(//InvoiceLine[LineExtraData/AccountCode = $AccountCode]/LineDiscountValue)),'0.00')"/>
+			<xsl:value-of select="format-number((sum(//InvoiceLine[translate(LineExtraData/AccountCode,'&quot;','') = $AccountCode]/LineValueExclVAT)-sum(//InvoiceLine[translate(LineExtraData/AccountCode,'&quot;','') = $AccountCode]/LineDiscountValue)),'0.00')"/>
 			<xsl:text>,</xsl:text>
 			<xsl:value-of select="$valRecipientsCodeForSender"/>
 			<xsl:text>&#13;&#10;</xsl:text>	
