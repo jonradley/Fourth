@@ -25,7 +25,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="text" encoding="UTF-8"/>
 	<!--Define key to be used for finding distinct line information. -->
-	<xsl:key name="keyLinesByAccount" match="InvoiceLine | CreditNoteLine" use="LineExtraData/AccountCode"/>	
+	<xsl:key name="keyLinesByAccount" match="InvoiceLine | CreditNoteLine" use="translate(LineExtraData/AccountCode,'&quot;','')"/>	
 
 	<xsl:template match="/Invoice">
 		<!-- Strore the Invoice Date-->
