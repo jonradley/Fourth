@@ -21,6 +21,12 @@
  25/05/2010	| Sandeep Sehgal| FB3516. Updated as per the Spec ver 1.2  
 ==========================================================================================
 15/02/2010  | Andrew Barber | Hard coded RecipientsCodeForSender match on substring of '670' to 'V009000'.
+==========================================================================================
+22/02/2010  | Andrew Barber | Drop double quotes before GL grouping.
+==========================================================================================
+24/02/2010  | Andrew Barber | Correction to perform translation on the key for grouping by GL code.
+==========================================================================================
+29/02/2010  | Andrew Barber | Addition of translation applied to GL code for credit note doucment type.
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="text" encoding="UTF-8"/>
@@ -125,10 +131,10 @@
 		</xsl:variable>
 		
 		<!-- Group By Account Code -->
-		<xsl:for-each select="(/CreditNote/CreditNoteDetail/CreditNoteLine)[generate-id() = generate-id(key('keyLinesByAccount',LineExtraData/AccountCode)[1])]">
-			<xsl:sort select="LineExtraData/AccountCode" data-type="text"/> 
+		<xsl:for-each select="(/CreditNote/CreditNoteDetail/CreditNoteLine)[generate-id() = generate-id(key('keyLinesByAccount',translate(LineExtraData/AccountCode,'&quot;',''))[1])]">
+			<xsl:sort select="translate(LineExtraData/AccountCode,'&quot;','')" data-type="text"/> 
 			<!-- Strore the Account Code-->	
-			<xsl:variable name="AccountCode" select="LineExtraData/AccountCode"/> 	
+			<xsl:variable name="AccountCode" select="translate(LineExtraData/AccountCode,'&quot;','')"/> 	
 			<xsl:value-of select="$varCreditNoteDate"/>
 			<xsl:text>,</xsl:text>
 			<xsl:value-of select="$valCreditNoteReference"/>
@@ -139,7 +145,7 @@
 			<xsl:text>,</xsl:text>
                <xsl:value-of select="$AccountCode"/>
 			<xsl:text>,</xsl:text>
-			<xsl:value-of select="format-number( -1 * (sum(//CreditNoteLine[LineExtraData/AccountCode = $AccountCode]/LineValueExclVAT)-sum(//CreditNoteLine[LineExtraData/AccountCode = $AccountCode]/LineDiscountValue)),'0.00')"/>
+			<xsl:value-of select="format-number( -1 * (sum(//CreditNoteLine[translate(LineExtraData/AccountCode,'&quot;','') = $AccountCode]/LineValueExclVAT)-sum(//CreditNoteLine[translate(LineExtraData/AccountCode,'&quot;','') = $AccountCode]/LineDiscountValue)),'0.00')"/>
 			<xsl:text>,</xsl:text>			
 			<xsl:value-of select="$valRecipientsCodeForSender"/>
 			<xsl:text>&#13;&#10;</xsl:text>	
