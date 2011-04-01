@@ -128,8 +128,8 @@
 		
 		<!-- Supplier Code -->
 		<xsl:choose>
-			<xsl:when test="contains(TradeSimpleHeader/RecipientsCodeForSender,'#')">
-				<xsl:value-of select="substring(substring-after(TradeSimpleHeader/RecipientsCodeForSender,'#'),1,10)"/>
+			<xsl:when test="contains(TradeSimpleHeader/RecipientsCodeForSender,'/')">
+				<xsl:value-of select="substring(substring-before(TradeSimpleHeader/RecipientsCodeForSender,'/'),1,10)"/>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="substring(TradeSimpleHeader/RecipientsCodeForSender,1,10)"/>
