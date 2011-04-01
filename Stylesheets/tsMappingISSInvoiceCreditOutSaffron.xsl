@@ -30,6 +30,8 @@
 ******************************************************************************************
 17/01/2011 | Andrew Barber | 4069 Copied Outbound Map for Saffron format from MITIE.
 ******************************************************************************************
+17/01/2011 | Andrew Barber | 4365 Drop '/n' component of supplier account code.
+******************************************************************************************
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
