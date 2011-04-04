@@ -52,6 +52,12 @@ R Cambridge	| 2010-10-14		| 3951 Created generic Bavel version from Aramark Spai
 					<xsl:with-param name="bavelSecondaryUnitCode" select="string(Customers/Customer/@CustomerSecondaryID)"/>
 				</xsl:call-template>
 			</xsl:variable>
+			
+			
+					<Batch>
+				
+				<BatchDocuments>
+					<BatchDocument DocumentTypeNo="7">
 
 			<DeliveryNote>
 			
@@ -201,6 +207,10 @@ R Cambridge	| 2010-10-14		| 3951 Created generic Bavel version from Aramark Spai
 				</DeliveryNoteDetail>
 				
 			</DeliveryNote>
+			
+								</BatchDocument>
+				</BatchDocuments>
+			</Batch>
 	
 		</BatchRoot>
 
