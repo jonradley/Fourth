@@ -24,7 +24,36 @@ R Cambridge	| 2010-10-14		| 3951 Created generic Bavel version from Aramark Spai
 	<xsl:include href="./tsMappingHospitalityBavelCommon.xsl"/>
 	
 	<!-- Start point - ensure required outer BatchRoot tag is applied -->
-	<xsl:template match="/Transaction">
+	<xsl:template match="/Transaction[ReturnReceipt/@RecDoc != 'Pedido']">
+		<BatchRoot>
+			<Batch>
+				<BatchDocuments>
+					<BatchDocument DocumentTypeNo="84">
+	
+						<PurchaseOrderAcknowledgement>
+							
+							<PurchaseOrderAcknowledgementHeader>
+								
+								<Supplier>
+									<SuppliersLocationID>
+										<xsl:comment>Goods Received Note Acknowledgement - Format check will send this to completion</xsl:comment>
+										<BuyersCode><xsl:value-of select="ReturnReceipt/@RecID"/></BuyersCode>						
+									</SuppliersLocationID>
+								</Supplier>
+								
+							</PurchaseOrderAcknowledgementHeader>
+			
+						</PurchaseOrderAcknowledgement>
+						
+					</BatchDocument>						
+				</BatchDocuments>
+			</Batch>
+		</BatchRoot>
+	</xsl:template>
+	
+	
+	<xsl:template match="/Transaction[ReturnReceipt/@RecDoc = 'Pedido']">
+
 		
 		<BatchRoot>
 	
@@ -36,67 +65,81 @@ R Cambridge	| 2010-10-14		| 3951 Created generic Bavel version from Aramark Spai
 				</xsl:call-template>			
 			</xsl:variable>
 	
-			<PurchaseOrderAcknowledgement>
-				<TradeSimpleHeader>
-				
-					<SendersCodeForRecipient>
-						<xsl:value-of select="$supplierCodeForUnit"/>
-					</SendersCodeForRecipient>
-					
-					<SendersBranchReference>
-					
-						<xsl:if test="ReturnReceipt/@SysTopLevelClientID != ''">
-							<xsl:value-of select="ReturnReceipt/@SysTopLevelClientID"/>						
-							<xsl:text>/</xsl:text>
-						</xsl:if>
-						
-						<xsl:value-of select="ReturnReceipt/@RecID"/>
-						
-					</SendersBranchReference>				
-						
-				</TradeSimpleHeader>
-				
-				<PurchaseOrderAcknowledgementHeader>
+			<Batch>				
+				<BatchDocuments>
+					<BatchDocument DocumentTypeNo="84">
 	
-					<Buyer>
-						<BuyersLocationID>							
-							<SuppliersCode>
+						<PurchaseOrderAcknowledgement>
+							<TradeSimpleHeader>
 							
-								<xsl:choose>
-									<!-- Standard baVel TR set up -->
-									<xsl:when test="ReturnReceipt/@SysTopLevelClientID != ''">
-										<xsl:value-of select="ReturnReceipt/@SysTopLevelClientID"/>
-									</xsl:when>
-									
-									<!-- Aramark Spain legacy codes -->
-									<xsl:otherwise>
-										<xsl:value-of select="ReturnReceipt/@RecID"/>
-									</xsl:otherwise>
-								</xsl:choose>
+								<SendersCodeForRecipient>
+									<xsl:value-of select="$supplierCodeForUnit"/>
+								</SendersCodeForRecipient>
 								
-							</SuppliersCode>
-						</BuyersLocationID>
-					</Buyer>
-	
-					<ShipTo>
-						<ShipToLocationID>
-							<SuppliersCode><xsl:value-of select="$supplierCodeForUnit"/></SuppliersCode>					
-						</ShipToLocationID>
-					</ShipTo>					
-					
-					<PurchaseOrderReferences>
-						<PurchaseOrderReference><xsl:value-of select="ReturnReceipt/@DocRef"/></PurchaseOrderReference>
-						<PurchaseOrderDate><xsl:value-of select="ReturnReceipt/@DeliveryDate"/></PurchaseOrderDate>
-					</PurchaseOrderReferences>					
-					
-					<PurchaseOrderAcknowledgementReferences>
-						<PurchaseOrderAcknowledgementReference><xsl:value-of select="ReturnReceipt/@DocRef"/></PurchaseOrderAcknowledgementReference>
-						<PurchaseOrderAcknowledgementDate><xsl:value-of select="ReturnReceipt/@DeliveryDate"/></PurchaseOrderAcknowledgementDate>	
-					</PurchaseOrderAcknowledgementReferences>
+								<SendersBranchReference>
+								
+									<xsl:if test="ReturnReceipt/@SysTopLevelClientID != ''">
+										<xsl:value-of select="ReturnReceipt/@SysTopLevelClientID"/>						
+										<xsl:text>/</xsl:text>
+									</xsl:if>
+									
+									<xsl:value-of select="ReturnReceipt/@RecID"/>
+									
+								</SendersBranchReference>				
+									
+							</TradeSimpleHeader>
+							
+							<PurchaseOrderAcknowledgementHeader>
 				
-				</PurchaseOrderAcknowledgementHeader>				
+								<Buyer>
+									<BuyersLocationID>							
+										<SuppliersCode>
+										
+											<xsl:choose>
+												<!-- Standard baVel TR set up -->
+												<xsl:when test="ReturnReceipt/@SysTopLevelClientID != ''">
+													<xsl:value-of select="ReturnReceipt/@SysTopLevelClientID"/>
+												</xsl:when>
+												
+												<!-- Aramark Spain legacy codes -->
+												<xsl:otherwise>
+													<xsl:value-of select="ReturnReceipt/@RecID"/>
+												</xsl:otherwise>
+											</xsl:choose>
+											
+										</SuppliersCode>
+									</BuyersLocationID>
+								</Buyer>
+								
+								<Supplier>
+									<SuppliersLocationID>
+										<BuyersCode><xsl:value-of select="ReturnReceipt[@RecDoc='Pedido']/@RecID"/></BuyersCode>						
+									</SuppliersLocationID>
+								</Supplier>
 				
-			</PurchaseOrderAcknowledgement>
+								<ShipTo>
+									<ShipToLocationID>
+										<SuppliersCode><xsl:value-of select="$supplierCodeForUnit"/></SuppliersCode>					
+									</ShipToLocationID>
+								</ShipTo>					
+								
+								<PurchaseOrderReferences>
+									<PurchaseOrderReference><xsl:value-of select="ReturnReceipt/@DocRef"/></PurchaseOrderReference>
+									<PurchaseOrderDate><xsl:value-of select="ReturnReceipt/@DeliveryDate"/></PurchaseOrderDate>
+								</PurchaseOrderReferences>					
+								
+								<PurchaseOrderAcknowledgementReferences>
+									<PurchaseOrderAcknowledgementReference><xsl:value-of select="ReturnReceipt/@DocRef"/></PurchaseOrderAcknowledgementReference>
+									<PurchaseOrderAcknowledgementDate><xsl:value-of select="ReturnReceipt/@DeliveryDate"/></PurchaseOrderAcknowledgementDate>	
+								</PurchaseOrderAcknowledgementReferences>
+							
+							</PurchaseOrderAcknowledgementHeader>				
+							
+						</PurchaseOrderAcknowledgement>
+			
+					</BatchDocument>
+				</BatchDocuments>
+			</Batch>
 
 		</BatchRoot>
 	
