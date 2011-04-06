@@ -99,9 +99,9 @@
 				<xsl:text>MOD347</xsl:text>
 			</xsl:when>
 			<xsl:when test="(InvoiceDetail/InvoiceLine/VATCode[1] | CreditNoteDetail/CreditNoteLine/VATCode[1] | DebitNoteDetail/DebitNoteLine/VATCode[1])='IGIC'">
-				<xsl:text>JE.ES.APXIISIM.MODELO415</xsl:text>
+				<xsl:text>JE.ES.APXIISIM.MODELO347</xsl:text>
 				<xsl:value-of select="$separator"/>
-				<xsl:text>MOD415</xsl:text>			
+				<xsl:text>MOD347</xsl:text>			
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:text>Unknown</xsl:text>
