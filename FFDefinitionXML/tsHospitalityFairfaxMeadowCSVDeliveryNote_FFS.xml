@@ -26,6 +26,8 @@
 					<SendersAddress>
 						<!-- AddressLine1 is used to capture a qualifier to the senders code for recipient that repesents the recipient's depot -->
 						<AddressLine1 RecordPos="&quot;HEAD&quot;" LPos="30"/>
+						<!-- AddressLine2 contains the number of boxes in the delivery. This is currently being passed to Reynolds.-->
+						<AddressLine2 RecordPos="&quot;HEAD&quot;" LPos="31"/>
 					</SendersAddress>
 				</TradeSimpleHeader>
 				<DeliveryNoteHeader>
