@@ -55,6 +55,14 @@
 	
 	<xsl:template match="TradeSimpleHeader/SendersAddress"/>
 
+	<xsl:template match="DeliveryNoteHeader">
+		<DeliveryNoteHeader>
+			<xsl:apply-templates/>
+			<HeaderExtraData>
+				<NumberOfBoxes><xsl:value-of select="normalize-space(../TradeSimpleHeader/SendersAddress/AddressLine2)"/></NumberOfBoxes>
+			</HeaderExtraData>	
+		</DeliveryNoteHeader>	
+	</xsl:template>
 
 	<!-- strip quotes from text fields -->
 	<xsl:template match="BuyersLocationID/SuppliersCode |
