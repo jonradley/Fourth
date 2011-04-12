@@ -85,7 +85,7 @@
 			</xsl:attribute>
 			<xsl:attribute name="responseStatusType">
 				<!--Always original for Fairfax-->
-				<xsl:text>ACCEPTED</xsl:text>
+				<xsl:text>ACKNOWLEDGED</xsl:text>
 			</xsl:attribute>
 		
 			<responseIdentification>
