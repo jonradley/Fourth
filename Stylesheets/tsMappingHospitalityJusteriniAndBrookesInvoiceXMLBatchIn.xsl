@@ -16,7 +16,7 @@
 					<InvoiceHeader>
 						<InvoiceReferences>
 							<InvoiceReference>  
-								<xsl:value-of select="SalesInvoicePrint/Invoice/@OurReference"/>
+								<xsl:value-of select="SalesInvoicePrint/Invoice/@Number"/>
 							</InvoiceReference>
 							<InvoiceDate>
 								<xsl:variable name="invdate"><xsl:value-of select="/SalesInvoicePrint/Invoice/Dates/InvoiceDate/@Date"/></xsl:variable>
