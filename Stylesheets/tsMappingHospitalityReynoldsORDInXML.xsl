@@ -75,7 +75,7 @@
 						<xsl:value-of select="documentCommand/documentCommandOperand/order/orderLogisticalInformation/shipToLogistics/shipTo/additionalPartyIdentification/additionalPartyIdentificationValue"/>
 					</BuyersCode>
 					<SuppliersCode>
-						<xsl:value-of select="documentCommand/documentCommandOperand/order/orderLogisticalInformation/shipToLogistics/shipTo/additionalPartyIdentification/additionalPartyIdentificationValue"/>
+						<xsl:value-of select="documentCommand/documentCommandOperand/order/orderLogisticalInformation/shipToLogistics/buyer/additionalPartyIdentification/additionalPartyIdentificationValue"/>
 					</SuppliersCode>
 				</ShipToLocationID>
 			</ShipTo>
