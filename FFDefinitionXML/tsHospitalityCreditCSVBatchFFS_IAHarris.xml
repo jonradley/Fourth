@@ -109,25 +109,25 @@
 								</CreditRequestReferences>
 								<PurchaseOrderReferences>
 									<PurchaseOrderReference RecordPos="D" LPos="4"/>
-									<PurchaseOrderDate RecordPos="D" LPos="5"/>
+									<PurchaseOrderDate RecordPos="D" LPos="3"/>
 								</PurchaseOrderReferences>
 								<DeliveryNoteReferences>
-									<DeliveryNoteReference RecordPos="D" LPos="6"/>
-									<DeliveryNoteDate RecordPos="D" LPos="7"/>
+									<DeliveryNoteReference RecordPos="H" LPos="19"/>
+									<DeliveryNoteDate RecordPos="H" LPos="20"/>
 								</DeliveryNoteReferences>
 								<ProductID>
 									<SuppliersProductCode RecordPos="D" LPos="8"/>
 								</ProductID>
 								<ProductDescription RecordPos="D" LPos="9"/>
 								<CreditedQuantity RecordPos="D" LPos="11">
-									<ffsAttribute1 name="UnitOfMeasure" RecordPos="D" LPos="17"/>
+									<ffsAttribute1 name="UnitOfMeasure" RecordPos="D" LPos="16"/>
 								</CreditedQuantity>
 								<PackSize RecordPos="D" LPos="10"/>
 								<UnitValueExclVAT RecordPos="D" LPos="12"/>
 								<LineValueExclVAT RecordPos="D" LPos="13"/>
 								<VATCode RecordPos="D" LPos="14"/>
 								<VATRate RecordPos="D" LPos="15"/>
-								<Narrative RecordPos="D" LPos="16"/>
+								<Narrative RecordPos="D" LPos="2"/>
 							</CreditNoteLine>
 						</CreditNoteDetail>
 						<CreditNoteTrailer>
