@@ -112,15 +112,9 @@
 					
 					<ItemIdentification>
 						<GTIN scheme="GTIN">
-							<xsl:value-of select="ProductID/GTIN"/>
+							<xsl:value-of select="ProductID/SuppliersProductCode"/>
 						</GTIN>
 						
-						<!-- We always use Buyers code as the alternate -->
-						<xsl:if test="ProductID/BuyersProductCode">
-							<AlternateCode scheme="OTHER">
-								<xsl:value-of select="ProductID/BuyersProductCode"/>
-							</AlternateCode>
-						</xsl:if>
 					</ItemIdentification>
 				</DespatchItem>
 			</xsl:for-each>
