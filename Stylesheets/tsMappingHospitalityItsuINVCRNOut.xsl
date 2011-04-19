@@ -41,7 +41,7 @@
 		<!-- Store the Reciepient Code for Sender-->
 		<xsl:variable name="valRecipientsCodeForSender" select="TradeSimpleHeader/RecipientsCodeForSender" />
 		<!-- Store the Financial Period-->
-		<xsl:variable name="valFinancialPeriod" select="substring(InvoiceHeader/HeaderExtraData/FinancialPeriod,4,2)" />
+		<xsl:variable name="valFinancialPeriod" select="substring(InvoiceHeader/HeaderExtraData/FinancialPeriod,5,2)" />
 		
 		<xsl:for-each select="(/Invoice/InvoiceDetail/InvoiceLine)[generate-id() = generate-id(key('keyLinesByAccount',concat(LineExtraData/AccountCode,'+',VATCode))[1])]">
 			<xsl:sort select="LineExtraData/AccountCode" data-type="text"/> 
@@ -111,7 +111,7 @@
 		<!-- Store the Reciepient Code for Sender-->
 		<xsl:variable name="valRecipientsCodeForSender" select="TradeSimpleHeader/RecipientsCodeForSender" />
 		<!-- Store the Financial Period-->
-		<xsl:variable name="valFinancialPeriod" select="substring(CreditNoteHeader/HeaderExtraData/FinancialPeriod,4,2)" />
+		<xsl:variable name="valFinancialPeriod" select="substring(CreditNoteHeader/HeaderExtraData/FinancialPeriod,5,2)" />
 			
 		<!-- Group By Account Code -->
 		<xsl:for-each select="(/CreditNote/CreditNoteDetail/CreditNoteLine)[generate-id() = generate-id(key('keyLinesByAccount',concat(LineExtraData/AccountCode,'+',VATCode))[1])]">
