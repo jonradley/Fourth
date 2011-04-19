@@ -34,47 +34,32 @@
 										</xsl:if>
 									</TradeSimpleHeader>
 									<InvoiceHeader>
-										<!--xsl:if test="InvoiceHeader/BatchInformation">
-											<BatchInformation>
-												<xsl:if test="InvoiceHeader/BatchInformation/FileGenerationNo != ''">
-													<FileGenerationNo>
-														<xsl:value-of select="InvoiceHeader/BatchInformation/FileGenerationNo"/>
-													</FileGenerationNo>
-												</xsl:if>
-												<xsl:if test="InvoiceHeader/BatchInformation/FileVersionNo != ''">
-													<FileVersionNo>
-														<xsl:value-of select="InvoiceHeader/BatchInformation/FileVersionNo"/>
-													</FileVersionNo>
-												</xsl:if>
-												<xsl:if test="InvoiceHeader/BatchInformation/FileCreationDate != ''">
-													<xsl:variable name="sFileDate">
-														<xsl:value-of select="InvoiceHeader/BatchInformation/FileCreationDate"/>
-													</xsl:variable>
-													<FileCreationDate>
-														<xsl:value-of select="concat(substring($sFileDate,1,4),'-',substring($sFileDate,5,2),'-',substring($sFileDate,7,2))"/>
-													</FileCreationDate>
-												</xsl:if>
-						
-												<xsl:if test="InvoiceHeader/BatchInformation/SendersTransmissionReference != ''">
-													<SendersTransmissionReference>
-														<xsl:value-of select="InvoiceHeader/BatchInformation/SendersTransmissionReference"/>
-													</SendersTransmissionReference>
-												</xsl:if>
-						
-												<xsl:if test="InvoiceHeader/BatchInformation/SendersTransmissionDate != ''">
-													<xsl:variable name="sSendersTransDate">
-														<xsl:value-of select="InvoiceHeader/BatchInformation/SendersTransmissionDate"/>
-													</xsl:variable>
-													<SendersTransmissionDate>
-														<xsl:value-of select="concat(substring($sSendersTransDate,1,4),'-',substring($sSendersTransDate,5,2),'-',substring($sSendersTransDate,7,2))"/>
-													</SendersTransmissionDate>
-												</xsl:if>
-						
-											</BatchInformation>
-										</xsl:if-->
-										<xsl:copy-of select="InvoiceHeader/Buyer"/>
-										<xsl:copy-of select="InvoiceHeader/Supplier"/>
-										<xsl:copy-of select="InvoiceHeader/ShipTo"/>
+										<DocumentStatus>Original</DocumentStatus>
+										<Buyer>
+											<BuyersLocationID>
+												<GLN>
+													<xsl:text>5555555555555</xsl:text>
+												</GLN>
+											</BuyersLocationID>
+										</Buyer>
+										<Supplier>
+											<SuppliersLocationID>
+												<GLN>
+													<xsl:text>5555555555555</xsl:text>
+												</GLN>
+											</SuppliersLocationID>
+										</Supplier>
+										<ShipTo>
+											<ShipToLocationID>
+												<GLN>
+													<xsl:text>5555555555555</xsl:text>
+												</GLN>
+											</ShipToLocationID>
+											<ShipToAddress>
+												<AddressLine1>xx</AddressLine1>
+											</ShipToAddress>
+										</ShipTo>
+
 										<InvoiceReferences>
 											<InvoiceReference>
 												<xsl:value-of select="InvoiceHeader/InvoiceReferences/InvoiceReference"/>
@@ -83,7 +68,7 @@
 												<xsl:value-of select="InvoiceHeader/InvoiceReferences/InvoiceDate"/>
 											</xsl:variable>
 											<InvoiceDate>
-												<xsl:value-of select="concat(substring($sInvDate,1,4),'-',substring($sInvDate,5,2),'-',substring($sInvDate,7,2))"/>
+												<xsl:value-of select="concat(substring($sInvDate,7,4),'-',substring($sInvDate,4,2),'-',substring($sInvDate,1,2))"/>
 											</InvoiceDate>
 											<xsl:variable name="sTaxDate">
 												<xsl:choose>
@@ -96,33 +81,38 @@
 												</xsl:choose>
 											</xsl:variable>
 											<TaxPointDate>
-												<xsl:value-of select="concat(substring($sTaxDate,1,4),'-',substring($sTaxDate,5,2),'-',substring($sTaxDate,7,2))"/>
+												<xsl:value-of select="concat(substring($sTaxDate,7,4),'-',substring($sTaxDate,4,2),'-',substring($sTaxDate,1,2))"/>
 											</TaxPointDate>
-											<VATRegNo>
+
+									<!--		<VATRegNo>
 												<xsl:value-of select="InvoiceHeader/InvoiceReferences/VATRegNo"/>
 											</VATRegNo>
+									-->		
 										</InvoiceReferences>
 										<Currency>
 											<xsl:value-of select="InvoiceHeader/Currency"/>
 										</Currency>
+										
 									</InvoiceHeader>
 									<InvoiceDetail>
 										<xsl:for-each select="InvoiceDetail/InvoiceLine">
 											<InvoiceLine>
-												<xsl:if test="PurchaseOrderReferences/PurchaseOrderReference != '' and PurchaseOrderReferences/PurchaseOrderDate != ''">
 													<PurchaseOrderReferences>
-														<PurchaseOrderReference>
-															<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderReference"/>
-														</PurchaseOrderReference>
-														<xsl:variable name="sPODate">
-															<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderDate"/>
-														</xsl:variable>
+														<xsl:if test="PurchaseOrderReferences/PurchaseOrderReference != ''">
+															<PurchaseOrderReference>
+																<xsl:value-of select="substring-before(substring-after(PurchaseOrderReferences/PurchaseOrderReference,'SP/'),'/')"/>
+															</PurchaseOrderReference>
+														</xsl:if>	
+													<xsl:variable name="sPODate">
+														<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderDate"/>
+													</xsl:variable>
+													<xsl:if test="PurchaseOrderReferences/PurchaseOrderDate != ''">
 														<PurchaseOrderDate>
 															<xsl:value-of select="concat(substring($sPODate,1,4),'-',substring($sPODate,5,2),'-',substring($sPODate,7,2))"/>
 														</PurchaseOrderDate>
+													</xsl:if>	
 													</PurchaseOrderReferences>
-												</xsl:if>
-												<DeliveryNoteReferences>
+												<!--DeliveryNoteReferences>
 													<DeliveryNoteReference>
 														<xsl:value-of select="DeliveryNoteReferences/DeliveryNoteReference"/>
 													</DeliveryNoteReference>
@@ -132,7 +122,7 @@
 													<DeliveryNoteDate>
 														<xsl:value-of select="concat(substring($sDelNoteDate,1,4),'-',substring($sDelNoteDate,5,2),'-',substring($sDelNoteDate,7,2))"/>
 													</DeliveryNoteDate>
-												</DeliveryNoteReferences>
+												</DeliveryNoteReferences-->
 												<ProductID>
 													<SuppliersProductCode>
 														<xsl:value-of select="ProductID/SuppliersProductCode"/>
@@ -156,10 +146,14 @@
 													</LineValueExclVAT>
 												</xsl:if>
 												<VATCode>
-													<xsl:value-of select="VATCode"/>
+													<xsl:if test="VATCode ='V'">
+														<xsl:text>S</xsl:text>
+													</xsl:if>	
 												</VATCode>
 												<VATRate>
-													<xsl:value-of select="VATRate"/>
+													<xsl:if test="VATRate = 'NLICS'">
+														<xsl:text>20</xsl:text>
+													</xsl:if>	
 												</VATRate>
 											</InvoiceLine>
 										</xsl:for-each>
