@@ -332,20 +332,22 @@
 										</LineNumber>
 										
 										<xsl:if test="/CreditNote/OrderReference or /CreditNote/TradeAgreementReference/ContractReferenceNumber != ''">
-											<PurchaseOrderReferences>
-												<xsl:if test="/CreditNote/OrderReference/PurchaseOrderNumber">
+										
+											<xsl:variable name="sPORef" select="normalize-space(/CreditNote/OrderReference/PurchaseOrderNumber)"/>
+											<xsl:variable name="sPODate" select="normalize-space(substring-before(/CreditNote/OrderReference/PurchaseOrderDate,'T'))"/>
+											<xsl:if test="$sPORef !='' and $sPODate !='' ">
+												<PurchaseOrderReferences>
 													<PurchaseOrderReference>
-														<xsl:value-of select="normalize-space(/CreditNote/OrderReference/PurchaseOrderNumber)"/>
+														<xsl:value-of select="$sPORef"/>
 													</PurchaseOrderReference>
-												</xsl:if>
-												<xsl:if test="/CreditNote/OrderReference/PurchaseOrderDate">
 													<PurchaseOrderDate>
-														<xsl:value-of select="normalize-space(substring-before(/CreditNote/OrderReference/PurchaseOrderDate,'T'))"/>
+														<xsl:value-of select="$sPODate"/>
 													</PurchaseOrderDate>
 													<PurchaseOrderTime>
 														<xsl:value-of select="normalize-space(substring-after(/CreditNote/OrderReference/PurchaseOrderDate,'T'))"/>
 													</PurchaseOrderTime>
-												</xsl:if>
+
+												
 												<xsl:if test="/CreditNote/TradeAgreementReference/ContractReferenceNumber != ''">
 													<TradeAgreement>
 														<ContractReference>
@@ -360,7 +362,7 @@
 												</xsl:if>
 											</PurchaseOrderReferences>
 										</xsl:if>
-										
+										</xsl:if>
 										<xsl:if test="/CreditNote/OrderConfirmationReference and /CreditNote/OrderConfirmationReference/PurchaseOrderConfirmationDate">
 
 											<PurchaseOrderConfirmationReferences>
