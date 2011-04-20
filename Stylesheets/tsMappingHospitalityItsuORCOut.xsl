@@ -200,9 +200,9 @@
 		<xsl:attribute name="SupplierPackageGuid">
 			<xsl:value-of select="'{00000000-0000-0000-0000-000000000000}'"/>
 		</xsl:attribute>	
-		<xsl:attribute name="MaxSplits">
+		<!--xsl:attribute name="MaxSplits">
 			<xsl:value-of select="MaxSplits"/>
-		</xsl:attribute>	
+		</xsl:attribute-->	
 	</xsl:template>
 	
 	<xsl:template name="WriteLine2">
@@ -241,9 +241,9 @@
 		<xsl:attribute name="SupplierPackageGuid">
 			<xsl:value-of select="'{00000000-0000-0000-0000-000000000000}'"/>
 		</xsl:attribute>	
-		<xsl:attribute name="MaxSplits">
+		<!--xsl:attribute name="MaxSplits">
 			<xsl:value-of select="MaxSplits"/>
-		</xsl:attribute>	
+		</xsl:attribute-->	
 	</xsl:template>
 	
 </xsl:stylesheet>
