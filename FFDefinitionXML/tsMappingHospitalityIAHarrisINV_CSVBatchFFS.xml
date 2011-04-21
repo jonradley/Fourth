@@ -105,7 +105,7 @@
 									<PurchaseOrderDate RecordPos="D" LPos="3"/>
 								</PurchaseOrderReferences>
 								<DeliveryNoteReferences>
-									<DeliveryNoteReference RecordPos="H" LPos="16"/>
+									<DeliveryNoteReference RecordPos="D" LPos="2"/>
 									<DeliveryNoteDate RecordPos="D" LPos="5"/>
 									<!--<DespatchDate RecordPos="" LPos=""/>-->
 								</DeliveryNoteReferences>
