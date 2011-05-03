@@ -25,7 +25,7 @@
 						<InvoiceHeader>
 							<Buyer>
 								<BuyersLocationID>
-									<SuppliersCode RecordPos="SYKCO" LPos="2"/>
+									<SuppliersCode RecordPos="SYKCO" LPos="8"/>
 								</BuyersLocationID>
 							</Buyer>
 							<ShipTo>
