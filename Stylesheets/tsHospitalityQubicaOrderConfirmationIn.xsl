@@ -155,8 +155,7 @@
 							
 							<xsl:if test="ProductDescription != ''">
 								<ProductDescription>
-									<xsl:text>ProductDescription MISSING</xsl:text>
-									<!--xsl:value-of select="ProductDescription"/-->
+									<xsl:value-of select="ProductDescription"/>
 								</ProductDescription>
 							</xsl:if>
 							
