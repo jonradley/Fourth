@@ -35,9 +35,10 @@ Mark E	| 01/02/2010 | Modified
 		<!-- Order Date -->
 		<xsl:text>SYTRDJ</xsl:text>
 		<xsl:text>,</xsl:text>
-		<xsl:value-of select="concat(substring(PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderDate,9,2),
-									'/',substring(PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderDate,6,2),
-									'/',substring(PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderDate,1,4))"/>
+		<xsl:variable name="PODate" select="PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderDate"/>
+		<xsl:value-of select="concat(substring($PODate,9,2),
+									'/',substring($PODate,6,2),
+									'/',substring($PODate,1,4))"/>
 		<xsl:text>,</xsl:text>									
 		<!--PO-->
 		<xsl:text>SYVR01</xsl:text>
@@ -86,7 +87,7 @@ Mark E	| 01/02/2010 | Modified
 									'/',substring(//..//PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderDate,1,4))"/>
 			<xsl:text>,</xsl:text>
 			<!--PO-->
-			<xsl:text>SZVR01</xsl:text>
+			<xsl:text>SZVR02</xsl:text>
 			<xsl:text>,</xsl:text>
 			<xsl:text>SP</xsl:text>
 			<xsl:text>/</xsl:text>
