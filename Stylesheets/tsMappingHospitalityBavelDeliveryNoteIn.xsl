@@ -12,7 +12,7 @@ R Cambridge	| 2010-06-01		| 3551 Handle non-pl customers by using Supplier/@Cust
 **********************************************************************
 R Cambridge	| 2010-10-14		| 3951 Created generic Bavel version from Aramark Spain version
 **********************************************************************
-				|						|				
+R Cambridge	| 2011-04-10		| 4361 Add Batch tags to facilitate migration to applying mapping before formatcheck sets senderid (currently it's done after)
 **********************************************************************
 				|						|
 **********************************************************************
