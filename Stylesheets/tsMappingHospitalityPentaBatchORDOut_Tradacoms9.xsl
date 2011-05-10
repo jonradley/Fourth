@@ -101,7 +101,7 @@
 			<xsl:text>GU47 9AY'</xsl:text>		
 			<!--xsl:text>+</xsl:text>
 			<xsl:value-of select=""/-->
-		<xsl:value-of select="$sRecordSep"/>
+		<!--xsl:value-of select="$sRecordSep"/-->
 		
 		<xsl:text>CDT=</xsl:text>
 			
