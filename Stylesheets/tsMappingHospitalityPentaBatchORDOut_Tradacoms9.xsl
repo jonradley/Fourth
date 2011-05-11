@@ -155,7 +155,7 @@
 			<xsl:text>:</xsl:text>
 			<!--xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode"/-->
 			<xsl:text>:</xsl:text>
-			<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
+			<xsl:text>ITS999</xsl:text>
 			<xsl:text>+</xsl:text>
 			<!-- truncate to 40 CNAM = 3060 = AN..40-->
 			<xsl:text>itsu</xsl:text>
