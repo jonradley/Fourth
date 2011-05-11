@@ -97,32 +97,36 @@
 									<InvoiceDetail>
 										<xsl:for-each select="InvoiceDetail/InvoiceLine">
 											<InvoiceLine>
-													<PurchaseOrderReferences>
-														<xsl:if test="PurchaseOrderReferences/PurchaseOrderReference != ''">
-															<PurchaseOrderReference>
-																<xsl:value-of select="substring-before(substring-after(PurchaseOrderReferences/PurchaseOrderReference,'SP/'),'/')"/>
-															</PurchaseOrderReference>
-														</xsl:if>	
-													<xsl:variable name="sPODate">
-														<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderDate"/>
-													</xsl:variable>
-													<xsl:if test="PurchaseOrderReferences/PurchaseOrderDate != ''">
-														<PurchaseOrderDate>
-															<xsl:value-of select="concat(substring($sPODate,1,4),'-',substring($sPODate,5,2),'-',substring($sPODate,7,2))"/>
-														</PurchaseOrderDate>
+												<PurchaseOrderReferences>
+													<xsl:if test="PurchaseOrderReferences/PurchaseOrderReference != ''">
+														<PurchaseOrderReference>
+															<xsl:value-of select="substring-before(substring-after(PurchaseOrderReferences/PurchaseOrderReference,'SP/'),'/')"/>
+														</PurchaseOrderReference>
 													</xsl:if>	
-													</PurchaseOrderReferences>
-												<!--DeliveryNoteReferences>
-													<DeliveryNoteReference>
-														<xsl:value-of select="DeliveryNoteReferences/DeliveryNoteReference"/>
-													</DeliveryNoteReference>
+												<xsl:variable name="sPODate">
+													<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderDate"/>
+												</xsl:variable>
+												<xsl:if test="PurchaseOrderReferences/PurchaseOrderDate != ''">
+													<PurchaseOrderDate>
+														<xsl:value-of select="concat(substring($sPODate,1,4),'-',substring($sPODate,5,2),'-',substring($sPODate,7,2))"/>
+													</PurchaseOrderDate>
+												</xsl:if>	
+												</PurchaseOrderReferences>
+												<DeliveryNoteReferences>
+													<xsl:if test="DeliveryNoteReferences/DeliveryNoteReference != ''">
+														<DeliveryNoteReference>
+															<xsl:value-of select="substring-before(substring-after(DeliveryNoteReferences/DeliveryNoteReference,'SP/'),'/')"/>
+														</DeliveryNoteReference>
+													</xsl:if>
 													<xsl:variable name="sDelNoteDate">
 														<xsl:value-of select="DeliveryNoteReferences/DeliveryNoteDate"/>
 													</xsl:variable>
-													<DeliveryNoteDate>
-														<xsl:value-of select="concat(substring($sDelNoteDate,1,4),'-',substring($sDelNoteDate,5,2),'-',substring($sDelNoteDate,7,2))"/>
-													</DeliveryNoteDate>
-												</DeliveryNoteReferences-->
+													<xsl:if test="DeliveryNoteReferences/DeliveryNoteDate != ''">
+														<DeliveryNoteDate>
+															<xsl:value-of select="concat(substring($sDelNoteDate,1,4),'-',substring($sDelNoteDate,5,2),'-',substring($sDelNoteDate,7,2))"/>
+														</DeliveryNoteDate>
+													</xsl:if>	
+												</DeliveryNoteReferences>
 												<ProductID>
 													<SuppliersProductCode>
 														<xsl:value-of select="ProductID/SuppliersProductCode"/>
@@ -146,14 +150,16 @@
 													</LineValueExclVAT>
 												</xsl:if>
 												<VATCode>
-													<xsl:if test="VATCode ='V'">
-														<xsl:text>S</xsl:text>
-													</xsl:if>	
+													<xsl:choose>
+														<xsl:when test="VATCode ='V'">Z</xsl:when>
+														<xsl:otherwise>S</xsl:otherwise>
+													</xsl:choose>	
 												</VATCode>
 												<VATRate>
-													<xsl:if test="VATRate = 'NLICS'">
-														<xsl:text>20</xsl:text>
-													</xsl:if>	
+													<xsl:choose>
+														<xsl:when test="VATRate = 'NLICS'">0</xsl:when>
+														<xsl:otherwise>20</xsl:otherwise>
+													</xsl:choose>	
 												</VATRate>
 											</InvoiceLine>
 										</xsl:for-each>
