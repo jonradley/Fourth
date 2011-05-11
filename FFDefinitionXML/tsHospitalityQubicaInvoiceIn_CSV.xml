@@ -54,10 +54,10 @@
 									<PurchaseOrderReference RecordPos="SZKCO" LPos="20"/>
 									<!--PurchaseOrderDate RecordPos="SZKCO" LPos="51"/-->
 								</PurchaseOrderReferences>
-								<!--DeliveryNoteReferences>
-									<DeliveryNoteReference RecordPos="SZKCO" LPos="50"/>
-									<DeliveryNoteDate RecordPos="SZKCO" LPos="47"/>
-								</DeliveryNoteReferences-->
+								<DeliveryNoteReferences>
+									<DeliveryNoteReference RecordPos="SZKCO" LPos="20"/>
+									<!--DeliveryNoteDate RecordPos="SZKCO" LPos="47"/-->
+								</DeliveryNoteReferences>
 								<ProductID>
 									<SuppliersProductCode RecordPos="SZKCO" LPos="22"/>
 								</ProductID>
