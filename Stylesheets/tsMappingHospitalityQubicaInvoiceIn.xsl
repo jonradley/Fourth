@@ -108,7 +108,7 @@
 												</xsl:variable>
 												<xsl:if test="PurchaseOrderReferences/PurchaseOrderDate != ''">
 													<PurchaseOrderDate>
-														<xsl:value-of select="concat(substring($sPODate,1,4),'-',substring($sPODate,5,2),'-',substring($sPODate,7,2))"/>
+														<xsl:value-of select="concat(substring($sPODate,7,4),'-',substring($sPODate,4,2),'-',substring($sPODate,1,2))"/>
 													</PurchaseOrderDate>
 												</xsl:if>	
 												</PurchaseOrderReferences>
@@ -123,7 +123,7 @@
 													</xsl:variable>
 													<xsl:if test="DeliveryNoteReferences/DeliveryNoteDate != ''">
 														<DeliveryNoteDate>
-															<xsl:value-of select="concat(substring($sDelNoteDate,1,4),'-',substring($sDelNoteDate,5,2),'-',substring($sDelNoteDate,7,2))"/>
+															<xsl:value-of select="concat(substring($sDelNoteDate,7,4),'-',substring($sDelNoteDate,4,2),'-',substring($sDelNoteDate,1,2))"/>
 														</DeliveryNoteDate>
 													</xsl:if>	
 												</DeliveryNoteReferences>
@@ -151,14 +151,16 @@
 												</xsl:if>
 												<VATCode>
 													<xsl:choose>
-														<xsl:when test="VATCode ='V'">Z</xsl:when>
-														<xsl:otherwise>S</xsl:otherwise>
+														<xsl:when test="VATCode ='NLICS'">Z</xsl:when>
+														<xsl:when test="VATCode ='UKDOM'">S</xsl:when>
+														<!--<xsl:otherwise>S</xsl:otherwise>-->
 													</xsl:choose>	
 												</VATCode>
 												<VATRate>
 													<xsl:choose>
 														<xsl:when test="VATRate = 'NLICS'">0</xsl:when>
-														<xsl:otherwise>20</xsl:otherwise>
+														<xsl:when test="VATRate = 'UKDOM'">20</xsl:when>
+														<!--<xsl:otherwise>20</xsl:otherwise>-->
 													</xsl:choose>	
 												</VATRate>
 											</InvoiceLine>
