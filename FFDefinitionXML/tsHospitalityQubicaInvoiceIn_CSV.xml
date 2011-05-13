@@ -52,11 +52,11 @@
 								<LineNumber RecordPos="SZKCO" LPos="8"/>
 								<PurchaseOrderReferences>
 									<PurchaseOrderReference RecordPos="SZKCO" LPos="20"/>
-									<!--PurchaseOrderDate RecordPos="SZKCO" LPos="51"/-->
+									<PurchaseOrderDate RecordPos="SZKCO" LPos="56"/>
 								</PurchaseOrderReferences>
 								<DeliveryNoteReferences>
 									<DeliveryNoteReference RecordPos="SZKCO" LPos="20"/>
-									<!--DeliveryNoteDate RecordPos="SZKCO" LPos="47"/-->
+									<DeliveryNoteDate RecordPos="SZKCO" LPos="58"/>
 								</DeliveryNoteReferences>
 								<ProductID>
 									<SuppliersProductCode RecordPos="SZKCO" LPos="22"/>
@@ -66,7 +66,7 @@
 								<PackSize RecordPos="SZKCO" LPos="26"/>
 								<UnitValueExclVAT RecordPos="SZKCO" LPos="32"/>
 								<LineValueExclVAT RecordPos="SZKCO" LPos="34"/>
-								<VATCode RecordPos="SZKCO" LPos="36"/>
+								<VATCode RecordPos="SZKCO" LPos="38"/>
 								<VATRate RecordPos="SZKCO" LPos="38"/>
 							</InvoiceLine>
 						</InvoiceDetail>
