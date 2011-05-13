@@ -152,15 +152,15 @@
 												<VATCode>
 													<xsl:choose>
 														<xsl:when test="VATCode ='NLICS'">Z</xsl:when>
-														<xsl:when test="VATCode ='UKDOM'">S</xsl:when>
-														<!--<xsl:otherwise>S</xsl:otherwise>-->
+														<!--<xsl:when test="VATCode ='UKDOM'">S</xsl:when>-->
+														<xsl:otherwise>S</xsl:otherwise>
 													</xsl:choose>	
 												</VATCode>
 												<VATRate>
 													<xsl:choose>
 														<xsl:when test="VATRate = 'NLICS'">0</xsl:when>
-														<xsl:when test="VATRate = 'UKDOM'">20</xsl:when>
-														<!--<xsl:otherwise>20</xsl:otherwise>-->
+														<!--<xsl:when test="VATRate = 'UKDOM'">20</xsl:when>-->
+														<xsl:otherwise>20</xsl:otherwise>
 													</xsl:choose>	
 												</VATRate>
 											</InvoiceLine>
