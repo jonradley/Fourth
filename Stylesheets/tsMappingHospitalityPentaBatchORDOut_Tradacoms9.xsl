@@ -48,7 +48,7 @@
 				</xsl:otherwise>
 			</xsl:choose>
 			<xsl:text>:</xsl:text>
-			<xsl:value-of select="js:msSafeText(string(PurchaseOrder//PurchaseOrderHeader/Buyer/BuyersName), 35)"/>
+			<xsl:value-of select="js:msSafeText(string(PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersName), 35)"/>
 			<xsl:text>+</xsl:text>
 			<!--Your mailbox reference-->
 			<xsl:value-of select="PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN"/>
@@ -96,7 +96,6 @@
 			<xsl:text>:</xsl:text>
 			<xsl:text>:</xsl:text>
 			<xsl:text>:</xsl:text>
-			<xsl:text>UK</xsl:text>
 			<!-- truncate to 8 (just in case) SADD 5 = 3063 = AN..8-->		
 			<xsl:text>GU47 9AY'</xsl:text>		
 			<!--xsl:text>+</xsl:text>
@@ -130,7 +129,7 @@
 		-->
 		
 		<xsl:text>FIL=</xsl:text>
-			<xsl:value-of select="PurchaseOrderHeader/FileGenerationNumber"/><xsl:text>+</xsl:text>
+			<xsl:value-of select="PurchaseOrder/PurchaseOrderHeader/FileGenerationNumber"/><xsl:text>+</xsl:text>
 			<xsl:text>1+</xsl:text>
 			<xsl:value-of select="$sFileGenerationDate"/>
 		<xsl:value-of select="$sRecordSep"/>
@@ -189,15 +188,31 @@
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:text>DIN=</xsl:text>
-			<!--xsl:value-of select="HelperObj:FormatDate(string(PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate))"/-->
-			<xsl:call-template name="msFormateDate">
-				<xsl:with-param name="vsUTCDate" select="$sFileGenerationDate"/>
-			</xsl:call-template>
+			<!-- Get earliest delivery date -->
+			<xsl:for-each select="//OrderedDeliveryDetails/DeliveryDate">
+				<xsl:sort select="."/>
+				
+				<xsl:if test="position() = 1">
+					<xsl:call-template name="msFormateDate">
+						<xsl:with-param name="vsUTCDate" select="."/>
+					</xsl:call-template>
+				</xsl:if>
+				
+			</xsl:for-each>
+			
 			<xsl:text>+</xsl:text>
 			<!--xsl:value-of select="HelperObj:FormatDate(string(PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate))"/-->
-			<xsl:call-template name="msFormateDate">
-				<xsl:with-param name="vsUTCDate" select="$sFileGenerationDate"/>
-			</xsl:call-template>
+			<!-- Get latest delivery date -->
+			<xsl:for-each select="//OrderedDeliveryDetails/DeliveryDate">
+				<xsl:sort select="."/>
+				
+				<xsl:if test="position() = last()">
+					<xsl:call-template name="msFormateDate">
+						<xsl:with-param name="vsUTCDate" select="."/>
+					</xsl:call-template>
+				</xsl:if>
+				
+			</xsl:for-each>
 			<xsl:text>+</xsl:text>
 		<xsl:value-of select="$sRecordSep"/>
 		
@@ -210,11 +225,11 @@
 		-->
 		
 		<!--xsl:value-of select="HelperObj:ResetCounter('OrderLineDetails')"/-->
-		<xsl:for-each select="//PurchaseOrderDetail/PurchaseOrderLine[generate-id() = generate-id(key('DistinctProductCode',ProductID/SuppliersProductCode)[1])]">
+		<xsl:for-each select="/BatchRoot/PurchaseOrder/PurchaseOrderDetail/PurchaseOrderLine[generate-id() = generate-id(key('DistinctProductCode',ProductID/SuppliersProductCode)[1])]">
 		
 			<xsl:text>OLD=</xsl:text>
 				<!--xsl:value-of select="HelperObj:GetNextCounterValue('OrderLineDetails')"/-->
-				<xsl:value-of select="count(preceding-sibling::* | self::*)"/>
+				<xsl:value-of select="count(preceding::PurchaseOrderLine[generate-id() = generate-id(key('DistinctProductCode',ProductID/SuppliersProductCode)[1])] | self::*)"/>
 				<xsl:text>+</xsl:text>
 				<xsl:text>:</xsl:text>
 				<xsl:call-template name="msCheckField">
@@ -352,7 +367,7 @@
 	<xsl:template name="msFormateDate">
 		<xsl:param name="vsUTCDate"/>
 	
-		<xsl:value-of select="substring(translate($vsUTCDate,'-',''), 3)"/>
+		<xsl:value-of select="substring(translate($vsUTCDate,'-',''),0)"/>
 	
 	</xsl:template>
 	
