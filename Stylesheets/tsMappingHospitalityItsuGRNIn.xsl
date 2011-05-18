@@ -88,11 +88,11 @@
 							</ProductID>
 							
 							<AcceptedQuantity>
-								<xsl:attribute name="UnitOfMeasure">CS</xsl:attribute>
+								<xsl:attribute name="UnitOfMeasure">EA</xsl:attribute>
 								<xsl:value-of select="@Quantity"/>
 							</AcceptedQuantity>
 													
-							<PackSize>Pack</PackSize>
+							<!--<PackSize>Pack</PackSize>-->
 													
 							<UnitValueExclVAT>
 								<xsl:value-of select="@MajorUnitPrice"/>
