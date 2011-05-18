@@ -19,12 +19,12 @@
 			<ffsFieldSeparator>,</ffsFieldSeparator>
 		</ffsFieldSeparators>
 		<!--ffsPadding/-->
-<!--		
+		<!--		
 		<ffsBatchHeader>
 			List of records that make up the header, this will be added to each document in the batch
 			<ffsHeaderRecord RecordPos="SYKCOO"/>
 		</ffsBatchHeader>
--->		
+-->
 		<!--ffsGroups>
 			<ffsGroup>
 				<ffsGroupRecord RecordPos="SYKCOO" FieldTotal="34"/>
@@ -67,7 +67,7 @@
 						<SuppliersProductCode RecordPos="SZKCOO" LPos="18"/>
 					</ProductID>
 					<ProductDescription RecordPos="SZKCOO" LPos="20"/>
-					<OrderedQuantity name="UnitOfMeasure" RecordPos="SZKCOO" LPos="24"/>
+					<!--<OrderedQuantity name="UnitOfMeasure" RecordPos="SZKCOO" LPos="24"/>-->
 					<ConfirmedQuantity name="UnitOfMeasure" RecordPos="SZKCOO" LPos="24"/>
 					<UnitValueExclVAT RecordPos="SZKCOO" LPos="28"/>
 					<LineValueExclVAT RecordPos="SZKCOO" LPos="30"/>
