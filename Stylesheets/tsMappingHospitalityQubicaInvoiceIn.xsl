@@ -55,9 +55,11 @@
 													<xsl:text>5555555555555</xsl:text>
 												</GLN>
 											</ShipToLocationID>
+									<!--		
 											<ShipToAddress>
 												<AddressLine1>xx</AddressLine1>
-											</ShipToAddress>
+											</ShipToAddress>  
+									-->		
 										</ShipTo>
 
 										<InvoiceReferences>
