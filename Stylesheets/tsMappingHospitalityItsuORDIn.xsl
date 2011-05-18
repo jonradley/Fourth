@@ -99,10 +99,10 @@
 							</ProductID>
 							<!--ProductDescription><xsl:value-of select="@SupplierPackageDescription"/></ProductDescription-->
 							<OrderedQuantity>
-								<xsl:attribute name="UnitOfMeasure">CS</xsl:attribute>
+								<xsl:attribute name="UnitOfMeasure">EA</xsl:attribute>
 								<xsl:value-of select="@Quantity"/>
 							</OrderedQuantity>
-							<PackSize>Pack</PackSize>
+							<!--<PackSize>Pack</PackSize>-->
 							<UnitValueExclVAT>
 								<xsl:value-of select="@MajorUnitPrice"/>
 							</UnitValueExclVAT>
