@@ -136,9 +136,12 @@
 					
 						<PurchaseOrderConfirmationLine>
 							
+						<!--
 							<xsl:attribute name="LineStatus">
 								<xsl:text>Accepted</xsl:text>
 							</xsl:attribute>
+							
+							-->
 							
 							<LineNumber>
 								<xsl:value-of select="position()"/>
