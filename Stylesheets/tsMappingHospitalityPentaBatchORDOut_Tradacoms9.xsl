@@ -20,12 +20,15 @@
 	xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript"
 	xmlns:vb="http://www.abs-ltd.com/dummynamespaces/vbscript"
 	xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+	
+	<xsl:import href="tsMappingHospitalityPentaFoodsOrderTradacomsv9Out.xsl"/>
+
 	<xsl:output method="text" encoding="utf-8"/>
 
-<!-- This is a place holder for the batching out processor to complete. -->
-<xsl:param name="nBatchID">Not Provided</xsl:param>
-<xsl:key name="DistinctProductCode" match="/BatchRoot/PurchaseOrder/PurchaseOrderDetail/PurchaseOrderLine" use="ProductID/SuppliersProductCode"/>
-	
+	<!-- This is a place holder for the batching out processor to complete. -->
+	<xsl:param name="nBatchID">Not Provided</xsl:param>
+	<xsl:key name="DistinctProductCode" match="/BatchRoot/PurchaseOrder/PurchaseOrderDetail/PurchaseOrderLine" use="ProductID/SuppliersProductCode"/>
+		
 	<xsl:template match="/BatchRoot[PurchaseOrder]">
 	
 		<xsl:variable name="sRecordSep">
