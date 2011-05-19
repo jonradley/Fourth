@@ -14,9 +14,12 @@
 ' ??/??/????  | ?            | Created        
 '******************************************************************************************
 ' 02/09/2005  | Lee Boyton   | H488. Cater for the SiteRef for Urbium messages being in the
-'                            | recipient's branch reference field.
+'                                            |            recipient's branch reference field.
 '******************************************************************************************
 ' 20/08/2007  | Lee Boyton   | 1390. Cater for extended characters.
+'******************************************************************************************
+' 19/05/2011  | John Cahill    | 4481. Translate accented characters in description for equivalents.
+'                                                        See relevant variables: accented & nonaccented
 '******************************************************************************************
 '             |              | 
 '******************************************************************************************
@@ -28,6 +31,9 @@
 	<xsl:variable name="CompressedOutput">
 		<xsl:value-of select="/GoodsReceivedNote/GoodsReceivedNoteHeader/HeaderExtraData/CompressedAztecOutput"/>
 	</xsl:variable>
+	<!-- Add further characters to 'accented' variable and the equivalent to 'nonaccented' variable -->
+	<xsl:variable name="accented" select="'áàâäéèêëíìîïóòôöúùûüÈ'" /> 
+	<xsl:variable name="nonaccented" select="'aaaaeeeeiiiioooouuuuE'" /> 
 	<xsl:template match="/">	
 		<DeliveryNote>
 			<xsl:attribute name="SiteCode"><xsl:value-of select="/GoodsReceivedNote/GoodsReceivedNoteHeader/AztecSiteID"/></xsl:attribute>
@@ -90,7 +96,7 @@
 							<xsl:attribute name="LineNo"><xsl:value-of select="LineNumber"/></xsl:attribute>
 							<xsl:attribute name="ImpExpRef"><xsl:value-of select="ProductID/SuppliersProductCode"/></xsl:attribute>
 							<xsl:if test="ProductDescription">
-								<xsl:attribute name="Description"><xsl:value-of select="ProductDescription"/></xsl:attribute>
+								<xsl:attribute name="Description"><xsl:value-of select="translate(ProductDescription,$accented,$nonaccented)"/></xsl:attribute>
 							</xsl:if>
 							<xsl:attribute name="Quantity"><xsl:value-of select="AcceptedQuantity"/></xsl:attribute>
 							<xsl:if test="UnitValueExclVAT">
@@ -108,5 +114,5 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</DeliveryNote>
-	</xsl:template>
+	</xsl:template>	
 </xsl:stylesheet>
