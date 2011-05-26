@@ -370,7 +370,7 @@
 	<xsl:template name="msFormateDate">
 		<xsl:param name="vsUTCDate"/>
 	
-		<xsl:value-of select="substring(translate($vsUTCDate,'-',''),0)"/>
+		<xsl:value-of select="substring(translate($vsUTCDate,'-',''),3)"/>
 	
 	</xsl:template>
 	
