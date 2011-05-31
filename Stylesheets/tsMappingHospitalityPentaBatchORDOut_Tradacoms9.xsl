@@ -182,9 +182,7 @@
 			</xsl:call-template>
 			<xsl:text>:</xsl:text>
 			<xsl:text>:</xsl:text>
-			<xsl:call-template name="msFormateDate">
-				<xsl:with-param name="vsUTCDate" select="$sFileGenerationDate"/>
-			</xsl:call-template>
+			<xsl:value-of select="$sFileGenerationDate"/>
 			<xsl:text>+</xsl:text>
 			<xsl:text>+</xsl:text>
 			<xsl:text>N+</xsl:text>
