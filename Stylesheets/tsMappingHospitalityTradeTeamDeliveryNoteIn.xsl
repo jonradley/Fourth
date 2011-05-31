@@ -91,24 +91,67 @@
 									</xsl:variable>
 									
 									<PurchaseOrderReferences>
-										<PurchaseOrderReference>Not provided</PurchaseOrderReference>
-										<PurchaseOrderDate><xsl:value-of select="$sDocumentDate"/></PurchaseOrderDate>
+										<PurchaseOrderReference>
+											<xsl:value-of select="DeliveryNoteHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
+										</PurchaseOrderReference>
+										<PurchaseOrderDate>
+											<xsl:choose>
+												<xsl:when test="/DeliveryNoteHeader/PurchaseOrderReferences/PurchaseOrderDate != '' ">
+													<xsl:call-template name="msFormatDate">
+														<xsl:with-param name="vsYYMMDD" select="DeliveryNoteHeader/PurchaseOrderReferences/PurchaseOrderDate"/>
+													</xsl:call-template>
+												</xsl:when>
+											<xsl:otherwise>
+												<xsl:value-of select="$sDocumentDate"/>
+											</xsl:otherwise>	
+											</xsl:choose>
+										</PurchaseOrderDate>
 									</PurchaseOrderReferences>
-									
-									<PurchaseOrderConfirmationReferences>
-										<PurchaseOrderConfirmationReference>Not provided</PurchaseOrderConfirmationReference>
-										<PurchaseOrderConfirmationDate><xsl:value-of select="$sDocumentDate"/></PurchaseOrderConfirmationDate>
-									</PurchaseOrderConfirmationReferences>
-									
+															
 									<DeliveryNoteReferences>
-										<DeliveryNoteReference><xsl:value-of select="DeliveryNoteHeader/DeliveryNoteReferences/DeliveryNoteReference"/></DeliveryNoteReference>
-										<DeliveryNoteDate><xsl:value-of select="$sDocumentDate"/></DeliveryNoteDate>
-										<DespatchDate><xsl:value-of select="$sDeliveryDate"/></DespatchDate>
+										<DeliveryNoteReference>
+											<xsl:value-of select="DeliveryNoteHeader/DeliveryNoteReferences/DeliveryNoteReference"/>
+										</DeliveryNoteReference>
+										<DeliveryNoteDate>
+											<xsl:choose>
+												<xsl:when test="DeliveryNoteHeader/DeliveryNoteReferences/DeliveryNoteDate != '' ">
+													<xsl:call-template name="msFormatDate">
+														<xsl:with-param name="vsYYMMDD" select="DeliveryNoteHeader/DeliveryNoteReferences/DeliveryNoteDate"/>
+													</xsl:call-template>
+												</xsl:when>
+											<xsl:otherwise>
+												<xsl:value-of select="$sDocumentDate"/>
+											</xsl:otherwise>	
+											</xsl:choose>
+										</DeliveryNoteDate>
+										<DespatchDate>
+											<xsl:choose>
+												<xsl:when test="DeliveryNoteHeader/DeliveryNoteReferences/DespatchDate != '' ">
+													<xsl:call-template name="msFormatDate">
+														<xsl:with-param name="vsYYMMDD" select="DeliveryNoteHeader/DeliveryNoteReferences/DespatchDate"/>
+													</xsl:call-template>
+												</xsl:when>
+											<xsl:otherwise>
+												<xsl:value-of select="$sDeliveryDate"/>
+											</xsl:otherwise>	
+											</xsl:choose>
+										</DespatchDate>
 									</DeliveryNoteReferences>
 									
 									<DeliveredDeliveryDetails>
 										<!--DeliveryType/-->
-										<DeliveryDate><xsl:value-of select="$sDeliveryDate"/></DeliveryDate>
+										<DeliveryDate>
+											<xsl:choose>
+												<xsl:when test="DeliveryNoteHeader/DeliveredDeliveryDetails/DeliveryDate != '' ">
+													<xsl:call-template name="msFormatDate">
+														<xsl:with-param name="vsYYMMDD" select="DeliveryNoteHeader/DeliveredDeliveryDetails/DeliveryDate"/>
+													</xsl:call-template>
+												</xsl:when>
+											<xsl:otherwise>
+												<xsl:value-of select="$sDeliveryDate"/>
+											</xsl:otherwise>	
+											</xsl:choose>
+										</DeliveryDate>
 									</DeliveredDeliveryDetails>
 									
 								</DeliveryNoteHeader>
