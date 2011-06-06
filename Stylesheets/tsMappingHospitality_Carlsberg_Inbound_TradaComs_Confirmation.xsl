@@ -82,14 +82,29 @@
 	<xsl:template match="PurchaseOrderConfirmation/TradeSimpleHeader">
 		<TradeSimpleHeader>
 			<SendersCodeForRecipient>
-				<xsl:value-of select="SendersCodeForRecipient"/>
+				<xsl:choose >
+					<xsl:when test="string(SendersBranchReference)!='5060166761066'">
+						<xsl:value-of select="SendersCodeForRecipient"/>		
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="../PurchaseOrderConfirmationHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
+					</xsl:otherwise>
+				</xsl:choose>
 			</SendersCodeForRecipient>
-			<!-- detect for Orchid or Bay account with the ANA -->
-			<xsl:if test="string(SendersBranchReference) !='5999998145710' and string(SendersBranchReference) !='5999999145710'  and string(SendersBranchReference) !='5999996145710' and string(SendersBranchReference) !='5999995145710' and string(SendersBranchReference) !='5060166760243'">
+	
+			<!--SendersCodeForRecipient>
+				<xsl:value-of select="SendersCodeForRecipient"/>
+			</SendersCodeForRecipient-->
+			<!-- detect for Orchid, Bay and Punch account with the ANA >
+			<xsl:if test="string(SendersBranchReference) !='5999998145710' and string(SendersBranchReference) !='5999999145710'  and string(SendersBranchReference) !='5999996145710' and string(SendersBranchReference) !='5999995145710' and string(SendersBranchReference) !='5060166760243' and string(SendersBranchReference) !='5060166761066'">
 				<SendersBranchReference>
 					<xsl:value-of select="SendersBranchReference"/>
 				</SendersBranchReference>
-			</xsl:if>
+			</xsl:if-->
+			
+			<SendersBranchReference>
+				<xsl:value-of select="SendersBranchReference"/>
+			</SendersBranchReference>
 			
 		</TradeSimpleHeader>
 	</xsl:template>
