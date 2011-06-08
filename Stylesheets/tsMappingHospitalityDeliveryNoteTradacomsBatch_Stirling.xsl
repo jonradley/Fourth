@@ -21,6 +21,8 @@ R Cambridge	| 29/10/2007	| 1556 Create module
 	<xsl:variable name="ARAMARK" select="'ARAMARK'"/>
 	<xsl:variable name="BEACON_PURCHASING" select="'BEACON_PURCHASING'"/>
 	<xsl:variable name="SSP" select="'SSP'"/>
+	<xsl:variable name="GIRAFFE" select="'GIRAFFE'"/>
+	<xsl:variable name="WAHACA" select="'WAHACA'"/>
 	
 	<xsl:variable name="CustomerFlag">
 		<xsl:variable name="accountCode" select="string(//DeliveryNote/TradeSimpleHeader/SendersBranchReference)"/>
@@ -37,6 +39,8 @@ R Cambridge	| 29/10/2007	| 1556 Create module
 			<xsl:when test="$accountCode = 'ARA02T'"><xsl:value-of select="$ARAMARK"/></xsl:when>
 			<xsl:when test="$accountCode = 'BEACON'"><xsl:value-of select="$BEACON_PURCHASING"/></xsl:when>
 			<xsl:when test="$accountCode = 'SSP25T'"><xsl:value-of select="$SSP"/></xsl:when>
+			<xsl:when test="$accountCode = 'GIR01T'"><xsl:value-of select="$GIRAFFE"/></xsl:when>
+			<xsl:when test="$accountCode = 'WAH01D'"><xsl:value-of select="$WAHACA"/></xsl:when>
 			<xsl:otherwise></xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>	
@@ -193,7 +197,7 @@ R Cambridge	| 29/10/2007	| 1556 Create module
 											<ProductID>
 												<SuppliersProductCode>
 													<xsl:value-of select="ProductID/SuppliersProductCode"/>
-													<xsl:if test="$CustomerFlag = $SSP">
+													<xsl:if test="$CustomerFlag = $SSP or $CustomerFlag = $GIRAFFE or $CustomerFlag = $WAHACA">
 														<!--xsl:choose>
 															<xsl:when test="translate(PackSize,' ','') ='1x1kg'">-EA</xsl:when>
 															<xsl:when test="contains(PackSize,'x')">-CS</xsl:when>
