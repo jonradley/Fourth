@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--******************************************************************
+Alterations
+**********************************************************************
+Name			| Date				| Change
+**********************************************************************
+		?		|			?			| Created module
+**********************************************************************
+R Cambridge	| 2011-06-07		| 4520 Added back order quantity and unit price
+**********************************************************************
+				|						|				
+**********************************************************************
+				|						|
+**********************************************************************
+				|						|
+*******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output encoding="utf-8"/>
 	<xsl:template match="/">
@@ -89,6 +104,12 @@
 							<ConfirmedQuantity>
 								<xsl:value-of select="format-number(ConfirmedQuantity,'0.00')"/>
 							</ConfirmedQuantity>
+							<xsl:for-each select="BackOrderQuantity[.!=''][1]">
+								<BackOrderQuantity><xsl:value-of select="."/></BackOrderQuantity>
+							</xsl:for-each>
+							<xsl:for-each select="UnitValueExclVAT[.!=''][1]">
+								<UnitValueExclVAT><xsl:value-of select="format-number(. div 100, '0.00')"/></UnitValueExclVAT>
+							</xsl:for-each>
 						</PurchaseOrderConfirmationLine>
 					</xsl:for-each>
 				</PurchaseOrderConfirmationDetail>
