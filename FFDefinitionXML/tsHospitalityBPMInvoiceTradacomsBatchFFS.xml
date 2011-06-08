@@ -3,12 +3,14 @@
 **********************************************************************
 Alterations
 **********************************************************************
-Name		| Date			| Change
+Name			| Date			| Change
 **********************************************************************
 S Jefford	| 22/08/2005	| GTIN field now sourced from ILD/SPRO(1).
-			|				| ILD/CRLI now stored in BuyersProductCode
+				|					| ILD/CRLI now stored in BuyersProductCode
 **********************************************************************
-			|				|
+R Cambridge	| 2011-06-08	| 4520 Capture suppleir's sales order number in OriginalPurchaseOrderReference for use with back order related docs
+**********************************************************************
+				|					|
 **********************************************************************
 -->
 <ffsFlatFileSchema>
