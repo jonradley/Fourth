@@ -288,7 +288,13 @@
 						<xsl:value-of select="translate(PurchaseOrderReferences/PurchaseOrderReference,',','')"/>
 						<xsl:text>,</xsl:text>
 						
+						<!-- Commented out the below and set only Suppliers Code to be inserted, with particular regard to Stonegate -->
+						<xsl:value-of select="translate(ProductID/SuppliersProductCode,',','')"/>
+						
+						
+						
 						<!-- Cater for old documents that do not have a Buyers code, by using the Suppliers code instead -->
+						<!--
 						<xsl:choose>
 							<xsl:when test="ProductID/BuyersProductCode">
 								<xsl:value-of select="translate(ProductID/BuyersProductCode,',','')"/>
@@ -297,6 +303,7 @@
 								<xsl:value-of select="translate(ProductID/SuppliersProductCode,',','')"/>
 							</xsl:otherwise>
 						</xsl:choose>															
+						-->
 						<xsl:text>,</xsl:text>
 						
 						<xsl:value-of select="translate(ProductDescription,',','')"/>
