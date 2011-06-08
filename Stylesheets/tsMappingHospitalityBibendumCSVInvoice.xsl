@@ -28,6 +28,8 @@ Lee Boyton        | 2009-04-28 | 2867. Translate product codes for SSP
 	<xsl:variable name="ARAMARK" select="'ARAMARK'"/>
 	<xsl:variable name="BEACON_PURCHASING" select="'BEACON_PURCHASING'"/>
 	<xsl:variable name="SSP" select="'SSP'"/>
+	<xsl:variable name="GIRAFFE" select="'GIRAFFE'"/>
+	<xsl:variable name="WAHACA" select="'WAHACA'"/>
 	
 	<xsl:variable name="CustomerFlag">
 		<xsl:variable name="accountCode" select="string(//Invoice/TradeSimpleHeader/SendersBranchReference)"/>
@@ -44,6 +46,8 @@ Lee Boyton        | 2009-04-28 | 2867. Translate product codes for SSP
 			<xsl:when test="$accountCode = 'ARA02T'"><xsl:value-of select="$ARAMARK"/></xsl:when>
 			<xsl:when test="$accountCode = 'BEACON'"><xsl:value-of select="$BEACON_PURCHASING"/></xsl:when>
 			<xsl:when test="$accountCode = 'SSP25T'"><xsl:value-of select="$SSP"/></xsl:when>
+			<xsl:when test="$accountCode = 'GIR01T'"><xsl:value-of select="$GIRAFFE"/></xsl:when>
+			<xsl:when test="$accountCode = 'WAH01D'"><xsl:value-of select="$WAHACA"/></xsl:when>
 			<xsl:otherwise></xsl:otherwise>
 		</xsl:choose>
 	
@@ -419,7 +423,7 @@ Lee Boyton        | 2009-04-28 | 2867. Translate product codes for SSP
 	<xsl:template match="ProductID/SuppliersProductCode">
 		<xsl:copy>
 			<xsl:choose>
-				<xsl:when test="$CustomerFlag = $SSP">
+				<xsl:when test="$CustomerFlag = $SSP or $CustomerFlag = $GIRAFFE or $CustomerFlag = $WAHACA">
 
 					<!-- translate the Units In Pack value and then append this to the product code -->
 					<xsl:variable name="UOMRaw">

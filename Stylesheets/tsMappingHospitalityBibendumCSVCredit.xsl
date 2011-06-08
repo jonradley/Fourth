@@ -253,11 +253,11 @@ Lee Boyton        | 2009-04-28 | 2867. Translate product codes for SSP
 		</xsl:attribute>
 	</xsl:template>
 
-	<!-- SSP specific change to append the unit of measure onto the product code -->
+	<!-- SSP, GIRAFFE, WAHACA specific change to append the unit of measure onto the product code -->
 	<xsl:template match="ProductID/SuppliersProductCode">
 		<xsl:copy>
 			<xsl:choose>
-				<xsl:when test="//TradeSimpleHeader/SendersBranchReference = 'SSP25T'">
+				<xsl:when test="//TradeSimpleHeader/SendersBranchReference = 'SSP25T' or //TradeSimpleHeader/SendersBranchReference = 'GIR01T'  or //TradeSimpleHeader/SendersBranchReference = 'WAH01D'">
 
 					<!-- translate the Units In Pack value and then append this to the product code -->
 					<xsl:variable name="UOMRaw">
