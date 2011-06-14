@@ -22,11 +22,11 @@ K Oshaughnessy| 21/04/2011	| FB4394 Document split into delivery note and invoic
 	<!-- Start point - ensure required outer BatchRoot tag is applied -->
 	<xsl:template match="/">
 		<BatchRoot>
-				
+			<Document>	
 				<xsl:attribute name="TypePrefix">INV</xsl:attribute>
 				<xsl:apply-templates/>
-				
-			<xsl:if test="Batch/BatchDocuments/BatchDocument/Invoice/InvoiceHeader/Buyer/BuyersName = 'ITSU (SOHO)'">
+			</Document>
+			<xsl:if test="Batch/BatchDocuments/BatchDocument/Invoice/InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode= 'ITS999'">
 				<!-- Create delivery notes for Itsu -->
 				<Document>
 					<xsl:attribute name="TypePrefix">DNB</xsl:attribute>				
@@ -159,7 +159,28 @@ K Oshaughnessy| 21/04/2011	| FB4394 Document split into delivery note and invoic
 		</InvoiceLine>
 		
 	</xsl:template>
-	
+		
+	<xsl:template match="VATCode">
+		
+		<xsl:copy>
+			<xsl:choose>
+				<xsl:when test="(../VATRate | ../@VATRate) = '0000' ">Z</xsl:when>
+				<xsl:otherwise>S</xsl:otherwise>
+			</xsl:choose>
+		</xsl:copy>
+		
+	</xsl:template>
+	<xsl:template match="VATSubTotal/@VATCode">
+		<xsl:attribute name="{name()}">
+
+			<xsl:choose>
+				<xsl:when test="(../VATRate | ../@VATRate) = '0000' ">Z</xsl:when>
+				<xsl:otherwise>S</xsl:otherwise>
+			</xsl:choose>
+
+		</xsl:attribute>
+		
+	</xsl:template>
 	
 	<!-- INVOIC-ILD-LEXC(InvoiceLine/LineValueExclVAT) need to be multiplied by -1 if (InvoiceLine/ProductID/BuyersProductCode) is NOT blank -->
 	<xsl:template match="InvoiceLine/LineValueExclVAT">
@@ -185,7 +206,7 @@ K Oshaughnessy| 21/04/2011	| FB4394 Document split into delivery note and invoic
 						BatchHeader/VATAmount |
 						BatchHeader/DocumentTotalInclVAT |
 						BatchHeader/SettlementTotalInclVAT |
-						VATSubTotal/* |
+						VATSubTotal/* | 
 						InvoiceTrailer/DocumentTotalExclVAT |
 						InvoiceTrailer/SettlementDiscount |
 						InvoiceTrailer/SettlementTotalExclVAT |
@@ -206,7 +227,9 @@ K Oshaughnessy| 21/04/2011	| FB4394 Document split into delivery note and invoic
 		<xsl:attribute name="{name()}">
 			<xsl:value-of select="format-number(. div 1000.0, '0.00')"/>
 		</xsl:attribute>
-	</xsl:template>
+	</xsl:template>	
+
+
 	<!-- SIMPLE CONVERSION IMPLICIT TO EXPLICIT 4 D.P -->
 	<!-- Add any XPath whose text node needs to be converted from implicit to explicit 4 D.P. -->
 	<xsl:template match="InvoiceLine/UnitValueExclVAT">
@@ -443,6 +466,18 @@ K Oshaughnessy| 21/04/2011	| FB4394 Document split into delivery note and invoic
 			</BatchDocuments>
 		</Batch>
 
+	</xsl:template>
+	
+	<!-- Templates shared by both doc types -->
+	<xsl:template name="translateUoM">
+		<xsl:param name="givenUoM"/>
+		
+		<xsl:choose>
+			<xsl:when test="$givenUoM = 'KG'">KGM</xsl:when>
+			<xsl:when test="$givenUoM = 'EACH'">EA</xsl:when>
+			<xsl:otherwise><xsl:value-of select="$givenUoM"/></xsl:otherwise>
+		</xsl:choose>
+	
 	</xsl:template>
 	
 	<msxsl:script language="JScript" implements-prefix="jscript"><![CDATA[ 
