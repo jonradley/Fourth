@@ -71,7 +71,7 @@ Lee Boyton | 28/06/2006	| H604. Cater for Laurel houses being members.
 			<BatchDocument>
 				<DeliveryNote>
 					<TradeSimpleHeader>
-						<SendersCodeForRecipient RecordPos="CLO=" LPos="1" SFPos="2"/>
+						<SendersCodeForRecipient RecordPos="CLO=" LPos="1" SFPos="3"/>
 					</TradeSimpleHeader>
 					<DeliveryNoteHeader>
 						<Buyer>
@@ -87,7 +87,7 @@ Lee Boyton | 28/06/2006	| H604. Cater for Laurel houses being members.
 						</Supplier>
 						<ShipTo>
 							<ShipToLocationID>
-								<SuppliersCode RecordPos="CLO=" LPos="1" SFPos="2"/>
+								<SuppliersCode RecordPos="CLO=" LPos="1" SFPos="3"/>
 							</ShipToLocationID>
 							<ShipToName RecordPos="CLO=" LPos="2" SFPos="1"/>
 							<ShipToAddress>
@@ -97,26 +97,30 @@ Lee Boyton | 28/06/2006	| H604. Cater for Laurel houses being members.
 								<AddressLine4 RecordPos="CLO=" LPos="3" SFPos="4"/>
 							</ShipToAddress>
 						</ShipTo>
+						<PurchaseOrderReferences>
+							<PurchaseOrderReference RecordPos="ORF=" LPos="2" SFPos="1"/>
+							<PurchaseOrderDate RecordPos="ORF=" LPos="2" SFPos="3"/>
+						</PurchaseOrderReferences>
 						<DeliveryNoteReferences>
-							<DeliveryNoteReference RecordPos="IRF=" LPos="1" SFPos="1"/>
-							<DeliveryNoteDate RecordPos="IRF=" LPos="2" SFPos="1"/>
-							<DespatchDate RecordPos="IRF=" LPos="2" SFPos="1"/>
+							<DeliveryNoteReference RecordPos="DEL=" LPos="1" SFPos="1"/>
+							<DeliveryNoteDate RecordPos="DEL=" LPos="1" SFPos="2"/>
+							<DespatchDate RecordPos="DEL=" LPos="1" SFPos="2"/>
 						</DeliveryNoteReferences>
 						<DeliveredDeliveryDetails>
 							<!--DeliveryType/-->
-							<DeliveryDate RecordPos="IRF=" LPos="2" SFPos="1"/>
+							<DeliveryDate RecordPos="DEL=" LPos="1" SFPos="2"/>
 						</DeliveredDeliveryDetails>
 					</DeliveryNoteHeader>
 					<DeliveryNoteDetail>
 						<DeliveryNoteLine>
 							<ProductID>
-								<SuppliersProductCode RecordPos="ILD=" LPos="3" SFPos="2"/>
+								<SuppliersProductCode RecordPos="DLD=" LPos="3" SFPos="2"/>
 							</ProductID>
-							<ProductDescription RecordPos="ILD=" LPos="14" SFPos="1"/>
+							<ProductDescription RecordPos="DLD=" LPos="8" SFPos="1"/>
 							<!-- OrderedQuantity holds credit or invoice flag, replaced by ILD (7:1) in translator -->
-							<OrderedQuantity RecordPos="ILD=" LPos="13" SFPos="1"/>
-							<ConfirmedQuantity RecordPos="ILD=" LPos="7" SFPos="1"/>
-							<DespatchedQuantity RecordPos="ILD=" LPos="7" SFPos="1"/>
+							<!--OrderedQuantity RecordPos="ILD=" LPos="13" SFPos="1"/-->
+							<!--ConfirmedQuantity RecordPos="ILD=" LPos="7" SFPos="1"/-->
+							<DespatchedQuantity RecordPos="DLD=" LPos="7" SFPos="1"/>
 						</DeliveryNoteLine>
 					</DeliveryNoteDetail>
 				</DeliveryNote>
