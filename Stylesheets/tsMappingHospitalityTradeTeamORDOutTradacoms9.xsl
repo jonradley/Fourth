@@ -22,7 +22,8 @@
 
 <!--xsl:param name="nBatchID">Not Provided</xsl:param-->
 	
-	<xsl:template match="/PurchaseOrder">
+	<xsl:template match="/BatchRoot">
+	<!--xsl:template match="/PurchaseOrder"-->
 	
 		<xsl:variable name="sRecordSep">
 			<xsl:text>'</xsl:text>
@@ -36,7 +37,7 @@
 			<xsl:text>ANA:1+</xsl:text>
 			<!--Our mailbox reference-->
 			<xsl:choose>
-				<xsl:when test="TradeSimpleHeader/TestFlag = 'false' or TradeSimpleHeader/TestFlag = '0'">
+				<xsl:when test="PurchaseOrder/TradeSimpleHeader/TestFlag = 'false' or PurchaseOrder/TradeSimpleHeader/TestFlag = '0'">
 					<xsl:text>5013546145710</xsl:text>
 				</xsl:when>
 				<xsl:otherwise>
@@ -44,20 +45,20 @@
 				</xsl:otherwise>
 			</xsl:choose>
 			<xsl:text>:</xsl:text>
-			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Buyer/BuyersName), 35)"/>
+			<xsl:value-of select="js:msSafeText(string(PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersName), 35)"/>
 			<xsl:text>+</xsl:text>
 			<!--Your mailbox reference-->
-			<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN"/>
+			<xsl:value-of select="PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN"/>
 			<xsl:text>:</xsl:text>
-			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersName), 35)"/>
+			<xsl:value-of select="js:msSafeText(string(PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersName), 35)"/>
 			<xsl:text>+</xsl:text>
 			<xsl:value-of select="$sFileGenerationDate"/><xsl:text>:</xsl:text><xsl:value-of select="vb:msFileGenerationTime()"/>
 			<xsl:text>+</xsl:text>
-			<xsl:value-of select="PurchaseOrderHeader/FileGenerationNumber"/>
+			<xsl:value-of select="PurchaseOrder/PurchaseOrderHeader/FileGenerationNumber"/>
 			<xsl:text>+</xsl:text>
 			<xsl:text>+</xsl:text>		
 			<xsl:choose>
-				<xsl:when test="TradeSimpleHeader/TestFlag = 'false' or TradeSimpleHeader/TestFlag = '0'">
+				<xsl:when test="PurchaseOrder/TradeSimpleHeader/TestFlag = 'false' or PurchaseOrder/TradeSimpleHeader/TestFlag = '0'">
 					<xsl:text>ORDHDR</xsl:text>
 				</xsl:when>
 				<xsl:otherwise><xsl:text>ORDTES</xsl:text></xsl:otherwise>
@@ -66,9 +67,10 @@
 		<xsl:text>B</xsl:text>			
 		<xsl:value-of select="$sRecordSep"/>
 		
+			
 		<xsl:text>MHD=</xsl:text>	
 			<!--<xsl:value-of select="HelperObj:GetNextCounterValue('MessageHeader')"/><xsl:text>+</xsl:text>-->
-			<xsl:text>1+ORDHDR:9</xsl:text>
+		<xsl:text>1+ORDHDR:9</xsl:text>
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:text>TYP=</xsl:text>	
@@ -78,24 +80,24 @@
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:text>SDT=</xsl:text>
-			<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN"/>
+			<xsl:value-of select="PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN"/>
 			<xsl:text>:</xsl:text>
-			<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/BuyersCode"/>
+			<xsl:value-of select="PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/BuyersCode"/>
 			<xsl:text>+</xsl:text>
 			<!-- truncate to 40 SNAM = 3060 = AN..40-->
-			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersName),40)"/>
+			<xsl:value-of select="js:msSafeText(string(PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersName),40)"/>
 			<xsl:text>+</xsl:text>
 			<!-- truncate to 35 SADD 1-4 = 3062 = AN..35-->		
-			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersAddress/AddressLine1),35)"/>
+			<xsl:value-of select="js:msSafeText(string(PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersAddress/AddressLine1),35)"/>
 			<xsl:text>:</xsl:text>
-			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersAddress/AddressLine2),35)"/>
+			<xsl:value-of select="js:msSafeText(string(PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersAddress/AddressLine2),35)"/>
 			<xsl:text>:</xsl:text>
-			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersAddress/AddressLine3),35)"/>
+			<xsl:value-of select="js:msSafeText(string(PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersAddress/AddressLine3),35)"/>
 			<xsl:text>:</xsl:text>
-			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersAddress/AddressLine4),35)"/>
+			<xsl:value-of select="js:msSafeText(string(PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersAddress/AddressLine4),35)"/>
 			<xsl:text>:</xsl:text>
 			<!-- truncate to 8 (just in case) SADD 5 = 3063 = AN..8-->		
-			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersAddress/PostCode),8)"/>		
+			<xsl:value-of select="js:msSafeText(string(PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersAddress/PostCode),8)"/>		
 			<!--xsl:text>+</xsl:text>
 			<xsl:value-of select=""/-->
 		<xsl:value-of select="$sRecordSep"/>
@@ -103,18 +105,18 @@
 		<xsl:text>CDT=</xsl:text>
 			<!--xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/-->
 			<xsl:text>:</xsl:text>
-			<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
+			<xsl:value-of select="PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
 			<xsl:text>+</xsl:text>
 			<!-- truncate to 40 CNAM = 3060 = AN..40-->
-			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Buyer/BuyersName),40)"/>
+			<xsl:value-of select="js:msSafeText(string(PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersName),40)"/>
 			<xsl:text>+</xsl:text> 
 			<!-- truncate to 35 CADD 1-4 = 3032 = AN..35-->
-			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine1),35)"/><xsl:text>:</xsl:text>
-			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine2),35)"/><xsl:text>:</xsl:text>
-			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine3),35)"/><xsl:text>:</xsl:text>
-			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine4),35)"/><xsl:text>:</xsl:text>
+			<xsl:value-of select="js:msSafeText(string(PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine1),35)"/><xsl:text>:</xsl:text>
+			<xsl:value-of select="js:msSafeText(string(PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine2),35)"/><xsl:text>:</xsl:text>
+			<xsl:value-of select="js:msSafeText(string(PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine3),35)"/><xsl:text>:</xsl:text>
+			<xsl:value-of select="js:msSafeText(string(PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersAddress/AddressLine4),35)"/><xsl:text>:</xsl:text>
 			<!-- truncate to 8 (just in case) CADD 5 = 3033 = AN..8-->
-			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Buyer/SendersAddress/PostCode),8)"/>
+			<xsl:value-of select="js:msSafeText(string(PurchaseOrder/PurchaseOrderHeader/Buyer/SendersAddress/PostCode),8)"/>
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<!--
@@ -126,7 +128,7 @@
 		-->
 		
 		<xsl:text>FIL=</xsl:text>
-			<xsl:value-of select="PurchaseOrderHeader/FileGenerationNumber"/>
+			<xsl:value-of select="PurchaseOrder/PurchaseOrderHeader/FileGenerationNumber"/>
 			<xsl:text>+</xsl:text>
 			<xsl:text>1+</xsl:text>
 			<xsl:value-of select="$sFileGenerationDate"/>
@@ -136,14 +138,14 @@
 			<xsl:text>6</xsl:text>
 		<xsl:value-of select="$sRecordSep"/>
 	
-
-	
 		<!--xsl:value-of select="HelperObj:ResetCounter('DataNarativeA')"/-->
+	
+	<xsl:for-each select="/BatchRoot/PurchaseOrder">
 	
 		<xsl:text>MHD=</xsl:text>	
 			<!--xsl:value-of select="HelperObj:GetNextCounterValue('MessageHeader')"/-->
-			<xsl:text>2+</xsl:text>
-			<xsl:text>ORDERS:9</xsl:text>
+			<xsl:value-of select="format-number(count(preceding-sibling::* | self::*) + 1,'0')"/>
+			<xsl:text>+ORDERS:9</xsl:text>
 		<xsl:value-of select="$sRecordSep"/>
 
 		
@@ -299,30 +301,33 @@
 		
 		<xsl:text>OTR=</xsl:text>	
 			<!-- 24 May 2007, FB: 972 - NE - Order count to include promotional lines -->
-			<xsl:value-of select="count(//PurchaseOrderLine)"/>
+			<xsl:value-of select="PurchaseOrderTrailer/NumberOfLines"/>
 			
 		<xsl:value-of select="$sRecordSep"/>
+		
+		
 		
 		<xsl:text>MTR=</xsl:text>
 			<xsl:value-of select="6 + count(PurchaseOrderDetail/PurchaseOrderLine)"/>
 		<xsl:value-of select="$sRecordSep"/>
-		
+		</xsl:for-each>
 				
 		<xsl:text>MHD=</xsl:text>	
 			<!--xsl:value-of select="HelperObj:GetNextCounterValue('MessageHeader')"/><xsl:text>+</xsl:text-->
-			<xsl:text>3+ORDTLR:9</xsl:text>		
+			<xsl:value-of select="format-number(count(/BatchRoot/PurchaseOrder) + 2,'0')"/>
+			<xsl:text>+ORDTLR:9</xsl:text>		
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:text>OFT=</xsl:text>	
-			<xsl:text>1</xsl:text>
+			<xsl:value-of select="count(/BatchRoot/PurchaseOrder)"/>
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:text>MTR=</xsl:text>	
-			<xsl:text>3</xsl:text>
+			<xsl:value-of select="count(/BatchRoot/PurchaseOrder)"/>
 		<xsl:value-of select="$sRecordSep"/>
 	
 		<xsl:text>END=</xsl:text>
-			<xsl:text>3</xsl:text>	
+			<xsl:value-of select="format-number(count(/BatchRoot/PurchaseOrder) + 2,'0')"/>
 		<xsl:value-of select="$sRecordSep"/>
 		
 	</xsl:template>
