@@ -7,13 +7,18 @@
 					<BatchDocument>
 						<Invoice xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 							<TradeSimpleHeader>
+							
 								<SendersCodeForRecipient>
-									<xsl:value-of select="//shipTo/additionalPartyIdentification[additionalPartyIdentificationType='SELLER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue"/>
+									<xsl:value-of select="substring-before(//seller/additionalPartyIdentification/additionalPartyIdentificationValue,'|')"/>
 								</SendersCodeForRecipient>
+								
+								<SendersBranchReference>
+									<xsl:value-of select="substring-after(//seller/additionalPartyIdentification/additionalPartyIdentificationValue,'|')"/>
+								</SendersBranchReference>
+								
 							</TradeSimpleHeader>
 							<!--~~~~~~~~~~~~~~~~~~~~~
 							 INVOICE HEADER
-							 
 							~~~~~~~~~~~~~~~~~~~-->
 							<InvoiceHeader>
 								<xsl:if test="string(//pay:invoice/@documentStatus) ='ORIGINAL'">
@@ -30,6 +35,7 @@
 										</xsl:if>
 									</BuyersLocationID>
 								</Buyer>
+								
 								<Supplier>
 									<SuppliersLocationID>
 										<xsl:if test="string(//sh:Sender/sh:Identifier) !=' '">
@@ -37,18 +43,19 @@
 												<xsl:value-of select="//sh:Sender/sh:Identifier"/>
 											</GLN>
 										</xsl:if>
-										<BuyerAssigned>
+										<!--BuyerAssigned>
 											<xsl:value-of select="//pay:invoice/seller/BuyerAssigned"/>
-										</BuyerAssigned>	
+										</BuyerAssigned-->	
 									</SuppliersLocationID>
 								</Supplier>
+								
 								<ShipTo>
 									<ShipToLocationID>
-										<BuyersCode>
+										<!--BuyersCode>
 											<xsl:value-of select="//shipTo/additionalPartyIdentification[additionalPartyIdentificationType='BUYER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue"/>
-										</BuyersCode>
+										</BuyersCode-->
 										<SuppliersCode>
-											<xsl:value-of select="//shipTo/additionalPartyIdentification[additionalPartyIdentificationType='SELLER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue"/>
+											<xsl:value-of select="//shipTo/additionalPartyIdentification[additionalPartyIdentificationType='BUYER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue"/>
 										</SuppliersCode>
 									</ShipToLocationID>
 								</ShipTo>
@@ -64,8 +71,9 @@
 							<!--~~~~~~~~~~~~~~~~~~~~~~~~
 								INVOICE LINE DETAIL
 						~~~~~~~~~~~~~~~~~~~~~~~~~-->
+						<InvoiceDetail>
+						
 							<xsl:for-each select="//documentCommandOperand/pay:invoice/invoiceLineItem">
-								<InvoiceDetail>
 									<InvoiceLine>
 										<xsl:if test="string(@number) !=' '">
 											<LineNumber>
@@ -73,10 +81,23 @@
 											</LineNumber>
 										</xsl:if>
 										<PurchaseOrderReferences>
-										<PurchaseOrderReference>
-											<xsl:value-of select="//eanucc:documentCommand/documentCommandOperand/pay:invoice/invoiceLineItem/orderIdentification/documentReference/uniqueCreatorIdentification"/>
-										</PurchaseOrderReference>
+											<PurchaseOrderReference>
+												<xsl:value-of select="//eanucc:documentCommand/documentCommandOperand/pay:invoice/invoiceLineItem/orderIdentification/documentReference/uniqueCreatorIdentification"/>
+											</PurchaseOrderReference>
+											<!--PurchaseOrderDate>
+												<xsl:value-of select="substring-before(//eanucc:documentCommand/documentCommandOperand/pay:invoice/@creationDateTime,'T')"/>
+											</PurchaseOrderDate-->
 										</PurchaseOrderReferences>
+										
+										<DeliveryNoteReferences>
+												<DeliveryNoteReference>
+													<xsl:value-of select="//eanucc:documentCommand/documentCommandOperand/pay:invoice/invoiceLineItem/deliveryNote/referenceIdentification"/>
+												</DeliveryNoteReference>
+												<DeliveryNoteDate>
+													<xsl:value-of select="substring-before(//eanucc:documentCommand/documentCommandOperand/pay:invoice/invoiceLineItem/deliveryNote/referenceDateTime,'T')"/>
+												</DeliveryNoteDate>
+										</DeliveryNoteReferences>
+										
 										<ProductID>
 											<GTIN>
 												<xsl:choose>
@@ -127,8 +148,9 @@
 											<xsl:value-of select="format-number(invoiceLineTaxInformation/extension/vat:vATTaxInformationExtension/rate, '0.00')"/>
 										</VATRate>
 									</InvoiceLine>
-								</InvoiceDetail>
 							</xsl:for-each>
+							
+						</InvoiceDetail>
 							<!--~~~~~~~~~~~~~~~~~~~~~~~
 								INVOICE TRAILER
 						~~~~~~~~~~~~~~~~~~~~~~~~-->
