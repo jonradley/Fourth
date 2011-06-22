@@ -21,6 +21,8 @@
 ' 19/05/2011  | John Cahill    | 4481. Translate accented characters in description for equivalents.
 '                                                        See relevant variables: accented & nonaccented
 '******************************************************************************************
+' 22/06/2011  | Maha    | 4555. Added characters to accented and nonaccented list for translation.
+'******************************************************************************************
 '             |              | 
 '******************************************************************************************
 -->
