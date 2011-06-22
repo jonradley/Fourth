@@ -32,8 +32,8 @@
 		<xsl:value-of select="/GoodsReceivedNote/GoodsReceivedNoteHeader/HeaderExtraData/CompressedAztecOutput"/>
 	</xsl:variable>
 	<!-- Add further characters to 'accented' variable and the equivalent to 'nonaccented' variable -->
-	<xsl:variable name="accented" select="'áàâäéèêëíìîïóòôöúùûüÈ'" /> 
-	<xsl:variable name="nonaccented" select="'aaaaeeeeiiiioooouuuuE'" /> 
+	<xsl:variable name="accented" select="'áàâäãåéèêëíìîïóòôöõúùûüñÿÀÂÄÃÁÅÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜŸÝÑÇçÞ'" /> 
+	<xsl:variable name="nonaccented" select="'aaaaaaeeeeiiiiooooouuuunyAAAAAAEEEEIIIIOOOOOUUUUYYNCcR'" /> 
 	<xsl:template match="/">	
 		<DeliveryNote>
 			<xsl:attribute name="SiteCode"><xsl:value-of select="/GoodsReceivedNote/GoodsReceivedNoteHeader/AztecSiteID"/></xsl:attribute>
@@ -60,7 +60,7 @@
 						<xsl:text>CEFO001</xsl:text>
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:value-of select="/GoodsReceivedNote/TradeSimpleHeader/SendersCodeForRecipient"/>
+						<xsl:value-of select="/GoodsReceivedNote/GoodsReceivedNoteHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:attribute>
