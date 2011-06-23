@@ -20,7 +20,7 @@
 	xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	<xsl:output method="text" encoding="utf-8"/>
 
-<!--xsl:param name="nBatchID">Not Provided</xsl:param-->
+	<xsl:param name="nBatchID"/>
 	
 	<xsl:template match="/BatchRoot">
 	<!--xsl:template match="/PurchaseOrder"-->
@@ -29,6 +29,10 @@
 			<xsl:text>'</xsl:text>
 			<!--<xsl:text>&#13;&#10;</xsl:text>-->
 			<xsl:text></xsl:text>
+		</xsl:variable>
+		
+		<xsl:variable name="FGN">
+			<xsl:value-of select="$nBatchID"/>					
 		</xsl:variable>
 		
 		<xsl:variable name="sFileGenerationDate" select="vb:msFileGenerationDate()"/>
@@ -54,7 +58,7 @@
 			<xsl:text>+</xsl:text>
 			<xsl:value-of select="$sFileGenerationDate"/><xsl:text>:</xsl:text><xsl:value-of select="vb:msFileGenerationTime()"/>
 			<xsl:text>+</xsl:text>
-			<xsl:value-of select="PurchaseOrder/PurchaseOrderHeader/FileGenerationNumber"/>
+			<xsl:value-of select="$FGN"/>
 			<xsl:text>+</xsl:text>
 			<xsl:text>+</xsl:text>		
 			<xsl:choose>
@@ -66,7 +70,6 @@
 		<xsl:text>+</xsl:text>			
 		<xsl:text>B</xsl:text>			
 		<xsl:value-of select="$sRecordSep"/>
-		
 			
 		<xsl:text>MHD=</xsl:text>	
 			<!--<xsl:value-of select="HelperObj:GetNextCounterValue('MessageHeader')"/><xsl:text>+</xsl:text>-->
@@ -128,7 +131,7 @@
 		-->
 		
 		<xsl:text>FIL=</xsl:text>
-			<xsl:value-of select="PurchaseOrder/PurchaseOrderHeader/FileGenerationNumber"/>
+			<xsl:value-of select="$FGN"/>
 			<xsl:text>+</xsl:text>
 			<xsl:text>1+</xsl:text>
 			<xsl:value-of select="$sFileGenerationDate"/>
