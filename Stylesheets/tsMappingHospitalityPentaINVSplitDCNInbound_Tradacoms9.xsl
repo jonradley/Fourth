@@ -26,7 +26,7 @@ K Oshaughnessy| 21/04/2011	| FB4394 Document split into delivery note and invoic
 				<xsl:attribute name="TypePrefix">INV</xsl:attribute>
 				<xsl:apply-templates/>
 			</Document>
-			<xsl:if test="Batch/BatchDocuments/BatchDocument/Invoice/InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode= 'ITS999'">
+			<xsl:if test="Batch/BatchDocuments/BatchDocument/Invoice/InvoiceHeader/Buyer/BuyersName= 'ITSU'">
 				<!-- Create delivery notes for Itsu -->
 				<Document>
 					<xsl:attribute name="TypePrefix">DNB</xsl:attribute>				
