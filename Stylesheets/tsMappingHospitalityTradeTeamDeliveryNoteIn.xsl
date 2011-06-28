@@ -22,7 +22,7 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  30/11/2005		| A Sheppard	| H522. Removed unallocated line
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- 28/06/2011		| R Cambridge	| FB4571 supress blank UnitValueExclVAT elements
+ 28/06/2011		| R Cambridge	| FB4571 Set UnitValueExclVAT to 0.00 if it would be blank
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
           		| 					| 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -184,12 +184,18 @@
 											<OrderedQuantity UnitOfMeasure="EA"><xsl:value-of select="$sQuantity"/></OrderedQuantity>
 											<ConfirmedQuantity UnitOfMeasure="EA"><xsl:value-of select="$sQuantity"/></ConfirmedQuantity>
 											<DespatchedQuantity UnitOfMeasure="EA"><xsl:value-of select="$sQuantity"/></DespatchedQuantity>
+											
 											<!-- 4571 Don't create UnitValueExclVAT if it would be blank 
 													(corrected name of source element too)
 											-->
-											<xsl:for-each select="UnitValueExclVAT[. != ''][1]">
-												<UnitValueExclVAT><xsl:value-of select="."/></UnitValueExclVAT>
-											</xsl:for-each>
+											<UnitValueExclVAT>
+												<xsl:choose>
+													<xsl:when test="UnitValueExclVAT != ''">
+														<xsl:value-of select="."/>
+													</xsl:when>
+													<xsl:otherwise>0.00</xsl:otherwise>
+												</xsl:choose>
+											</UnitValueExclVAT>											
 			
 											<LineExtraData>
 												<IsStockProduct>1</IsStockProduct>
