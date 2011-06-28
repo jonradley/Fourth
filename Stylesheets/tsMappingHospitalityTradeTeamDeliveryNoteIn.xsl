@@ -20,7 +20,13 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  25/11/2005		| R Cambridge	| H522 Changed input can be output of FF2XML
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-30/11/2005		| A Sheppard	| H522. Removed unallocated line
+ 30/11/2005		| A Sheppard	| H522. Removed unallocated line
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 28/06/2011		| R Cambridge	| FB4571 supress blank UnitValueExclVAT elements
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          		| 					| 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          		| 					| 
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="msxsl">
 	<xsl:output method="xml" encoding="utf-8"/>
@@ -178,7 +184,12 @@
 											<OrderedQuantity UnitOfMeasure="EA"><xsl:value-of select="$sQuantity"/></OrderedQuantity>
 											<ConfirmedQuantity UnitOfMeasure="EA"><xsl:value-of select="$sQuantity"/></ConfirmedQuantity>
 											<DespatchedQuantity UnitOfMeasure="EA"><xsl:value-of select="$sQuantity"/></DespatchedQuantity>
-											<UnitValueExclVAT><xsl:value-of select="UnitPrice"/></UnitValueExclVAT>
+											<!-- 4571 Don't create UnitValueExclVAT if it would be blank 
+													(corrected name of source element too)
+											-->
+											<xsl:for-each select="UnitValueExclVAT[. != ''][1]">
+												<UnitValueExclVAT><xsl:value-of select="."/></UnitValueExclVAT>
+											</xsl:for-each>
 			
 											<LineExtraData>
 												<IsStockProduct>1</IsStockProduct>
