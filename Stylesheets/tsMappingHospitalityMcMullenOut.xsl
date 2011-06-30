@@ -39,17 +39,17 @@
 		<xsl:variable name="NewLine">
 			<xsl:text>&#13;&#10;</xsl:text>
 		</xsl:variable>
-		<xsl:for-each select="/BatchRoot/PurchaseOrder">
+		<xsl:for-each select="/PurchaseOrder">
 			<!--Header -->
 			<xsl:text>1</xsl:text>
 			<xsl:variable name="sRecipientCode">
 				<xsl:value-of select="TradeSimpleHeader/RecipientsCodeForSender"/>
 			</xsl:variable>
-			<xsl:call-template name="prepend-pad">
+			<!--xsl:call-template name="prepend-pad">
 				<xsl:with-param name="padVar" select="$sRecipientCode"/>
 				<xsl:with-param name="padChar" select="0"/>
 				<xsl:with-param name="length" select="4"/>
-			</xsl:call-template>
+			</xsl:call-template-->
 			<xsl:variable name="sPONo">
 				<xsl:value-of select="PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
 			</xsl:variable>
@@ -83,11 +83,11 @@
 			<!--Purchase Order Line one or more detail lines  -->
 			<xsl:for-each select="PurchaseOrderDetail/PurchaseOrderLine">
 				<xsl:text>2</xsl:text>
-				<xsl:call-template name="prepend-pad">
+				<!--xsl:call-template name="prepend-pad">
 					<xsl:with-param name="padVar" select="$sRecipientCode"/>
 					<xsl:with-param name="padChar" select="0"/>
 					<xsl:with-param name="length" select="4"/>
-				</xsl:call-template>
+				</xsl:call-template-->
 				<xsl:call-template name="prepend-pad">
 					<xsl:with-param name="padVar" select="$sPONo"/>
 					<xsl:with-param name="padChar" select="0"/>

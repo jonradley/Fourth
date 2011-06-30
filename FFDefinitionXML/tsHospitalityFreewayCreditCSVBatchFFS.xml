@@ -81,7 +81,7 @@
 								<CreditNoteDate RecordPos="HEAD" LPos="6"/>
 								<!--Set TaxPoint Date same as CreditNote Date.-->
 								<TaxPointDate RecordPos="HEAD" LPos="6"/>
-								<VATRegNo RecordPos="HEAD" LPos="51"/>
+								<VATRegNo RecordPos="HEAD" LPos="50"/>
 							</CreditNoteReferences>
 							<!--Set dummy value (HEAD-3) to Currency and correct it in stylesheet.-->
 							<Currency RecordPos="HEAD" LPos="3"/>
@@ -91,17 +91,17 @@
 								<!--Set dummy value (Line-7) to LineNo and correct it in stylesheet.-->
 								<LineNumber RecordPos="LINE" LPos="7"/>
 								<PurchaseOrderReferences>
-									<PurchaseOrderReference RecordPos="LINE" LPos="94"/>
-									<PurchaseOrderDate RecordPos="LINE" LPos="95"/>
+									<PurchaseOrderReference RecordPos="HEAD" LPos="63"/>
+									<PurchaseOrderDate RecordPos="HEAD" LPos="64"/>
 									<TradeAgreement>
-										<ContractReference RecordPos="LINE" LPos="58"/>
+										<ContractReference RecordPos="HEAD" LPos="58"/>
 									</TradeAgreement>
 								</PurchaseOrderReferences>
 								<DeliveryNoteReferences>
-									<DeliveryNoteReference RecordPos="LINE" LPos="84"/>
-									<DeliveryNoteDate RecordPos="LINE" LPos="85"/>
+									<DeliveryNoteReference RecordPos="HEAD" LPos="67"/>
+									<DeliveryNoteDate RecordPos="HEAD" LPos="68"/>
 									<!--Set Despatch Date same as Delivery Note Date.-->
-									<DespatchDate RecordPos="LINE" LPos="85"/>
+									<DespatchDate RecordPos="HEAD" LPos="68"/>
 								</DeliveryNoteReferences>
 								<ProductID>
 									<GTIN RecordPos="LINE" LPos="18"/>
