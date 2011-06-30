@@ -24,46 +24,45 @@ Andrew Barber	| 13/05/2010		| Created FFS
 				<BatchDocument>
 					<Invoice>
 						<TradeSimpleHeader>
-							<SendersCodeForRecipient RecordLength="46" RecordPos="*" LPos="8"/>
+							<SendersCodeForRecipient RecordLength="45" RecordPos="*" LPos="8"/>
 							<!--Map the fisrt record of the header column in (otherwise errors), to be dropped in XSL transformation-->
-							<SendersBranchReference RecordLength="58" RecordPos="*" LPos="1"/>
 						</TradeSimpleHeader>
 						<InvoiceHeader>
 							<Buyer>
 								<BuyersLocationID>
-									<SuppliersCode RecordLength="46" RecordPos="*" LPos="8"/>
+									<SuppliersCode RecordLength="45" RecordPos="*" LPos="8"/>
 								</BuyersLocationID>
-								<BuyersName RecordLength="46" RecordPos="*" LPos="9"/>
+								<BuyersName RecordLength="45" RecordPos="*" LPos="9"/>
 							</Buyer>
 							<Supplier>
-								<SuppliersName RecordLength="46" RecordPos="*" LPos="4"/>
+								<SuppliersName RecordLength="45" RecordPos="*" LPos="4"/>
 							</Supplier>
 							<ShipTo>
 								<ShipToLocationID>
-									<SuppliersCode RecordLength="46" RecordPos="*" LPos="8"/>
+									<SuppliersCode RecordLength="45" RecordPos="*" LPos="8"/>
 								</ShipToLocationID>
 							</ShipTo>
 							<InvoiceReferences>
-								<InvoiceReference RecordLength="46" RecordPos="*" LPos="1"/>
-								<InvoiceDate RecordLength="46" RecordPos="*" LPos="2"/>
-								<TaxPointDate RecordLength="46" RecordPos="*" LPos="2"/>
+								<InvoiceReference RecordLength="45" RecordPos="*" LPos="1"/>
+								<InvoiceDate RecordLength="45" RecordPos="*" LPos="2"/>
+								<TaxPointDate RecordLength="45" RecordPos="*" LPos="2"/>
 							</InvoiceReferences>
 						</InvoiceHeader>
 						<InvoiceDetail>
 							<InvoiceLine>
 								<ProductID>
-									<SuppliersProductCode RecordLength="46" RecordPos="*" LPos="15"/>
+									<SuppliersProductCode RecordLength="45" RecordPos="*" LPos="15"/>
 								</ProductID>
-								<ProductDescription RecordLength="46" RecordPos="*" LPos="11"/>
-								<InvoicedQuantity RecordLength="46" RecordPos="*" LPos="39"/>
-								<UnitValueExclVAT RecordLength="46" RecordPos="*" LPos="43"/>
-								<LineValueExclVAT RecordLength="46" RecordPos="*" LPos="44"/>
+								<ProductDescription RecordLength="45" RecordPos="*" LPos="11"/>
+								<InvoicedQuantity RecordLength="45" RecordPos="*" LPos="39"/>
+								<UnitValueExclVAT RecordLength="45" RecordPos="*" LPos="43"/>
+								<LineValueExclVAT RecordLength="45" RecordPos="*" LPos="44"/>
 							</InvoiceLine>
 						</InvoiceDetail>
 						<InvoiceTrailer>
-							<DocumentTotalExclVAT RecordLength="46" RecordPos="*" LPos="5"/>
-							<VATAmount RecordLength="46" RecordPos="*" LPos="6"/>
-							<DocumentTotalInclVAT RecordLength="46" RecordPos="*" LPos="7"/>
+							<DocumentTotalExclVAT RecordLength="45" RecordPos="*" LPos="5"/>
+							<VATAmount RecordLength="45" RecordPos="*" LPos="6"/>
+							<DocumentTotalInclVAT RecordLength="45" RecordPos="*" LPos="7"/>
 						</InvoiceTrailer>
 					</Invoice>
 				</BatchDocument>
