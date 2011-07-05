@@ -40,6 +40,7 @@
 
 		<xsl:call-template name="writeBatchTrailer"/>
 		
+		<xsl:value-of select="$RECORD_SEPARATOR"/>		
 		
 		
 	</xsl:template>
@@ -50,6 +51,7 @@
 		<xsl:text>A0</xsl:text>
 		
 		<!-- Date -->
+		<xsl:text>20</xsl:text>
 		<xsl:value-of select="translate($sDocumentDate,'-','')"/>
 		
 		<!-- Time -->
@@ -61,6 +63,9 @@
 				and obtaining a messageid required a batch GUID which will not have been created at this point ) -->
 		<!-- The formating is defined by the config XML setting //FileGenerationNumberFormat -->
 		<xsl:value-of select="$nBatchID"/>
+		
+		<!-- Padding -->
+		<xsl:text>           </xsl:text>
 	
 	</xsl:template>
 	
@@ -103,6 +108,9 @@
 		
 		<!-- Record count -->
 		<xsl:value-of select="format-number(count(/BatchRoot/*) + 2,'000000000000')"/>
+		
+		<!-- Padding -->
+		<xsl:text>                   </xsl:text>
 
 	
 	</xsl:template>
