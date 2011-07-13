@@ -18,7 +18,9 @@
 ==========================================================================================
  Date            | Name             | Description of modification
  =======================================================================================
- 30/06/2011		| K Oshaughnessy| 4577 change to length of delivery notes reference
+ 30/06/2011	| K Oshaughnessy| 4577 change to length of delivery notes reference
+=======================================================================================
+13/07/2011	| K Oshaughnessy| 4609 Hack Alert. GLN manipulation for Brakes
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
@@ -127,13 +129,18 @@
 		
 					<!-- Take the ANA number from the GLN if it is not the default 13 5's otherwise use the SuppliersCode for Supplier -->
 					<xsl:choose>
+						<!--Hack alert Caterwide sees brakes as one supplier, we see them as three. Caterwide only want us to send one GLN for all brakes GRN's we get this from the buyers code for supplier-->
+						<xsl:when test="contains(/*/*/Supplier/SuppliersLocationID/BuyersCode,'/')">
+							<xsl:value-of select="substring(/*/*/Supplier/SuppliersLocationID/BuyersCode,3,13)"/>
+						</xsl:when>
 						<xsl:when test="/*/*/Supplier/SuppliersLocationID/GLN and /*/*/Supplier/SuppliersLocationID/GLN != '5555555555555' and /*/*/Supplier/SuppliersLocationID/GLN != '5014748111116' and /*/*/Supplier/SuppliersLocationID/GLN != '5010118000026'">
 							<xsl:value-of select="/*/*/Supplier/SuppliersLocationID/GLN"/>						
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:value-of select="/*/*/Supplier/SuppliersLocationID/SuppliersCode"/>
 						</xsl:otherwise>
-					</xsl:choose>	
+					</xsl:choose>
+						
 					<xsl:text>,</xsl:text>
 					
 					<xsl:text>,</xsl:text>
