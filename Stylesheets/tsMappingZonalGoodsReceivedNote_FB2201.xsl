@@ -23,6 +23,8 @@
 '******************************************************************************************
 ' 22/06/2011  | Maha    | 4555. Added characters to accented and nonaccented list for translation.
 '******************************************************************************************
+' 15/07/2011  | Chris Taylor  | 4617. Fix problems with code created in 4555
+'******************************************************************************************
 '             |              | 
 '******************************************************************************************
 -->
@@ -62,7 +64,7 @@
 						<xsl:text>CEFO001</xsl:text>
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:value-of select="/GoodsReceivedNote/GoodsReceivedNoteHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
+						<xsl:value-of select="/GoodsReceivedNote/TradeSimpleHeader/SendersCodeForRecipient"/>
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:attribute>
