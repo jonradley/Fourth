@@ -23,7 +23,10 @@ R Cambridge	| 2010-07-23		| 3788 if no PO date is supplied use delivery note dat
 **********************************************************************
 R Cambridge	| 2010-10-14		| 3951 Created generic Bavel version from Aramark Spain version
 **********************************************************************
-R Cambridge	| 2010-11-08		| 4012 Voxel invoices faling validation - DiscountedLinesTotalExclVAT not provided			|						|
+R Cambridge	| 2010-11-08		| 4012 Voxel invoices failing validation - DiscountedLinesTotalExclVAT not provided
+**********************************************************************
+R Cambridge	| 2011-07-18		| 4621 Use TotalSummary/@SubTotal as source of taxable amount
+													This means discounted lines total and settlement total must always be the same
 **********************************************************************
 				|						|
 *******************************************************************-->
@@ -303,13 +306,13 @@ R Cambridge	| 2010-11-08		| 4012 Voxel invoices faling validation - DiscountedLi
 										
 								</VATSubTotals>
 								<!-- 4012 Only create element if @NetAmount is provided-->
-								<xsl:for-each select="TotalSummary/@NetAmount">
+								<xsl:for-each select="TotalSummary/@SubTotal">
 									<DiscountedLinesTotalExclVAT><xsl:value-of select="."/></DiscountedLinesTotalExclVAT>
 								</xsl:for-each>
 								<xsl:for-each select="TotalSummary/@Discounts[. != ''][1]">
 									<DocumentDiscount><xsl:value-of select="."/></DocumentDiscount>
 								</xsl:for-each>
-								<xsl:for-each select="TotalSummary/@GrossAmount[1]">
+								<xsl:for-each select="TotalSummary/@SubTotal[1]">
 									<DocumentTotalExclVAT><xsl:value-of select="."/></DocumentTotalExclVAT>
 								</xsl:for-each>
 								<SettlementTotalExclVAT><xsl:value-of select="TotalSummary/@SubTotal"/></SettlementTotalExclVAT>
