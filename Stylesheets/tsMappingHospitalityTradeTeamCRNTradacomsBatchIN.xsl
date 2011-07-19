@@ -107,8 +107,23 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from CLD/SPRO(1).
 						CreditNoteTrailer/DocumentTotalInclVAT |
 						CreditNoteTrailer/SettlementTotalInclVAT |
 						CreditNoteTrailer/DiscountedLinesTotalExclVAT">
-		<xsl:call-template name="copyCurrentNodeExplicit2DP"/>
+		<xsl:call-template name="ZeroPrice2"/>
 	</xsl:template>
+	<!-- This effects Stonegate only. They do not want prices to appear on the credit notes-->
+	<xsl:template name="ZeroPrice2">
+		<xsl:param name="Zero2" select="//Buyer/BuyersLocationID/SuppliersCode = '5060166760007'"/>
+		<xsl:copy>
+			<xsl:choose>
+				<xsl:when test="$Zero2">
+					<xsl:text>0</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:call-template name="copyCurrentNodeExplicit2DP"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:copy>	
+	</xsl:template>
+	
 	<!-- SIMPLE CONVERSION IMPLICIT TO EXPLICIT 3 D.P -->
 	<!-- Add any XPath whose text node needs to be converted from implicit to explicit 3 D.P. -->
 	<xsl:template match="TotalMeasure">
@@ -147,7 +162,21 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from CLD/SPRO(1).
 	<!-- SIMPLE CONVERSION IMPLICIT TO EXPLICIT 4 D.P -->
 	<!-- Add any XPath whose text node needs to be converted from implicit to explicit 4 D.P. -->
 	<xsl:template match="CreditNoteLine/UnitValueExclVAT | CreditNoteLine/LineValueExclVAT">
-		<xsl:call-template name="copyCurrentNodeExplicit4DP"/>
+		<xsl:call-template name="ZeroPrice"/>
+	</xsl:template>
+	<!-- This effects Stonegate only. They do not want prices to appear on the credit notes-->
+	<xsl:template name="ZeroPrice">
+		<xsl:param name="Zero" select="//Buyer/BuyersLocationID/SuppliersCode = '5060166760007' "/>
+		<xsl:copy>
+			<xsl:choose>
+				<xsl:when test="$Zero =  '10000' ">
+					<xsl:text>0</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:call-template name="copyCurrentNodeExplicit4DP"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:copy>
 	</xsl:template>
 	<!-- END of SIMPLE CONVERSIONS-->
 
