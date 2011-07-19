@@ -22,7 +22,7 @@ Koshaughnessy	| 29/05/2011	| created
 		<xsl:apply-templates/>
 </BatchRoot>
 	</xsl:template>
-	
+
 	<xsl:template match="VATSubTotals/VATSubTotal/@VATCode">
 		<xsl:call-template name="VATTrailer"/>
 	</xsl:template>
@@ -82,7 +82,7 @@ Koshaughnessy	| 29/05/2011	| created
 	
 	<!-- SIMPLE CONVERSION IMPLICIT TO EXPLICIT 2 D.P -->
 	<!-- Add any XPath whose text node needs to be converted from implicit to explicit 2 D.P. -->
-	<xsl:template match="BatchHeader/DocumentTotalExclVAT |
+	<xsl:template match="
 						BatchHeader/SettlementTotalExclVAT |
 						BatchHeader/VATAmount |
 						BatchHeader/DocumentTotalInclVAT |
@@ -94,8 +94,23 @@ Koshaughnessy	| 29/05/2011	| created
 						InvoiceTrailer/VATAmount |
 						InvoiceTrailer/DocumentTotalInclVAT |
 						InvoiceTrailer/SettlementTotalInclVAT">
-		<xsl:call-template name="copyCurrentNodeExplicit2DP"/>
+		<xsl:call-template name="ZeroPrice2"/>
 	</xsl:template>	
+	
+	<xsl:template name="ZeroPrice2">
+		<xsl:param name="Zero2" select="//Buyer/BuyersLocationID/SuppliersCode = '5060166760007'"/>
+		<xsl:copy>
+			<xsl:choose>
+				<xsl:when test="$Zero2">
+					<xsl:text>0</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:call-template name="copyCurrentNodeExplicit2DP"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:copy>	
+	</xsl:template>
+	
 	<!-- SIMPLE CONVERSION IMPLICIT TO EXPLICIT 3 D.P -->
 	<!-- Add any XPath whose text node needs to be converted from implicit to explicit 3 D.P. -->
 	<xsl:template match="OrderingMeasure | 
@@ -116,9 +131,23 @@ Koshaughnessy	| 29/05/2011	| created
 		</xsl:attribute>
 	</xsl:template>
 	<!-- SIMPLE CONVERSION IMPLICIT TO EXPLICIT 4 D.P -->
-	<!-- Add any XPath whose text node needs to be converted from implicit to explicit 4 D.P. -->
-	<xsl:template match="InvoiceLine/UnitValueExclVAT">
-		<xsl:call-template name="copyCurrentNodeExplicit4DP"/>
+	<xsl:template match="//InvoiceLine/UnitValueExclVAT |
+							//BatchHeader/DocumentTotalExclVAT">
+		<xsl:call-template name="ZeroPrice"/>
+	</xsl:template>
+	
+	<xsl:template name="ZeroPrice">
+		<xsl:param name="Zero" select="//Buyer/BuyersLocationID/SuppliersCode = '5060166760007' "/>
+		<xsl:copy>
+			<xsl:choose>
+				<xsl:when test="$Zero =  '10000' ">
+					<xsl:text>0</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:call-template name="copyCurrentNodeExplicit4DP"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:copy>
 	</xsl:template>
 	
 	<!--docing the VAT sub totals-->
@@ -271,7 +300,7 @@ Koshaughnessy	| 29/05/2011	| created
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-	
+
 	<msxsl:script language="JScript" implements-prefix="jscript"><![CDATA[ 
 		function toUpperCase(vs) {
 			return vs.toUpperCase();
