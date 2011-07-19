@@ -96,7 +96,7 @@ Koshaughnessy	| 29/05/2011	| created
 						InvoiceTrailer/SettlementTotalInclVAT">
 		<xsl:call-template name="ZeroPrice2"/>
 	</xsl:template>	
-	
+	<!-- This effects Stonegate only. They do not want prices to appear on the Invoices-->
 	<xsl:template name="ZeroPrice2">
 		<xsl:param name="Zero2" select="//Buyer/BuyersLocationID/SuppliersCode = '5060166760007'"/>
 		<xsl:copy>
@@ -135,7 +135,7 @@ Koshaughnessy	| 29/05/2011	| created
 							//BatchHeader/DocumentTotalExclVAT">
 		<xsl:call-template name="ZeroPrice"/>
 	</xsl:template>
-	
+	<!-- This effects Stonegate only. They do not want prices to appear on the Invoices-->
 	<xsl:template name="ZeroPrice">
 		<xsl:param name="Zero" select="//Buyer/BuyersLocationID/SuppliersCode = '5060166760007' "/>
 		<xsl:copy>
