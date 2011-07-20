@@ -2,7 +2,7 @@
 <!--======================================================================================
  Overview
 
-	Invoice/credit approval report to Punch's Peoplesoft system
+	Invoice/credit approval report to Spirit's Peoplesoft system
 
 ==========================================================================================
  Module History
@@ -15,7 +15,7 @@
 ==========================================================================================
  18/05/2011	| R Cambridge			| 4376 system testing changes
 ==========================================================================================
-           	|                 	| 
+ 20/07/2011 | A Barber                 	| 4376 Updated all name references from Punch to Spirit.
 ==========================================================================================
            	|                 	|
 =======================================================================================-->
@@ -29,7 +29,7 @@
 				match="/Batch/BatchDocuments/BatchDocument/Invoice[InvoiceHeader/Buyer/BuyersAddress/AddressLine2='C']" 
 				use="InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode"/>
 
-	<xsl:variable name="PUNCH_PREFIX" select="'PUNCH_'"/>
+	<xsl:variable name="SPIRIT_PREFIX" select="'SPIRIT_'"/>
 
 	<xsl:template match="/">
 		<BatchRoot>
@@ -45,8 +45,8 @@
 									<Invoice>
 										<TradeSimpleHeader>
 											<SendersCodeForRecipient>
-												<!-- SCR is defined by POunch but need to ensure Punch's codes don not clash with supplier defined codes for other customs -->
-												<xsl:value-of select="concat($PUNCH_PREFIX,TradeSimpleHeader/SendersCodeForRecipient)"/>
+												<!-- SCR is defined by POunch but need to ensure Spirit's codes don not clash with supplier defined codes for other customs -->
+												<xsl:value-of select="concat($SPIRIT_PREFIX,TradeSimpleHeader/SendersCodeForRecipient)"/>
 											</SendersCodeForRecipient>
 										</TradeSimpleHeader>
 										<InvoiceHeader>
@@ -155,8 +155,8 @@
 									<CreditNote>
 										<TradeSimpleHeader>
 											<SendersCodeForRecipient>
-												<!-- SCR is defined by POunch but need to ensure Punch's codes don not clash with supplier defined codes for other customs -->
-												<xsl:value-of select="concat($PUNCH_PREFIX,TradeSimpleHeader/SendersCodeForRecipient)"/>
+												<!-- SCR is defined by POunch but need to ensure Spirit's codes don not clash with supplier defined codes for other customs -->
+												<xsl:value-of select="concat($SPIRIT_PREFIX,TradeSimpleHeader/SendersCodeForRecipient)"/>
 											</SendersCodeForRecipient>
 										</TradeSimpleHeader>
 										<CreditNoteHeader>
@@ -172,11 +172,11 @@
 											</Supplier>
 	
 											<ShipTo>
-												<!--ShipToLocationID>
-													<SuppliersCode>
+												<ShipToLocationID>
+													<BuyersCode>
 														<xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/>
-													</SuppliersCode>
-												</ShipToLocationID-->
+													</BuyersCode>
+												</ShipToLocationID>
 											</ShipTo>
 											<InvoiceReferences>
 												<InvoiceReference>

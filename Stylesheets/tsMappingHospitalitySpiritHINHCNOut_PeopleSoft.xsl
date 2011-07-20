@@ -2,7 +2,7 @@
 <!--======================================================================================
  Overview
 
-	Invoice/credit approval report to Punch's Peoplesoft system
+	Invoice/credit approval report to Spirit's Peoplesoft system
 
 ==========================================================================================
  Module History
@@ -13,7 +13,7 @@
 ==========================================================================================
  18/05/2011	| R Cambridge			| 4376 Created module
 ==========================================================================================
-           	|                 	| 
+ 20/07/2011 | A Barber	                	| 4376 Updated all name references from Punch to Spirit.
 ==========================================================================================
            	|                 	|
 =======================================================================================-->
@@ -25,6 +25,8 @@
 	<xsl:param name="nBatchID">Not Provided</xsl:param>
 	
 	<xsl:variable name="RECORD_SEPARATOR" select="'&#13;&#10;'"/>
+	
+	<xsl:variable name="AUTO_AUTH_USERNAME" select="'SYSTEM'"/>
 
 	
 	<xsl:template match="/">
@@ -65,7 +67,7 @@
 		<xsl:value-of select="$nBatchID"/>
 		
 		<!-- Padding -->
-		<xsl:text>           </xsl:text>
+		<xsl:value-of select="'           '"/>
 	
 	</xsl:template>
 	
@@ -94,8 +96,9 @@
 		
 		<!-- Force Match Indicator -->
 		<xsl:choose>
-			<xsl:when test="InvoiceHeader/HeaderExtraData/Authorisation/IsAuthorised[.=1]">N</xsl:when>
-			<xsl:otherwise>Y</xsl:otherwise>
+			<xsl:when test="not(InvoiceHeader/HeaderExtraData/Authorisation/AuthorisedBy)">?</xsl:when>
+			<xsl:when test="translate(InvoiceHeader/HeaderExtraData/Authorisation/AuthorisedBy,'system','SYSTEM') != $AUTO_AUTH_USERNAME">Y</xsl:when>
+			<xsl:otherwise>N</xsl:otherwise>
 		</xsl:choose>
 	
 	</xsl:template>
@@ -110,7 +113,7 @@
 		<xsl:value-of select="format-number(count(/BatchRoot/*) + 2,'000000000000')"/>
 		
 		<!-- Padding -->
-		<xsl:text>                   </xsl:text>
+		<xsl:value-of select="'                   '"/>
 
 	
 	</xsl:template>
