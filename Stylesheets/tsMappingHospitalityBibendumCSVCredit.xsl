@@ -257,7 +257,7 @@ Lee Boyton        | 2009-04-28 | 2867. Translate product codes for SSP
 	<xsl:template match="ProductID/SuppliersProductCode">
 		<xsl:copy>
 			<xsl:choose>
-				<xsl:when test="//TradeSimpleHeader/SendersBranchReference = 'SSP25T' or //TradeSimpleHeader/SendersBranchReference = 'GIR01T'  or //TradeSimpleHeader/SendersBranchReference = 'WAH01D'">
+				<xsl:when test="//TradeSimpleHeader/SendersBranchReference = 'SSP25T' or //TradeSimpleHeader/SendersBranchReference = 'GIR01T'  or //TradeSimpleHeader/SendersBranchReference = 'WAH01D' or //TradeSimpleHeader/SendersBranchReference ='FOO01D' or //TradeSimpleHeader/SendersBranchReference ='RIS01D' or //TradeSimpleHeader/SendersBranchReference ='SPA01D' or //TradeSimpleHeader/SendersBranchReference ='LSQ01D' or //TradeSimpleHeader/SendersBranchReference ='ZER01D' or //TradeSimpleHeader/SendersBranchReference ='MOR01T' or //TradeSimpleHeader/SendersBranchReference ='SEA01D' or //TradeSimpleHeader/SendersBranchReference ='DAD01T' or //TradeSimpleHeader/SendersBranchReference ='DEV01T' or //TradeSimpleHeader/SendersBranchReference ='MAL01D'">
 
 					<!-- translate the Units In Pack value and then append this to the product code -->
 					<xsl:variable name="UOMRaw">
