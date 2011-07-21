@@ -26,6 +26,18 @@ H Mahbub	|	2010-05-17		| Created file
 	<xsl:variable name="SSP" select="'SSP'"/>
 	<xsl:variable name="GIRAFFE" select="'GIRAFFE'"/>
 	<xsl:variable name="WAHACA" select="'WAHACA'"/>
+	<xsl:variable name="FOODANDFUEL" select="'FOODANDFUEL'"/>
+	<xsl:variable name="RISINGSTAR" select="'RISINGSTAR'"/>
+	<xsl:variable name="SPAGHETTI" select="'SPAGHETTI'"/>
+	<xsl:variable name="LONDONCLUBS" select="'LONDONCLUBS'"/>
+	<xsl:variable name="ZERODEGREES" select="'ZERODEGREES'"/>
+	<xsl:variable name="SCLONDON" select="'SCLONDON'"/>
+	<xsl:variable name="SEARCYS" select="'SEARCYS'"/>
+	<xsl:variable name="DANDD" select="'DANDD'"/>
+	<xsl:variable name="DEVERE" select="'DEVERE'"/>
+	<xsl:variable name="MALMAISON" select="MALMAISON"/>
+	
+	
 	
 	<xsl:variable name="CustomerFlag">
 		<xsl:variable name="accountCode" select="string(//PurchaseOrderConfirmation/TradeSimpleHeader/SendersBranchReference)"/>
@@ -44,6 +56,19 @@ H Mahbub	|	2010-05-17		| Created file
 			<xsl:when test="$accountCode = 'SSP25T'"><xsl:value-of select="$SSP"/></xsl:when>
 			<xsl:when test="$accountCode = 'GIR01T'"><xsl:value-of select="$GIRAFFE"/></xsl:when>
 			<xsl:when test="$accountCode = 'WAH01D'"><xsl:value-of select="$WAHACA"/></xsl:when>
+			<xsl:when test="$accountCode = 'FOO01D'"><xsl:value-of select="$FOODANDFUEL"/></xsl:when>
+			<xsl:when test="$accountCode = 'RIS01D'"><xsl:value-of select="$RISINGSTAR"/></xsl:when>
+			<xsl:when test="$accountCode = 'SPA01D'"><xsl:value-of select="$SPAGHETTI"/></xsl:when>
+			<xsl:when test="$accountCode = 'LSQ01D'"><xsl:value-of select="$LONDONCLUBS"/></xsl:when>
+			<xsl:when test="$accountCode = 'ZER01D'"><xsl:value-of select="$ZERODEGREES"/></xsl:when>
+			<xsl:when test="$accountCode = 'MOR01T'"><xsl:value-of select="$SCLONDON"/></xsl:when>
+			<xsl:when test="$accountCode = 'SEA01D'"><xsl:value-of select="$SEARCYS"/></xsl:when>
+			<xsl:when test="$accountCode = 'DAD01T'"><xsl:value-of select="$DANDD"/></xsl:when>
+			<xsl:when test="$accountCode = 'DEV01T'"><xsl:value-of select="$DEVERE"/></xsl:when>
+			<xsl:when test="$accountCode = 'MAL01D'"><xsl:value-of select="$MALMAISON"/></xsl:when>
+			
+			
+
 			<xsl:otherwise></xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>	
@@ -164,7 +189,7 @@ H Mahbub	|	2010-05-17		| Created file
 								
 								<SuppliersProductCode>
 									<xsl:value-of select="ProductID/SuppliersProductCode"/>
-									<xsl:if test="$CustomerFlag = $SSP or $CustomerFlag = $GIRAFFE or $CustomerFlag = $WAHACA">
+									<xsl:if test="$CustomerFlag = $SSP or $CustomerFlag = $GIRAFFE or $CustomerFlag = $WAHACA or $CustomerFlag = $FOODANDFUEL or $CustomerFlag = $RISINGSTAR or $CustomerFlag = $SPAGHETTI or $CustomerFlag = $LONDONCLUBS or $CustomerFlag = $ZERODEGREES or $CustomerFlag = $SCLONDON or $CustomerFlag = $SEARCYS or $CustomerFlag = $DANDD or $CustomerFlag = $DEVERE or $CustomerFlag = $MALMAISON">
 										<!--xsl:choose>
 											<xsl:when test="translate(PackSize,' ','') ='1x1kg'">-EA</xsl:when>
 											<xsl:when test="contains(PackSize,'x')">-CS</xsl:when>
