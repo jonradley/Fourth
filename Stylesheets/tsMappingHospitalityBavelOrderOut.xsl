@@ -8,7 +8,7 @@ R Cambridge	| 2009-07-07		| 2991 Created Module
 **********************************************************************
 R Cambridge	| 2010-10-14		| 3951 Created generic Bavel version from Aramark Spain version
 **********************************************************************
-				|						|				
+Graham Neicho |	 2011-07-25			| 4635 Added ShipTo/ContactName to Transaction/Comments/Comment/@Msg
 **********************************************************************
 				|						|
 **********************************************************************
@@ -140,15 +140,20 @@ R Cambridge	| 2010-10-14		| 3951 Created generic Bavel version from Aramark Spai
 					
 			</Customers>
 			
-			<xsl:if test="	PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions[. != '']">			
+			<xsl:if test="PurchaseOrderHeader/ShipTo/ContactName[. != ''] or PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions[. != '']">
 				<Comments>
 					<Comment>
 						<xsl:attribute name="Msg">
+							<xsl:if test="PurchaseOrderHeader/ShipTo/ContactName[. != '']">
+								<xsl:text>Incidencias contactar con </xsl:text><xsl:value-of select="PurchaseOrderHeader/ShipTo/ContactName"/><xsl:text>. </xsl:text>
+							</xsl:if>
 							<!-- Pedido urgente!!! -->
-							<xsl:value-of select="PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions"/>
+							<xsl:if test="PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions[. != '']">
+								<xsl:value-of select="PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions"/>
+							</xsl:if>
 						</xsl:attribute>
-						</Comment>
-				</Comments>				
+					</Comment>
+				</Comments>
 			</xsl:if>
 				
 			<References/>
