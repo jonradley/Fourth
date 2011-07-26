@@ -1,3 +1,14 @@
+<!--******************************************************************
+Alterations
+**********************************************************************
+Name				| Date				| Change
+**********************************************************************
+K Oshaughnessy| 						| 3450
+**********************************************************************
+R Cambridge		| 2011-07-26		| 4632 Added supplier's code for buyer (to allow tsProcessorHosptransSBR to remove SBR when required)
+**********************************************************************
+					|						|				
+*******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:sh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" xmlns:eanucc="urn:ean.ucc:2" xmlns:pay="urn:ean.ucc:pay:2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:vat="urn:ean.ucc:pay:vat:2">
 	<xsl:output method="xml"/>
 	<xsl:template match="/">
@@ -33,6 +44,9 @@
 												<xsl:value-of select="//sh:Receiver/sh:Identifier"/>
 											</GLN>
 										</xsl:if>
+										<SuppliersCode>
+											<xsl:value-of select="substring-after(//seller/additionalPartyIdentification/additionalPartyIdentificationValue,'|')"/>
+										</SuppliersCode>
 									</BuyersLocationID>
 								</Buyer>
 								

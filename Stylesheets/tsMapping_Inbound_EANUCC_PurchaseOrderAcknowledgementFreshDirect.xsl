@@ -19,7 +19,11 @@
 ******************************************************************************************
  Date        	| Name				| Description of modification
 ******************************************************************************************
-
+K Oshaughnessy|           		| 3450
+******************************************************************************************
+R Cambridge		| 2011-07-26		| 4632 Added supplier's code for buyer (to allow tsProcessorHosptransSBR to remove SBR when required)
+******************************************************************************************
+					|						|				
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 	xmlns:sh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" 
@@ -81,8 +85,10 @@
 								<BuyersLocationID>
 									<GLN>
 										<xsl:value-of select="order:orderResponse/buyer/gln"/>
-									</GLN>
-
+									</GLN>							
+									<SuppliersCode>
+										<xsl:value-of select="substring-after(order:orderResponse/seller/additionalPartyIdentification/additionalPartyIdentificationValue,'|')"/>
+									</SuppliersCode>
 								</BuyersLocationID>
 								
 							</Buyer>
