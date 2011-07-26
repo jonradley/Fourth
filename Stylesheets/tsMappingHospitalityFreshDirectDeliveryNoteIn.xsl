@@ -1,11 +1,13 @@
 <!--******************************************************************
 Alterations
 **********************************************************************
-Name			| Date				| Change
+Name				| Date				| Change
 **********************************************************************
-K Oshaughnessy| 2010-10-27		| 1332 Created Modele
+K Oshaughnessy| 2010-10-27		| 3450
 **********************************************************************
-				|						|				
+R Cambridge		| 2011-07-26		| 4632 Added supplier's code for buyer (to allow tsProcessorHosptransSBR to remove SBR when required)
+**********************************************************************
+					|						|				
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 	xmlns:sh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" 
@@ -50,9 +52,9 @@ K Oshaughnessy| 2010-10-27		| 1332 Created Modele
 									</xsl:choose>						
 								</SendersCodeForRecipient>
 						
-									<SendersBranchReference>
-										<xsl:value-of select="documentCommandOperand/deliver:despatchAdvice/shipTo/additionalPartyIdentification[additionalPartyIdentificationType='SELLER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue[1]"/>
-									</SendersBranchReference>
+								<SendersBranchReference>
+									<xsl:value-of select="documentCommandOperand/deliver:despatchAdvice/shipTo/additionalPartyIdentification[additionalPartyIdentificationType='SELLER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue[1]"/>
+								</SendersBranchReference>
 							
 							</TradeSimpleHeader>
 							
@@ -63,6 +65,10 @@ K Oshaughnessy| 2010-10-27		| 1332 Created Modele
 										<GLN>
 											<xsl:value-of select="/sh:StandardBusinessDocument/sh:StandardBusinessDocumentHeader/sh:Receiver/sh:Identifier[1]"/>
 										</GLN>
+										<SuppliersCode>
+											<xsl:value-of select="documentCommandOperand/deliver:despatchAdvice/shipTo/additionalPartyIdentification[additionalPartyIdentificationType='SELLER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue[1]"/>
+										</SuppliersCode>
+
 									</BuyersLocationID>
 								</Buyer>
 
