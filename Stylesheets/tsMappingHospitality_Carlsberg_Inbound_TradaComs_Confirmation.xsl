@@ -12,7 +12,9 @@
 '******************************************************************************************
 ' Date        | Name         | Description of modification
 '******************************************************************************************
-' 18/06/2007  | Nigel Emsen  | Created. FB: 1214.
+' 18/06/2007  | Nigel Emsen		| Created. FB: 1214.
+'******************************************************************************************
+' 28/07/2011  | Andrew Barber	| FB4657: Set confirmed qty = 0 where line status = 'Rejected'
 '******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:vbscript="http://abs-Ltd.com">
@@ -161,7 +163,19 @@
 			<xsl:copy-of select="ProductDescription"/>
 
 			<!-- ConfirmedQuantity -->
-			<xsl:copy-of select="ConfirmedQuantity"/>
+			<!--xsl:copy-of select="ConfirmedQuantity"/-->
+			
+			<!-- Set ConfirmedQuantity = 0 where line status = 'Rejected' -->
+			<ConfirmedQuantity>
+				<xsl:choose>
+					<xsl:when test="$nRejectCode &gt; 5 and $nRejectCode &lt; 100">
+						<xsl:text>0</xsl:text>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="ConfirmedQuantity"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</ConfirmedQuantity>
 			
 			<!-- Narrative -->
 			<!-- test if it is in the range of 6-99. -->
