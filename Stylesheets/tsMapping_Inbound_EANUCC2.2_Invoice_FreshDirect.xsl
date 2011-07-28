@@ -175,60 +175,6 @@ R Cambridge		| 2011-07-26		| 4632 Added supplier's code for buyer (to allow tsPr
 								<NumberOfItems>
 									<xsl:value-of select="sum(//pay:invoice/invoiceLineItem/invoicedQuantity/value)"/>
 								</NumberOfItems>
-								<VATSubTotals>
-									<xsl:for-each select="sh:StandardBusinessDocument/eanucc:message/eanucc:transaction/command/eanucc:documentCommand/documentCommandOperand/pay:invoice/invoiceTotals/taxSubTotal">
-										<VATSubTotal>
-											<xsl:attribute name="VATCode"><xsl:choose><xsl:when test="extension/vat:vATTaxInformationExtension/vATCategory ='ZERO_RATED_GOODS'"><xsl:text>Z</xsl:text></xsl:when><xsl:when test="extension/vat:vATTaxInformationExtension/vATCategory = 'STANDARD_RATE'"><xsl:text>S</xsl:text></xsl:when><xsl:otherwise>Error</xsl:otherwise></xsl:choose></xsl:attribute>
-											<xsl:attribute name="VATRate"><xsl:value-of select="format-number(extension/vat:vATTaxInformationExtension/rate, '0.00')"/></xsl:attribute>
-											<NumberOfLinesAtRate>
-												<xsl:choose>
-													<xsl:when test="extension/vat:vATTaxInformationExtension/vATCategory = 'ZERO_RATED_GOODS'">
-														<xsl:value-of select="count(//pay:invoice/invoiceLineItem/invoiceLineTaxInformation/extension/vat:vATTaxInformationExtension[vATCategory = 'ZERO_RATED_GOODS'])"/>
-													</xsl:when>
-													<xsl:when test="extension/vat:vATTaxInformationExtension/vATCategory = 'STANDARD_RATE'">
-														<xsl:value-of select="count(//pay:invoice/invoiceLineItem/invoiceLineTaxInformation/extension/vat:vATTaxInformationExtension[vATCategory='STANDARD_RATE'])"/>
-													</xsl:when>
-												</xsl:choose>
-											</NumberOfLinesAtRate>
-											<NumberOfItemsAtRate>
-												<xsl:choose>
-													<xsl:when test="extension/vat:vATTaxInformationExtension/vATCategory = 'ZERO_RATED_GOODS'">
-														<xsl:value-of select="sum(//pay:invoice/invoiceLineItem[invoiceLineTaxInformation/extension/vat:vATTaxInformationExtension/vATCategory='ZERO_RATED_GOODS']/invoicedQuantity/value)"/>
-													</xsl:when>
-													<xsl:when test="extension/vat:vATTaxInformationExtension/vATCategory = 'STANDARD_RATE'">
-														<xsl:value-of select="sum(//pay:invoice/invoiceLineItem[invoiceLineTaxInformation/extension/vat:vATTaxInformationExtension/vATCategory='STANDARD_RATE']/invoicedQuantity/value)"/>
-													</xsl:when>
-													<xsl:otherwise>error</xsl:otherwise>
-												</xsl:choose>
-											</NumberOfItemsAtRate>
-											<DocumentTotalExclVATAtRate>
-												<xsl:choose>
-													<xsl:when test="extension/vat:vATTaxInformationExtension/vATCategory = 'ZERO_RATED_GOODS'">
-														<xsl:value-of select="format-number(//pay:invoice/invoiceTotals[taxSubTotal/extension/vat:vATTaxInformationExtension/vATCategory='ZERO_RATED_GOODS']/totalLineAmountInclusiveAllowancesCharges, '0.00')"/>
-													</xsl:when>
-													<xsl:when test="extension/vat:vATTaxInformationExtension/vATCategory = 'STANDARD_RATE'">
-														<xsl:value-of select="format-number(//pay:invoice/invoiceTotals[taxSubTotal/extension/vat:vATTaxInformationExtension/vATCategory='STANDARD_RATE']/totalLineAmountInclusiveAllowancesCharges, '0.00')"/>
-													</xsl:when>
-													<xsl:otherwise>Error</xsl:otherwise>
-												</xsl:choose>
-											</DocumentTotalExclVATAtRate>
-											<VATAmountAtRate>
-												<xsl:value-of select="format-number(taxAmount, '0.00')"/>
-											</VATAmountAtRate>
-											<DocumentTotalInclVATAtRate>
-												<xsl:choose>
-													<xsl:when test="extension/vat:vATTaxInformationExtension/vATCategory = 'ZERO_RATED_GOODS'">
-														<xsl:value-of select="format-number(//pay:invoice/invoiceTotals[taxSubTotal/extension/vat:vATTaxInformationExtension/vATCategory='ZERO_RATED_GOODS']/totalInvoiceAmount, '0.00')"/>
-													</xsl:when>
-													<xsl:when test="extension/vat:vATTaxInformationExtension/vATCategory = 'STANDARD_RATE'">
-														<xsl:value-of select="format-number(//pay:invoice/invoiceTotals[taxSubTotal/extension/vat:vATTaxInformationExtension/vATCategory='STANDARD_RATE']/totalInvoiceAmount,'0.00')"/>
-													</xsl:when>
-													<xsl:otherwise>Error</xsl:otherwise>
-												</xsl:choose>
-											</DocumentTotalInclVATAtRate>
-										</VATSubTotal>
-									</xsl:for-each>
-								</VATSubTotals>
 								<DocumentTotalExclVAT>
 									<xsl:choose>
 										<xsl:when test="count(sh:StandardBusinessDocument/eanucc:message/eanucc:transaction/command/eanucc:documentCommand/documentCommandOperand/pay:invoice/invoiceTotals[totalLineAmountInclusiveAllowancesCharges > 1])">
