@@ -64,7 +64,7 @@ R Cambridge	| 2011-03-09		| 4260 don't write blank delivery instruction records
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
 		
 		<xsl:call-template name="padRight">
-			<xsl:with-param name="inputText" select="/PurchaseOrder/TradeSimpleHeader/RecipientsCodeForSender"/>
+			<xsl:with-param name="inputText" select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
 			<xsl:with-param name="fieldSize" select="20"/>
 		</xsl:call-template>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
