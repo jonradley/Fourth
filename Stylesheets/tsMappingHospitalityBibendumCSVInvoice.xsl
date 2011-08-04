@@ -32,13 +32,13 @@ Lee Boyton        | 2009-04-28 | 2867. Translate product codes for SSP
 	<xsl:variable name="WAHACA" select="'WAHACA'"/>
 	<xsl:variable name="FOODANDFUEL" select="'FOODANDFUEL'"/>
 	<xsl:variable name="RISINGSTAR" select="'RISINGSTAR'"/>
-	<xsl:variable name="SPAGHETTI" select="SPAGHETTI'"/>
+	<xsl:variable name="SPAGHETTI" select="'SPAGHETTI'"/>
 	<xsl:variable name="LONDONCLUBS" select="'LONDONCLUBS'"/>
 	<xsl:variable name="ZERODEGREES" select="'ZERODEGREES'"/>
-	<xsl:variable name="SCLONDON" select="SCLONDON'"/>
+	<xsl:variable name="SCLONDON" select="'SCLONDON'"/>
 	<xsl:variable name="DANDD" select="'DANDD'"/>
 	<xsl:variable name="SEARCYS" select="'SEARCYS'"/>
-	<xsl:variable name="DEVERE" select="DEVERE'"/>
+	<xsl:variable name="DEVERE" select="'DEVERE'"/>
 	<xsl:variable name="MALMAISON" select="'MALMAISON'"/>
 
 	
@@ -444,7 +444,7 @@ Lee Boyton        | 2009-04-28 | 2867. Translate product codes for SSP
 	<xsl:template match="ProductID/SuppliersProductCode">
 		<xsl:copy>
 			<xsl:choose>
-				<xsl:when test="$CustomerFlag = $SSP or $CustomerFlag = $GIRAFFE or $CustomerFlag = $WAHACA or $CustomerFlag = $FOODANDFUEL or $CustomerFlag = $RISINGSTAR or $CustomerFlag = $SPAGHETTI or $CustomerFlag = $LONDONCLUBS or $CustomerFlag = $ZERODEGREES or $CustomerFlag = $SCLONDON  OR $CustomerFlag = $SEARCYS or $CustomerFlag = $DANDD or  $CustomerFlag = $DEVERE or $CustomerFlag = $MALMAISON">
+				<xsl:when test="$CustomerFlag = $SSP or $CustomerFlag = $GIRAFFE or $CustomerFlag = $WAHACA or $CustomerFlag = $FOODANDFUEL or $CustomerFlag = $RISINGSTAR or $CustomerFlag = $SPAGHETTI or $CustomerFlag = $LONDONCLUBS or $CustomerFlag = $ZERODEGREES or $CustomerFlag = $SCLONDON or $CustomerFlag = $SEARCYS or $CustomerFlag = $DANDD or  $CustomerFlag = $DEVERE or $CustomerFlag = $MALMAISON">
 
 					<!-- translate the Units In Pack value and then append this to the product code -->
 					<xsl:variable name="UOMRaw">
