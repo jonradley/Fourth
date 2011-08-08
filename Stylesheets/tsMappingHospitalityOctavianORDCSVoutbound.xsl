@@ -12,7 +12,7 @@ Date	|	Name	|	Comment
 		<xsl:text>"HEADER"</xsl:text>
 		<xsl:text>,</xsl:text>
 		<!--Cert Octavian warehouse code-->
-		<xsl:text>""</xsl:text>
+		<xsl:text>"OCT"</xsl:text>
 		<xsl:text>,</xsl:text>
 		<!--Cert Octavian customer/owner code-->
 		<xsl:text>"</xsl:text>
@@ -213,7 +213,7 @@ Date	|	Name	|	Comment
 			<xsl:when test="$dcUOM = 'CS'">
 				<xsl:text>CASES</xsl:text>
 			</xsl:when>
-			<xsl:otherwise>katherine</xsl:otherwise>
+			<xsl:otherwise>UNITS</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
 	
