@@ -24,11 +24,11 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  28/06/2011		| R Cambridge	| FB4571 Set UnitValueExclVAT to 0.00 if it would be blank
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-          		| 					| 
+ 10/08/2011  		| K Oshaughnessy| FB4700 Delivery date hack 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
           		| 					| 
 =======================================================================================-->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="msxsl">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="msxsl" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	<xsl:output method="xml" encoding="utf-8"/>
 
 	<xsl:template match="/">
@@ -49,7 +49,6 @@
 							<DeliveryNote>
 								<TradeSimpleHeader>
 									<SendersCodeForRecipient><xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/></SendersCodeForRecipient>
-									<!--xsl:if test="string() != ''"><SendersBranchReference><xsl:value-of select="$sCurrentANA"/></SendersBranchReference></xsl:if-->
 								</TradeSimpleHeader>
 								<DeliveryNoteHeader>
 								
@@ -78,10 +77,6 @@
 													<xsl:value-of select="."/>
 												</xsl:element>										
 											</xsl:for-each>									
-											<!--xsl:call-template name="mobjShuffleAddressLines">
-												<xsl:with-param name="vsAddressLines" select="concat($objDoc/ShipToAddress,':')"/>
-												<xsl:with-param name="vnLineNumber" select="1"/>
-											</xsl:call-template-->
 										</ShipToAddress>
 									</ShipTo>
 									
@@ -119,16 +114,7 @@
 											<xsl:value-of select="DeliveryNoteHeader/DeliveryNoteReferences/DeliveryNoteReference"/>
 										</DeliveryNoteReference>
 										<DeliveryNoteDate>
-											<xsl:choose>
-												<xsl:when test="DeliveryNoteHeader/DeliveryNoteReferences/DeliveryNoteDate != '' ">
-													<xsl:call-template name="msFormatDate">
-														<xsl:with-param name="vsYYMMDD" select="DeliveryNoteHeader/DeliveryNoteReferences/DeliveryNoteDate"/>
-													</xsl:call-template>
-												</xsl:when>
-											<xsl:otherwise>
-												<xsl:value-of select="$sDocumentDate"/>
-											</xsl:otherwise>	
-											</xsl:choose>
+											<xsl:value-of select="script:msDeliveryDayFridayManipulation(string($sDeliveryDate))"/>
 										</DeliveryNoteDate>
 										<DespatchDate>
 											<xsl:choose>
@@ -145,26 +131,15 @@
 									</DeliveryNoteReferences>
 									
 									<DeliveredDeliveryDetails>
-										<!--DeliveryType/-->
 										<DeliveryDate>
-											<xsl:choose>
-												<xsl:when test="DeliveryNoteHeader/DeliveredDeliveryDetails/DeliveryDate != '' ">
-													<xsl:call-template name="msFormatDate">
-														<xsl:with-param name="vsYYMMDD" select="DeliveryNoteHeader/DeliveredDeliveryDetails/DeliveryDate"/>
-													</xsl:call-template>
-												</xsl:when>
-											<xsl:otherwise>
-												<xsl:value-of select="$sDeliveryDate"/>
-											</xsl:otherwise>	
-											</xsl:choose>
+											<xsl:value-of select="script:msDeliveryDayFridayManipulation(string($sDeliveryDate))"/>
 										</DeliveryDate>
 									</DeliveredDeliveryDetails>
 									
 								</DeliveryNoteHeader>
 								
 								<DeliveryNoteDetail>
-								
-									<!--xsl:for-each select="$objDoc/Lines/Line[string(@SuppliersANANumber) = $sCurrentANA]"-->
+															
 									<xsl:for-each select="DeliveryNoteDetail/DeliveryNoteLine">								
 									
 										<DeliveryNoteLine>
@@ -211,9 +186,7 @@
 								</DeliveryNoteTrailer>
 							</DeliveryNote>
 						</BatchDocument>
-							
-						<!--/xsl:for-each-->
-						
+												
 					</xsl:for-each>
 						
 				</BatchDocuments>
@@ -223,6 +196,16 @@
 	
 	</xsl:template>
 	
+<!--=======================================================================================
+  Routine		:msFormateDate()
+  Description	:
+  Inputs		: vsUTCDate
+  Outputs		:
+  Returns		:A string
+  Author		:Katherine OShaughnessy
+  Version		:1.0
+  Alterations	:(none)
+ =======================================================================================-->	
 	
 	<xsl:template name="msFormatDate">
 		<xsl:param name="vsYYMMDD"/>
@@ -230,6 +213,53 @@
 		<xsl:value-of select="concat('20',substring($vsYYMMDD,1,2),'-',substring($vsYYMMDD,3,2),'-',substring($vsYYMMDD,5,2))"/>
 		
 	</xsl:template>
-										
+							
+<!--=======================================================================================
+  Routine		: CalculateDeliveryDate()
+  Description	:  
+  Inputs		: 
+  Outputs		: 
+  Returns		: A string
+  Author		: Katherine OShaughnessy
+  Version		: 1.0
+  Alterations	: (none)
+ =======================================================================================-->		
+ 
+<msxsl:script language="VBScript" implements-prefix="script"><![CDATA[
+	Function msDeliveryDayFridayManipulation(docDate)
+	
+		Dim dayOfWeek
+		Dim dtDate 
+		Dim sDate
+		Dim sMonth
+		Dim sYear
+		
+		dayOfWeek = Weekday(docDate)
+		
+		If  dayOfWeek = 6 Then 
+					
+			dtDate = DateAdd("d",2 ,docDate)
+			sDate = Day(dtDate)
+			If (sDate<10) Then 			
+				sDate ="0" & sDate
+			End If 
+		
+			sMonth = Month(dtDate)
+			If (sMonth<10) Then 
+				sMonth ="0" & sMonth
+			End If 					
+		
+			sYear  = Year(dtDate)
+		
+			msDeliveryDayFridayManipulation = sYear & "-" & sMonth &"-"& sDate
+			
+		Else
+			msDeliveryDayFridayManipulation= docDate
+		End If
+
+	End Function
+
+]]>		
+</msxsl:script>						
 
 </xsl:stylesheet>
