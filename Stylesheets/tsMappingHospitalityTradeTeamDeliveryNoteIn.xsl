@@ -238,7 +238,24 @@
 		
 		If  dayOfWeek = 6 Then 
 					
-			dtDate = DateAdd("d",2 ,docDate)
+			dtDate = DateAdd("d",3,docDate)
+			sDate = Day(dtDate)
+			If (sDate<10) Then 			
+				sDate ="0" & sDate
+			End If 
+		
+			sMonth = Month(dtDate)
+			If (sMonth<10) Then 
+				sMonth ="0" & sMonth
+			End If 					
+		
+			sYear  = Year(dtDate)
+		
+			msDeliveryDayFridayManipulation = sYear & "-" & sMonth &"-"& sDate
+		
+		ElseIf	dayOfWeek = 7 Then
+		
+			dtDate = DateAdd("d",2,docDate)
 			sDate = Day(dtDate)
 			If (sDate<10) Then 			
 				sDate ="0" & sDate
