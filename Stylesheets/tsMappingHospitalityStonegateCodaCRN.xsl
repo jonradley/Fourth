@@ -39,7 +39,7 @@
 		</xsl:if>
 		
 		<ABSformatEDIdocument>
-			<coda-document-code>IPINVGEN</coda-document-code>
+			<coda-document-code>IPCNDGEN</coda-document-code>
 			<supplier-invoice-date>
 				<xsl:value-of select="CreditNoteHeader/CreditNoteReferences/CreditNoteDate"/>
 			</supplier-invoice-date>
