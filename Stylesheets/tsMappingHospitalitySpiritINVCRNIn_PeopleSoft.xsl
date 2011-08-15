@@ -15,7 +15,9 @@
 ==========================================================================================
  18/05/2011	| R Cambridge			| 4376 system testing changes
 ==========================================================================================
- 20/07/2011 | A Barber                 	| 4376 Updated all name references from Punch to Spirit.
+ 20/07/2011 | A Barber         	| 4376 Updated all name references from Punch to Spirit.
+==========================================================================================
+ 04/08/2011	| R Cambridge			| 4686 UAT change: don't create PO refs element if PO blank
 ==========================================================================================
            	|                 	|
 =======================================================================================-->
@@ -95,16 +97,18 @@
 										<InvoiceDetail>
 											<xsl:for-each select="InvoiceDetail/InvoiceLine">
 												<InvoiceLine>
-													<PurchaseOrderReferences>
-														<PurchaseOrderReference>
-															<xsl:value-of select="../*[1]/PurchaseOrderReferences/PurchaseOrderReference"/>
-														</PurchaseOrderReference>
-														<PurchaseOrderDate>
-															<xsl:call-template name="utcDate">
-																<xsl:with-param name="input" select="../*[1]/PurchaseOrderReferences/PurchaseOrderDate"/>
-															</xsl:call-template>
-														</PurchaseOrderDate>
-													</PurchaseOrderReferences>
+													<xsl:if test="string(../*[1]/PurchaseOrderReferences/PurchaseOrderReference) != '' and string(../*[1]/PurchaseOrderReferences/PurchaseOrderDate) != ''">
+														<PurchaseOrderReferences>
+															<PurchaseOrderReference>
+																<xsl:value-of select="../*[1]/PurchaseOrderReferences/PurchaseOrderReference"/>
+															</PurchaseOrderReference>
+															<PurchaseOrderDate>
+																<xsl:call-template name="utcDate">
+																	<xsl:with-param name="input" select="../*[1]/PurchaseOrderReferences/PurchaseOrderDate"/>
+																</xsl:call-template>
+															</PurchaseOrderDate>
+														</PurchaseOrderReferences>
+													</xsl:if>
 													<DeliveryNoteReferences>
 														<DeliveryNoteReference>
 															<xsl:value-of select="../*[1]/DeliveryNoteReferences/DeliveryNoteReference"/>
@@ -220,16 +224,18 @@
 										<CreditNoteDetail>
 											<xsl:for-each select="InvoiceDetail/InvoiceLine">
 												<CreditNoteLine>
-													<PurchaseOrderReferences>
-														<PurchaseOrderReference>
-															<xsl:value-of select="../*[1]/PurchaseOrderReferences/PurchaseOrderReference"/>
-														</PurchaseOrderReference>
-														<PurchaseOrderDate>
-															<xsl:call-template name="utcDate">
-																<xsl:with-param name="input" select="../*[1]/PurchaseOrderReferences/PurchaseOrderDate"/>
-															</xsl:call-template>
-														</PurchaseOrderDate>
-													</PurchaseOrderReferences>
+													<xsl:if test="string(../*[1]/PurchaseOrderReferences/PurchaseOrderReference) != '' and string(../*[1]/PurchaseOrderReferences/PurchaseOrderDate) != ''">
+														<PurchaseOrderReferences>
+															<PurchaseOrderReference>
+																<xsl:value-of select="../*[1]/PurchaseOrderReferences/PurchaseOrderReference"/>
+															</PurchaseOrderReference>
+															<PurchaseOrderDate>
+																<xsl:call-template name="utcDate">
+																	<xsl:with-param name="input" select="../*[1]/PurchaseOrderReferences/PurchaseOrderDate"/>
+																</xsl:call-template>
+															</PurchaseOrderDate>
+														</PurchaseOrderReferences>
+													</xsl:if>
 													<DeliveryNoteReferences>
 														<DeliveryNoteReference>
 															<xsl:value-of select="../*[1]/DeliveryNoteReferences/DeliveryNoteReference"/>
