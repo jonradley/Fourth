@@ -15,7 +15,7 @@
 ==========================================================================================
  20/07/2011 | A Barber	                	| 4376 Updated all name references from Punch to Spirit.
 ==========================================================================================
-           	|                 	|
+ 15/08/2011 | A Barber                 	| 4686 Always provide etiher only 'Y' or 'N' as force match indicator
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="text" encoding="utf-8"/>
@@ -96,7 +96,7 @@
 		
 		<!-- Force Match Indicator -->
 		<xsl:choose>
-			<xsl:when test="not(InvoiceHeader/HeaderExtraData/Authorisation/AuthorisedBy)">?</xsl:when>
+			<!--xsl:when test="not(InvoiceHeader/HeaderExtraData/Authorisation/AuthorisedBy)">?</xsl:when-->
 			<xsl:when test="translate(InvoiceHeader/HeaderExtraData/Authorisation/AuthorisedBy,'system','SYSTEM') != $AUTO_AUTH_USERNAME">Y</xsl:when>
 			<xsl:otherwise>N</xsl:otherwise>
 		</xsl:choose>
