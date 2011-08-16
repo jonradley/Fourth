@@ -1,16 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--******************************************************************
-Alterations
-**********************************************************************
-Name				| Date				| Change
-**********************************************************************
-S Sehgal		| 06/04/2011		| 4369 Created
-**********************************************************************
-           		|            		|                                 
-*******************************************************************-->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-	<xsl:output method="xml" encoding="UTF-8"/>	
+<!--**************************************************************************************
+ Overview
+
+ Inbound orders from FnB Manager 
+ 
+******************************************************************************************
+ Module History
+******************************************************************************************
+ Date        | Name         	| Description of modification
+******************************************************************************************
+    ?        |      ?      	|           ?
+******************************************************************************************
+  23/09/2009 | R Cambridge 	| 2839 Don't create elements that can be reasonably added by the infiller
+******************************************************************************************
+  12/04/2010 | R Cambridge 	| 3414 replace particular character sequence with commas (caused by line break in underlying FnB data)
+******************************************************************************************
+  12/04/2010 | R Cambridge 	| 3272 redoing FnB - tradesimple interface, created internal XML as Batch
+******************************************************************************************
+             |             	|           
+***************************************************************************************-->
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
+	<xsl:output method="xml" encoding="UTF-8"/>
+	
 	<xsl:variable name="LINE_BREAK_STRING" select="'&amp;lt;br&amp;gt;'"/>
+
+	<!-- Start point - ensure required outer BatchRoot tag is applied -->
+	<xsl:template match="/">
+		<BatchRoot>
+			<xsl:apply-templates/>
+		</BatchRoot>
+	</xsl:template>
 	
 	<!-- GENERIC HANDLER to copy unchanged nodes, will be overridden by any node-specific templates below -->
 	<xsl:template match="*">
@@ -28,14 +47,8 @@ S Sehgal		| 06/04/2011		| 4369 Created
 		<xsl:copy/>
 	</xsl:template>
 	<!-- END of GENERIC HANDLERS -->
-	
-	<!-- Change TradeSimpleHeaderSent to TradeSimpleHeader -->
-	<xsl:template match="TradeSimpleHeaderSent">
-		<xsl:element name="TradeSimpleHeader">
-			<xsl:copy-of select="./*"/>
-		</xsl:element>
-	</xsl:template>
 
+	
 	<!-- Change TradeSimpleHeaderSent to TradeSimpleHeader -->
 	<xsl:template match="TradeSimpleHeaderSent">
 		<xsl:element name="TradeSimpleHeader">
@@ -69,7 +82,7 @@ S Sehgal		| 06/04/2011		| 4369 Created
 	</xsl:template>
 	
 	<!-- remove any weird characters from text fields -->
-	<xsl:template match="SpecialDeliveryInstructions | BuyersName | AddressLine1 | AddressLine2 | AddressLine3 | AddressLine4 | PostCode | SuppliersName | ShipToName | ContactName |  ProductDescription">
+	<xsl:template match="SpecialDeliveryInstructions | BuyersName | AddressLine1 | AddressLine2 | AddressLine3 | AddressLine4 | PostCode | SuppliersName | ShipToName | ContactName |  ProductDescription | OrderedDeliveryDetailsLineLevel">
 		<xsl:element name="{name()}">
 			<xsl:value-of select="normalize-space(.)"/>
 		</xsl:element>
@@ -82,7 +95,7 @@ S Sehgal		| 06/04/2011		| 4369 Created
 		</xsl:element>
 	</xsl:template>
 	
-	<!-- remove line break character sequences -->
+	<!-- 3414 remove line break character sequences -->
 	<xsl:template match="SpecialDeliveryInstructions | AddressLine1 | AddressLine2 | AddressLine3 | AddressLine4 ">
 		<xsl:copy>
 			<xsl:call-template name="msReplace">
@@ -92,8 +105,20 @@ S Sehgal		| 06/04/2011		| 4369 Created
 			</xsl:call-template>	
 		</xsl:copy>
 	</xsl:template>
+			
+	<!-- Remove Customer Order REf -->
+	<xsl:template match="CustomerPurchaseOrderReference">
+	</xsl:template>
+		
+	<!-- Remove OrderID -->
+	<xsl:template match="OrderID">
+	</xsl:template>
 	
-	<xsl:template match="GoodsReceivedNoteTrailer">
+	<!-- Remove Line Value and Total Value-->
+	<xsl:template match="LineValueExclVAT">
+	</xsl:template>
+	
+	<xsl:template match="PurchaseOrderTrailer">
 	</xsl:template>
 	
 	<xsl:template name="msReplace">
@@ -115,4 +140,7 @@ S Sehgal		| 06/04/2011		| 4369 Created
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+
+	
+	
 </xsl:stylesheet>
