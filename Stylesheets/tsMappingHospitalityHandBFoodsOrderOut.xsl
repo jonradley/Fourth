@@ -8,9 +8,7 @@ R Cambridge	| 2010-08-02		| 3796 Created Module
 **********************************************************************
 R Cambridge	| 2011-02-23		| 4260 added delivery instructions support
 **********************************************************************
-R Cambridge	| 2011-03-09		| 4260 don't write blank delivery instruction records
-**********************************************************************
-				|						|
+K Oshaughnessy|2011-08-18	|
 **********************************************************************
 				|						|				
 *******************************************************************-->
@@ -156,7 +154,10 @@ R Cambridge	| 2011-03-09		| 4260 don't write blank delivery instruction records
 		<xsl:text xml:space="preserve">TRADESIMPLE    </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
 		
-		<xsl:text xml:space="preserve">               </xsl:text>
+		<xsl:call-template name="padRight">
+			<xsl:with-param name="inputText" select="/PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
+			<xsl:with-param name="fieldSize" select="15"/>
+		</xsl:call-template>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
 		
 		<xsl:text xml:space="preserve">    </xsl:text>
@@ -183,7 +184,10 @@ R Cambridge	| 2011-03-09		| 4260 don't write blank delivery instruction records
 		<xsl:text xml:space="preserve"> </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
 		
-		<xsl:text xml:space="preserve">                    </xsl:text>
+		<xsl:call-template name="padRight">
+			<xsl:with-param name="inputText" select="concat('ORD0',PurchaseOrderHeader/FileGenerationNumber)"/>
+			<xsl:with-param name="fieldSize" select="20"/>
+		</xsl:call-template>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
 		
 		<xsl:text xml:space="preserve">                    </xsl:text>
@@ -635,6 +639,7 @@ R Cambridge	| 2011-03-09		| 4260 don't write blank delivery instruction records
 			</xsl:when>
 			
 			<xsl:otherwise>
+				<!--xsl:value-of select="$candidateEndPosition"/-->
 				<xsl:call-template name="getTextBlock">
 					<xsl:with-param name="inputText" select="$inputText"/>
 					<xsl:with-param name="candidateEndPosition" select="$candidateEndPosition - 1"/>
@@ -646,6 +651,5 @@ R Cambridge	| 2011-03-09		| 4260 don't write blank delivery instruction records
 		</xsl:choose>
 						
 	</xsl:template>
-	
 	
 </xsl:stylesheet>
