@@ -1,4 +1,14 @@
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:sh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" xmlns:eanucc="urn:ean.ucc:2" xmlns:pay="urn:ean.ucc:pay:2" xmlns:vat="urn:ean.ucc:pay:vat:2">
+<!--************************************************************************************************
+Date				| Name					| Comments	
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+03/08/2011		|	Koshaughnessy		| Created
+*************************************************************************************************-->
+<xsl:stylesheet version="1.0" 
+xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+xmlns:sh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" 
+xmlns:eanucc="urn:ean.ucc:2" 
+xmlns:pay="urn:ean.ucc:pay:2" 
+xmlns:vat="urn:ean.ucc:pay:vat:2">
 	<xsl:template match="/">
 		<Batch>
 			<BatchDocuments>
