@@ -28,6 +28,10 @@ R Cambridge	| 2010-11-08		| 4012 Voxel invoices failing validation - DiscountedL
 R Cambridge	| 2011-07-18		| 4621 Use TotalSummary/@SubTotal as source of taxable amount
 													This means discounted lines total and settlement total must always be the same
 **********************************************************************
+R Cambridge	| 2011-08-22		| 4733 Ensure all line values and prices are 2dpl
+**********************************************************************
+				|						|
+**********************************************************************
 				|						|
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" >
@@ -239,9 +243,10 @@ R Cambridge	| 2011-07-18		| 4621 Use TotalSummary/@SubTotal as source of taxable
 											
 											<xsl:otherwise>
 												
-												<UnitValueExclVAT><xsl:value-of select="@UP"/></UnitValueExclVAT>	
+												<!-- 4733 ensure 2dpl -->
+												<UnitValueExclVAT><xsl:value-of select="format-number(@UP, '0.00')"/></UnitValueExclVAT>	
 												
-												<LineValueExclVAT><xsl:value-of select="@Total"/></LineValueExclVAT>
+												<LineValueExclVAT><xsl:value-of select="format-number(@Total, '0.00')"/></LineValueExclVAT>
 												
 											</xsl:otherwise>
 											
