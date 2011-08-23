@@ -45,7 +45,7 @@
 ******************************************************************************************
 14/12/2009 |S Sehgal  	| Case 3286 Changed to handle VAT changing back to 17.5% from 1-Jan-2010
 '******************************************************************************************
-	          	|              	|	                                                            
+23/08/2011|K Oshaughnessy	|Case 4738 Cut down of suppliers code for supplier to get round validation rule 112	                                                            
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	<xsl:output method="xml"/>
@@ -162,10 +162,11 @@
 											<BuyersCode>
 												<xsl:value-of select="/Invoice/Seller/BuyerAssigned"/>
 											</BuyersCode>
-										</xsl:if>
+										</xsl:if>	
+										<!--The cut down of the suppliers code for supplier is a temporary change until validation rule 112 is fixed as we no longer need to ensure this code is less than 17 characters 4738 -->
 										<xsl:if test="string(/Invoice/Seller/SellerAssigned)">
 											<SuppliersCode>
-												<xsl:value-of select="/Invoice/Seller/SellerAssigned"/>
+												<xsl:value-of select="substring(/Invoice/Seller/SellerAssigned,1,17)"/>
 											</SuppliersCode>
 										</xsl:if>
 									</SuppliersLocationID>
