@@ -1,10 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--************************************************************************************************
+Date				| Name					| Comments	
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+25/08/2011		|	Koshaughnessy		| FB case 4745 Change to strip '/' from recipients code for sender.
+*************************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
                               xmlns:fo="http://www.w3.org/1999/XSL/Format"
                               xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	<xsl:template match="PriceCatalog">
 		<Catalogue>
-			<xsl:copy-of select="TradeSimpleHeader"/>
+		
+			<TradeSimpleHeader>
+			
+				<xsl:for-each select="TradeSimpleHeader/RecipientsCodeForSender/preceding-sibling::*">
+					<xsl:copy-of select="."/>
+				</xsl:for-each>
+				
+				<RecipientsCodeForSender>
+					<xsl:value-of select="substring-before(TradeSimpleHeader/RecipientsCodeForSender,'/')"/>
+				</RecipientsCodeForSender>
+				
+				<xsl:for-each select="TradeSimpleHeader/RecipientsCodeForSender/following-sibling::*">
+					<xsl:copy-of select="."/>
+				</xsl:for-each>				
+			
+			</TradeSimpleHeader>
+			
 			<CatalogueHeader>
 				<CatalogueCode>
 					<xsl:value-of select="PriceCatHeader/CatHdrRef/PriceCat/RefNum"/>
