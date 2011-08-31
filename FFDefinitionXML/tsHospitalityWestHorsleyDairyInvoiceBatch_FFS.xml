@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+**********************************************************************
+Alterations
+**********************************************************************
+Name			| Date			| Change
+**********************************************************************
+R Cambridge	| 03/04/2007	| 482 Created FSS
+**********************************************************************
+				|					|
+**********************************************************************
+-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>chr(13)chr(10)</ffsRecordSeparator>
+		<ffsPadding/>
+		<ffsBatchHeader>
+			<ffsHeaderRecord RecordPos="0"/>
+			<ffsHeaderRecord RecordPos="1"/>
+		</ffsBatchHeader>
+		<ffsSplitBatchRecord RecordPos="2"/>
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<!--BatchHeader>
+				<DocumentTotalExclVAT RecordPos="7" LPos="12" UPos="21"/>
+				<SettlementTotalExclVAT RecordPos="7" LPos="12" UPos="21"/>
+				<VATAmount RecordPos="7" LPos="22" UPos="31"/>
+				<DocumentTotalInclVAT RecordPos="7" LPos="32" UPos="41"/>
+				<SettlementTotalInclVAT RecordPos="7" LPos="32" UPos="41"/>
+			</BatchHeader-->
+			<BatchDocuments>
+				<BatchDocument>
+					<Invoice>
+						<TradeSimpleHeader>
+							<SendersCodeForRecipient RecordPos="2" LPos="101" UPos="120"/>
+						</TradeSimpleHeader>
+						<InvoiceHeader>
+							<BatchInformation>
+								<FileCreationDate RecordPos="0" LPos="14" UPos="19"/>
+								<SendersTransmissionReference RecordPos="0" LPos="26" UPos="35"/>
+								<SendersTransmissionDate RecordPos="0" LPos="26" UPos="31"/>
+							</BatchInformation>
+							<Buyer>
+								<BuyersLocationID>
+									<SuppliersCode RecordPos="2" LPos="19" UPos="32"/>
+								</BuyersLocationID>
+							</Buyer>
+							<ShipTo>
+								<ShipToLocationID>
+									<SuppliersCode RecordPos="2" LPos="101" UPos="120"/>
+								</ShipToLocationID>
+							</ShipTo>
+							<InvoiceReferences>
+								<InvoiceReference RecordPos="2" LPos="2" UPos="18"/>
+								<InvoiceDate RecordPos="2" LPos="63" UPos="68"/>
+								<TaxPointDate RecordPos="2" LPos="69" UPos="74"/>
+							</InvoiceReferences>
+						</InvoiceHeader>
+						<InvoiceDetail>
+						
+							<!--
+							
+								The one line per product, agregated over the week, approach
+								===========================================================
+							
+							-->
+							<!-- Catchweight items are listed over two lines, logic to sort this out is in the stylesheet -->
+							<InvoiceLine>
+								<ProductID>
+									<SuppliersProductCode RecordPos="3" LPos="2" UPos="14"/>
+									<!-- Catchweight data will go in here -->
+									<BuyersProductCode RecordPos="3" LPos="15" UPos="152"/>
+								</ProductID>
+								<ProductDescription RecordPos="3" LPos="15" UPos="44"/>
+								<InvoicedQuantity RecordPos="3" LPos="88" UPos="92"/>
+								<UnitValueExclVAT RecordPos="3" LPos="93" UPos="103"/>
+								<LineValueExclVAT RecordPos="3" LPos="104" UPos="112"/>
+								<VATCode RecordPos="3" LPos="113" UPos="113"/>
+								<Measure>
+									<TotalMeasureIndicator RecordPos="3" LPos="119" UPos="124"/>
+								</Measure>
+							</InvoiceLine>
+							
+							<!--
+							
+								The one line per product per delivery approach
+								==============================================
+							
+							-->
+							<!--
+							<!== WHD's format aggregates 1 week of deliveries into one invoice, with one line per product ==>
+							<!== Delivery Note refs are listed in DeliveryNoteReferences/DeliveryNoteReference ==>
+							<!== Quantities for each delivery are listed as one string of fixed width fields in InvoicedQuantity ==>
+							<!== Catchweight items are listed over two lines, logic to sort this out is in the stylesheet ==>
+							<InvoiceLine>
+								<PurchaseOrderReferences>
+									<!== Only the first line will have one of these ==>
+									<PurchaseOrderReference RecordPos="4ORDNO" LPos="109" UPos="120"/>
+								</PurchaseOrderReferences>
+								<DeliveryNoteReferences>
+									<!== The list of delivery reference will be stored here (only the first line will have one of these) ==>
+									<DeliveryNoteReference RecordPos="4DELNO" LPos="2" UPos="120"/>
+									<DeliveryNoteDate RecordPos="1" LPos="21" UPos="26"/>
+								</DeliveryNoteReferences>
+								<ProductID>
+									<SuppliersProductCode RecordPos="3" LPos="2" UPos="14"/>
+								</ProductID>
+								<ProductDescription RecordPos="3" LPos="15" UPos="44"/>
+								<InvoicedQuantity RecordPos="3" LPos="45" UPos="152"/>
+								<UnitValueExclVAT RecordPos="3" LPos="93" UPos="103"/>
+								<!==LineValueExclVAT RecordPos="3" LPos="104" UPos="112"/==>
+								<VATCode RecordPos="3" LPos="113" UPos="113"/>
+								<Measure>
+									<TotalMeasureIndicator RecordPos="3" LPos="119" UPos="124"/>
+								</Measure>
+							</InvoiceLine>
+							-->
+							
+							
+						</InvoiceDetail>
+						<InvoiceTrailer>
+							<VATSubTotals>
+								<VATSubTotal>
+									<DocumentTotalExclVATAtRate RecordPos="5" LPos="13" UPos="22"/>
+									<!--SettlementDiscountAtRate RecordPos="5" LPos="13" UPos="22"/>
+									<SettlementTotalExclVATAtRate RecordPos="5" LPos="13" UPos="22"/-->
+									<VATAmountAtRate RecordPos="5" LPos="23" UPos="32"/>
+									<ffsAttribute1 name="VATCode" RecordPos="5" LPos="2" UPos="2"/>
+									<ffsAttribute1 name="VATRate" RecordPos="5" LPos="3" UPos="7"/>
+								</VATSubTotal>
+							</VATSubTotals>
+							<DocumentTotalExclVAT RecordPos="6" LPos="5" UPos="14"/>
+							<!--SettlementTotalExclVAT RecordPos="6" LPos="5" UPos="14"/-->
+							<VATAmount RecordPos="6" LPos="15" UPos="24"/>
+							<DocumentTotalInclVAT RecordPos="6" LPos="25" UPos="34"/>
+							<!--SettlementTotalInclVAT RecordPos="6" LPos="25" UPos="34"/-->
+						</InvoiceTrailer>
+					</Invoice>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>
