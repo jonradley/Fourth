@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+29th March 05 Andy Trafford - copied from tsHospitalityStatementCSVBatchFFS.xml
+-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>sequenced</ffsRecordPositionType>
+		<ffsRecordSeparator>chr(13)chr(10)</ffsRecordSeparator>
+		<ffsEscapeChars>
+			<ffsEscapeChar>
+				<ffsNative>chr(26)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+		</ffsEscapeChars>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>,</ffsFieldSeparator>
+		</ffsFieldSeparators>
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<BatchDocuments>
+				<BatchDocument>
+					<Statement>
+						<TradeSimpleHeader>
+							<!--MANDATORY in Spec, Line 1, Col 1 (mandatory in schema)-->
+							<SendersCodeForRecipient RecordLength="*" RecordPos="1" LPos="1"/>
+							<!--MANDATORY in Spec, Line 1, Col 2 (mandatory in schema)-->
+							<SendersBranchReference RecordLength="*" RecordPos="1" LPos="2"/>
+							<!--DERIVE in Spec, Line 1, Col 3, Y or N in Spec, XSLT should convert to 1 or 0 if present -->
+							<TestFlag RecordLength="*" RecordPos="1" LPos="3"/>
+						</TradeSimpleHeader>
+						<StatementHeader>
+							<BatchInformation>
+								<!--DERIVE in Spec, Line 1, Col 4, YYYYMMDD in Spec, XSLT should convert to xsd:date format if present -->
+								<FileCreationDate RecordLength="*" RecordPos="1" LPos="4"/>
+							</BatchInformation>
+							<StatementReferences>
+								<!--OPTIONAL in Spec, Line 1, Col 5 (mandatory in schema) -->
+								<StatementReference RecordLength="*" RecordPos="1" LPos="5"/>
+								<!--OPTIONAL in Spec, Line 1, Col 6 (mandatory in schema) -->
+								<StatementDate RecordLength="*" RecordPos="1" LPos="6"/>
+								<!--ABSENT in Spec, (mandatory in schema) -->
+								<!--<VATRegNo>-->
+							</StatementReferences>
+						</StatementHeader>
+						<StatementDetail>
+							<StatementLine>
+								<ShipToLocationID>
+									<!--MANDATORY in Spec, Line N, Col 1, (mandatory in Schema)-->
+									<SuppliersCode RecordLength="*" RecordPos="*" LPos="1"/>
+								</ShipToLocationID>
+								<!--MANDATORY in Spec, Line N, Col 2, I or C in flat file, XSLT needs to convert to Invoice or Credit (mandatory in Schema)-->
+								<DocumentType RecordLength="*" RecordPos="*" LPos="2"/>
+								<!--MANDATORY in Spec, Line N, Col 3 (mandatory in Schema)-->
+								<DocumentReference RecordLength="*" RecordPos="*" LPos="3"/>
+								<!--MANDATORY in Spec, Line N, Col 4, YYYYMMDD in Spec, XSLT needs to convert to xsd:date (mandatory in Schema)-->
+								<DocumentDate RecordLength="*" RecordPos="*" LPos="4"/>
+								<!--MANDATORY in Spec, Line N, Col 5-->
+								<LineValueExclVAT RecordLength="*" RecordPos="*" LPos="5"/>
+								<!--MANDATORY in Spec, Line N, Col 6-->
+								<LineVATAmount RecordLength="*" RecordPos="*" LPos="6"/>
+								<!--OPTIONAL in Spec, Line N, Col 7-->
+								<Narrative RecordLength="*" RecordPos="*" LPos="7"/>
+							</StatementLine>
+						</StatementDetail>
+						<StatementTrailer>
+							<!--DERIVE in Spec, Line 1, Col 7-->
+							<NumberOfLines RecordLength="*" RecordPos="1" LPos="7"/>
+							<!--DERIVE in Spec, Line 1, Col 8-->
+							<TotalExclVAT RecordLength="*" RecordPos="1" LPos="8"/>
+							<!--DERIVE in Spec, Line 1, Col 9-->
+							<VATAmount RecordLength="*" RecordPos="1" LPos="9"/>
+						</StatementTrailer>
+					</Statement>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>
