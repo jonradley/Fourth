@@ -328,7 +328,7 @@
 			
 			sString= replace(sString,"¬","""")
 			
-			if InStr(sString,"""")> 0 or InStr(sString,",") Then
+			if InStr(sString,",") Then
 				sString= """" & sString& """"
 			End if
 			
