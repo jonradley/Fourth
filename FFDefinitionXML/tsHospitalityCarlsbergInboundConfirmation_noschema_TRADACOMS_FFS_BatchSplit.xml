@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+***************************************************************************************************
+Tradacoms Order Confirmation
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Alterations
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Name				| Date					| Change
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Nigel Emsen	|	25th July 2007	|	Created from 
+					|							|	tsHospitalityPurchaseOrderConfirmationTradacomsBatch_CLOC3_FFS.xml	
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+***************************************************************************************************
+
+-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>'</ffsRecordSeparator>
+		<ffsEscapeChars>
+			<ffsEscapeChar>
+				<ffsNative>chr(13)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>chr(10)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?=</ffsNative>
+				<ffsTradesimple>¬E</ffsTradesimple>
+				<ffsLiteral>=</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?+</ffsNative>
+				<ffsTradesimple>¬P</ffsTradesimple>
+				<ffsLiteral>+</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?:</ffsNative>
+				<ffsTradesimple>¬C</ffsTradesimple>
+				<ffsLiteral>:</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?'</ffsNative>
+				<ffsTradesimple>¬A</ffsTradesimple>
+				<ffsLiteral>'</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>??</ffsNative>
+				<ffsTradesimple>¬Q</ffsTradesimple>
+				<ffsLiteral>?</ffsLiteral>
+			</ffsEscapeChar>
+		</ffsEscapeChars>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>+</ffsFieldSeparator>
+			<ffsSubFieldSeparator>:</ffsSubFieldSeparator>
+		</ffsFieldSeparators>
+		<ffsPadding/>
+		<ffsBatchHeader>
+			<!--list of records that make up the header, this will be added to each document in the batch -->
+			<ffsHeaderRecord RecordPos="STX="/>
+			<ffsHeaderRecord RecordPos="TYP="/>
+			<ffsHeaderRecord RecordPos="SDT="/>
+			<ffsHeaderRecord RecordPos="CDT="/>
+			<ffsHeaderRecord RecordPos="FIL="/>
+		</ffsBatchHeader>
+		<ffsGroups>
+			<ffsGroup>
+				<!--References below which mean RecordPos ODD= with LPos 1 would be coded as ALD= and LPos 26 (25+1)-->
+				<ffsGroupRecord RecordPos="ALD=" FieldTotal="9"/>
+				<ffsSubGroupRecord RecordPos="DNB=" FieldTotal="3"/>
+				<!--ffsSubGroupRecord RecordPos="AQD=" FieldTotal="5"/-->
+			</ffsGroup>
+		</ffsGroups>
+		<ffsSplitBatchRecord RecordPos="CLO="/>
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<BatchDocuments>
+				<BatchDocument>
+					<PurchaseOrderConfirmation>
+						<TradeSimpleHeader>
+							<!-- MANDATORY Sender’s code for recipient, MANDATORY, INVOIC – CLO – CLOC(2), You must provide this code.  It is your internal identifier for the company that is to receive the document.  It must match the code that you have entered on the trading relationship you have with the other company-->
+							<SendersCodeForRecipient RecordPos="CLO=" LPos="1" SFPos="2"/>
+							<!-- OPTIONAL Sender’s Branch Reference, MANDATORY, INVFIL – CDT – CIDN(2), Depending on your particular relationship with the company, you must provide this code.  It is your internal identifier for the “contract” that the receiving company belongs to.  It must match the code that you have provided to ABS on set-up -->
+							<SendersBranchReference RecordPos="CDT=" LPos="1" SFPos="1"/>
+							<!-- this added as we have to detect the contents of the DNA Segment. This element is stripped in the stylesheet -->
+							<TestFlag RecordPos="DNA=" LPos="4" SFPos="4"/>
+						</TradeSimpleHeader>
+						<PurchaseOrderConfirmationHeader>
+							<BatchInformation>
+								<!-- OPTIONAL Supplier’s File Generation Number, DERIVE, INVFIL – FIL – FLGN, This should be incremented by +1 for each transmission of PurchaseOrderConfirmations sent to the exchange.  This must return to 1 after 9999 -->
+								<FileGenerationNo RecordPos="FIL=" LPos="1"/>
+								<!-- OPTIONAL Supplier’s File Version Number, DERIVE, INVFIL – FIL – FLVN, This should be incremented by +1 for each retry of a transmission of PurchaseOrderConfirmations sent to the exchange.  This must return to 1 after 9999 -->
+								<FileVersionNo RecordPos="FIL=" LPos="2"/>
+								<!-- OPTIONAL Supplier’s File Creation Date, DERIVE, INVFIL – FIL - FLDT, This should be a valid date, and should be the date on which the PurchaseOrderConfirmation transmission file was created by your systems -->
+								<FileCreationDate RecordPos="FIL=" LPos="3"/>
+								<!-- OPTIONAL Sender’s Transmission Reference, OPTIONAL, STX – SNRF, If available – for use in transmission notifications -->
+								<SendersTransmissionReference RecordPos="STX=" LPos="5"/>
+								<!-- OPTIONAL Sender’s Transmission Date/Time, OPTIONAL, STX – TRDT, If available – for use in transmission notifications -->
+								<SendersTransmissionDate RecordPos="STX=" LPos="4"/>
+							</BatchInformation>
+							<Buyer>
+								<BuyersLocationID>
+									<!--INVFIL-CDT-CIDN(1)-->
+									<SuppliersCode RecordPos="CDT=" LPos="1" SFPos="1"/>
+								</BuyersLocationID>
+								<!-- OPTIONAL Buyer Name, MANDATORY, INVFIL – CDT – CNAM, NB: To make this a legal PurchaseOrderConfirmation, you must provide this field. The “PurchaseOrderConfirmation to” name -->
+								<BuyersName RecordPos="CDT=" LPos="2"/>
+								<BuyersAddress>
+									<!-- OPTIONAL Buyer Address, M, INVFIL – CDT – CADD(1…5), NB: To make this a legal PurchaseOrderConfirmation, you must provide these fields. The “PurchaseOrderConfirmation to” address -->
+									<AddressLine1 RecordPos="CDT=" LPos="3" SFPos="1"/>
+									<AddressLine2 RecordPos="CDT=" LPos="3" SFPos="2"/>
+									<AddressLine3 RecordPos="CDT=" LPos="3" SFPos="3"/>
+									<AddressLine4 RecordPos="CDT=" LPos="3" SFPos="4"/>
+									<PostCode RecordPos="CDT=" LPos="3" SFPos="5"/>
+								</BuyersAddress>
+							</Buyer>
+							<Supplier>
+								<SuppliersLocationID>
+									<!--INVFIL-SDT-SIDN(1)-->
+									<SuppliersCode RecordPos="SDT=" LPos="1" SFPos="1"/>
+								</SuppliersLocationID>
+								<!-- OPTIONAL Supplier Name, MANDATORY, INVFIL – SDT – SNAM, NB: To make this a legal PurchaseOrderConfirmation, you must provide this field. This field should be set to your company name as on your paper PurchaseOrderConfirmations for this account -->
+								<SuppliersName RecordPos="SDT=" LPos="2"/>
+								<SuppliersAddress>
+									<!-- OPTIONAL Supplier Address, MANDATORY, INVFIL – SDT – SADD(1…5), NB: To make this a legal PurchaseOrderConfirmation, you must provide these fields. Your address -->
+									<AddressLine1 RecordPos="SDT=" LPos="3" SFPos="1"/>
+									<AddressLine2 RecordPos="SDT=" LPos="3" SFPos="2"/>
+									<AddressLine3 RecordPos="SDT=" LPos="3" SFPos="3"/>
+									<AddressLine4 RecordPos="SDT=" LPos="3" SFPos="4"/>
+									<PostCode RecordPos="SDT=" LPos="3" SFPos="5"/>
+								</SuppliersAddress>
+							</Supplier>
+							<ShipTo>
+								<ShipToLocationID>
+									<BuyersCode RecordPos="CLO=" LPos="1" SFPos="2"/>
+									<!--INVFIL-CLO-(1)2)-->
+									<SuppliersCode RecordPos="CLO=" LPos="1" SFPos="3"/>
+								</ShipToLocationID>
+								<!-- OPTIONAL Delivery Location Name, DERIVE, INVOIC – CLO – CNAM, The “ship-to” name -->
+								<ShipToName RecordPos="CLO=" LPos="2"/>
+								<ShipToAddress>
+									<!-- OPTIONAL Delivery Location Address, DERIVE, INVOIC – CLO – CADD(1…5), The “ship-to” address -->
+									<AddressLine1 RecordPos="CLO=" LPos="3" SFPos="1"/>
+									<AddressLine2 RecordPos="CLO=" LPos="3" SFPos="2"/>
+									<AddressLine3 RecordPos="CLO=" LPos="3" SFPos="3"/>
+									<AddressLine4 RecordPos="CLO=" LPos="3" SFPos="4"/>
+									<PostCode RecordPos="CLO=" LPos="3" SFPos="5"/>
+								</ShipToAddress>
+							</ShipTo>
+							<!--PurchaseOrderReferences-->
+							<PurchaseOrderReferences>
+								<PurchaseOrderReference RecordPos="AOR=" LPos="1" SFPos="1"/>
+								<PurchaseOrderDate RecordPos="AOR=" LPos="1" SFPos="4"/>
+							</PurchaseOrderReferences>
+							<!--PurchaseOrderConfirmationReferences-->
+							<PurchaseOrderConfirmationReferences>
+								<PurchaseOrderConfirmationReference RecordPos="AOR=" LPos="2"/>
+								<PurchaseOrderConfirmationDate RecordPos="AOR=" LPos="4"/>
+							</PurchaseOrderConfirmationReferences>
+							<!-- Carlsberg do not provide order requested delivery date information, they consider it optional -->
+							<!--OrderedDeliveryDetails-->
+							<!--OrderedDeliveryDetails-->
+							<!--DeliveryType>Delivery</DeliveryType-->
+							<!--DeliveryDate RecordPos="AQD=" LPos="1" SFPos="5"/>
+				</OrderedDeliveryDetails-->
+							<!-- Carlsberg only provide the estimated confirmed delivery date -->
+							<!--ConfirmedDeliveryDetails-->
+							<ConfirmedDeliveryDetails>
+								<!--DeliveryType RecordPos="AQD=" LPos="1" SFPos="2"/-->
+								<DeliveryDate RecordPos="AQD=" LPos="1" SFPos="3"/>
+							</ConfirmedDeliveryDetails>
+						</PurchaseOrderConfirmationHeader>
+						<!--PurchaseOrderConfirmationDetail-->
+						<PurchaseOrderConfirmationDetail>
+							<!--PurchaseOrderConfirmationLine-->
+							<PurchaseOrderConfirmationLine>
+								<LineNumber RecordPos="ALD=" LPos="1" SFPos="1"/>
+								<ProductID>
+									<!-- MANDATORY GTIN, INVOIC - ILD - SPRO(1) -->
+									<GTIN RecordPos="ALD=" LPos="2" SFPos="1"/>
+									<!-- OPTIONAL Supplier’s Product Code, MANDATORY, INVOIC – ILD – SPRO(2), Your unique code for this product -->
+									<SuppliersProductCode RecordPos="ALD=" LPos="2" SFPos="2"/>
+								</ProductID>
+								<!-- MANDATORY Product Description, OPTIONAL, INVOIC – ILD – TDES(1), While not strictly mandatory, this is a very useful textual piece of information. This will always contain something but may be set to ‘Not Provided’ -->
+								<ProductDescription RecordPos="ALD=" LPos="9" SFPos="1"/>
+								<!-- MANDATORY Quantity PurchaseOrderConfirmationd, MANDATORY, INVOIC – ILD – QTYI(1), If INVOIC – ILD – CRLI <> {blank} then multiply by –1 Must be greater or equal to zero -->
+								<!--OrderedQuantity RecordPos="ALD=" LPos="5" SFPos="1"/-->
+								<ConfirmedQuantity RecordPos="ALD=" LPos="6" SFPos="1"/>
+								<!-- This is being used to transport the Carlsberg code of the error because the 
+										The grouping does not match the ALD & DNB segments properly -->
+								<PackSize RecordPos="DNB=" LPos="4" SFPos="1"/>
+								<!-- Carlsberg do not provide pricing information 
+										This is being used to transport the Line Number of the error because the 
+										The grouping does not match the ALD & DNB segments properly -->
+								<UnitValueExclVAT RecordPos="DNB=" LPos="1" SFPos="1"/>
+								<!-- Carlsberg do not provide pricing information -->
+								<!--LineValueExclVAT RecordPos="ALD=" LPos="8" SFPos="1"/-->
+								<Narrative RecordPos="DNB=" LPos="4" SFPos="2"/>
+							</PurchaseOrderConfirmationLine>
+						</PurchaseOrderConfirmationDetail>
+						<!-- PurchaseOrderConfirmationTrailer -->
+						<PurchaseOrderConfirmationTrailer>
+							<!--NumberOfLines RecordPos="KTR=" LPos="1" SFPos="1"/-->
+							<!-- Carlsberg do not provide pricing information -->
+							<!--TotalExclVAT RecordPos="ALD=" LPos="6" SFPos="1"/-->
+						</PurchaseOrderConfirmationTrailer>
+					</PurchaseOrderConfirmation>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>
