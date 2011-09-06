@@ -323,11 +323,6 @@
 				sString= vsString
 			End If	
 
-						
-			sString= replace(sString,"""","¬")
-			
-			sString= replace(sString,"¬","""")
-			
 			if InStr(sString,",") Then
 				sString= """" & sString& """"
 			End if
