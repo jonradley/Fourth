@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--************************************************************************************************
 Date				| Name					| Comments	
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+****************************************************************************************************
+		?			|			?				|				?
+****************************************************************************************************
 25/08/2011		|	Koshaughnessy		| FB case 4745 Change to strip '/' from recipients code for sender.
+****************************************************************************************************
+07/09/2011		|	R Cambridge			| 4810 Ensure 'slash-less' codes are copied to the output
+****************************************************************************************************
+					|							|				
 *************************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
                               xmlns:fo="http://www.w3.org/1999/XSL/Format"
@@ -17,7 +23,15 @@ Date				| Name					| Comments
 				</xsl:for-each>
 				
 				<RecipientsCodeForSender>
-					<xsl:value-of select="substring-before(TradeSimpleHeader/RecipientsCodeForSender,'/')"/>
+					<!-- 4810, R Cambridge, check for a slash in RCS and output as required -->
+					<xsl:choose>
+						<xsl:when test="contains(TradeSimpleHeader/RecipientsCodeForSender,'/')">
+							<xsl:value-of select="substring-before(TradeSimpleHeader/RecipientsCodeForSender,'/')"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="TradeSimpleHeader/RecipientsCodeForSender"/>
+						</xsl:otherwise>
+					</xsl:choose>					
 				</RecipientsCodeForSender>
 				
 				<xsl:for-each select="TradeSimpleHeader/RecipientsCodeForSender/following-sibling::*">
