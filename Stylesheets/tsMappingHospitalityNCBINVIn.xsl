@@ -61,6 +61,21 @@ M Dimant		| 07/09/2011  | Added creation of a Delivery Notes for Aramark. Hides 
 		<xsl:copy/>
 	</xsl:template>
 	<!-- END of GENERIC HANDLERS -->
+	
+	<!-- Create Sender Branch Reference if buyer is Aramark, otherwise don't.  --> 
+	<xsl:template match="TradeSimpleHeader">
+		<TradeSimpleHeader>		
+		<xsl:choose>
+			<xsl:when test="./Invoice/InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode='5027615900013'">
+				<SendersCodeForRecipient><xsl:value-of select="substring-before(././././SendersCodeForRecipient,'-')"/></SendersCodeForRecipient>
+				<SendersBranchReference><xsl:value-of select="substring-after(././././SendersCodeForRecipient,'-')"/></SendersBranchReference>
+			</xsl:when>
+			<xsl:otherwise>
+				<SendersCodeForRecipient><xsl:value-of select="SendersCodeForRecipient"/></SendersCodeForRecipient>
+			</xsl:otherwise>
+		</xsl:choose>	
+		</TradeSimpleHeader>
+	</xsl:template>
 
 	<!-- InvoiceLine/ProductID/BuyersProductCode is used as a placeholder for INVOIC-ILD-CRLI and should not be copied over -->
 	<xsl:template match="BuyersProductCode"/>
@@ -353,20 +368,21 @@ M Dimant		| 07/09/2011  | Added creation of a Delivery Notes for Aramark. Hides 
 				<xsl:for-each select="Batch/BatchDocuments/BatchDocument/Invoice">
 					<BatchDocument>
 						<xsl:attribute name="DocumentTypeNo">7</xsl:attribute>
-						<DeliveryNote>
-							<TradeSimpleHeader>
-								<SendersCodeForRecipient>
-									<xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/>
-								</SendersCodeForRecipient>
-								<xsl:if test="TradeSimpleHeader/SendersBranchReference != ''">
-									<SendersBranchReference>
-										<xsl:value-of select="TradeSimpleHeader/SendersBranchReference"/>
-									</SendersBranchReference>
-								</xsl:if>
+						<DeliveryNote>					
+							<TradeSimpleHeader>		
+								<xsl:choose>
+									<xsl:when test="//InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode='5027615900013'">
+										<SendersCodeForRecipient><xsl:value-of select="substring-before(././././TradeSimpleHeader/SendersCodeForRecipient,'-')"/></SendersCodeForRecipient>
+										<SendersBranchReference><xsl:value-of select="substring-after(././././TradeSimpleHeader/SendersCodeForRecipient,'-')"/></SendersBranchReference>
+									</xsl:when>
+									<xsl:otherwise>
+										<SendersCodeForRecipient><xsl:value-of select="././././TradeSimpleHeader/SendersCodeForRecipient"/></SendersCodeForRecipient>
+									</xsl:otherwise>
+								</xsl:choose>	
 							</TradeSimpleHeader>
 							<DeliveryNoteHeader>
 								<DocumentStatus>Original</DocumentStatus>
-								<xsl:copy-of select="InvoiceHeader/Buyer"/>
+								<!--xsl:copy-of select="InvoiceHeader/Buyer"/-->
 								<xsl:copy-of select="InvoiceHeader/Supplier"/>
 								<xsl:copy-of select="InvoiceHeader/ShipTo"/>
 								<xsl:if test="InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderReference != '' and InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderDate != ''">
