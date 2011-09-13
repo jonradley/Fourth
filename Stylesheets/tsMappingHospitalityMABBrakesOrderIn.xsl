@@ -1,4 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--**************************************************************************************
+ Overview
+
+	Tradacoms order mapping for M&B via Brakes
+
+******************************************************************************************
+ Module History
+******************************************************************************************
+ Date         | Name       		| Description of modification
+******************************************************************************************
+     ?       	|       ?       	| Created
+******************************************************************************************
+ 12/09/2011   	| R Cambridge   	| 4828 read customer PO ref from DIN/DINN/1 
+ 														(Also convert blank ship-to name  & address line 1
+ 														 and product descripiton to 'Not Provided')
+******************************************************************************************
+	          	|              	|	                                                        
+***************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 
 	<xsl:template match="Document">
@@ -26,7 +44,14 @@
 								</SuppliersCode>
 							</ShipToLocationID>
 							<ShipToName>
-								<xsl:value-of select="CLO/L2[2]/L3[2]/L4[1]"/>
+								<xsl:choose>
+									<xsl:when test="string(CLO/L2[2]/L3[2]/L4[1]) != ''">
+										<xsl:value-of select="CLO/L2[2]/L3[2]/L4[1]"/>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:text>Not Provided</xsl:text>
+									</xsl:otherwise>
+								</xsl:choose>								
 							</ShipToName>
 							<ShipToAddress>
 								<xsl:variable name="addlines">
@@ -48,7 +73,14 @@
 								</xsl:variable>
 								
 								<AddressLine1>
-									<xsl:value-of select="msxsl:node-set($addlines)/addline[. != ''][1]"/>
+									<xsl:choose>
+										<xsl:when test="count(msxsl:node-set($addlines)/addline[. != '']) &gt; 0">
+											<xsl:value-of select="msxsl:node-set($addlines)/addline[. != ''][1]"/>
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:text>Not Provided</xsl:text>
+										</xsl:otherwise>
+									</xsl:choose>																		
 								</AddressLine1>
 								<xsl:if test="count(msxsl:node-set($addlines)/addline[. != '']) &gt; 1">
 									<AddressLine2>
@@ -80,10 +112,6 @@
 							<PurchaseOrderDate>
 								<xsl:value-of select="$sPODate"/>
 							</PurchaseOrderDate>
-							<CustomerPurchaseOrderReference>
-								<xsl:value-of select="ORD/L2[2]/L3/L4[1]"/>
-							</CustomerPurchaseOrderReference>
-
 						</PurchaseOrderReferences>
 						<!--OrderedDeliveryDetails>
 							<DeliveryDate>
@@ -103,6 +131,9 @@
 							<DropNumber>
 								<xsl:value-of select="DIN/L2[2]/L3[4]/L4[3]"/>
 							</DropNumber>
+							<CustomerOrderNumber>
+								<xsl:value-of select="ORD/L2[2]/L3/L4[1]"/>
+							</CustomerOrderNumber>
 						</HeaderExtraData>
 					</PurchaseOrderHeader>
 					<PurchaseOrderDetail>
@@ -130,7 +161,14 @@
 									</BuyersProductCode>
 								</ProductID>
 								<ProductDescription>
-									<xsl:value-of select="L2[2]/L3[10]/L4[1]"/>
+									<xsl:choose>
+										<xsl:when test="string(L2[2]/L3[10]/L4[1]) != ''">
+											<xsl:value-of select="L2[2]/L3[10]/L4[1]"/>
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:text>Not Provided</xsl:text>
+										</xsl:otherwise>
+									</xsl:choose>
 								</ProductDescription>
 								<OrderedQuantity>
 									<xsl:attribute name="UnitOfMeasure">

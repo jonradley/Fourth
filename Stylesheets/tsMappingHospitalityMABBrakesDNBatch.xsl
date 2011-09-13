@@ -15,7 +15,9 @@
 ==========================================================================================
  2008-09-11	| R Cambridge     	| 2459 override any ship-to ANA/GLN provided
 ==========================================================================================
-           	|                 	|
+     ?     	|        ?				| Branched from something 
+==========================================================================================
+ 2011-09-12	| R Cambridge     	| 4828 Added customer PO ref (sent in original order and passed on Fairfax Meadow, who return it in their delivery data)
 ==========================================================================================
            	|                 	|
 =======================================================================================-->
@@ -169,6 +171,9 @@
 			<xsl:text>+</xsl:text>
 			<xsl:value-of select="DeliveryNoteHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
 			<xsl:text>:</xsl:text>
+			<!-- 4828 R Cambridge, Place original Brakes PO ref here 
+			 (even though this it the supplier's PO ref sub-field it's the locaiton requested by Brakes) -->
+			<xsl:value-of select="DeliveryNoteHeader/PurchaseOrderReferences/CustomerPurchaseOrderReference"/>
 			<xsl:text>:</xsl:text>
 			<xsl:value-of select="HelperObj:FormatDate(string(DeliveryNoteHeader/PurchaseOrderReferences/PurchaseOrderDate))"></xsl:value-of>
 			<xsl:text>'</xsl:text>

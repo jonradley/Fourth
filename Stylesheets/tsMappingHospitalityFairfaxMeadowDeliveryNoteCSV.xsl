@@ -1,4 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--======================================================================================
+ Overview
+
+ © Alternative Business Solutions Ltd., 2000.
+==========================================================================================
+ Module History
+==========================================================================================
+ Version		| 
+==========================================================================================
+ Date      	| Name 					| Description of modification
+==========================================================================================
+     ?     	|        ?				| ?
+==========================================================================================
+ 2011-09-12	| R Cambridge     	| 4828 Added customer PO ref (sent in original order and passed on Fairfax Meadow, who return it in their delivery data)
+==========================================================================================
+           	|                 	|
+=======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 	<xsl:output method="xml" encoding="UTF-8"/>
 	
@@ -68,6 +85,7 @@
 	<xsl:template match="BuyersLocationID/SuppliersCode |
 	                     ShipToLocationID/SuppliersCode |
 	                     PurchaseOrderReference |
+	                     CustomerPurchaseOrderReference |
 	                     DeliveryNoteReference |
 	                     SuppliersProductCode |
 	                     ProductDescription">
