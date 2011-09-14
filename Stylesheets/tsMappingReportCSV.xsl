@@ -21,34 +21,35 @@
 ******************************************************************************************
   08/07/2010 | Sandeep Sehgal  | FB3739 CommaCharacter param changed to a variable
 ******************************************************************************************
-  13/04/2011 | Sandeep Sehgal  | FB4272 Removed whitepspace from varaible declarations
+ 13/04/2011 | Sandeep Sehgal  | FB4272 Removed whitespace from variable declarations
 ******************************************************************************************
+02/09/2011 | Graham Neicho | FB4773 Added translations for Report 118 (GRNI)
 ******************************************************************************************
 -->
 
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 	
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 			xmlns:script="http://mycompany.com/mynamespace"
 		       xmlns:msxsl="urn:schemas-microsoft-com:xslt"
 		      exclude-result-prefixes="#default xsl msxsl script">
 	<xsl:output method="text"/>
 	<xsl:include href="Internationalisation.xsl"/>
-
-	<xsl:param name="RootFolderPath" select="'./Translations'"/>		
+	<xsl:param name="RootFolderPath" select="'./Translations'"/>
 	<xsl:param name="LocaleID"><xsl:value-of select = "/Report/@LocaleID"></xsl:value-of></xsl:param>
 	<xsl:variable name="TranslationFile">Report<xsl:value-of select = "/Report/@ReportID"></xsl:value-of>.xml</xsl:variable>
 	<xsl:variable name="ReportID"><xsl:value-of select = "/Report/@ReportID"></xsl:value-of></xsl:variable>
+
 	<xsl:variable name="CommaCharacter"><xsl:if test="$LocaleID=1034">;</xsl:if><xsl:if test="$LocaleID=2057">,</xsl:if></xsl:variable >
 
 	<xsl:template match="/">
 		<xsl:choose>
-			<xsl:when test="$LocaleID>0 and ($ReportID=90 or $ReportID=92 or $ReportID=93 or $ReportID=97 or $ReportID=98 or $ReportID=99 or $ReportID=112 or $ReportID=113 or $ReportID=129) ">
+			<xsl:when test="$LocaleID>0 and ($ReportID=90 or $ReportID=92 or $ReportID=93 or $ReportID=97 or $ReportID=98 or $ReportID=99 or $ReportID=112 or $ReportID=113 or $ReportID=118 or $ReportID=129) ">
 				<xsl:call-template name="SelectString"><xsl:with-param name="InputString" select="script:msFormatForCSV(/Report/ReportName)"/><xsl:with-param name="ReportID" select="$ReportID"/></xsl:call-template><xsl:text> - </xsl:text><xsl:value-of select="script:gsFormatDateByLocale(/Report/ReportDate,number($LocaleID))"/>
 				<xsl:text>&#xD;</xsl:text>
 				<xsl:text>&#xD;</xsl:text>
 				<!--Header Details-->
 				<xsl:if test="/Report/HeaderDetails">
 					<xsl:for-each select="/Report/HeaderDetails/HeaderDetail">
-						<xsl:call-template name="SelectString"><xsl:with-param name="InputString" select="Description"/><xsl:with-param name="ReportID" select="$ReportID"/></xsl:call-template><xsl:value-of select="$CommaCharacter"></xsl:value-of><xsl:call-template name="SelectString"><xsl:with-param name="InputString" select="Value"/><xsl:with-param name="ReportID" select="$ReportID"/></xsl:call-template><xsl:text>&#xD;</xsl:text>				
+						<xsl:call-template name="SelectString"><xsl:with-param name="InputString" select="Description"/><xsl:with-param name="ReportID" select="$ReportID"/></xsl:call-template><xsl:value-of select="$CommaCharacter"></xsl:value-of><xsl:call-template name="SelectString"><xsl:with-param name="InputString" select="Value"/><xsl:with-param name="ReportID" select="$ReportID"/></xsl:call-template><xsl:text>&#xD;</xsl:text>
 					</xsl:for-each>
 				</xsl:if>
 				<!--Line Details-->
@@ -72,6 +73,9 @@
 								</xsl:when>								
 								<xsl:otherwise>
 									<xsl:choose>
+										<xsl:when test="$ReportID = 118 and position() = 13">
+											<xsl:call-template name="SelectString"><xsl:with-param name="InputString" select="script:msFormatForCSV(.)"/><xsl:with-param name="ReportID" select="$ReportID"/></xsl:call-template><xsl:value-of select="$CommaCharacter"></xsl:value-of>
+										</xsl:when>
 										<xsl:when test="$ReportID = 129 and position() = 9">
 											<xsl:call-template name="SelectString"><xsl:with-param name="InputString" select="script:msFormatForCSV(.)"/><xsl:with-param name="ReportID" select="$ReportID"/></xsl:call-template><xsl:value-of select="$CommaCharacter"></xsl:value-of>
 										</xsl:when>
@@ -324,6 +328,30 @@
 					<xsl:when test="$InputString='Exported'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="18"/></xsl:call-template></xsl:when>
 					<xsl:when test="$InputString='Not Provided'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="19"/></xsl:call-template></xsl:when>
 					<xsl:when test="$InputString='All'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="20"/></xsl:call-template></xsl:when>
+					<xsl:otherwise><xsl:value-of select="$InputString" /></xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+			<xsl:when test="$ReportID=118">
+				<xsl:choose>
+					<xsl:when test="$InputString='A0502: GRNIs - Detail (All) V3'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="1"/></xsl:call-template></xsl:when>
+					<xsl:when test="$InputString='Accrual Date'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="2"/></xsl:call-template></xsl:when>
+					<xsl:when test="$InputString='Unit Number'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="3"/></xsl:call-template></xsl:when>
+					<xsl:when test="$InputString='Unit Name'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="4"/></xsl:call-template></xsl:when>
+					<xsl:when test="$InputString='Supplier Number'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="5"/></xsl:call-template></xsl:when>
+					<xsl:when test="$InputString='Supplier Name'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="6"/></xsl:call-template></xsl:when>
+					<xsl:when test="$InputString='Purchase Order Number'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="7"/></xsl:call-template></xsl:when>
+					<xsl:when test="$InputString='Purchase Order Date'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="8"/></xsl:call-template></xsl:when>
+					<xsl:when test="$InputString='Delivery Note Number'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="9"/></xsl:call-template></xsl:when>									
+					<xsl:when test="$InputString='Delivery Date'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="10"/></xsl:call-template></xsl:when>
+					<xsl:when test="$InputString='Invoice Number'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="11"/></xsl:call-template></xsl:when>
+					<xsl:when test="$InputString='Invoice Date'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="12"/></xsl:call-template></xsl:when>
+					<xsl:when test="$InputString='GL Code'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="13"/></xsl:call-template></xsl:when>
+					<xsl:when test="$InputString='Total excl VAT'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="14"/></xsl:call-template></xsl:when>
+					<xsl:when test="$InputString='Status'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="15"/></xsl:call-template></xsl:when>
+					<xsl:when test="$InputString='Emergency Goods Received Note'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="16"/></xsl:call-template></xsl:when>
+					<xsl:when test="$InputString='Active Invoice Discrepancy'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="17"/></xsl:call-template></xsl:when>
+					<xsl:when test="$InputString='Not Authorised'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="18"/></xsl:call-template></xsl:when>
+					<xsl:when test="$InputString='Authorised but not Exported'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="19"/></xsl:call-template></xsl:when>
 					<xsl:otherwise><xsl:value-of select="$InputString" /></xsl:otherwise>
 				</xsl:choose>
 			</xsl:when>
