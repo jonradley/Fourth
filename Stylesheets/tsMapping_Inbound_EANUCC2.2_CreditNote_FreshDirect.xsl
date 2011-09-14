@@ -10,6 +10,7 @@ xmlns:eanucc="urn:ean.ucc:2"
 xmlns:pay="urn:ean.ucc:pay:2" 
 xmlns:vat="urn:ean.ucc:pay:vat:2">
 	<xsl:template match="/">
+	<BatchRoot>
 		<Batch>
 			<BatchDocuments>
 				<BatchDocument>
@@ -17,8 +18,12 @@ xmlns:vat="urn:ean.ucc:pay:vat:2">
 						<TradeSimpleHeader>
 						
 							<SendersCodeForRecipient>
-								<xsl:value-of select="//shipTo/additionalPartyIdentification[additionalPartyIdentificationType='SELLER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue"/>
+								<xsl:value-of select="substring-before(//seller/additionalPartyIdentification/additionalPartyIdentificationValue,'|')"/>
 							</SendersCodeForRecipient>
+							
+							<SendersBranchReference>
+								<xsl:value-of select="substring-after(//seller/additionalPartyIdentification/additionalPartyIdentificationValue,'|')"/>
+							</SendersBranchReference>							
 							
 						</TradeSimpleHeader>
 						<!--~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -39,6 +44,10 @@ xmlns:vat="urn:ean.ucc:pay:vat:2">
 											<xsl:value-of select="//sh:Receiver/sh:Identifier"/>
 										</GLN>
 									</xsl:if>
+									<SuppliersCode>
+										<xsl:value-of select="substring-after(//seller/additionalPartyIdentification/additionalPartyIdentificationValue,'|')"/>
+									</SuppliersCode>
+
 								</BuyersLocationID>
 							</Buyer>
 							
@@ -66,8 +75,12 @@ xmlns:vat="urn:ean.ucc:pay:vat:2">
 							<InvoiceReferences>
 							
 								<InvoiceReference>
-									<xsl:value-of select="//eanucc:message/eanucc:transaction/entityIdentification/uniqueCreatorIdentification"/>
+									<xsl:value-of select="//eanucc:transaction/command/eanucc:documentCommand/documentCommandOperand/pay:invoice/invoiceIdentification/uniqueCreatorIdentification"/>
 								</InvoiceReference>
+								
+								<InvoiceDate>
+									<xsl:value-of select="//eanucc:transaction/command/eanucc:documentCommand/documentCommandOperand/pay:invoice/invoiceLineItem/deliveryNote/referenceDateTime"/>
+								</InvoiceDate>
 								
 							</InvoiceReferences>
 							
@@ -78,7 +91,7 @@ xmlns:vat="urn:ean.ucc:pay:vat:2">
 								</CreditNoteReference>
 								
 								<CreditNoteDate>
-									<xsl:value-of select="substring-before(//sh:DocumentIdentification/sh:CreationDateAndTime, 'T')"/>
+									<xsl:value-of select="/sh:StandardBusinessDocument/eanucc:message/eanucc:transaction/command/eanucc:documentCommand/documentCommandOperand/pay:invoice/@creationDateTime"/>
 								</CreditNoteDate>
 								
 								<xsl:if test="//vat:vATInvoicePartyExtension/vATRegistrationNumber !=''">
@@ -88,33 +101,33 @@ xmlns:vat="urn:ean.ucc:pay:vat:2">
 								</xsl:if>
 								
 							</CreditNoteReferences>
-							
-							<DeliveryNoteReferences>
-								<xsl:if test="string(//invoiceLineItem/deliveryNote/referenceIdentification) !=' '">
-									<DeliveryNoteReference>
-										<xsl:value-of select="//invoiceLineItem/deliveryNote/referenceIdentification"/>
-									</DeliveryNoteReference>
-								</xsl:if>
-								<xsl:if test="string(//invoiceLineItem/deliveryNote/referenceDateTime) !=' '">
-									<DeliveryNoteDate>
-										<xsl:value-of select="substring-before(//invoiceLineItem/deliveryNote/referenceDateTime, 'T')"/>
-									</DeliveryNoteDate>
-								</xsl:if>
-							</DeliveryNoteReferences>
-							
+														
 						</CreditNoteHeader>
 						<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 							CREDIT NOTE DETAIL
 						~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-						<xsl:for-each select="//documentCommandOperand/pay:invoice/invoiceLineItem">
-							<CreditNoteDetail>
+						<CreditNoteDetail>
+							<xsl:for-each select="//documentCommandOperand/pay:invoice/invoiceLineItem">
 								<CreditNoteLine>
 								
 									<xsl:if test="string(@number) !=' '">
-										<LineNumbe>
+										<LineNumber>
 											<xsl:value-of select="@number"/>
-										</LineNumbe>
+										</LineNumber>
 									</xsl:if>
+									
+									<DeliveryNoteReferences>
+										<xsl:if test="string(//invoiceLineItem/deliveryNote/referenceIdentification) !=' '">
+											<DeliveryNoteReference>
+												<xsl:value-of select="//invoiceLineItem/deliveryNote/referenceIdentification"/>
+											</DeliveryNoteReference>
+										</xsl:if>
+										<xsl:if test="string(//invoiceLineItem/deliveryNote/referenceDateTime) !=' '">
+											<DeliveryNoteDate>
+												<xsl:value-of select="substring-before(//invoiceLineItem/deliveryNote/referenceDateTime, 'T')"/>
+											</DeliveryNoteDate>
+										</xsl:if>
+									</DeliveryNoteReferences>
 									
 									<ProductID>
 										<xsl:if test="string(tradeItemIdentification/gtin) !='00000000000000'">
@@ -163,8 +176,8 @@ xmlns:vat="urn:ean.ucc:pay:vat:2">
 									</VATRate>
 									
 								</CreditNoteLine>
-							</CreditNoteDetail>
-						</xsl:for-each>
+							</xsl:for-each>
+						</CreditNoteDetail>
 						<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 							CREDIT NOTE TRAILER
 						~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
@@ -293,10 +306,11 @@ xmlns:vat="urn:ean.ucc:pay:vat:2">
 								</xsl:choose>
 							</DocumentTotalInclVAT>
 							
-						</CreditNoteTrailer>
-					</CreditNote>
-				</BatchDocument>
-			</BatchDocuments>
-		</Batch>
+							</CreditNoteTrailer>
+						</CreditNote>
+					</BatchDocument>
+				</BatchDocuments>
+			</Batch>
+		</BatchRoot>	
 	</xsl:template>
 </xsl:stylesheet>
