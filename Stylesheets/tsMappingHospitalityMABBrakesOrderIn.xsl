@@ -12,17 +12,18 @@
      ?       	|       ?       	| Created
 ******************************************************************************************
  12/09/2011   	| R Cambridge   	| 4828 read customer PO ref from DIN/DINN/1 
+ 													 explicitly get delivery date (was set by infiller as today's date)
  														(Also convert blank ship-to name  & address line 1
  														 and product descripiton to 'Not Provided')
 ******************************************************************************************
 	          	|              	|	                                                        
 ***************************************************************************************-->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 
 	<xsl:template match="Document">
 
 	<xsl:variable name="sPODate" select="concat('20', substring(ORD/L2[2]/L3/L4[3], 1, 2), '-', substring(ORD/L2[2]/L3/L4[3], 3, 2), '-', substring(ORD/L2[2]/L3/L4[3], 5, 2))"/>
-	<!--xsl:variable name="sReqDate" select="concat('20', substring(DIN/L2[2]/L3[2]/L4[1], 1, 2), '-', substring(DIN/L2[2]/L3[2]/L4[1], 3, 2), '-',  substring(DIN/L2[2]/L3[2]/L4[1], 5, 2))"/-->
+	<xsl:variable name="sReqDate" select="concat('20', substring(DIN/L2[2]/L3[1]/L4[1], 1, 2), '-', substring(DIN/L2[2]/L3[1]/L4[1], 3, 2), '-',  substring(DIN/L2[2]/L3[1]/L4[1], 5, 2))"/>
 
 
 		<BatchRoot>
@@ -113,11 +114,11 @@
 								<xsl:value-of select="$sPODate"/>
 							</PurchaseOrderDate>
 						</PurchaseOrderReferences>
-						<!--OrderedDeliveryDetails>
+						<OrderedDeliveryDetails>
 							<DeliveryDate>
 								<xsl:value-of select="$sReqDate"/>
 							</DeliveryDate>
-						</OrderedDeliveryDetails-->
+						</OrderedDeliveryDetails>
 						<SequenceNumber>
 							<xsl:value-of select="FIL/L2[2]/L3[1]/L4[1]"/>
 						</SequenceNumber>
