@@ -150,6 +150,8 @@
 
 		<xsl:text>DEL=</xsl:text>
 			<xsl:text>+</xsl:text>
+			<!-- 4828 R Cambridge, number of delivery units -->
+			<xsl:value-of select="DeliveryNoteHeader/HeaderExtraData/NumberOfBoxes"/>
 			<xsl:text>+</xsl:text>
 			<xsl:text>+</xsl:text>
 			<xsl:text>+</xsl:text>
