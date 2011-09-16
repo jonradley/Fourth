@@ -91,12 +91,8 @@
     ' Alterations   	  : S Sehgal, 13/04/2011. 4272 Converted to c#
     '========================================================================================*/
     public string msFormatForCSV(string vsString)
-    {              						
-      vsString= vsString.Replace("\"","¬");
-        
-      vsString= vsString.Replace("¬","\"");
-      
-      if(vsString.IndexOf("\"")>0 || vsString.IndexOf(",")>0)
+    {
+      if(vsString.IndexOf(",")>0)
       {
         vsString= "\""  +  vsString +  "\"";
       }
