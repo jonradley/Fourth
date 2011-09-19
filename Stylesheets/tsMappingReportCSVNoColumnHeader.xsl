@@ -22,6 +22,8 @@
 ******************************************************************************************
   08/07/2010 | Sandeep Sehgal  | FB3739 CommaCharacter param changed to a variable
 ******************************************************************************************
+19/09/2011 | Sandeep Sehgal  | FB4272 Removed whitepspace from varaible declarations
+******************************************************************************************
 
 ******************************************************************************************
 -->
@@ -33,15 +35,9 @@
 	<xsl:output method="text"/>
 	<xsl:include href="Internationalisation.xsl"/>
 	<xsl:param name="RootFolderPath" select="'./Translations'"/>		
-	<xsl:param name="LocaleID">
-		<xsl:value-of select = "/Report/@LocaleID"></xsl:value-of>
-	</xsl:param>
-	<xsl:variable name="TranslationFile">
-		Report<xsl:value-of select = "/Report/@ReportID"></xsl:value-of>.xml
-	</xsl:variable>
-	<xsl:variable name="ReportID">
-		<xsl:value-of select = "/Report/@ReportID"></xsl:value-of>
-	</xsl:variable>	
+	<xsl:param name="LocaleID"><xsl:value-of select = "/Report/@LocaleID"></xsl:value-of></xsl:param>
+	<xsl:variable name="TranslationFile">Report<xsl:value-of select = "/Report/@ReportID"></xsl:value-of>.xml</xsl:variable>
+	<xsl:variable name="ReportID"><xsl:value-of select = "/Report/@ReportID"></xsl:value-of></xsl:variable>	
 	<xsl:variable name="CommaCharacter"><xsl:if test="$LocaleID=1034">;</xsl:if><xsl:if test="$LocaleID=2057">,</xsl:if></xsl:variable >
 	<xsl:template match="/">
 		<xsl:choose>
