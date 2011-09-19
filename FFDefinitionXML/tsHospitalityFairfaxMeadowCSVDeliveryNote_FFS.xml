@@ -1,4 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--**************************************************************************************
+ Overview
+
+	Fairfax Meadow's csv delivery note format
+
+******************************************************************************************
+ Module History
+******************************************************************************************
+ Date         | Name       		| Description of modification
+******************************************************************************************
+     ?       	|       ?       	| Created
+******************************************************************************************
+ 12/09/2011   	| R Cambridge   	| 4828 capture customer order reference
+******************************************************************************************
+	          	|              	|	                                                        
+***************************************************************************************-->
 <ffsFlatFileSchema>
 	<ffsSettings>
 		<ffsRecordPositionType>named</ffsRecordPositionType>
@@ -84,9 +100,9 @@
 								<TradeAgreement>
 									<ContractReference/>
 									<ContractDate/>
-								</TradeAgreement>
-								<CustomerPurchaseOrderReference/>
-								<JobNumber/-->
+								</TradeAgreement-->
+						<CustomerPurchaseOrderReference RecordPos="&quot;HEAD&quot;" LPos="29"/>
+								<!--JobNumber/-->
 					</PurchaseOrderReferences>
 					<!--PurchaseOrderConfirmationReferences>
 								<PurchaseOrderConfirmationReference/>
