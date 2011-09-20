@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--******************************************************************
+Alterations
+**********************************************************************
+Name			| Date				| Change
+**********************************************************************
+		?		|			?			| Created module
+**********************************************************************
+R Cambridge	| 2011-06-07		| 4520 Added back order quantity 
+													Corrected unit price (was reading from BO quantity field)
+**********************************************************************
+				|						|				
+**********************************************************************
+				|						|
+**********************************************************************
+				|						|
+*******************************************************************-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>'</ffsRecordSeparator>
+		<ffsEscapeChars>
+			<ffsEscapeChar>
+				<ffsNative>chr(13)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>chr(10)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?=</ffsNative>
+				<ffsTradesimple>¬E</ffsTradesimple>
+				<ffsLiteral>=</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?+</ffsNative>
+				<ffsTradesimple>¬P</ffsTradesimple>
+				<ffsLiteral>+</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?:</ffsNative>
+				<ffsTradesimple>¬C</ffsTradesimple>
+				<ffsLiteral>:</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?'</ffsNative>
+				<ffsTradesimple>¬A</ffsTradesimple>
+				<ffsLiteral>'</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>??</ffsNative>
+				<ffsTradesimple>¬Q</ffsTradesimple>
+				<ffsLiteral>?</ffsLiteral>
+			</ffsEscapeChar>
+		</ffsEscapeChars>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>+</ffsFieldSeparator>
+			<ffsSubFieldSeparator>:</ffsSubFieldSeparator>
+		</ffsFieldSeparators>
+		<ffsPadding/>
+		<ffsBatchHeader>
+			<ffsHeaderRecord RecordPos="STX="/>
+			<ffsHeaderRecord RecordPos="TYP="/>
+			<ffsHeaderRecord RecordPos="SDT="/>
+			<ffsHeaderRecord RecordPos="CDT="/>
+			<ffsHeaderRecord RecordPos="FIL="/>
+		</ffsBatchHeader>
+		<!--<ffsGroups>
+			<ffsGroup>
+				<ffsGroupRecord RecordPos="ODD=" FieldTotal="11"/>
+				<ffsSubGroupRecord RecordPos="ILD=" FieldTotal="25"/>
+			</ffsGroup>
+		</ffsGroups>-->
+		<ffsSplitBatchRecord RecordPos="CLO="/>
+	</ffsSettings>
+	<ffsRoot>
+		<PurchaseOrderConfirmation>
+			<TradeSimpleHeader>
+				<SendersCodeForRecipient RecordPos="CLO=" LPos="1" SFPos="2"/>
+			</TradeSimpleHeader>
+			<PurchaseOrderConfirmationHeader>
+				<!--DocumentStatus RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/-->
+				<BatchInformation>
+					<!-- OPTIONAL Supplier’s File Generation Number, DERIVE, INVFIL – FIL – FLGN, This should be incremented by +1 for each transmission of invoices sent to the exchange.  This must return to 1 after 9999 -->
+					<FileGenerationNo RecordPos="FIL=" LPos="1"/>
+					<!-- OPTIONAL Supplier’s File Version Number, DERIVE, INVFIL – FIL – FLVN, This should be incremented by +1 for each retry of a transmission of invoices sent to the exchange.  This must return to 1 after 9999 -->
+					<FileVersionNo RecordPos="FIL=" LPos="2"/>
+					<!-- OPTIONAL Supplier’s File Creation Date, DERIVE, INVFIL – FIL - FLDT, This should be a valid date, and should be the date on which the invoice transmission file was created by your systems -->
+					<FileCreationDate RecordPos="FIL=" LPos="3"/>
+					<!-- OPTIONAL Sender’s Transmission Reference, OPTIONAL, STX – SNRF, If available – for use in transmission notifications -->
+					<SendersTransmissionReference RecordPos="STX=" LPos="5"/>
+					<!-- OPTIONAL Sender’s Transmission Date/Time, OPTIONAL, STX – TRDT, If available – for use in transmission notifications -->
+					<SendersTransmissionDate RecordPos="STX=" LPos="4"/>
+				</BatchInformation>
+				<Buyer>
+					<BuyersLocationID>
+						<!--INVFIL-CDT-CIDN(1)-->
+						<SuppliersCode RecordPos="CDT=" LPos="1" SFPos="1"/>
+					</BuyersLocationID>
+					<!-- OPTIONAL Buyer Name, MANDATORY, INVFIL – CDT – CNAM, NB: To make this a legal invoice, you must provide this field. The “invoice to” name -->
+					<BuyersName RecordPos="CDT=" LPos="2"/>
+					<BuyersAddress>
+						<!-- OPTIONAL Buyer Address, M, INVFIL – CDT – CADD(1…5), NB: To make this a legal invoice, you must provide these fields. The “invoice to” address -->
+						<AddressLine1 RecordPos="CDT=" LPos="3" SFPos="1"/>
+						<AddressLine2 RecordPos="CDT=" LPos="3" SFPos="2"/>
+						<AddressLine3 RecordPos="CDT=" LPos="3" SFPos="3"/>
+						<AddressLine4 RecordPos="CDT=" LPos="3" SFPos="4"/>
+						<PostCode RecordPos="CDT=" LPos="3" SFPos="5"/>
+					</BuyersAddress>
+				</Buyer>
+				<Supplier>
+					<SuppliersLocationID>
+						<!--INVFIL-SDT-SIDN(1)-->
+						<SuppliersCode RecordPos="SDT=" LPos="1" SFPos="1"/>
+					</SuppliersLocationID>
+					<!-- OPTIONAL Supplier Name, MANDATORY, INVFIL – SDT – SNAM, NB: To make this a legal invoice, you must provide this field. 
+							This field should be set to your company name as on your paper invoices for this account -->
+					<SuppliersName RecordPos="SDT=" LPos="2"/>
+					<SuppliersAddress>
+						<!-- OPTIONAL Supplier Address, MANDATORY, INVFIL – SDT – SADD(1…5), NB: To make this a legal invoice, you must provide these fields. Your address -->
+						<AddressLine1 RecordPos="SDT=" LPos="3" SFPos="1"/>
+						<AddressLine2 RecordPos="SDT=" LPos="3" SFPos="2"/>
+						<AddressLine3 RecordPos="SDT=" LPos="3" SFPos="3"/>
+						<AddressLine4 RecordPos="SDT=" LPos="3" SFPos="4"/>
+						<PostCode RecordPos="SDT=" LPos="3" SFPos="5"/>
+					</SuppliersAddress>
+				</Supplier>
+				<ShipTo>
+					<ShipToLocationID>
+						<!--INVFIL-CLO-(1)2)-->
+						<SuppliersCode RecordPos="CLO=" LPos="1" SFPos="2"/>
+					</ShipToLocationID>
+					<!-- OPTIONAL Delivery Location Name, DERIVE, INVOIC – CLO – CNAM, The “ship-to” name -->
+					<ShipToName RecordPos="CLO=" LPos="2"/>
+					<ShipToAddress>
+						<!-- OPTIONAL Delivery Location Address, DERIVE, INVOIC – CLO – CADD(1…5), The “ship-to” address -->
+						<AddressLine1 RecordPos="CLO=" LPos="3" SFPos="1"/>
+						<AddressLine2 RecordPos="CLO=" LPos="3" SFPos="2"/>
+						<AddressLine3 RecordPos="CLO=" LPos="3" SFPos="3"/>
+						<AddressLine4 RecordPos="CLO=" LPos="3" SFPos="4"/>
+						<PostCode RecordPos="CLO=" LPos="3" SFPos="5"/>
+					</ShipToAddress>
+				</ShipTo>
+				<PurchaseOrderReferences>
+					<PurchaseOrderReference RecordPos="AOR=" LPos="1" SFPos="1"/>
+					<PurchaseOrderDate RecordPos="AOR=" LPos="1" SFPos="3"/>
+				</PurchaseOrderReferences>
+				<PurchaseOrderConfirmationReferences>
+					<PurchaseOrderConfirmationReference RecordPos="AOR=" LPos="1" SFPos="1"/>
+					<PurchaseOrderConfirmationDate RecordPos="AOR=" LPos="1" SFPos="3"/>
+				</PurchaseOrderConfirmationReferences>
+				<OrderedDeliveryDetails>
+					<!--DeliveryType RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/-->
+					<DeliveryDate RecordPos="AQD" LPos="5" SFPos="1"/>
+					<!--DeliverySlot>
+						<SlotStart RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+						<SlotEnd RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+					</DeliverySlot>
+					<SpecialDeliveryInstructions RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/-->
+				</OrderedDeliveryDetails>
+				<ConfirmedDeliveryDetails>
+					<!--DeliveryType RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/-->
+					<DeliveryDate RecordPos="AQD" LPos="3" SFPos="1"/>
+					<!--DeliverySlot>
+						<SlotStart RecordPos="H" LPos="8"/>
+						<SlotEnd RecordPos="H" LPos="9"/>
+					</DeliverySlot-->
+					<!--SpecialDeliveryInstructions RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/-->
+				</ConfirmedDeliveryDetails>
+				<!--SequenceNumber RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/-->
+			</PurchaseOrderConfirmationHeader>
+			<PurchaseOrderConfirmationDetail>
+				<PurchaseOrderConfirmationLine>
+					<!--LineNumber RecordPos="" LPos=""/-->
+					<ProductID>
+						<!--GTIN RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/-->
+						<SuppliersProductCode RecordPos="ALD=" LPos="2" SFPos="3"/>
+						<BuyersProductCode RecordPos="ALD=" LPos="4" SFPos="2"/>
+					</ProductID>
+					<ProductDescription RecordPos="ALD=" LPos="9" SFPos="1"/>
+					<OrderedQuantity RecordPos="ALD=" LPos="6" SFPos="2"/>
+					<ConfirmedQuantity RecordPos="ALD" LPos="6" SFPos="2"/>
+					<BackOrderQuantity RecordPos="ALD=" LPos="7" SFPos="1"/>
+					<!--PackSize RecordPos="D" LPos="6"/-->
+					<UnitValueExclVAT RecordPos="ALD=" LPos="8" SFPos="1"/>
+					<!--LineValueExclVAT /-->
+					<!--OrderedDeliveryDetailsLineLevel>
+						<DeliveryDate RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+						<DeliverySlot>
+							<SlotStart RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+							<SlotEnd RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+						</DeliverySlot>
+					</OrderedDeliveryDetailsLineLevel-->
+					<!--ConfirmedDeliveryDetailsLineLevel>
+						<DeliveryDate RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+						<DeliverySlot>
+							<SlotStart RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+							<SlotEnd RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+						</DeliverySlot>
+					</ConfirmedDeliveryDetailsLineLevel-->
+					<!--Narrative RecordPos="D" LPos="11"/-->
+				</PurchaseOrderConfirmationLine>
+			</PurchaseOrderConfirmationDetail>
+			<!--PurchaseOrderConfirmationTrailer>
+				<NumberOfLines RecordPos="H" LPos="17"/>
+				<TotalExclVAT RecordPos="H" LPos="18"/>
+			</PurchaseOrderConfirmationTrailer-->
+		</PurchaseOrderConfirmation>
+	</ffsRoot>
+</ffsFlatFileSchema>

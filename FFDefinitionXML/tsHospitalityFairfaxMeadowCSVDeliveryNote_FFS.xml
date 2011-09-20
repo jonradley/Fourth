@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>chr(10)</ffsRecordSeparator>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>,</ffsFieldSeparator>
+		</ffsFieldSeparators>
+		<ffsPadding/>
+		<ffsGroups>
+			<ffsGroup>
+				<!--References below which MEAN RecordPos 'H' with LPos 1 would be CODED as 'D' and LPos 14 (13+1)-->
+				<ffsGroupRecord RecordPos="&quot;HEAD&quot;" FieldTotal="30"/>
+				<ffsSubGroupRecord RecordPos="&quot;DTL&quot;" FieldTotal="23"/>
+			</ffsGroup>
+		</ffsGroups>
+		<ffsSplitBatchRecord RecordPos="&quot;HEAD&quot;"/>
+	</ffsSettings>
+	<ffsRoot>
+		<BatchRoot>
+			<!--BatchDocuments>
+			<BatchDocument-->
+			<DeliveryNote>
+				<TradeSimpleHeader>
+					<SendersCodeForRecipient RecordPos="&quot;HEAD&quot;" LPos="4"/>
+					<SendersAddress>
+						<!-- AddressLine1 is used to capture a qualifier to the senders code for recipient that repesents the recipient's depot -->
+						<AddressLine1 RecordPos="&quot;HEAD&quot;" LPos="30"/>
+						<!-- AddressLine2 contains the number of boxes in the delivery. This is currently being passed to Reynolds.-->
+						<AddressLine2 RecordPos="&quot;HEAD&quot;" LPos="31"/>
+					</SendersAddress>
+				</TradeSimpleHeader>
+				<DeliveryNoteHeader>
+					<Buyer>
+						<BuyersLocationID>
+							<!--GLN/-->
+							<!--BuyersCode/-->
+							<SuppliersCode RecordPos="&quot;HEAD&quot;" LPos="11"/>
+						</BuyersLocationID>
+						<!--BuyersName/>
+								<BuyersAddress>
+									<AddressLine1/>
+									<AddressLine2/>
+									<AddressLine3/>
+									<AddressLine4/>
+									<PostCode/>
+								</BuyersAddress-->
+					</Buyer>
+					<!--Supplier>
+								<SuppliersLocationID>
+									<GLN/>
+									<BuyersCode/>
+									<SuppliersCode/>
+								</SuppliersLocationID>
+								<SuppliersName/>
+								<SuppliersAddress>
+									<AddressLine1/>
+									<AddressLine2/>
+									<AddressLine3/>
+									<AddressLine4/>
+									<PostCode/>
+								</SuppliersAddress>
+							</Supplier-->
+					<ShipTo>
+						<ShipToLocationID>
+							<!--GLN/>
+									<BuyersCode/-->
+							<SuppliersCode RecordPos="&quot;HEAD&quot;" LPos="11"/>
+						</ShipToLocationID>
+						<!--ShipToName/>
+								<ShipToAddress>
+									<AddressLine1/>
+									<AddressLine2/>
+									<AddressLine3/>
+									<AddressLine4/>
+									<PostCode/>
+								</ShipToAddress-->
+						<!--ContactName/-->
+					</ShipTo>
+					<PurchaseOrderReferences>
+						<PurchaseOrderReference RecordPos="&quot;HEAD&quot;" LPos="16"/>
+						<PurchaseOrderDate RecordPos="&quot;HEAD&quot;" LPos="17"/>
+						<!--PurchaseOrderTime/>
+								<TradeAgreement>
+									<ContractReference/>
+									<ContractDate/>
+								</TradeAgreement>
+								<CustomerPurchaseOrderReference/>
+								<JobNumber/-->
+					</PurchaseOrderReferences>
+					<!--PurchaseOrderConfirmationReferences>
+								<PurchaseOrderConfirmationReference/>
+								<PurchaseOrderConfirmationDate/>
+							</PurchaseOrderConfirmationReferences-->
+					<DeliveryNoteReferences>
+						<DeliveryNoteReference RecordPos="&quot;HEAD&quot;" LPos="12"/>
+						<DeliveryNoteDate RecordPos="&quot;HEAD&quot;" LPos="14"/>
+						<!--DespatchDate/-->
+					</DeliveryNoteReferences>
+					<DeliveredDeliveryDetails>
+						<!--DeliveryType/-->
+						<DeliveryDate RecordPos="&quot;HEAD&quot;" LPos="14"/>
+						<!--DeliverySlot>
+							<SlotStart/>
+							<SlotEnd/>
+						</DeliverySlot>
+						<DeliveryCutOffDate/>
+						<DeliveryCutOffTime/>
+						<SpecialDeliveryInstructions/-->
+					</DeliveredDeliveryDetails>
+					<!--SequenceNumber/>
+					<HeaderExtraData/-->
+				</DeliveryNoteHeader>
+				<DeliveryNoteDetail>
+					<DeliveryNoteLine>
+						<!--LineNumber/-->
+						<ProductID>
+							<!--GTIN/-->
+							<SuppliersProductCode RecordPos="&quot;DTL&quot;" LPos="3"/>
+							<!--BuyersProductCode/-->
+						</ProductID>
+						<ProductDescription RecordPos="&quot;DTL&quot;" LPos="16"/>
+						<OrderedQuantity RecordPos="&quot;DTL&quot;" LPos="9"/>
+						<!--ConfirmedQuantity/-->
+						<DespatchedQuantity RecordPos="&quot;DTL&quot;" LPos="12"/>
+						<PackSize RecordPos="&quot;DTL&quot;" LPos="8"/>
+						<!--ExpiryDate/>
+								<SellByDate/-->
+						<SSCC RecordPos="&quot;DTL&quot;" LPos="24"/>
+						<UnitValueExclVAT RecordPos="&quot;DTL&quot;" LPos="23"/>
+					</DeliveryNoteLine>
+				</DeliveryNoteDetail>
+				<!--DeliveryNoteTrailer>
+							<NumberOfLines/>
+						</DeliveryNoteTrailer-->
+			</DeliveryNote>
+			<!--ffsAttribute1 name="DocumentTypeNo" RecordPos="&quot;HEAD&quot;" LPos="1"/-->
+			<!--/BatchDocument>
+		</BatchDocuments-->
+		</BatchRoot>
+	</ffsRoot>
+</ffsFlatFileSchema>

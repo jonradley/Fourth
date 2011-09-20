@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+**********************************************************************
+Alterations
+**********************************************************************
+Name			| Date			| Change
+**********************************************************************
+R Cambridge	| 08/01/2009	| 2666 Created FSS
+**********************************************************************
+				|					|
+**********************************************************************
+-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>sequenced</ffsRecordPositionType>
+		<ffsRecordSeparator>chr(10)</ffsRecordSeparator>
+		<ffsEscapeChars>
+			<ffsEscapeChar>
+				<ffsNative>chr(13)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>chr(10)</ffsNative>
+				<ffsTradesimple>chr(10)</ffsTradesimple>
+				<ffsLiteral>chr(10)</ffsLiteral>
+			</ffsEscapeChar>
+		</ffsEscapeChars>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>|</ffsFieldSeparator>
+		</ffsFieldSeparators>
+		<ffsSplitBatchRecord LPos="3"/>
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<BatchDocuments>
+				<BatchDocument>
+					<PurchaseOrder>
+						<TradeSimpleHeader>
+							<SendersCodeForRecipient RecordLength="27" RecordPos="*" LPos="20"/>
+							<!-- 3663 Depot code -->
+							<SendersBranchReference RecordLength="27" RecordPos="*" LPos="21"/>
+						</TradeSimpleHeader>
+						<PurchaseOrderHeader>
+							<ShipTo>
+								<ShipToLocationID>
+									<SuppliersCode RecordLength="27" RecordPos="*" LPos="1"/>
+								</ShipToLocationID>
+								<ShipToName RecordLength="27" RecordPos="*" LPos="13"/>
+								<ShipToAddress>
+									<AddressLine1 RecordLength="27" RecordPos="*" LPos="14"/>
+									<AddressLine2 RecordLength="27" RecordPos="*" LPos="15"/>
+									<AddressLine3 RecordLength="27" RecordPos="*" LPos="16"/>
+									<AddressLine4 RecordLength="27" RecordPos="*" LPos="17"/>
+									<PostCode RecordLength="27" RecordPos="*" LPos="18"/>
+								</ShipToAddress>
+							</ShipTo>
+							<PurchaseOrderReferences>
+								<PurchaseOrderReference RecordLength="27" RecordPos="*" LPos="3"/>
+								<!-- Preserved from order on 3663 -->
+								<CustomerPurchaseOrderReference RecordLength="27" RecordPos="*" LPos="19"/>
+							</PurchaseOrderReferences>
+							<OrderedDeliveryDetails>
+								<!-- Customer's delivery date -->
+								<DeliveryDate RecordLength="27" RecordPos="*" LPos="23"/>
+								<!-- Delivery date -->
+								<DeliveryCutOffDate RecordLength="27" RecordPos="*" LPos="2"/>
+								<!-- 3663 route number -->
+								<DeliveryCutOffTime RecordLength="27" RecordPos="*" LPos="25"/>
+								<!-- Drop number on route -->
+								<SpecialDeliveryInstructions RecordLength="27" RecordPos="*" LPos="26"/>
+							</OrderedDeliveryDetails>
+						</PurchaseOrderHeader>
+						<PurchaseOrderDetail>
+							<PurchaseOrderLine>
+								<!-- Preserved from order on 3663 -->
+								<LineNumber RecordLength="27" RecordPos="*" LPos="8"/>
+								<ProductID>
+									<SuppliersProductCode RecordLength="27" RecordPos="*" LPos="5"/>
+									<BuyersProductCode RecordLength="27" RecordPos="*" LPos="4"/>
+								</ProductID>
+								<OrderedQuantity RecordLength="27" RecordPos="*" LPos="6"/>
+								<PackSize RecordLength="27" RecordPos="*" LPos="7"/>
+							</PurchaseOrderLine>
+						</PurchaseOrderDetail>
+					</PurchaseOrder>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>
