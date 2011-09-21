@@ -133,7 +133,7 @@
 								<xsl:value-of select="DIN/L2[2]/L3[4]/L4[3]"/>
 							</DropNumber>
 							<CustomerOrderNumber>
-								<xsl:value-of select="ORD/L2[2]/L3/L4[1]"/>
+								<xsl:value-of select="DIN/L2[2]/L3[5]/L4[1]"/>
 							</CustomerOrderNumber>
 						</HeaderExtraData>
 					</PurchaseOrderHeader>
