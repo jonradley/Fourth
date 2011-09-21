@@ -43,7 +43,7 @@
 							</BatchInformation>
 							<Buyer>
 								<BuyersLocationID>
-									<SuppliersCode RecordPos="HEAD" LPos="4"/>
+									<SuppliersCode RecordPos="HEAD" LPos="3"/>
 									<BuyersCode RecordPos="HEAD" LPos="2"/>
 								</BuyersLocationID>
 							</Buyer>
