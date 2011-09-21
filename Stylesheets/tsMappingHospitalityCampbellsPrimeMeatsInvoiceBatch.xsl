@@ -39,6 +39,10 @@
 	</xsl:template-->
 
 
+	<!-- Remove any 0 value invoices -->
+	<xsl:template match=" BatchDocument[Invoice/InvoiceTrailer/DocumentTotalExclVAT=0]"/>
+	
+	
 	<xsl:template match="Buyer">
 
 		<Buyer>
