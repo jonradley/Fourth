@@ -14,7 +14,7 @@ Outbound Purchase Order Stylesheet, based on Maginus CSV format.
 ==========================================================================================
  01/03/2011	| Moty Dimant	| Created.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-				| 							|
+04/10/2011	| Moty Dimant	| Improved logic around UOM so that packsize can contain non numberic characters.
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 	xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:vbscript="http://abs-ltd.com/blah">
@@ -299,10 +299,15 @@ Outbound Purchase Order Stylesheet, based on Maginus CSV format.
 			
 			<xsl:text>,</xsl:text>
 			
+			<!-- Get the number of bottles in a case -->
+			<xsl:variable name="sPackSizeNo">
+				<xsl:value-of select="number(translate(PackSize,translate(PackSize,'0123456789',''),''))"/>
+			</xsl:variable>
+			
 			<xsl:choose>
 				<xsl:when test="OrderedQuantity/@UnitOfMeasure = 'EA'">BOTTLE</xsl:when>
-				<xsl:when test="OrderedQuantity/@UnitOfMeasure = 'CS' and number(PackSize) &gt; 0 "><xsl:value-of select="concat('CASE',PackSize)"/></xsl:when>
-				<xsl:when test="OrderedQuantity/@UnitOfMeasure = 'CS' and number(PackSize) = 0"></xsl:when>
+				<!-- if a case, format the UOM correctly for Maginus, i.e. CASE12 -->
+				<xsl:when test="OrderedQuantity/@UnitOfMeasure = 'CS'"><xsl:value-of select="concat('CASE',$sPackSizeNo)"/></xsl:when>				
 				<xsl:otherwise></xsl:otherwise>
 			</xsl:choose>
 			<xsl:text>,</xsl:text>
