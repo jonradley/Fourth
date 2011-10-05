@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--******************************************************************
+CSV Purchase Order Acknowledgement mapper
+Columns (all mandatory):
+1 Unit Code
+2 PO Reference
+3 Order Date
+
+**********************************************************************
+Name         | Date       | Change
+*********************************************************************
+Lee Boyton   | 22/09/2006 | Created
+**********************************************************************
+Lee Boyton   | 10/11/2006 | Our CSV format now seems to be PSV.
+**********************************************************************
+             |            |
+*******************************************************************-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>sequenced</ffsRecordPositionType>
+		<ffsRecordSeparator>chr(13)chr(10)</ffsRecordSeparator>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>,</ffsFieldSeparator>
+		</ffsFieldSeparators>
+		<ffsSplitBatchRecord RecordLength="4" RecordPos="*"/>
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<BatchDocuments>
+				<BatchDocument>
+					<PurchaseOrderAcknowledgement>
+						<TradeSimpleHeader>
+							<SendersCodeForRecipient RecordLength="*" RecordPos="*" LPos="1"/>
+							<SendersBranchReference RecordLength="*" RecordPos="*" LPos="4"/>
+						</TradeSimpleHeader>
+						<PurchaseOrderAcknowledgementHeader>
+							<PurchaseOrderReferences>
+								<PurchaseOrderReference RecordLength="*" RecordPos="*" LPos="2"/>
+								<PurchaseOrderDate RecordLength="*" RecordPos="*" LPos="3"/>
+							</PurchaseOrderReferences>
+							<ShipTo>
+								<ShipToLocationID>
+									<SuppliersCode RecordLength="*" RecordPos="*" LPos="1"/>						
+								</ShipToLocationID>
+							</ShipTo>
+						</PurchaseOrderAcknowledgementHeader>
+					</PurchaseOrderAcknowledgement>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>
