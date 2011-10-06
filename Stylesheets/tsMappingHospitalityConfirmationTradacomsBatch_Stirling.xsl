@@ -9,63 +9,58 @@ Name			| Date				| Change
 **********************************************************************
      ?     	|       ?    		| Created Module
 **********************************************************************
-H Mahbub	|	2010-05-17		| Created file
+H Mahbub		|	2010-05-17		| Created file
 **********************************************************************
- 			|						|				
+R Cambridge	|	2011-08-24		| 4743 change product code manipulation to be default (hard code a list of customer that will no require it)
+**********************************************************************
+ 				|						|				
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output encoding="utf-8"/>
 		
 	<!-- The structure of the interal XML varries depending on who the customer is -->
+	<!-- UoM may not be added to product codes for these customers -->
 	
-	<!-- All documents in the batch will be for the same customer/agreement -->	
-	<xsl:variable name="COMPASS" select="'COMPASS'"/>
-	<xsl:variable name="TESCO" select="'TESCO'"/>
 	<xsl:variable name="ARAMARK" select="'ARAMARK'"/>
 	<xsl:variable name="BEACON_PURCHASING" select="'BEACON_PURCHASING'"/>
-	<xsl:variable name="SSP" select="'SSP'"/>
-	<xsl:variable name="GIRAFFE" select="'GIRAFFE'"/>
-	<xsl:variable name="WAHACA" select="'WAHACA'"/>
-	<xsl:variable name="FOODANDFUEL" select="'FOODANDFUEL'"/>
-	<xsl:variable name="RISINGSTAR" select="'RISINGSTAR'"/>
-	<xsl:variable name="SPAGHETTI" select="'SPAGHETTI'"/>
-	<xsl:variable name="LONDONCLUBS" select="'LONDONCLUBS'"/>
-	<xsl:variable name="ZERODEGREES" select="'ZERODEGREES'"/>
-	<xsl:variable name="SCLONDON" select="'SCLONDON'"/>
+	<xsl:variable name="COMPASS" select="'COMPASS'"/>
+	<xsl:variable name="COOP" select="'COOP'"/>
+	<xsl:variable name="FISHWORKS" select="'FISHWORKS'"/>
+	<xsl:variable name="MCC" select="'MCC'"/>
+	<xsl:variable name="ORCHID" select="'ORCHID'"/>
 	<xsl:variable name="SEARCYS" select="'SEARCYS'"/>
-	<xsl:variable name="DANDD" select="'DANDD'"/>
-	<xsl:variable name="DEVERE" select="'DEVERE'"/>
-	<xsl:variable name="MALMAISON" select="MALMAISON"/>
-	
+	<xsl:variable name="SODEXO_PRESTIGE" select="'SODEXO_PRESTIGE'"/>
+	<xsl:variable name="TESCO" select="'TESCO'"/>
 	
 	
 	<xsl:variable name="CustomerFlag">
 		<xsl:variable name="accountCode" select="string(//PurchaseOrderConfirmation/TradeSimpleHeader/SendersBranchReference)"/>
 	
 		<xsl:choose>
+			
+			<xsl:when test="$accountCode = '203909'"><xsl:value-of select="$ARAMARK"/></xsl:when>
+			<xsl:when test="$accountCode = 'ARA02T'"><xsl:value-of select="$ARAMARK"/></xsl:when>
+			<xsl:when test="$accountCode = 'ARANET'"><xsl:value-of select="$ARAMARK"/></xsl:when>
+			<xsl:when test="$accountCode = 'BEACON'"><xsl:value-of select="$BEACON_PURCHASING"/></xsl:when>
 			<xsl:when test="$accountCode = 'MIL14T'"><xsl:value-of select="$COMPASS"/></xsl:when>
-			<xsl:when test="$accountCode = 'FMC01T'"><xsl:value-of select="$COMPASS"/></xsl:when>
+			<xsl:when test="$accountCode = 'KIN04D'"><xsl:value-of select="$COOP"/></xsl:when>
+			<xsl:when test="$accountCode = 'fishworks'"><xsl:value-of select="$FISHWORKS"/></xsl:when>
+			<xsl:when test="$accountCode = 'MAR100T'"><xsl:value-of select="$MCC"/></xsl:when>
+			<xsl:when test="$accountCode = 'BLA16T'"><xsl:value-of select="$ORCHID"/></xsl:when>
+			<xsl:when test="$accountCode = 'OPL01T'"><xsl:value-of select="$ORCHID"/></xsl:when>
+			<xsl:when test="$accountCode = 'ORCHID'"><xsl:value-of select="$ORCHID"/></xsl:when>
+			<xsl:when test="$accountCode = 'PBR16T'"><xsl:value-of select="$ORCHID"/></xsl:when>
+			<xsl:when test="$accountCode = 'SEA01T'"><xsl:value-of select="$SEARCYS"/></xsl:when>
+			<xsl:when test="$accountCode = 'GAR06T'"><xsl:value-of select="$SODEXO_PRESTIGE"/></xsl:when>
+			<xsl:when test="$accountCode = 'SOD99T'"><xsl:value-of select="$SODEXO_PRESTIGE"/></xsl:when>
+			
 			
 			<xsl:when test="$accountCode = 'TES01T'"><xsl:value-of select="$TESCO"/></xsl:when>
 			<xsl:when test="$accountCode = 'TES08T'"><xsl:value-of select="$TESCO"/></xsl:when>
 			<xsl:when test="$accountCode = 'TES12T'"><xsl:value-of select="$TESCO"/></xsl:when>
 			<xsl:when test="$accountCode = 'TES15T'"><xsl:value-of select="$TESCO"/></xsl:when>
 			<xsl:when test="$accountCode = 'TES25T'"><xsl:value-of select="$TESCO"/></xsl:when>
-			<xsl:when test="$accountCode = 'ARA02T'"><xsl:value-of select="$ARAMARK"/></xsl:when>
-			<xsl:when test="$accountCode = 'BEACON'"><xsl:value-of select="$BEACON_PURCHASING"/></xsl:when>
-			<xsl:when test="$accountCode = 'SSP25T'"><xsl:value-of select="$SSP"/></xsl:when>
-			<xsl:when test="$accountCode = 'GIR01T'"><xsl:value-of select="$GIRAFFE"/></xsl:when>
-			<xsl:when test="$accountCode = 'WAH01D'"><xsl:value-of select="$WAHACA"/></xsl:when>
-			<xsl:when test="$accountCode = 'FOO01D'"><xsl:value-of select="$FOODANDFUEL"/></xsl:when>
-			<xsl:when test="$accountCode = 'RIS01D'"><xsl:value-of select="$RISINGSTAR"/></xsl:when>
-			<xsl:when test="$accountCode = 'SPA01D'"><xsl:value-of select="$SPAGHETTI"/></xsl:when>
-			<xsl:when test="$accountCode = 'LSQ01D'"><xsl:value-of select="$LONDONCLUBS"/></xsl:when>
-			<xsl:when test="$accountCode = 'ZER01D'"><xsl:value-of select="$ZERODEGREES"/></xsl:when>
-			<xsl:when test="$accountCode = 'MOR01T'"><xsl:value-of select="$SCLONDON"/></xsl:when>
-			<xsl:when test="$accountCode = 'SEA01D'"><xsl:value-of select="$SEARCYS"/></xsl:when>
-			<xsl:when test="$accountCode = 'DAD01T'"><xsl:value-of select="$DANDD"/></xsl:when>
-			<xsl:when test="$accountCode = 'DEV01T'"><xsl:value-of select="$DEVERE"/></xsl:when>
-			<xsl:when test="$accountCode = 'MAL01D'"><xsl:value-of select="$MALMAISON"/></xsl:when>
+
 			
 			
 
@@ -89,7 +84,7 @@ H Mahbub	|	2010-05-17		| Created file
 							<xsl:when test="SendersBranchReference = 'TES25T'">TES25T</xsl:when-->	
 					
 						<xsl:when test="$CustomerFlag = $COMPASS or $CustomerFlag = $TESCO or $CustomerFlag = $BEACON_PURCHASING ">
-						<xsl:value-of select="/PurchaseOrderConfirmation/TradeSimpleHeader/SendersBranchReference"/>
+							<xsl:value-of select="/PurchaseOrderConfirmation/TradeSimpleHeader/SendersBranchReference"/>
 						</xsl:when>			
 									
 						<xsl:otherwise>
@@ -176,25 +171,12 @@ H Mahbub	|	2010-05-17		| Created file
 								<xsl:value-of select="count(preceding-sibling::* | self::*)"/>
 							</LineNumber>
 							<ProductID>
-								<!--GTIN>55555555555555</GTIN>
-								<SuppliersProductCode>
-									<xsl:value-of select="SuppliersProductCode"/>
-								</SuppliersProductCode>
-								<xsl:if test="string(BuyersProductCode) != ''">
-									<BuyersProductCode>
-										<xsl:value-of select="BuyersProductCode"/>
-									</BuyersProductCode>
-								</xsl:if-->
-								<!--xsl:apply-templates select="ProductID/*"/-->
 								
 								<SuppliersProductCode>
+									
 									<xsl:value-of select="ProductID/SuppliersProductCode"/>
-									<xsl:if test="$CustomerFlag = $SSP or $CustomerFlag = $GIRAFFE or $CustomerFlag = $WAHACA or $CustomerFlag = $FOODANDFUEL or $CustomerFlag = $RISINGSTAR or $CustomerFlag = $SPAGHETTI or $CustomerFlag = $LONDONCLUBS or $CustomerFlag = $ZERODEGREES or $CustomerFlag = $SCLONDON or $CustomerFlag = $SEARCYS or $CustomerFlag = $DANDD or $CustomerFlag = $DEVERE or $CustomerFlag = $MALMAISON">
-										<!--xsl:choose>
-											<xsl:when test="translate(PackSize,' ','') ='1x1kg'">-EA</xsl:when>
-											<xsl:when test="contains(PackSize,'x')">-CS</xsl:when>
-											<xsl:otherwise>-EA</xsl:otherwise>
-										</xsl:choose-->		
+									
+									<xsl:if test="not($CustomerFlag = $ARAMARK or $CustomerFlag = $ORCHID or $CustomerFlag = $COMPASS or $CustomerFlag = $SODEXO_PRESTIGE or $CustomerFlag = $SEARCYS)">	
 										<xsl:choose>
 											<xsl:when test="ConfirmedQuantity/@UnitOfMeasure = 'EA'">-EA</xsl:when>
 											<xsl:when test="ConfirmedQuantity/@UnitOfMeasure = 'CS'">-CS</xsl:when>
@@ -206,10 +188,8 @@ H Mahbub	|	2010-05-17		| Created file
 							<ProductDescription>
 								<xsl:value-of select="ProductDescription"/>
 							</ProductDescription>
-							<!--OrderedQuantity>
-								<xsl:copy-of select="ConfirmedQuantity/@UnitOfMeasure"/>
-								<xsl:value-of select="format-number(OrderedQuantity div 1000,'0.00')"/>
-							</OrderedQuantity-->
+
+
 							<ConfirmedQuantity>
 								<xsl:copy-of select="ConfirmedQuantity/@UnitOfMeasure"/>
 								<xsl:value-of select="format-number(ConfirmedQuantity div 1000,'0.00')"/>
