@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--******************************************************************
+Alterations
+**********************************************************************
+Name	| Date		 | Change
+**********************************************************************
+Maha	| 04/10/2011 | 4913: Map vatcode S8 to vatrate 20 and 17.5
+**********************************************************************
+				|             	|
+**********************************************************************
+-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
 	
@@ -170,6 +180,8 @@
 			<xsl:when test="$sVATCode = 'S0'">0.00</xsl:when>
 			<xsl:when test="$sVATCode = 'S1' and $sVATDate &gt; 20110104">20.00</xsl:when>
 			<xsl:when test="$sVATCode = 'S1' and $sVATDate &lt; 20110104">17.50</xsl:when>
+			<xsl:when test="$sVATCode = 'S8' and $sVATDate &gt; 20110104">20.00</xsl:when>
+			<xsl:when test="$sVATCode = 'S8' and $sVATDate &lt; 20110104">17.50</xsl:when>
 			<xsl:otherwise><xsl:value-of select="$sVATDate"/></xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
