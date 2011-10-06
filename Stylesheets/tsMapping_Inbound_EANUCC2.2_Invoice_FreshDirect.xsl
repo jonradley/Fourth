@@ -7,9 +7,13 @@ K Oshaughnessy| 						| 3450
 **********************************************************************
 R Cambridge		| 2011-07-26		| 4632 Added supplier's code for buyer (to allow tsProcessorHosptransSBR to remove SBR when required)
 **********************************************************************
-					|						|				
+K OShaughnessy|2011-09-22		| 4876 Bugfix invoice reference was not being correctly mapped				
 *******************************************************************-->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:sh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" xmlns:eanucc="urn:ean.ucc:2" xmlns:pay="urn:ean.ucc:pay:2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:vat="urn:ean.ucc:pay:vat:2">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:sh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" 
+xmlns:eanucc="urn:ean.ucc:2" 
+xmlns:pay="urn:ean.ucc:pay:2" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xmlns:vat="urn:ean.ucc:pay:vat:2">
 	<xsl:output method="xml"/>
 	<xsl:template match="/">
 		<BatchRoot>
@@ -75,7 +79,7 @@ R Cambridge		| 2011-07-26		| 4632 Added supplier's code for buyer (to allow tsPr
 								</ShipTo>
 								<InvoiceReferences>
 									<InvoiceReference>
-										<xsl:value-of select="//eanucc:documentCommand/documentCommandOperand/pay:invoice/invoiceLineItem/orderIdentification/documentReference/uniqueCreatorIdentification"/>
+										<xsl:value-of select="//eanucc:documentCommand/documentCommandOperand/pay:invoice/invoiceIdentification/uniqueCreatorIdentification"/>
 									</InvoiceReference>
 									<InvoiceDate>
 										<xsl:value-of select="substring-before(//eanucc:documentCommand/documentCommandOperand/pay:invoice/@creationDateTime,'T')"/>
@@ -175,6 +179,7 @@ R Cambridge		| 2011-07-26		| 4632 Added supplier's code for buyer (to allow tsPr
 								<NumberOfItems>
 									<xsl:value-of select="sum(//pay:invoice/invoiceLineItem/invoicedQuantity/value)"/>
 								</NumberOfItems>
+								
 								<DocumentTotalExclVAT>
 									<xsl:choose>
 										<xsl:when test="count(sh:StandardBusinessDocument/eanucc:message/eanucc:transaction/command/eanucc:documentCommand/documentCommandOperand/pay:invoice/invoiceTotals[totalLineAmountInclusiveAllowancesCharges > 1])">

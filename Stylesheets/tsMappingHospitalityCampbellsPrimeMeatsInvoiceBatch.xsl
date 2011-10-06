@@ -49,6 +49,10 @@ Maha	| 04/10/2011 | 4913: Map vatcode S8 to vatrate 20 and 17.5
 	</xsl:template-->
 
 
+	<!-- Remove any 0 value invoices -->
+	<xsl:template match=" BatchDocument[Invoice/InvoiceTrailer/DocumentTotalExclVAT=0]"/>
+	
+	
 	<xsl:template match="Buyer">
 
 		<Buyer>
