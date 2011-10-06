@@ -52,17 +52,13 @@ R Cambridge	|	2011-08-24		| 4743 change product code manipulation to be default 
 			<xsl:when test="$accountCode = 'PBR16T'"><xsl:value-of select="$ORCHID"/></xsl:when>
 			<xsl:when test="$accountCode = 'SEA01T'"><xsl:value-of select="$SEARCYS"/></xsl:when>
 			<xsl:when test="$accountCode = 'GAR06T'"><xsl:value-of select="$SODEXO_PRESTIGE"/></xsl:when>
-			<xsl:when test="$accountCode = 'SOD99T'"><xsl:value-of select="$SODEXO_PRESTIGE"/></xsl:when>
-			
-			
+			<xsl:when test="$accountCode = 'SOD99T'"><xsl:value-of select="$SODEXO_PRESTIGE"/></xsl:when>			
+						
 			<xsl:when test="$accountCode = 'TES01T'"><xsl:value-of select="$TESCO"/></xsl:when>
 			<xsl:when test="$accountCode = 'TES08T'"><xsl:value-of select="$TESCO"/></xsl:when>
 			<xsl:when test="$accountCode = 'TES12T'"><xsl:value-of select="$TESCO"/></xsl:when>
 			<xsl:when test="$accountCode = 'TES15T'"><xsl:value-of select="$TESCO"/></xsl:when>
 			<xsl:when test="$accountCode = 'TES25T'"><xsl:value-of select="$TESCO"/></xsl:when>
-
-			
-			
 
 			<xsl:otherwise></xsl:otherwise>
 		</xsl:choose>
@@ -72,99 +68,61 @@ R Cambridge	|	2011-08-24		| 4743 change product code manipulation to be default 
 	<xsl:template match="/">
 		<BatchRoot>
 			<PurchaseOrderConfirmation>
+			
 				<TradeSimpleHeader>
 					<SendersCodeForRecipient>
-						<xsl:choose>
-							<!--xsl:when test="SendersBranchReference = 'MIL14T'">MIL14T</xsl:when>
-							<xsl:when test="SendersBranchReference = 'FMC01T'">FMC01T</xsl:when>
-							<xsl:when test="SendersBranchReference = 'TES01T'">TES01T</xsl:when>					
-							<xsl:when test="SendersBranchReference = 'TES08T'">TES08T</xsl:when>					
-							<xsl:when test="SendersBranchReference = 'TES12T'">TES12T</xsl:when>					
-							<xsl:when test="SendersBranchReference = 'TES15T'">TES15T</xsl:when>					
-							<xsl:when test="SendersBranchReference = 'TES25T'">TES25T</xsl:when-->	
+						<xsl:choose>	
 					
-						<xsl:when test="$CustomerFlag = $COMPASS or $CustomerFlag = $TESCO or $CustomerFlag = $BEACON_PURCHASING ">
-							<xsl:value-of select="/PurchaseOrderConfirmation/TradeSimpleHeader/SendersBranchReference"/>
-						</xsl:when>			
-									
-						<xsl:otherwise>
-							<xsl:value-of select="/PurchaseOrderConfirmation/TradeSimpleHeader/SendersCodeForRecipient"/>
-						</xsl:otherwise>
-					
-					</xsl:choose>
-				</SendersCodeForRecipient>
+							<xsl:when test="$CustomerFlag = $COMPASS or $CustomerFlag = $TESCO or $CustomerFlag = $BEACON_PURCHASING ">
+								<xsl:value-of select="/PurchaseOrderConfirmation/TradeSimpleHeader/SendersBranchReference"/>
+							</xsl:when>			
+										
+							<xsl:otherwise>
+								<xsl:value-of select="/PurchaseOrderConfirmation/TradeSimpleHeader/SendersCodeForRecipient"/>
+							</xsl:otherwise>
+						
+						</xsl:choose>
+					</SendersCodeForRecipient>
 			
-				<!--xsl:if test="SendersBranchReference = 'MIL14T' or SendersBranchReference = 'FMC01T' or SendersBranchReference = 'TES01T'"-->
-				<!--xsl:if test="SendersBranchReference">
-					<xsl:if test="contains('MIL14T~FMC01T~TES01T~TES08T~TES12T~TES15T~TES25T',SendersBranchReference)"-->
-				<xsl:if test="$CustomerFlag = $COMPASS or $CustomerFlag = $TESCO or $CustomerFlag = $ARAMARK">
-					<SendersBranchReference>
-						<xsl:value-of select="/PurchaseOrderConfirmation/TradeSimpleHeader/SendersBranchReference"/>
-					</SendersBranchReference>
-				</xsl:if>
-				<!--/xsl:if>
-				</xsl:if-->
-			</TradeSimpleHeader>		
-				<!--<TradeSimpleHeader>
-					<xsl:copy-of select="/PurchaseOrderConfirmation/TradeSimpleHeader/SendersCodeForRecipient"/>
-					<xsl:copy-of select="/PurchaseOrderConfirmation/TradeSimpleHeader/SendersBranchReference"/>
-				</TradeSimpleHeader-->
+					<xsl:if test="$CustomerFlag = $COMPASS or $CustomerFlag = $TESCO or $CustomerFlag = $ARAMARK">
+						<SendersBranchReference>
+							<xsl:value-of select="/PurchaseOrderConfirmation/TradeSimpleHeader/SendersBranchReference"/>
+						</SendersBranchReference>
+					</xsl:if>
+
+				</TradeSimpleHeader>		
+
 				<PurchaseOrderConfirmationHeader>
+				
 					<DocumentStatus>Original</DocumentStatus>
 					<Buyer>
-						<xsl:apply-templates select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/Buyer/*"/>				
-						<!--BuyersLocationID>
-							<GLN/>
-						</BuyersLocationID-->
+						<xsl:apply-templates select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/Buyer/*"/>
 					</Buyer>
 					<Supplier>
 						<xsl:apply-templates select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/Supplier/*"/>
-						<!--SuppliersLocationID>
-							<GLN/>
-						</SuppliersLocationID-->
 					</Supplier>
 					<ShipTo>
 						<xsl:apply-templates select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/ShipTo/*"/>
-						<!--ShipToLocationID>
-							<GLN/>
-						</ShipToLocationID>
-						<ShipToAddress>
-							<AddressLine1/>
-						</ShipToAddress-->
 					</ShipTo>
 					<PurchaseOrderReferences>
-						<!--PurchaseOrderReference>
-							<xsl:value-of select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
-						</PurchaseOrderReference>
-						<PurchaseOrderDate>
-							<xsl:value-of select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/PurchaseOrderReferences/PurchaseOrderDate"/>
-						</PurchaseOrderDate-->
 						<xsl:apply-templates select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/PurchaseOrderReferences/*"/>
 					</PurchaseOrderReferences>
 					
 					<PurchaseOrderConfirmationReferences>
-						<!--PurchaseOrderConfirmationReference>
-							<xsl:value-of select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationReference"/>
-						</PurchaseOrderConfirmationReference>
-						<PurchaseOrderConfirmationDate>
-							<xsl:value-of select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationDate"/>
-						</PurchaseOrderConfirmationDate-->
 						<xsl:apply-templates select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/PurchaseOrderConfirmationReferences/*"/>
 					</PurchaseOrderConfirmationReferences>
 					
 					<OrderedDeliveryDetails>
-						<!--DeliveryType></DeliveryType-->
 						<xsl:apply-templates select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/OrderedDeliveryDetails/DeliveryDate"/>
-						<!--DeliveryDate><xsl:value-of select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/OrderedDeliveryDetails/DeliveryDate"/></DeliveryDate-->
 					</OrderedDeliveryDetails>
 					<ConfirmedDeliveryDetails>
-						<!--DeliveryType/-->
 						<xsl:apply-templates select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/ConfirmedDeliveryDetails/DeliveryDate"/>
-						
-						<!--DeliveryDate><xsl:value-of select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/ConfirmedDeliveryDetails/DeliveryDate"/></DeliveryDate-->
 					</ConfirmedDeliveryDetails>
+					
 				</PurchaseOrderConfirmationHeader>
+				
 				<PurchaseOrderConfirmationDetail>
+				
 					<xsl:for-each select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationDetail/PurchaseOrderConfirmationLine">
 						<PurchaseOrderConfirmationLine>
 							<LineNumber>
@@ -201,9 +159,13 @@ R Cambridge	|	2011-08-24		| 4743 change product code manipulation to be default 
 							
 						</PurchaseOrderConfirmationLine>
 					</xsl:for-each>
+					
 				</PurchaseOrderConfirmationDetail>
+				
 			</PurchaseOrderConfirmation>
+			
 		</BatchRoot>	
+		
 	</xsl:template>
 	
 	<xsl:template match="@* | node()">
@@ -213,7 +175,6 @@ R Cambridge	|	2011-08-24		| 4743 change product code manipulation to be default 
 	</xsl:template>
 	
 	<xsl:template match="BuyersAddress | SuppliersAddress | ShipToAddress">
-		<!--xsl:with-param name="vobjAddressElements"/-->
 				
 		<xsl:copy>
 			<xsl:for-each select="*[contains(name(),'Address')][string(.) != '']">
