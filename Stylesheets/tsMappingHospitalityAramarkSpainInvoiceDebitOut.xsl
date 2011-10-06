@@ -6,7 +6,7 @@ Name			| Date				| Change
 **********************************************************************
 R Cambridge	| 2009-08-11		| 2991 Created Module
 **********************************************************************
-				|						|				
+R Cambridge	| 2011-10-05		| 4992 Only identify buyer and site with buyer's codes (suppliers codes now have baVel ID prefixed to them)
 **********************************************************************
 				|						|
 **********************************************************************
@@ -85,8 +85,9 @@ R Cambridge	| 2009-08-11		| 2991 Created Module
 					<IDCliente>
 						<xsl:value-of select="InvoiceHeader/Buyer/BuyersLocationID/BuyersCode | DebitNoteHeader/Buyer/BuyersLocationID/BuyersCode"/>
 					</IDCliente>
+					<!-- 4992 R Cambridge use buyer's code for supplier -->
 					<IDCliProv>
-						<xsl:value-of select="InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode | DebitNoteHeader/Buyer/BuyersLocationID/SuppliersCode"/>
+						<xsl:value-of select="InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode | DebitNoteHeader/Supplier/SuppliersLocationID/BuyersCode"/>
 					</IDCliProv>
 					<IDCentroCli/>
 					<CIF>
@@ -121,7 +122,8 @@ R Cambridge	| 2009-08-11		| 2991 Created Module
 					</SupplierClientID>
 					<Something/>
 					<SupplierCustomerID>
-						<xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/SuppliersCode | DebitNoteHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
+						<!-- 4992 R Cambridge use buyer's code for ship to -->
+						<xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode | DebitNoteHeader/ShipTo/ShipToLocationID/BuyersCode"/>
 					</SupplierCustomerID>
 					<IDCentroCli/>
 					<Customer>
