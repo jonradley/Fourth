@@ -4,6 +4,8 @@ Date				| Name					| Comments
 03/08/2011		|	Koshaughnessy		| Created
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 26/09/2011		|	KOshaughnessy		|Bugfix 4984,4896
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+06/10/2011		| 	KOshaughnessy		|Bugfix 4925
 *************************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:sh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" xmlns:eanucc="urn:ean.ucc:2" xmlns:pay="urn:ean.ucc:pay:2" xmlns:vat="urn:ean.ucc:pay:vat:2">
 	<xsl:template match="/">
@@ -68,9 +70,11 @@ Date				| Name					| Comments
 										<xsl:value-of select="substring-before(//pay:invoice/invoiceLineItem/deliveryNote/referenceDateTime, 'T')"/>
 									</InvoiceDate>
 								</InvoiceReferences>
-								<CreditNoteReferences>
+								<CreditNoteReferences>			
 									<CreditNoteReference>
-										<xsl:value-of select="//sh:DocumentIdentification/sh:InstanceIdentifier"/>
+										<xsl:call-template name="characterStrip">
+											<xsl:with-param name="inputText" select="//sh:DocumentIdentification/sh:InstanceIdentifier"/>
+										</xsl:call-template>
 									</CreditNoteReference>
 									<CreditNoteDate>
 										<xsl:value-of select="substring-before(//pay:invoice/@creationDateTime, 'T')"/>
@@ -279,4 +283,27 @@ Date				| Name					| Comments
 			</Batch>
 		</BatchRoot>
 	</xsl:template>
+	
+	<!-- Removal of Alpha prefix from Credit note reference-->
+	<xsl:template name="characterStrip">
+		<xsl:param name="inputText"/>
+		<xsl:choose>
+			<xsl:when test="$inputText = ''"/>
+			<xsl:otherwise>
+				<xsl:variable name="firstCharacter" select="substring($inputText,1,1)"/>
+				<xsl:choose>
+					<xsl:when test="translate($firstCharacter,'CRN','crn') = ''">
+						<xsl:text/>
+					</xsl:when>
+					<xsl:when test="translate($firstCharacter,'1234567890() ','') = ''">
+						<xsl:value-of select="$firstCharacter"/>
+					</xsl:when>
+				</xsl:choose>
+				<xsl:call-template name="characterStrip">
+					<xsl:with-param name="inputText" select="substring($inputText,2)"/>
+				</xsl:call-template>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	
 </xsl:stylesheet>
