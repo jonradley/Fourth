@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+'******************************************************************************************
+' Overview
+'		
+' Flat file mapping definition for TRADACOMS messages with the following delimiters
+'
+' Segment ' (=)
+' Element +
+' Item    :
+' 
+' © Alternative Business Solutions Ltd., 2000,2001,2002,2003.
+'******************************************************************************************
+' Module History
+'******************************************************************************************
+' Date       		| Name            | Description of modification
+'******************************************************************************************
+' 08/07/2004 	| N Dry         | Created (based on DMSC one written by Calum)
+'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+'           			 |                 | 
+'******************************************************************************************
+-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>noschema</ffsRecordPositionType>
+		<ffsEscapeChars>
+			<ffsEscapeChar>
+				<ffsNative>?=</ffsNative>
+				<ffsTradesimple>¬E</ffsTradesimple>
+				<ffsLiteral>=</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?+</ffsNative>
+				<ffsTradesimple>¬P</ffsTradesimple>
+				<ffsLiteral>+</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?:</ffsNative>
+				<ffsTradesimple>¬C</ffsTradesimple>
+				<ffsLiteral>:</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?'</ffsNative>
+				<ffsTradesimple>¬A</ffsTradesimple>
+				<ffsLiteral>'</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>??</ffsNative>
+				<ffsTradesimple>¬Q</ffsTradesimple>
+				<ffsLiteral>?</ffsLiteral>
+			</ffsEscapeChar>
+		</ffsEscapeChars>
+		<ffsRecordSeparator>'</ffsRecordSeparator>
+		<ffsBatchHeader>
+			<ffsHeaderRecord RecordPos="STX="/>
+		</ffsBatchHeader>
+		<ffsBatchHeader>
+			<ffsHeaderRecord RecordPos="SDT="/>
+		</ffsBatchHeader>
+		<ffsBatchHeader>
+			<ffsHeaderRecord RecordPos="CDT="/>
+		</ffsBatchHeader>
+		<ffsBatchHeader>
+			<ffsHeaderRecord RecordPos="FIL="/>
+		</ffsBatchHeader>
+		<ffsSplitBatchRecord RecordPos="CLO="/>
+	</ffsSettings>
+	<ffsRoot>
+		<L1>
+			<Delim>'</Delim>
+			<ElementName Start="1" Length="3"/>
+			<L2>
+				<Delim>=</Delim>
+				<L3>
+					<Delim>+</Delim>
+					<L4>
+						<Delim>:</Delim>
+					</L4>
+				</L3>
+			</L2>
+		</L1>
+	</ffsRoot>
+</ffsFlatFileSchema>
