@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
+<!--******************************************************************
+Alterations
+**********************************************************************
+Name			| Date				| Change
+**********************************************************************
+		?		|			?			|				?
+**********************************************************************
+R Cambridge	| 2011-10-05		| 4992 read buyers code for supplier from SuppliersLocationID/BuyersCode
+**********************************************************************
+				|						|				
+**********************************************************************
+				|						|				
+*******************************************************************-->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 		   xmlns:script="http://mycompany.com/mynamespace"
@@ -51,7 +63,8 @@
 		<xsl:value-of select="$separator"/>
 		<xsl:value-of select="translate(InvoiceHeader/InvoiceReferences/InvoiceDate | CreditNoteHeader/InvoiceReferences/InvoiceDate | DebitNoteHeader/InvoiceReferences/InvoiceDate,'-','')"/>
 		<xsl:value-of select="$separator"/>
-		<xsl:value-of select="InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode | CreditNoteHeader/Buyer/BuyersLocationID/SuppliersCode | DebitNoteHeader/Buyer/BuyersLocationID/SuppliersCode"/>
+		<!-- 4992 R Cambridge use buyer's code for supplier -->
+		<xsl:value-of select="InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode | CreditNoteHeader/Supplier/SuppliersLocationID/BuyersCode | DebitNoteHeader/Supplier/SuppliersLocationID/BuyersCode"/>
 		<xsl:value-of select="$separator"/>
 		<xsl:value-of select="$separator"/>
 		<xsl:text>PRINCIPAL</xsl:text>
