@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--******************************************************************
-Alterations
-**********************************************************************
-Name			| Date			| Change
-**********************************************************************
-M Dimant		| 06/09/2011  |  Created. Derived from tsMappingHospitalityInvoiceTradacomsBatch.xsl
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-M Dimant		| 07/09/2011  | Added creation of a Delivery Notes for Aramark. Hides the invoice.	
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-				|             	|
-**********************************************************************
--->
+<!--======================================================================================
+ Overview
+
+ © Alternative Business Solutions Ltd, 2006.
+==========================================================================================
+ Module Histo
+==========================================================================================
+ Version		| 
+==========================================================================================
+ Date      	| Name 						|	Description of modification
+==========================================================================================
+ 21/07/2011	| K OShaughnessy		|	Created
+==========================================================================================
+
+=======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
 	<!-- NOTE that these string literals are not only enclosed with double quotes, but have single quotes within also-->
@@ -21,29 +24,23 @@ M Dimant		| 07/09/2011  | Added creation of a Delivery Notes for Aramark. Hides 
 	
 	<!-- Start point - ensure required outer BatchRoot tag is applied -->
 	<xsl:template match="/">
-<BatchRoot>
-		<xsl:variable name="suppliersCodeForBuyer" select="translate(/Batch/BatchDocuments/BatchDocument/Invoice/InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"/>
-		
-		
-			<xsl:if test="$suppliersCodeForBuyer != '5027615900013'">
-				<!-- Don't create invoices for Aramark -->
-				<Document>
-					<xsl:attribute name="TypePrefix">INV</xsl:attribute>
-					<!-- Create invoice -->		
-					<xsl:apply-templates/>
-				</Document>
-			</xsl:if>
-			
-			<xsl:if test="$suppliersCodeForBuyer = '5027615900013'">
-				<!-- Create delivery notes for Aramark -->
-				<Document>
-					<xsl:attribute name="TypePrefix">DNB</xsl:attribute>				
-					<!-- 2722 -->
-					<xsl:call-template name="createDeliveryNotes"/>
-				</Document>
-			</xsl:if>
-</BatchRoot>
+		<BatchRoot>
+			<Document>	
+				<xsl:attribute name="TypePrefix">INV</xsl:attribute>
+				<xsl:apply-templates/>
+			</Document>
+		</BatchRoot>
 	</xsl:template>
+	
+	<xsl:template match="/">
+		<BatchRoot>
+			<Document>
+				<xsl:attribute name="TypePrefix">DNB</xsl:attribute>				
+				<xsl:call-template name="createDeliveryNotes"/>
+				<xsl:apply-templates/>
+			</Document>
+		</BatchRoot>
+	</xsl:template>	
 	
 	<!-- GENERIC HANDLER to copy unchanged nodes, will be overridden by any node-specific templates below -->
 	<xsl:template match="*">
@@ -55,6 +52,7 @@ M Dimant		| 07/09/2011  | Added creation of a Delivery Notes for Aramark. Hides 
 			<xsl:apply-templates/>
 		</xsl:copy>
 	</xsl:template>
+	
 	<!-- GENERIC ATTRIBUTE HANDLER to copy unchanged attributes, will be overridden by any attribute-specific templates below-->
 	<xsl:template match="@*">
 		<!--Copy the attribute unchanged-->
@@ -62,19 +60,82 @@ M Dimant		| 07/09/2011  | Added creation of a Delivery Notes for Aramark. Hides 
 	</xsl:template>
 	<!-- END of GENERIC HANDLERS -->
 	
-	<!-- Create Sender Branch Reference if buyer is Aramark, otherwise don't.  --> 
-	<xsl:template match="TradeSimpleHeader">
-		<TradeSimpleHeader>		
+	<!-- 21/12/2006 - NE - Template convert total measure to tradeSimple values -->
+	<xsl:template name="ConvertUnitOfMeasureToUpperCase">
+		<xsl:param name="sValue" select="sValue"/>
+		<xsl:variable name="sUpperValue" select="translate(translate($sValue,'abcdefghijlkmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ'),' ','')"/>
 		<xsl:choose>
-			<xsl:when test="./Invoice/InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode='5027615900013'">
-				<SendersCodeForRecipient><xsl:value-of select="substring-before(././././SendersCodeForRecipient,'-')"/></SendersCodeForRecipient>
-				<SendersBranchReference><xsl:value-of select="substring-after(././././SendersCodeForRecipient,'-')"/></SendersBranchReference>
-			</xsl:when>
+			<xsl:when test="$sUpperValue = 'KG' "><xsl:text>KGM</xsl:text></xsl:when>
+			<!-- if no match found, return given value as upper case -->
 			<xsl:otherwise>
-				<SendersCodeForRecipient><xsl:value-of select="SendersCodeForRecipient"/></SendersCodeForRecipient>
+				<xsl:value-of select="$sUpperValue"/>
 			</xsl:otherwise>
-		</xsl:choose>	
-		</TradeSimpleHeader>
+		</xsl:choose>
+	</xsl:template>
+	
+	<!-- 21/Dec/2006 - NE -	Amended to copy /InvoiceLine/Measure/TotalMeasure and /InvoiceLine/Measure/TotalMeasureIndicator 
+											if InvoiceLine/InvoicedQuantity is blank. -->
+	<xsl:template match="InvoiceLine">
+		<InvoiceLine>
+		<xsl:copy-of select="LineNumber"/>
+		
+			<PurchaseOrderReferences>
+				<PurchaseOrderReference>
+					<xsl:choose>
+						<xsl:when test="LineNumber=1">
+							<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderReference"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="../InvoiceLine[LineNumber=1]/PurchaseOrderReferences/PurchaseOrderReference"/>
+						</xsl:otherwise>
+					</xsl:choose>
+					
+				</PurchaseOrderReference>
+				<PurchaseOrderDate>
+					<xsl:value-of select="concat('20', substring(DeliveryNoteReferences/DeliveryNoteDate, 1, 2), '-', substring(DeliveryNoteReferences/DeliveryNoteDate, 3, 2), '-', substring(DeliveryNoteReferences/DeliveryNoteDate, 5, 2))"/>
+				</PurchaseOrderDate>
+			</PurchaseOrderReferences>
+		
+		<!-- DeliveryNoteReferences -->
+		<DeliveryNoteReferences>
+			<DeliveryNoteReference>
+				<xsl:value-of select="DeliveryNoteReferences/DeliveryNoteReference"/>
+			</DeliveryNoteReference>
+			<DeliveryNoteDate>
+				<xsl:value-of select="concat('20', substring(DeliveryNoteReferences/DeliveryNoteDate, 1, 2), '-', substring(DeliveryNoteReferences/DeliveryNoteDate, 3, 2), '-', substring(DeliveryNoteReferences/DeliveryNoteDate, 5, 2))"/>
+			</DeliveryNoteDate>
+			<DespatchDate>
+				<xsl:value-of select="concat('20', substring(DeliveryNoteReferences/DespatchDate, 1, 2), '-', substring(DeliveryNoteReferences/DespatchDate, 3, 2), '-', substring(DeliveryNoteReferences/DespatchDate, 5, 2))"/>
+			</DespatchDate>
+		</DeliveryNoteReferences>
+		
+		<xsl:apply-templates select="ProductID"/>
+		<xsl:copy-of select="ProductDescription"/>
+		<!-- check if InvoiceLine/InvoicedQuantity is bkank, if so re-map. -->
+		<InvoicedQuantity>
+				<xsl:choose>
+					<!-- IS at weighted item -->
+					<xsl:when test="string(Measure/TotalMeasure) != '' ">
+						<xsl:attribute name="UnitOfMeasure">
+							<xsl:call-template name="ConvertUnitOfMeasureToUpperCase">
+								<xsl:with-param name="sValue" select="Measure/TotalMeasureIndicator"/>
+							</xsl:call-template>
+						</xsl:attribute>
+						<xsl:value-of select="format-number((Measure/TotalMeasure * 1.0) div 1000.0, '0.00#')"/>
+					</xsl:when>
+					<!-- NOT a weighted item -->	
+					<xsl:otherwise>
+						<xsl:value-of select="InvoicedQuantity"/>
+					</xsl:otherwise>
+				</xsl:choose>		
+		</InvoicedQuantity>
+		<xsl:apply-templates select="UnitValueExclVAT"/>
+		<xsl:apply-templates  select="LineValueExclVAT"/>
+		<xsl:apply-templates  select="VATCode"/>
+		<xsl:apply-templates  select="VATRate"/>
+		<xsl:apply-templates  select="Measure"/>
+		<xsl:apply-templates  select="LineExtraData"/>
+		</InvoiceLine>
 	</xsl:template>
 
 	<!-- InvoiceLine/ProductID/BuyersProductCode is used as a placeholder for INVOIC-ILD-CRLI and should not be copied over -->
@@ -86,102 +147,6 @@ M Dimant		| 07/09/2011  | Added creation of a Delivery Notes for Aramark. Hides 
 			<xsl:value-of select="format-number(., '#0.##')"/>
 		</xsl:copy>
 	</xsl:template>
-	
-	<!-- INVOIC-ILD-QTYI (InvoiceLine/InvoicedQuantity) needs to be multiplied by -1 if (InvoiceLine/ProductID/BuyersProductCode) is NOT blank -->
-	<!-- 941 read catchweight values if present -->
-	<!--xsl:template match="InvoiceLine/InvoicedQuantity">
-	
-		<xsl:variable name="sQuantity">
-			<xsl:choose>
-				<xsl:when test="string(..[Measure/TotalMeasureIndicator]/Measure/TotalMeasure) != ''">
-					<xsl:for-each select="../Measure/TotalMeasure[1]">
-						<xsl:call-template name="copyCurrentNodeExplicit3DP"/>
-					</xsl:for-each>
-				</xsl:when>
-				<xsl:otherwise><xsl:value-of select="."/></xsl:otherwise>
-			</xsl:choose>		
-		</xsl:variable>
-		
-		<xsl:variable name="sUoM">
-			<xsl:choose>
-				<xsl:when test="string(Measure/TotalMeasureIndicator) = 'KG'">KGM</xsl:when>
-				<xsl:otherwise><xsl:value-of select="@UoM"/></xsl:otherwise>
-			</xsl:choose>		
-		</xsl:variable>
-	
-	
-		<InvoicedQuantity>
-			<xsl:if test="string-length(../ProductID/BuyersProductCode) &gt; 0">-</xsl:if>
-			<xsl:value-of select="$sQuantity"/>
-			<xsl:if test="string(sUoM) != 0">
-				<xsl:attribute name="UnitOfMeasure">
-					<xsl:value-of select="$sUoM"/>
-				</xsl:attribute>
-			</xsl:if>
-		</InvoicedQuantity>
-	
-	</xsl:template-->
-	
-	
-	<xsl:template match="InvoiceLine">
-	
-		<InvoiceLine>
-	
-			<xsl:apply-templates select="LineNumber"/>
-			<xsl:apply-templates select="PurchaseOrderReferences"/>
-			<xsl:apply-templates select="PurchaseOrderConfirmationReferences"/>
-			<xsl:apply-templates select="DeliveryNoteReferences"/>
-			<xsl:apply-templates select="GoodsReceivedNoteReferences"/>
-			<xsl:apply-templates select="ProductID"/>
-			<xsl:apply-templates select="ProductDescription"/>
-			<xsl:apply-templates select="OrderedQuantity"/>
-			<xsl:apply-templates select="ConfirmedQuantity"/>
-			<xsl:apply-templates select="DeliveredQuantity"/>
-			
-			<xsl:variable name="sQuantity">
-				<xsl:choose>
-					<xsl:when test="string(./*[TotalMeasureIndicator]/TotalMeasure) != ''">
-						<xsl:for-each select="./Measure/TotalMeasure[1]">
-							<xsl:call-template name="copyCurrentNodeExplicit3DP"/>
-						</xsl:for-each>
-					</xsl:when>
-					<xsl:otherwise><xsl:value-of select="InvoicedQuantity"/></xsl:otherwise>
-				</xsl:choose>		
-			</xsl:variable>
-			
-			<xsl:variable name="sUoM">
-				<xsl:choose>
-					<xsl:when test="string(./Measure/TotalMeasureIndicator) = 'KG' or string(./Measure/TotalMeasureIndicator) = 'KGM' ">KGM</xsl:when>
-					<xsl:otherwise><xsl:value-of select="@UoM"/></xsl:otherwise>
-				</xsl:choose>		
-			</xsl:variable>
-	
-			
-			<InvoicedQuantity>
-				<xsl:if test="string-length($sUoM) &gt; 0">
-					<xsl:attribute name="UnitOfMeasure">
-						<xsl:value-of select="$sUoM"/>
-					</xsl:attribute>
-				</xsl:if>
-				<xsl:if test="string-length(./ProductID/BuyersProductCode) &gt; 0">-</xsl:if>
-				<xsl:value-of select="$sQuantity"/>			
-			</InvoicedQuantity>
-			
-			<xsl:apply-templates select="PackSize"/>
-			<xsl:apply-templates select="UnitValueExclVAT"/>
-			<xsl:apply-templates select="LineValueExclVAT"/>
-			<xsl:apply-templates select="LineDiscountRate"/>
-			<xsl:apply-templates select="LineDiscountValue"/>
-			<xsl:apply-templates select="VATCode"/>
-			<xsl:apply-templates select="VATRate"/>
-			<xsl:apply-templates select="NetPriceFlag"/>
-			<xsl:apply-templates select="Measure"/>
-			<xsl:apply-templates select="LineExtraData"/>
-			
-		</InvoiceLine>
-		
-	</xsl:template>
-	
 	
 	<!-- INVOIC-ILD-LEXC(InvoiceLine/LineValueExclVAT) need to be multiplied by -1 if (InvoiceLine/ProductID/BuyersProductCode) is NOT blank -->
 	<xsl:template match="InvoiceLine/LineValueExclVAT">
@@ -207,6 +172,7 @@ M Dimant		| 07/09/2011  | Added creation of a Delivery Notes for Aramark. Hides 
 						BatchHeader/VATAmount |
 						BatchHeader/DocumentTotalInclVAT |
 						BatchHeader/SettlementTotalInclVAT |
+						BatchHeader/VATSubTotals/VATSubTotal/@VATRate |
 						VATSubTotal/* |
 						InvoiceTrailer/DocumentTotalExclVAT |
 						InvoiceTrailer/SettlementDiscount |
@@ -223,12 +189,14 @@ M Dimant		| 07/09/2011  | Added creation of a Delivery Notes for Aramark. Hides 
 						InvoiceLine/VATRate">
 		<xsl:call-template name="copyCurrentNodeExplicit3DP"/>
 	</xsl:template>
+	
 	<!--Add any attribute XPath whose value needs to be converted from implicit 3 D.P to explicit 2 D.P. -->
 	<xsl:template match="VATSubTotal/@VATRate">
 		<xsl:attribute name="{name()}">
 			<xsl:value-of select="format-number(. div 1000.0, '0.00')"/>
 		</xsl:attribute>
 	</xsl:template>
+	
 	<!-- SIMPLE CONVERSION IMPLICIT TO EXPLICIT 4 D.P -->
 	<!-- Add any XPath whose text node needs to be converted from implicit to explicit 4 D.P. -->
 	<xsl:template match="InvoiceLine/UnitValueExclVAT">
@@ -238,15 +206,15 @@ M Dimant		| 07/09/2011  | Added creation of a Delivery Notes for Aramark. Hides 
 	
 	<!-- DATE CONVERSION YYMMDD to xsd:date -->
 	<xsl:template match="PurchaseOrderReferences/PurchaseOrderDate | 
-						DeliveryNoteReferences/DeliveryNoteDate |
-						DeliveryNoteReferences/DespatchDate |
 						BatchInformation/FileCreationDate |
+						DeliveryNoteReferences/DeliveryNoteDate |
 						InvoiceReferences/InvoiceDate |
 						InvoiceReferences/TaxPointDate">
 		<xsl:copy>
 			<xsl:value-of select="concat('20', substring(., 1, 2), '-', substring(., 3, 2), '-', substring(., 5, 2))"/>
 		</xsl:copy>
 	</xsl:template>
+	
 	<!-- DATE CONVERSION YYMMDD:[HHMMSS] to xsd:dateTime CCYY-MM-DDTHH:MM:SS+00:00 -->
 	<xsl:template match="BatchInformation/SendersTransmissionDate">
 		<xsl:copy>
@@ -345,22 +313,6 @@ M Dimant		| 07/09/2011  | Added creation of a Delivery Notes for Aramark. Hides 
 	</xsl:template>
 	<!-- END of MHDSegment HANDLER -->
 	
-	<!-- Check for pairing of Purchase Order Date & Purchase Order Reference -->
-	<xsl:template match="//PurchaseOrderReferences">
-		<xsl:variable name="sPORefDate" select="translate(PurchaseOrderDate,' ','')"/>
-		<xsl:variable name="sPORefReference" select="translate(PurchaseOrderReference,' ','')"/>
-		<xsl:if test="string($sPORefDate) !='' and string($sPORefReference) != '' ">
-			<PurchaseOrderReferences>
-				<PurchaseOrderReference>
-					<xsl:value-of select="$sPORefReference"/>
-				</PurchaseOrderReference>
-				<PurchaseOrderDate>
-					<xsl:value-of select="concat('20',substring($sPORefDate,1,2),'-',substring($sPORefDate,3,2),'-',substring($sPORefDate,5,2))"/>
-				</PurchaseOrderDate>
-			</PurchaseOrderReferences>
-		</xsl:if>
-	</xsl:template>	
-	
 	<xsl:template name="createDeliveryNotes">
 	
 		<Batch>
@@ -368,21 +320,20 @@ M Dimant		| 07/09/2011  | Added creation of a Delivery Notes for Aramark. Hides 
 				<xsl:for-each select="Batch/BatchDocuments/BatchDocument/Invoice">
 					<BatchDocument>
 						<xsl:attribute name="DocumentTypeNo">7</xsl:attribute>
-						<DeliveryNote>					
-							<TradeSimpleHeader>		
-								<xsl:choose>
-									<xsl:when test="//InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode='5027615900013'">
-										<SendersCodeForRecipient><xsl:value-of select="substring-before(././././TradeSimpleHeader/SendersCodeForRecipient,'-')"/></SendersCodeForRecipient>
-										<SendersBranchReference><xsl:value-of select="substring-after(././././TradeSimpleHeader/SendersCodeForRecipient,'-')"/></SendersBranchReference>
-									</xsl:when>
-									<xsl:otherwise>
-										<SendersCodeForRecipient><xsl:value-of select="././././TradeSimpleHeader/SendersCodeForRecipient"/></SendersCodeForRecipient>
-									</xsl:otherwise>
-								</xsl:choose>	
+						<DeliveryNote>
+							<TradeSimpleHeader>
+								<SendersCodeForRecipient>
+									<xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/>
+								</SendersCodeForRecipient>
+								<xsl:if test="TradeSimpleHeader/SendersBranchReference != ''">
+									<SendersBranchReference>
+										<xsl:value-of select="TradeSimpleHeader/SendersBranchReference"/>
+									</SendersBranchReference>
+								</xsl:if>
 							</TradeSimpleHeader>
 							<DeliveryNoteHeader>
 								<DocumentStatus>Original</DocumentStatus>
-								<!--xsl:copy-of select="InvoiceHeader/Buyer"/-->
+								<xsl:copy-of select="InvoiceHeader/Buyer"/>
 								<xsl:copy-of select="InvoiceHeader/Supplier"/>
 								<xsl:copy-of select="InvoiceHeader/ShipTo"/>
 								<xsl:if test="InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderReference != '' and InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderDate != ''">
@@ -420,8 +371,6 @@ M Dimant		| 07/09/2011  | Added creation of a Delivery Notes for Aramark. Hides 
 										<xsl:copy-of select="ProductID"/>
 										<xsl:copy-of select="ProductDescription"/>
 										
-										
-										
 										<xsl:variable name="sQuantity">
 											<xsl:choose>
 												<xsl:when test="string(./*[TotalMeasureIndicator]/TotalMeasure) != ''">
@@ -439,7 +388,6 @@ M Dimant		| 07/09/2011  | Added creation of a Delivery Notes for Aramark. Hides 
 											</xsl:call-template>		
 										</xsl:variable>
 								
-										
 										<DespatchedQuantity>
 											<xsl:if test="string-length($sUoM) &gt; 0">
 												<xsl:attribute name="UnitOfMeasure">
@@ -449,8 +397,6 @@ M Dimant		| 07/09/2011  | Added creation of a Delivery Notes for Aramark. Hides 
 											<xsl:value-of select="$sQuantity"/>			
 										</DespatchedQuantity>
 										
-										
-
 										<xsl:copy-of select="PackSize"/>
 									</DeliveryNoteLine>
 								</xsl:for-each>
@@ -466,10 +412,8 @@ M Dimant		| 07/09/2011  | Added creation of a Delivery Notes for Aramark. Hides 
 			</BatchDocuments>
 		</Batch>
 
-	
 	</xsl:template>
 	
-		
 	<!-- Templates shared by both doc types -->
 	<xsl:template name="translateUoM">
 		<xsl:param name="givenUoM"/>

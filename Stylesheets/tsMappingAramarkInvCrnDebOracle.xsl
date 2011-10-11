@@ -1,17 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--******************************************************************
-Alterations
-**********************************************************************
-Name			| Date				| Change
-**********************************************************************
-		?		|			?			|				?
-**********************************************************************
-R Cambridge	| 2011-10-05		| 4992 read buyers code for supplier from SuppliersLocationID/BuyersCode
-**********************************************************************
-				|						|				
-**********************************************************************
-				|						|				
-*******************************************************************-->
+<!--
+******************************************************************************************
+ Overview
+
+ This XSL file is used to transform XML for a Hospitality Invoice/Credit note/ Debit note into the Oracle file for Aramark Spain
+
+ © Fourth Hospitality
+******************************************************************************************
+ Module History
+******************************************************************************************
+ Date            | Name           | Description of modification
+******************************************************************************************
+ 
+******************************************************************************************
+ 04/10/2011      | S Sehgal       | 4854 Header field is now calculated based on the document financial period when provided or using document date. 
+******************************************************************************************
+ 05/10/2011      | R Cambridge    | 4992 read buyers code for supplier from SuppliersLocationID/BuyersCode
+******************************************************************************************
+-->
+
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 		   xmlns:script="http://mycompany.com/mynamespace"
@@ -143,14 +150,30 @@ R Cambridge	| 2011-10-05		| 4992 read buyers code for supplier from SuppliersLoc
 		<xsl:value-of select="$separator"/>
 		<xsl:value-of select="$separator"/>
 		<xsl:value-of select="$separator"/>
-		<xsl:value-of select="translate(substring(InvoiceHeader/InvoiceReferences/InvoiceDate | CreditNoteHeader/InvoiceReferences/InvoiceDate | DebitNoteHeader/InvoiceReferences/InvoiceDate,1,7),'-','')"/>
-	       <xsl:choose>
-	          <xsl:when test="substring(InvoiceHeader/InvoiceReferences/InvoiceDate | CreditNoteHeader/InvoiceReferences/InvoiceDate | DebitNoteHeader/InvoiceReferences/InvoiceDate,6,2)='02'">
-	          	<xsl:text>28</xsl:text>
-	          </xsl:when>
-	          <xsl:otherwise>
-	          	<xsl:text>30</xsl:text>
-	          </xsl:otherwise>
+		<xsl:choose>
+			<xsl:when test="InvoiceHeader/HeaderExtraData/FinancialPeriod | CreditNoteHeader/HeaderExtraData/FinancialPeriod | DebitNoteHeader/HeaderExtraData/FinancialPeriod">
+				<xsl:value-of select="InvoiceHeader/HeaderExtraData/FinancialPeriod | CreditNoteHeader/HeaderExtraData/FinancialPeriod | 	DebitNoteHeader/HeaderExtraData/FinancialPeriod"/>
+				   <xsl:choose>
+		          <xsl:when test="substring(InvoiceHeader/HeaderExtraData/FinancialPeriod | CreditNoteHeader/HeaderExtraData/FinancialPeriod | 	DebitNoteHeader/HeaderExtraData/FinancialPeriod,5,2)='02'">
+		          	<xsl:text>28</xsl:text>
+		          </xsl:when>
+		          <xsl:otherwise>
+		          	<xsl:text>30</xsl:text>
+		          </xsl:otherwise>
+		       </xsl:choose>
+
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="translate(substring(InvoiceHeader/InvoiceReferences/InvoiceDate | CreditNoteHeader/InvoiceReferences/InvoiceDate | 	DebitNoteHeader/InvoiceReferences/InvoiceDate,1,7),'-','')"/>
+		       <xsl:choose>
+		          <xsl:when test="substring(InvoiceHeader/InvoiceReferences/InvoiceDate | CreditNoteHeader/InvoiceReferences/InvoiceDate | 	DebitNoteHeader/InvoiceReferences/InvoiceDate,6,2)='02'">
+		          	<xsl:text>28</xsl:text>
+		          </xsl:when>
+		          <xsl:otherwise>
+		          	<xsl:text>30</xsl:text>
+		          </xsl:otherwise>
+		       </xsl:choose>
+			</xsl:otherwise>       
 	       </xsl:choose>
 		<xsl:value-of select="$separator"/>
 		<xsl:value-of select="substring(InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode | CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode | DebitNoteHeader/ShipTo/ShipToLocationID/BuyersCode,1,4)"/>
