@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+'******************************************************************************************
+' Overview
+'		
+' Flat file mapping definition for Commas IDOC messages
+' 
+' © Alternative Business Solutions Ltd., 2000,2001,2002,2003.
+'******************************************************************************************
+' Module History
+'******************************************************************************************
+' Date       | Name            | Description of modification
+'******************************************************************************************
+' 01/08/2007 | Nigel Emsen     | Created from Eparts Fix Width IDOC mapper for Comma
+'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+'            |                 | 
+'******************************************************************************************
+-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>noschema</ffsRecordPositionType>
+	</ffsSettings>
+	<ffsRoot>
+		<L1>
+			<Delim>chr(13)chr(10)</Delim>
+			<L2>
+				<Delim>
+					<String>
+						<Start>1</Start>
+						<Length>1</Length>
+					</String>
+					<!-- HEADER - One per document. -->
+					<Type Value="H" Name="H">
+						<!-- H -->
+						<Field>
+							<Length>1</Length>
+						</Field>
+						<!-- INT NUMBER -->
+						<Field>
+							<Length>10</Length>
+						</Field>
+						<!-- SUPPLIER CODE -->
+						<Field>
+							<Length>8</Length>
+						</Field>
+						<!-- INVOICE NUMBER	-->
+						<Field>
+							<Length>10</Length>
+						</Field>
+						<!-- INVOICE DATE -->
+						<Field>
+							<Length>10</Length>
+						</Field>
+						<!-- TAX POINT -->
+						<Field>
+							<Length>10</Length>
+						</Field>
+						<!-- YR PO NUMBER -->
+						<Field>
+							<Length>15</Length>
+						</Field>
+						<!--YR PO DATE  -->
+						<Field>
+							<Length>10</Length>
+						</Field>
+						<!-- VAT AMOUNT Z	-->
+						<Field>
+							<Length>10</Length>
+						</Field>
+						<!-- GOODS AMOUNT Z -->
+						<Field>
+							<Length>10</Length>
+						</Field>
+						<!-- VAT AMOUNT S -->
+						<Field>
+							<Length>10</Length>
+						</Field>
+						<!-- GOODS AMOUNT S -->
+						<Field>
+							<Length>11</Length>
+						</Field>
+						<!-- OUR ORDER NO -->
+						<Field>
+							<Length>10</Length>
+						</Field>
+					</Type>
+					<!-- DETAIL LINE - Many per Header Line -->
+					<Type Value="D" Name="D">
+						<!-- D -->
+						<Field>
+							<Length>1</Length>
+						</Field>
+						<!-- INT NUMBER -->
+						<Field>
+							<Length>10</Length>
+						</Field>
+						<!-- ITEM CODE -->
+						<Field>
+							<Length>10</Length>
+						</Field>
+						<!-- QUANTITY -->
+						<Field>
+							<Length>10</Length>
+						</Field>
+						<!-- PRICE -->
+						<Field>
+							<Length>10</Length>
+						</Field>
+						<!-- LINE TOTAL -->
+						<Field>
+							<Length>10</Length>
+						</Field>
+						<!-- VAT CODE -->
+						<Field>
+							<Length>6</Length>
+						</Field>
+						<!-- OUR ORDER NO -->
+						<Field>
+							<Length>10</Length>
+						</Field>
+					</Type>
+				</Delim>
+			</L2>
+		</L1>
+	</ffsRoot>
+</ffsFlatFileSchema>
