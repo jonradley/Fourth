@@ -36,41 +36,34 @@ R Cambridge	| 29/10/2007	| 1556 Create module
 	
 	<xsl:variable name="CustomerFlag">
 		<xsl:variable name="accountCode" select="string(//DeliveryNote/TradeSimpleHeader/SendersBranchReference)"/>
-	
 		<xsl:choose>
+			<xsl:when test="$accountCode = '203909'"><xsl:value-of select="$ARAMARK"/></xsl:when>
+			<xsl:when test="$accountCode = 'ARA02T'"><xsl:value-of select="$ARAMARK"/></xsl:when>
+			<xsl:when test="$accountCode = 'ARANET'"><xsl:value-of select="$ARAMARK"/></xsl:when>
+			<xsl:when test="$accountCode = 'BEACON'"><xsl:value-of select="$BEACON_PURCHASING"/></xsl:when>
 			<xsl:when test="$accountCode = 'MIL14T'"><xsl:value-of select="$COMPASS"/></xsl:when>
-			<xsl:when test="$accountCode = 'FMC01T'"><xsl:value-of select="$COMPASS"/></xsl:when>
-			
+			<xsl:when test="$accountCode = 'KIN04D'"><xsl:value-of select="$COOP"/></xsl:when>
+			<xsl:when test="$accountCode = 'KIN04T'"><xsl:value-of select="$COOP"/></xsl:when>
+			<xsl:when test="$accountCode = 'fishworks'"><xsl:value-of select="$FISHWORKS"/></xsl:when>
+			<xsl:when test="$accountCode = 'MAR100T'"><xsl:value-of select="$MCC"/></xsl:when>
+			<xsl:when test="$accountCode = 'BLA16T'"><xsl:value-of select="$ORCHID"/></xsl:when>
+			<xsl:when test="$accountCode = 'OPL01T'"><xsl:value-of select="$ORCHID"/></xsl:when>
+			<xsl:when test="$accountCode = 'ORCHID'"><xsl:value-of select="$ORCHID"/></xsl:when>
+			<xsl:when test="$accountCode = 'PBR16T'"><xsl:value-of select="$ORCHID"/></xsl:when>
+			<xsl:when test="$accountCode = 'SEA01T'"><xsl:value-of select="$SEARCYS"/></xsl:when>
+			<xsl:when test="$accountCode = 'GAR06T'"><xsl:value-of select="$SODEXO_PRESTIGE"/></xsl:when>
+			<xsl:when test="$accountCode = 'SOD99T'"><xsl:value-of select="$SODEXO_PRESTIGE"/></xsl:when>			
+						
 			<xsl:when test="$accountCode = 'TES01T'"><xsl:value-of select="$TESCO"/></xsl:when>
 			<xsl:when test="$accountCode = 'TES08T'"><xsl:value-of select="$TESCO"/></xsl:when>
 			<xsl:when test="$accountCode = 'TES12T'"><xsl:value-of select="$TESCO"/></xsl:when>
 			<xsl:when test="$accountCode = 'TES15T'"><xsl:value-of select="$TESCO"/></xsl:when>
 			<xsl:when test="$accountCode = 'TES25T'"><xsl:value-of select="$TESCO"/></xsl:when>
-			<xsl:when test="$accountCode = 'ARA02T'"><xsl:value-of select="$ARAMARK"/></xsl:when>
-			<xsl:when test="$accountCode = 'BEACON'"><xsl:value-of select="$BEACON_PURCHASING"/></xsl:when>
-			<xsl:when test="$accountCode = 'SSP25T'"><xsl:value-of select="$SSP"/></xsl:when>
-			<xsl:when test="$accountCode = 'GIR01T'"><xsl:value-of select="$GIRAFFE"/></xsl:when>
-			<xsl:when test="$accountCode = 'WAH01D'"><xsl:value-of select="$WAHACA"/></xsl:when>
-			<xsl:when test="$accountCode = 'FOO01D'"><xsl:value-of select="$FOODANDFUEL"/></xsl:when>
-			<xsl:when test="$accountCode = 'RIS01D'"><xsl:value-of select="$RISINGSTAR"/></xsl:when>
-			<xsl:when test="$accountCode = 'SPA01D'"><xsl:value-of select="$SPAGHETTI"/></xsl:when>
-			<xsl:when test="$accountCode = 'LSQ01D'"><xsl:value-of select="$LONDONCLUBS"/></xsl:when>
-			<xsl:when test="$accountCode = 'ZER01D'"><xsl:value-of select="$ZERODEGREES"/></xsl:when>
-			<xsl:when test="$accountCode = 'MOR01T'"><xsl:value-of select="$SCLONDON"/></xsl:when>
-			<xsl:when test="$accountCode = 'DAD01T'"><xsl:value-of select="$DANDD"/></xsl:when>
-			<xsl:when test="$accountCode = 'SEA01D'"><xsl:value-of select="$SEARCYS"/></xsl:when>
-			<xsl:when test="$accountCode = 'DEV01T'"><xsl:value-of select="$DEVERE"/></xsl:when>
-			<xsl:when test="$accountCode = 'MAL01D'"><xsl:value-of select="$MALMAISON"/></xsl:when>
-			
-			
-			
-			
-			
 			<xsl:otherwise></xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>	
 
-<!-- Start point - ensure required outer BatchRoot tag is applied -->
+	<!-- Start point - ensure required outer BatchRoot tag is applied -->
 	<xsl:template match="/">
 		<BatchRoot>	
 			<Batch>				
@@ -216,18 +209,20 @@ R Cambridge	| 29/10/2007	| 1556 Create module
 								
 									<xsl:for-each select="DeliveryNoteDetail/DeliveryNoteLine">								
 									
-
 										<DeliveryNoteLine>
 										
 											<ProductID>4
 												<SuppliersProductCode>
 													<xsl:value-of select="ProductID/SuppliersProductCode"/>
-													<xsl:if test="$CustomerFlag = $SSP or $CustomerFlag = $GIRAFFE or $CustomerFlag = $WAHACA or $CustomerFlag = $FOODANDFUEL or $CustomerFlag = $RISINGSTAR or $CustomerFlag = $SPAGHETTI or $CustomerFlag = $LONDONCLUBS or $CustomerFlag = $ZERODEGREES or $CustomerFlag = $SCLONDON or $CustomerFlag = $SEARCYS or $CustomerFlag = $DANDD or  $CustomerFlag = $DEVERE or $CustomerFlag = $MALMAISON" >
-														<!--xsl:choose>
-															<xsl:when test="translate(PackSize,' ','') ='1x1kg'">-EA</xsl:when>
-															<xsl:when test="contains(PackSize,'x')">-CS</xsl:when>
-															<xsl:otherwise>-EA</xsl:otherwise>
-														</xsl:choose-->	
+													<xsl:if test="not(
+														$CustomerFlag = $ARAMARK or
+														$CustomerFlag = $COMPASS or
+														$CustomerFlag = $COOP  or
+														$CustomerFlag = $FISHWORKS or
+														$CustomerFlag = $MCC  or
+														$CustomerFlag = $ORCHID or
+														$CustomerFlag = $SEARCYS or
+														$CustomerFlag = $SODEXO_PRESTIGE)" >
 														<xsl:choose>
 															<xsl:when test="ConfirmedQuantity/@UnitOfMeasure = 'EA'">-EA</xsl:when>
 															<xsl:when test="ConfirmedQuantity/@UnitOfMeasure = 'CS'">-CS</xsl:when>

@@ -44,6 +44,7 @@ R Cambridge	|	2011-08-24		| 4743 change product code manipulation to be default 
 			<xsl:when test="$accountCode = 'BEACON'"><xsl:value-of select="$BEACON_PURCHASING"/></xsl:when>
 			<xsl:when test="$accountCode = 'MIL14T'"><xsl:value-of select="$COMPASS"/></xsl:when>
 			<xsl:when test="$accountCode = 'KIN04D'"><xsl:value-of select="$COOP"/></xsl:when>
+			<xsl:when test="$accountCode = 'KIN04T'"><xsl:value-of select="$COOP"/></xsl:when>
 			<xsl:when test="$accountCode = 'fishworks'"><xsl:value-of select="$FISHWORKS"/></xsl:when>
 			<xsl:when test="$accountCode = 'MAR100T'"><xsl:value-of select="$MCC"/></xsl:when>
 			<xsl:when test="$accountCode = 'BLA16T'"><xsl:value-of select="$ORCHID"/></xsl:when>
@@ -134,7 +135,15 @@ R Cambridge	|	2011-08-24		| 4743 change product code manipulation to be default 
 									
 									<xsl:value-of select="ProductID/SuppliersProductCode"/>
 									
-									<xsl:if test="not($CustomerFlag = $ARAMARK or $CustomerFlag = $ORCHID or $CustomerFlag = $COMPASS or $CustomerFlag = $SODEXO_PRESTIGE or $CustomerFlag = $SEARCYS)">	
+									<xsl:if test="not(
+										$CustomerFlag = $ARAMARK or
+										$CustomerFlag = $COMPASS or
+										$CustomerFlag = $COOP  or
+										$CustomerFlag = $FISHWORKS or
+										$CustomerFlag = $MCC  or
+										$CustomerFlag = $ORCHID or
+										$CustomerFlag = $SEARCYS or
+										$CustomerFlag = $SODEXO_PRESTIGE)">	
 										<xsl:choose>
 											<xsl:when test="ConfirmedQuantity/@UnitOfMeasure = 'EA'">-EA</xsl:when>
 											<xsl:when test="ConfirmedQuantity/@UnitOfMeasure = 'CS'">-CS</xsl:when>
