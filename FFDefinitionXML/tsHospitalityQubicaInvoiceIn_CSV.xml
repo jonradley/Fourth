@@ -6,9 +6,6 @@
 		<ffsFieldSeparators>
 			<ffsFieldSeparator>,</ffsFieldSeparator>
 		</ffsFieldSeparators>
-		<!--ffsBatchHeader>
-			<ffsHeaderRecord RecordPos="SYKCO"/>
-		</ffsBatchHeader> -->
 		<ffsSplitBatchRecord RecordPos="SYKCO"/>
 	</ffsSettings>
 	<ffsRoot>
