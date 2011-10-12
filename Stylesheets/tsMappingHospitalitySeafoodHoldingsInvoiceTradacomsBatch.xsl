@@ -29,18 +29,13 @@
 				<xsl:attribute name="TypePrefix">INV</xsl:attribute>
 				<xsl:apply-templates/>
 			</Document>
-		</BatchRoot>
-	</xsl:template>
-	
-	<xsl:template match="/">
-		<BatchRoot>
 			<Document>
 				<xsl:attribute name="TypePrefix">DNB</xsl:attribute>				
 				<xsl:call-template name="createDeliveryNotes"/>
 				<xsl:apply-templates/>
 			</Document>
 		</BatchRoot>
-	</xsl:template>	
+	</xsl:template>
 	
 	<!-- GENERIC HANDLER to copy unchanged nodes, will be overridden by any node-specific templates below -->
 	<xsl:template match="*">
