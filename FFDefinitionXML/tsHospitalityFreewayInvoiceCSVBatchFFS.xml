@@ -43,7 +43,7 @@
 							</BatchInformation>
 							<Buyer>
 								<BuyersLocationID>
-									<SuppliersCode RecordPos="HEAD" LPos="4"/>
+									<SuppliersCode RecordPos="HEAD" LPos="3"/>
 									<BuyersCode RecordPos="HEAD" LPos="2"/>
 								</BuyersLocationID>
 							</Buyer>
@@ -62,7 +62,8 @@
 							<ShipTo>
 								<ShipToLocationID>
 									<GLN RecordPos="HEAD" LPos="23"/>
-									<BuyersCode RecordPos="HEAD" LPos="24"/>
+									<!--BuyersCode RecordPos="HEAD" LPos="24"/-->
+									<BuyersCode RecordPos="HEAD" LPos="4"/>
 								</ShipToLocationID>
 								<ShipToName RecordPos="HEAD" LPos="17"/>
 								<ShipToAddress>
