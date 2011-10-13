@@ -16,23 +16,16 @@ R Cambridge	| 29/10/2007	| 1556 Create module
 	<!-- The structure of the interal XML varries depending on who the customer is -->
 	
 	<!-- All documents in the batch will be for the same customer/agreement -->	
-	<xsl:variable name="COMPASS" select="'COMPASS'"/>
-	<xsl:variable name="TESCO" select="'TESCO'"/>
 	<xsl:variable name="ARAMARK" select="'ARAMARK'"/>
 	<xsl:variable name="BEACON_PURCHASING" select="'BEACON_PURCHASING'"/>
-	<xsl:variable name="SSP" select="'SSP'"/>
-	<xsl:variable name="GIRAFFE" select="'GIRAFFE'"/>
-	<xsl:variable name="WAHACA" select="'WAHACA'"/>
-	<xsl:variable name="FOODANDFUEL" select="'FOODANDFUEL'"/>
-	<xsl:variable name="RISINGSTAR" select="'RISINGSTAR'"/>
-	<xsl:variable name="SPAGHETTI" select="'SPAGHETTI'"/>
-	<xsl:variable name="LONDONCLUBS" select="'LONDONCLUBS'"/>
-	<xsl:variable name="ZERODEGREES" select="'ZERODEGREES'"/>
-	<xsl:variable name="SCLONDON" select="'SCLONDON'"/>
-	<xsl:variable name="DANDD" select="'DANDD'"/>
+	<xsl:variable name="COMPASS" select="'COMPASS'"/>
+	<xsl:variable name="COOP" select="'COOP'"/>
+	<xsl:variable name="FISHWORKS" select="'FISHWORKS'"/>
+	<xsl:variable name="MCC" select="'MCC'"/>
+	<xsl:variable name="ORCHID" select="'ORCHID'"/>
 	<xsl:variable name="SEARCYS" select="'SEARCYS'"/>
-	<xsl:variable name="DEVERE" select="'DEVERE'"/>
-	<xsl:variable name="MALMAISON" select="'MALMAISON'"/>
+	<xsl:variable name="SODEXO_PRESTIGE" select="'SODEXO_PRESTIGE'"/>
+	<xsl:variable name="TESCO" select="'TESCO'"/>
 	
 	<xsl:variable name="CustomerFlag">
 		<xsl:variable name="accountCode" select="string(//DeliveryNote/TradeSimpleHeader/SendersBranchReference)"/>
