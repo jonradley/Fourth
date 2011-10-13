@@ -135,20 +135,33 @@
 													</SuppliersProductCode>
 												</ProductID>
 												<xsl:copy-of select="ProductDescription"/>
+												<!--
 												<InvoicedQuantity>
 													<xsl:value-of select="InvoicedQuantity"/>
 												</InvoicedQuantity>
+												-->
+												<InvoicedQuantity>
+													<xsl:attribute name="UnitOfMeasure">
+														<xsl:call-template name="decodeUoM">
+															<xsl:with-param name="sInput">
+																<xsl:value-of select="PackSize"/>
+															</xsl:with-param>
+														</xsl:call-template>
+													</xsl:attribute>
+													<xsl:value-of select="format-number(InvoicedQuantity,'0.000')"/>
+												</InvoicedQuantity>
+												
 												<xsl:if test="PackSize != ''">
 													<PackSize>
 														<xsl:value-of select="PackSize"/>
 													</PackSize>
 												</xsl:if>
 												<UnitValueExclVAT>
-													<xsl:value-of select="UnitValueExclVAT"/>
+													<xsl:value-of select="format-number(UnitValueExclVAT,'0.00')"/>
 												</UnitValueExclVAT>
 												<xsl:if test="LineValueExclVAT != ''">
 													<LineValueExclVAT>
-														<xsl:value-of select="LineValueExclVAT"/>
+														<xsl:value-of select="format-number(LineValueExclVAT,'0.00')"/>
 													</LineValueExclVAT>
 												</xsl:if>
 												<VATCode>
@@ -205,7 +218,7 @@
 													</xsl:if>
 													<xsl:if test="DocumentTotalExclVATAtRate != ''">
 														<DocumentTotalExclVATAtRate>
-															<xsl:value-of select="DocumentTotalExclVATAtRate"/>
+															<xsl:value-of select="format-number(DocumentTotalExclVATAtRate,'0.00')"/>
 														</DocumentTotalExclVATAtRate>
 													</xsl:if>
 													<xsl:if test="SettlementDiscountAtRate != ''">
@@ -215,22 +228,22 @@
 													</xsl:if>
 													<xsl:if test="SettlementTotalExclVATAtRate != ''">
 														<SettlementTotalExclVATAtRate>
-															<xsl:value-of select="SettlementTotalExclVATAtRate"/>
+															<xsl:value-of select="format-number(SettlementTotalExclVATAtRate,'0.00')"/>
 														</SettlementTotalExclVATAtRate>
 													</xsl:if>
 													<xsl:if test="VATAmountAtRate != ''">
 														<VATAmountAtRate>
-															<xsl:value-of select="VATAmountAtRate"/>
+															<xsl:value-of select="format-number(VATAmountAtRate,'0.00')"/>
 														</VATAmountAtRate>
 													</xsl:if>
 													<xsl:if test="DocumentTotalInclVATAtRate != ''">
 														<DocumentTotalInclVATAtRate>
-															<xsl:value-of select="DocumentTotalInclVATAtRate"/>
+															<xsl:value-of select="format-number(DocumentTotalInclVATAtRate,'0.00')"/>
 														</DocumentTotalInclVATAtRate>
 													</xsl:if>
 													<xsl:if test="SettlementTotalInclVATAtRate">
 														<SettlementTotalInclVATAtRate>
-															<xsl:value-of select="SettlementTotalInclVATAtRate"/>
+															<xsl:value-of select="format-number(SettlementTotalInclVATAtRate,'0.00')"/>
 														</SettlementTotalInclVATAtRate>
 													</xsl:if>
 												</VATSubTotal>
@@ -238,7 +251,7 @@
 										</VATSubTotals>
 										<xsl:if test="InvoiceTrailer/DocumentTotalExclVAT != ''">
 											<DocumentTotalExclVAT>
-												<xsl:value-of select="InvoiceTrailer/DocumentTotalExclVAT"/>
+												<xsl:value-of select="format-number(InvoiceTrailer/DocumentTotalExclVAT,'0.00')"/>
 											</DocumentTotalExclVAT>
 										</xsl:if>
 										<xsl:if test="InvoiceTrailer/SettlementDiscount != ''">
@@ -248,17 +261,17 @@
 										</xsl:if>
 										<xsl:if test="InvoiceTrailer/SettlementTotalExclVAT != ''">
 											<SettlementTotalExclVAT>
-												<xsl:value-of select="InvoiceTrailer/SettlementTotalExclVAT"/>
+												<xsl:value-of select="format-number(InvoiceTrailer/SettlementTotalExclVAT,'0.00')"/>
 											</SettlementTotalExclVAT>
 										</xsl:if>
 										<xsl:if test="InvoiceTrailer/VATAmount != ''">
 											<VATAmount>
-												<xsl:value-of select="InvoiceTrailer/VATAmount"/>
+												<xsl:value-of select="format-number(InvoiceTrailer/VATAmount,'0.00')"/>
 											</VATAmount>
 										</xsl:if>
 										<xsl:if test="InvoiceTrailer/DocumentTotalInclVAT != ''">
 											<DocumentTotalInclVAT>
-												<xsl:value-of select="InvoiceTrailer/DocumentTotalInclVAT"/>
+												<xsl:value-of select="format-number(InvoiceTrailer/DocumentTotalInclVAT,'0.00')"/>
 											</DocumentTotalInclVAT>
 										</xsl:if>
 									</InvoiceTrailer>
@@ -269,6 +282,34 @@
 			</Batch>
 		</BatchRoot>
 
+	</xsl:template>
+	
+	<xsl:template name="decodeUoM">
+		<xsl:param name="sInput"/>
+		<xsl:choose>
+			<xsl:when test="$sInput = 'BG'">EA</xsl:when>
+			<xsl:when test="$sInput = 'BX'">CS</xsl:when>
+			<xsl:when test="$sInput = 'CS'">CS</xsl:when>
+			<xsl:when test="$sInput = 'DZ'">DZN</xsl:when>
+			<xsl:when test="$sInput = 'FT'">EA</xsl:when>
+			<xsl:when test="$sInput = 'GA'">EA</xsl:when>
+			<xsl:when test="$sInput = 'LB'">PND</xsl:when>
+			<xsl:when test="$sInput = 'LF'">EA</xsl:when>
+			<xsl:when test="$sInput = 'LG'">EA</xsl:when>
+			<xsl:when test="$sInput = 'MT'">EA</xsl:when>
+			<xsl:when test="$sInput = 'PD'">EA</xsl:when>
+			<xsl:when test="$sInput = 'PK'">EA</xsl:when>
+			<xsl:when test="$sInput = 'PR'">PR</xsl:when>
+			<xsl:when test="$sInput = 'PT'">PTI</xsl:when>
+			<xsl:when test="$sInput = 'QT'">EA</xsl:when>
+			<xsl:when test="$sInput = 'RL'">EA</xsl:when>
+			<xsl:when test="$sInput = 'SH'">EA</xsl:when>
+			<xsl:when test="$sInput = 'ST'">EA</xsl:when>
+			<xsl:when test="$sInput = 'TB'">EA</xsl:when>
+			<xsl:otherwise>
+				<xsl:text>EA</xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 	
 	<msxsl:script language="VBScript" implements-prefix="vbscript"><![CDATA[ 

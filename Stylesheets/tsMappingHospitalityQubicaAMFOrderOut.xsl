@@ -104,7 +104,7 @@ Mark E	| 01/02/2010 | Modified
 			<!--UOM-->
 			<xsl:text>SZUOM</xsl:text>
 			<xsl:text>,</xsl:text>
-			<xsl:value-of select ="OrderedQuantity/@UnitOfMeasure"/>
+			<xsl:value-of select ="PackSize"/>
 			<xsl:text>,</xsl:text>
 			<!--OrderedQuantity-->
 			<xsl:text>SZUORG</xsl:text>

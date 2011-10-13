@@ -168,12 +168,25 @@
 								</OrderedQuantity>
 							</xsl:if>
 							
+							<!--
 							<xsl:if test="ConfirmedQuantity != ''">
 								<ConfirmedQuantity UnitOfMeasure="EA">
 									<xsl:value-of select="ConfirmedQuantity"/>
 								</ConfirmedQuantity>
 							</xsl:if>
-	
+							-->
+							
+							<ConfirmedQuantity>
+								<xsl:attribute name="UnitOfMeasure">
+									<xsl:call-template name="decodeUoM">
+										<xsl:with-param name="sInput">
+											<xsl:value-of select="PackSize"/>
+										</xsl:with-param>
+									</xsl:call-template>
+								</xsl:attribute>
+								<xsl:value-of select="format-number(ConfirmedQuantity, '0.000')"/>
+							</ConfirmedQuantity>
+							
 							<xsl:if test="PackSize != ''">
 								<PackSize>
 									<xsl:value-of select="PackSize"/>
@@ -224,6 +237,34 @@
 			
 		</BatchRoot>	
 
+	</xsl:template>
+	
+	<xsl:template name="decodeUoM">
+		<xsl:param name="sInput"/>
+		<xsl:choose>
+			<xsl:when test="$sInput = 'BG'">EA</xsl:when>
+			<xsl:when test="$sInput = 'BX'">CS</xsl:when>
+			<xsl:when test="$sInput = 'CS'">CS</xsl:when>
+			<xsl:when test="$sInput = 'DZ'">DZN</xsl:when>
+			<xsl:when test="$sInput = 'FT'">EA</xsl:when>
+			<xsl:when test="$sInput = 'GA'">EA</xsl:when>
+			<xsl:when test="$sInput = 'LB'">PND</xsl:when>
+			<xsl:when test="$sInput = 'LF'">EA</xsl:when>
+			<xsl:when test="$sInput = 'LG'">EA</xsl:when>
+			<xsl:when test="$sInput = 'MT'">EA</xsl:when>
+			<xsl:when test="$sInput = 'PD'">EA</xsl:when>
+			<xsl:when test="$sInput = 'PK'">EA</xsl:when>
+			<xsl:when test="$sInput = 'PR'">PR</xsl:when>
+			<xsl:when test="$sInput = 'PT'">PTI</xsl:when>
+			<xsl:when test="$sInput = 'QT'">EA</xsl:when>
+			<xsl:when test="$sInput = 'RL'">EA</xsl:when>
+			<xsl:when test="$sInput = 'SH'">EA</xsl:when>
+			<xsl:when test="$sInput = 'ST'">EA</xsl:when>
+			<xsl:when test="$sInput = 'TB'">EA</xsl:when>
+			<xsl:otherwise>
+				<xsl:text>EA</xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 	
 	<msxsl:script language="VBScript" implements-prefix="vbscript"><![CDATA[ 
