@@ -15,10 +15,13 @@ will NOT automatically be added to this document, as specified in the specificat
 ******************************************************************************************
 25/03/2011 	| Graham Neicho 	| Created module. FB4292
 ******************************************************************************************
+13/10/2011 	| Sandeep Sehgal    | 4928. Set output encoding as UTF-8
+******************************************************************************************
 			|					| 
 ******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl">
+<xsl:output encoding="UTF-8"/>
 	<xsl:template match="/Invoice | /CreditNote | /DebitNote">
 		<xsl:variable name="DocumentType">
 			<xsl:value-of select="local-name(.)"/>
