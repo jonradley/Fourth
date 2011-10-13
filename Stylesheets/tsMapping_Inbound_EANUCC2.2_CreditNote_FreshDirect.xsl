@@ -6,6 +6,8 @@ Date				| Name					| Comments
 26/09/2011		|	KOshaughnessy		|Bugfix 4984,4896
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 06/10/2011		| 	KOshaughnessy		|Bugfix 4925
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+13/10/11			|	KOshaughnessy		|Bugfix 4943
 *************************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:sh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" xmlns:eanucc="urn:ean.ucc:2" xmlns:pay="urn:ean.ucc:pay:2" xmlns:vat="urn:ean.ucc:pay:vat:2">
 	<xsl:template match="/">
@@ -64,7 +66,7 @@ Date				| Name					| Comments
 								</ShipTo>
 								<InvoiceReferences>
 									<InvoiceReference>
-										<xsl:value-of select="//eanucc:transaction/command/eanucc:documentCommand/documentCommandOperand/pay:invoice/invoiceIdentification/uniqueCreatorIdentification"/>
+										<xsl:value-of select="//pay:invoice/invoiceLineItem/invoice/documentReference/uniqueCreatorIdentification"/>
 									</InvoiceReference>
 									<InvoiceDate>
 										<xsl:value-of select="substring-before(//pay:invoice/invoiceLineItem/deliveryNote/referenceDateTime, 'T')"/>
@@ -72,9 +74,7 @@ Date				| Name					| Comments
 								</InvoiceReferences>
 								<CreditNoteReferences>			
 									<CreditNoteReference>
-										<xsl:call-template name="characterStrip">
-											<xsl:with-param name="inputText" select="//sh:DocumentIdentification/sh:InstanceIdentifier"/>
-										</xsl:call-template>
+										<xsl:value-of select="//pay:invoice/invoiceIdentification/uniqueCreatorIdentification"/>
 									</CreditNoteReference>
 									<CreditNoteDate>
 										<xsl:value-of select="substring-before(//pay:invoice/@creationDateTime, 'T')"/>
@@ -100,6 +100,15 @@ Date				| Name					| Comments
 												<xsl:value-of select="@number"/>
 											</LineNumber>
 										</xsl:if>
+										
+										<xsl:if test="//pay:invoice/invoiceLineItem/orderIdentification/documentReference/uniqueCreatorIdentification != ''">
+											<PurchaseOrderReferences>
+												<PurchaseOrderReference>
+													<xsl:value-of select="//pay:invoice/invoiceLineItem/orderIdentification/documentReference/uniqueCreatorIdentification"/>
+												</PurchaseOrderReference>
+											</PurchaseOrderReferences>
+										</xsl:if>
+										
 										<DeliveryNoteReferences>
 											<xsl:if test="string(//invoiceLineItem/deliveryNote/referenceIdentification) !=' '">
 												<DeliveryNoteReference>
@@ -282,28 +291,6 @@ Date				| Name					| Comments
 				</BatchDocuments>
 			</Batch>
 		</BatchRoot>
-	</xsl:template>
-	
-	<!-- Removal of Alpha prefix from Credit note reference-->
-	<xsl:template name="characterStrip">
-		<xsl:param name="inputText"/>
-		<xsl:choose>
-			<xsl:when test="$inputText = ''"/>
-			<xsl:otherwise>
-				<xsl:variable name="firstCharacter" select="substring($inputText,1,1)"/>
-				<xsl:choose>
-					<xsl:when test="translate($firstCharacter,'CRN','crn') = ''">
-						<xsl:text/>
-					</xsl:when>
-					<xsl:when test="translate($firstCharacter,'1234567890() ','') = ''">
-						<xsl:value-of select="$firstCharacter"/>
-					</xsl:when>
-				</xsl:choose>
-				<xsl:call-template name="characterStrip">
-					<xsl:with-param name="inputText" select="substring($inputText,2)"/>
-				</xsl:call-template>
-			</xsl:otherwise>
-		</xsl:choose>
 	</xsl:template>
 	
 </xsl:stylesheet>
