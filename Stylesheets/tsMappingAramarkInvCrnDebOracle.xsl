@@ -13,12 +13,11 @@
 ******************************************************************************************
  
 ******************************************************************************************
- 04/10/2011 | S Sehgal | 4854 Header field is now calculated based on the document financial period when provided or using document date. 
+ 04/10/2011      | S Sehgal       | 4854 Header field is now calculated based on the document financial period when provided or using document date. 
 ******************************************************************************************
-            |            | 
+ 05/10/2011      | R Cambridge    | 4992 read buyers code for supplier from SuppliersLocationID/BuyersCode
 ******************************************************************************************
 -->
-
 
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -71,7 +70,8 @@
 		<xsl:value-of select="$separator"/>
 		<xsl:value-of select="translate(InvoiceHeader/InvoiceReferences/InvoiceDate | CreditNoteHeader/InvoiceReferences/InvoiceDate | DebitNoteHeader/InvoiceReferences/InvoiceDate,'-','')"/>
 		<xsl:value-of select="$separator"/>
-		<xsl:value-of select="InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode | CreditNoteHeader/Buyer/BuyersLocationID/SuppliersCode | DebitNoteHeader/Buyer/BuyersLocationID/SuppliersCode"/>
+		<!-- 4992 R Cambridge use buyer's code for supplier -->
+		<xsl:value-of select="InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode | CreditNoteHeader/Supplier/SuppliersLocationID/BuyersCode | DebitNoteHeader/Supplier/SuppliersLocationID/BuyersCode"/>
 		<xsl:value-of select="$separator"/>
 		<xsl:value-of select="$separator"/>
 		<xsl:text>PRINCIPAL</xsl:text>
