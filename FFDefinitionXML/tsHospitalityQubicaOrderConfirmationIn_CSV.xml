@@ -69,6 +69,7 @@
 					<ProductDescription RecordPos="SZKCOO" LPos="20"/>
 					<!--<OrderedQuantity name="UnitOfMeasure" RecordPos="SZKCOO" LPos="24"/>-->
 					<ConfirmedQuantity name="UnitOfMeasure" RecordPos="SZKCOO" LPos="24"/>
+					<PackSize RecordPos="SZKCOO" LPos="22"/>
 					<UnitValueExclVAT RecordPos="SZKCOO" LPos="28"/>
 					<LineValueExclVAT RecordPos="SZKCOO" LPos="30"/>
 					<ConfirmedDeliveryDetailsLineLevel>
