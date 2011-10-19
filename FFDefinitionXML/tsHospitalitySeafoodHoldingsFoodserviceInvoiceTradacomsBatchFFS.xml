@@ -194,7 +194,7 @@ K Oshaughnessy| 21/07/2011	| Created
 								<LineNumber RecordPos="ILD=" LPos="2"/>
 								<PurchaseOrderReferences>
 									<!-- LPos 2 OPTIONAL Purchase Order Reference, OPTIONAL, INVOIC – ODD – ORNO(1), Should be set to the customer’s order reference.  If the order has been generated without a customer reference then the seller’s order reference may be used -->
-									<PurchaseOrderReference RecordPos="ODD=" LPos="2" SFPos="1"/>
+									<PurchaseOrderReference RecordPos="ILD=" LPos="28" SFPos="1"/>
 									<!-- LPos 2 OPTIONAL Purchase Order Date, OPTIONAL, INVOIC – ODD – ORNO(3), YYMMDD, Must be valid date, and should be set to the order date associated with the reference above -->
 									<PurchaseOrderDate RecordPos="ILD=" LPos="27" SFPos="3"/>
 								</PurchaseOrderReferences>
