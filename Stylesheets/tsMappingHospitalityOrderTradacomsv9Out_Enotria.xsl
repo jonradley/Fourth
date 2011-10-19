@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--======================================================================================
  Overview
 
@@ -55,7 +54,7 @@
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Buyer/BuyersName), 35)"/>
 			<xsl:text>+</xsl:text>
 			<!--Your mailbox reference-->
-			<xsl:text>5050085514393</xsl:text>
+			<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/>
 			<xsl:text>:</xsl:text>
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersName), 35)"/>
 			<xsl:text>+</xsl:text>
@@ -547,15 +546,6 @@ function msEscape(vsField){
 	return vsField.replace(/([?+=:'])/g, "?$1");
 	
 }
-
-
-   
 ]]></msxsl:script>
-
-
-
-
-
-
 
 </xsl:stylesheet>
