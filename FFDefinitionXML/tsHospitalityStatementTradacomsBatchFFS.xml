@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>'</ffsRecordSeparator>
+		<ffsEscapeChars>
+			<ffsEscapeChar>
+				<ffsNative>chr(13)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>chr(10)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?=</ffsNative>
+				<ffsTradesimple>¬E</ffsTradesimple>
+				<ffsLiteral>=</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?+</ffsNative>
+				<ffsTradesimple>¬P</ffsTradesimple>
+				<ffsLiteral>+</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?:</ffsNative>
+				<ffsTradesimple>¬C</ffsTradesimple>
+				<ffsLiteral>:</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?'</ffsNative>
+				<ffsTradesimple>¬A</ffsTradesimple>
+				<ffsLiteral>'</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>??</ffsNative>
+				<ffsTradesimple>¬Q</ffsTradesimple>
+				<ffsLiteral>?</ffsLiteral>
+			</ffsEscapeChar>
+		</ffsEscapeChars>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>+</ffsFieldSeparator>
+			<ffsSubFieldSeparator>:</ffsSubFieldSeparator>
+		</ffsFieldSeparators>
+		<ffsPadding/>
+		<ffsBatchHeader>
+			<!--list of records that make up the header, this will be added to each document in the batch -->
+			<ffsHeaderRecord RecordPos="STX="/>
+			<ffsHeaderRecord RecordPos="TYP="/>
+			<ffsHeaderRecord RecordPos="SDT="/>
+			<ffsHeaderRecord RecordPos="CDT="/>
+		</ffsBatchHeader>
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<BatchDocuments>
+				<BatchDocument>
+					<Statement>
+						<TradeSimpleHeader>
+							<!-- MANDATORY Sender’s code for recipient, MANDATORY, SRMHDR – CDT – CIDN(2), You must provide this code.  It is your internal identifier for the company that is to receive the document.  It must match the code that you have entered on the trading relationship you have with the other company -->
+							<SendersCodeForRecipient RecordPos="CDT=" LPos="1" SFPos="2"/>
+							<!-- OPTIONAL Sender’s Branch Reference, MANDATORY, SRMHDR – CDT – CIDN(2), Depending on your particular relationship with the company, you must provide this code.  It is your internal identifier for the “contract” that the receiving company belongs to.  It must match the code that you have provided to ABS on set-up -->
+							<SendersBranchReference RecordPos="CDT=" LPos="1" SFPos="2"/>
+						</TradeSimpleHeader>
+						<StatementHeader>
+							<BatchInformation>
+								<!-- OPTIONAL Supplier’s File Generation Number, DERIVE, SRMHDR – FIL – FLGN, This should be incremented by +1 for each transmission of credit notes sent to the exchange.  This must return to 1 after 9999 -->
+								<FileGenerationNo RecordPos="FIL=" LPos="1"/>
+								<!-- OPTIONAL Supplier’s File Version Number, DERIVE, SRMHDR – FIL – FLVN, This should be incremented by +1 for each retry of a transmission of credit notes sent to the exchange.  This must return to 1 after 9999 -->
+								<FileVersionNo RecordPos="FIL=" LPos="2"/>
+								<!-- OPTIONAL Supplier’s File Creation Date, DERIVE, SRMHDR – FIL - FLDT, YYMMDD, This should be a valid date, and should be the date on which the credit note transmission file was created by your systems -->
+								<FileCreationDate RecordPos="FIL=" LPos="3"/>
+								<!-- OPTIONAL Sender’s Transmission Reference, OPTIONAL, STX – SNRF, If available – for use in transmission notifications -->
+								<SendersTransmissionReference RecordPos="STX=" LPos="5"/>
+								<!-- OPTIONAL Sender’s Transmission Date/Time, OPTIONAL, STX – TRDT, YYMMDD, If available – for use in transmission notifications -->
+								<SendersTransmissionDate RecordPos="STX=" LPos="4"/>
+							</BatchInformation>
+							<Buyer>
+								<BuyersLocationID>
+									<!--SRMHDR-CDT-CIDN(1)-->
+									<SuppliersCode RecordPos="CDT=" LPos="1" SFPos="1"/>
+								</BuyersLocationID>
+								<!-- OPTIONAL Buyer Name, DERIVE, SRMHDR – CDT – CNAM, The “invoice to” name -->
+								<BuyersName RecordPos="CDT=" LPos="2"/>
+								<BuyersAddress>
+									<!-- OPTIONAL Buyer Address, DERIVE, SRMHDR – CDT – CADD(1…5), The “invoice to” address -->
+									<AddressLine1 RecordPos="CDT=" LPos="3" SFPos="1"/>
+									<AddressLine2 RecordPos="CDT=" LPos="3" SFPos="2"/>
+									<AddressLine3 RecordPos="CDT=" LPos="3" SFPos="3"/>
+									<AddressLine4 RecordPos="CDT=" LPos="3" SFPos="4"/>
+									<PostCode RecordPos="CDT=" LPos="3" SFPos="5"/>
+								</BuyersAddress>
+							</Buyer>
+							<Supplier>
+								<SuppliersLocationID>
+									<!--SRMHDR-SDT-SIDN(1)-->
+									<SuppliersCode RecordPos="SDT=" LPos="1" SFPos="1"/>
+								</SuppliersLocationID>
+								<!-- OPTIONAL Supplier Name, DERIVE, SRMHDR – SDT – SNAM, This field should be set to your company name as on your paper credit notes for this account -->
+								<SuppliersName RecordPos="SDT=" LPos="2"/>
+								<SuppliersAddress>
+									<!-- OPTIONAL Supplier Address, DERIVE, SRMHDR – SDT – SADD(1…5), Your address -->
+									<AddressLine1 RecordPos="SDT=" LPos="3" SFPos="1"/>
+									<AddressLine2 RecordPos="SDT=" LPos="3" SFPos="2"/>
+									<AddressLine3 RecordPos="SDT=" LPos="3" SFPos="3"/>
+									<AddressLine4 RecordPos="SDT=" LPos="3" SFPos="4"/>
+									<PostCode RecordPos="SDT=" LPos="3" SFPos="5"/>
+								</SuppliersAddress>
+							</Supplier>
+							<StatementReferences>
+								<!-- MANDATORY Supplier VAT Number, DERIVE, SRMHDR – SDT – VATN, Your VAT number -->
+								<VATRegNo RecordPos="SDT=" LPos="4"/>
+							</StatementReferences>
+						</StatementHeader>
+						<StatementDetail>
+							<StatementLine>
+								<ShipToLocationID>
+									<!-- NOT USED FOR GLN, actually used to store SRMINF - SRD - SEQA for matching with SRMINF - DNB - SEQA -->
+									<GLN RecordPos="SRD=" LPos="1"/>
+									<!-- NOT USED FOR BuyersCode, actually used to store SRMINF - DNB - SEQA -->
+									<BuyersCode RecordPos="DNB=" LPos="1"/>
+									<!-- OPTIONAL Supplier’s Delivery Location Code, MANDATORY, SRMINF – SRD – CLOC(2), Same value as Sender’s code for recipient on the invoice/credit note -->
+									<SuppliersCode RecordPos="SRD=" LPos="2" SFPos="2"/>
+								</ShipToLocationID>
+								<!-- MANDATORY Invoice/Credit Indicator, MANDATORY, SRMINF – SRD – LINE, TRADACOMS: 05 – Invoice, 06 – Credit note, SCHEMA 'Invoice' or 'Credit'	“Invoice” or “Credit” -->
+								<DocumentType RecordPos="SRD=" LPos="3"/>
+								<!-- MANDATORY Invoice/Credit Number, MANDATORY, SRMINF – SRD – LIDR(1), A unique document number for the date -->
+								<DocumentReference RecordPos="SRD=" LPos="4" SFPos="1"/>
+								<!-- MANDATORY Invoice/Credit Date, MANDATORY, SRMINF – SRD – LIDR(2), YYMMDD, The date the document was issued -->
+								<DocumentDate RecordPos="SRD=" LPos="4" SFPos="2"/>
+								<!-- MANDATORY Invoice/Credit Total Ex VAT, MANDATORY, SRMINF – SRD – LIDT, 2 d.p. implied - If SRMINF – SRD – LINE = “06” then multiply by –1.The total value of the document, before VAT and settlement discount -->
+								<LineValueExclVAT RecordPos="SRD=" LPos="6"/>
+								<!-- MANDATORY Invoice/Credit VAT Amount, MANDATORY, SRMINF – SRD – LIDV, 2 d.p. implied - If SRMINF – SRD – LINE = “06” then multiply by –1.The document total amount of VAT payable -->
+								<LineVATAmount RecordPos="SRD=" LPos="7"/>
+								<!-- OPTIONAL Narrative, OPTIONAL, SRMINF – DNB – GNAR(1…4), (where SEQA matches line above) Any free text associated with this document -->
+								<Narrative RecordPos="DNB=" LPos="5">
+									<!-- NOT USED FOR Code, actually used to store SRMINF - DNB - SEQB -->
+									<ffsAttribute1 name="Code" RecordPos="DNB=" LPos="2"/>
+								</Narrative>
+							</StatementLine>
+						</StatementDetail>
+						<StatementTrailer>
+							<!-- MANDATORY Number of Lines, DERIVE, SRMINF – SRT - SRLC, 2 d.p. implied, The number of documents contained in the statement -->
+							<NumberOfLines RecordPos="SRT=" LPos="1"/>
+							<!-- MANDATORY Documents Total Ex VAT, DERIVE, SRMINF – SRT – SRDT, 2 d.p. implied, The total value of the all document totals, before VAT -->
+							<TotalExclVAT RecordPos="SRT=" LPos="3"/>
+							<!-- MANDATORY VAT Amounts Total, DERIVE, SRMINF – SRT - SRVT, 2 d.p. implied, The total amount of VAT payable -->
+							<VATAmount RecordPos="SRT=" LPos="4"/>
+						</StatementTrailer>
+					</Statement>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>
