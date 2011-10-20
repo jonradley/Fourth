@@ -24,9 +24,9 @@
 	
 	<!-- Start point - ensure required outer BatchRoot tag is applied -->
 	<xsl:template match="/">
-<BatchRoot>
-		<xsl:apply-templates/>
-</BatchRoot>
+		<BatchRoot>
+			<xsl:apply-templates/>
+		</BatchRoot>
 	</xsl:template>
 	
 	<!-- GENERIC HANDLER to copy unchanged nodes, will be overridden by any node-specific templates below -->
@@ -63,21 +63,90 @@
 		</xsl:copy>
 	</xsl:template>
 	
-	<!-- CLD-QTYC(1) (CreditNoteLine/CreditedQuantity) needs to be multiplied by -1 if (CreditNoteLine/ProductID/BuyersProductCode) is NOT blank -->
-	<xsl:template match="CreditNoteLine/CreditedQuantity">
-		<xsl:choose>
-			<!--Parent of CreditedQuantity is CreditNoteLine-->
-			<xsl:when test="string-length(../ProductID/BuyersProductCode) &gt; 0" >
-				<!--CLD-DRLI is not blank, multiply by -1-->
-				<xsl:call-template name="copyCurrentNodeDPUnchanged">
-					<xsl:with-param name="lMultiplier" select="-1.0"/>
-				</xsl:call-template>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:call-template name="copyCurrentNodeDPUnchanged"/>
-			</xsl:otherwise>
-		</xsl:choose>
+	
+	
+	<xsl:template match="CreditNoteLine">
+	
+		<CreditNoteLine>
+	
+			<xsl:apply-templates select="LineNumber"/>
+			<xsl:apply-templates select="CreditRequestReferences"/>
+			<xsl:apply-templates select="PurchaseOrderReferences"/>
+			<xsl:apply-templates select="PurchaseOrderConfirmationReferences"/>
+			<xsl:apply-templates select="DeliveryNoteReferences"/>
+			<xsl:apply-templates select="GoodsReceivedNoteReferences"/>
+			<xsl:apply-templates select="ProductID"/>
+			<xsl:apply-templates select="ProductDescription"/>
+			<xsl:apply-templates select="OrderedQuantity"/>
+			<xsl:apply-templates select="ConfirmedQuantity"/>
+			<xsl:apply-templates select="DeliveredQuantity"/>
+			<xsl:apply-templates select="InvoicedQuantity"/>
+		
+			<xsl:variable name="sQuantity">
+				<xsl:choose>
+					<xsl:when test="string(./*[TotalMeasureIndicator]/TotalMeasure) != ''">
+						<xsl:for-each select="./Measure/TotalMeasure[1]">
+							<xsl:call-template name="copyCurrentNodeExplicit3DP"/>
+						</xsl:for-each>
+					</xsl:when>
+					<xsl:otherwise><xsl:value-of select="CreditedQuantity"/></xsl:otherwise>
+				</xsl:choose>		
+			</xsl:variable>
+			
+			<xsl:variable name="sUoM">
+				<xsl:choose>
+					<xsl:when test="string(./Measure/TotalMeasureIndicator) = 'KG' or string(./Measure/TotalMeasureIndicator) = 'KGM' ">KGM</xsl:when>
+					<xsl:otherwise><xsl:value-of select="@UoM"/></xsl:otherwise>
+				</xsl:choose>		
+			</xsl:variable>
+	
+			
+			<CreditedQuantity>
+				<xsl:if test="string-length($sUoM) &gt; 0">
+					<xsl:attribute name="UnitOfMeasure">
+						<xsl:value-of select="$sUoM"/>
+					</xsl:attribute>
+				</xsl:if>
+				<!-- CLD-QTYC(1) (CreditNoteLine/CreditedQuantity) needs to be multiplied by -1 if (CreditNoteLine/ProductID/BuyersProductCode) is NOT blank -->
+				<xsl:if test="string-length(./ProductID/BuyersProductCode) &gt; 0">-</xsl:if>
+				<xsl:value-of select="$sQuantity"/>			
+			</CreditedQuantity>
+		
+		
+			<xsl:apply-templates select="PackSize"/>
+			<xsl:apply-templates select="UnitValueExclVAT"/>
+			<xsl:apply-templates select="LineValueExclVAT"/>
+			<xsl:apply-templates select="LineDiscountRate"/>
+			<xsl:apply-templates select="LineDiscountValue"/>
+			<xsl:apply-templates select="VATCode"/>
+			<xsl:apply-templates select="VATRate"/>
+			<xsl:apply-templates select="Narrative"/>
+			<xsl:apply-templates select="NetPriceFlag"/>
+			<xsl:apply-templates select="Measure"/>
+			<xsl:apply-templates select="LineExtraData"/>
+			
+			
+		</CreditNoteLine>
+		
 	</xsl:template>
+	
+	
+	<xsl:template match="PurchaseOrderReferences">
+	
+		<xsl:choose>
+		
+			<xsl:when test="count(*) != 2"/>
+			
+			<xsl:otherwise>
+				<xsl:copy>
+					<xsl:apply-templates select="*"/>
+				</xsl:copy>			
+			</xsl:otherwise>
+			
+		</xsl:choose>
+	
+	</xsl:template>
+	
 	
 	<!-- CLD-EXLV (CreditNoteLine/LineValueExclVAT) need to be multiplied by -1 if (CreditNoteLine/ProductID/BuyersProductCode) is NOT blank -->
 	<xsl:template match="CreditNoteLine/LineValueExclVAT">
@@ -142,9 +211,11 @@
 	<!-- END of SIMPLE CONVERSIONS-->
 
 	<!-- DATE CONVERSION YYMMDD to xsd:date -->
-	<xsl:template match="CreditNoteReferences/CreditNoteDate |
+	<xsl:template match="PurchaseOrderReferences/PurchaseOrderDate | 
+						CreditNoteReferences/CreditNoteDate |
 						BatchInformation/FileCreationDate |
 						InvoiceReferences/InvoiceDate |
+						InvoiceReferences/TaxPointDate |
 						CreditNoteReferences/TaxPointDate">
 		<xsl:copy>
 			<xsl:value-of select="concat('20', substring(., 1, 2), '-', substring(., 3, 2), '-', substring(., 5, 2))"/>
