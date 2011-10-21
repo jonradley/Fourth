@@ -68,7 +68,7 @@ K Oshaughnessy| 21/07/2011	| Created
 			<ffsGroup>
 				<!--References below which mean RecordPos ODD= with LPos 1 would be coded as ILD= and LPos 26 (25+1)-->
 				<ffsGroupRecord RecordPos="ODD=" FieldTotal="11"/>
-				<ffsSubGroupRecord RecordPos="ILD=" FieldTotal="25"/>
+				<ffsSubGroupRecord RecordPos="ILD=" FieldTotal="17"/>
 			</ffsGroup>
 		</ffsGroups>
 		<ffsSplitBatchRecord RecordPos="CLO="/>
@@ -194,17 +194,17 @@ K Oshaughnessy| 21/07/2011	| Created
 								<LineNumber RecordPos="ILD=" LPos="2"/>
 								<PurchaseOrderReferences>
 									<!-- LPos 2 OPTIONAL Purchase Order Reference, OPTIONAL, INVOIC – ODD – ORNO(1), Should be set to the customer’s order reference.  If the order has been generated without a customer reference then the seller’s order reference may be used -->
-									<PurchaseOrderReference RecordPos="ILD=" LPos="28" SFPos="1"/>
+									<PurchaseOrderReference RecordPos="ILD=" LPos="19" SFPos="1"/>
 									<!-- LPos 2 OPTIONAL Purchase Order Date, OPTIONAL, INVOIC – ODD – ORNO(3), YYMMDD, Must be valid date, and should be set to the order date associated with the reference above -->
-									<PurchaseOrderDate RecordPos="ILD=" LPos="27" SFPos="3"/>
+									<PurchaseOrderDate RecordPos="ILD=" LPos="19" SFPos="3"/>
 								</PurchaseOrderReferences>
 								<DeliveryNoteReferences>
 									<!-- LPos 3 OPTIONAL Delivery Note Reference, CONDITIONAL, INVOIC – ODD – DELN(1), The delivery note reference for the goods being invoiced -->
-									<DeliveryNoteReference RecordPos="ILD=" LPos="28" SFPos="1"/>
+									<DeliveryNoteReference RecordPos="ILD=" LPos="20" SFPos="1"/>
 									<!-- LPos 3 OPTIONAL Delivery Note Date, CONDITIONAL, INVOIC – ODD – DELN(2), YYMMDD, The date associated with the reference above -->
-									<DeliveryNoteDate RecordPos="ILD=" LPos="28" SFPos="2"/>
+									<DeliveryNoteDate RecordPos="ILD=" LPos="20" SFPos="2"/>
 									<!-- LPos 3 OPTIONAL Despatch Date, CONDITIONAL, INVOIC – ODD – DELN(2), YYMMDD, The same as the above date -->
-									<DespatchDate RecordPos="ILD=" LPos="28" SFPos="2"/>
+									<DespatchDate RecordPos="ILD=" LPos="20" SFPos="2"/>
 								</DeliveryNoteReferences>
 								<ProductID>
 									<!-- MANDATORY GTIN, INVOIC - ILD - SPRO(1) -->
