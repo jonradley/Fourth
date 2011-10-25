@@ -125,13 +125,27 @@
 														</SuppliersProductCode>
 													</ProductID>
 													<InvoicedQuantity>
-														<xsl:value-of select="format-number(concat(substring(InvoicedQuantity,2,11),'.',substring(InvoicedQuantity,13,4)),'0.0000')"/>
+														<xsl:choose>
+															<xsl:when test="substring(InvoicedQuantity,1,1) = '-'">
+																<xsl:value-of select="format-number(concat(substring(InvoicedQuantity,1,12),'.',substring(InvoicedQuantity,13,4)),'0.0000')"/>
+															</xsl:when>
+															<xsl:otherwise>
+																<xsl:value-of select="format-number(concat(substring(InvoicedQuantity,2,11),'.',substring(InvoicedQuantity,13,4)),'0.0000')"/>
+															</xsl:otherwise>
+														</xsl:choose>
 													</InvoicedQuantity>
 													<UnitValueExclVAT>
 														<xsl:value-of select="format-number(format-number(concat(substring(LineValueExclVAT,2,13),'.',substring(LineValueExclVAT,15,2)),'0.00') div format-number	(concat(substring(InvoicedQuantity,2,11),'.',substring(InvoicedQuantity,13,4)),'0.0000'),'0.0000')"/>
 													</UnitValueExclVAT>
 													<LineValueExclVAT>
-														<xsl:value-of select="format-number(concat(substring(LineValueExclVAT,2,13),'.',substring(LineValueExclVAT,15,2)),'0.00')"/>
+														<xsl:choose>
+															<xsl:when test="substring(LineValueExclVAT,1,1) = '-'">
+																<xsl:value-of select="format-number(concat(substring(LineValueExclVAT,1,14),'.',substring(LineValueExclVAT,15,2)),'0.00')"/>
+															</xsl:when>
+															<xsl:otherwise>
+																<xsl:value-of select="format-number(concat(substring(LineValueExclVAT,2,13),'.',substring(LineValueExclVAT,15,2)),'0.00')"/>
+															</xsl:otherwise>
+														</xsl:choose>	
 													</LineValueExclVAT>
 													<VATCode>Z</VATCode>
 													<VATRate>0.00</VATRate>
@@ -252,13 +266,27 @@
 														</SuppliersProductCode>
 													</ProductID>
 													<CreditedQuantity>
-														<xsl:value-of select="format-number(concat(substring(InvoicedQuantity,2,11),'.',substring(InvoicedQuantity,13,4)),'0.0000')"/>
+														<xsl:choose>
+															<xsl:when test="substring(InvoicedQuantity,1,1) = '+'">
+																<xsl:value-of select="(format-number(concat(substring(InvoicedQuantity,2,11),'.',substring(InvoicedQuantity,13,4)),'0.0000')) * -1"/>
+															</xsl:when>
+															<xsl:otherwise>
+																<xsl:value-of select="format-number(concat(substring(InvoicedQuantity,2,11),'.',substring(InvoicedQuantity,13,4)),'0.0000')"/>
+															</xsl:otherwise>
+														</xsl:choose>
 													</CreditedQuantity>
 													<UnitValueExclVAT>
 														<xsl:value-of select="format-number(format-number(concat(substring(LineValueExclVAT,2,13),'.',substring(LineValueExclVAT,15,2)),'0.00') div format-number	(concat(substring(InvoicedQuantity,2,11),'.',substring(InvoicedQuantity,13,4)),'0.0000'),'0.0000')"/>
 													</UnitValueExclVAT>
 													<LineValueExclVAT>
-														<xsl:value-of select="format-number(concat(substring(LineValueExclVAT,2,13),'.',substring(LineValueExclVAT,15,2)),'0.00')"/>
+														<xsl:choose>
+															<xsl:when test="substring(LineValueExclVAT,1,1) = '+'">
+																<xsl:value-of select="(format-number(concat(substring(LineValueExclVAT,2,13),'.',substring(LineValueExclVAT,15,2)),'0.00')) * -1"/>
+															</xsl:when>
+															<xsl:otherwise>
+																<xsl:value-of select="format-number(concat(substring(LineValueExclVAT,2,13),'.',substring(LineValueExclVAT,15,2)),'0.00')"/>
+															</xsl:otherwise>
+														</xsl:choose>	
 													</LineValueExclVAT>
 													<VATCode>Z</VATCode>
 													<VATRate>0.00</VATRate>
