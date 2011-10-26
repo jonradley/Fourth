@@ -1,0 +1,102 @@
+<!--
+**********************************************************************
+Date		| Name		| Change
+**********************************************************************
+27/07/2011| KOshaughnessy| FB4970 created
+**********************************************************************
+			|			|
+*********************************************************************-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>'</ffsRecordSeparator>
+		<ffsEscapeChars>
+			<ffsEscapeChar>
+				<ffsNative>chr(13)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>chr(10)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?=</ffsNative>
+				<ffsTradesimple>¬E</ffsTradesimple>
+				<ffsLiteral>=</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?+</ffsNative>
+				<ffsTradesimple>¬P</ffsTradesimple>
+				<ffsLiteral>+</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?:</ffsNative>
+				<ffsTradesimple>¬C</ffsTradesimple>
+				<ffsLiteral>:</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?'</ffsNative>
+				<ffsTradesimple>¬A</ffsTradesimple>
+				<ffsLiteral>'</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>??</ffsNative>
+				<ffsTradesimple>¬Q</ffsTradesimple>
+				<ffsLiteral>?</ffsLiteral>
+			</ffsEscapeChar>
+		</ffsEscapeChars>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>+</ffsFieldSeparator>
+			<ffsSubFieldSeparator>:</ffsSubFieldSeparator>
+		</ffsFieldSeparators>
+		<ffsPadding/>
+	</ffsSettings>
+	<ffsRoot>
+		<PurchaseOrder>
+			<TradeSimpleHeader>
+				<SendersCodeForRecipient/>
+			</TradeSimpleHeader>
+			<PurchaseOrderHeader>
+				<DocumentStatus>Original</DocumentStatus>
+				<Buyer>
+					<BuyersLocationID>
+						<SuppliersCode RecordPos="RFF+IA" LPos="1" SFPos="1"/>
+					</BuyersLocationID>
+				</Buyer>
+				<Supplier>
+					<SuppliersLocationID>
+						<GLN RecordPos="NAD+SE" LPos="1"/>
+						<BuyersCode RecordPos="RFF+IA" LPos="1" SFPos="1"/>
+					</SuppliersLocationID>
+				</Supplier>
+				<ShipTo>
+					<ShipToLocationID>
+						<GLN RecordPos="NAD+BY" LPos="1"/>
+					</ShipToLocationID>
+				</ShipTo>
+				<PurchaseOrderReferences>
+					<PurchaseOrderReference RecordPos="BGM" LPos="2"/>
+					<PurchaseOrderDate RecordPos="DTM+137" LPos="2" SFPos="1"/>
+				</PurchaseOrderReferences>
+				<OrderedDeliveryDetails>
+					<DeliveryType>Delivery</DeliveryType>
+					<DeliveryDate RecordPos="DTM+199" LPos="2" SFPos="1"/>
+				</OrderedDeliveryDetails>
+			</PurchaseOrderHeader>
+			<PurchaseOrderDetail>
+				<PurchaseOrderLine>
+					<LineNumber RecordPos="LIN" LPos="1"/>
+					<ProductID>
+						<SuppliersProductCode RecordPos="LIN" LPos="3"/>
+					</ProductID>
+					<ProductDescription RecordPos="IMD+F++" LPos="1" SFPos="3"/>
+					<OrderedQuantity RecordPos="QTY+21" LPos="1" SFPos="2"/>
+					<ffsAttribute1 name="UnitOfMeasure" RecordPos="QTY+21" LPos="1" SFPos="3"/>
+					<LineValueExclVAT RecordPos="MOA+203" LPos="1" SFPos="2"/>
+				</PurchaseOrderLine>
+			</PurchaseOrderDetail>
+		</PurchaseOrder>
+	</ffsRoot>
+</ffsFlatFileSchema>
