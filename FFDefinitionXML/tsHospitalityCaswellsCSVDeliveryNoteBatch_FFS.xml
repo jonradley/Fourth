@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--******************************************************************
+Alterations
+**********************************************************************
+Name			| Date			| Change
+**********************************************************************
+R Cambridge	| 09/02/2009	| 2723 Created mapper
+**********************************************************************
+				|					|
+*******************************************************************-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>chr(10)</ffsRecordSeparator>
+		<ffsEscapeChars>
+			<ffsEscapeChar>
+				<ffsNative>chr(13)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>chr(10)</ffsNative>
+				<ffsTradesimple>chr(10)</ffsTradesimple>
+				<ffsLiteral>chr(10)</ffsLiteral>
+			</ffsEscapeChar>
+		</ffsEscapeChars>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>,</ffsFieldSeparator>
+		</ffsFieldSeparators>
+		<ffsSplitBatchRecord RecordPos="H"/>
+	</ffsSettings>
+	<ffsRoot>
+		<BatchDocuments>
+			<BatchDocument>
+				<DeliveryNote>
+					<TradeSimpleHeader>
+						<SendersCodeForRecipient RecordPos="HEAD" LPos="4"/>
+					</TradeSimpleHeader>
+					<DeliveryNoteHeader>
+						<Buyer>
+							<BuyersLocationID>
+								<SuppliersCode RecordPos="HEAD" LPos="2"/>
+								<BuyersCode RecordPos="HEAD" LPos="3"/>
+							</BuyersLocationID>
+						</Buyer>
+						<ShipTo>
+							<ShipToLocationID>
+								<GLN RecordPos="HEAD" LPos="23"/>
+								<SuppliersCode RecordPos="HEAD" LPos="4"/>
+							</ShipToLocationID>
+							<ShipToAddress>
+								<AddressLine1 RecordPos="HEAD" LPos="18"/>
+								<AddressLine2 RecordPos="HEAD" LPos="19"/>
+								<AddressLine3 RecordPos="HEAD" LPos="20"/>
+								<PostCode RecordPos="HEAD" LPos="21"/>
+							</ShipToAddress>
+						</ShipTo>
+						<PurchaseOrderReferences>
+							<PurchaseOrderReference RecordPos="HEAD" LPos="7"/>
+							<PurchaseOrderDate RecordPos="HEAD" LPos="8"/>
+						</PurchaseOrderReferences>
+						<DeliveryNoteReferences>
+							<DeliveryNoteReference RecordPos="HEAD" LPos="5"/>
+							<DeliveryNoteDate RecordPos="HEAD" LPos="6"/>
+							<!-- Despatch Date -->
+						</DeliveryNoteReferences>
+						<DeliveredDeliveryDetails>
+							<DeliveryDate RecordPos="HEAD" LPos="6"/>
+						</DeliveredDeliveryDetails>
+					</DeliveryNoteHeader>
+					<DeliveryNoteDetail>
+						<DeliveryNoteLine>
+							<ProductID>
+								<GTIN RecordPos="LINE" LPos="18"/>
+								<SuppliersProductCode RecordPos="LINE" LPos="19"/>
+							</ProductID>
+							<DespatchedQuantity RecordPos="LINE" LPos="7"/>
+							<PackSize RecordPos="LINE" LPos="1"/>
+						</DeliveryNoteLine>
+					</DeliveryNoteDetail>
+				</DeliveryNote>
+			</BatchDocument>
+		</BatchDocuments>
+	</ffsRoot>
+</ffsFlatFileSchema>
