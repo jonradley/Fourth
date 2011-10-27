@@ -56,10 +56,9 @@ Date		| Name		| Change
 	<ffsRoot>
 		<PurchaseOrder>
 			<TradeSimpleHeader>
-				<SendersCodeForRecipient/>
+				<SendersCodeForRecipient RecordPos="RFF" LPos="2" SFPos="2"/>
 			</TradeSimpleHeader>
 			<PurchaseOrderHeader>
-				<DocumentStatus>Original</DocumentStatus>
 				<Buyer>
 					<BuyersLocationID>
 						<SuppliersCode RecordPos="RFF+IA" LPos="1" SFPos="1"/>
@@ -67,34 +66,34 @@ Date		| Name		| Change
 				</Buyer>
 				<Supplier>
 					<SuppliersLocationID>
-						<GLN RecordPos="NAD+SE" LPos="1"/>
-						<BuyersCode RecordPos="RFF+IA" LPos="1" SFPos="1"/>
+						<GLN RecordPos="NAD+SE" LPos="3" SFPos="1"/>
+						<BuyersCode RecordPos="RFF+IA" LPos="2" SFPos="2"/>
 					</SuppliersLocationID>
 				</Supplier>
 				<ShipTo>
 					<ShipToLocationID>
-						<GLN RecordPos="NAD+BY" LPos="1"/>
+						<GLN RecordPos="NAD+BY" LPos="3" SFPos="1"/>
 					</ShipToLocationID>
 				</ShipTo>
 				<PurchaseOrderReferences>
-					<PurchaseOrderReference RecordPos="BGM" LPos="2"/>
-					<PurchaseOrderDate RecordPos="DTM+137" LPos="2" SFPos="1"/>
+					<PurchaseOrderReference RecordPos="BGM" LPos="3"/>
+					<PurchaseOrderDate RecordPos="DTM+137" LPos="2" SFPos="2"/>
 				</PurchaseOrderReferences>
 				<OrderedDeliveryDetails>
-					<DeliveryType>Delivery</DeliveryType>
-					<DeliveryDate RecordPos="DTM+199" LPos="2" SFPos="1"/>
+					<DeliveryDate RecordPos="DTM+199" LPos="2" SFPos="2"/>
 				</OrderedDeliveryDetails>
 			</PurchaseOrderHeader>
 			<PurchaseOrderDetail>
 				<PurchaseOrderLine>
-					<LineNumber RecordPos="LIN" LPos="1"/>
+					<LineNumber RecordPos="LIN" LPos="2"/>
 					<ProductID>
-						<SuppliersProductCode RecordPos="LIN" LPos="3"/>
+						<SuppliersProductCode RecordPos="LIN" LPos="4" SFPos="1"/>
 					</ProductID>
-					<ProductDescription RecordPos="IMD+F++" LPos="1" SFPos="3"/>
-					<OrderedQuantity RecordPos="QTY+21" LPos="1" SFPos="2"/>
-					<ffsAttribute1 name="UnitOfMeasure" RecordPos="QTY+21" LPos="1" SFPos="3"/>
-					<LineValueExclVAT RecordPos="MOA+203" LPos="1" SFPos="2"/>
+					<ProductDescription RecordPos="IMD+F" LPos="4" SFPos="4"/>
+					<OrderedQuantity RecordPos="QTY+21" LPos="2" SFPos="1">
+						<ffsAttribute1 name="UnitOfMeasure" RecordPos="QTY+21" LPos="2" SFPos="3"/>
+					</OrderedQuantity>
+					<LineValueExclVAT RecordPos="MOA+203" LPos="2" SFPos="2"/>
 				</PurchaseOrderLine>
 			</PurchaseOrderDetail>
 		</PurchaseOrder>
