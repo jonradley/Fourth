@@ -10,10 +10,12 @@ Date		|	Name				|	Comment
 <xsl:output method="xml" encoding="UTF-8"/>
 
 	<xsl:template match="/">
+		<BatchRoot>
 			<Document>	
 				<xsl:attribute name="TypePrefix">ORD</xsl:attribute>
 				<xsl:apply-templates/>
 			</Document>
+		</BatchRoot>	
 	</xsl:template>
 	
 	<xsl:template match="*">
