@@ -79,7 +79,8 @@
 					     this needs to be removed here -->
 					<xsl:choose>
 						<xsl:when test="contains(TradeSimpleHeader/RecipientsCodeForSender,'/')">
-							<xsl:value-of select="substring-before(TradeSimpleHeader/RecipientsCodeForSender,'/')"/>
+							<!-- temp hard codes for Woodward -->
+							<xsl:text>S40137250000</xsl:text>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:value-of select="TradeSimpleHeader/RecipientsCodeForSender"/>
