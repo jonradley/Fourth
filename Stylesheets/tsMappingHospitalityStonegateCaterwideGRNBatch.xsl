@@ -11,16 +11,18 @@
 
 
  © Alternative Business Solutions Ltd, 2005.
-==========================================================================================
+=======================================================================================
  Module History
-==========================================================================================
+=======================================================================================
  Version        | 
-==========================================================================================
+=======================================================================================
  Date            | Name             | Description of modification
- =======================================================================================
+ ======================================================================================
  30/06/2011	| K Oshaughnessy| 4577 change to length of delivery notes reference
 =======================================================================================
 13/07/2011	| K Oshaughnessy| 4609 Hack Alert. GLN manipulation for Brakes
+=======================================================================================
+01/11/2011	| KOshaughnessy | 4992 bugfix
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
@@ -131,7 +133,7 @@
 					<xsl:choose>
 						<!--Hack alert Caterwide sees brakes as one supplier, we see them as three. Caterwide only want us to send one GLN for all brakes GRN's we get this from the buyers code for supplier-->
 						<xsl:when test="contains(/*/*/Supplier/SuppliersLocationID/BuyersCode,'/')">
-							<xsl:value-of select="substring(/*/*/Supplier/SuppliersLocationID/BuyersCode,3,13)"/>
+							<xsl:value-of select="substring(substring-before(/*/*/Supplier/SuppliersLocationID/BuyersCode,'/'),3)"/>
 						</xsl:when>
 						<xsl:when test="/*/*/Supplier/SuppliersLocationID/GLN and /*/*/Supplier/SuppliersLocationID/GLN != '5555555555555' and /*/*/Supplier/SuppliersLocationID/GLN != '5014748111116' and /*/*/Supplier/SuppliersLocationID/GLN != '5010118000026'">
 							<xsl:value-of select="/*/*/Supplier/SuppliersLocationID/GLN"/>						
