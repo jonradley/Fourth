@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--******************************************************************
+Flat file map for Punch Taverns Invoices from PeopleSoft
+**********************************************************************
+Revision History
+**********************************************************************
+Date		| Name				| Change
+**********************************************************************
+28/03/2011	| Andrew Barber	| Created
+******************************************************************-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>chr(10)</ffsRecordSeparator>
+		<ffsEscapeChars>
+			<ffsEscapeChar>
+				<ffsNative>chr(13)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+		</ffsEscapeChars>
+		<ffsPadding/>
+		<ffsBatchHeader>
+			<ffsHeaderRecord RecordPos="A0"/>
+		</ffsBatchHeader>
+		<ffsSplitBatchRecord RecordPos="A1"/>
+	</ffsSettings>
+	<!-- Invoice Mapping -->
+	<ffsRoot>
+		<Batch>
+			<BatchDocuments>
+				<BatchDocument>
+					<Invoice>
+						<TradeSimpleHeader>
+							<SendersCodeForRecipient RecordPos="A1" LPos="18" UPos="22"/>
+						</TradeSimpleHeader>
+						<InvoiceHeader>
+							<Buyer>
+								<BuyersAddress>
+									<!-- Voucher Number -->
+									<AddressLine1 RecordPos="A1" LPos="3" UPos="10"/>
+									<!-- Invoice Type -->
+									<AddressLine2 RecordPos="A1" LPos="17" UPos="17"/>
+								</BuyersAddress>
+							</Buyer>
+							<Supplier>
+								<SuppliersLocationID>
+									<BuyersCode RecordPos="A1" LPos="23" UPos="28"/>
+								</SuppliersLocationID>
+							</Supplier>
+							<ShipTo>
+								<ShipToLocationID>
+									<BuyersCode RecordPos="A1" LPos="18" UPos="22"/>
+								</ShipToLocationID>
+							</ShipTo>
+							<InvoiceReferences>
+								<InvoiceReference RecordPos="A1" LPos="29" UPos="44"/>
+								<InvoiceDate RecordPos="A1" LPos="45" UPos="52"/>
+								<TaxPointDate RecordPos="A1" LPos="86" UPos="93"/>
+							</InvoiceReferences>
+							<HeaderExtraData>
+								<VoucherID RecordPos="A1" LPos="3" UPos="10"/>
+							</HeaderExtraData>
+						</InvoiceHeader>
+						<InvoiceDetail>
+							<InvoiceLine>
+								<PurchaseOrderReferences>
+									<PurchaseOrderReference RecordPos="A1" LPos="94" UPos="110"/>
+									<!-- No PO date provided, Delivery Date should be sufficient to ensure threading -->
+									<PurchaseOrderDate RecordPos="A1" LPos="86" UPos="93"/>
+								</PurchaseOrderReferences>
+								<DeliveryNoteReferences>
+									<DeliveryNoteReference RecordPos="A1" LPos="69" UPos="85"/>
+									<DeliveryNoteDate RecordPos="A1" LPos="86" UPos="93"/>
+								</DeliveryNoteReferences>
+								<DeliveryNoteReferences>
+									<DeliveryNoteReference RecordPos="A1" LPos="69" UPos="85"/>
+									<DeliveryNoteDate RecordPos="A1" LPos="86" UPos="93"/>
+								</DeliveryNoteReferences>
+								<ProductID>
+									<SuppliersProductCode RecordPos="B1" LPos="17" UPos="46"/>
+								</ProductID>
+								<InvoicedQuantity RecordPos="B1" LPos="47" UPos="62"/>
+								<LineValueExclVAT RecordPos="B1" LPos="69" UPos="84"/>
+							</InvoiceLine>
+						</InvoiceDetail>
+						<InvoiceTrailer>
+							<DocumentTotalExclVAT RecordPos="A1" LPos="53" UPos="68"/>
+						</InvoiceTrailer>
+					</Invoice>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>

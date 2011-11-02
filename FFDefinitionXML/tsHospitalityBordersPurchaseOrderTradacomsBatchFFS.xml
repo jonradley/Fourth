@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by Dev (ABS Ltd) -->
+<!--
+**********************************************************************
+Date		| Name		| Change
+**********************************************************************
+29/04/2009 	| Rave Tech	| H574. Copied from tsHospitalityConfirmationTradacoms.xml
+**********************************************************************
+			|			|
+**********************************************************************
+-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>'</ffsRecordSeparator>
+		<ffsEscapeChars>
+			<ffsEscapeChar>
+				<ffsNative>chr(13)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>chr(10)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?=</ffsNative>
+				<ffsTradesimple>¬E</ffsTradesimple>
+				<ffsLiteral>=</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?+</ffsNative>
+				<ffsTradesimple>¬P</ffsTradesimple>
+				<ffsLiteral>+</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?:</ffsNative>
+				<ffsTradesimple>¬C</ffsTradesimple>
+				<ffsLiteral>:</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?'</ffsNative>
+				<ffsTradesimple>¬A</ffsTradesimple>
+				<ffsLiteral>'</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>??</ffsNative>
+				<ffsTradesimple>¬Q</ffsTradesimple>
+				<ffsLiteral>?</ffsLiteral>
+			</ffsEscapeChar>
+		</ffsEscapeChars>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>+</ffsFieldSeparator>
+			<ffsSubFieldSeparator>:</ffsSubFieldSeparator>
+		</ffsFieldSeparators>
+		<ffsPadding/>
+		<ffsBatchHeader>
+			<ffsHeaderRecord RecordPos="STX="/>
+			<ffsHeaderRecord RecordPos="TYP="/>
+			<ffsHeaderRecord RecordPos="SDT="/>
+			<ffsHeaderRecord RecordPos="CDT="/>
+			<ffsHeaderRecord RecordPos="FIL="/>
+		</ffsBatchHeader>
+		<ffsSplitBatchRecord RecordPos="CLO="/>
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<BatchDocuments>
+				<BatchDocument>
+					<PurchaseOrder>
+						<TradeSimpleHeader>
+							<!-- SN specific use CLOC(3) not (2) MANDATORY Sender’s code for recipient, MANDATORY, ORDHDR – CLO – CLOC(3), You must provide this code.  It is your internal identifier for the company that is to receive the document.  It must 		match 	the code that you have entered on the trading relationship you have with the other company-->
+							<SendersCodeForRecipient RecordPos="CLO=" LPos="1" SFPos="3"/>
+						</TradeSimpleHeader>
+						<PurchaseOrderHeader>
+							<!--BatchInformation>
+								OPTIONAL Supplier’s File Generation Number, DERIVE, ORDHDR – FIL – FLGN, This should be incremented by +1 for each transmission of invoices sent to the exchange.  This must return to 1 after 9999
+								<FileGenerationNo RecordPos="FIL=" LPos="1"/>
+								OPTIONAL Supplier’s File Version Number, DERIVE, ORDHDR – FIL – FLVN, This should be incremented by +1 for each retry of a transmission of invoices sent to the exchange.  This must return to 1 after 9999
+								<FileVersionNo RecordPos="FIL=" LPos="2"/>
+								OPTIONAL Supplier’s File Creation Date, DERIVE, ORDHDR – FIL - FLDT, This should be a valid date, and should be the date on which the invoice transmission file was created by your systems
+								<FileCreationDate RecordPos="FIL=" LPos="3"/>
+								OPTIONAL Sender’s Transmission Reference, OPTIONAL, STX – SNRF, If available – for use in transmission notifications
+								<SendersTransmissionReference RecordPos="STX=" LPos="5"/>
+								OPTIONAL Sender’s Transmission Date/Time, OPTIONAL, STX – TRDT, If available – for use in transmission notifications
+								<SendersTransmissionDate RecordPos="STX=" LPos="4"/>
+							</BatchInformation-->
+							<Buyer>
+								<BuyersLocationID>
+									<!--ORDHDR-CDT-CIDN(1)-->
+									<SuppliersCode RecordPos="CDT=" LPos="1" SFPos="1"/>
+								</BuyersLocationID>
+								<!-- OPTIONAL Buyer Name, MANDATORY, ORDHDR – CDT – CNAM, NB: To make this a legal invoice, you must provide this field. The “invoice to” name -->
+								<BuyersName RecordPos="CDT=" LPos="2"/>
+								<BuyersAddress>
+									<!-- OPTIONAL Buyer Address, M, ORDHDR – CDT – CADD(1…5), NB: To make this a legal invoice, you must provide these fields. The “invoice to” address -->
+									<AddressLine1 RecordPos="CDT=" LPos="3" SFPos="1"/>
+									<AddressLine2 RecordPos="CDT=" LPos="3" SFPos="2"/>
+									<AddressLine3 RecordPos="CDT=" LPos="3" SFPos="3"/>
+									<AddressLine4 RecordPos="CDT=" LPos="3" SFPos="4"/>
+									<PostCode RecordPos="CDT=" LPos="3" SFPos="5"/>
+								</BuyersAddress>
+							</Buyer>
+							<Supplier>
+								<SuppliersLocationID>
+									<!--ORDHDR-SDT-SIDN(1)-->
+									<SuppliersCode RecordPos="SDT=" LPos="1" SFPos="1"/>
+								</SuppliersLocationID>
+								<!-- OPTIONAL Supplier Name, MANDATORY, ORDHDR – SDT – SNAM, NB: To make this a legal invoice, you must provide this field. 
+										This field should be set to your company name as on your paper invoices for this account -->
+								<SuppliersName RecordPos="SDT=" LPos="2"/>
+								<SuppliersAddress>
+									<!-- OPTIONAL Supplier Address, MANDATORY, ORDHDR – SDT – SADD(1…5), NB: To make this a legal invoice, you must provide these fields. Your address -->
+									<AddressLine1 RecordPos="SDT=" LPos="3" SFPos="1"/>
+									<AddressLine2 RecordPos="SDT=" LPos="3" SFPos="2"/>
+									<AddressLine3 RecordPos="SDT=" LPos="3" SFPos="3"/>
+									<AddressLine4 RecordPos="SDT=" LPos="3" SFPos="4"/>
+									<PostCode RecordPos="SDT=" LPos="3" SFPos="5"/>
+								</SuppliersAddress>
+							</Supplier>
+							<ShipTo>
+								<ShipToLocationID>
+									<!-- SN specific use CLOC(3) not (2) MANDATORY Sender’s code for recipient, MANDATORY, ORDHDR – CLO – CLOC(3), You must provide this code.  It is your internal identifier for the company that is to receive the 	document.  It 	must 	match the code that you have entered on the trading relationship you have with the other company-->
+									<SuppliersCode RecordPos="CLO=" LPos="1" SFPos="3"/>
+								</ShipToLocationID>
+								<!-- OPTIONAL Delivery Location Name, DERIVE, ORDHDR – CLO – CNAM, The “ship-to” name -->
+								<ShipToName RecordPos="CLO=" LPos="2"/>
+								<ShipToAddress>
+									<!-- OPTIONAL Delivery Location Address, DERIVE, ORDHDR – CLO – CADD(1…5), The “ship-to” address -->
+									<AddressLine1 RecordPos="CLO=" LPos="3" SFPos="1"/>
+									<AddressLine2 RecordPos="CLO=" LPos="3" SFPos="2"/>
+									<AddressLine3 RecordPos="CLO=" LPos="3" SFPos="3"/>
+									<AddressLine4 RecordPos="CLO=" LPos="3" SFPos="4"/>
+									<PostCode RecordPos="CLO=" LPos="3" SFPos="5"/>
+								</ShipToAddress>
+							</ShipTo>
+							<PurchaseOrderReferences>
+								<!-- MANDATORY Order Reference, MANDATORY ORDERS - ORD - ORNO(1) -->
+								<PurchaseOrderReference RecordPos="ORD=" LPos="1" SFPos="1"/>
+								<!-- MANDATORY Order Date, OPTIONAL ORDERS - ORD - ORNO(3) -->
+								<PurchaseOrderDate RecordPos="ORD=" LPos="1" SFPos="3"/>
+							</PurchaseOrderReferences>
+							<OrderedDeliveryDetails>
+								<DeliveryDate RecordPos="DIN=" LPos="1" SFPos="1"/>
+								<!-- SN specific MANDATORY header action for confirmation, OPTIONAL ORDERS - DNA - GNAR(1) -->
+								<SpecialDeliveryInstructions RecordPos="DNA=" LPos="4" SFPos="1"/>
+							</OrderedDeliveryDetails>
+						</PurchaseOrderHeader>
+						<PurchaseOrderDetail>
+							<PurchaseOrderLine>
+								<LineNumber RecordPos="OLD=" LPos="1"/>
+								<ProductID>
+									<!-- SN specific NOT GTIN, sequence number from optional narrative for matching against line number, ORDHDR - DNB - SEQA -->
+									<GTIN RecordPos="DNB=" LPos="1"/>
+									<SuppliersProductCode RecordPos="OLD=" LPos="2" SFPos="2"/>
+									<BuyersProductCode RecordPos="OLD=" LPos="4" SFPos="2"/>
+								</ProductID>
+								<ProductDescription RecordPos="OLD=" LPos="10" SFPos="1"/>
+								<!-- SN specific use the first rather than second position (no implied decimals)-->
+								<OrderedQuantity RecordPos="OLD=" LPos="6" SFPos="1"/>
+								<!-- OPTIONAL unit price, OPTIONAL ORDERS - OLD - OUCT -->
+								<UnitValueExclVAT RecordPos="OLD=" LPos="7" SFPos="1"/>
+								<!-- SN specific MANDATORY line action for confirmation line, OPTIONAL ORDERS - DNB - GNAR(1) -->
+								<Narrative RecordPos="DNB=" LPos="5" SFPos="1"/>
+							</PurchaseOrderLine>
+						</PurchaseOrderDetail>
+					</PurchaseOrder>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>
