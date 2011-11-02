@@ -40,11 +40,11 @@
 		<xsl:text>,</xsl:text>
 
 		<xsl:choose>
-			<xsl:when test="contains(TradeSimpleHeader/SendersCodeForRecipient,'/')">
-				<xsl:value-of select="substring(substring-before(TradeSimpleHeader/SendersCodeForRecipient,'/'),1,10)"/>
+			<xsl:when test="contains(TradeSimpleHeader/RecipientsCodeForSender,'/')">
+				<xsl:value-of select="substring(substring-before(TradeSimpleHeader/RecipientsCodeForSender,'/'),1,10)"/>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:value-of select="substring(TradeSimpleHeader/SendersCodeForRecipient,1,10)"/>
+				<xsl:value-of select="substring(TradeSimpleHeader/RecipientsCodeForSender,1,10)"/>
 			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:text>,T</xsl:text>
