@@ -30,14 +30,14 @@ Date		|	Name				|	Comment
 	</xsl:template>
 	
 	<xsl:template match="PurchaseOrderDetail/PurchaseOrderLine/LineNumber">
-		<xsl:call-template name="copyCurrentNodeExplicit2DP"/>
+		<xsl:call-template name="copyCurrentNodeExplicit1DP"/>
 	</xsl:template>		
 	
-	<xsl:template name="copyCurrentNodeExplicit2DP">
+	<xsl:template name="copyCurrentNodeExplicit1DP">
 		<xsl:param name="lMultiplier" select="1.0"/>
 		<xsl:copy>
 			<xsl:if test="string(number(.)) != 'NaN'">
-				<xsl:value-of select="format-number((. * $lMultiplier) div 10.0, '0.0')"/>
+				<xsl:value-of select="format-number((. * $lMultiplier) div 10.0, '0')"/>
 			</xsl:if>
 		</xsl:copy>
 	</xsl:template>
@@ -50,44 +50,40 @@ Date		|	Name				|	Comment
 	<xsl:template name="DateFormat">
 		<xsl:param name="rejig" select="."/>
 			<xsl:copy>
-				<xsl:value-of select="concat(substring($rejig,7,2),'-',substring($rejig,5,2),'-',substring($rejig,1,4))"/>
+				<xsl:value-of select="concat(substring($rejig,1,4),'-',substring($rejig,5,2),'-',substring($rejig,7,2))"/>
 			</xsl:copy>
 	</xsl:template>
 	
-	<!--xsl:template match="PurchaseOrderDetail/PurchaseOrderLine/ProductID/SuppliersProductCode |
-							   PurchaseOrderDetail/PurchaseOrderLine/ProductID/BuyersProductCode">
-		<xsl:call-template name="ProductCode"/>
-	</xsl:template-->
-	
-	<!--xsl:template name="ProductCode">
-		<xsl:param name="owner" select="."/>
-			<xsl:choose>
-				<xsl:when test="substring-after($owner,':') = 'BP' ">
-					<xsl:copy>
-					<xsl:value-of select="substring-before($owner,':')"/>
-					</xsl:copy>
-				</xsl:when>
-				<xsl:when test="substring-after($owner,':') != 'BP' ">
-					<xsl:element name="BuyersProductCode">
-						<xsl:value-of select="substring-before($owner,':')"/>
-					</xsl:element>
-				</xsl:when>
-			</xsl:choose>
-	</xsl:template-->
-	
 	<xsl:template match="PurchaseOrderLine">
-		<PurchaseOrderLine>
-				<xsl:apply-templates select="LineNumber"/>
-				<xsl:apply-templates select="ProductID"/>
-				<xsl:apply-templates select="GTIN"/>
-				<xsl:apply-templates select="GTIN"/>
-				<xsl:apply-templates select="SuppliersProductCode"/>
-				<xsl:apply-templates select="BuyersProductCode"/>		
-				<xsl:apply-templates select="ProductDescription"/>
-				<xsl:apply-templates select="OrderedQuantity"/>
-				<xsl:apply-templates select="LineValueExclVAT"/>
-				<xsl:apply-templates select="ProductDescription"/>
-		</PurchaseOrderLine>
+		<xsl:if test="OrderedQuantity">
+			<PurchaseOrderLine>
+					<xsl:apply-templates select="LineNumber"/>
+					
+					<ProductID>
+						<xsl:apply-templates select="ProductID/GTIN"/>
+						<SuppliersProductCode>
+							<xsl:choose>
+								<xsl:when test="//PurchaseOrderDetail/PurchaseOrderLine[substring-after(ProductID/BuyersProductCode,':') = 'BP']/ProductID/SuppliersProductCode ">
+									<xsl:value-of select="substring-before(//PurchaseOrderDetail/PurchaseOrderLine[substring-after(ProductID/BuyersProductCode,':') = 'BP']/ProductID/SuppliersProductCode,':')"/>
+								</xsl:when>
+								<xsl:otherwise>error</xsl:otherwise>
+							</xsl:choose>
+						</SuppliersProductCode>
+						<BuyersProductCode>
+							<xsl:choose>
+								<xsl:when test="//PurchaseOrderDetail/PurchaseOrderLine[substring-after(ProductID/BuyersProductCode,':') = 'SA']/ProductID/SuppliersProductCode">
+									<xsl:value-of select="substring-before(//PurchaseOrderDetail/PurchaseOrderLine[substring-after(ProductID/BuyersProductCode,':') = 'SA']/ProductID/SuppliersProductCode,':')"/>
+								</xsl:when>
+								<xsl:otherwise>error</xsl:otherwise>
+							</xsl:choose>
+						</BuyersProductCode>
+					</ProductID>
+					
+					<xsl:apply-templates select="ProductDescription"/>
+					<xsl:apply-templates select="OrderedQuantity"/>
+					<xsl:apply-templates select="LineValueExclVAT"/>
+			</PurchaseOrderLine>
+		</xsl:if>	
 	</xsl:template>
 	
 </xsl:stylesheet>
