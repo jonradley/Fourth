@@ -17,6 +17,8 @@ R Cambridge	| 2010-10-14		| 3951 Created generic Bavel version from Aramark Spai
 R Cambridge	| 2011-04-10		| 4361 Add Batch tags to facilitate migration to applying mapping before formatcheck sets senderid (currently it's done after)
 												 Create minimal XML for GRN acks (formatcheck would previsouly have sent these to completion before mapping)
 **********************************************************************
+R Cambridge	| 2011-10-13		| 4946 Ensure XMl produced for GRN acks doesn't inadvertently match PO ack format check rules
+**********************************************************************
 				|						|
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" >
@@ -37,8 +39,9 @@ R Cambridge	| 2011-04-10		| 4361 Add Batch tags to facilitate migration to apply
 								
 								<Supplier>
 									<SuppliersLocationID>
-										<xsl:comment>Goods Received Note Acknowledgement - Format check will send this to completion</xsl:comment>
-										<BuyersCode><xsl:value-of select="ReturnReceipt/@RecID"/></BuyersCode>						
+										<xsl:comment>Goods Received Note Acknowledgement for <xsl:value-of select="ReturnReceipt/@RecID"/> - Format check will send this to completion</xsl:comment>
+										<!-- 4946 R Cambridge set buyer's code to something that will never match a real supplier's code -->
+										<BuyersCode>GRN_ACK___NO_MATCH</BuyersCode>						
 									</SuppliersLocationID>
 								</Supplier>
 								

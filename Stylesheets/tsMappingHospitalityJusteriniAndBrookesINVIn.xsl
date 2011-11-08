@@ -20,7 +20,8 @@
 							</InvoiceReference>
 							<InvoiceDate>
 								<xsl:variable name="invdate"><xsl:value-of select="/SalesInvoicePrint/Invoice/Dates/InvoiceDate/@Date"/></xsl:variable>
-								<xsl:value-of select="concat(substring($invdate,7,4),'-',substring($invdate,4,2),'-',substring($invdate,1,2))"/>
+								<xsl:variable name="forminvdate"><xsl:value-of select="format-number(translate($invdate,translate($invdate,'0123456789',''),''),'00000000')"/></xsl:variable>
+								<xsl:value-of select="concat(substring($forminvdate,5,4),'-',substring($forminvdate,3,2),'-',substring($forminvdate,1,2))"/>								
 							</InvoiceDate>
 						</InvoiceReferences>
 					</InvoiceHeader>
@@ -33,7 +34,8 @@
 								<PurchaseOrderReference><xsl:value-of select="//SalesOrderDetails/@CustomerOrderNo"/></PurchaseOrderReference>								
 								<PurchaseOrderDate>
 									<xsl:variable name="orddate"><xsl:value-of select="//SalesOrderDetails/Dates/Document/@Date"/></xsl:variable>
-									<xsl:value-of select="concat(substring($orddate,7,4),'-',substring($orddate,4,2),'-',substring($orddate,1,2))"/>
+									<xsl:variable name="formorddate"><xsl:value-of select="format-number(translate($orddate,translate($orddate,'0123456789',''),''),'00000000')"/></xsl:variable>
+									<xsl:value-of select="concat(substring($formorddate,5,4),'-',substring($formorddate,3,2),'-',substring($formorddate,1,2))"/>	
 								</PurchaseOrderDate>								
 							</PurchaseOrderReferences>
 												
@@ -45,7 +47,7 @@
 							<InvoicedQuantity>	
 										<xsl:attribute name="UnitOfMeasure">
 											<xsl:choose>
-												<xsl:when test="substring(Quantities/PriceQuantity/@Quantity,1,4) = 'CASE'">CS</xsl:when>
+												<xsl:when test="substring(Quantities/PriceQuantity/@UOM,1,4) = 'CASE'">CS</xsl:when>
 												<xsl:otherwise>EA</xsl:otherwise>
 											</xsl:choose>										
 										</xsl:attribute>

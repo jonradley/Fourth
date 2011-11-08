@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!--======================================================================================
  Overview
 
@@ -10,15 +11,9 @@
 ==========================================================================================
  Date      	| Name 						|	Description of modification
 ==========================================================================================
- 13/02/2006	| R Cambridge			|	Created module
+ 21/07/2011	| K OShaughnessy		|	Created
 ==========================================================================================
- 13/03/2006	| Lee Boyton      	|	H574. Turned into Tradacoms version 9.
-==========================================================================================
- 23/05/2007	|	Nigel Emsen			|	FB 972: Amendments to handle Marstons promotions.
-==========================================================================================
- 07/01/2008	| R Cambridge			|	1556 don't truncate product description
-==========================================================================================
- 05/07/2010	| R Cambridge			|	3586 Read buyer's GLN into CDT/CIDN/1
+
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -41,27 +36,20 @@
 	
 		<xsl:text>STX=</xsl:text>
 			<xsl:text>ANA:1+</xsl:text>
-			<!--Our mailbox reference-->
-			<xsl:choose>
-				<xsl:when test="TradeSimpleHeader/TestFlag = 'false' or TradeSimpleHeader/TestFlag = '0'">
-					<xsl:text>5013546145710</xsl:text>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:text>5013546164209</xsl:text>
-				</xsl:otherwise>
-			</xsl:choose>
+			<!--Customers GLN. DBC need unique customer GLN at this level for routing purposes-->
+			<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/>			
 			<xsl:text>:</xsl:text>
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Buyer/BuyersName), 35)"/>
 			<xsl:text>+</xsl:text>
 			<!--Your mailbox reference-->
-			<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/>
+			<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN"/>
 			<xsl:text>:</xsl:text>
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersName), 35)"/>
 			<xsl:text>+</xsl:text>
 			<xsl:value-of select="$sFileGenerationDate"/><xsl:text>:</xsl:text><xsl:value-of select="vb:msFileGenerationTime()"/>
 			<xsl:text>+</xsl:text>
 			<xsl:value-of select="PurchaseOrderHeader/FileGenerationNumber"/>
-			<xsl:text>+</xsl:text>
+			<xsl:text>+</xsl:text>			
 			<xsl:text>+</xsl:text>		
 			<xsl:choose>
 				<xsl:when test="TradeSimpleHeader/TestFlag = 'false' or TradeSimpleHeader/TestFlag = '0'">
@@ -85,7 +73,7 @@
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:text>SDT=</xsl:text>
-			<xsl:text>5050085514393</xsl:text>
+			<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN"/>
 			<xsl:text>:</xsl:text>
 			<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/BuyersCode"/>
 			<xsl:text>+</xsl:text>
@@ -108,7 +96,7 @@
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:text>CDT=</xsl:text>
-			<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/>
+			<!--xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/-->
 			<xsl:text>:</xsl:text>
 			<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
 			<xsl:text>+</xsl:text>
@@ -156,7 +144,7 @@
 		<xsl:text>CLO=</xsl:text>
 			<!--xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/GLN"/-->
 			<xsl:text>:</xsl:text>
-			<!--xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode"/-->
+			<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode"/>
 			<xsl:text>:</xsl:text>
 			<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
 			<xsl:text>+</xsl:text>
@@ -546,6 +534,15 @@ function msEscape(vsField){
 	return vsField.replace(/([?+=:'])/g, "?$1");
 	
 }
+
+
+   
 ]]></msxsl:script>
+
+
+
+
+
+
 
 </xsl:stylesheet>

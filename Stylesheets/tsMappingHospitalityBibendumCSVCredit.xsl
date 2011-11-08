@@ -15,6 +15,46 @@ Lee Boyton        | 2009-04-28 | 2867. Translate product codes for SSP
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 	<xsl:output method="xml" encoding="UTF-8"/>
 	
+	<xsl:variable name="ARAMARK" select="'ARAMARK'"/>
+	<xsl:variable name="BEACON_PURCHASING" select="'BEACON_PURCHASING'"/>
+	<xsl:variable name="COMPASS" select="'COMPASS'"/>
+	<xsl:variable name="COOP" select="'COOP'"/>
+	<xsl:variable name="FISHWORKS" select="'FISHWORKS'"/>
+	<xsl:variable name="MCC" select="'MCC'"/>
+	<xsl:variable name="ORCHID" select="'ORCHID'"/>
+	<xsl:variable name="SEARCYS" select="'SEARCYS'"/>
+	<xsl:variable name="SODEXO_PRESTIGE" select="'SODEXO_PRESTIGE'"/>
+	<xsl:variable name="TESCO" select="'TESCO'"/>
+	
+	<xsl:variable name="CustomerFlag">
+		<xsl:variable name="accountCode" select="string(//TradeSimpleHeader/SendersBranchReference)"/>
+		<xsl:choose>
+			<xsl:when test="$accountCode = '203909'"><xsl:value-of select="$ARAMARK"/></xsl:when>
+			<xsl:when test="$accountCode = 'ARA02T'"><xsl:value-of select="$ARAMARK"/></xsl:when>
+			<xsl:when test="$accountCode = 'ARANET'"><xsl:value-of select="$ARAMARK"/></xsl:when>
+			<xsl:when test="$accountCode = 'BEACON'"><xsl:value-of select="$BEACON_PURCHASING"/></xsl:when>
+			<xsl:when test="$accountCode = 'MIL14T'"><xsl:value-of select="$COMPASS"/></xsl:when>
+			<xsl:when test="$accountCode = 'KIN04D'"><xsl:value-of select="$COOP"/></xsl:when>
+			<xsl:when test="$accountCode = 'KIN04T'"><xsl:value-of select="$COOP"/></xsl:when>
+			<xsl:when test="$accountCode = 'fishworks'"><xsl:value-of select="$FISHWORKS"/></xsl:when>
+			<xsl:when test="$accountCode = 'MAR100T'"><xsl:value-of select="$MCC"/></xsl:when>
+			<xsl:when test="$accountCode = 'BLA16T'"><xsl:value-of select="$ORCHID"/></xsl:when>
+			<xsl:when test="$accountCode = 'OPL01T'"><xsl:value-of select="$ORCHID"/></xsl:when>
+			<xsl:when test="$accountCode = 'ORCHID'"><xsl:value-of select="$ORCHID"/></xsl:when>
+			<xsl:when test="$accountCode = 'PBR16T'"><xsl:value-of select="$ORCHID"/></xsl:when>
+			<xsl:when test="$accountCode = 'SEA01T'"><xsl:value-of select="$SEARCYS"/></xsl:when>
+			<xsl:when test="$accountCode = 'GAR06T'"><xsl:value-of select="$SODEXO_PRESTIGE"/></xsl:when>
+			<xsl:when test="$accountCode = 'SOD99T'"><xsl:value-of select="$SODEXO_PRESTIGE"/></xsl:when>			
+						
+			<xsl:when test="$accountCode = 'TES01T'"><xsl:value-of select="$TESCO"/></xsl:when>
+			<xsl:when test="$accountCode = 'TES08T'"><xsl:value-of select="$TESCO"/></xsl:when>
+			<xsl:when test="$accountCode = 'TES12T'"><xsl:value-of select="$TESCO"/></xsl:when>
+			<xsl:when test="$accountCode = 'TES15T'"><xsl:value-of select="$TESCO"/></xsl:when>
+			<xsl:when test="$accountCode = 'TES25T'"><xsl:value-of select="$TESCO"/></xsl:when>
+			<xsl:otherwise></xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>	
+	
 	<!-- Start point - ensure required outer BatchRoot tag is applied -->
 	<xsl:template match="/">
 <BatchRoot>
@@ -257,8 +297,15 @@ Lee Boyton        | 2009-04-28 | 2867. Translate product codes for SSP
 	<xsl:template match="ProductID/SuppliersProductCode">
 		<xsl:copy>
 			<xsl:choose>
-				<xsl:when test="//TradeSimpleHeader/SendersBranchReference = 'SSP25T' or //TradeSimpleHeader/SendersBranchReference = 'GIR01T'  or //TradeSimpleHeader/SendersBranchReference = 'WAH01D' or //TradeSimpleHeader/SendersBranchReference ='FOO01D' or //TradeSimpleHeader/SendersBranchReference ='RIS01D' or //TradeSimpleHeader/SendersBranchReference ='SPA01D' or //TradeSimpleHeader/SendersBranchReference ='LSQ01D' or //TradeSimpleHeader/SendersBranchReference ='ZER01D' or //TradeSimpleHeader/SendersBranchReference ='MOR01T' or //TradeSimpleHeader/SendersBranchReference ='SEA01D' or //TradeSimpleHeader/SendersBranchReference ='DAD01T' or //TradeSimpleHeader/SendersBranchReference ='DEV01T' or //TradeSimpleHeader/SendersBranchReference ='MAL01D'">
-
+				<xsl:when test="not(
+					$CustomerFlag = $ARAMARK or
+					$CustomerFlag = $COMPASS or
+					$CustomerFlag = $COOP  or
+					$CustomerFlag = $FISHWORKS or
+					$CustomerFlag = $MCC  or
+					$CustomerFlag = $ORCHID or
+					$CustomerFlag = $SEARCYS or
+					$CustomerFlag = $SODEXO_PRESTIGE)">
 					<!-- translate the Units In Pack value and then append this to the product code -->
 					<xsl:variable name="UOMRaw">
 						<xsl:call-template name="decodePacks">

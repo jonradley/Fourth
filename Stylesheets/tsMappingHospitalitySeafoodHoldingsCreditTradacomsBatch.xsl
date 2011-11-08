@@ -1,109 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-**********************************************************************
-Alterations
-**********************************************************************
-Name		| Date			| Change
-**********************************************************************
-S Jefford	| 22/08/2005		| GTIN field now sourced from ILD/SPRO(1).
-				|						| ILD/CRLI now stored in BuyersProductCode
-**********************************************************************
-N Emsen		|	14/09/2006	|	Purchase order date stipped if = blank
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-N Emsen		|	21/09/2006	|	Case: To only create purchase order 
-				|						|	references if both Date and Reference are
-				|						|	present.
-				|						|	Ready to live.
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-A Barber		|	19/10/2011	|	FB 4907: Created POD document type from invoice for Spirit.
-**********************************************************************
--->
+<!--======================================================================================
+ Overview
+
+ © Alternative Business Solutions Ltd, 2006.
+==========================================================================================
+ Module History
+==========================================================================================
+ Version		| 
+==========================================================================================
+ Date      	| Name 						|	Description of modification
+==========================================================================================
+ 21/07/2011	| K OShaughnessy		|	Created
+==========================================================================================
+
+=======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
 	<!-- NOTE that these string literals are not only enclosed with double quotes, but have single quotes within also-->
-	<xsl:variable name="FileHeaderSegment" select="'INVFIL'"/>
-	<xsl:variable name="DocumentSegment" select="'INVOIC'"/>
-	<xsl:variable name="FileTrailerSegment" select="'INVTLR'"/>
+	<xsl:variable name="FileHeaderSegment" select="'CREHDR'"/>
+	<xsl:variable name="DocumentSegment" select="'CREDIT'"/>
+	<xsl:variable name="FileTrailerSegment" select="'CRETLR'"/>
 	<xsl:variable name="VATTrailerSegment" select="'VATTLR'"/>
 	
 	<!-- Start point - ensure required outer BatchRoot tag is applied -->
 	<xsl:template match="/">
 		<BatchRoot>
 			<xsl:apply-templates/>
-			<xsl:if test="/Batch/BatchDocuments/BatchDocument/Invoice/InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode='5060166761066'">
-				<Document>
-	           			<xsl:attribute name="TypePrefix">POD</xsl:attribute>
-					<Batch>
-						<BatchDocuments>
-							<xsl:for-each select="Batch/BatchDocuments/BatchDocument/Invoice">
-								<BatchDocument>
-									<xsl:attribute name="DocumentTypeNo">313</xsl:attribute>
-									<ProofOfDelivery>
-										<xsl:apply-templates select="TradeSimpleHeader"/>
-										<ProofOfDeliveryHeader>
-											<xsl:apply-templates select="InvoiceHeader/Buyer"/>
-											<xsl:apply-templates select="InvoiceHeader/Supplier"/>
-											<xsl:apply-templates select="InvoiceHeader/ShipTo"/>
-											<PurchaseOrderReferences>									
-												<PurchaseOrderReference>
-													<xsl:value-of select="(InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderReference | InvoiceDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteReference)[1]"/>
-												</PurchaseOrderReference>
-												<xsl:variable name="sDPODate">
-													<xsl:value-of select="(InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderDate | InvoiceDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteDate)[1]"/>
-												</xsl:variable>
-												<PurchaseOrderDate>
-													<xsl:value-of select="concat('20',substring($sDPODate,1,2),'-',substring($sDPODate,3,2),'-',substring($sDPODate,5,2))"/>
-												</PurchaseOrderDate>
-											</PurchaseOrderReferences>
-											<ProofOfDeliveryReferences>
-												<ProofOfDeliveryReference>
-													<xsl:value-of select="InvoiceHeader/InvoiceReferences/InvoiceReference"/>
-												</ProofOfDeliveryReference>
-												<xsl:variable name="dDPODDate">
-													<xsl:value-of select="InvoiceDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteDate"/>
-												</xsl:variable>
-												<ProofOfDeliveryDate>
-													<xsl:value-of select="concat('20',substring($dDPODDate,1,2),'-',substring($dDPODDate,3,2),'-',substring	($dDPODDate,5,2))"/>
-												</ProofOfDeliveryDate>
-											</ProofOfDeliveryReferences>										
-											<DeliveryNoteReferences>
-												<DeliveryNoteReference>
-													<xsl:value-of select="InvoiceDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteReference"/>
-												</DeliveryNoteReference>
-												<xsl:variable name="dDDelNoteDate">
-													<xsl:value-of select="InvoiceDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteDate"/>
-												</xsl:variable>
-												<DeliveryNoteDate>
-													<xsl:value-of select="concat('20',substring($dDDelNoteDate,1,2),'-',substring($dDDelNoteDate,3,2),'-',substring($dDDelNoteDate,5,2))"/>
-												</DeliveryNoteDate>
-											</DeliveryNoteReferences>								
-										</ProofOfDeliveryHeader>
-										<ProofOfDeliveryDetail>
-											<xsl:for-each select="InvoiceDetail/InvoiceLine">
-												<!--xsl:if test="InvoicedQuantity&gt;0"-->
-												<xsl:choose>
-													<xsl:when test="ProductID/BuyersProductCode"/>
-													<xsl:otherwise>
-														<ProofOfDeliveryLine>
-															<!--xsl:apply-templates select="LineNumber"/-->
-															<xsl:apply-templates select="ProductID"/>
-															<xsl:apply-templates select="ProductDescription"/>
-															<DespatchedQuantity>
-																<xsl:value-of select="InvoicedQuantity"/>
-															</DespatchedQuantity>
-															<xsl:apply-templates select="PackSize"/>
-														</ProofOfDeliveryLine>													
-													</xsl:otherwise>
-												</xsl:choose>
-											</xsl:for-each>
-										</ProofOfDeliveryDetail>
-									</ProofOfDelivery>
-								</BatchDocument>
-							</xsl:for-each>
-						</BatchDocuments>
-					</Batch>
-				</Document>
-			</xsl:if>		
 		</BatchRoot>
 	</xsl:template>
 	
@@ -124,68 +46,115 @@ A Barber		|	19/10/2011	|	FB 4907: Created POD document type from invoice for Spi
 	</xsl:template>
 	<!-- END of GENERIC HANDLERS -->
 	
-	<!-- Use the correct supplier code for Spirit -->
-	<xsl:template match="Invoice/TradeSimpleHeader">
-		<TradeSimpleHeader>
-			<SendersCodeForRecipient>
-				<xsl:choose >
-					<xsl:when test="string(SendersBranchReference)!='1066546'">
-						<xsl:value-of select="SendersCodeForRecipient"/>		
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:value-of select="../InvoiceHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
-					</xsl:otherwise>
-				</xsl:choose>
-			</SendersCodeForRecipient>
-			<SendersBranchReference>
-				<xsl:value-of select="SendersBranchReference"/>
-			</SendersBranchReference>
-		</TradeSimpleHeader>
-	</xsl:template>
-	
-	<!-- This is so we dont duplicate block Carlsberg's invoice's on FGN -->
-	<xsl:template match="Invoice/InvoiceHeader/BatchInformation/FileGenerationNo">
-		<xsl:copy>
-			<xsl:value-of select="."/>
-			<xsl:text> (</xsl:text>
-			<xsl:value-of select="../../Buyer/BuyersLocationID/SuppliersCode"/>
-			<xsl:text>)</xsl:text>
-		</xsl:copy>
-	</xsl:template>	
-
 	<!-- InvoiceLine/ProductID/BuyersProductCode is used as a placeholder for INVOIC-ILD-CRLI and should not be copied over -->
 	<xsl:template match="BuyersProductCode"/>
 	
 	<!-- Tags which need to be stripped of all leading zeros and have 2 optional trailing digits (not zero) -->
-	<xsl:template match="InvoiceLine/LineNumber | Measure/UnitsInPack">
+	<xsl:template match="CreditNoteLine/LineNumber">
 		<xsl:copy>
 			<xsl:value-of select="format-number(., '#0.##')"/>
 		</xsl:copy>
 	</xsl:template>
 	
-	<!-- INVOIC-ILD-QTYI (InvoiceLine/InvoicedQuantity) needs to be multiplied by -1 if (InvoiceLine/ProductID/BuyersProductCode) is NOT blank -->
-	<xsl:template match="InvoiceLine/InvoicedQuantity">
-		<xsl:choose>
-			<!--Parent of InvoicedQuantity is InvoiceLine-->
-			<xsl:when test="string-length(../ProductID/BuyersProductCode) &gt; 0" >
-				<!--INVOIC-ILD-CRLI is not blank, multiply by -1-->
-				<xsl:call-template name="copyCurrentNodeDPUnchanged">
-					<xsl:with-param name="lMultiplier" select="-1.0"/>
-				</xsl:call-template>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:call-template name="copyCurrentNodeDPUnchanged"/>
-			</xsl:otherwise>
-		</xsl:choose>
+	<xsl:template match="CreditNoteReferences/VATRegNo">
+		<xsl:copy>
+			<!-- Convert all colons to spaces, then trim leading and trailing whitespace - trims leading and trailing colons, and converts mid string colons to spaces -->
+			<xsl:value-of select="normalize-space(translate(., ':', ' '))"/>
+		</xsl:copy>
 	</xsl:template>
 	
-	<!-- INVOIC-ILD-LEXC(InvoiceLine/LineValueExclVAT) need to be multiplied by -1 if (InvoiceLine/ProductID/BuyersProductCode) is NOT blank -->
-	<xsl:template match="InvoiceLine/LineValueExclVAT">
+	
+	
+	<xsl:template match="CreditNoteLine">
+	
+		<CreditNoteLine>
+	
+			<xsl:apply-templates select="LineNumber"/>
+			<xsl:apply-templates select="CreditRequestReferences"/>
+			<xsl:apply-templates select="PurchaseOrderReferences"/>
+			<xsl:apply-templates select="PurchaseOrderConfirmationReferences"/>
+			<xsl:apply-templates select="DeliveryNoteReferences"/>
+			<xsl:apply-templates select="GoodsReceivedNoteReferences"/>
+			<xsl:apply-templates select="ProductID"/>
+			<xsl:apply-templates select="ProductDescription"/>
+			<xsl:apply-templates select="OrderedQuantity"/>
+			<xsl:apply-templates select="ConfirmedQuantity"/>
+			<xsl:apply-templates select="DeliveredQuantity"/>
+			<xsl:apply-templates select="InvoicedQuantity"/>
+		
+			<xsl:variable name="sQuantity">
+				<xsl:choose>
+					<xsl:when test="string(./*[TotalMeasureIndicator]/TotalMeasure) != ''">
+						<xsl:for-each select="./Measure/TotalMeasure[1]">
+							<xsl:call-template name="copyCurrentNodeExplicit3DP"/>
+						</xsl:for-each>
+					</xsl:when>
+					<xsl:otherwise><xsl:value-of select="CreditedQuantity"/></xsl:otherwise>
+				</xsl:choose>		
+			</xsl:variable>
+			
+			<xsl:variable name="sUoM">
+				<xsl:choose>
+					<xsl:when test="string(./Measure/TotalMeasureIndicator) = 'KG' or string(./Measure/TotalMeasureIndicator) = 'KGM' ">KGM</xsl:when>
+					<xsl:otherwise><xsl:value-of select="@UoM"/></xsl:otherwise>
+				</xsl:choose>		
+			</xsl:variable>
+	
+			
+			<CreditedQuantity>
+				<xsl:if test="string-length($sUoM) &gt; 0">
+					<xsl:attribute name="UnitOfMeasure">
+						<xsl:value-of select="$sUoM"/>
+					</xsl:attribute>
+				</xsl:if>
+				<!-- CLD-QTYC(1) (CreditNoteLine/CreditedQuantity) needs to be multiplied by -1 if (CreditNoteLine/ProductID/BuyersProductCode) is NOT blank -->
+				<xsl:if test="string-length(./ProductID/BuyersProductCode) &gt; 0">-</xsl:if>
+				<xsl:value-of select="$sQuantity"/>			
+			</CreditedQuantity>
+		
+		
+			<xsl:apply-templates select="PackSize"/>
+			<xsl:apply-templates select="UnitValueExclVAT"/>
+			<xsl:apply-templates select="LineValueExclVAT"/>
+			<xsl:apply-templates select="LineDiscountRate"/>
+			<xsl:apply-templates select="LineDiscountValue"/>
+			<xsl:apply-templates select="VATCode"/>
+			<xsl:apply-templates select="VATRate"/>
+			<xsl:apply-templates select="Narrative"/>
+			<xsl:apply-templates select="NetPriceFlag"/>
+			<xsl:apply-templates select="Measure"/>
+			<xsl:apply-templates select="LineExtraData"/>
+			
+			
+		</CreditNoteLine>
+		
+	</xsl:template>
+	
+	
+	<xsl:template match="PurchaseOrderReferences">
+	
+		<xsl:choose>
+		
+			<xsl:when test="count(*) != 2"/>
+			
+			<xsl:otherwise>
+				<xsl:copy>
+					<xsl:apply-templates select="*"/>
+				</xsl:copy>			
+			</xsl:otherwise>
+			
+		</xsl:choose>
+	
+	</xsl:template>
+	
+	
+	<!-- CLD-EXLV (CreditNoteLine/LineValueExclVAT) need to be multiplied by -1 if (CreditNoteLine/ProductID/BuyersProductCode) is NOT blank -->
+	<xsl:template match="CreditNoteLine/LineValueExclVAT">
 		<!-- Implicit 4DP conversion required regardless of BuyersProductCode -->
 		<xsl:choose>
-			<!--Parent of LineValueExclVAT is InvoiceLine -->
+			<!--Parent of LineValueExclVAT is CreditNoteLine -->
 			<xsl:when test="string-length(../ProductID/BuyersProductCode) &gt; 0" >
-				<!--INVOIC-ILD-CRLI is not blank, multiply by -1-->
+				<!--CLD-DRLI is not blank, multiply by -1-->
 				<xsl:call-template name="copyCurrentNodeExplicit4DP">
 					<xsl:with-param name="lMultiplier" select="-1.0"/>
 				</xsl:call-template>
@@ -196,6 +165,11 @@ A Barber		|	19/10/2011	|	FB 4907: Created POD document type from invoice for Spi
 		</xsl:choose>
 	</xsl:template>
 	
+	<!--Don't copy invoicereferences if no invoice reference is present-->
+	<xsl:template match="InvoiceReferences[not(InvoiceReference)]">
+		
+	</xsl:template>
+	
 	<!-- SIMPLE CONVERSION IMPLICIT TO EXPLICIT 2 D.P -->
 	<!-- Add any XPath whose text node needs to be converted from implicit to explicit 2 D.P. -->
 	<xsl:template match="BatchHeader/DocumentTotalExclVAT |
@@ -204,19 +178,17 @@ A Barber		|	19/10/2011	|	FB 4907: Created POD document type from invoice for Spi
 						BatchHeader/DocumentTotalInclVAT |
 						BatchHeader/SettlementTotalInclVAT |
 						VATSubTotal/* |
-						InvoiceTrailer/DocumentTotalExclVAT |
-						InvoiceTrailer/SettlementDiscount |
-						InvoiceTrailer/SettlementTotalExclVAT |
-						InvoiceTrailer/VATAmount |
-						InvoiceTrailer/DocumentTotalInclVAT |
-						InvoiceTrailer/SettlementTotalInclVAT">
+						CreditNoteTrailer/DocumentTotalExclVAT |
+						CreditNoteTrailer/SettlementDiscount |
+						CreditNoteTrailer/SettlementTotalExclVAT |
+						CreditNoteTrailer/VATAmount |
+						CreditNoteTrailer/DocumentTotalInclVAT |
+						CreditNoteTrailer/SettlementTotalInclVAT">
 		<xsl:call-template name="copyCurrentNodeExplicit2DP"/>
-	</xsl:template>	
+	</xsl:template>
 	<!-- SIMPLE CONVERSION IMPLICIT TO EXPLICIT 3 D.P -->
 	<!-- Add any XPath whose text node needs to be converted from implicit to explicit 3 D.P. -->
-	<xsl:template match="OrderingMeasure | 
-						TotalMeasure | 
-						InvoiceLine/VATRate">
+	<xsl:template match="TotalMeasure">
 		<xsl:call-template name="copyCurrentNodeExplicit3DP"/>
 	</xsl:template>
 	<!--Add any attribute XPath whose value needs to be converted from implicit 3 D.P to explicit 2 D.P. -->
@@ -225,20 +197,26 @@ A Barber		|	19/10/2011	|	FB 4907: Created POD document type from invoice for Spi
 			<xsl:value-of select="format-number(. div 1000.0, '0.00')"/>
 		</xsl:attribute>
 	</xsl:template>
+	<!--Add any element XPath whose value needs to be converted from implicit 3 D.P to explicit 2 D.P. -->
+	<xsl:template match="CreditNoteLine/VATRate">
+		<xsl:copy>
+			<xsl:value-of select="format-number(. div 1000.0, '0.00')"/>
+		</xsl:copy>
+	</xsl:template>
 	<!-- SIMPLE CONVERSION IMPLICIT TO EXPLICIT 4 D.P -->
 	<!-- Add any XPath whose text node needs to be converted from implicit to explicit 4 D.P. -->
-	<xsl:template match="InvoiceLine/UnitValueExclVAT">
+	<xsl:template match="CreditNoteLine/UnitValueExclVAT">
 		<xsl:call-template name="copyCurrentNodeExplicit4DP"/>
 	</xsl:template>
 	<!-- END of SIMPLE CONVERSIONS-->
-	
+
 	<!-- DATE CONVERSION YYMMDD to xsd:date -->
 	<xsl:template match="PurchaseOrderReferences/PurchaseOrderDate | 
-						DeliveryNoteReferences/DeliveryNoteDate |
-						DeliveryNoteReferences/DespatchDate |
+						CreditNoteReferences/CreditNoteDate |
 						BatchInformation/FileCreationDate |
 						InvoiceReferences/InvoiceDate |
-						InvoiceReferences/TaxPointDate">
+						InvoiceReferences/TaxPointDate |
+						CreditNoteReferences/TaxPointDate">
 		<xsl:copy>
 			<xsl:value-of select="concat('20', substring(., 1, 2), '-', substring(., 3, 2), '-', substring(., 5, 2))"/>
 		</xsl:copy>
@@ -259,7 +237,7 @@ A Barber		|	19/10/2011	|	FB 4907: Created POD document type from invoice for Spi
 		</xsl:copy>
 	</xsl:template>
 	<!--END of DATE CONVERSIONS -->
-	
+
 	<!-- CURRENT NODE HELPERS -->
 	<xsl:template name="copyCurrentNodeDPUnchanged">
 		<xsl:param name="lMultiplier" select="1.0"/>
@@ -297,11 +275,12 @@ A Barber		|	19/10/2011	|	FB 4907: Created POD document type from invoice for Spi
 		</xsl:copy>
 	</xsl:template>
 	<!-- END of CURRENT NODE HELPERS -->
-	
+
+
 	<!--
 	MHDSegment HANDLER
 	This handler works with the MHDSegment tags which should be at the start of the BatchHeader, but are actually at start and end. Furthermore, This collection of MHDSegments includes unwanted
-	INVOIC segments, which are only required at document level, under InvoiceHeader, so the following template does not copy those.
+	CREDIT segments, which are only required at document level, under CreditNoteHeader, so the following template does not copy those.
 	-->
 	<xsl:template match="BatchHeader/MHDSegment">
 		<xsl:if test="contains(jscript:toUpperCase(string(./MHDHeader)), $FileHeaderSegment)">
@@ -325,8 +304,8 @@ A Barber		|	19/10/2011	|	FB 4907: Created POD document type from invoice for Spi
 				</xsl:choose>
 			</xsl:for-each>
 		</xsl:if>
-	</xsl:template>	
-	<xsl:template match="BatchDocument/Invoice/InvoiceHeader">
+	</xsl:template>
+	<xsl:template match="BatchDocument/CreditNote/CreditNoteHeader">
 		<!-- Get a count of all the preceding instances of BatchDocument/Invoice/InvoiceHeader -->
 		<xsl:variable name="BatchDocumentIndex" select="1 + count(../../preceding-sibling::*)"/>
 		<!-- Get a node list of all the MHDSegment nodes under the BatchHeader tag-->
@@ -340,23 +319,6 @@ A Barber		|	19/10/2011	|	FB 4907: Created POD document type from invoice for Spi
 		</xsl:copy>
 	</xsl:template>
 	<!-- END of MHDSegment HANDLER -->
-	
-	<!-- Check for pairing of Purchase Order Date & Purchase Order Reference -->
-	<xsl:template match="//PurchaseOrderReferences">
-		<xsl:variable name="sPORefDate" select="translate(PurchaseOrderDate,' ','')"/>
-		<xsl:variable name="sPORefReference" select="translate(PurchaseOrderReference,' ','')"/>
-		<xsl:if test="string($sPORefDate) !='' and string($sPORefReference) != '' ">
-			<PurchaseOrderReferences>
-				<PurchaseOrderReference>
-					<xsl:value-of select="$sPORefReference"/>
-				</PurchaseOrderReference>
-				<PurchaseOrderDate>
-					<xsl:value-of select="concat('20',substring($sPORefDate,1,2),'-',substring($sPORefDate,3,2),'-',substring($sPORefDate,5,2))"/>
-				</PurchaseOrderDate>
-
-			</PurchaseOrderReferences>
-		</xsl:if>
-	</xsl:template>
 	
 	<msxsl:script language="JScript" implements-prefix="jscript"><![CDATA[ 
 		function toUpperCase(vs) {

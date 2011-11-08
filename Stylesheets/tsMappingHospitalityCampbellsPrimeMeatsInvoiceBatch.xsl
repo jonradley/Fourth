@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--******************************************************************
+Alterations
+**********************************************************************
+Name	| Date		 | Change
+**********************************************************************
+Maha	| 04/10/2011 | 4913: Map vatcode S8 to vatrate 20 and 17.5
+**********************************************************************
+				|             	|
+**********************************************************************
+-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
 	
@@ -39,24 +49,34 @@
 	</xsl:template-->
 
 
+	<!-- Remove any 0 value invoices -->
+	<xsl:template match=" BatchDocument[Invoice/InvoiceTrailer/DocumentTotalExclVAT=0]"/>
+	
+	
 	<xsl:template match="Buyer">
-
-		<Buyer>
-			<BuyersLocationID>
-				<xsl:if test="BuyersLocationID/BuyersCode">
-					<BuyersCode><xsl:value-of select="substring-before(BuyersLocationID/BuyersCode,'/')"/></BuyersCode>
-				</xsl:if>
-				<SuppliersCode><xsl:value-of select="BuyersLocationID/SuppliersCode"/></SuppliersCode>
-			</BuyersLocationID>
-			<BuyersName><xsl:value-of select="BuyersName"/></BuyersName>
-		</Buyer>
-		
 		<xsl:if test="BuyersLocationID/BuyersCode">
-			<Supplier>
-				<SuppliersLocationID>
-					<BuyersCode><xsl:value-of select="substring-after(BuyersLocationID/BuyersCode,'/')"/></BuyersCode>
-				</SuppliersLocationID>
-			</Supplier>
+			<Buyer>
+				<BuyersLocationID>				
+					<xsl:choose>
+						<xsl:when test="substring-before(BuyersLocationID/BuyersCode,'/') !=''">
+							<BuyersCode><xsl:value-of select="substring-before(BuyersLocationID/BuyersCode,'/')"/></BuyersCode>
+						</xsl:when>
+						<xsl:otherwise>
+							<BuyersCode><xsl:value-of select="BuyersLocationID/BuyersCode"/></BuyersCode>
+						</xsl:otherwise>
+					</xsl:choose>					
+					<SuppliersCode><xsl:value-of select="BuyersLocationID/SuppliersCode"/></SuppliersCode>
+				</BuyersLocationID>
+				<BuyersName><xsl:value-of select="BuyersName"/></BuyersName>
+			</Buyer>
+			
+			<xsl:if test="substring-after(BuyersLocationID/BuyersCode,'/') !=''">
+				<Supplier>
+					<SuppliersLocationID>
+						<BuyersCode><xsl:value-of select="substring-after(BuyersLocationID/BuyersCode,'/')"/></BuyersCode>
+					</SuppliersLocationID>
+				</Supplier>
+			</xsl:if>
 		</xsl:if>
 	</xsl:template>		
 
@@ -170,6 +190,8 @@
 			<xsl:when test="$sVATCode = 'S0'">0.00</xsl:when>
 			<xsl:when test="$sVATCode = 'S1' and $sVATDate &gt; 20110104">20.00</xsl:when>
 			<xsl:when test="$sVATCode = 'S1' and $sVATDate &lt; 20110104">17.50</xsl:when>
+			<xsl:when test="$sVATCode = 'S8' and $sVATDate &gt; 20110104">20.00</xsl:when>
+			<xsl:when test="$sVATCode = 'S8' and $sVATDate &lt; 20110104">17.50</xsl:when>
 			<xsl:otherwise><xsl:value-of select="$sVATDate"/></xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>

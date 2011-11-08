@@ -8,7 +8,7 @@ Name		| Date			| Change
 S Jefford	| 22/08/2005	| GTIN field now sourced from ILD/SPRO(1).
 			|				| ILD/CRLI now stored in BuyersProductCode
 **********************************************************************
-			|				| ready for live
+M Dimant	| 07/09/2011	| Pickup Buyer's GLN from CLO segment
 **********************************************************************
 -->
 <ffsFlatFileSchema>
@@ -133,7 +133,7 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from ILD/SPRO(1).
 							<Buyer>
 								<BuyersLocationID>
 									<!--INVFIL-CDT-CIDN(1)-->
-									<SuppliersCode RecordPos="CDT=" LPos="1" SFPos="1"/>
+									<SuppliersCode RecordPos="CLO=" LPos="1" SFPos="1"/>
 								</BuyersLocationID>
 								<!-- OPTIONAL Buyer Name, MANDATORY, INVFIL – CDT – CNAM, NB: To make this a legal invoice, you must provide this field. The “invoice to” name -->
 								<BuyersName RecordPos="CDT=" LPos="2"/>
@@ -165,8 +165,7 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from ILD/SPRO(1).
 							<ShipTo>
 								<ShipToLocationID>
 									<!--INVFIL-CLO-(1)2)-->
-									<BuyersCode RecordPos="CLO=" LPos="1" SFPos="2"/>
-									<SuppliersCode RecordPos="CLO=" LPos="1" SFPos="3"/>
+									<SuppliersCode RecordPos="CLO=" LPos="1" SFPos="2"/>
 								</ShipToLocationID>
 								<!-- OPTIONAL Delivery Location Name, DERIVE, INVOIC – CLO – CNAM, The “ship-to” name -->
 								<ShipToName RecordPos="CLO=" LPos="2"/>
