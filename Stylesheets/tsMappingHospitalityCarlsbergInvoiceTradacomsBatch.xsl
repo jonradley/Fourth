@@ -30,6 +30,7 @@ A Barber		|	19/10/2011	|	FB 4907: Created POD document type from invoice for Spi
 	<xsl:template match="/">
 		<BatchRoot>
 			<xsl:apply-templates/>
+			<!-- Start Generation POD's for Spirit -->
 			<xsl:if test="/Batch/BatchDocuments/BatchDocument/Invoice/InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode='5060166761066'">
 				<Document>
 	           			<xsl:attribute name="TypePrefix">POD</xsl:attribute>
@@ -80,19 +81,17 @@ A Barber		|	19/10/2011	|	FB 4907: Created POD document type from invoice for Spi
 										</ProofOfDeliveryHeader>
 										<ProofOfDeliveryDetail>
 											<xsl:for-each select="InvoiceDetail/InvoiceLine">
-												<!--xsl:if test="InvoicedQuantity&gt;0"-->
 												<xsl:choose>
 													<xsl:when test="ProductID/BuyersProductCode"/>
 													<xsl:otherwise>
 														<ProofOfDeliveryLine>
-															<!--xsl:apply-templates select="LineNumber"/-->
 															<xsl:apply-templates select="ProductID"/>
 															<xsl:apply-templates select="ProductDescription"/>
 															<DespatchedQuantity>
 																<xsl:value-of select="InvoicedQuantity"/>
 															</DespatchedQuantity>
 															<xsl:apply-templates select="PackSize"/>
-														</ProofOfDeliveryLine>													
+														</ProofOfDeliveryLine>									
 													</xsl:otherwise>
 												</xsl:choose>
 											</xsl:for-each>
@@ -124,7 +123,7 @@ A Barber		|	19/10/2011	|	FB 4907: Created POD document type from invoice for Spi
 	</xsl:template>
 	<!-- END of GENERIC HANDLERS -->
 	
-	<!-- Use the correct supplier code for Spirit -->
+	<!-- Use the correct supplier code for Spirit in the tradesimple header -->
 	<xsl:template match="Invoice/TradeSimpleHeader">
 		<TradeSimpleHeader>
 			<SendersCodeForRecipient>
@@ -141,6 +140,23 @@ A Barber		|	19/10/2011	|	FB 4907: Created POD document type from invoice for Spi
 				<xsl:value-of select="SendersBranchReference"/>
 			</SendersBranchReference>
 		</TradeSimpleHeader>
+	</xsl:template>
+
+	<!-- Use BuyersCode as SuppliersCode for non-Spirit Invoices -->
+	<xsl:template match="InvoiceHeader/ShipTo/ShipToLocationID">
+		<BuyersCode>
+			<xsl:value-of select="BuyersCode"/>
+		</BuyersCode>
+		<SuppliersCode>
+			<xsl:choose>
+				<xsl:when test="string(../TradeSimpleHeader/SendersBranchReference)!='1066546'">
+					<xsl:value-of select="BuyersCode"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="SuppliersCode"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</SuppliersCode>
 	</xsl:template>
 	
 	<!-- This is so we dont duplicate block Carlsberg's invoice's on FGN -->
