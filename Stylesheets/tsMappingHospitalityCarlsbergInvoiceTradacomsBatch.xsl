@@ -143,20 +143,22 @@ A Barber		|	19/10/2011	|	FB 4907: Created POD document type from invoice for Spi
 	</xsl:template>
 
 	<!-- Use BuyersCode as SuppliersCode for non-Spirit Invoices -->
-	<xsl:template match="InvoiceHeader/ShipTo/ShipToLocationID">
-		<BuyersCode>
-			<xsl:value-of select="BuyersCode"/>
-		</BuyersCode>
-		<SuppliersCode>
-			<xsl:choose>
-				<xsl:when test="string(../TradeSimpleHeader/SendersBranchReference)!='1066546'">
-					<xsl:value-of select="BuyersCode"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="SuppliersCode"/>
-				</xsl:otherwise>
-			</xsl:choose>
-		</SuppliersCode>
+	<xsl:template match="ShipTo/ShipToLocationID">
+		<ShipToLocationID>
+			<BuyersCode>
+				<xsl:value-of select="BuyersCode"/>
+			</BuyersCode>
+			<SuppliersCode>
+				<xsl:choose>
+					<xsl:when test="string(../../../TradeSimpleHeader/SendersBranchReference)!='1066546'">
+						<xsl:value-of select="BuyersCode"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="SuppliersCode"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</SuppliersCode>
+		</ShipToLocationID>
 	</xsl:template>
 	
 	<!-- This is so we dont duplicate block Carlsberg's invoice's on FGN -->
