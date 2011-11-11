@@ -64,10 +64,10 @@ H Robson	| 2011-10-21		| 4966 Created Module
 						<xsl:attribute name="nominalcode"></xsl:attribute>
 						<xsl:attribute name="quantity"><xsl:value-of select="InvoicedQuantity"/></xsl:attribute>
 						<xsl:attribute name="unitprice"><xsl:value-of select="UnitValueExclVAT"/></xsl:attribute>
-						<xsl:attribute name="vatrate"><xsl:value-of select="format-number(VATRate,'#.00')"/></xsl:attribute>
+						<xsl:attribute name="vatrate"><xsl:value-of select="format-number(VATRate,'0.00')"/></xsl:attribute>
 						<xsl:attribute name="discountamount"><xsl:value-of select="LineDiscountValue"/></xsl:attribute>
 						<xsl:attribute name="itemprice"><xsl:value-of select="LineValueExclVAT"/></xsl:attribute>
-						<xsl:attribute name="vatamount"><xsl:value-of select="format-number(LineValueExclVAT * VATRate div 100,'#.00')"/></xsl:attribute>
+						<xsl:attribute name="vatamount"><xsl:value-of select="format-number(LineValueExclVAT * VATRate div 100,'0.00')"/></xsl:attribute>
 					</productitem>
 				</xsl:for-each>
 			</productitems>
