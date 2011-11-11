@@ -18,11 +18,11 @@
 ******************************************************************************************
  21/06/2010 | Sandeep Sehgal | 3536. For Spanish Reports use ; as the field separator
 ******************************************************************************************
-  08/07/2010 | Steve Hewitt  | FB3536 The path to the translations files cannot access a web box and branched into hosp
+ 08/07/2010 | Steve Hewitt  | FB3536 The path to the translations files cannot access a web box and branched into hosp
 ******************************************************************************************
-  08/07/2010 | Sandeep Sehgal  | FB3739 CommaCharacter param changed to a variable
+ 08/07/2010 | Sandeep Sehgal  | FB3739 CommaCharacter param changed to a variable
 ******************************************************************************************
-19/09/2011 | Sandeep Sehgal  | FB4272 Removed whitepspace from varaible declarations
+ 19/09/2011 | Sandeep Sehgal  | FB4272 Removed whitepspace from varaible declarations
 ******************************************************************************************
 
 ******************************************************************************************

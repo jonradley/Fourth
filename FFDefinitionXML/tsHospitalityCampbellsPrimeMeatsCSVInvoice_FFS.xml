@@ -68,7 +68,7 @@ R Cambridge	| 29/09/2009	| 3142 read units codes into SCR and Supplier's code fo
 					<Invoice>
 						<TradeSimpleHeader>
 							<SendersCodeForRecipient RecordPos="HEAD" LPos="24"/>
-							<!--SendersBranchReference RecordPos="SUPPLIER" LPos="2"/-->
+							<SendersBranchReference RecordPos="HEAD" LPos="23"/>
 						</TradeSimpleHeader>
 						<InvoiceHeader>
 							<!--BatchInformation>

@@ -14,6 +14,8 @@ N Emsen		|	21/09/2006	|	Case: To only create purchase order
 				|						|	references if both Date and Reference are
 				|						|	present.
 				|						|	Ready to live.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+A Barber		|	19/10/2011	|	FB 4907: Created POD document type from invoice for Spirit.
 **********************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
@@ -26,9 +28,82 @@ N Emsen		|	21/09/2006	|	Case: To only create purchase order
 	
 	<!-- Start point - ensure required outer BatchRoot tag is applied -->
 	<xsl:template match="/">
-<BatchRoot>
-		<xsl:apply-templates/>
-</BatchRoot>
+		<BatchRoot>
+			<xsl:apply-templates/>
+			<!-- Start Generation POD's for Spirit -->
+			<xsl:if test="/Batch/BatchDocuments/BatchDocument/Invoice/InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode='5060166761066'">
+				<Document>
+	           			<xsl:attribute name="TypePrefix">POD</xsl:attribute>
+					<Batch>
+						<BatchDocuments>
+							<xsl:for-each select="Batch/BatchDocuments/BatchDocument/Invoice">
+								<BatchDocument>
+									<xsl:attribute name="DocumentTypeNo">313</xsl:attribute>
+									<ProofOfDelivery>
+										<xsl:apply-templates select="TradeSimpleHeader"/>
+										<ProofOfDeliveryHeader>
+											<xsl:apply-templates select="InvoiceHeader/Buyer"/>
+											<xsl:apply-templates select="InvoiceHeader/Supplier"/>
+											<xsl:apply-templates select="InvoiceHeader/ShipTo"/>
+											<PurchaseOrderReferences>									
+												<PurchaseOrderReference>
+													<xsl:value-of select="(InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderReference | InvoiceDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteReference)[1]"/>
+												</PurchaseOrderReference>
+												<xsl:variable name="sDPODate">
+													<xsl:value-of select="(InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderDate | InvoiceDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteDate)[1]"/>
+												</xsl:variable>
+												<PurchaseOrderDate>
+													<xsl:value-of select="concat('20',substring($sDPODate,1,2),'-',substring($sDPODate,3,2),'-',substring($sDPODate,5,2))"/>
+												</PurchaseOrderDate>
+											</PurchaseOrderReferences>
+											<ProofOfDeliveryReferences>
+												<ProofOfDeliveryReference>
+													<xsl:value-of select="InvoiceHeader/InvoiceReferences/InvoiceReference"/>
+												</ProofOfDeliveryReference>
+												<xsl:variable name="dDPODDate">
+													<xsl:value-of select="InvoiceDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteDate"/>
+												</xsl:variable>
+												<ProofOfDeliveryDate>
+													<xsl:value-of select="concat('20',substring($dDPODDate,1,2),'-',substring($dDPODDate,3,2),'-',substring	($dDPODDate,5,2))"/>
+												</ProofOfDeliveryDate>
+											</ProofOfDeliveryReferences>										
+											<DeliveryNoteReferences>
+												<DeliveryNoteReference>
+													<xsl:value-of select="InvoiceDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteReference"/>
+												</DeliveryNoteReference>
+												<xsl:variable name="dDDelNoteDate">
+													<xsl:value-of select="InvoiceDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteDate"/>
+												</xsl:variable>
+												<DeliveryNoteDate>
+													<xsl:value-of select="concat('20',substring($dDDelNoteDate,1,2),'-',substring($dDDelNoteDate,3,2),'-',substring($dDDelNoteDate,5,2))"/>
+												</DeliveryNoteDate>
+											</DeliveryNoteReferences>								
+										</ProofOfDeliveryHeader>
+										<ProofOfDeliveryDetail>
+											<xsl:for-each select="InvoiceDetail/InvoiceLine">
+												<xsl:choose>
+													<xsl:when test="ProductID/BuyersProductCode"/>
+													<xsl:otherwise>
+														<ProofOfDeliveryLine>
+															<xsl:apply-templates select="ProductID"/>
+															<xsl:apply-templates select="ProductDescription"/>
+															<DespatchedQuantity>
+																<xsl:value-of select="InvoicedQuantity"/>
+															</DespatchedQuantity>
+															<xsl:apply-templates select="PackSize"/>
+														</ProofOfDeliveryLine>									
+													</xsl:otherwise>
+												</xsl:choose>
+											</xsl:for-each>
+										</ProofOfDeliveryDetail>
+									</ProofOfDelivery>
+								</BatchDocument>
+							</xsl:for-each>
+						</BatchDocuments>
+					</Batch>
+				</Document>
+			</xsl:if>		
+		</BatchRoot>
 	</xsl:template>
 	
 	<!-- GENERIC HANDLER to copy unchanged nodes, will be overridden by any node-specific templates below -->
@@ -47,6 +122,44 @@ N Emsen		|	21/09/2006	|	Case: To only create purchase order
 		<xsl:copy/>
 	</xsl:template>
 	<!-- END of GENERIC HANDLERS -->
+	
+	<!-- Use the correct supplier code for Spirit in the tradesimple header -->
+	<xsl:template match="Invoice/TradeSimpleHeader">
+		<TradeSimpleHeader>
+			<SendersCodeForRecipient>
+				<xsl:choose >
+					<xsl:when test="string(SendersBranchReference)!='1066546'">
+						<xsl:value-of select="SendersCodeForRecipient"/>		
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="../InvoiceHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</SendersCodeForRecipient>
+			<SendersBranchReference>
+				<xsl:value-of select="SendersBranchReference"/>
+			</SendersBranchReference>
+		</TradeSimpleHeader>
+	</xsl:template>
+
+	<!-- Use BuyersCode as SuppliersCode for non-Spirit Invoices -->
+	<xsl:template match="ShipTo/ShipToLocationID">
+		<ShipToLocationID>
+			<BuyersCode>
+				<xsl:value-of select="BuyersCode"/>
+			</BuyersCode>
+			<SuppliersCode>
+				<xsl:choose>
+					<xsl:when test="string(../../../TradeSimpleHeader/SendersBranchReference)!='1066546'">
+						<xsl:value-of select="BuyersCode"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="SuppliersCode"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</SuppliersCode>
+		</ShipToLocationID>
+	</xsl:template>
 	
 	<!-- This is so we dont duplicate block Carlsberg's invoice's on FGN -->
 	<xsl:template match="Invoice/InvoiceHeader/BatchInformation/FileGenerationNo">
