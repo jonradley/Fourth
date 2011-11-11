@@ -131,15 +131,13 @@ H Robson	| 2011-10-19		| 4958 Created Module
 													<xsl:value-of select="format-number(QTY_DEL,'#')"/>
 												</CreditedQuantity>
 											</xsl:if>
-											<UnitValueExclVAT><xsl:value-of select="format-number(LIST_PRICE,'#.00')"/></UnitValueExclVAT>
+											<UnitValueExclVAT><xsl:value-of select="format-number(LIST_PRICE,'0.00')"/></UnitValueExclVAT>
 											<xsl:if test="NETT_VALUE != ''">
-												<LineValueExclVAT><xsl:value-of select="format-number(NETT_VALUE,'#.00')"/></LineValueExclVAT>
+												<LineValueExclVAT><xsl:value-of select="format-number(NETT_VALUE,'0.00')"/></LineValueExclVAT>
 											</xsl:if>
 											<xsl:if test="DISCOUNT != ''">
-												<LineDiscountRate><xsl:value-of select="format-number(translate(DISCOUNT,'- %',''),'#.00')"/></LineDiscountRate>
+												<LineDiscountRate><xsl:value-of select="format-number(translate(DISCOUNT,'- %',''),'0.00')"/></LineDiscountRate>
 											</xsl:if>
-											<!--
-											<LineDiscountValue/>-->
 											<VATCode>
 												<xsl:call-template name="jacksonsVatCodeLookup">
 													<xsl:with-param name="vatCode" select="VC"/>
@@ -171,24 +169,18 @@ H Robson	| 2011-10-19		| 4958 Created Module
 												<NumberOfItemsAtRate>
 													<xsl:value-of select="sum(../LINE[PRODUCT_CODE != ''][QTY_ORD != ''][LIST_PRICE != ''][VC = current()/VCE]/QTY_DEL)"/>
 												</NumberOfItemsAtRate>
-												<VATAmountAtRate><xsl:value-of select="format-number(VAT_AMOUNT,'#.00')" /></VATAmountAtRate>
+												<VATAmountAtRate><xsl:value-of select="format-number(VAT_AMOUNT,'0.00')" /></VATAmountAtRate>
 												<VATTrailerExtraData>	
 													<SuppliersOriginalVATCode><xsl:value-of select="VCE" /></SuppliersOriginalVATCode>
 												</VATTrailerExtraData>
 											</VATSubTotal>
 										</xsl:for-each>
 									</VATSubTotals>
-									<!-- 
-									<DiscountedLinesTotalExclVAT/>
-									<DocumentDiscount/>-->
-									<DocumentTotalExclVAT><xsl:value-of select="format-number(TOTAL_VALUE,'#.00')" /></DocumentTotalExclVAT>
-									<!--
-									<SettlementDiscount/>
-									-->
-									<SettlementTotalExclVAT><xsl:value-of select="format-number(TOTAL_VALUE,'#.00')" /></SettlementTotalExclVAT>
-									<VATAmount><xsl:value-of select="format-number(TOTAL_VAT,'#.00')" /></VATAmount>
-									<DocumentTotalInclVAT><xsl:value-of select="format-number(TOTAL_DUE,'#.00')" /></DocumentTotalInclVAT>
-									<SettlementTotalInclVAT><xsl:value-of select="format-number(TOTAL_DUE,'#.00')" /></SettlementTotalInclVAT>
+									<DocumentTotalExclVAT><xsl:value-of select="format-number(TOTAL_VALUE,'0.00')" /></DocumentTotalExclVAT>
+									<SettlementTotalExclVAT><xsl:value-of select="format-number(TOTAL_VALUE,'0.00')" /></SettlementTotalExclVAT>
+									<VATAmount><xsl:value-of select="format-number(TOTAL_VAT,'0.00')" /></VATAmount>
+									<DocumentTotalInclVAT><xsl:value-of select="format-number(TOTAL_DUE,'0.00')" /></DocumentTotalInclVAT>
+									<SettlementTotalInclVAT><xsl:value-of select="format-number(TOTAL_DUE,'0.00')" /></SettlementTotalInclVAT>
 								</CreditNoteTrailer>
 							</CreditNote>
 						</BatchDocument>
