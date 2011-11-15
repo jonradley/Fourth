@@ -59,11 +59,6 @@ Date		| Name		| Change
 				<SendersCodeForRecipient RecordPos="RFF" LPos="2" SFPos="2"/>
 			</TradeSimpleHeader>
 			<PurchaseOrderHeader>
-				<Buyer>
-					<BuyersLocationID>
-						<SuppliersCode RecordPos="RFF+IA" LPos="1" SFPos="1"/>
-					</BuyersLocationID>
-				</Buyer>
 				<Supplier>
 					<SuppliersLocationID>
 						<GLN RecordPos="NAD+SE" LPos="3" SFPos="1"/>
@@ -87,7 +82,8 @@ Date		| Name		| Change
 				<PurchaseOrderLine>
 					<LineNumber RecordPos="LIN" LPos="2"/>
 					<ProductID>
-						<SuppliersProductCode RecordPos="LIN" LPos="4" SFPos="1"/>
+						<SuppliersProductCode RecordPos="PIA" LPos="3"/>
+						<BuyersProductCode RecordPos="PIA" LPos="3"/>
 					</ProductID>
 					<ProductDescription RecordPos="IMD+F" LPos="4" SFPos="4"/>
 					<OrderedQuantity RecordPos="QTY+21" LPos="2" SFPos="1">
