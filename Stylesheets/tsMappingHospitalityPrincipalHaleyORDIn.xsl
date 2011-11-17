@@ -86,8 +86,8 @@ H Robson	| 2011-11-14		| 4966 Created Module
 								</ShipTo>
 								
 								<PurchaseOrderReferences>
-									<xsl:if test="indepedi/@reference != ''"><PurchaseOrderReference><xsl:value-of select="indepedi/@reference"/></PurchaseOrderReference></xsl:if>
-									<xsl:if test="indepedi/@taxpoint != ''"><PurchaseOrderDate><xsl:value-of select="substring-before(indepedi/@taxpoint,'Z')"/></PurchaseOrderDate></xsl:if>
+									<xsl:if test="@reference != ''"><PurchaseOrderReference><xsl:value-of select="@reference"/></PurchaseOrderReference></xsl:if>
+									<xsl:if test="@taxpoint != ''"><PurchaseOrderDate><xsl:value-of select="substring-before(@taxpoint,'Z')"/></PurchaseOrderDate></xsl:if>
 									<!--<TradeAgreement>
 										<ContractReference/>
 										<ContractDate/>
