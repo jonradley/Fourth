@@ -87,7 +87,7 @@ H Robson	| 2011-11-14		| 4966 Created Module
 								
 								<PurchaseOrderReferences>
 									<xsl:if test="@reference != ''"><PurchaseOrderReference><xsl:value-of select="@reference"/></PurchaseOrderReference></xsl:if>
-									<xsl:if test="@taxpoint != ''"><PurchaseOrderDate><xsl:value-of select="substring-before(@taxpoint,'Z')"/></PurchaseOrderDate></xsl:if>
+									<xsl:if test="@taxpoint != ''"><PurchaseOrderDate><xsl:value-of select="translate(substring-before(@taxpoint,'Z'),'-','')"/></PurchaseOrderDate></xsl:if>
 									<!--<TradeAgreement>
 										<ContractReference/>
 										<ContractDate/>
