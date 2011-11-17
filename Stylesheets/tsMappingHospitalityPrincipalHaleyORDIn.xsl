@@ -16,7 +16,7 @@ H Robson	| 2011-11-14		| 4966 Created Module
 					<BatchDocument DocumentTypeNo="2">
 						<PurchaseOrder>
 							<TradeSimpleHeader>
-								<xsl:if test="supplierdata/@name != ''"><SendersCodeForRecipient><xsl:value-of select="supplierdata/@name"/></SendersCodeForRecipient></xsl:if>
+								<SendersCodeForRecipient><xsl:value-of select="supplierdata/@code"/></SendersCodeForRecipient>
 								<!-- <SendersBranchReference/> -->
 								<xsl:if test="clientdata/@name != ''"><SendersName><xsl:value-of select="clientdata/@name"/></SendersName></xsl:if>
 								<SendersAddress>
@@ -57,11 +57,9 @@ H Robson	| 2011-11-14		| 4966 Created Module
 									</BuyersAddress>
 								</Buyer>
 								<Supplier>
-									<!--<SuppliersLocationID>
-										<GLN/>
-										<BuyersCode/>
-										<SuppliersCode/>
-									</SuppliersLocationID>-->
+									<SuppliersLocationID>
+										<BuyersCode><xsl:value-of select="supplierdata/@code"/></BuyersCode>
+									</SuppliersLocationID>
 									<xsl:if test="supplierdata/@name != ''"><SuppliersName><xsl:value-of select="supplierdata/@name"/></SuppliersName></xsl:if>
 									<SuppliersAddress>
 										<xsl:if test="supplierdata/@address1 != ''"><AddressLine1><xsl:value-of select="supplierdata/@address1"/></AddressLine1></xsl:if>
