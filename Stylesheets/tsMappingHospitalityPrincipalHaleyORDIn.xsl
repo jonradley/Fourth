@@ -83,7 +83,6 @@ H Robson	| 2011-11-14		| 4966 Created Module
 										<xsl:if test="deliverydata/@town != ''"><AddressLine4><xsl:value-of select="deliverydata/@town"/></AddressLine4></xsl:if>
 										<xsl:if test="deliverydata/@postcode != ''"><PostCode><xsl:value-of select="deliverydata/@postcode"/></PostCode></xsl:if>
 									</ShipToAddress>
-									<ContactName/>
 								</ShipTo>
 								
 								<PurchaseOrderReferences>
