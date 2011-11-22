@@ -5,6 +5,7 @@ Alterations
 Name		| Date		   	| Change
 **********************************************************************
 H Robson	| 2011-10-21		| 4966 Created Module
+H Robson	| 2011-11-14		| 4966 Questions answered by client, revisions made
 **********************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes"/>
@@ -13,10 +14,10 @@ H Robson	| 2011-10-21		| 4966 Created Module
 		<indepedi>
 			<xsl:attribute name="editype">Invoice</xsl:attribute>
 			<!-- check with client why there is a Z after dates and if it is needed -->
-			<xsl:attribute name="created"><xsl:value-of select="concat(InvoiceHeader/InvoiceReferences/TaxPointDate,'Z')"/></xsl:attribute>
+			<xsl:attribute name="created"><xsl:value-of select="concat(InvoiceHeader/InvoiceReferences/InvoiceDate,'Z')"/></xsl:attribute>
 			<!-- clarify with client what their expected reference is -->
 			<xsl:attribute name="reference"></xsl:attribute>
-			<xsl:attribute name="taxpoint"><xsl:value-of select="concat(InvoiceHeader/InvoiceReferences/InvoiceDate,'Z')"/></xsl:attribute>
+			<xsl:attribute name="taxpoint"><xsl:value-of select="concat(InvoiceHeader/InvoiceReferences/TaxPointDate,'Z')"/></xsl:attribute>
 			<xsl:attribute name="currency"><xsl:value-of select="InvoiceHeader/Currency"/></xsl:attribute>
 			
 			<supplierdata>
@@ -29,14 +30,14 @@ H Robson	| 2011-10-21		| 4966 Created Module
 			
 			<!-- Indicater client data -->
 			<clientdata>
-				<xsl:attribute name="name"></xsl:attribute>
+				<xsl:attribute name="name"><xsl:value-of select="InvoiceHeader/ShipTo/ShipToName"/></xsl:attribute>
 				<xsl:attribute name="outletreference"></xsl:attribute>
-				<xsl:attribute name="outletname"></xsl:attribute>
-				<xsl:attribute name="outletaddress1"></xsl:attribute>
-				<xsl:attribute name="outlettown"></xsl:attribute>
-				<xsl:attribute name="outletcounty"></xsl:attribute>
-				<xsl:attribute name="outletpostcode"></xsl:attribute>
-				<xsl:attribute name="outletcountry"></xsl:attribute>
+				<xsl:attribute name="outletname"><xsl:value-of select="InvoiceHeader/ShipTo/ShipToName"/></xsl:attribute>
+				<xsl:attribute name="outletaddress1"><xsl:value-of select="InvoiceHeader/ShipTo/ShipToAddress/AddressLine1"/></xsl:attribute>
+				<xsl:attribute name="outlettown"><xsl:value-of select="InvoiceHeader/ShipTo/ShipToAddress/AddressLine2"/></xsl:attribute>
+				<xsl:attribute name="outletcounty"><xsl:value-of select="InvoiceHeader/ShipTo/ShipToAddress/AddressLine3"/></xsl:attribute>
+				<xsl:attribute name="outletpostcode"><xsl:value-of select="InvoiceHeader/ShipTo/ShipToAddress/PostCode"/></xsl:attribute>
+				<xsl:attribute name="outletcountry"><xsl:value-of select="InvoiceHeader/ShipTo/ShipToAddress/AddressLine4"/></xsl:attribute>
 			</clientdata>
 			
 			<deliverydata>
@@ -60,7 +61,7 @@ H Robson	| 2011-10-21		| 4966 Created Module
 					<productitem>
 						<xsl:attribute name="description"><xsl:value-of select="ProductDescription"/></xsl:attribute>
 						<xsl:attribute name="itemcode"><xsl:value-of select="ProductID/SuppliersProductCode"/></xsl:attribute>
-						<!-- check with client -->
+						<!-- Where split cases are used we populate the nominal code field with the pack size of the product and where a supplier does not use split casing we leave the field blank. -->
 						<xsl:attribute name="nominalcode"></xsl:attribute>
 						<xsl:attribute name="quantity"><xsl:value-of select="InvoicedQuantity"/></xsl:attribute>
 						<xsl:attribute name="unitprice"><xsl:value-of select="UnitValueExclVAT"/></xsl:attribute>
