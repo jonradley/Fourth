@@ -8,11 +8,12 @@ Date				| Name					| Comments
 ****************************************************************************************************
 07/09/2011		|	R Cambridge			| 4810 Ensure 'slash-less' codes are copied to the output
 ****************************************************************************************************
-					|							|				
+11/11/2011		|	H Robson				| 5015 Set output encoding to UTF-8			
 *************************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
                               xmlns:fo="http://www.w3.org/1999/XSL/Format"
                               xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+	<xsl:output encoding="UTF-8"/> 
 	<xsl:template match="PriceCatalog">
 		<Catalogue>
 		
