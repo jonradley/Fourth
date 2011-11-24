@@ -104,16 +104,22 @@ H Robson	| 2011-10-19		| 4958 Created Module
 											</ProductID>
 											<ProductDescription><xsl:value-of select="DESCRIPTION"/></ProductDescription>
 											<OrderedQuantity>
-												<xsl:call-template name="jacksonsUoMLookup"/>
+												<xsl:call-template name="jacksonsUoMLookup">
+													<xsl:with-param name="PER" select="PER"/>
+												</xsl:call-template>
 												<xsl:value-of select="format-number(QTY_ORD,'#')"/>
 											</OrderedQuantity>
 											<xsl:if test="QTY_DEL != ''">
 												<DeliveredQuantity>
-													<xsl:call-template name="jacksonsUoMLookup"/>
+													<xsl:call-template name="jacksonsUoMLookup">
+														<xsl:with-param name="PER" select="PER"/>
+													</xsl:call-template>
 													<xsl:value-of select="format-number(QTY_DEL,'#')"/>
 												</DeliveredQuantity>
 												<InvoicedQuantity>
-													<xsl:call-template name="jacksonsUoMLookup"/>
+													<xsl:call-template name="jacksonsUoMLookup">
+														<xsl:with-param name="PER" select="PER"/>
+													</xsl:call-template>
 													<xsl:value-of select="format-number(QTY_DEL,'#')"/>
 												</InvoicedQuantity>
 											</xsl:if>
