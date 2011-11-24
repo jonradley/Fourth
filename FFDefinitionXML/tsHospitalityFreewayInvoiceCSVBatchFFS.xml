@@ -32,6 +32,7 @@
 						<TradeSimpleHeader>
 							<SendersCodeForRecipient RecordPos="HEAD" LPos="4"/>
 							<SendersBranchReference RecordPos="HEAD" LPos="2"/>
+							<RecipientsName RecordPos="HEAD" LPos="40"/>
 						</TradeSimpleHeader>
 						<InvoiceHeader>
 							<!--Set dummy value (HEAD-3) to DocumentStatus and correct it in stylesheet.-->
@@ -62,8 +63,7 @@
 							<ShipTo>
 								<ShipToLocationID>
 									<GLN RecordPos="HEAD" LPos="23"/>
-									<!--BuyersCode RecordPos="HEAD" LPos="24"/-->
-									<BuyersCode RecordPos="HEAD" LPos="4"/>
+									<SuppliersCode RecordPos="HEAD" LPos="4"/>
 								</ShipToLocationID>
 								<ShipToName RecordPos="HEAD" LPos="17"/>
 								<ShipToAddress>
