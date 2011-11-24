@@ -8,8 +8,12 @@ Date				| Name					| Comments
 06/10/2011		| 	KOshaughnessy		|Bugfix 4925
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 13/10/11			|	KOshaughnessy		|Bugfix 4943
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+24/11/11			|	H Robson		|Bugfix 5061
 *************************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:sh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" xmlns:eanucc="urn:ean.ucc:2" xmlns:pay="urn:ean.ucc:pay:2" xmlns:vat="urn:ean.ucc:pay:vat:2">
+	<xsl:output encoding="UTF-8"/> 
+	
 	<xsl:template match="/">
 		<BatchRoot>
 			<Batch>
@@ -77,10 +81,12 @@ Date				| Name					| Comments
 										<xsl:value-of select="//pay:invoice/invoiceIdentification/uniqueCreatorIdentification"/>
 									</CreditNoteReference>
 									<CreditNoteDate>
-										<xsl:value-of select="substring-before(//pay:invoice/@creationDateTime, 'T')"/>
+										<!-- 24/11/11 - use DN date by order of Chris -->
+										<xsl:value-of select="substring-before(//pay:invoice/invoiceLineItem/deliveryNote/referenceDateTime, 'T')"/>
 									</CreditNoteDate>
 									<TaxPointDate>
-										<xsl:value-of select="substring-before(//pay:invoice/@creationDateTime, 'T')"/>
+										<!-- 24/11/11 - use DN date by order of Chris -->
+										<xsl:value-of select="substring-before(//pay:invoice/invoiceLineItem/deliveryNote/referenceDateTime, 'T')"/>
 									</TaxPointDate>
 									<xsl:if test="//vat:vATInvoicePartyExtension/vATRegistrationNumber !=''">
 										<VATRegNo>
@@ -110,9 +116,10 @@ Date				| Name					| Comments
 										</xsl:if>
 										
 										<DeliveryNoteReferences>
-											<xsl:if test="string(//invoiceLineItem/deliveryNote/referenceIdentification) !=' '">
+											<xsl:if test="string(//pay:invoice/invoiceLineItem/invoice/documentReference/uniqueCreatorIdentification) !=' '">
 												<DeliveryNoteReference>
-													<xsl:value-of select="//invoiceLineItem/deliveryNote/referenceIdentification"/>
+													<!-- 24/11/11 - use INV ref by order of Chris -->
+													<xsl:value-of select="//pay:invoice/invoiceLineItem/invoice/documentReference/uniqueCreatorIdentification"/>
 												</DeliveryNoteReference>
 											</xsl:if>
 											<xsl:if test="string(//invoiceLineItem/deliveryNote/referenceDateTime) !=' '">
