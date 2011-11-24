@@ -82,12 +82,26 @@ Rave Tech     	|  02/01/2009 | Created Module
 		<xsl:element name="DocumentStatus"><xsl:text>Original</xsl:text></xsl:element>
 	</xsl:template>
 
-
+	<!--H&B Send the buyers code for supplier just for extranet customers. We dont want them to populate this for TS customer, Infiller will do the job-->
+	<xsl:template match="ShipTo">
+		<ShipTo>
+			<ShipToLocationID>
+				<xsl:if test="//Invoice/TradeSimpleHeader/RecipientsName = 'Extranet'">
+					<xsl:element name="BuyersCode">		
+						<xsl:value-of select="//ShipTo/ShipToLocationID/SuppliersCode"/>
+					</xsl:element>
+				</xsl:if>	
+				<xsl:apply-templates select="SuppliersCode"/>
+			</ShipToLocationID>
+			<xsl:apply-templates select="ShipToName"/>
+			<xsl:apply-templates select="ShipToAddress"/>
+		</ShipTo>
+	</xsl:template>
+	
 	<!--Set Currency as 'GBP'-->
 	<xsl:template match="//Currency">
 		<xsl:element name="Currency"><xsl:text>GBP</xsl:text></xsl:element>
 	</xsl:template>
-
 
 	<!--*********** LINE DETAILS **********-->
 	<!--***************************************-->
