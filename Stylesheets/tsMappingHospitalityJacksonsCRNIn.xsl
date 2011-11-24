@@ -122,12 +122,16 @@ H Robson	| 2011-10-19		| 4958 Created Module
 												<ProductDescription><xsl:value-of select="DESCRIPTION"/></ProductDescription>
 											</xsl:if>
 											<OrderedQuantity>
-												<xsl:call-template name="jacksonsUoMLookup"/>
+												<xsl:call-template name="jacksonsUoMLookup">
+													<xsl:with-param name="PER" select="PER"/>
+												</xsl:call-template>
 												<xsl:value-of select="format-number(QTY_ORD,'#')"/>
 											</OrderedQuantity>
 											<xsl:if test="QTY_DEL != ''">
 												<CreditedQuantity>
-													<xsl:call-template name="jacksonsUoMLookup"/>
+													<xsl:call-template name="jacksonsUoMLookup">
+														<xsl:with-param name="PER" select="PER"/>
+													</xsl:call-template>
 													<xsl:value-of select="format-number(QTY_DEL,'#')"/>
 												</CreditedQuantity>
 											</xsl:if>
