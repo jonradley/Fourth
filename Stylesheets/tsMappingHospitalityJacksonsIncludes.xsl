@@ -5,6 +5,7 @@ Alterations
 Name		| Date		   	| Change
 **********************************************************************
 H Robson	| 2011-10-19		| 4958 Created Module
+H Robson	| 2011-11-24		| 4958 fixed createAddressNodes to handle blank input lines
 **********************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes"/>
@@ -167,8 +168,9 @@ H Robson	| 2011-10-19		| 4958 Created Module
 	<xsl:template name="createAddressNodes">
 		<xsl:param name="text" select="INVOICE_TO_ADDRESS" />
 		<xsl:param name="numberOfLines" />
-		<!-- address start and end defaults are set up for the jacksons input data -->
 		<xsl:param name="suppressPostCode" select="false()"/>
+		<!-- the number of blank/empty input lines that have been skipped -->
+		<xsl:param name="blanklines" select="number(0)" />
 		<!-- the first iteration is always 1 -->
 		<xsl:param name="iteration" select="number(1)" />
 
@@ -183,26 +185,66 @@ H Robson	| 2011-10-19		| 4958 Created Module
 						</xsl:call-template>
 					</PostCode>
 				</xsl:when>
-				<!-- if the iteration (the current line being processed) is between 2 and 5 inclusive -->
-				<xsl:when test="($iteration &gt;= 2) and ($iteration &lt;= 5)">
-					<xsl:element name="{concat('AddressLine',$iteration - 1 )}"><!-- we subtract 1 because the 1st addressline is the actually the 2nd line -->
+				
+				<!-- if the iteration (the current input line being processed) is between 2 and 5 inclusive (the start and end of the address in the jacksons input) -->
+				<xsl:when test="($iteration &gt;= 2) and ($iteration &lt;= 5 + $blanklines)">
+
+					<!-- a variable to store the line being processed so we can test that its not blank -->
+					<xsl:variable name="line">
 						<xsl:call-template name="outputLineFromText">
 							<xsl:with-param name="text" select="$text" />
 							<xsl:with-param name="requestedLine" select="$iteration" />
 						</xsl:call-template>
-					</xsl:element>
+					</xsl:variable>
+					
+					<xsl:choose>
+						<xsl:when test="$line != ''">
+							<xsl:element name="{concat('AddressLine',$iteration - (1 + $blanklines))}">
+							<!-- we subtract 1 because the 1st addressline is the actually the 2nd input line -->
+							<!-- and if there have been blank lines that we skipped, we subtract 1 for each of those to keep the addresslines sequential -->
+								 <xsl:value-of select="$line"/>
+							</xsl:element>
+							
+							<!-- if there are more lines in the input than we have had iterations, run the template again for the next iteration -->
+							<xsl:if test="$numberOfLines &gt; $iteration">
+								<xsl:call-template name="createAddressNodes">
+									<xsl:with-param name="text" select="$text" />
+									<xsl:with-param name="numberOfLines" select="$numberOfLines"  />
+									<xsl:with-param name="suppressPostCode" select="$suppressPostCode"  />
+									<xsl:with-param name="blanklines" select="$blanklines" />
+									<xsl:with-param name="iteration" select="$iteration + 1" />
+								</xsl:call-template>
+							</xsl:if>
+						</xsl:when>
+						
+						<!-- if the line being processed IS blank -->
+						<xsl:otherwise>
+							<!-- if there are more lines in the input than we have had iterations, run the template again for the next iteration, and increment $blanklines -->
+							<xsl:if test="$numberOfLines &gt; $iteration">
+								<xsl:call-template name="createAddressNodes">
+									<xsl:with-param name="text" select="$text" />
+									<xsl:with-param name="numberOfLines" select="$numberOfLines"  />
+									<xsl:with-param name="suppressPostCode" select="$suppressPostCode"  />
+									<xsl:with-param name="blanklines" select="$blanklines + 1" />
+									<xsl:with-param name="iteration" select="$iteration + 1" />
+								</xsl:call-template>
+							</xsl:if>
+						</xsl:otherwise>
+					</xsl:choose>
 				</xsl:when>
+				<xsl:otherwise>
+					<!-- if there are more lines in the input than we have had iterations, run the template again for the next iteration -->
+					<xsl:if test="$numberOfLines &gt; $iteration">
+						<xsl:call-template name="createAddressNodes">
+							<xsl:with-param name="text" select="$text" />
+							<xsl:with-param name="numberOfLines" select="$numberOfLines"  />
+							<xsl:with-param name="suppressPostCode" select="$suppressPostCode"  />
+							<xsl:with-param name="blanklines" select="$blanklines" />
+							<xsl:with-param name="iteration" select="$iteration + 1" />
+						</xsl:call-template>
+					</xsl:if>
+				</xsl:otherwise>
 			</xsl:choose>
-		</xsl:if>
-
-		<!-- if there are more lines in the input than we have had iterations, run the template again for the next iteration -->
-		<xsl:if test="$numberOfLines &gt; $iteration">
-			<xsl:call-template name="createAddressNodes">
-				<xsl:with-param name="text" select="$text" />
-				<xsl:with-param name="numberOfLines" select="$numberOfLines"  />
-				<xsl:with-param name="suppressPostCode" select="$suppressPostCode"  />
-				<xsl:with-param name="iteration" select="$iteration + 1" />
-			</xsl:call-template>
 		</xsl:if>
 	</xsl:template>	
 </xsl:stylesheet>
