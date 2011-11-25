@@ -86,7 +86,7 @@ Rave Tech     	|  02/01/2009 | Created Module
 	<xsl:template match="ShipTo">
 		<ShipTo>
 			<ShipToLocationID>
-				<xsl:if test="//Invoice/TradeSimpleHeader/RecipientsName = 'Extranet'">
+				<xsl:if test="//Invoice/TradeSimpleHeader/RecipientsName = 'EXTRANET'">
 					<xsl:element name="BuyersCode">		
 						<xsl:value-of select="//ShipTo/ShipToLocationID/SuppliersCode"/>
 					</xsl:element>
