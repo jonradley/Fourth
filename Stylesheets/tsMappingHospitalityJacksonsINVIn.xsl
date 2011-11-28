@@ -99,6 +99,11 @@ H Robson	| 2011-10-19		| 4958 Created Module
 											<PurchaseOrderReferences>
 												<PurchaseOrderReference><xsl:value-of select="../YOUR_ORDER_NUMBER"/></PurchaseOrderReference>
 											</PurchaseOrderReferences>
+											<DeliveryNoteReferences>
+												<DeliveryNoteReference><xsl:value-of select="../OUR_ORDER_NO"/></DeliveryNoteReference>
+												<DeliveryNoteDate><xsl:value-of select="../DATE_DESPATCHED"/></DeliveryNoteDate>
+												<DespatchDate><xsl:value-of select="../DATE_DESPATCHED"/></DespatchDate>
+											</DeliveryNoteReferences>
 											<ProductID>
 												<SuppliersProductCode><xsl:value-of select="PRODUCT_CODE"/></SuppliersProductCode>
 											</ProductID>
