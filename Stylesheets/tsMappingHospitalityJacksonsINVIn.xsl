@@ -101,8 +101,16 @@ H Robson	| 2011-10-19		| 4958 Created Module
 											</PurchaseOrderReferences>
 											<DeliveryNoteReferences>
 												<DeliveryNoteReference><xsl:value-of select="../OUR_ORDER_NO"/></DeliveryNoteReference>
-												<DeliveryNoteDate><xsl:value-of select="../DATE_DESPATCHED"/></DeliveryNoteDate>
-												<DespatchDate><xsl:value-of select="../DATE_DESPATCHED"/></DespatchDate>
+												<DeliveryNoteDate>
+													<xsl:call-template name="jacksonsDateToInternal">
+														<xsl:with-param name="inputDate" select="../DATE_DESPATCHED"/>
+													</xsl:call-template>
+												</DeliveryNoteDate>
+												<DespatchDate>
+													<xsl:call-template name="jacksonsDateToInternal">
+														<xsl:with-param name="inputDate" select="../DATE_DESPATCHED"/>
+													</xsl:call-template>
+												</DespatchDate>
 											</DeliveryNoteReferences>
 											<ProductID>
 												<SuppliersProductCode><xsl:value-of select="PRODUCT_CODE"/></SuppliersProductCode>
