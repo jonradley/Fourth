@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--******************************************************************
+Alterations
+**********************************************************************
+Name			| Date			| Change
+**********************************************************************
+R Cambridge	| 04/12/2006	| 585 Created, based on tsHospitalityInboundDeliveryNoteCSV_FFS.xml
+**********************************************************************
+				|					|
+*******************************************************************-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>chr(13)chr(10)</ffsRecordSeparator>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>,</ffsFieldSeparator>
+		</ffsFieldSeparators>
+		<ffsSplitBatchRecord RecordPos="chr(49)"/>
+	</ffsSettings>
+	<ffsRoot>
+		<BatchDocuments>
+		<BatchDocument>
+		<DeliveryNote>
+			<TradeSimpleHeader>
+				<SendersCodeForRecipient RecordPos="chr(49)" LPos="2"/>
+				<!--TestFlag RecordPos="H" LPos="3"/-->
+			</TradeSimpleHeader>
+			<DeliveryNoteHeader>
+				<!-- Buyers GLN -->
+				<!-- Suppliers GLN and SuppliersCodeFor -->
+				<ShipTo>
+					<ShipToLocationID>
+						<SuppliersCode RecordPos="chr(49)" LPos="2"/>
+					</ShipToLocationID>
+					<ShipToName RecordPos="chr(49)" LPos="3"/>
+					<!--ShipToAddress>
+								<AddressLine1 RecordPos="H" LPos="13"/>
+								<AddressLine2 RecordPos="H" LPos="14"/>
+								<AddressLine3 RecordPos="H" LPos="15"/>
+								<AddressLine4 RecordPos="H" LPos="16"/>
+								<PostCode RecordPos="H" LPos="17"/>
+							</ShipToAddress>
+							<ContactName RecordPos="H" LPos="11"/-->
+				</ShipTo>
+				<PurchaseOrderReferences>
+					<PurchaseOrderReference RecordPos="chr(49)" LPos="4"/>
+					<PurchaseOrderDate RecordPos="chr(49)" LPos="5"/>
+				</PurchaseOrderReferences>
+				<DeliveryNoteReferences>
+					<DeliveryNoteReference RecordPos="chr(49)" LPos="6"/>
+					<DeliveryNoteDate RecordPos="chr(49)" LPos="7"/>
+					<!-- Despatch Date -->
+				</DeliveryNoteReferences>
+				<DeliveredDeliveryDetails>
+					<DeliveryDate RecordPos="chr(49)" LPos="7"/>
+					<!--DeliverySlot>
+								<SlotStart RecordPos="H" LPos="9"/>
+								<SlotEnd RecordPos="H" LPos="10"/>
+							</DeliverySlot-->
+				</DeliveredDeliveryDetails>
+			</DeliveryNoteHeader>
+			<DeliveryNoteDetail>
+				<DeliveryNoteLine>
+					<ProductID>
+						<SuppliersProductCode RecordPos="chr(50)" LPos="3"/>
+					</ProductID>
+					<ProductDescription RecordPos="chr(50)" LPos="4"/>
+					<!--OrderedQuantity RecordPos="D" LPos="5"/>
+							<ConfirmedQuantity RecordPos="D" LPos="6"/-->
+					<DespatchedQuantity RecordPos="chr(50)" LPos="6"/>
+					<!--PackSize RecordPos="D" LPos="4"/>
+							<ExpiryDate RecordPos="D" LPos="8"/>
+							<SellByDate RecordPos="D" LPos="9"/-->
+				</DeliveryNoteLine>
+			</DeliveryNoteDetail>
+			<!--DeliveryNoteTrailer>
+						<NumberOfLines RecordPos="H" LPos="18"/>
+					</DeliveryNoteTrailer-->
+		</DeliveryNote>
+		<ffsAttribute1 name="DocumentTypeNo" RecordPos="chr(49)" LPos="1"/>
+		</BatchDocument>
+		</BatchDocuments>
+	</ffsRoot>
+</ffsFlatFileSchema>
