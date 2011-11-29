@@ -7,7 +7,7 @@ Name		| Date			| Change
 **********************************************************************
 K Oshaughnessy| 21/07/2011	| Created
 **********************************************************************
-			|				|
+K Oshaughnessy|24/11/2011	| BugId:5060
 **********************************************************************
 -->
 <ffsFlatFileSchema>
@@ -64,13 +64,6 @@ K Oshaughnessy| 21/07/2011	| Created
 			<ffsHeaderRecord RecordPos="CDT="/>
 			<ffsHeaderRecord RecordPos="FIL="/>
 		</ffsBatchHeader>
-		<ffsGroups>
-			<ffsGroup>
-				<ffsGroupRecord RecordPos="OIR=" FieldTotal="6"/>
-				<!-- Because FieldTotal of CLD is 18, all line level references to OIR should be done as accesses to CLD, but with 18 added to the LPos value -->
-				<ffsSubGroupRecord RecordPos="CLD=" FieldTotal="14"/>
-			</ffsGroup>
-		</ffsGroups>
 		<ffsSplitBatchRecord RecordPos="CLO="/>
 	</ffsSettings>
 	<ffsRoot>
@@ -180,11 +173,9 @@ K Oshaughnessy| 21/07/2011	| Created
 							</ShipTo>
 							<InvoiceReferences>
 								<!-- OPTIONAL Original Invoice Number, OPTIONAL, CREDIT – OIR – INVN, A unique invoice number for the date, if applicable -->
-								<InvoiceReference RecordPos="CLD=" LPos="16" SFPos="1"/>
+								<InvoiceReference RecordPos="OIR" LPos="2" />
 								<!-- OPTIONAL Original Invoice Date, OPTIONAL, CREDIT – OIR – IVDT, YYMMDD, The date the invoice was issued, if applicable -->
-								<InvoiceDate RecordPos="CLD=" LPos="17"/>
-								<!-- Fix -->
-								<VATRegNo RecordPos="SDT=" LPos="4"/>
+								<InvoiceDate RecordPos="OIR" LPos="3"/>
 							</InvoiceReferences>
 							<CreditNoteReferences>
 								<!-- MANDATORY Credit note Number, LEGAL MANDATORY, CREDIT – CRF – CRNR, A unique credit note number for the date -->
@@ -200,12 +191,6 @@ K Oshaughnessy| 21/07/2011	| Created
 						<CreditNoteDetail>
 							<CreditNoteLine>
 								<LineNumber RecordPos="CLD=" LPos="1"/>
-								<!--
-								<PurchaseOrderReferences>
-									<PurchaseOrderReference RecordPos="CLD=" LPos="23" SFPos="1"/>
-									<PurchaseOrderDate RecordPos="CLD=" LPos="23" SFPos="3"/>
-								</PurchaseOrderReferences>
-								-->
 								<ProductID>
 									<!-- MANDATORY GTIN, INVOIC - CLD - SPRO(1) -->
 									<GTIN RecordPos="CLD=" LPos="2" SFPos="1"/>
