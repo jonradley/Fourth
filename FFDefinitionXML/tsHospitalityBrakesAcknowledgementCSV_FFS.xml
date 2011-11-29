@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--******************************************************************
+Alterations
+**********************************************************************
+Name			| Date			| Change
+**********************************************************************
+R Cambridge	| 28/11/2007	| 1626 Brakes Logistics will send acknowledgments to Laurel
+**********************************************************************
+				|					|
+**********************************************************************
+				|					|
+*******************************************************************-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>chr(13)chr(10)</ffsRecordSeparator>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>,</ffsFieldSeparator>
+		</ffsFieldSeparators>
+		<ffsPadding/>
+		<ffsBatchHeader>
+			<!--list of records that make up the header, this will be added to each document in the batch -->
+			<ffsHeaderRecord RecordPos="0"/>
+		</ffsBatchHeader>
+		<ffsSplitBatchRecord RecordPos="1"/>
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<BatchDocuments>
+				<BatchDocument>
+					<PurchaseOrderAcknowledgement>
+						<TradeSimpleHeader>
+							<SendersCodeForRecipient RecordPos="1" LPos="2"/>
+							<!--SendersBranchReference RecordPos="1" LPos="4"/-->
+						</TradeSimpleHeader>
+						<PurchaseOrderAcknowledgementHeader>
+							<Buyer>
+								<BuyersLocationID>
+									<GLN RecordPos="0" LPos="5"/>
+								</BuyersLocationID>
+							</Buyer>
+							<Supplier>
+								<SuppliersLocationID>
+									<GLN RecordPos="0" LPos="4"/>
+								</SuppliersLocationID>
+							</Supplier>
+							<ShipTo>
+								<ShipToLocationID>
+									<GLN RecordPos="1" LPos="5"/>
+									<BuyersCode RecordPos="1" LPos="3"/>
+									<SuppliersCode RecordPos="1" LPos="2"/>
+								</ShipToLocationID>
+							</ShipTo>
+							<PurchaseOrderReferences>
+								<PurchaseOrderReference RecordPos="1" LPos="8"/>
+								<PurchaseOrderDate RecordPos="1" LPos="6"/>
+							</PurchaseOrderReferences>
+							<PurchaseOrderAcknowledgementReferences>
+								<PurchaseOrderAcknowledgementReference RecordPos="1" LPos="10"/>
+								<PurchaseOrderAcknowledgementDate RecordPos="0" LPos="3"/>
+							</PurchaseOrderAcknowledgementReferences>
+							<OrderedDeliveryDetails>
+								<DeliveryDate RecordPos="1" LPos="7"/>
+							</OrderedDeliveryDetails>
+						</PurchaseOrderAcknowledgementHeader>
+					</PurchaseOrderAcknowledgement>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>
