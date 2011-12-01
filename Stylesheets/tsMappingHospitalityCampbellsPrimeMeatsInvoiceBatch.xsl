@@ -53,17 +53,16 @@ Maha	| 04/10/2011 | 4913: Map vatcode S8 to vatrate 20 and 17.5
 	<xsl:template match=" BatchDocument[Invoice/InvoiceTrailer/DocumentTotalExclVAT=0]"/>
 	
 	
-	<xsl:template match="Buyer">
-		<xsl:if test="BuyersLocationID/BuyersCode">
+	<xsl:template match="Buyer">		
 			<Buyer>
 				<BuyersLocationID>				
 					<xsl:choose>
 						<xsl:when test="substring-before(BuyersLocationID/BuyersCode,'/') !=''">
 							<BuyersCode><xsl:value-of select="substring-before(BuyersLocationID/BuyersCode,'/')"/></BuyersCode>
 						</xsl:when>
-						<xsl:otherwise>
+						<xsl:when test="BuyersLocationID/BuyersCode !=''">
 							<BuyersCode><xsl:value-of select="BuyersLocationID/BuyersCode"/></BuyersCode>
-						</xsl:otherwise>
+						</xsl:when>
 					</xsl:choose>					
 					<SuppliersCode><xsl:value-of select="BuyersLocationID/SuppliersCode"/></SuppliersCode>
 				</BuyersLocationID>
@@ -76,8 +75,7 @@ Maha	| 04/10/2011 | 4913: Map vatcode S8 to vatrate 20 and 17.5
 						<BuyersCode><xsl:value-of select="substring-after(BuyersLocationID/BuyersCode,'/')"/></BuyersCode>
 					</SuppliersLocationID>
 				</Supplier>
-			</xsl:if>
-		</xsl:if>
+			</xsl:if>	
 	</xsl:template>		
 
 
