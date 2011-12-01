@@ -5,36 +5,38 @@ Alterations
 Name		| Date		   	| Change
 **********************************************************************
 H Robson	| 2011-11-14		| 4966 Created Module
+**********************************************************************
+H Robson	| 2011-12-01		| 4966 Revisions (element names changed case from the spec)
 **********************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes"/>
 	
-	<xsl:template match="indepedi[@editype='Estimate']">
+	<xsl:template match="INDEPEDI[@EDIType='Estimate']">
 		<BatchRoot>
 			<Batch>
 				<BatchDocuments>
 					<BatchDocument DocumentTypeNo="2">
 						<PurchaseOrder>
 							<TradeSimpleHeader>
-								<SendersCodeForRecipient><xsl:value-of select="supplierdata/@code"/></SendersCodeForRecipient>
+								<SendersCodeForRecipient><xsl:value-of select="SupplierData/@code"/></SendersCodeForRecipient>
 								<!-- <SendersBranchReference/> -->
-								<xsl:if test="clientdata/@name != ''"><SendersName><xsl:value-of select="clientdata/@name"/></SendersName></xsl:if>
+								<xsl:if test="ClientData/@Name != ''"><SendersName><xsl:value-of select="ClientData/@Name"/></SendersName></xsl:if>
 								<SendersAddress>
-									<xsl:if test="clientdata/@outletaddress1 != ''"><AddressLine1><xsl:value-of select="clientdata/@outletaddress1"/></AddressLine1></xsl:if>
-									<xsl:if test="clientdata/@outletaddress2 != ''"><AddressLine2><xsl:value-of select="clientdata/@outletaddress2"/></AddressLine2></xsl:if>
-									<xsl:if test="clientdata/@outletaddress3 != ''"><AddressLine3><xsl:value-of select="clientdata/@outletaddress3"/></AddressLine3></xsl:if>
-									<xsl:if test="clientdata/@outlettown != ''"><AddressLine4><xsl:value-of select="clientdata/@outlettown"/></AddressLine4></xsl:if>
-									<xsl:if test="clientdata/@outletpostcode != ''"><PostCode><xsl:value-of select="clientdata/@outletpostcode"/></PostCode></xsl:if>
+									<xsl:if test="ClientData/@OutletAddress1 != ''"><AddressLine1><xsl:value-of select="ClientData/@OutletAddress1"/></AddressLine1></xsl:if>
+									<xsl:if test="ClientData/@OutletAddress2 != ''"><AddressLine2><xsl:value-of select="ClientData/@OutletAddress2"/></AddressLine2></xsl:if>
+									<xsl:if test="ClientData/@OutletAddress3 != ''"><AddressLine3><xsl:value-of select="ClientData/@OutletAddress3"/></AddressLine3></xsl:if>
+									<xsl:if test="ClientData/@OutletTown != ''"><AddressLine4><xsl:value-of select="ClientData/@OutletTown"/></AddressLine4></xsl:if>
+									<xsl:if test="ClientData/@OutletPostCode != ''"><PostCode><xsl:value-of select="ClientData/@OutletPostCode"/></PostCode></xsl:if>
 								</SendersAddress>
 								<!--<RecipientsCodeForSender/>
 								<RecipientsBranchReference/>-->
-								<xsl:if test="supplierdata/@name != ''"><RecipientsName><xsl:value-of select="supplierdata/@name"/></RecipientsName></xsl:if>
+								<xsl:if test="SupplierData/@Name != ''"><RecipientsName><xsl:value-of select="SupplierData/@Name"/></RecipientsName></xsl:if>
 								<RecipientsAddress>
-									<xsl:if test="supplierdata/@address1 != ''"><AddressLine1><xsl:value-of select="supplierdata/@address1"/></AddressLine1></xsl:if>
-									<xsl:if test="supplierdata/@address2 != ''"><AddressLine2><xsl:value-of select="supplierdata/@address2"/></AddressLine2></xsl:if>
-									<xsl:if test="supplierdata/@address3 != ''"><AddressLine3><xsl:value-of select="supplierdata/@address3"/></AddressLine3></xsl:if>
-									<xsl:if test="supplierdata/@town != ''"><AddressLine4><xsl:value-of select="supplierdata/@town"/></AddressLine4></xsl:if>
-									<xsl:if test="supplierdata/@postcode != ''"><PostCode><xsl:value-of select="supplierdata/@postcode"/></PostCode></xsl:if>
+									<xsl:if test="SupplierData/@Address1 != ''"><AddressLine1><xsl:value-of select="SupplierData/@Address1"/></AddressLine1></xsl:if>
+									<xsl:if test="SupplierData/@Address2 != ''"><AddressLine2><xsl:value-of select="SupplierData/@Address2"/></AddressLine2></xsl:if>
+									<xsl:if test="SupplierData/@Address3 != ''"><AddressLine3><xsl:value-of select="SupplierData/@Address3"/></AddressLine3></xsl:if>
+									<xsl:if test="SupplierData/@Town != ''"><AddressLine4><xsl:value-of select="SupplierData/@Town"/></AddressLine4></xsl:if>
+									<xsl:if test="SupplierData/@PostCode != ''"><PostCode><xsl:value-of select="SupplierData/@PostCode"/></PostCode></xsl:if>
 								</RecipientsAddress>
 								<!--<TestFlag/>-->
 							</TradeSimpleHeader>
@@ -47,26 +49,26 @@ H Robson	| 2011-11-14		| 4966 Created Module
 										<BuyersCode/>
 										<SuppliersCode/>
 									</BuyersLocationID>-->
-									<xsl:if test="clientdata/@name != ''"><BuyersName><xsl:value-of select="clientdata/@name"/></BuyersName></xsl:if>
+									<xsl:if test="ClientData/@Name != ''"><BuyersName><xsl:value-of select="ClientData/@Name"/></BuyersName></xsl:if>
 									<BuyersAddress>
-										<xsl:if test="clientdata/@outletaddress1 != ''"><AddressLine1><xsl:value-of select="clientdata/@outletaddress1"/></AddressLine1></xsl:if>
-										<xsl:if test="clientdata/@outletaddress2 != ''"><AddressLine2><xsl:value-of select="clientdata/@outletaddress2"/></AddressLine2></xsl:if>
-										<xsl:if test="clientdata/@outletaddress3 != ''"><AddressLine3><xsl:value-of select="clientdata/@outletaddress3"/></AddressLine3></xsl:if>
-										<xsl:if test="clientdata/@outlettown != ''"><AddressLine4><xsl:value-of select="clientdata/@outlettown"/></AddressLine4></xsl:if>
-										<xsl:if test="clientdata/@outletpostcode != ''"><PostCode><xsl:value-of select="clientdata/@outletpostcode"/></PostCode></xsl:if>
+										<xsl:if test="ClientData/@OutletAddress1 != ''"><AddressLine1><xsl:value-of select="ClientData/@OutletAddress1"/></AddressLine1></xsl:if>
+										<xsl:if test="ClientData/@OutletAddress2 != ''"><AddressLine2><xsl:value-of select="ClientData/@OutletAddress2"/></AddressLine2></xsl:if>
+										<xsl:if test="ClientData/@OutletAddress3 != ''"><AddressLine3><xsl:value-of select="ClientData/@OutletAddress3"/></AddressLine3></xsl:if>
+										<xsl:if test="ClientData/@OutletTown != ''"><AddressLine4><xsl:value-of select="ClientData/@OutletTown"/></AddressLine4></xsl:if>
+										<xsl:if test="ClientData/@OutletPostCode != ''"><PostCode><xsl:value-of select="ClientData/@OutletPostCode"/></PostCode></xsl:if>
 									</BuyersAddress>
 								</Buyer>
 								<Supplier>
 									<SuppliersLocationID>
-										<BuyersCode><xsl:value-of select="supplierdata/@code"/></BuyersCode>
+										<BuyersCode><xsl:value-of select="SupplierData/@code"/></BuyersCode>
 									</SuppliersLocationID>
-									<xsl:if test="supplierdata/@name != ''"><SuppliersName><xsl:value-of select="supplierdata/@name"/></SuppliersName></xsl:if>
+									<xsl:if test="SupplierData/@Name != ''"><SuppliersName><xsl:value-of select="SupplierData/@Name"/></SuppliersName></xsl:if>
 									<SuppliersAddress>
-										<xsl:if test="supplierdata/@address1 != ''"><AddressLine1><xsl:value-of select="supplierdata/@address1"/></AddressLine1></xsl:if>
-										<xsl:if test="supplierdata/@address2 != ''"><AddressLine2><xsl:value-of select="supplierdata/@address2"/></AddressLine2></xsl:if>
-										<xsl:if test="supplierdata/@address3 != ''"><AddressLine3><xsl:value-of select="supplierdata/@address3"/></AddressLine3></xsl:if>
-										<xsl:if test="supplierdata/@town != ''"><AddressLine4><xsl:value-of select="supplierdata/@town"/></AddressLine4></xsl:if>
-										<xsl:if test="supplierdata/@postcode != ''"><PostCode><xsl:value-of select="supplierdata/@postcode"/></PostCode></xsl:if>
+										<xsl:if test="SupplierData/@Address1 != ''"><AddressLine1><xsl:value-of select="SupplierData/@Address1"/></AddressLine1></xsl:if>
+										<xsl:if test="SupplierData/@Address2 != ''"><AddressLine2><xsl:value-of select="SupplierData/@Address2"/></AddressLine2></xsl:if>
+										<xsl:if test="SupplierData/@Address3 != ''"><AddressLine3><xsl:value-of select="SupplierData/@Address3"/></AddressLine3></xsl:if>
+										<xsl:if test="SupplierData/@Town != ''"><AddressLine4><xsl:value-of select="SupplierData/@Town"/></AddressLine4></xsl:if>
+										<xsl:if test="SupplierData/@PostCode != ''"><PostCode><xsl:value-of select="SupplierData/@PostCode"/></PostCode></xsl:if>
 									</SuppliersAddress>
 								</Supplier>
 								<ShipTo>
@@ -75,19 +77,19 @@ H Robson	| 2011-11-14		| 4966 Created Module
 										<BuyersCode/>
 										<SuppliersCode/>
 									</ShipToLocationID>-->
-									<xsl:if test="clientdata/@name != ''"><ShipToName><xsl:value-of select="clientdata/@name"/></ShipToName></xsl:if>
+									<xsl:if test="ClientData/@Name != ''"><ShipToName><xsl:value-of select="ClientData/@Name"/></ShipToName></xsl:if>
 									<ShipToAddress>
-										<xsl:if test="deliverydata/@address1 != ''"><AddressLine1><xsl:value-of select="deliverydata/@address1"/></AddressLine1></xsl:if>
-										<xsl:if test="deliverydata/@address2 != ''"><AddressLine2><xsl:value-of select="deliverydata/@address2"/></AddressLine2></xsl:if>
-										<xsl:if test="deliverydata/@address3 != ''"><AddressLine3><xsl:value-of select="deliverydata/@address3"/></AddressLine3></xsl:if>
-										<xsl:if test="deliverydata/@town != ''"><AddressLine4><xsl:value-of select="deliverydata/@town"/></AddressLine4></xsl:if>
-										<xsl:if test="deliverydata/@postcode != ''"><PostCode><xsl:value-of select="deliverydata/@postcode"/></PostCode></xsl:if>
+										<xsl:if test="DeliveryData/@Address1 != ''"><AddressLine1><xsl:value-of select="DeliveryData/@Address1"/></AddressLine1></xsl:if>
+										<xsl:if test="DeliveryData/@Address2 != ''"><AddressLine2><xsl:value-of select="DeliveryData/@Address2"/></AddressLine2></xsl:if>
+										<xsl:if test="DeliveryData/@Address3 != ''"><AddressLine3><xsl:value-of select="DeliveryData/@Address3"/></AddressLine3></xsl:if>
+										<xsl:if test="DeliveryData/@Town != ''"><AddressLine4><xsl:value-of select="DeliveryData/@Town"/></AddressLine4></xsl:if>
+										<xsl:if test="DeliveryData/@PostCode != ''"><PostCode><xsl:value-of select="DeliveryData/@PostCode"/></PostCode></xsl:if>
 									</ShipToAddress>
 								</ShipTo>
 								
 								<PurchaseOrderReferences>
-									<xsl:if test="@reference != ''"><PurchaseOrderReference><xsl:value-of select="@reference"/></PurchaseOrderReference></xsl:if>
-									<xsl:if test="@taxpoint != ''"><PurchaseOrderDate><xsl:value-of select="substring-before(@taxpoint,'Z')"/></PurchaseOrderDate></xsl:if>
+									<xsl:if test="@Reference != ''"><PurchaseOrderReference><xsl:value-of select="@Reference"/></PurchaseOrderReference></xsl:if>
+									<xsl:if test="@TaxPoint != ''"><PurchaseOrderDate><xsl:value-of select="substring-before(@TaxPoint,'Z')"/></PurchaseOrderDate></xsl:if>
 									<!--<TradeAgreement>
 										<ContractReference/>
 										<ContractDate/>
@@ -115,23 +117,23 @@ H Robson	| 2011-11-14		| 4966 Created Module
 							</PurchaseOrderHeader>
 							
 							<PurchaseOrderDetail>
-								<xsl:for-each select="productitems/productitem">
+								<xsl:for-each select="ProductItems/ProductItem">
 									<PurchaseOrderLine>
 										<LineNumber><xsl:value-of select="position()"/></LineNumber>
 										<ProductID>
 											<!--<GTIN/>-->
-											<xsl:if test="@itemcode!= ''"><SuppliersProductCode><xsl:value-of select="@itemcode"/></SuppliersProductCode></xsl:if>
+											<xsl:if test="@ItemCode!= ''"><SuppliersProductCode><xsl:value-of select="@ItemCode"/></SuppliersProductCode></xsl:if>
 										</ProductID>
 										
-										<xsl:if test="@description!= ''"><ProductDescription><xsl:value-of select="@description"/></ProductDescription></xsl:if>
-										<xsl:if test="@quantity!= ''">
+										<xsl:if test="@Description!= ''"><ProductDescription><xsl:value-of select="@Description"/></ProductDescription></xsl:if>
+										<xsl:if test="@Quantity!= ''">
 											<OrderedQuantity>
 												<xsl:attribute name="UnitOfMeasure"><xsl:call-template name="uomLookup"/></xsl:attribute>
-												<xsl:value-of select="@quantity"/>
+												<xsl:value-of select="@Quantity"/>
 											</OrderedQuantity>
 										</xsl:if>
-										<xsl:if test="@unitprice!= ''"><UnitValueExclVAT><xsl:value-of select="@unitprice"/></UnitValueExclVAT></xsl:if>
-										<xsl:if test="@itemprice!= ''"><LineValueExclVAT><xsl:value-of select="@itemprice"/></LineValueExclVAT></xsl:if>
+										<xsl:if test="@UnitPrice!= ''"><UnitValueExclVAT><xsl:value-of select="@UnitPrice"/></UnitValueExclVAT></xsl:if>
+										<xsl:if test="@ItemPrice!= ''"><LineValueExclVAT><xsl:value-of select="@ItemPrice"/></LineValueExclVAT></xsl:if>
 										<!--<OrderedDeliveryDetailsLineLevel>
 											<DeliveryDate/>
 											<DeliverySlot>
@@ -144,10 +146,10 @@ H Robson	| 2011-11-14		| 4966 Created Module
 								</xsl:for-each>
 							</PurchaseOrderDetail>
 							
-							<xsl:for-each select="summarydata">
+							<xsl:for-each select="SummaryData">
 								<PurchaseOrderTrailer>
-									<NumberOfLines><xsl:value-of select="count(/indepedi/productitems/productitem)"/></NumberOfLines>
-									<TotalExclVAT><xsl:value-of select="@netamount"/></TotalExclVAT>
+									<NumberOfLines><xsl:value-of select="count(/INDEPEDI/ProductItems/ProductItem)"/></NumberOfLines>
+									<TotalExclVAT><xsl:value-of select="@NetAmount"/></TotalExclVAT>
 								</PurchaseOrderTrailer>
 							</xsl:for-each>
 							
@@ -161,10 +163,10 @@ H Robson	| 2011-11-14		| 4966 Created Module
 	<!-- UoM Lookup -->
 	<xsl:template name="uomLookup">
 		<xsl:choose>
-			<xsl:when test="@nominalcode = 'EA' or @nominalcode = 'EACH'">EA</xsl:when>
-			<xsl:when test="@nominalcode = 'PACK' or @nominalcode = 'CASE'">CS</xsl:when>
-			<xsl:when test="@nominalcode = 'DOZ'">DZN</xsl:when>
-			<xsl:when test="@nominalcode = 'KG'">KGM</xsl:when>
+			<xsl:when test="@NominalCode = 'EA' or @NominalCode = 'EACH'">EA</xsl:when>
+			<xsl:when test="@NominalCode = 'PACK' or @NominalCode = 'CASE'">CS</xsl:when>
+			<xsl:when test="@NominalCode = 'DOZ'">DZN</xsl:when>
+			<xsl:when test="@NominalCode = 'KG'">KGM</xsl:when>
 			<xsl:otherwise>EA</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
