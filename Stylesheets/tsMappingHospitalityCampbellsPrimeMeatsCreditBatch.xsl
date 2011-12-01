@@ -27,16 +27,15 @@
 	<!-- END of GENERIC HANDLERS -->
 	
 	<xsl:template match="Buyer">
-		<xsl:if test="BuyersLocationID/BuyersCode">
 			<Buyer>
 				<BuyersLocationID>				
 					<xsl:choose>
 						<xsl:when test="substring-before(BuyersLocationID/BuyersCode,'/') !=''">
 							<BuyersCode><xsl:value-of select="substring-before(BuyersLocationID/BuyersCode,'/')"/></BuyersCode>
 						</xsl:when>
-						<xsl:otherwise>
+						<xsl:when test="BuyersLocationID/BuyersCode !=''">
 							<BuyersCode><xsl:value-of select="BuyersLocationID/BuyersCode"/></BuyersCode>
-						</xsl:otherwise>
+						</xsl:when>
 					</xsl:choose>					
 					<SuppliersCode><xsl:value-of select="BuyersLocationID/SuppliersCode"/></SuppliersCode>
 				</BuyersLocationID>
@@ -50,7 +49,6 @@
 					</SuppliersLocationID>
 				</Supplier>
 			</xsl:if>
-		</xsl:if>
 	</xsl:template>	
 
 	<!-- insert VAT Rates -->
