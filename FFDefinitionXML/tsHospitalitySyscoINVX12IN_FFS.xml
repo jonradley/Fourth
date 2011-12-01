@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>~</ffsRecordSeparator>
+		<ffsEscapeChars>
+			<ffsEscapeChar>
+				<ffsNative>chr(13)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>chr(10)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?=</ffsNative>
+				<ffsTradesimple>¬E</ffsTradesimple>
+				<ffsLiteral>=</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?+</ffsNative>
+				<ffsTradesimple>¬P</ffsTradesimple>
+				<ffsLiteral>+</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?:</ffsNative>
+				<ffsTradesimple>¬C</ffsTradesimple>
+				<ffsLiteral>:</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?'</ffsNative>
+				<ffsTradesimple>¬A</ffsTradesimple>
+				<ffsLiteral>'</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>??</ffsNative>
+				<ffsTradesimple>¬Q</ffsTradesimple>
+				<ffsLiteral>?</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>"</ffsNative>
+			</ffsEscapeChar>
+		</ffsEscapeChars>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>*</ffsFieldSeparator>
+		</ffsFieldSeparators>
+		<ffsPadding/>
+	</ffsSettings>
+	<ffsRoot>
+		<Invoice>
+			<TradeSimpleHeader>
+				<SendersCodeForRecipient RescordPos="N1*SF" LPos="5"/>
+			</TradeSimpleHeader>
+			<InvoiceHeader>
+				<Buyer>
+					<BuyersLocationID>
+						<SuppliersCode RescordPos="N1*ST" LPos="5"/>
+					</BuyersLocationID>
+				</Buyer>
+				<Supplier>
+					<SuppliersLocationID>
+						<GLN RescordPos="" LPos=""/>
+					</SuppliersLocationID>
+				</Supplier>
+				<ShipTo>
+					<ShipToLocationID>
+						<SuppliersCode RescordPos="N1*SF" LPos="5"/>
+					</ShipToLocationID>
+				</ShipTo>
+				<InvoiceReferences>
+					<InvoiceReference RescordPos="BIG*" LPos="3"/>
+					<InvoiceDate RescordPos="BIG" LPos="2"/>
+				</InvoiceReferences>
+			</InvoiceHeader>
+			<InvoiceDetail>
+				<InvoiceLine>
+					<PurchaseOrderReferences>
+						<PurchaseOrderReference RescordPos="BIG" LPos="4"/>
+					</PurchaseOrderReferences>
+					<ProductID>
+						<SuppliersProductCode RescordPos="IT1" LPos="8"/>
+						<BuyersProductCode RescordPos="IT1" LPos="14"/>
+					</ProductID>
+					<ProductDescription RescordPos="PID" LPos="6"/>
+					<InvoicedQuantity RescordPos="IT1" LPos="3">
+						<ffsAttribute1 name="UnitOfMeasure" RescordPos="IT1" LPos="4"/>
+					</InvoicedQuantity>
+					<UnitValueExclVAT RescordPos="IT1" LPos="5"/>
+					<LineValueExclVAT RescordPos="" LPos=""/>
+				</InvoiceLine>
+			</InvoiceDetail>
+		</Invoice>
+	</ffsRoot>
+</ffsFlatFileSchema>
