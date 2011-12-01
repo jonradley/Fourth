@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <ffsFlatFileSchema>
 	<ffsSettings>
 		<ffsRecordPositionType>named</ffsRecordPositionType>
@@ -14,83 +13,69 @@
 				<ffsTradesimple/>
 				<ffsLiteral/>
 			</ffsEscapeChar>
-			<ffsEscapeChar>
-				<ffsNative>?=</ffsNative>
-				<ffsTradesimple>¬E</ffsTradesimple>
-				<ffsLiteral>=</ffsLiteral>
-			</ffsEscapeChar>
-			<ffsEscapeChar>
-				<ffsNative>?+</ffsNative>
-				<ffsTradesimple>¬P</ffsTradesimple>
-				<ffsLiteral>+</ffsLiteral>
-			</ffsEscapeChar>
-			<ffsEscapeChar>
-				<ffsNative>?:</ffsNative>
-				<ffsTradesimple>¬C</ffsTradesimple>
-				<ffsLiteral>:</ffsLiteral>
-			</ffsEscapeChar>
-			<ffsEscapeChar>
-				<ffsNative>?'</ffsNative>
-				<ffsTradesimple>¬A</ffsTradesimple>
-				<ffsLiteral>'</ffsLiteral>
-			</ffsEscapeChar>
-			<ffsEscapeChar>
-				<ffsNative>??</ffsNative>
-				<ffsTradesimple>¬Q</ffsTradesimple>
-				<ffsLiteral>?</ffsLiteral>
-			</ffsEscapeChar>
-			<ffsEscapeChar>
-				<ffsNative>"</ffsNative>
-			</ffsEscapeChar>
 		</ffsEscapeChars>
 		<ffsFieldSeparators>
 			<ffsFieldSeparator>*</ffsFieldSeparator>
 		</ffsFieldSeparators>
+		<ffsSplitBatchRecord RecordPos="ST*810"/>
 		<ffsPadding/>
 	</ffsSettings>
 	<ffsRoot>
-		<Invoice>
+		<Batch>
 			<TradeSimpleHeader>
-				<SendersCodeForRecipient RescordPos="N1*SF" LPos="5"/>
+				<SendersCodeForRecipient RecordPos="N1*ST" LPos="5"/>
+				<SendersBranchReference RecordPos="ISA" LPos="7"/>
 			</TradeSimpleHeader>
-			<InvoiceHeader>
-				<Buyer>
-					<BuyersLocationID>
-						<SuppliersCode RescordPos="N1*ST" LPos="5"/>
-					</BuyersLocationID>
-				</Buyer>
-				<Supplier>
-					<SuppliersLocationID>
-						<GLN RescordPos="" LPos=""/>
-					</SuppliersLocationID>
-				</Supplier>
-				<ShipTo>
-					<ShipToLocationID>
-						<SuppliersCode RescordPos="N1*SF" LPos="5"/>
-					</ShipToLocationID>
-				</ShipTo>
-				<InvoiceReferences>
-					<InvoiceReference RescordPos="BIG*" LPos="3"/>
-					<InvoiceDate RescordPos="BIG" LPos="2"/>
-				</InvoiceReferences>
-			</InvoiceHeader>
-			<InvoiceDetail>
-				<InvoiceLine>
-					<PurchaseOrderReferences>
-						<PurchaseOrderReference RescordPos="BIG" LPos="4"/>
-					</PurchaseOrderReferences>
-					<ProductID>
-						<SuppliersProductCode RescordPos="IT1" LPos="8"/>
-						<BuyersProductCode RescordPos="IT1" LPos="14"/>
-					</ProductID>
-					<ProductDescription RescordPos="PID" LPos="6"/>
-					<InvoicedQuantity RescordPos="IT1" LPos="3">
-						<ffsAttribute1 name="UnitOfMeasure" RescordPos="IT1" LPos="4"/>
-					</InvoicedQuantity>
-					<UnitValueExclVAT RescordPos="IT1" LPos="5"/>
-					<LineValueExclVAT RescordPos="" LPos=""/>
-				</InvoiceLine>
-			</InvoiceDetail>
-		</Invoice>
+			<BatchDocuments>
+				<BatchDocument>
+					<Invoice>
+						<TradeSimpleHeader>
+							<SendersCodeForRecipient RecordPos="N1*ST" LPos="5"/>
+							<SendersBranchReference RecordPos="ISA" LPos="7"/>
+						</TradeSimpleHeader>
+						<InvoiceHeader>
+							<!--Dummy value <DocumentStatus> to be changed in stylesheet.-->
+							<DocumentStatus RecordPos="GS" LPos="3"/>
+							<Buyer>
+								<BuyersLocationID>
+									<SuppliersCode RecordPos="GS" LPos="4"/>
+								</BuyersLocationID>
+							</Buyer>
+							<Supplier>
+								<SuppliersLocationID>
+									<SuppliersCode RecordPos="GS" LPos="3"/>
+								</SuppliersLocationID>
+							</Supplier>
+							<ShipTo>
+								<ShipToLocationID>
+									<SuppliersCode RecordPos="N1*ST" LPos="5"/>
+								</ShipToLocationID>
+							</ShipTo>
+							<InvoiceReferences>
+								<InvoiceReference RecordPos="BIG" LPos="3"/>
+								<InvoiceDate RecordPos="BIG" LPos="2"/>
+							</InvoiceReferences>
+						</InvoiceHeader>
+						<InvoiceDetail>
+							<InvoiceLine>
+								<PurchaseOrderReferences>
+									<PurchaseOrderReference RecordPos="BIG" LPos="4"/>
+								</PurchaseOrderReferences>
+								<ProductID>
+									<SuppliersProductCode RecordPos="IT1" LPos="8"/>
+									<BuyersProductCode RecordPos="IT1" LPos="14"/>
+								</ProductID>
+								<ProductDescription RecordPos="PID" LPos="6"/>
+								<InvoicedQuantity RecordPos="IT1" LPos="3">
+									<ffsAttribute1 name="UnitOfMeasure" RecordPos="IT1" LPos="4"/>
+								</InvoicedQuantity>
+								<UnitValueExclVAT RecordPos="IT1" LPos="5"/>
+								<!--LineValueExclVAT RecordPos="" LPos=""/-->
+							</InvoiceLine>
+						</InvoiceDetail>
+					</Invoice>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
 	</ffsRoot>
 </ffsFlatFileSchema>
