@@ -5,6 +5,8 @@ Alterations
 Name		| Date		   	| Change
 **********************************************************************
 H Robson	| 2011-10-19		| 4958 Created Module
+**********************************************************************
+H Robson	| 2011-12-02		| 4958 Jacksons changed address format
 **********************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:import href="tsMappingHospitalityJacksonsIncludes.xsl"/>
@@ -24,57 +26,27 @@ H Robson	| 2011-10-19		| 4958 Created Module
 
 								<CreditNoteHeader>
 									<Buyer>
-										<xsl:variable name="numberOfLines_creditto">
-											<xsl:call-template name="countLinesInText">
-												<xsl:with-param name="text" select="CREDIT_TO_ADDRESS" />
-											</xsl:call-template>
-										</xsl:variable>
-										<xsl:if test="$numberOfLines_creditto &gt;= 1">
-											<BuyersName>
-												<xsl:call-template name="outputLineFromText">
-													<xsl:with-param name="text" select="CREDIT_TO_ADDRESS" />
-													<xsl:with-param name="requestedLine" select="1" />
-												</xsl:call-template>
-											</BuyersName>
-										</xsl:if>
-										<xsl:if test="$numberOfLines_creditto &gt;= 2">
-											<BuyersAddress>
-												<xsl:call-template name="createAddressNodes">
-													<xsl:with-param name="text" select="CREDIT_TO_ADDRESS" />
-													<xsl:with-param name="numberOfLines" select="$numberOfLines_creditto" />
-													<xsl:with-param name="suppressPostCode" select="true()" />
-												</xsl:call-template>
-												<xsl:if test="CREDIT_TO_POSTCODE != ''">
-													<PostCode><xsl:value-of select="CREDIT_TO_POSTCODE"/></PostCode>
-												</xsl:if>
-											</BuyersAddress>
-										</xsl:if>
+										<BuyersName><xsl:value-of select="INVOICE_TO_NAME"/></BuyersName>
+										<BuyersAddress>
+											<xsl:if test="INVOICE_TO_ADDRESS_LINE1 != ''"><AddressLine1><xsl:value-of select="INVOICE_TO_ADDRESS_LINE1"/></AddressLine1></xsl:if>
+											<xsl:if test="INVOICE_TO_ADDRESS_LINE2 != ''"><AddressLine2><xsl:value-of select="INVOICE_TO_ADDRESS_LINE2"/></AddressLine2></xsl:if>
+											<xsl:if test="INVOICE_TO_ADDRESS_LINE3 != ''"><AddressLine3><xsl:value-of select="INVOICE_TO_ADDRESS_LINE3"/></AddressLine3></xsl:if>
+											<xsl:if test="INVOICE_TO_ADDRESS_LINE4 != ''"><AddressLine4><xsl:value-of select="INVOICE_TO_ADDRESS_LINE4"/></AddressLine4></xsl:if>
+											<xsl:if test="INVOICE_TO_ADDRESS_POSTCODE != ''"><PostCode><xsl:value-of select="INVOICE_TO_ADDRESS_POSTCODE"/></PostCode></xsl:if>
+										</BuyersAddress>
 									</Buyer>
 									<ShipTo>
 										<ShipToLocationID>
 											<SuppliersCode><xsl:value-of select="ACCOUNT_NO_1"/></SuppliersCode>
 										</ShipToLocationID>
-										<xsl:variable name="numberOfLines_deliverto">
-											<xsl:call-template name="countLinesInText">
-												<xsl:with-param name="text" select="DELIVER_TO_ADDRESS" />
-											</xsl:call-template>
-										</xsl:variable>
-										<xsl:if test="$numberOfLines_deliverto &gt;= 1">
-											<ShipToName>
-												<xsl:call-template name="outputLineFromText">
-													<xsl:with-param name="text" select="DELIVER_TO_ADDRESS" />
-													<xsl:with-param name="requestedLine" select="1" />
-												</xsl:call-template>
-											</ShipToName>
-										</xsl:if>
-										<xsl:if test="$numberOfLines_deliverto &gt;= 2">
-											<ShipToAddress>
-												<xsl:call-template name="createAddressNodes">
-													<xsl:with-param name="text" select="DELIVER_TO_ADDRESS" />
-													<xsl:with-param name="numberOfLines" select="$numberOfLines_deliverto" />
-												</xsl:call-template>
-											</ShipToAddress>
-										</xsl:if>
+										<ShipToName><xsl:value-of select="DELIVER_TO_NAME"/></ShipToName>
+										<ShipToAddress>
+											<xsl:if test="DELIVER_TO_ADDRESS_LINE1 != ''"><AddressLine1><xsl:value-of select="DELIVER_TO_ADDRESS_LINE1"/></AddressLine1></xsl:if>
+											<xsl:if test="DELIVER_TO_ADDRESS_LINE2 != ''"><AddressLine2><xsl:value-of select="DELIVER_TO_ADDRESS_LINE2"/></AddressLine2></xsl:if>
+											<xsl:if test="DELIVER_TO_ADDRESS_LINE3 != ''"><AddressLine3><xsl:value-of select="DELIVER_TO_ADDRESS_LINE3"/></AddressLine3></xsl:if>
+											<xsl:if test="DELIVER_TO_ADDRESS_LINE4 != ''"><AddressLine4><xsl:value-of select="DELIVER_TO_ADDRESS_LINE4"/></AddressLine4></xsl:if>
+											<xsl:if test="DELIVER_TO_ADDRESS_POSTCODE != ''"><PostCode><xsl:value-of select="DELIVER_TO_ADDRESS_POSTCODE"/></PostCode></xsl:if>
+										</ShipToAddress>
 									</ShipTo>
 									
 									<InvoiceReferences>
