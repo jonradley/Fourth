@@ -72,11 +72,9 @@ H Robson	| 2011-12-01		| 4966 Revisions (element names changed case from the spe
 									</SuppliersAddress>
 								</Supplier>
 								<ShipTo>
-									<!--<ShipToLocationID>
-										<GLN/>
-										<BuyersCode/>
-										<SuppliersCode/>
-									</ShipToLocationID>-->
+									<ShipToLocationID>
+										<SuppliersCode><xsl:value-of select="ClientData/@OutletReference"/></SuppliersCode>
+									</ShipToLocationID>
 									<xsl:if test="ClientData/@Name != ''"><ShipToName><xsl:value-of select="ClientData/@Name"/></ShipToName></xsl:if>
 									<ShipToAddress>
 										<xsl:if test="DeliveryData/@Address1 != ''"><AddressLine1><xsl:value-of select="DeliveryData/@Address1"/></AddressLine1></xsl:if>
