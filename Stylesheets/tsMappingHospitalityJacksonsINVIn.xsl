@@ -5,6 +5,8 @@ Alterations
 Name		| Date		   	| Change
 **********************************************************************
 H Robson	| 2011-10-19		| 4958 Created Module
+**********************************************************************
+H Robson	| 2011-12-02		| 4958 Jacksons changed address format
 **********************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:import href="tsMappingHospitalityJacksonsIncludes.xsl"/>
@@ -25,61 +27,27 @@ H Robson	| 2011-10-19		| 4958 Created Module
 								</TradeSimpleHeader>
 								<InvoiceHeader>
 									<Buyer>
-										<!-- BuyersNameAndAddress -===========================================-->
-										<!-- the first line of INVOICE_TO_ADDRESS (from the input document) contains the buyers name -->
-										<!-- the second line of INVOICE_TO_ADDRESS contains the first actual address line -->
-										<!-- the last line of INVOICE_TO_ADDRESS contains the post code (we assume) -->
-										<xsl:variable name="numberOfLines">
-											<xsl:call-template name="countLinesInText">
-												<xsl:with-param name="text" select="INVOICE_TO_ADDRESS" />
-											</xsl:call-template>
-										</xsl:variable>
-										<xsl:if test="$numberOfLines &gt;= 1">
-											<BuyersName>
-												<xsl:call-template name="outputLineFromText">
-													<xsl:with-param name="text" select="INVOICE_TO_ADDRESS" />
-													<xsl:with-param name="requestedLine" select="1" />
-												</xsl:call-template>
-											</BuyersName>
-										</xsl:if>
-										<xsl:if test="$numberOfLines &gt;= 2">
-											<BuyersAddress>
-												<xsl:call-template name="createAddressNodes">
-													<xsl:with-param name="text" select="INVOICE_TO_ADDRESS" />
-													<xsl:with-param name="numberOfLines" select="$numberOfLines" />
-												</xsl:call-template>
-											</BuyersAddress>
-										</xsl:if>
+										<BuyersName><xsl:value-of select="INVOICE_TO_NAME"/></BuyersName>
+										<BuyersAddress>
+											<xsl:if test="INVOICE_TO_ADDRESS_LINE1 != ''"><AddressLine1><xsl:value-of select="INVOICE_TO_ADDRESS_LINE1"/></AddressLine1></xsl:if>
+											<xsl:if test="INVOICE_TO_ADDRESS_LINE2 != ''"><AddressLine2><xsl:value-of select="INVOICE_TO_ADDRESS_LINE2"/></AddressLine2></xsl:if>
+											<xsl:if test="INVOICE_TO_ADDRESS_LINE3 != ''"><AddressLine3><xsl:value-of select="INVOICE_TO_ADDRESS_LINE3"/></AddressLine3></xsl:if>
+											<xsl:if test="INVOICE_TO_ADDRESS_LINE4 != ''"><AddressLine4><xsl:value-of select="INVOICE_TO_ADDRESS_LINE4"/></AddressLine4></xsl:if>
+											<xsl:if test="INVOICE_TO_ADDRESS_POSTCODE != ''"><PostCode><xsl:value-of select="INVOICE_TO_ADDRESS_POSTCODE"/></PostCode></xsl:if>
+										</BuyersAddress>
 									</Buyer>
 									<ShipTo>
 										<ShipToLocationID>
 											<SuppliersCode><xsl:value-of select="ACCOUNT_NO_1"/></SuppliersCode>
 										</ShipToLocationID>
-										<!-- ShipToNameAndAddress -===========================================-->
-										<!-- the first line of DELIVER_TO_ADDRESS (from the input document) contains the 'ShipTo' name -->
-										<!-- the second line of DELIVER_TO_ADDRESS contains the first actual address line -->
-										<!-- the last line of DELIVER_TO_ADDRESS contains the post code (we assume) -->
-										<xsl:variable name="ShipToAddress_numberOfLines">
-											<xsl:call-template name="countLinesInText">
-												<xsl:with-param name="text" select="DELIVER_TO_ADDRESS" />
-											</xsl:call-template>
-										</xsl:variable>
-										<xsl:if test="$ShipToAddress_numberOfLines &gt;= 1">
-											<ShipToName>
-												<xsl:call-template name="outputLineFromText">
-													<xsl:with-param name="text" select="DELIVER_TO_ADDRESS" />
-													<xsl:with-param name="requestedLine" select="1" />
-												</xsl:call-template>
-											</ShipToName>
-										</xsl:if>
-										<xsl:if test="$ShipToAddress_numberOfLines &gt;= 2">
-											<ShipToAddress>
-												<xsl:call-template name="createAddressNodes">
-													<xsl:with-param name="text" select="DELIVER_TO_ADDRESS" />
-													<xsl:with-param name="numberOfLines" select="$ShipToAddress_numberOfLines" />
-												</xsl:call-template>
-											</ShipToAddress>
-										</xsl:if>
+										<ShipToName><xsl:value-of select="DELIVER_TO_NAME"/></ShipToName>
+										<ShipToAddress>
+											<xsl:if test="DELIVER_TO_ADDRESS_LINE1 != ''"><AddressLine1><xsl:value-of select="DELIVER_TO_ADDRESS_LINE1"/></AddressLine1></xsl:if>
+											<xsl:if test="DELIVER_TO_ADDRESS_LINE2 != ''"><AddressLine2><xsl:value-of select="DELIVER_TO_ADDRESS_LINE2"/></AddressLine2></xsl:if>
+											<xsl:if test="DELIVER_TO_ADDRESS_LINE3 != ''"><AddressLine3><xsl:value-of select="DELIVER_TO_ADDRESS_LINE3"/></AddressLine3></xsl:if>
+											<xsl:if test="DELIVER_TO_ADDRESS_LINE4 != ''"><AddressLine4><xsl:value-of select="DELIVER_TO_ADDRESS_LINE4"/></AddressLine4></xsl:if>
+											<xsl:if test="DELIVER_TO_ADDRESS_POSTCODE != ''"><PostCode><xsl:value-of select="DELIVER_TO_ADDRESS_POSTCODE"/></PostCode></xsl:if>
+										</ShipToAddress>
 									</ShipTo>
 									<InvoiceReferences>
 										<InvoiceReference><xsl:value-of select="INVOICE_NO"/></InvoiceReference>
@@ -99,21 +67,40 @@ H Robson	| 2011-10-19		| 4958 Created Module
 											<PurchaseOrderReferences>
 												<PurchaseOrderReference><xsl:value-of select="../YOUR_ORDER_NUMBER"/></PurchaseOrderReference>
 											</PurchaseOrderReferences>
+											<DeliveryNoteReferences>
+												<DeliveryNoteReference><xsl:value-of select="../OUR_ORDER_NO"/></DeliveryNoteReference>
+												<DeliveryNoteDate>
+													<xsl:call-template name="jacksonsDateToInternal">
+														<xsl:with-param name="inputDate" select="../DATE_DESPATCHED"/>
+													</xsl:call-template>
+												</DeliveryNoteDate>
+												<DespatchDate>
+													<xsl:call-template name="jacksonsDateToInternal">
+														<xsl:with-param name="inputDate" select="../DATE_DESPATCHED"/>
+													</xsl:call-template>
+												</DespatchDate>
+											</DeliveryNoteReferences>
 											<ProductID>
 												<SuppliersProductCode><xsl:value-of select="PRODUCT_CODE"/></SuppliersProductCode>
 											</ProductID>
 											<ProductDescription><xsl:value-of select="DESCRIPTION"/></ProductDescription>
 											<OrderedQuantity>
-												<xsl:call-template name="jacksonsUoMLookup"/>
+												<xsl:call-template name="jacksonsUoMLookup">
+													<xsl:with-param name="PER" select="PER"/>
+												</xsl:call-template>
 												<xsl:value-of select="format-number(QTY_ORD,'#')"/>
 											</OrderedQuantity>
 											<xsl:if test="QTY_DEL != ''">
 												<DeliveredQuantity>
-													<xsl:call-template name="jacksonsUoMLookup"/>
+													<xsl:call-template name="jacksonsUoMLookup">
+														<xsl:with-param name="PER" select="PER"/>
+													</xsl:call-template>
 													<xsl:value-of select="format-number(QTY_DEL,'#')"/>
 												</DeliveredQuantity>
 												<InvoicedQuantity>
-													<xsl:call-template name="jacksonsUoMLookup"/>
+													<xsl:call-template name="jacksonsUoMLookup">
+														<xsl:with-param name="PER" select="PER"/>
+													</xsl:call-template>
 													<xsl:value-of select="format-number(QTY_DEL,'#')"/>
 												</InvoicedQuantity>
 											</xsl:if>
