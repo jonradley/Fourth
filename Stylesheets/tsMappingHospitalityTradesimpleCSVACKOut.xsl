@@ -10,7 +10,7 @@ H Robson	| 2011-11-17		| 4966 Created Module
 	<xsl:output method="text" encoding="UTF-8"/>
 	
 	<xsl:template match="PurchaseOrderAcknowledgement">
-		<xsl:value-of select="TradeSimpleHeader/RecipientsCodeForSender"/>
+		<xsl:value-of select="PurchaseOrderAcknowledgementHeader/ShipTo/ShipToLocationID/BuyersCode"/>
 		<xsl:text>,</xsl:text>
 		<xsl:value-of select="PurchaseOrderAcknowledgementHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
 		<xsl:text>,</xsl:text>
