@@ -17,6 +17,8 @@
 ******************************************************************************************
  05/10/2011      | R Cambridge    | 4992 read buyers code for supplier from SuppliersLocationID/BuyersCode
 ******************************************************************************************
+09/12/2011       | Graham Neicho | 5066 Format ShipToLocationID/BuyersCode so it does not display the "secondary" part
+******************************************************************************************
 -->
 
 <xsl:stylesheet version="1.0"
@@ -29,15 +31,19 @@
 
 <xsl:param name="separator" select="'|'"/>
 <xsl:param name="line-separator" select="'&#13;&#10;'"/>
+<xsl:param name="SITE_CODE_SEPARATOR" select="' '"/>
 
 	<xsl:template match="//Invoice | //CreditNote | //DebitNote">
+		<xsl:variable name="primaryCodeForSite" select="substring-before(concat(InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode | CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode | DebitNoteHeader/ShipTo/ShipToLocationID/BuyersCode, $SITE_CODE_SEPARATOR), $SITE_CODE_SEPARATOR)" />
+		<xsl:variable name="primaryCodePrefix" select="substring($primaryCodeForSite, 1, 4)" />
+
 		<xsl:text>IH</xsl:text>
 		<xsl:value-of select="$separator"/>
 	       <xsl:choose>
-	          <xsl:when test="substring(InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode | CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode | DebitNoteHeader/ShipTo/ShipToLocationID/BuyersCode,1,4)=1801">
+	          <xsl:when test="$primaryCodePrefix = '1801'">
 	          	<xsl:text>ARAMARK Servicios de Catering S.L.U</xsl:text>
 	          </xsl:when>
-	          <xsl:when test="substring(InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode | CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode | DebitNoteHeader/ShipTo/ShipToLocationID/BuyersCode,1,4)=1802">
+	          <xsl:when test="$primaryCodePrefix = '1802'">
 	          	<xsl:text>ARAMARK Servicios Integrales S.A.U</xsl:text>
 	          </xsl:when>
 	          <xsl:otherwise>
@@ -96,7 +102,7 @@
 		<xsl:value-of select="$separator"/>
 		<xsl:text>XARAES_INV_HEADER</xsl:text>
 		<xsl:value-of select="$separator"/>
-		<xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode | CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode | DebitNoteHeader/ShipTo/ShipToLocationID/BuyersCode"/>
+		<xsl:value-of select="$primaryCodeForSite"/>
 		<xsl:value-of select="$separator"/>
 		<xsl:value-of select="$separator"/>
 		<xsl:value-of select="$separator"/>
@@ -176,13 +182,13 @@
 			</xsl:otherwise>       
 	       </xsl:choose>
 		<xsl:value-of select="$separator"/>
-		<xsl:value-of select="substring(InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode | CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode | DebitNoteHeader/ShipTo/ShipToLocationID/BuyersCode,1,4)"/>
+		<xsl:value-of select="$primaryCodePrefix"/>
 		<xsl:text>_ARATRADE</xsl:text>
 		<xsl:value-of select="$separator"/>
 		<xsl:value-of select="$separator"/>
-		<xsl:value-of select="substring(InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode | CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode | DebitNoteHeader/ShipTo/ShipToLocationID/BuyersCode,1,4)"/>
+		<xsl:value-of select="$primaryCodePrefix"/>
 		<xsl:value-of select="$separator"/>
-		<xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode | CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode | DebitNoteHeader/ShipTo/ShipToLocationID/BuyersCode"/>
+		<xsl:value-of select="$primaryCodeForSite"/>
 		<xsl:value-of select="$separator"/>			
 		<xsl:text>8100</xsl:text>
 		<xsl:value-of select="$separator"/>			
@@ -229,9 +235,9 @@
 		       </xsl:choose>
 			<xsl:value-of select="$separator"/>	
 			<xsl:value-of select="$separator"/>	
-			<xsl:value-of select="substring(../../InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode | ../../CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode | ../../DebitNoteHeader/ShipTo/ShipToLocationID/BuyersCode,1,4)"/>
+			<xsl:value-of select="$primaryCodePrefix"/>
 			<xsl:value-of select="$separator"/>
-			<xsl:value-of select="../../InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode | ../../CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode | ../../DebitNoteHeader/ShipTo/ShipToLocationID/BuyersCode"/>
+			<xsl:value-of select="$primaryCodeForSite"/>
 			<xsl:value-of select="$separator"/>
 			<xsl:value-of select="substring(LineExtraData/AccountCode,1,4)"/>
 			<xsl:value-of select="$separator"/>
