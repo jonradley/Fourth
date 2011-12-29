@@ -6,12 +6,14 @@ Name			|  Date		  | Change
 **********************************************************************
 Rave Tech     	|  02/01/2009 | Created Module
 **********************************************************************
+Maha			|  29/12/2011 | Updated default vat rate to 20 Percent
+**********************************************************************
 				|			  |				
 *********************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com/jscript" xmlns:vbscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
 	
-	<xsl:variable name="DefaultVATRate" select="'15'"/>
+	<xsl:variable name="DefaultVATRate" select="'20'"/>
 	<xsl:variable name="AccountCode">
 		 <xsl:value-of select="string(//TradeSimpleHeader/SendersBranchReference)"/>
 	</xsl:variable>
