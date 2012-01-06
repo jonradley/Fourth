@@ -14,6 +14,20 @@ H Robson	| 2012-01-04		| 5150 Created Module
 			<xsl:apply-templates select="@*|node()"/>
 		</xsl:copy>
 	</xsl:template>
+	
+	<xsl:template match="/">
+		<BatchRoot>
+			<Batch>
+				<BatchDocuments>
+					<BatchDocument DocumentTypeNo="3">
+						<xsl:copy>
+							<xsl:apply-templates select="@*|node()"/>
+						</xsl:copy>
+					</BatchDocument>
+				</BatchDocuments>
+			</Batch>
+		</BatchRoot>
+	</xsl:template>
 
 	<xsl:template match="TradeSimpleHeaderSent">
 		<TradeSimpleHeader>
