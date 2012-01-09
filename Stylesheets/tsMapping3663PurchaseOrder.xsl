@@ -206,11 +206,17 @@
 						</xsl:otherwise>
 					</xsl:choose>										
 				</SellerGLN>				
-				<xsl:if test="PurchaseOrderHeader/Supplier/SuppliersLocationID/SuppliersCode">
-					<SellerAssigned scheme="OTHER">
-						<xsl:value-of select="substring(PurchaseOrderHeader/Supplier/SuppliersLocationID/SuppliersCode,1,13)"/>
-					</SellerAssigned>
-				</xsl:if>
+				<SellerAssigned scheme="OTHER">
+					<xsl:choose>
+						<xsl:when test="PurchaseOrderHeader/Supplier/SuppliersLocationID/SuppliersCode">
+							<xsl:value-of select="substring(PurchaseOrderHeader/Supplier/SuppliersLocationID/SuppliersCode,1,13)"/>
+						</xsl:when>
+						<xsl:when test="PurchaseOrderHeader/Buyer/BuyersLocationID/GLN= '5027615900013' ">
+							<xsl:text>3525</xsl:text>
+						</xsl:when>
+						<xsl:otherwise>error</xsl:otherwise>
+					</xsl:choose>	
+				</SellerAssigned>	
 				<BuyerAssigned scheme="OTHER">
 					<xsl:value-of select="substring(TradeSimpleHeader/SendersCodeForRecipient,1,13)"/>
 				</BuyerAssigned>
