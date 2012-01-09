@@ -7,6 +7,8 @@ Name		| Date		   	| Change
 H Robson	| 2011-11-14		| 4966 Created Module
 **********************************************************************
 H Robson	| 2011-12-01		| 4966 Revisions (element names changed case from the spec, date format changed)
+**********************************************************************
+H Robson	| 2012-01-09		| 4966 Fix (no delivery date)
 **********************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes"/>
@@ -90,7 +92,7 @@ H Robson	| 2011-12-01		| 4966 Revisions (element names changed case from the spe
 									<xsl:if test="@Reference != ''"><PurchaseOrderReference><xsl:value-of select="@Reference"/></PurchaseOrderReference></xsl:if>
 									<PurchaseOrderDate>
 										<xsl:call-template name="dateToInternal">
-											<xsl:with-param name="inputDate" select="@TaxPoint"/>
+											<xsl:with-param name="inputDate" select="@Created"/>
 										</xsl:call-template>
 									</PurchaseOrderDate>
 									<!--<TradeAgreement>
@@ -102,18 +104,21 @@ H Robson	| 2011-12-01		| 4966 Revisions (element names changed case from the spe
 									<OriginalPurchaseOrderReference/>-->
 								</PurchaseOrderReferences>
 								
-								<!--<OrderedDeliveryDetails>
-									<DeliveryType/>
-									<DeliveryDate/>
-									<DeliverySlot>
+								<OrderedDeliveryDetails>
+									<DeliveryDate>
+										<xsl:call-template name="dateToInternal">
+											<xsl:with-param name="inputDate" select="@TaxPoint"/>
+										</xsl:call-template>
+									</DeliveryDate>
+									<!--<DeliverySlot>
 										<SlotStart/>
 										<SlotEnd/>
 									</DeliverySlot>
 									<DeliveryCutOffDate/>
 									<DeliveryCutOffTime/>
-									<SpecialDeliveryInstructions/>
+									<SpecialDeliveryInstructions/>-->
 								</OrderedDeliveryDetails>
-								<OrderID/>
+								<!--<OrderID/>
 								<SequenceNumber/>
 								<HeaderExtraData/>-->
 								
