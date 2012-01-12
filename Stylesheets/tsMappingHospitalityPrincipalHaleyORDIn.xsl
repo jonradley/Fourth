@@ -9,6 +9,8 @@ H Robson	| 2011-11-14		| 4966 Created Module
 H Robson	| 2011-12-01		| 4966 Revisions (element names changed case from the spec, date format changed)
 **********************************************************************
 H Robson	| 2012-01-09		| 4966 Fix (no delivery date)
+**********************************************************************
+H Robson	| 2012-01-12		| 5164 Map the SpecialDeliveryInstructions field.
 **********************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes"/>
@@ -115,8 +117,12 @@ H Robson	| 2012-01-09		| 4966 Fix (no delivery date)
 										<SlotEnd/>
 									</DeliverySlot>
 									<DeliveryCutOffDate/>
-									<DeliveryCutOffTime/>
-									<SpecialDeliveryInstructions/>-->
+									<DeliveryCutOffTime/>-->
+									<xsl:if test="@Notes != ''">
+										<SpecialDeliveryInstructions>
+											<xsl:value-of select="@Notes"/>
+										</SpecialDeliveryInstructions>
+									</xsl:if>
 								</OrderedDeliveryDetails>
 								<!--<OrderID/>
 								<SequenceNumber/>
