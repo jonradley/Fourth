@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+*******************************************************************
+Purchase Order translation following tradacoms flat file mapping for Prezzo.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Name         	| Date       	| Change
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+K Oshaughnessy| 01/01/2012	| 5008: Created. 
+**********************************************************************************************************
+-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 <xsl:output method="text"/>
 
@@ -8,7 +17,7 @@
 	<!--Header-->
 	<xsl:text>FMSVEND</xsl:text>
 	<xsl:text>0001</xsl:text>
-	<xsl:value-of select="TradeSimpleHeader/RecipientsCodeForSender"/>
+	<xsl:text>3663</xsl:text>
 	<xsl:value-of select="script:msDeliveryDayTranslateDateToString"/>
 	<xsl:text>&#13;&#10;</xsl:text>
 	
@@ -71,7 +80,7 @@
 		
 		<!--product group-->
 		<xsl:call-template name="padRight">
-			<xsl:with-param name="inputText" select="/PriceCatalog/ListOfPriceCatAction/PriceCatAction/PriceCatDetail/ListOfKeyVal/KeyVal[@Keyword='Group']"/>
+			<xsl:with-param name="inputText" select="ListOfKeyVal/KeyVal[@Keyword='Group']"/>
 			<xsl:with-param name="fieldSize" select="8"/>
 		</xsl:call-template>
 		
@@ -86,7 +95,7 @@
 		
 		<!--Weight Unit of Measure-->
 		<xsl:choose>
-			<xsl:when test="ListOfPriceCatAction/PriceCatAction/PriceCatDetail/ListOfKeyVal/KeyVal[@Keyword='InvoicePriceUOM'] = KGM">
+			<xsl:when test="ListOfKeyVal/KeyVal[@Keyword='InvoicePriceUOM'] = 'KGM'">
 				<xsl:text>K</xsl:text>
 			</xsl:when>
 			<xsl:otherwise>
@@ -101,13 +110,11 @@
 		<!--Discontinued Date-->
 		<xsl:text xml:space="preserve">        </xsl:text>
 		<!--Split Flag-->
-		<xsl:text xml:space="preserve">        </xsl:text>
-		<!--Splitable Flag-->
-		<xsl:text xml:space="preserve"> </xsl:text>
+		<xsl:text xml:space="preserve">  </xsl:text>
 		
 		<!--Catchweight Flag-->
 		<xsl:choose>
-			<xsl:when test="ListOfPriceCatAction/PriceCatAction/PriceCatDetail/ListOfKeyVal/KeyVal[@Keyword='InvoicePriceUOM']">
+			<xsl:when test="ListOfKeyVal/KeyVal[@Keyword='InvoicePriceUOM']">
 				<xsl:text>Y</xsl:text>
 			</xsl:when>
 			<xsl:otherwise>
@@ -128,7 +135,10 @@
 		<!--Perishability Code-->
 		<xsl:text xml:space="preserve">  </xsl:text>
 		<!--Purchase Group Code-->
-		<xsl:text xml:space="preserve">        </xsl:text>
+		<xsl:call-template name="padRight">
+			<xsl:with-param name="inputText" select="ListOfKeyVal/KeyVal[@Keyword='SubGroup']"/>
+			<xsl:with-param name="fieldSize" select="8"/>
+		</xsl:call-template>
 		<!--UPC-->
 		<xsl:text xml:space="preserve">               </xsl:text>
 		<!--General Item Key Name-->
@@ -141,8 +151,6 @@
 		<xsl:text xml:space="preserve">                    </xsl:text>
 	  	<!--Replaced Item Discontinued Date-->
 		<xsl:text xml:space="preserve">        </xsl:text>
-		
-		<xsl:text>CR/LF</xsl:text>
 		
 	<xsl:text>&#13;&#10;</xsl:text>	
 	</xsl:for-each>
