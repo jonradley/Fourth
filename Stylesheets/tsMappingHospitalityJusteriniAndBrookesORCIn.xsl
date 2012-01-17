@@ -48,10 +48,14 @@
 									<DeliveryType/>
 									<DeliveryDate/>
 								</OrderedDeliveryDetails-->
-								<!--ConfirmedDeliveryDetails>
-									<DeliveryType/>
-									<DeliveryDate/>
-								</ConfirmedDeliveryDetails-->
+								<ConfirmedDeliveryDetails>
+									<DeliveryType>Delivery</DeliveryType>										
+									<DeliveryDate>
+										<xsl:variable name="orcdate"><xsl:value-of select="/SalesAcknowledgementOrQuote/Items/Item/Dates/Promised/@Date"/></xsl:variable>
+										<xsl:variable name="formorcdate"><xsl:value-of select="format-number(translate($orcdate,translate($orcdate,'0123456789',''),''),'00000000')"/></xsl:variable>
+										<xsl:value-of select="concat(substring($formorcdate,5,4),'-',substring($formorcdate,3,2),'-',substring($formorcdate,1,2))"/>
+									</DeliveryDate>
+								</ConfirmedDeliveryDetails>
 							</PurchaseOrderConfirmationHeader>
 							<PurchaseOrderConfirmationDetail>
 							<xsl:for-each select="Items/Item">
