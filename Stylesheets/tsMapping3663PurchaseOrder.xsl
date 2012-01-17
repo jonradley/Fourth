@@ -185,21 +185,11 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</BuyerGLN>
-				<!--xsl:if test="PurchaseOrderHeader/Buyer/BuyersLocationID/BuyersCode">
+				<xsl:if test="PurchaseOrderHeader/Buyer/BuyersLocationID/BuyersCode">
 					<BuyerAssigned scheme="OTHER">
 						<xsl:value-of select="substring(PurchaseOrderHeader/Buyer/BuyersLocationID/BuyersCode,1,13)"/>
 					</BuyerAssigned>			
-				</xsl:if-->
-				<BuyerAssigned scheme="OTHER">
-					<xsl:choose>
-						<xsl:when test="PurchaseOrderHeader/Buyer/BuyersLocationID/BuyersCode">
-							<xsl:value-of select="substring(PurchaseOrderHeader/Buyer/BuyersLocationID/BuyersCode,1,13)"/>
-						</xsl:when>
-						<xsl:when test="PurchaseOrderHeader/Buyer/BuyersLocationID/GLN= '5027615900013' ">
-							<xsl:value-of select="substring(TradeSimpleHeader/SendersCodeForRecipient,1,13)"/>
-						</xsl:when>
-					</xsl:choose>
-				</BuyerAssigned>
+				</xsl:if>
 				<!-- 3663 specific requirement to use the seller's code for Ship-To in the seller' code for buyer value -->
 				<SellerAssigned scheme="OTHER">
 					<xsl:value-of select="substring(TradeSimpleHeader/RecipientsCodeForSender,1,13)"/>
