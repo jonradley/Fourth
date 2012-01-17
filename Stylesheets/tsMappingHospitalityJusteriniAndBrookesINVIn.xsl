@@ -38,6 +38,21 @@
 									<xsl:value-of select="concat(substring($formorddate,5,4),'-',substring($formorddate,3,2),'-',substring($formorddate,1,2))"/>	
 								</PurchaseOrderDate>								
 							</PurchaseOrderReferences>
+							
+							<DeliveryNoteReferences>
+								<DeliveryNoteReference><xsl:value-of select="//DespatchDetails/@DespatchNumber"/></DeliveryNoteReference>
+								<DeliveryNoteDate>									
+									<xsl:variable name="deldate"><xsl:value-of select="//DespatchDetails/Dates/DespatchDate/@Date"/></xsl:variable>
+									<xsl:variable name="formdeldate"><xsl:value-of select="format-number(translate($deldate,translate($deldate,'0123456789',''),''),'00000000')"/></xsl:variable>
+									<xsl:value-of select="concat(substring($formdeldate,5,4),'-',substring($formdeldate,3,2),'-',substring($formdeldate,1,2))"/>	
+								</DeliveryNoteDate>								
+								<DespatchDate>							
+									<xsl:variable name="despdate"><xsl:value-of select="//DespatchDetails/Dates/ConfirmedDate/@Date"/></xsl:variable>
+									<xsl:variable name="formdespdate"><xsl:value-of select="format-number(translate($despdate,translate($despdate,'0123456789',''),''),'00000000')"/></xsl:variable>
+									<xsl:value-of select="concat(substring($formdespdate,5,4),'-',substring($formdespdate,3,2),'-',substring($formdespdate,1,2))"/>
+								</DespatchDate>								
+							</DeliveryNoteReferences>
+							
 												
 							<ProductID>
 								<SuppliersProductCode><xsl:value-of select="Product/@Code"/></SuppliersProductCode>
