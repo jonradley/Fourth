@@ -135,7 +135,7 @@
 														</xsl:choose>
 													</InvoicedQuantity>
 													<UnitValueExclVAT>
-														<xsl:value-of select="format-number(format-number(concat(substring(LineValueExclVAT,2,13),'.',substring(LineValueExclVAT,15,2)),'0.00') div format-number	(concat(substring(InvoicedQuantity,2,11),'.',substring(InvoicedQuantity,13,4)),'0.0000'),'0.0000')"/>
+														<xsl:value-of select="format-number(format-number(concat(substring(LineValueExclVAT,2,13),'.',substring(LineValueExclVAT,15,2)),'0.00') div format-number	(concat(substring(InvoicedQuantity,2,11),'.',substring(InvoicedQuantity,13,4)),'0.0000'),'0.00')"/>
 													</UnitValueExclVAT>
 													<LineValueExclVAT>
 														<xsl:choose>
@@ -276,7 +276,7 @@
 														</xsl:choose>
 													</CreditedQuantity>
 													<UnitValueExclVAT>
-														<xsl:value-of select="format-number(format-number(concat(substring(LineValueExclVAT,2,13),'.',substring(LineValueExclVAT,15,2)),'0.00') div format-number	(concat(substring(InvoicedQuantity,2,11),'.',substring(InvoicedQuantity,13,4)),'0.0000'),'0.0000')"/>
+														<xsl:value-of select="format-number(format-number(concat(substring(LineValueExclVAT,2,13),'.',substring(LineValueExclVAT,15,2)),'0.00') div format-number	(concat(substring(InvoicedQuantity,2,11),'.',substring(InvoicedQuantity,13,4)),'0.0000'),'0.00')"/>
 													</UnitValueExclVAT>
 													<LineValueExclVAT>
 														<xsl:choose>
