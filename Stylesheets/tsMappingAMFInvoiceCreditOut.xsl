@@ -17,7 +17,10 @@
  12/01/2009 | Rave Tech 	| 2681. Create VAT Lines for each AMF account code.
 ****************************************************************************************** 
  02/04/2009 | Natalie Dry        | Changed place that AMF's code for supplier comes from, because with 3663 and the parent 3663 member, it picks up the wrong one
-****************************************************************************************** 
+ ****************************************************************************************** 
+ 25/01/2012 | H Robson 	| 5208 Multiple codes are supplied in the AccountCode field and (for certain suppliers) the format is going to change from "Nominal Code/VAT code" 
+ to "Nominal Code/VAT code/Marketing Code". Backwards compatibility needs to be maintained. 
+ ****************************************************************************************** 
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -29,15 +32,17 @@
 	<xsl:include href="HospitalityInclude.xsl"/>	
 	
 	<!--Define keys to be used for finding distinct line information. -->
+	<!-- this key uses the entirety of the account code -->
 	<xsl:key name="keyLinesByAccount" match="InvoiceLine | CreditNoteLine" use="LineExtraData/AccountCode"/>	
-	<xsl:key name="keyLinesByAccount2" match="InvoiceLine | CreditNoteLine" use="substring-after(LineExtraData/AccountCode,'/')"/>	
+	<!-- this key should only use the VAT code portion of the account code -->
+	<xsl:key name="keyLinesByAccount2" match="InvoiceLine | CreditNoteLine" use="substring-before(substring-after(concat(LineExtraData/AccountCode,'/'),'/'),'/')"/>
 	
 	<xsl:template match="/Invoice | /CreditNote">
 			
 		<xsl:variable name="NewLine">
 			<xsl:text>&#13;&#10;</xsl:text>
 		</xsl:variable>
-		
+
 		<!-- store the Transaction type as it is referenced on multiple lines -->
 		<xsl:variable name="TransactionType">
 			<xsl:text>ACTUAL</xsl:text>
@@ -190,9 +195,9 @@
 		<xsl:text>,</xsl:text>																		
 			
 		<!--VAT Line-->
-		<xsl:for-each select="(CreditNoteDetail/CreditNoteLine | InvoiceDetail/InvoiceLine)[generate-id() = generate-id(key('keyLinesByAccount2',substring-after(LineExtraData/AccountCode,'/'))[1])]">
-			<xsl:sort select="substring-after(LineExtraData/AccountCode,'/')" data-type="text"/> 
-			<xsl:variable name="AccountCode" select="substring-after(LineExtraData/AccountCode,'/')"/> 
+		<xsl:for-each select="(CreditNoteDetail/CreditNoteLine | InvoiceDetail/InvoiceLine)[generate-id() = generate-id(key('keyLinesByAccount2',substring-before(substring-after(concat(LineExtraData/AccountCode,'/'),'/'),'/'))[1])]">
+			<xsl:sort select="substring-before(substring-after(concat(LineExtraData/AccountCode,'/'),'/'),'/')" data-type="text"/> 
+			<xsl:variable name="AccountCode" select="substring-before(substring-after(concat(LineExtraData/AccountCode,'/'),'/'),'/')"/> 
 	
 			<xsl:value-of select="$NewLine"/>
 			<xsl:value-of select="$TransactionType"/>
@@ -217,7 +222,7 @@
 				<!--When its NOT the last account code, Calculate VAT amt as, sum of (Line Value * VATRate) -->
 				<xsl:when test="position() != last()">
 					<xsl:variable name="summaryXML">
-						<xsl:for-each select="//InvoiceLine[substring-after(LineExtraData/AccountCode,'/') = $AccountCode] | //CreditNoteLine[substring-after(LineExtraData/AccountCode,'/') = $AccountCode]">
+						<xsl:for-each select="//InvoiceLine[substring-before(substring-after(concat(LineExtraData/AccountCode,'/'),'/'),'/') = $AccountCode] | //CreditNoteLine[substring-before(substring-after(concat(LineExtraData/AccountCode,'/'),'/'),'/') = $AccountCode]">
 							<LineVat>
 								<xsl:value-of select="./LineValueExclVAT * ./VATRate div 100"/>
 							</LineVat>
@@ -236,7 +241,7 @@
 				<!--When its a last account code, Calculate VAT amt as, Tralier VAT amount minus sum of VAT amounts of earlier lines to avoid rounding difference -->
 				<xsl:otherwise>
 					<xsl:variable name="summaryXML">
-						<xsl:for-each select="//InvoiceLine[substring-after(LineExtraData/AccountCode,'/') != $AccountCode] | //CreditNoteLine[substring-after(LineExtraData/AccountCode,'/') != $AccountCode]">
+						<xsl:for-each select="//InvoiceLine[substring-before(substring-after(concat(LineExtraData/AccountCode,'/'),'/'),'/') != $AccountCode] | //CreditNoteLine[substring-before(substring-after(concat(LineExtraData/AccountCode,'/'),'/'),'/') != $AccountCode]">
 							<LineVat>
 								<xsl:value-of select="./LineValueExclVAT * ./VATRate div 100"/>
 							</LineVat>
@@ -265,10 +270,10 @@
 			<xsl:text>,</xsl:text>
 			<xsl:choose>
 				<xsl:when test="/Invoice">
-					<xsl:value-of select="format-number(sum(//InvoiceLine[substring-after(LineExtraData/AccountCode,'/') = $AccountCode]/LineValueExclVAT),'0.00')"/>
+					<xsl:value-of select="format-number(sum(//InvoiceLine[substring-before(substring-after(concat(LineExtraData/AccountCode,'/'),'/'),'/') = $AccountCode]/LineValueExclVAT),'0.00')"/>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:value-of select="format-number(sum(//CreditNoteLine[substring-after(LineExtraData/AccountCode,'/') = $AccountCode]/LineValueExclVAT),'0.00')"/>
+					<xsl:value-of select="format-number(sum(//CreditNoteLine[substring-before(substring-after(concat(LineExtraData/AccountCode,'/'),'/'),'/') = $AccountCode]/LineValueExclVAT),'0.00')"/>
 				</xsl:otherwise>
 			</xsl:choose>
 			<xsl:text>,</xsl:text>
@@ -278,9 +283,18 @@
 		<!--Expense Line-->		
 		<!-- use the keys for grouping Lines by Account Code -->
 		<!-- the first loop will match the first line in each set of lines grouped by Account Code -->
+		<!-- 25/01/2012 - Marketing code needs to be output on Expense line -->
 		<xsl:for-each select="(CreditNoteDetail/CreditNoteLine | InvoiceDetail/InvoiceLine)[generate-id() = generate-id(key('keyLinesByAccount',LineExtraData/AccountCode)[1])]">
 			<xsl:sort select="LineExtraData/AccountCode" data-type="text"/>
 			<xsl:variable name="AccountCode" select="LineExtraData/AccountCode"/>
+			
+			<!-- 26/01/2012 - store the number of segments in the Account code -->
+			<xsl:variable name="numberOfDelimiters">
+				<xsl:call-template name="countChar">
+					<xsl:with-param name="string" select="$AccountCode" />
+				</xsl:call-template>
+			</xsl:variable>
+			
 			<xsl:value-of select="$NewLine"/>
 
 			<xsl:value-of select="$TransactionType"/>
@@ -295,6 +309,7 @@
 			<xsl:text>,</xsl:text>
 			<xsl:value-of select="$DocumentDate"/>
 			<xsl:text>,</xsl:text>
+			<!-- nominal code (always the first segment of account code field) -->
 			<xsl:choose>
 			     <xsl:when test="contains($AccountCode,'/')">			      
 			         <xsl:value-of select="substring-before($AccountCode,'/')"/>			     
@@ -312,7 +327,11 @@
 					<xsl:value-of select="/CreditNote/CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode"/>
 				</xsl:otherwise>
 			</xsl:choose>
-			<xsl:text>,</xsl:text>			
+			<xsl:text>,</xsl:text>
+			<!-- marketing code  -->
+			<xsl:if test="$numberOfDelimiters = 2">
+				<xsl:value-of select="substring-after(substring-after($AccountCode,'/'),'/')"/>
+			</xsl:if>
 			<xsl:text>,</xsl:text>			
 			<xsl:text>,</xsl:text> 
 			<xsl:choose>
@@ -325,15 +344,15 @@
 			</xsl:choose>			
 			<xsl:text>,</xsl:text>			
 			<xsl:value-of select="$DocumentReference"/>
-			<xsl:text>,</xsl:text>					
+			<xsl:text>,</xsl:text>
+			<!-- VAT code -->			
 			<xsl:choose>
-			     <xsl:when test="contains($AccountCode,'/')">			      
-			         <xsl:value-of select="substring-after($AccountCode,'/')"/>			     
-			     </xsl:when>
+				<xsl:when test="$numberOfDelimiters = 1"><xsl:value-of select="substring-after($AccountCode,'/')"/></xsl:when>
+				<xsl:when test="$numberOfDelimiters = 2"><xsl:value-of select="substring-before(substring-after($AccountCode,'/'),'/')"/></xsl:when>
 			     <xsl:otherwise>
 			        <xsl:text>01</xsl:text>
 			     </xsl:otherwise>
-			</xsl:choose>  
+			</xsl:choose>
 			<xsl:text>,</xsl:text>
 			<xsl:value-of select="$SuppliersName"/>
 			<xsl:text>,</xsl:text>
@@ -351,6 +370,17 @@
 		<xsl:value-of select="substring($xmlDate,6,2)"/>
 		<xsl:text>/</xsl:text>
 		<xsl:value-of select="substring($xmlDate,1,4)"/>		
+	</xsl:template>
+	
+	<!-- a template to count instances of given character in string-->
+	<xsl:template name="countChar">
+		<xsl:param name="string" />
+		<xsl:param name="char" select="'/'" />
+		<xsl:variable name="stringWithoutChar">
+			<xsl:value-of select="translate($string,'/','')" />
+		</xsl:variable>
+		<!-- return the result -->
+		<xsl:value-of select="string-length($string) - string-length($stringWithoutChar)" />
 	</xsl:template>
 
 	<msxsl:script language="VBScript" implements-prefix="vbscript"><![CDATA[ 
