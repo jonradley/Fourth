@@ -10,7 +10,7 @@ Name			| Date		| Change
 Lee Boyton        | 2009-04-28 | 2867. Translate product codes for SSP
                           |                     | to ensure they are unique (product code plus UOM on the end).				
 **********************************************************************
-				|			|				
+H Robson		|	2012-02-01		| 5226 change Aramark onto the default way of handling the Product Code
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 	<xsl:output method="xml" encoding="UTF-8"/>
@@ -297,8 +297,8 @@ Lee Boyton        | 2009-04-28 | 2867. Translate product codes for SSP
 	<xsl:template match="ProductID/SuppliersProductCode">
 		<xsl:copy>
 			<xsl:choose>
+				<!-- 2012-02-01 - removed ARAMARK from this list, UoM SHOULD be added to product codes for them -->
 				<xsl:when test="not(
-					$CustomerFlag = $ARAMARK or
 					$CustomerFlag = $COMPASS or
 					$CustomerFlag = $COOP  or
 					$CustomerFlag = $FISHWORKS or
