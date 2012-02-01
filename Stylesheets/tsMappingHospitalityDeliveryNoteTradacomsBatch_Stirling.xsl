@@ -8,7 +8,7 @@ Name			| Date			| Change
 **********************************************************************
 R Cambridge	| 29/10/2007	| 1556 Create module
 **********************************************************************
-				|					|
+H Robson		|	2012-02-01		| 5226 change Aramark onto the default way of handling the Product Code
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="xml" encoding="utf-8"/>
@@ -207,8 +207,8 @@ R Cambridge	| 29/10/2007	| 1556 Create module
 											<ProductID>4
 												<SuppliersProductCode>
 													<xsl:value-of select="ProductID/SuppliersProductCode"/>
+													<!-- 2012-02-01 - removed ARAMARK from this list, UoM SHOULD be added to product codes for them -->
 													<xsl:if test="not(
-														$CustomerFlag = $ARAMARK or
 														$CustomerFlag = $COMPASS or
 														$CustomerFlag = $COOP  or
 														$CustomerFlag = $FISHWORKS or
