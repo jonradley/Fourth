@@ -13,7 +13,7 @@ H Mahbub		|	2010-05-17		| Created file
 **********************************************************************
 R Cambridge	|	2011-08-24		| 4743 change product code manipulation to be default (hard code a list of customer that will no require it)
 **********************************************************************
- 				|						|				
+H Robson		|	2012-02-01		| 5226 change Aramark onto the default way of handling the Product Code
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output encoding="utf-8"/>
@@ -134,9 +134,8 @@ R Cambridge	|	2011-08-24		| 4743 change product code manipulation to be default 
 								<SuppliersProductCode>
 									
 									<xsl:value-of select="ProductID/SuppliersProductCode"/>
-									
+									<!-- 2012-02-01 - removed ARAMARK from this list, UoM SHOULD be added to product codes for them -->
 									<xsl:if test="not(
-										$CustomerFlag = $ARAMARK or
 										$CustomerFlag = $COMPASS or
 										$CustomerFlag = $COOP  or
 										$CustomerFlag = $FISHWORKS or
