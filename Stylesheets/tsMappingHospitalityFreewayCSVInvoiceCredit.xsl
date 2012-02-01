@@ -8,6 +8,8 @@ Rave Tech     	|  02/01/2009 | Created Module
 **********************************************************************
 Maha			|  29/12/2011 | 5144 Updated default vat rate to 20 Percent
 **********************************************************************
+Maha			|  01/02/2012 | 5144 Updated vat rate format to 2dp
+**********************************************************************
 				|			  |				
 *********************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com/jscript" xmlns:vbscript="http://abs-Ltd.com">
@@ -198,7 +200,7 @@ Maha			|  29/12/2011 | 5144 Updated default vat rate to 20 Percent
 		<xsl:element name="VATRate">
 			<xsl:choose>
 				<xsl:when test="../VATCode='Z'">0</xsl:when>
-				<xsl:otherwise><xsl:value-of select="format-number($DefaultVATRate, '0.000')"/></xsl:otherwise>
+				<xsl:otherwise><xsl:value-of select="format-number($DefaultVATRate, '0.00')"/></xsl:otherwise>
 			</xsl:choose>
 		</xsl:element>
 	</xsl:template>
@@ -258,7 +260,7 @@ Maha			|  29/12/2011 | 5144 Updated default vat rate to 20 Percent
 		<xsl:attribute name="{name()}">
 			<xsl:choose>
 				<xsl:when test="../@VATCode='Z'">0</xsl:when>
-				<xsl:otherwise><xsl:value-of select="format-number($DefaultVATRate, '0.000')"/></xsl:otherwise>
+				<xsl:otherwise><xsl:value-of select="format-number($DefaultVATRate, '0.00')"/></xsl:otherwise>
 			</xsl:choose>
 		</xsl:attribute>
 	</xsl:template>
