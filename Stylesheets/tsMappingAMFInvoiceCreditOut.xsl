@@ -28,6 +28,7 @@
                 xmlns:msxsl="urn:schemas-microsoft-com:xslt"
 		  xmlns:vbscript="http://abs-Ltd.com"
                 exclude-result-prefixes="#default xsl msxsl">
+	<xsl:output encoding="UTF-8"/>
 	<xsl:output method="text"/>
 	<xsl:include href="HospitalityInclude.xsl"/>	
 	
