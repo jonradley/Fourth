@@ -151,7 +151,9 @@
 		<xsl:value-of select="PurchaseOrderTrailer/TotalExclVAT"/>
 		<xsl:if test="PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions">
 			<xsl:text>,</xsl:text>
-			<xsl:value-of select="substring(PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions,1,120)"/>
+			<xsl:call-template name="characterStrip">
+				<xsl:with-param name="inputText" select="substring(PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions,1,120)"/>
+			</xsl:call-template>
 		</xsl:if>
 		<xsl:text>&#13;&#10;</xsl:text>
 		
@@ -208,6 +210,28 @@
 			<xsl:text>&#13;&#10;</xsl:text>
 			
 		</xsl:for-each>
+	</xsl:template>
+	
+	
+	<xsl:template name="characterStrip">
+		<xsl:param name="inputText"/>
+		<xsl:choose>
+			<xsl:when test="$inputText = ''"/>
+			<xsl:otherwise>
+				<xsl:variable name="firstCharacter" select="substring($inputText,1,1)"/>
+				<xsl:choose>
+					<xsl:when test="translate($firstCharacter,'-/','') = ''">
+						<xsl:text/>
+					</xsl:when>
+					<xsl:when test="translate($firstCharacter,'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890() ','') = ''">
+						<xsl:value-of select="$firstCharacter"/>
+					</xsl:when>
+				</xsl:choose>
+				<xsl:call-template name="characterStrip">
+					<xsl:with-param name="inputText" select="substring($inputText,2)"/>
+				</xsl:call-template>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
 	<msxsl:script language="VBScript" implements-prefix="user"><![CDATA[ 
