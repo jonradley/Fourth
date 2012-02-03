@@ -223,7 +223,7 @@
 					<xsl:when test="translate($firstCharacter,'-/','') = ''">
 						<xsl:text/>
 					</xsl:when>
-					<xsl:when test="translate($firstCharacter,'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890() ','') = ''">
+					<xsl:when test="translate($firstCharacter,'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890()? ','') = '' ">
 						<xsl:value-of select="$firstCharacter"/>
 					</xsl:when>
 				</xsl:choose>
