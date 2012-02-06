@@ -110,10 +110,10 @@
 			<!--Tax Code-->
 			<xsl:choose>
 				<xsl:when test="$valVATRated &gt; 1">
-					<xsl:text>IZ</xsl:text>
+					<xsl:text>IT</xsl:text>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:text>IT</xsl:text>
+					<xsl:text>IZ</xsl:text>
 				</xsl:otherwise>
 			</xsl:choose>
 			<xsl:text>,</xsl:text>
@@ -181,10 +181,10 @@
 			<!-- Tax Code -->
 			<xsl:choose>
 				<xsl:when test="$valVATRated &gt; 1">
-					<xsl:text>IZ</xsl:text>
+					<xsl:text>IT</xsl:text>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:text>IT</xsl:text>
+					<xsl:text>IZ</xsl:text>
 				</xsl:otherwise>
 			</xsl:choose>
 			<xsl:text>,</xsl:text>
@@ -253,10 +253,10 @@
 			<!--Tax Code-->
 			<xsl:choose>
 				<xsl:when test="$valVATRated &gt; 1">
-					<xsl:text>IZ</xsl:text>
+					<xsl:text>IT</xsl:text>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:text>IT</xsl:text>
+					<xsl:text>IZ</xsl:text>
 				</xsl:otherwise>
 			</xsl:choose>
 			<xsl:text>,</xsl:text>
@@ -324,10 +324,10 @@
 			<!-- Tax Code -->
 			<xsl:choose>
 				<xsl:when test="$valVATRated &gt; 1">
-					<xsl:text>IZ</xsl:text>
+					<xsl:text>IT</xsl:text>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:text>IT</xsl:text>
+					<xsl:text>IZ</xsl:text>
 				</xsl:otherwise>
 			</xsl:choose>
 			<xsl:text>,</xsl:text>
