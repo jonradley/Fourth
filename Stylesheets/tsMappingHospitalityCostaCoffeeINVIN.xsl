@@ -10,10 +10,9 @@ Date		|	Name				|	Comment
 <xsl:output method="xml" encoding="UTF-8"/>
 
 	<xsl:template match="/">
-			<Document>	
-				<xsl:attribute name="TypePrefix">INV</xsl:attribute>
+		<BatchRoot>
 				<xsl:apply-templates/>
-			</Document>
+		</BatchRoot>
 	</xsl:template>
 	
 	<!-- GENERIC HANDLER to copy unchanged nodes, will be overridden by any node-specific templates below -->
@@ -23,6 +22,7 @@ Date		|	Name				|	Comment
 			<xsl:apply-templates/>
 		</xsl:copy>
 	</xsl:template>
+	
 	<!-- GENERIC ATTRIBUTE HANDLER to copy unchanged attributes, will be overridden by any attribute-specific templates below-->
 	<xsl:template match="@*">
 		<xsl:copy/>
@@ -31,7 +31,8 @@ Date		|	Name				|	Comment
 	
 	<!--Reformating Date to Trade|Simple format-->
 	<xsl:template match="InvoiceHeader/InvoiceReferences/TaxPointDate |
-							   InvoiceDetail/InvoiceLine/PurchaseOrderReferences/PurchaseOrderDate">
+							   InvoiceDetail/InvoiceLine/PurchaseOrderReferences/PurchaseOrderDate |
+							   InvoiceHeader/InvoiceReferences/InvoiceDate">
 		<xsl:call-template name="DateFormat"/>
 	</xsl:template>
 	
