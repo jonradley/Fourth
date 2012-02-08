@@ -2,9 +2,9 @@
 <!--
 *******************************************************************
 Purchase Order translation following tradacoms flat file mapping for Prezzo.
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*******************************************************************
 Name         	| Date       	| Change
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*******************************************************************
 K Oshaughnessy| 11/11/2011	| 5008: Created. 
 **********************************************************************************************************
 -->
@@ -18,179 +18,239 @@ K Oshaughnessy| 11/11/2011	| 5008: Created.
 	<xsl:variable name="sFileGenerationDate" select="vb:msFileGenerationDate()"/>
 	<xsl:template match="/GoodsReceivedNote">
 	
-	<!--Transaction Set Header-->
-	<xsl:text>ST~</xsl:text>
-	<xsl:text>810~</xsl:text>
-	<xsl:text>~</xsl:text>
-	<xsl:text>&#13;&#10;</xsl:text>
-	
-	<!--Beginning Segment for Invoice-->
-	<xsl:text>BIG~</xsl:text>
+	<!--Interchange Control Header-->
+	<xsl:text>ISA*</xsl:text>
+	<xsl:text>00*</xsl:text>
+	<xsl:text>          </xsl:text>
+	<xsl:text>*</xsl:text>
+	<xsl:text>00*</xsl:text>
+	<xsl:text>          </xsl:text>
+	<xsl:text>*</xsl:text>	
+	<xsl:text>ZZ*</xsl:text>
+	<xsl:text>3663*</xsl:text>
+	<xsl:text>ZZ*</xsl:text>
 	<xsl:call-template name="DateFormat">
 		<xsl:with-param name="sDateFormat" select="GoodsReceivedNoteHeader/GoodsReceivedNoteReferences/GoodsReceivedNoteDate"/>
 	</xsl:call-template>
-	<xsl:text>~</xsl:text>
+	<xsl:text>*</xsl:text>
+	<xsl:text>*</xsl:text>
+	<xsl:text>U</xsl:text>
+	<xsl:text>*</xsl:text>
+	<xsl:text>00400</xsl:text>
+	<xsl:text>*</xsl:text>
+	<!--FGN number-->
+	<xsl:text>*</xsl:text>
+	<xsl:text>0</xsl:text>
+	<xsl:text>*</xsl:text>
+	<xsl:text>P</xsl:text>
+	<xsl:text>*</xsl:text>
+	<xsl:text>*</xsl:text>
+	<xsl:text>*</xsl:text>
+	<xsl:text>&#13;&#10;</xsl:text>
+	
+	<!--Functional Group Header-->
+	<xsl:text>GS</xsl:text>
+	<xsl:text>*</xsl:text>
+	<xsl:text>IN</xsl:text>
+	<xsl:text>*</xsl:text>
+	<xsl:text>VENDXXX</xsl:text>
+	<xsl:text>*</xsl:text>
+	<xsl:call-template name="DateFormat">
+		<xsl:with-param name="sDateFormat" select="GoodsReceivedNoteHeader/GoodsReceivedNoteReferences/GoodsReceivedNoteDate"/>
+	</xsl:call-template>
+	<xsl:text>*</xsl:text>
+	<xsl:text>*</xsl:text>
+	<!--FGN-->
+	<xsl:text>*</xsl:text>
+	<xsl:text>X</xsl:text>
+	<xsl:text>*</xsl:text>
+	<xsl:text>004010</xsl:text>
+	<xsl:text>&#13;&#10;</xsl:text>
+	
+	<!--Transaction Set Header-->
+	<xsl:text>ST*</xsl:text>
+	<xsl:text>810*</xsl:text>
+	<xsl:value-of select="//FileGenerationNumber"/>
+	<xsl:text>&#13;&#10;</xsl:text>
+	
+	<!--Beginning Segment for Invoice-->
+	<xsl:text>BIG*</xsl:text>
+	<xsl:call-template name="DateFormat">
+		<xsl:with-param name="sDateFormat" select="GoodsReceivedNoteHeader/GoodsReceivedNoteReferences/GoodsReceivedNoteDate"/>
+	</xsl:call-template>
+	<xsl:text>*</xsl:text>
 	<xsl:value-of select="GoodsReceivedNoteHeader/GoodsReceivedNoteReferences/GoodsReceivedNoteReference"/>
-	<xsl:text>~</xsl:text>
+	<xsl:text>*</xsl:text>
 	<xsl:value-of select="$sFileGenerationDate"/>
-	<xsl:text>~</xsl:text>
+	<xsl:text>*</xsl:text>
 	<xsl:value-of select="GoodsReceivedNoteHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
-	<xsl:text>~</xsl:text>
-	<xsl:text>~</xsl:text>
-	<xsl:text>DI~</xsl:text>
-	<xsl:text>~</xsl:text>
-	<xsl:text>~</xsl:text>
-	<xsl:text>~</xsl:text>
+	<xsl:text>*</xsl:text>
+	<xsl:text>*</xsl:text>
+	<xsl:text>*</xsl:text>
+	<xsl:text>DI</xsl:text>
 	<xsl:text>&#13;&#10;</xsl:text>	
 	
 	<!--Reference Identification-->
-	<xsl:text>REF~</xsl:text>
-	<xsl:text>OI~</xsl:text>
+	<xsl:text>REF*</xsl:text>
+	<xsl:text>OI*</xsl:text>
 	<xsl:value-of select="GoodsReceivedNoteHeader/GoodsReceivedNoteReferences/GoodsReceivedNoteReference"/>
-	<xsl:text>~</xsl:text>
-	<xsl:text>~</xsl:text>
-	<xsl:text>~</xsl:text>
+	<xsl:text>*</xsl:text>
+	<xsl:text>*</xsl:text>
+	<xsl:text>*</xsl:text>
 	<xsl:text>&#13;&#10;</xsl:text>
 	
 	<!--Name - Seller-->
-	<xsl:text>N1~</xsl:text>
-	<xsl:text>SE~</xsl:text>
+	<xsl:text>N1*</xsl:text>
+	<xsl:text>SE*</xsl:text>
 	<xsl:value-of select="GoodsReceivedNoteHeader/Supplier/SuppliersName"/>
-	<xsl:text>~</xsl:text>
-	<xsl:text>~</xsl:text>
-	<xsl:text>~</xsl:text>
-	<xsl:text>~</xsl:text>
-	<xsl:text>~</xsl:text>
-	<xsl:text>&#13;&#10;</xsl:text>
-	
-	<!--Name - Buyer-->
-	<xsl:text>N1~</xsl:text>
-	<xsl:text>BY~</xsl:text>	
-	<xsl:value-of select="GoodsReceivedNoteHeader/Buyer/BuyersName"/>
-	<xsl:text>~</xsl:text>
-	<xsl:text>~</xsl:text>
-	<xsl:text>~</xsl:text>
-	<xsl:text>~</xsl:text>
-	<xsl:text>~</xsl:text>
+	<xsl:text>*</xsl:text>
+	<xsl:text>91</xsl:text>
+	<xsl:text>*</xsl:text>
+	<xsl:text>*</xsl:text>
+	<xsl:text>*</xsl:text>
+	<xsl:text>*</xsl:text>
 	<xsl:text>&#13;&#10;</xsl:text>
 	
 	<!--Address Information - Buyer-->
-	<xsl:text>N3~</xsl:text>
+	<xsl:text>N3*</xsl:text>
 	<xsl:value-of select="GoodsReceivedNoteHeader/Buyer/BuyersAddress/AddressLine1"/>
-	<xsl:text>~</xsl:text>
+	<xsl:text>*</xsl:text>
 	<xsl:value-of select="GoodsReceivedNoteHeader/Buyer/BuyersAddress/AddressLine2"/>
 	<xsl:text>&#13;&#10;</xsl:text>
 	
 	<!--Geographic  Information - Buyer-->
-	<xsl:text>N4~</xsl:text>
+	<xsl:text>N4*</xsl:text>
 	<xsl:value-of select="GoodsReceivedNoteHeader/Buyer/BuyersAddress/AddressLine3"/>
-	<xsl:text>~</xsl:text>
-	<xsl:text>~</xsl:text>
+	<xsl:text>*</xsl:text>
+	<xsl:text>*</xsl:text>
 	<xsl:value-of select="GoodsReceivedNoteHeader/Buyer/BuyersAddress/PostCode"/>
-	<xsl:text>~</xsl:text>
-	<xsl:text>~</xsl:text>
-	<xsl:text>~</xsl:text>
-	<xsl:text>~</xsl:text>
+	<xsl:text>*</xsl:text>
+	<xsl:text>*</xsl:text>
+	<xsl:text>*</xsl:text>
+	<xsl:text>*</xsl:text>
 	<xsl:text>&#13;&#10;</xsl:text>
 	
 	<!--Terms of Sale	-->
-	<xsl:text>ITD~</xsl:text>
-	<xsl:text>01~</xsl:text>
+	<xsl:text>ITD*</xsl:text>
+	<xsl:text>01*</xsl:text>
 	<xsl:call-template name="DateFormat">
 		<xsl:with-param name="sDateFormat" select="GoodsReceivedNoteHeader/GoodsReceivedNoteReferences/GoodsReceivedNoteDate"/>
 	</xsl:call-template>
-	<xsl:text>~</xsl:text>
-	<xsl:text>~</xsl:text>
-	<xsl:text>~</xsl:text>
-	<xsl:text>~</xsl:text>
-	<xsl:text>~</xsl:text>
-	<xsl:text>~</xsl:text>
-	<xsl:text>~</xsl:text>
-	<xsl:text>~</xsl:text>
-	<xsl:text>~</xsl:text>
-	<xsl:text>~</xsl:text>
-	<xsl:text>~</xsl:text>
-	<xsl:text>~</xsl:text>
-	<xsl:text>~</xsl:text>
+	<xsl:text>*</xsl:text>
+	<xsl:text>*</xsl:text>
+	<xsl:text>*</xsl:text>
+	<xsl:text>*</xsl:text>
+	<xsl:text>*</xsl:text>
+	<xsl:text>*</xsl:text>
+	<xsl:text>*</xsl:text>
+	<xsl:text>*</xsl:text>
+	<xsl:text>*</xsl:text>
+	<xsl:text>*</xsl:text>
+	<xsl:text>*</xsl:text>
+	<xsl:text>*</xsl:text>
+	<xsl:text>*</xsl:text>
 	<xsl:text>&#13;&#10;</xsl:text>
 	
 	<!--Date  Information -->
-	<xsl:text>DMT~</xsl:text>
-	<xsl:text>011~</xsl:text>
+	<xsl:text>DMT*</xsl:text>
+	<xsl:text>011*</xsl:text>
 	<xsl:call-template name="DateFormat">
 		<xsl:with-param name="sDateFormat" select="GoodsReceivedNoteHeader/DeliveryNoteReferences/DeliveryNoteDate"/>
 	</xsl:call-template>
-	<xsl:text>~</xsl:text>
-	<xsl:text>~</xsl:text>
-	<xsl:text>~</xsl:text>
-	<xsl:text>~</xsl:text>
-	<xsl:text>~</xsl:text>
+	<xsl:text>*</xsl:text>
+	<xsl:text>*</xsl:text>
+	<xsl:text>*</xsl:text>
+	<xsl:text>*</xsl:text>
+	<xsl:text>*</xsl:text>
 	<xsl:text>&#13;&#10;</xsl:text>
 	
 	<xsl:for-each select="GoodsReceivedNoteDetail/GoodsReceivedNoteLine">
 		<!--Baseline Item Data-->
-		<xsl:text>IT1~</xsl:text>
-		<xsl:value-of select="ProductID/SuppliersProductCode"/>
-		<xsl:text>~</xsl:text>
+		<xsl:text>IT1*</xsl:text>
+		<xsl:text>N</xsl:text>
+		<xsl:text>*</xsl:text>
 		<xsl:value-of select="AcceptedQuantity"/>
-		<xsl:text>~</xsl:text>
+		<xsl:text>*</xsl:text>
 		<xsl:call-template name="UOM">
 			<xsl:with-param name="UOMdecode" select="AcceptedQuantity/@UnitOfMeasure"/>
 		</xsl:call-template>
-		<xsl:text>~</xsl:text>
+		<xsl:text>*</xsl:text>
 		<xsl:value-of select="UnitValueExclVAT"/>
-		<xsl:text>~</xsl:text>
-		<xsl:text>CT~</xsl:text>
-		<xsl:text>VC~</xsl:text>
+		<xsl:text>*</xsl:text>
+		<xsl:text>CT*</xsl:text>
+		<xsl:text>VC*</xsl:text>
 		<xsl:value-of select="ProductID/SuppliersProductCode"/>
-		<xsl:text>~</xsl:text>
+		<xsl:text>*</xsl:text>
 		<xsl:text>&#13;&#10;</xsl:text>
 		
 		<!--Quantity-->
-		<xsl:text>QTY~</xsl:text>
-		<xsl:text>39~</xsl:text>
-		<xsl:text>~</xsl:text>
-		<xsl:text>~</xsl:text>
-		<xsl:text>~</xsl:text>
+		<xsl:text>QTY*</xsl:text>
+		<xsl:text>39*</xsl:text>
+		<xsl:value-of select="AcceptedQuantity"/>
+		<xsl:text>*</xsl:text>
+		<xsl:value-of select="AcceptedQuantity/@UnitOfMeasure"/>
 		<xsl:text>&#13;&#10;</xsl:text>
 		
 		<!--Tax Information-->
-		<xsl:text>TXI~</xsl:text>
-		<xsl:text>~</xsl:text>
-		<xsl:text>~</xsl:text>
-		<xsl:text>~</xsl:text>
-		<xsl:text>~</xsl:text>
-		<xsl:text>~</xsl:text>
-		<xsl:text>~</xsl:text>
-		<xsl:text>~</xsl:text>
-		<xsl:text>~</xsl:text>
-		<xsl:text>~</xsl:text>
+		<xsl:text>TXI*</xsl:text>
+		<xsl:text>*</xsl:text>
+		<xsl:text>*</xsl:text>
+		<xsl:text>*</xsl:text>
+		<xsl:text>*</xsl:text>
+		<xsl:text>*</xsl:text>
+		<xsl:text>*</xsl:text>
+		<xsl:text>*</xsl:text>
+		<xsl:text>*</xsl:text>
+		<xsl:text>*</xsl:text>
+		<xsl:text>&#13;&#10;</xsl:text>
+		
+		<!--Pricing information-->
+		<xsl:text>CPT*</xsl:text>
+		<xsl:text>DI*</xsl:text>
+		<xsl:text>INV*</xsl:text>
+		<xsl:value-of select="UnitValueExclVAT"/>
+		<xsl:text>*</xsl:text>
+		<xsl:value-of select="AcceptedQuantity"/>
+		<xsl:text>*</xsl:text>
+		<xsl:text>SEL*</xsl:text>
+		<xsl:text>1*</xsl:text>
+		<xsl:value-of select="LineValueExclVAT"/>
 		<xsl:text>&#13;&#10;</xsl:text>
 		
 		<!--Product/Item Description-->
-		<xsl:text>PID~</xsl:text>
+		<xsl:text>PID*</xsl:text>
 		<xsl:value-of select="ProductDescription"/>
-		<xsl:text>~</xsl:text>
-		<xsl:text>~</xsl:text>
-		<xsl:text>~</xsl:text>
-		<xsl:text>~</xsl:text>
+		<xsl:text>*</xsl:text>
+		<xsl:text>*</xsl:text>
+		<xsl:text>*</xsl:text>
+		<xsl:text>*</xsl:text>
 		<xsl:value-of select="ProductDescription"/>
-		<xsl:text>~</xsl:text>
-		<xsl:text>~</xsl:text>
-		<xsl:text>~</xsl:text>
-		<xsl:text>~</xsl:text>
+		<xsl:text>*</xsl:text>
+		<xsl:text>*</xsl:text>
+		<xsl:text>*</xsl:text>
+		<xsl:text>*</xsl:text>
 		<xsl:text>&#13;&#10;</xsl:text>
 	
 		<!--Reference Identification-->
-		<xsl:text>REF~</xsl:text>
-		<xsl:text>11~</xsl:text>
+		<xsl:text>REF*</xsl:text>
+		<xsl:text>11*</xsl:text>
 		<xsl:value-of select="ProductID/SuppliersProductCode"/>
-		<xsl:text>~</xsl:text>
-		<xsl:text>~</xsl:text>
+		<xsl:text>*</xsl:text>
+		<xsl:text>*</xsl:text>
 		<xsl:text>&#13;&#10;</xsl:text>
 	
 	</xsl:for-each>
-		
+	
+	<!--Total Monetary Value Summary-->
+	<xsl:text>TDS*</xsl:text>
+	<xsl:value-of select="sum(GoodsReceivedNoteDetail/GoodsReceivedNoteLine/LineValueExclVAT)"/>
+	<xsl:text>&#13;&#10;</xsl:text>
+	
+	<!--Transaction Totals-->
+	<xsl:text>CTT*</xsl:text>
+	<xsl:value-of select="count(GoodsReceivedNoteDetail/GoodsReceivedNoteLine/LineNumber)"/>
+	<xsl:text>&#13;&#10;</xsl:text>
+	
 	</xsl:template>
 	
 	<!--Formating Date-->
