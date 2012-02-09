@@ -14,6 +14,8 @@
 ==========================================================================================
  2011-09-12	| R Cambridge     	| 4828 Added customer PO ref (sent in original order and passed on Fairfax Meadow, who return it in their delivery data)
 ==========================================================================================
+ 2012-02-09	| R Cambridge     	| 5193 Adjustments to accomdate the fact that " text delimiters are now removed in the flat file mapper
+==========================================================================================
            	|                 	|
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
@@ -208,6 +210,8 @@
 	<xsl:template name="decodePacksize">
 		<xsl:param name="sInput"/>
 		<xsl:choose>
+			<xsl:when test="$sInput = 'EACH'">EA</xsl:when>
+			<xsl:when test="$sInput = 'KG'">KGM</xsl:when>
 			<xsl:when test="$sInput = '&quot;EACH&quot;'">EA</xsl:when>
 			<xsl:when test="$sInput = '&quot;KG&quot;'">KGM</xsl:when>
 		</xsl:choose>
