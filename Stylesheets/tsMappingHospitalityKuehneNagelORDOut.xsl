@@ -165,7 +165,7 @@
 		<xsl:value-of select="count(//PurchaseOrder)"/>
 		<xsl:text>*</xsl:text>
 		<!--Number of Units Ordered-->
-		<xsl:value-of select="count(//ShipTo)"/>
+		<xsl:value-of select="sum(//OrderedQuantity)"/>
 		<xsl:text>*</xsl:text>
 		<xsl:text>*</xsl:text>
 		<xsl:text>*</xsl:text>
