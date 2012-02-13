@@ -19,16 +19,18 @@
 ==========================================================================================
  04/08/2011	| R Cambridge			| 4686 UAT change: don't create PO refs element if PO blank
 ==========================================================================================
-           	|                 	|
+ 06/02/2012	| H Robson			| 5236 Modify to incorporate additional tests to determine the correct document type
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	
+	<!-- 13/02/12 - for invoices match docs with a positive total -->
 	<xsl:key name="distinctSuppliers_Invoices" 
-				match="/Batch/BatchDocuments/BatchDocument/Invoice[InvoiceHeader/Buyer/BuyersAddress/AddressLine2='I']" 
+				match="/Batch/BatchDocuments/BatchDocument/Invoice[InvoiceHeader/Buyer/BuyersAddress/AddressLine2='I' or substring(InvoiceTrailer/DocumentTotalExclVAT,1,1) = '+']" 
 				use="InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode"/>
-				
+	
+	<!-- 13/02/12 - for credits match docs with a negative total -->			
 	<xsl:key name="distinctSuppliers_Credits" 
-				match="/Batch/BatchDocuments/BatchDocument/Invoice[InvoiceHeader/Buyer/BuyersAddress/AddressLine2='C']" 
+				match="/Batch/BatchDocuments/BatchDocument/Invoice[InvoiceHeader/Buyer/BuyersAddress/AddressLine2='C' or substring(InvoiceTrailer/DocumentTotalExclVAT,1,1) = '-']" 
 				use="InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode"/>
 
 	<xsl:variable name="SPIRIT_PREFIX" select="'SPIRIT_'"/>
@@ -47,7 +49,7 @@
 									<Invoice>
 										<TradeSimpleHeader>
 											<SendersCodeForRecipient>
-												<!-- SCR is defined by POunch but need to ensure Spirit's codes don not clash with supplier defined codes for other customs -->
+												<!-- SCR is defined by POunch but need to ensure Spirit's codes do not clash with supplier defined codes for other customers -->
 												<xsl:value-of select="concat($SPIRIT_PREFIX,TradeSimpleHeader/SendersCodeForRecipient)"/>
 											</SendersCodeForRecipient>
 										</TradeSimpleHeader>
