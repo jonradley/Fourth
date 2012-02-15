@@ -9,22 +9,26 @@ Date		|	Name				|	Comment
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 <xsl:output method="xml" encoding="UTF-8"/>
 
+	<!-- Start point - ensure required outer BatchRoot tag is applied -->
 	<xsl:template match="/">
-		<BatchRoot>
-				<xsl:apply-templates/>
-		</BatchRoot>
+<BatchRoot>
+		<xsl:apply-templates/>
+</BatchRoot>
 	</xsl:template>
 	
 	<!-- GENERIC HANDLER to copy unchanged nodes, will be overridden by any node-specific templates below -->
 	<xsl:template match="*">
+		<!-- Copy the node unchanged -->
 		<xsl:copy>
+			<!--Then let attributes be copied/not copied/modified by other more specific templates -->
 			<xsl:apply-templates select="@*"/>
+			<!-- Then within this node, continue processing children -->
 			<xsl:apply-templates/>
 		</xsl:copy>
 	</xsl:template>
-	
 	<!-- GENERIC ATTRIBUTE HANDLER to copy unchanged attributes, will be overridden by any attribute-specific templates below-->
 	<xsl:template match="@*">
+		<!--Copy the attribute unchanged-->
 		<xsl:copy/>
 	</xsl:template>
 	<!-- END of GENERIC HANDLERS -->
@@ -39,7 +43,7 @@ Date		|	Name				|	Comment
 	<xsl:template name="DateFormat">
 		<xsl:param name="sDateFormat" select="."/>
 		<xsl:copy>
-			<xsl:value-of select="concat(substring($sDateFormat,7,2),'-',substring($sDateFormat,5,2),'-',substring($sDateFormat,1,4))"/>
+			<xsl:value-of select="concat(substring($sDateFormat,1,4),'-',substring($sDateFormat,5,2),'-',substring($sDateFormat,7,2))"/>
 		</xsl:copy>
 	</xsl:template>
 	
@@ -67,6 +71,26 @@ Date		|	Name				|	Comment
 				</xsl:when>
 				<xsl:otherwise>S</xsl:otherwise>
 			</xsl:choose>
+	</xsl:template>
+	
+	<xsl:template name="UOMDECODE">
+		<xsl:param name="TranslateUOM"/>
+			<xsl:choose>
+				<xsl:when test="$TranslateUOM = 'CA' ">
+					<xsl:text>CS</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="$TranslateUOM"/>
+				</xsl:otherwise>
+			</xsl:choose>
+	</xsl:template>
+	
+	<xsl:template match="@UnitOfMeasure">
+		<xsl:attribute name="UnitOfMeasure">
+			<xsl:call-template name="UOMDECODE">
+				<xsl:with-param name="TranslateUOM" select="."/>
+			</xsl:call-template>
+		</xsl:attribute>
 	</xsl:template>
 
 </xsl:stylesheet>
