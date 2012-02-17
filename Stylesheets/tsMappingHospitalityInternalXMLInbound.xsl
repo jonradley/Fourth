@@ -6,7 +6,7 @@ Name				| Date				| Change
 **********************************************************************
 R Cambridge		| 14/08/2007		| 1336 Created module
 **********************************************************************
-           		|            		|                                 
+       Steve Bowers    		|   17/02/2012     	|     5260 Map Unit of measure                            
 **********************************************************************
 
 *******************************************************************-->
@@ -42,6 +42,18 @@ R Cambridge		| 14/08/2007		| 1336 Created module
 		<xsl:element name="TradeSimpleHeader">
 			<xsl:copy-of select="./*"/>
 		</xsl:element>
+	</xsl:template>
+	<!--17-2-2012 Mapping Packsize to Unitofmeasure-->
+	<xsl:template match="InvoicedQuantity">
+	<InvoiceQuantity>
+	          <xsl:choose>
+               <xsl:when test="../PackSize = 'E'"><xsl:attribute name="UnitOfMeasure">EA</xsl:attribute></xsl:when>
+               <xsl:when test="../PackSize = 'B'"><xsl:attribute name="UnitOfMeasure">CS</xsl:attribute></xsl:when>
+               <xsl:when test="../PackSize = 'K'"><xsl:attribute name="UnitOfMeasure">KGM</xsl:attribute></xsl:when>
+               </xsl:choose>
+               <xsl:value-of select="."/>
+
+	</InvoiceQuantity>
 	</xsl:template>
 
 
