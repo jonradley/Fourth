@@ -32,6 +32,8 @@
 ******************************************************************************************
 26/10/2009  | 	Lee Boyton | 3152. Cater for missing Recipient's Branch Reference. It is mandatory.
 ******************************************************************************************
+17/02/2012  | Maha | 5256. Including LineDiscountValue in calulating ValueExVat for outbound batch.
+******************************************************************************************
 		  |						| 
 ******************************************************************************************
 -->
@@ -205,7 +207,7 @@
 				<xsl:variable name="LineTotalExclVAT">
 					<xsl:choose>
 						<xsl:when test="/Invoice">
-							<xsl:value-of select="translate(format-number(sum(//InvoiceLine[LineExtraData/AccountCode = $AccountCode and VATCode = $VATCode]/LineValueExclVAT),'0.00'),'.','')"/>
+							<xsl:value-of select="translate(format-number(sum(//InvoiceLine[LineExtraData/AccountCode = $AccountCode and VATCode = $VATCode]/LineValueExclVAT) - sum(//InvoiceLine[LineExtraData/AccountCode = $AccountCode and VATCode = $VATCode]/LineDiscountValue),'0.00'),'.','')"/>
 						</xsl:when>
 						<xsl:when test="/DebitNote">
 							<xsl:value-of select="translate(format-number(-1* sum(//DebitNoteLine[LineExtraData/AccountCode = $AccountCode and VATCode = $VATCode]/LineValueExclVAT),'0.00'),'.','')"/>
@@ -220,7 +222,7 @@
 				<xsl:variable name="LineVATAmount">
 					<xsl:choose>
 						<xsl:when test="/Invoice">
-							<xsl:value-of select="translate(format-number(sum(//InvoiceLine[LineExtraData/AccountCode = $AccountCode and VATCode = $VATCode]/LineValueExclVAT) * ($VATRate div 100) + .000000000000001,'0.00'),'.','')"/>
+							<xsl:value-of select="translate(format-number((sum(//InvoiceLine[LineExtraData/AccountCode = $AccountCode and VATCode = $VATCode]/LineValueExclVAT) - sum(//InvoiceLine[LineExtraData/AccountCode = $AccountCode and VATCode = $VATCode]/LineDiscountValue)) * ($VATRate div 100) + .000000000000001,'0.00'),'.','')"/>
 						</xsl:when>
 						<xsl:when test="/DebitNote">
 							<xsl:value-of select="translate(format-number(-1* sum(//DebitNoteLine[LineExtraData/AccountCode = $AccountCode and VATCode = $VATCode]/LineValueExclVAT) * ($VATRate div 100) - .000000000000001,'0.00'),'.','')"/>
