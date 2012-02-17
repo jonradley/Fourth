@@ -19,18 +19,18 @@
 ==========================================================================================
  04/08/2011	| R Cambridge			| 4686 UAT change: don't create PO refs element if PO blank
 ==========================================================================================
- 06/02/2012	| H Robson			| 5236 Modify to incorporate additional tests to determine the correct document type
+ 13/02/2012	| H Robson			| 5236 Modify to determine the correct document type based on document value (positive/negative)
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	
-	<!-- 13/02/12 - for invoices match docs with a positive total -->
+	<!-- 13/02/12 - any doc with a positive total -->
 	<xsl:key name="distinctSuppliers_Invoices" 
-				match="/Batch/BatchDocuments/BatchDocument/Invoice[InvoiceHeader/Buyer/BuyersAddress/AddressLine2='I' or substring(InvoiceTrailer/DocumentTotalExclVAT,1,1) = '+']" 
+				match="/Batch/BatchDocuments/BatchDocument/Invoice[sum(number(InvoiceDetail/InvoiceLine/LineValueExclVAT)) &gt; 0]" 
 				use="InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode"/>
 	
-	<!-- 13/02/12 - for credits match docs with a negative total -->			
+	<!-- 13/02/12 - any doc with a negative total -->			
 	<xsl:key name="distinctSuppliers_Credits" 
-				match="/Batch/BatchDocuments/BatchDocument/Invoice[InvoiceHeader/Buyer/BuyersAddress/AddressLine2='C' or substring(InvoiceTrailer/DocumentTotalExclVAT,1,1) = '-']" 
+				match="/Batch/BatchDocuments/BatchDocument/Invoice[sum(number(InvoiceDetail/InvoiceLine/LineValueExclVAT)) &lt; 0]" 
 				use="InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode"/>
 
 	<xsl:variable name="SPIRIT_PREFIX" select="'SPIRIT_'"/>
@@ -126,6 +126,7 @@
 															<xsl:value-of select="ProductID/SuppliersProductCode"/>
 														</SuppliersProductCode>
 													</ProductID>
+													<!-- quantities to 4dp -->
 													<InvoicedQuantity>
 														<xsl:choose>
 															<xsl:when test="substring(InvoicedQuantity,1,1) = '-'">
@@ -137,7 +138,7 @@
 														</xsl:choose>
 													</InvoicedQuantity>
 													<UnitValueExclVAT>
-														<xsl:value-of select="format-number(format-number(concat(substring(LineValueExclVAT,2,13),'.',substring(LineValueExclVAT,15,2)),'0.00') div format-number	(concat(substring(InvoicedQuantity,2,11),'.',substring(InvoicedQuantity,13,4)),'0.0000'),'0.00')"/>
+														<xsl:value-of select="format-number(format-number(concat(substring(LineValueExclVAT,2,13),'.',substring(LineValueExclVAT,15,2)),'0.00') div format-number(concat(substring(InvoicedQuantity,2,11),'.',substring(InvoicedQuantity,13,4)),'0.0000'),'0.00')"/>
 													</UnitValueExclVAT>
 													<LineValueExclVAT>
 														<xsl:choose>
