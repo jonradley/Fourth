@@ -21,30 +21,59 @@
 ==========================================================================================
  13/02/2012	| H Robson			| 5236 Modify to determine the correct document type based on document value (positive/negative)
 =======================================================================================-->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-	
-	<!-- 13/02/12 - any doc with a positive total -->
-	<xsl:key name="distinctSuppliers_Invoices" 
-				match="/Batch/BatchDocuments/BatchDocument/Invoice[sum(number(InvoiceDetail/InvoiceLine/LineValueExclVAT)) &gt; 0]" 
-				use="InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode"/>
-	
-	<!-- 13/02/12 - any doc with a negative total -->			
-	<xsl:key name="distinctSuppliers_Credits" 
-				match="/Batch/BatchDocuments/BatchDocument/Invoice[sum(number(InvoiceDetail/InvoiceLine/LineValueExclVAT)) &lt; 0]" 
-				use="InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode"/>
-
-	<xsl:variable name="SPIRIT_PREFIX" select="'SPIRIT_'"/>
-
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="xsl msxsl">
+	<xsl:output method="xml" encoding="utf-8"/>
+	<!-- outputs a batch of batches, outer batches are grouped by type then supplier -->
+	<!--=======================================================================================
+  Routine        : {default template}
+  Description    : strip + signs out of line values in the input XML, because you cant sum numbers with plus signs or remove the 
+  					plus signs dynamically, and puts the resulting xml in a variable. 
+  Author         : H Robson 5236 17/02/12
+ =======================================================================================-->
 	<xsl:template match="/">
+		<!-- variable for new XML -->
+		<xsl:variable name="xmlNoPlusSigns">
+			<xsl:apply-templates/>
+		</xsl:variable>
+		<!-- DEBUGGING
+		<xsl:copy-of select="msxsl:node-set($xmlNoPlusSigns)"/> -->
+		<!--perform the rest of the transformation as normal -->
+		<xsl:call-template name="mainTransformation">
+			<xsl:with-param name="vobNode" select="msxsl:node-set($xmlNoPlusSigns)"/>
+		</xsl:call-template>
+	</xsl:template>
+	<!-- remove plus signs, and replace with another leading 0 so that everything is still padded the same -->
+	<xsl:template match="LineValueExclVAT">
+		<LineValueExclVAT>
+			<xsl:value-of select="translate(.,'+','0')"/>
+		</LineValueExclVAT>
+	</xsl:template>
+	<!-- copy template -->
+	<xsl:template match="@*|node()">
+		<xsl:copy>
+			<xsl:apply-templates select="@*|node()"/>
+		</xsl:copy>
+	</xsl:template>
+	<!--=======================================================================================
+  Routine        : mainTransformation
+  Description    : creates the output xml as before, except now it is acting on a variable and not directly on the input xml
+  Author         : H Robson 5236 17/02/12
+ =======================================================================================-->
+	<xsl:template name="mainTransformation">
+		<xsl:param name="vobNode"/>
+		<xsl:variable name="SPIRIT_PREFIX" select="'SPIRIT_'"/>
 		<BatchRoot>
-			
-			<xsl:for-each select="/Batch/BatchDocuments/BatchDocument/Invoice[generate-id() = generate-id(key('distinctSuppliers_Invoices',InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode)[1])]">
-			
+			<!-- Generate Invoices-->
+			<!-- one iteration of this loop for every distinct buyerscode -->
+			<!-- 20/02/12 checks that the buyers code in the current document is not equal to any buyers code in a previous document with a positive total, and that the current document has a positive total --> 
+			<xsl:for-each select="$vobNode/Batch/BatchDocuments/BatchDocument/Invoice[not(InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode = preceding::InvoiceHeader[sum(../InvoiceDetail/InvoiceLine/LineValueExclVAT) &gt; 0]/Supplier/SuppliersLocationID/BuyersCode) and sum(InvoiceDetail/InvoiceLine/LineValueExclVAT) &gt; 0]">
+				<xsl:variable name="buyersCode" select="InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode"/>
 				<Document>
 					<xsl:attribute name="TypePrefix"><xsl:text>INV</xsl:text></xsl:attribute>
 					<Batch>
 						<BatchDocuments>
-							<xsl:for-each select="key('distinctSuppliers_Invoices',InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode)">
+							<!-- one iteration of this loop for every occurence of the same buyerscode as in the outer loop, where the document total is positive -->
+							<xsl:for-each select="$vobNode/Batch/BatchDocuments/BatchDocument/Invoice[InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode = $buyersCode and sum(InvoiceDetail/InvoiceLine/LineValueExclVAT) &gt; 0]">
 								<BatchDocument>
 									<Invoice>
 										<TradeSimpleHeader>
@@ -55,22 +84,23 @@
 										</TradeSimpleHeader>
 										<InvoiceHeader>
 											<!--Buyer>
-												<BuyersLocationID>
-													<SuppliersCode/>
-												</BuyersLocationID>
-											</Buyer-->
+													<BuyersLocationID>
+														<SuppliersCode/>
+													</BuyersLocationID>
+												</Buyer-->
 											<Supplier>
 												<SuppliersLocationID>
-													<BuyersCode><xsl:value-of select="InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode"/></BuyersCode>
+													<BuyersCode>
+														<xsl:value-of select="InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode"/>
+													</BuyersCode>
 												</SuppliersLocationID>
 											</Supplier>
-	
 											<ShipTo>
 												<!--ShipToLocationID>
-													<SuppliersCode>
-														<xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/>
-													</SuppliersCode>
-												</ShipToLocationID-->
+														<SuppliersCode>
+															<xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/>
+														</SuppliersCode>
+													</ShipToLocationID-->
 											</ShipTo>
 											<InvoiceReferences>
 												<InvoiceReference>
@@ -82,7 +112,7 @@
 													</xsl:call-template>
 												</InvoiceDate>
 												<TaxPointDate>
-													<xsl:call-template 	name="utcDate">
+													<xsl:call-template name="utcDate">
 														<xsl:with-param name="input" select="InvoiceHeader/InvoiceReferences/TaxPointDate"/>
 													</xsl:call-template>
 												</TaxPointDate>
@@ -93,7 +123,7 @@
 												</VoucherID>
 												<InvoiceType>
 													<xsl:value-of select="*/Buyer/BuyersAddress/AddressLine2"/>
-												</InvoiceType>												
+												</InvoiceType>
 											</HeaderExtraData>
 										</InvoiceHeader>
 										<InvoiceDetail>
@@ -148,7 +178,7 @@
 															<xsl:otherwise>
 																<xsl:value-of select="format-number(concat(substring(LineValueExclVAT,2,13),'.',substring(LineValueExclVAT,15,2)),'0.00')"/>
 															</xsl:otherwise>
-														</xsl:choose>	
+														</xsl:choose>
 													</LineValueExclVAT>
 													<VATCode>Z</VATCode>
 													<VATRate>0.00</VATRate>
@@ -161,17 +191,17 @@
 						</BatchDocuments>
 					</Batch>
 				</Document>
-			
 			</xsl:for-each>
-			
-			
-			<xsl:for-each select="/Batch/BatchDocuments/BatchDocument/Invoice[generate-id() = generate-id(key('distinctSuppliers_Credits',InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode)[1])]">
-			
+			<!-- Generate Credit Notes -->
+			<!-- 20/02/12 checks that the buyers code in the current document is not equal to any buyers code in a previous document with a negative total, and that the current document has a negative total --> 
+			<xsl:for-each select="$vobNode/Batch/BatchDocuments/BatchDocument/Invoice[not(InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode = preceding::InvoiceHeader[sum(../InvoiceDetail/InvoiceLine/LineValueExclVAT) &lt; 0]/Supplier/SuppliersLocationID/BuyersCode) and sum(InvoiceDetail/InvoiceLine/LineValueExclVAT) &lt; 0]">
+				<xsl:variable name="buyersCode" select="InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode"/>
 				<Document>
 					<xsl:attribute name="TypePrefix"><xsl:text>CRN</xsl:text></xsl:attribute>
 					<Batch>
 						<BatchDocuments>
-							<xsl:for-each select="key('distinctSuppliers_Credits',InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode)">
+							<!-- one iteration of this loop for every occurence of the same buyerscode as in the outer loop, where the document total is negative -->
+							<xsl:for-each select="$vobNode/Batch/BatchDocuments/BatchDocument/Invoice[InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode = $buyersCode and sum(InvoiceDetail/InvoiceLine/LineValueExclVAT) &lt; 0]">
 								<BatchDocument>
 									<CreditNote>
 										<TradeSimpleHeader>
@@ -182,16 +212,17 @@
 										</TradeSimpleHeader>
 										<CreditNoteHeader>
 											<!--Buyer>
-												<BuyersLocationID>
-													<SuppliersCode/>
-												</BuyersLocationID>
-											</Buyer-->
+													<BuyersLocationID>
+														<SuppliersCode/>
+													</BuyersLocationID>
+												</Buyer-->
 											<Supplier>
 												<SuppliersLocationID>
-													<BuyersCode><xsl:value-of select="InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode"/></BuyersCode>
+													<BuyersCode>
+														<xsl:value-of select="InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode"/>
+													</BuyersCode>
 												</SuppliersLocationID>
 											</Supplier>
-	
 											<ShipTo>
 												<ShipToLocationID>
 													<BuyersCode>
@@ -209,7 +240,7 @@
 													</xsl:call-template>
 												</InvoiceDate>
 												<TaxPointDate>
-													<xsl:call-template 	name="utcDate">
+													<xsl:call-template name="utcDate">
 														<xsl:with-param name="input" select="InvoiceHeader/InvoiceReferences/TaxPointDate"/>
 													</xsl:call-template>
 												</TaxPointDate>
@@ -235,8 +266,8 @@
 												</VoucherID>
 												<InvoiceType>
 													<xsl:value-of select="*/Buyer/BuyersAddress/AddressLine2"/>
-												</InvoiceType>												
-											</HeaderExtraData>											
+												</InvoiceType>
+											</HeaderExtraData>
 										</CreditNoteHeader>
 										<CreditNoteDetail>
 											<xsl:for-each select="InvoiceDetail/InvoiceLine">
@@ -283,43 +314,31 @@
 													</UnitValueExclVAT>
 													<LineValueExclVAT>
 														<xsl:choose>
-															<xsl:when test="substring(LineValueExclVAT,1,1) = '+'">
+															<!-- 2012 02 21 - this test used to check that the first character was '+' but now we are changing the plus sign to '0' in the LineValueExclVAT field -->
+															<xsl:when test="substring(LineValueExclVAT,1,1) = '0'">
 																<xsl:value-of select="(format-number(concat(substring(LineValueExclVAT,2,13),'.',substring(LineValueExclVAT,15,2)),'0.00')) * -1"/>
 															</xsl:when>
 															<xsl:otherwise>
 																<xsl:value-of select="format-number(concat(substring(LineValueExclVAT,2,13),'.',substring(LineValueExclVAT,15,2)),'0.00')"/>
 															</xsl:otherwise>
-														</xsl:choose>	
+														</xsl:choose>
 													</LineValueExclVAT>
 													<VATCode>Z</VATCode>
 													<VATRate>0.00</VATRate>
-													
 												</CreditNoteLine>
 											</xsl:for-each>
 										</CreditNoteDetail>
 									</CreditNote>
-									
 								</BatchDocument>
-								
 							</xsl:for-each>
-							
 						</BatchDocuments>
-						
 					</Batch>
-					
 				</Document>
-				
 			</xsl:for-each>
-			
 		</BatchRoot>
-		
 	</xsl:template>
-	
-	<xsl:template 	name="utcDate">
+	<xsl:template name="utcDate">
 		<xsl:param name="input"/>
-		
 		<xsl:value-of select="concat(substring($input,1,4),'-',substring($input,5,2),'-',substring($input,7,2))"/>
-		
 	</xsl:template>
-	
 </xsl:stylesheet>
