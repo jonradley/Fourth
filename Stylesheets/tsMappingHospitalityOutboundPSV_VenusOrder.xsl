@@ -13,7 +13,7 @@
 '******************************************************************************************
 ' 06/12/2012  | KO  | Created
 '******************************************************************************************
-'             |              | 
+' 23/02/2012 | H Robson              | All UoMs to be mapped as EA regardless of what is in the order
 '******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
@@ -78,9 +78,10 @@
 			<xsl:when test="OrderedQuantity/@UnitOfMeasure = 'EA'">
 				<xsl:text>1</xsl:text>
 			</xsl:when>
+			<!-- 23/02/12 HR commented out so that all UoMs will become EA
 			<xsl:when test="OrderedQuantity/@UnitOfMeasure = 'CS'">
 				<xsl:text>2</xsl:text>
-			</xsl:when>
+			</xsl:when> -->
 			<xsl:otherwise>
 				<xsl:text>1</xsl:text>
 			</xsl:otherwise>
