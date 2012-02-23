@@ -21,6 +21,11 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from CLD/SPRO(1).
 	<xsl:variable name="FileTrailerSegment" select="'CRETLR'"/>
 	<xsl:variable name="VATTrailerSegment" select="'VATTLR'"/>
 	
+	<!-- 16/02/12 - a key of credits with invoice lines, so that PODs can be generated -->
+	<xsl:key name="creditsWithInvoiceLines" 
+				match="/Batch/BatchDocuments/BatchDocument/CreditNote[sum(number(InvoiceDetail/InvoiceLine/LineValueExclVAT)) &gt; 0]" 
+				use="InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode"/> <!--use = key, match = value -->
+	
 	<!-- Start point - ensure required outer BatchRoot tag is applied -->
 	<xsl:template match="/">
 		<BatchRoot>
@@ -32,6 +37,7 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from CLD/SPRO(1).
 	           			<xsl:attribute name="TypePrefix">POD</xsl:attribute>
 					<Batch>
 						<BatchDocuments>
+							<!-- 16/02/12 - check against key -->
 							<xsl:for-each select="Batch/BatchDocuments/BatchDocument/CreditNote">
 								<BatchDocument>
 									<xsl:attribute name="DocumentTypeNo">313</xsl:attribute>
