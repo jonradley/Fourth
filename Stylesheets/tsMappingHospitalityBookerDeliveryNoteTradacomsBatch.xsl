@@ -8,7 +8,7 @@ Name			| Date			| Change
 **********************************************************************
 R Cambridge	| 29/10/2007	| 1556 Create module
 **********************************************************************
-				|					|
+M Emanuel	|	24/02/2012	| Created Delivery Note Mapper for Booker
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="xml" encoding="utf-8"/>
@@ -29,23 +29,6 @@ R Cambridge	| 29/10/2007	| 1556 Create module
 							<DeliveryNote>
 								<TradeSimpleHeader>
 									<SendersCodeForRecipient>
-										<!--
-										<xsl:choose>
-											<xsl:when test="DeliveryNoteHeader/Buyer/BuyersLocationID/SuppliersCode='5027615900022'">
-												<xsl:choose>
-													<xsl:when test="DeliveryNoteHeader/ShipTo/ShipToLocationID/BuyersCode !=''">
-														<xsl:value-of select="DeliveryNoteHeader/ShipTo/ShipToLocationID/BuyersCode"/>
-													</xsl:when>
-													<xsl:otherwise>
-														<xsl:value-of select="DeliveryNoteHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
-													</xsl:otherwise>
-												</xsl:choose>
-											</xsl:when>
-											<xsl:otherwise>
-												<xsl:value-of select="DeliveryNoteHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
-											</xsl:otherwise>
-										</xsl:choose>
-										-->
 										<xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/>
 									</SendersCodeForRecipient>
 								</TradeSimpleHeader>
@@ -60,26 +43,6 @@ R Cambridge	| 29/10/2007	| 1556 Create module
 									</Supplier>
 									
 									<ShipTo>
-									<!--
-										<ShipToLocationID>										
-											<SuppliersCode>
-												<xsl:choose>
-													<xsl:when test="DeliveryNoteHeader/Buyer/BuyersLocationID/SuppliersCode='5027615900022'">
-														<xsl:value-of select="DeliveryNoteHeader/ShipTo/ShipToLocationID/BuyersCode"/>
-													</xsl:when>
-													<xsl:otherwise>
-														<xsl:value-of select="DeliveryNoteHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
-													</xsl:otherwise>
-												</xsl:choose>
-											</SuppliersCode>
-										</ShipToLocationID>
-										<ShipToName>
-											<xsl:value-of select="DeliveryNoteHeader/ShipTo/ShipToName"/>
-										</ShipToName>
-										<ShipToAddress>
-											<xsl:apply-templates select="DeliveryNoteHeader/ShipTo/ShipToAddress/*"/>
-										</ShipToAddress>	
-										-->	
 										<xsl:apply-templates select="DeliveryNoteHeader/ShipTo/*"/>
 									</ShipTo>
 									

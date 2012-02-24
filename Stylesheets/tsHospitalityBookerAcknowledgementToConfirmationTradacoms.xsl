@@ -8,7 +8,7 @@ Name			| Date				| Change
 **********************************************************************
 R Cambridge	| 2011-06-07		| 4520 Added back order quantity and unit price
 **********************************************************************
-				|						|				
+M Emanuel	|	24/02/2012	| Created PO Confirmation Mapper for Booker				|						|				
 **********************************************************************
 				|						|
 **********************************************************************
@@ -26,23 +26,6 @@ R Cambridge	| 2011-06-07		| 4520 Added back order quantity and unit price
 							<PurchaseOrderConfirmation>
 								<TradeSimpleHeader>
 									<SendersCodeForRecipient>
-									<!--
-										<xsl:choose>
-											<xsl:when test="PurchaseOrderConfirmationHeader/Buyer/BuyersLocationID/SuppliersCode='5027615900022'">
-												<xsl:choose>
-													<xsl:when test="PurchaseOrderConfirmationHeader/ShipTo/ShipToLocationID/BuyersCode !=''">
-														<xsl:value-of select="PurchaseOrderConfirmationHeader/ShipTo/ShipToLocationID/BuyersCode"/>
-													</xsl:when>
-													<xsl:otherwise>
-														<xsl:value-of select="PurchaseOrderConfirmationHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
-													</xsl:otherwise>
-												</xsl:choose>
-											</xsl:when>
-											<xsl:otherwise>
-												<xsl:value-of select="PurchaseOrderConfirmationHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
-											</xsl:otherwise>
-										</xsl:choose>
-									-->
 									<xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/>
 									</SendersCodeForRecipient>
 								</TradeSimpleHeader>
@@ -50,54 +33,12 @@ R Cambridge	| 2011-06-07		| 4520 Added back order quantity and unit price
 									<DocumentStatus>Original</DocumentStatus>
 									<Buyer>
 										<xsl:apply-templates select="PurchaseOrderConfirmationHeader/Buyer/*"/>
-										<!--BuyersLocationID>
-											<GLN/>
-										</BuyersLocationID-->
 									</Buyer>
 									<Supplier>
 										<xsl:apply-templates select="PurchaseOrderConfirmationHeader/Supplier/*"/>
-										<!--SuppliersLocationID>
-											<GLN/>
-										</SuppliersLocationID-->
 									</Supplier>
 									<ShipTo>
-									
-									<!--
-										<ShipToLocationID>
-										
-											<BuyersCode>
-												<xsl:choose>
-													<xsl:when test="PurchaseOrderConfirmationHeader/Buyer/BuyersLocationID/SuppliersCode='5027615900022'">
-														<xsl:value-of select="PurchaseOrderConfirmationHeader/ShipTo/ShipToLocationID/BuyersCode"/>
-													</xsl:when>
-													<xsl:otherwise>
-														<xsl:value-of select="PurchaseOrderConfirmationHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
-													</xsl:otherwise>
-												</xsl:choose>
-											</BuyersCode>
-											
-											<SuppliersCode>
-												<xsl:choose>
-													<xsl:when test="PurchaseOrderConfirmationHeader/Buyer/BuyersLocationID/SuppliersCode='5027615900022'">
-														<xsl:value-of select="PurchaseOrderConfirmationHeader/ShipTo/ShipToLocationID/BuyersCode"/>
-													</xsl:when>
-													<xsl:otherwise>
-														<xsl:value-of select="PurchaseOrderConfirmationHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
-													</xsl:otherwise>
-												</xsl:choose>
-											</SuppliersCode>
-										</ShipToLocationID>
-										
-										<ShipToName>
-											<xsl:value-of select="PurchaseOrderConfirmationHeader/ShipTo/ShipToName"/>
-										</ShipToName>
-										<ShipToAddress>
-											<xsl:apply-templates select="PurchaseOrderConfirmationHeader/ShipTo/ShipToAddress/*"/>
-										</ShipToAddress>
-										
-										-->
 										<xsl:apply-templates select="PurchaseOrderConfirmationHeader/ShipTo/*"/>
-										
 									</ShipTo>
 									<PurchaseOrderReferences>
 										<PurchaseOrderReference>
@@ -133,15 +74,6 @@ R Cambridge	| 2011-06-07		| 4520 Added back order quantity and unit price
 												<xsl:value-of select="count(preceding-sibling::* | self::*)"/>
 											</LineNumber>
 											<ProductID>
-												<!--GTIN>55555555555555</GTIN>
-												<SuppliersProductCode>
-													<xsl:value-of select="SuppliersProductCode"/>
-												</SuppliersProductCode>
-												<xsl:if test="string(BuyersProductCode) != ''">
-													<BuyersProductCode>
-														<xsl:value-of select="BuyersProductCode"/>
-													</BuyersProductCode>
-												</xsl:if-->
 												<xsl:apply-templates select="ProductID/*"/>
 											</ProductID>
 											<ProductDescription>
