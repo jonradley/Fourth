@@ -8,7 +8,7 @@ Name			| Date			| Change
 **********************************************************************
 M Dimant	| 06/01/2009	| 2262 Created bespoke mapper to satisfy location of Suppliers Product Code 
 **********************************************************************
-				|					|
+M Emanuel	|	24/02/2012	| Created Delivery Note FF Mapper for Booker				|					|
 *******************************************************************-->
 <ffsFlatFileSchema>
 	<ffsSettings>
@@ -73,12 +73,10 @@ M Dimant	| 06/01/2009	| 2262 Created bespoke mapper to satisfy location of Suppl
 					<DeliveryNote>
 						<TradeSimpleHeader>
 							<SendersCodeForRecipient RecordPos="CLO=" LPos="1" SFPos="3"/>
-							<!--SendersBranchReference RecordPos="CDT=" LPos="1" SFPos="2"/-->
 						</TradeSimpleHeader>
 						<DeliveryNoteHeader>
 							<Buyer>
 								<BuyersLocationID>
-									<!--GLN RecordPos="CDT=" LPos="1" SFPos="1"/-->
 									<SuppliersCode RecordPos="CDT=" LPos="1" SFPos="1"/>
 								</BuyersLocationID>
 								<BuyersName RecordPos="CDT=" LPos="2"/>
@@ -106,7 +104,6 @@ M Dimant	| 06/01/2009	| 2262 Created bespoke mapper to satisfy location of Suppl
 							</Supplier>
 							<ShipTo>
 								<ShipToLocationID>
-									<!--BuyersCode RecordPos="CLO=" LPos="1" SFPos="2"/-->
 									<SuppliersCode RecordPos="CLO=" LPos="1" SFPos="3"/>
 								</ShipToLocationID>
 								<ShipToName RecordPos="CLO=" LPos="2" SFPos="1"/>
@@ -128,7 +125,6 @@ M Dimant	| 06/01/2009	| 2262 Created bespoke mapper to satisfy location of Suppl
 								<DespatchDate RecordPos="DEL=" LPos="1" SFPos="2"/>
 							</DeliveryNoteReferences>
 							<DeliveredDeliveryDetails>
-								<!--DeliveryType/-->
 								<DeliveryDate RecordPos="DEL=" LPos="1" SFPos="2"/>
 							</DeliveredDeliveryDetails>
 						</DeliveryNoteHeader>
@@ -137,7 +133,6 @@ M Dimant	| 06/01/2009	| 2262 Created bespoke mapper to satisfy location of Suppl
 								<ProductID>
 									<GTIN RecordPos="DLD=" LPos="3" SFPos="3"/>
 									<SuppliersProductCode RecordPos="DLD=" LPos="3" SFPos="2"/>
-									<!--BuyersProductCode RecordPos="DLD=" LPos="3" SFPos="2"/-->
 								</ProductID>
 								<ProductDescription RecordPos="DLD=" LPos="8" SFPos="1"/>
 								<OrderedQuantity RecordPos="DLD=" LPos="6" SFPos="2">
