@@ -74,18 +74,8 @@
 		<xsl:text>|</xsl:text>
 		
 		<!--unit of measure-->
-		<xsl:choose>
-			<xsl:when test="OrderedQuantity/@UnitOfMeasure = 'EA'">
-				<xsl:text>1</xsl:text>
-			</xsl:when>
-			<!-- 23/02/12 HR commented out so that all UoMs will become EA
-			<xsl:when test="OrderedQuantity/@UnitOfMeasure = 'CS'">
-				<xsl:text>2</xsl:text>
-			</xsl:when> -->
-			<xsl:otherwise>
-				<xsl:text>1</xsl:text>
-			</xsl:otherwise>
-		</xsl:choose>
+		<!-- 24/02/12 HR - Must always be '1' for EA -->
+		<xsl:text>1</xsl:text>
 		<xsl:text>|</xsl:text>
 		
 		<!--Pack size-->
