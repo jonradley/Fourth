@@ -21,10 +21,6 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from CLD/SPRO(1).
 	<xsl:variable name="FileTrailerSegment" select="'CRETLR'"/>
 	<xsl:variable name="VATTrailerSegment" select="'VATTLR'"/>
 	
-	<!-- 16/02/12 - a key of credits with invoice lines, so that PODs can be generated -->
-	<xsl:key name="creditsWithInvoiceLines" 
-				match="/Batch/BatchDocuments/BatchDocument/CreditNote[sum(number(InvoiceDetail/InvoiceLine/LineValueExclVAT)) &gt; 0]" 
-				use="InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode"/> <!--use = key, match = value -->
 	
 	<!-- Start point - ensure required outer BatchRoot tag is applied -->
 	<xsl:template match="/">
@@ -32,13 +28,12 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from CLD/SPRO(1).
 			<xsl:apply-templates/>
 			<!-- Start Generation POD's for Spirit -->
 			<!-- 2012 02 06 - POD template copied in/modified from Invoice mapper -->
-			<xsl:if test="/Batch/BatchDocuments/BatchDocument/CreditNote/CreditNoteHeader/Buyer/BuyersLocationID/SuppliersCode='5060166761066'"> <!-- recipient = Spirit -->
+			<xsl:if test="/Batch/BatchDocuments/BatchDocument/CreditNote[CreditNoteDetail/CreditNoteLine/CreditedQuantity &lt; 0]/CreditNoteHeader/Buyer/BuyersLocationID/SuppliersCode='5060166761066'"> <!-- recipient = Spirit -->
 				<Document>
 	           			<xsl:attribute name="TypePrefix">POD</xsl:attribute>
 					<Batch>
 						<BatchDocuments>
-							<!-- 16/02/12 - check against key -->
-							<xsl:for-each select="Batch/BatchDocuments/BatchDocument/CreditNote">
+							<xsl:for-each select="Batch/BatchDocuments/BatchDocument/CreditNote[CreditNoteDetail/CreditNoteLine/CreditedQuantity &lt; 0]">
 								<BatchDocument>
 									<xsl:attribute name="DocumentTypeNo">313</xsl:attribute>
 									<ProofOfDelivery>
@@ -49,10 +44,10 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from CLD/SPRO(1).
 											<xsl:apply-templates select="CreditNoteHeader/ShipTo"/>
 											<PurchaseOrderReferences>									
 												<PurchaseOrderReference>
-													<xsl:value-of select="(CreditNoteDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderReference | CreditNoteDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteReference)[1]"/>
+													<xsl:value-of select="(CreditNoteDetail/CreditNoteLine[1]/PurchaseOrderReferences/PurchaseOrderReference | CreditNoteDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteReference)[1]"/>
 												</PurchaseOrderReference>
 												<xsl:variable name="sDPODate">
-													<xsl:value-of select="(CreditNoteDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderDate | CreditNoteDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteDate)[1]"/>
+													<xsl:value-of select="(CreditNoteDetail/CreditNoteLine[1]/PurchaseOrderReferences/PurchaseOrderDate | CreditNoteDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteDate)[1]"/>
 												</xsl:variable>
 												<PurchaseOrderDate>
 													<xsl:value-of select="concat('20',substring($sDPODate,1,2),'-',substring($sDPODate,3,2),'-',substring($sDPODate,5,2))"/>
@@ -63,7 +58,7 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from CLD/SPRO(1).
 													<xsl:value-of select="CreditNoteHeader/InvoiceReferences/InvoiceReference"/>
 												</ProofOfDeliveryReference>
 												<xsl:variable name="dDPODDate">
-													<xsl:value-of select="CreditNoteDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteDate"/>
+													<xsl:value-of select="CreditNoteDetail/CreditNoteLine[1]/DeliveryNoteReferences/DeliveryNoteDate"/>
 												</xsl:variable>
 												<ProofOfDeliveryDate>
 													<xsl:value-of select="concat('20',substring($dDPODDate,1,2),'-',substring($dDPODDate,3,2),'-',substring($dDPODDate,5,2))"/>
@@ -71,10 +66,10 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from CLD/SPRO(1).
 											</ProofOfDeliveryReferences>										
 											<DeliveryNoteReferences>
 												<DeliveryNoteReference>
-													<xsl:value-of select="CreditNoteDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteReference"/>
+													<xsl:value-of select="CreditNoteDetail/CreditNoteLine[1]/DeliveryNoteReferences/DeliveryNoteReference"/>
 												</DeliveryNoteReference>
 												<xsl:variable name="dDDelNoteDate">
-													<xsl:value-of select="CreditNoteDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteDate"/>
+													<xsl:value-of select="CreditNoteDetail/CreditNoteLine[1]/DeliveryNoteReferences/DeliveryNoteDate"/>
 												</xsl:variable>
 												<DeliveryNoteDate>
 													<xsl:value-of select="concat('20',substring($dDDelNoteDate,1,2),'-',substring($dDDelNoteDate,3,2),'-',substring($dDDelNoteDate,5,2))"/>
@@ -82,20 +77,17 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from CLD/SPRO(1).
 											</DeliveryNoteReferences>								
 										</ProofOfDeliveryHeader>
 										<ProofOfDeliveryDetail>
-											<xsl:for-each select="CreditNoteDetail/CreditNoteLine">
-												<xsl:choose>
-													<xsl:when test="ProductID/BuyersProductCode"/>
-													<xsl:otherwise>
-														<ProofOfDeliveryLine>
-															<xsl:apply-templates select="ProductID"/>
-															<xsl:apply-templates select="ProductDescription"/>
-															<DespatchedQuantity>
-																<xsl:value-of select="InvoicedQuantity"/>
-															</DespatchedQuantity>
-															<xsl:apply-templates select="PackSize"/>
-														</ProofOfDeliveryLine>									
-													</xsl:otherwise>
-												</xsl:choose>
+											<!-- for creditnote lines with a negative quantity i.e. invoice lines on a credit, generate a POD line  -->
+											<xsl:for-each select="CreditNoteDetail/CreditNoteLine[CreditedQuantity &lt; 0]">
+												<ProofOfDeliveryLine>
+													<xsl:apply-templates select="ProductID"/>
+													<xsl:apply-templates select="ProductDescription"/>
+													<DespatchedQuantity>
+														<!-- value needs to become positive -->
+														<xsl:value-of select="CreditedQuantity * -1"/>
+													</DespatchedQuantity>
+													<xsl:apply-templates select="PackSize"/>
+												</ProofOfDeliveryLine>									
 											</xsl:for-each>
 										</ProofOfDeliveryDetail>
 									</ProofOfDelivery>
