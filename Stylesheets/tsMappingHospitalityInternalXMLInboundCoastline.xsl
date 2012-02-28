@@ -8,7 +8,7 @@ R Cambridge		| 14/08/2007		| 1336 Created module
 **********************************************************************
          Steve Bowers	  		| 27-2-2012           		|    5260  New stylesheet for Coastline                            
 **********************************************************************
-
+Steve Bowers					28-2-2012					`	5260 mapped UOM on CreditedQuantity
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="xml" encoding="UTF-8"/>
@@ -57,4 +57,22 @@ R Cambridge		| 14/08/2007		| 1336 Created module
 			<xsl:value-of select="."/>
 		</InvoicedQuantity>
 	</xsl:template>
+	<xsl:template match="CreditedQuantity">
+		<CreditedQuantity>
+			<xsl:choose>
+				<xsl:when test="../PackSize = 'E'">
+					<xsl:attribute name="UnitOfMeasure">EA</xsl:attribute>
+				</xsl:when>
+				<xsl:when test="../PackSize = 'B'">
+					<xsl:attribute name="UnitOfMeasure">CS</xsl:attribute>
+				</xsl:when>
+				<xsl:when test="../PackSize = 'K'">
+					<xsl:attribute name="UnitOfMeasure">KGM</xsl:attribute>
+				</xsl:when>
+			</xsl:choose>
+			<xsl:value-of select="."/>
+		</CreditedQuantity>
+	</xsl:template>
+
 </xsl:stylesheet>
+
