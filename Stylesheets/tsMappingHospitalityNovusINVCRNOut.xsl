@@ -65,7 +65,7 @@
 			<!-- Store the Invoice Reference -->
 			<xsl:variable name="valInvoiceReference" select="InvoiceHeader/InvoiceReferences/InvoiceReference"/>
 			<!-- Store the Buyers Code-->
-			<xsl:variable name="valBuyersCode" select="substring-before(InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode,'-')"/>
+			<xsl:variable name="valBuyersCode" select="substring-before(TradeSimpleHeader/RecipientsBranchReference,'-')"/>
 			<!-- Store theTotal Amount Excl VAT-->
 			<xsl:variable name="valSettlementTotalExclVAT" select="format-number(InvoiceTrailer/SettlementTotalExclVAT,'0.00')"/>
 			<!-- Store the VAT-->
@@ -109,7 +109,7 @@
 			<xsl:text>,</xsl:text>
 			<!--Tax Code-->
 			<xsl:choose>
-				<xsl:when test="$valVATRated &gt; 1">
+				<xsl:when test="$valVATRated &gt; 0">
 					<xsl:text>IT</xsl:text>
 				</xsl:when>
 				<xsl:otherwise>
@@ -180,7 +180,7 @@
 			<xsl:text>,</xsl:text>
 			<!-- Tax Code -->
 			<xsl:choose>
-				<xsl:when test="$valVATRated &gt; 1">
+				<xsl:when test="$valVATRated &gt; 0">
 					<xsl:text>IT</xsl:text>
 				</xsl:when>
 				<xsl:otherwise>
@@ -197,7 +197,7 @@
 		
 		<xsl:for-each select="CreditNote">
 		
-			<!-- Store the Invoice Date-->
+			<!-- Store the Credit Note Date-->
 			<xsl:variable name="varCreditNoteDate">
 				<xsl:call-template name="formatDate">
 					<xsl:with-param name="utcFormat" select="CreditNoteHeader/CreditNoteReferences/CreditNoteDate"/>
@@ -205,10 +205,10 @@
 			</xsl:variable>
 			<!-- Store the Delivery Note Reference-->
 			<xsl:variable name="valDeliveryNoteReference" select="CreditNoteDetail/CreditNoteLine/DeliveryNoteReferences/DeliveryNoteReference[1]"/>
-			<!-- Store the Invoice Reference -->
+			<!-- Store the Credit Note Reference -->
 			<xsl:variable name="valCreditNoteReference" select="CreditNoteHeader/CreditNoteReferences/CreditNoteReference"/>
 			<!-- Store the Buyers Code-->
-			<xsl:variable name="valBuyersCode" select="substring-before(CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode,'-')"/>
+			<xsl:variable name="valBuyersCode" select="substring-before(TradeSimpleHeader/RecipientsBranchReference,'-')"/>
 			<!-- Store theTotal Amount Excl VAT-->
 			<xsl:variable name="valSettlementTotalExclVAT" select="format-number(CreditNoteTrailer/SettlementTotalExclVAT,'0.00')"/>
 			<!-- Store the VAT-->
@@ -221,7 +221,7 @@
 			<xsl:variable name="valFinancialPeriod" select="concat(substring(CreditNoteHeader/HeaderExtraData/FinancialPeriod,1,4),'/',format-number(substring	(CreditNoteHeader/HeaderExtraData/FinancialPeriod,5,2),'000'))"/>
 			<xsl:variable name="valVATRated" select="count(CreditNoteDetail/CreditNoteLine/VATCode[.='S'])"/>
 			
-			<!-- Invoice Header -->
+			<!-- Credit Note Header -->
 			<xsl:choose>
 				<xsl:when test="preceding-sibling::CreditNote[1]">
 					<xsl:text>2;</xsl:text>
@@ -252,7 +252,7 @@
 			<xsl:text>,</xsl:text>
 			<!--Tax Code-->
 			<xsl:choose>
-				<xsl:when test="$valVATRated &gt; 1">
+				<xsl:when test="$valVATRated &gt; 0">
 					<xsl:text>IT</xsl:text>
 				</xsl:when>
 				<xsl:otherwise>
@@ -323,7 +323,7 @@
 			<xsl:text>,</xsl:text>
 			<!-- Tax Code -->
 			<xsl:choose>
-				<xsl:when test="$valVATRated &gt; 1">
+				<xsl:when test="$valVATRated &gt; 0">
 					<xsl:text>IT</xsl:text>
 				</xsl:when>
 				<xsl:otherwise>
