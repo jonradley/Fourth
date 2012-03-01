@@ -77,9 +77,19 @@ Date		|	Name				|	Comment
 				<xsl:when test="$TranslateUOM = 'CA' ">
 					<xsl:text>CS</xsl:text>
 				</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="$TranslateUOM"/>
-				</xsl:otherwise>
+				<xsl:when test="$TranslateUOM = 'CASE' ">
+					<xsl:text>CS</xsl:text>
+				</xsl:when>
+				<xsl:when test="$TranslateUOM = 'CL' ">
+					<xsl:text>CS</xsl:text>
+				</xsl:when>
+				<xsl:when test="$TranslateUOM = 'KG' ">
+					<xsl:text>KGM</xsl:text>
+				</xsl:when>
+				<xsl:when test="$TranslateUOM = 'LITRES' ">
+					<xsl:text>LTR</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>EA</xsl:otherwise>
 			</xsl:choose>
 	</xsl:template>
 	
