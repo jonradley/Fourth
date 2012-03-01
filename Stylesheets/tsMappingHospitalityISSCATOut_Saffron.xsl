@@ -21,7 +21,8 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 		   xmlns:script="http://mycompany.com/mynamespace"
                 xmlns:msxsl="urn:schemas-microsoft-com:xslt"
-                exclude-result-prefixes="#default xsl msxsl script">
+                exclude-result-prefixes="#default xsl msxsl script"
+                xmlns:user="http://mycompany.com/mynamespace">
 	<xsl:output method="text"/>
 	
 	<xsl:template match="/PriceCatalog">
@@ -61,11 +62,34 @@
 			<xsl:value-of select="substring(PriceCatDetail/PartNum/PartID,1,20)"/>
 			<xsl:text>,</xsl:text>
 
-			<xsl:value-of select="substring(PriceCatDetail/ListOfDescription/Description,1,50)"/>
+			<!--xsl:value-of select="substring(PriceCatDetail/ListOfDescription/Description,1,50)"/>
+			<xsl:text>,</xsl:text-->
+			
+			<xsl:if test="contains(user:msEscapeQuotes(substring(PriceCatDetail/ListOfDescription/Description,1,50)),',')">
+				<xsl:text>"</xsl:text>
+			</xsl:if>
+			<xsl:value-of select="user:msEscapeQuotes(substring(PriceCatDetail/ListOfDescription/Description,1,50))"/>
+			<xsl:if test="contains(user:msEscapeQuotes(substring(PriceCatDetail/ListOfDescription/Description,1,50)),',')">
+				<xsl:text>"</xsl:text>
+			</xsl:if>
 			<xsl:text>,</xsl:text>
 
 			<xsl:value-of select="substring(PriceCatDetail/ListOfKeyVal/KeyVal[@Keyword='PackSize'],1,20)"/>
+			
 		</xsl:for-each>
 
 	</xsl:template>
+	
+	<msxsl:script language="VBScript" implements-prefix="user"><![CDATA[ 
+	
+		Function msEscapeQuotes(inputValue)
+			Dim sReturn
+				       	
+			'sReturn = inputValue.item(0).nodeTypedValue
+			sReturn = inputValue
+	      		msEscapeQuotes = Replace(sReturn,"""","""" & """")
+			
+			End Function 
+	]]></msxsl:script>
+	
 </xsl:stylesheet>
