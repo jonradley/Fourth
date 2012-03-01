@@ -8,11 +8,11 @@
 		<ffsPadding/>
 		<ffsGroups>
 			<ffsGroup>
-				<!--References below which mean RecordPos ODD= with LPos 1 would be coded as ILD= and LPos 26 (25+1)-->
 				<ffsGroupRecord RecordPos="HEAD" FieldTotal="44"/>
 				<ffsSubGroupRecord RecordPos="LINE" FieldTotal="44"/>
 			</ffsGroup>
 		</ffsGroups>
+		<ffsSplitBatchRecord RecordPos="HEAD"/>
 	</ffsSettings>
 	<ffsRoot>
 		<Batch>
@@ -20,8 +20,8 @@
 				<BatchDocument>
 					<Invoice>
 						<TradeSimpleHeader>
-							<SendersCodeForRecipient RecordPos="HEAD" LPos="11"/>
-							<!--SendersBranchReference RecordPos="" LPos=""/-->
+							<SendersCodeForRecipient RecordPos="HEAD" LPos="14"/>
+							<SendersBranchReference RecordPos="HEAD" LPos="44"/>
 						</TradeSimpleHeader>
 						<InvoiceHeader>
 							<Buyer>
@@ -38,27 +38,28 @@
 							</Supplier>
 							<ShipTo>
 								<ShipToLocationID>
-									<GLN RecordPos="HEAD" LPos="12"/>
-									<SuppliersCode RecordPos="HEAD" LPos="11"/>
+									<GLN RecordPos="HEAD" LPos="13"/>
+									<SuppliersCode RecordPos="HEAD" LPos="14"/>
 								</ShipToLocationID>
 							</ShipTo>
 							<InvoiceReferences>
-								<InvoiceReference RecordPos="HEAD" LPos="22"/>
-								<InvoiceDate RecordPos="HEAD" LPos="23"/>
-								<TaxPointDate RecordPos="HEAD" LPos="24"/>
+								<InvoiceReference RecordPos="HEAD" LPos="23"/>
+								<InvoiceDate RecordPos="HEAD" LPos="24"/>
+								<TaxPointDate RecordPos="HEAD" LPos="25"/>
 							</InvoiceReferences>
 						</InvoiceHeader>
 						<InvoiceDetail>
 							<InvoiceLine>
 								<PurchaseOrderReferences>
-									<PurchaseOrderReference RecordPos="LINE" LPos="74"/>
-									<PurchaseOrderDate RecordPos="LINE" LPos="75"/>
+									<PurchaseOrderReference RecordPos="LINE" LPos="75"/>
+									<PurchaseOrderDate RecordPos="LINE" LPos="74"/>
 								</PurchaseOrderReferences>
 								<ProductID>
 									<SuppliersProductCode RecordPos="LINE" LPos="2"/>
 								</ProductID>
+								<ProductDescription RecordPos="LINE" LPos="25"/>
 								<InvoicedQuantity RecordPos="LINE" LPos="8">
-									<ffsattribute1 name="UnitOfMeasure" RecordPos="LINE" LPos="7"/>
+									<ffsAttribute1 name="UnitOfMeasure" RecordPos="LINE" LPos="7"/>
 								</InvoicedQuantity>
 								<UnitValueExclVAT RecordPos="LINE" LPos="13"/>
 								<LineValueExclVAT RecordPos="LINE" LPos="14"/>
@@ -75,15 +76,13 @@
 									<DocumentTotalExclVATAtRate RecordPos="VAT" LPos="5"/>
 									<SettlementTotalExclVATAtRate RecordPos="VAT" LPos="5"/>
 									<VATAmountAtRate RecordPos="VAT" LPos="13"/>
-									<DocumentTotalInclVATAtRate RecordPos="" LPos=""/>
-									<SettlementTotalInclVATAtRate RecordPos="" LPos=""/>
 								</VATSubTotal>
 							</VATSubTotals>
 							<DocumentTotalExclVAT RecordPos="TRAILER" LPos="4"/>
 							<SettlementTotalExclVAT RecordPos="TRAILER" LPos="4"/>
-							<VATAmount RecordPos="TRAILER" LPos="10"/>
-							<DocumentTotalInclVAT RecordPos="TRAILER" LPos="11"/>
-							<SettlementTotalInclVAT RecordPos="TRAILER" LPos="11"/>
+							<VATAmount RecordPos="TRAILER" LPos="12"/>
+							<DocumentTotalInclVAT RecordPos="TRAILER" LPos="13"/>
+							<SettlementTotalInclVAT RecordPos="TRAILER" LPos="14"/>
 						</InvoiceTrailer>
 					</Invoice>
 				</BatchDocument>
