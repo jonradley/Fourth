@@ -42,6 +42,19 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from CLD/SPRO(1).
 											<xsl:apply-templates select="CreditNoteHeader/Buyer"/>
 											<xsl:apply-templates select="CreditNoteHeader/Supplier"/>
 											<xsl:apply-templates select="CreditNoteHeader/ShipTo"/>
+											
+											<xsl:variable name="dDPODDate">
+												<!-- 2012-02-29 use the DeliveryNoteDate if possible, if not use CreditNoteDate as next best thing -->
+												<xsl:choose>
+													<xsl:when test="CreditNoteDetail/CreditNoteLine[1]/DeliveryNoteReferences/DeliveryNoteDate != ''">
+														<xsl:value-of select="CreditNoteDetail/CreditNoteLine[1]/DeliveryNoteReferences/DeliveryNoteDate"/>
+													</xsl:when>
+													<xsl:otherwise>
+														<xsl:value-of select="CreditNoteHeader/CreditNoteReferences/CreditNoteDate"/>
+													</xsl:otherwise>
+												</xsl:choose>
+											</xsl:variable>
+											
 											<PurchaseOrderReferences>									
 												<PurchaseOrderReference>
 													<xsl:value-of select="(CreditNoteDetail/CreditNoteLine[1]/PurchaseOrderReferences/PurchaseOrderReference | CreditNoteDetail/CreditNoteLine[1]/DeliveryNoteReferences/DeliveryNoteReference)[1]"/>
@@ -57,17 +70,6 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from CLD/SPRO(1).
 												<ProofOfDeliveryReference>
 													<xsl:value-of select="CreditNoteHeader/InvoiceReferences/InvoiceReference"/>
 												</ProofOfDeliveryReference>
-												<xsl:variable name="dDPODDate">
-													<!-- 2012-02-29 use the DeliveryNoteDate if possible, if not use CreditNoteDate as next best thing -->
-													<xsl:choose>
-														<xsl:when test="CreditNoteDetail/CreditNoteLine[1]/DeliveryNoteReferences/DeliveryNoteDate != ''">
-															<xsl:value-of select="CreditNoteDetail/CreditNoteLine[1]/DeliveryNoteReferences/DeliveryNoteDate"/>
-														</xsl:when>
-														<xsl:otherwise>
-															<xsl:value-of select="CreditNoteHeader/CreditNoteReferences/CreditNoteDate"/>
-														</xsl:otherwise>
-													</xsl:choose>
-												</xsl:variable>
 												<ProofOfDeliveryDate>
 													<xsl:value-of select="concat('20',substring($dDPODDate,1,2),'-',substring($dDPODDate,3,2),'-',substring($dDPODDate,5,2))"/>
 												</ProofOfDeliveryDate>
@@ -84,6 +86,9 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from CLD/SPRO(1).
 														</xsl:otherwise>
 													</xsl:choose>
 												</DeliveryNoteReference>
+												<!--<xsl:variable name="dDDelNoteDate">
+													<xsl:value-of select="CreditNoteDetail/CreditNoteLine[1]/DeliveryNoteReferences/DeliveryNoteDate"/>
+												</xsl:variable>-->
 												<DeliveryNoteDate>
 													<xsl:value-of select="concat('20',substring($dDPODDate,1,2),'-',substring($dDPODDate,3,2),'-',substring($dDPODDate,5,2))"/>
 												</DeliveryNoteDate>
