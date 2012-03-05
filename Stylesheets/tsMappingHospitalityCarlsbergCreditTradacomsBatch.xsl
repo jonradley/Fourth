@@ -84,11 +84,8 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from CLD/SPRO(1).
 														</xsl:otherwise>
 													</xsl:choose>
 												</DeliveryNoteReference>
-												<xsl:variable name="dDDelNoteDate">
-													<xsl:value-of select="CreditNoteDetail/CreditNoteLine[1]/DeliveryNoteReferences/DeliveryNoteDate"/>
-												</xsl:variable>
 												<DeliveryNoteDate>
-													<xsl:value-of select="concat('20',substring($dDDelNoteDate,1,2),'-',substring($dDDelNoteDate,3,2),'-',substring($dDDelNoteDate,5,2))"/>
+													<xsl:value-of select="concat('20',substring($dDPODDate,1,2),'-',substring($dDPODDate,3,2),'-',substring($dDPODDate,5,2))"/>
 												</DeliveryNoteDate>
 											</DeliveryNoteReferences>								
 										</ProofOfDeliveryHeader>
