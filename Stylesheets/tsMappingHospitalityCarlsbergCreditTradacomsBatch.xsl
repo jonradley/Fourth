@@ -60,7 +60,7 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from CLD/SPRO(1).
 												<xsl:variable name="dDPODDate">
 													<!-- 2012-02-29 use the DeliveryNoteDate if possible, if not use CreditNoteDate as next best thing -->
 													<xsl:choose>
-														<xsl:when test="CreditNoteDetail/CreditNoteLine[1]/DeliveryNoteReferences/DeliveryNoteDate != ">
+														<xsl:when test="CreditNoteDetail/CreditNoteLine[1]/DeliveryNoteReferences/DeliveryNoteDate != ''">
 															<xsl:value-of select="CreditNoteDetail/CreditNoteLine[1]/DeliveryNoteReferences/DeliveryNoteDate"/>
 														</xsl:when>
 														<xsl:otherwise>
