@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--======================================================================================
+<!--
+======================================================================================
  Overview
 
 
@@ -81,7 +82,10 @@
  24/06/2009		| Lee Boyton	| 2959. /FD is too long for Caterwide now, needs to be just /F.
  =========================================================================================
  22/01/2010		| Rave Tech		| 3334.Added Caterwide Delivery Note Suffix logic.
-=======================================================================================-->
+=======================================================================================
+ 07/03/2012     | Maha | 5302.GRNs going to caterwide with incorrect/duplicate refs.
+=======================================================================================
+-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
     <xsl:output method="text" encoding="utf-8"/>
@@ -173,10 +177,24 @@
 					<!-- trim the delivery reference to a maximum of 7 characters so that adding /F does not exceed the maximum of 9 characters -->
 					<xsl:choose>
 						<xsl:when test="normalize-space(LineExtraData/DeliveryNoteSuffix) = ''">
-							<xsl:value-of select="substring($DNRef,1,7)"/>
+							<xsl:choose>
+								<xsl:when test="string-length($DNRef) >= 7">
+									<xsl:value-of select="substring($DNRef,string-length($DNRef)-6,7)"/>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="$DNRef"/>
+								</xsl:otherwise>
+							</xsl:choose>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:value-of select="concat(substring($DNRef,1,7),concat('/',LineExtraData/DeliveryNoteSuffix))"/>
+							<xsl:choose>
+								<xsl:when test="string-length($DNRef) >= 7">
+									<xsl:value-of select="concat(substring($DNRef,string-length($DNRef)-6,7),concat('/',LineExtraData/DeliveryNoteSuffix))"/>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="concat($DNRef,concat('/',LineExtraData/DeliveryNoteSuffix))"/>
+								</xsl:otherwise>
+							</xsl:choose>
 						</xsl:otherwise>
 					</xsl:choose>				
 					
