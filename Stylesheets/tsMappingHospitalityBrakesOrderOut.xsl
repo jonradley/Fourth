@@ -17,7 +17,7 @@ R Cambridge	| 2010-01-04		| 3310 handle MITIE PL accounts in //sh:Receiver/sh:Id
 **********************************************************************
 R Cambridge	| 2010-02-01		| 3310 set sh:Sender and sh:Receiver according to GLN of the relevant party
 **********************************************************************
-				|						|				
+H Robson		| 2012-03-02		| 5295 New template to return BuyersCode from a fixed list of codes that Brakes have agreed to receive
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:sh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" xmlns:eanucc="urn:ean.ucc:2" xmlns:order="urn:ean.ucc:order:2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" >
 	<xsl:output method="xml" encoding="UTF-8"/>
@@ -143,6 +143,7 @@ R Cambridge	| 2010-02-01		| 3310 set sh:Sender and sh:Receiver according to GLN 
 													<xsl:value-of select="TradeSimpleHeader/RecipientsBranchReference"/>
 												</xsl:when>
 												<xsl:otherwise>
+													<!-- 2012-03-02 HR 5295 Call a new template to return a code from a fixed list of codes that Brakes have agreed to receive -->
 													<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/BuyersCode"/>
 												</xsl:otherwise>
 											</xsl:choose>	
@@ -394,6 +395,106 @@ R Cambridge	| 2010-02-01		| 3310 set sh:Sender and sh:Receiver according to GLN 
 				<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersName"/>
 				<xsl:text>)</xsl:text>
 			</xsl:otherwise>
+		</xsl:choose>	
+		
+	</xsl:template>
+	
+<!--=======================================================================================
+  Routine        : determineBuyersCode
+  Description    : Uses supplier's GLN & the buyers GLN to determine the buyer's code for supplier. See FB case 5295 
+  
+  Inputs         : Nodes containing GLNs
+  Returns        : A string with a code/name
+  Author         : H Robson 	2012-03-02
+  Alterations    : 
+ =======================================================================================-->	
+	<xsl:template name="determineBuyersCode">
+		<xsl:param name="vendorGLN"/>
+		<xsl:param name="senderGLN"/>
+		<xsl:param name="buyersCode"/>
+		
+		<xsl:choose>
+			<!-- special cases -->
+			<!-- unfortunately the 3 subdivisions of Brakes; Grocery, Non-Food, and Bar, have all been set up with the same GLN -->
+			<!-- TCG and Stonegate both trade with more than one of these subdivisions, so we can not provide protection against these customers changing their codes -->
+			<!-- the best we can do is to detect the presence of the codes as they are now (March 2012) and pass them straight through -->
+			<xsl:when test="$vendorGLN = '5013546062482' and $senderGLN = '5060166760106' and $buyersCode = 'BRA008'">BRA008</xsl:when>
+			<xsl:when test="$vendorGLN = '5013546062482' and $senderGLN = '5060166760106' and $buyersCode = 'BRA015'">BRA015</xsl:when>
+			<xsl:when test="$vendorGLN = '5013546062482' and $senderGLN = '5060166760106' and $buyersCode = 'BRA020'">BRA020</xsl:when>
+			<xsl:when test="$vendorGLN = '5013546062482' and $senderGLN = '5060166760007' and $buyersCode = 'S20293538800/N'">S20293538800/N</xsl:when>
+			<xsl:when test="$vendorGLN = '5013546062482' and $senderGLN = '5060166760007' and $buyersCode = 'S20293538800/G'">S20293538800/G</xsl:when>
+
+			<!-- !!! NEW MAPPINGS FOR BRAKES NON-FOOD OR BRAKES BAR SHOULD BE ADDED HERE !! -->
+			<!-- for any other subdivision (e.g. MJ Seafood, Brakes Grocery) the mapping is handled further down in this template and nothing should be added -->
+			<!-- <xsl:when test="$vendorGLN = '5013546062482' and $senderGLN = 'xxxxxxxxxxxxx' and $buyersCode = 'xxxxxx'">BRAKESNONFOOD</xsl:when> -->
+			<!-- <xsl:when test="$vendorGLN = '5013546062482' and $senderGLN = 'xxxxxxxxxxxxx' and $buyersCode = 'xxxxxx'">BRAKESBAR</xsl:when>-->
+			<!-- if the vendorGLN is 5013546062482 and you do not add a mapping then the code 'BRAKESGROCERY' will be sent by default -->
+			<!-- once again the code to use for a Non-Food integration is 'BRAKESNONFOOD' and for a Bar integration its 'BRAKESBAR' - this has been agreed with Brakes as of March 2012 -->
+				
+			<!-- standard cases -->
+			<!-- where the combination of vendor GLN and sender GLN is enough to correctly determine the right buyersCode -->
+			<xsl:when test="$vendorGLN = '5013546026886' and $senderGLN = '5060166760045'">S34824145700</xsl:when>
+			<xsl:when test="$vendorGLN = '5013546026886' and $senderGLN = '5060166760069'">CMJS01</xsl:when>
+			<xsl:when test="$vendorGLN = '5013546026886' and $senderGLN = '5060166760014'">M&amp;JSEAFOOD</xsl:when>
+			<xsl:when test="$vendorGLN = '5013546026886' and $senderGLN = '5027615900012'">MandJ</xsl:when>
+			<xsl:when test="$vendorGLN = '5013546026886' and $senderGLN = '5060166760106'">MJS001</xsl:when>
+			<xsl:when test="$vendorGLN = '5013546026886' and $senderGLN = '5060166760090'">MJS001</xsl:when>
+			<xsl:when test="$vendorGLN = '5013546026886' and $senderGLN = '5060166760083'">MJSEAFOOD</xsl:when>
+			<xsl:when test="$vendorGLN = '5013546026886' and $senderGLN = '5060166760274'">m&amp;jSEAFOOD</xsl:when>
+			<xsl:when test="$vendorGLN = '5013546026886' and $senderGLN = '5060166761004'">MJSE01</xsl:when>
+			<xsl:when test="$vendorGLN = '5013546026886' and $senderGLN = '5060166761028'">803/1</xsl:when>
+			<xsl:when test="$vendorGLN = '5013546026886' and $senderGLN = '5060166761066'">752907</xsl:when>
+			<xsl:when test="$vendorGLN = '5013546026886' and $senderGLN = '5055188800008'">mjseafood</xsl:when>
+			<xsl:when test="$vendorGLN = '5013546026886' and $senderGLN = '5060166760038'">mjseafoods</xsl:when>
+			<xsl:when test="$vendorGLN = '5036036000009' and $senderGLN = '5060166760045'">S20293538800FROZEN</xsl:when>
+			<xsl:when test="$vendorGLN = '5036036000009' and $senderGLN = '5060166760069'">CBRA01</xsl:when>
+			<xsl:when test="$vendorGLN = '5036036000009' and $senderGLN = '5060166760014'">BRAKESFROZEN</xsl:when>
+			<xsl:when test="$vendorGLN = '5036036000009' and $senderGLN = '5060166760106'">BRA010</xsl:when>
+			<xsl:when test="$vendorGLN = '5036036000009' and $senderGLN = '5027615900020'">BRAKESFROZEN</xsl:when>
+			<xsl:when test="$vendorGLN = '5036036000009' and $senderGLN = '5060166760083'">BrakesFrozen</xsl:when>
+			<xsl:when test="$vendorGLN = '5036036000009' and $senderGLN = '5060166760236'">BRAK01</xsl:when>
+			<xsl:when test="$vendorGLN = '5036036000009' and $senderGLN = '5060166760281'">PL106</xsl:when>
+			<xsl:when test="$vendorGLN = '5036036000009' and $senderGLN = '5060166761028'">FROZEN#805/2</xsl:when>
+			<xsl:when test="$vendorGLN = '5036036000009' and $senderGLN = '5060166760007'">S20293538800/F</xsl:when>
+			<xsl:when test="$vendorGLN = '5036036000009' and $senderGLN = '5060166760021'">213948</xsl:when>
+			<xsl:when test="$vendorGLN = '5036036000009' and $senderGLN = '5055188800008'">brakesfrozen</xsl:when>
+			<xsl:when test="$vendorGLN = '5036036000009' and $senderGLN = '5060166760038'">brakesfrozen</xsl:when>
+			<xsl:when test="$vendorGLN = '5036036000009' and $senderGLN = '5060166760144'">BF</xsl:when>
+			<xsl:when test="$vendorGLN = '5036036000009' and $senderGLN = '5060166760076'">13285</xsl:when>
+			<xsl:when test="$vendorGLN = '5013546062482' and $senderGLN = '5060166760045'">S20293538800GROCERY</xsl:when>
+			<xsl:when test="$vendorGLN = '5013546062482' and $senderGLN = '5060166760069'">CWAT01</xsl:when>
+			<xsl:when test="$vendorGLN = '5013546062482' and $senderGLN = '5060166760014'">BRAKESGROCERY</xsl:when>
+			<xsl:when test="$vendorGLN = '5013546062482' and $senderGLN = '5027615900020'">BRAKESGROCERY</xsl:when>
+			<xsl:when test="$vendorGLN = '5013546062482' and $senderGLN = '5060166760083'">BrakesGrocery</xsl:when>
+			<xsl:when test="$vendorGLN = '5013546062482' and $senderGLN = '5060166760236'">WATS02</xsl:when>
+			<xsl:when test="$vendorGLN = '5013546062482' and $senderGLN = '5060166760281'">PL744</xsl:when>
+			<xsl:when test="$vendorGLN = '5013546062482' and $senderGLN = '5060166761028'">GROCERY#805/2</xsl:when>
+			<xsl:when test="$vendorGLN = '5013546062482' and $senderGLN = '5060166760021'">201027</xsl:when>
+			<xsl:when test="$vendorGLN = '5013546062482' and $senderGLN = '5055188800008'">brakesgrocery</xsl:when>
+			<xsl:when test="$vendorGLN = '5013546062482' and $senderGLN = '5060166760038'">brakesgrocery</xsl:when>
+			<xsl:when test="$vendorGLN = '5013546062482' and $senderGLN = '5060166760144'">BRAKES</xsl:when>
+			<xsl:when test="$vendorGLN = '5013546062482' and $senderGLN = '5060166760076'">GOSH45</xsl:when>
+			<xsl:when test="$vendorGLN = '5013546062482' and $senderGLN = '5024875116663'">BRAKES</xsl:when>
+			<xsl:when test="$vendorGLN = '5013546120137' and $senderGLN = '5060166760045'">Woodwards</xsl:when>
+			<xsl:when test="$vendorGLN = '5013546120137' and $senderGLN = '5060166760014'">WOODWARD</xsl:when>
+			<xsl:when test="$vendorGLN = '5013546120137' and $senderGLN = '5060166760274'">LW0163</xsl:when>
+			<xsl:when test="$vendorGLN = '5036036000030' and $senderGLN = '5060166760045'">S20293538800</xsl:when>
+			<xsl:when test="$vendorGLN = '5036036000030' and $senderGLN = '5060166760113'">V010352</xsl:when>
+			<xsl:when test="$vendorGLN = '5036036000030' and $senderGLN = '5060166760120'">BRA01</xsl:when>
+			<xsl:when test="$vendorGLN = '5036036000030' and $senderGLN = '5060166760007'">S20293538800</xsl:when>
+			<xsl:when test="$vendorGLN = '5036036000030' and $senderGLN = '5060166761042'">CBRA02</xsl:when>
+			<xsl:when test="$vendorGLN = '5036036000030' and $senderGLN = '5024875116663'">BRAKES</xsl:when>
+			
+			<!-- codes to be sent for future customers we integrate -->
+			<xsl:when test="$vendorGLN = '5013546026886'">MJSEAFOOD</xsl:when>
+			<xsl:when test="$vendorGLN = '5036036000009'">BRAKESFROZEN</xsl:when>
+			<!-- Unfortunately Brakes Grocery, Non-Food, and Bar, all share a GLN so the best we can do is assume the Grocery code by default -->
+			<xsl:when test="$vendorGLN = '5013546062482'">BRAKESGROCERY</xsl:when>
+			<!--<xsl:when test="$vendorGLN = '5013546062482'">BRAKESNONFOOD</xsl:when>-->
+			<!--<xsl:when test="$vendorGLN = '5013546062482'">BRAKESBAR</xsl:when>-->
+			<xsl:when test="$vendorGLN = '5013546120137'">WOODWARD</xsl:when>
+			<xsl:when test="$vendorGLN = '5036036000030'">BRAKESLOGISTICS</xsl:when>
+
 		</xsl:choose>	
 		
 	</xsl:template>
