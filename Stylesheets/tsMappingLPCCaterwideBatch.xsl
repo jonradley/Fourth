@@ -85,6 +85,8 @@
 =======================================================================================
  07/03/2012     | Maha | 5302.GRNs going to caterwide with incorrect/duplicate refs.
 =======================================================================================
+ 12/03/2012     | S Sehgal | 5302.Stop trimming DN ref to 9 Characters. Instead take last 7 characters from DN Ref
+=======================================================================================
 -->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
@@ -402,12 +404,12 @@
 		
 		<xsl:choose>
 			<xsl:when test="number($sNewRef) != number($sNewRef)">
-				<!-- just return the original value trimmed to the maximum length of 9 characters -->
-				<xsl:value-of select="substring($vsDNRef, 1, 9)"/>
+				<!-- just return the original value-->
+				<xsl:value-of select="$vsDNRef"/>
 			</xsl:when>
 			<xsl:otherwise>
 				<!-- convert the input value to a number to strip leading zeros. -->
-				<xsl:value-of select="substring(number($sNewRef), 1, 9)"/>
+				<xsl:value-of select="number($sNewRef)"/>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
