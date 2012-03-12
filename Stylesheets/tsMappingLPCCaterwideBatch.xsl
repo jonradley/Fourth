@@ -87,6 +87,8 @@
 =======================================================================================
  12/03/2012     | S Sehgal | 5302.Stop trimming DN ref to 9 Characters. Instead take last 7 characters from DN Ref
 =======================================================================================
+ 12/03/2012     | S Sehgal | 5302.Stop converting the Ref to a number within the template/function
+=======================================================================================
 -->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
@@ -408,8 +410,7 @@
 				<xsl:value-of select="$vsDNRef"/>
 			</xsl:when>
 			<xsl:otherwise>
-				<!-- convert the input value to a number to strip leading zeros. -->
-				<xsl:value-of select="number($sNewRef)"/>
+				<xsl:value-of select="$sNewRef"/>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
