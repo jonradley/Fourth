@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-======================================================================================
+<!--======================================================================================
  Overview
 
 
@@ -82,14 +81,7 @@
  24/06/2009		| Lee Boyton	| 2959. /FD is too long for Caterwide now, needs to be just /F.
  =========================================================================================
  22/01/2010		| Rave Tech		| 3334.Added Caterwide Delivery Note Suffix logic.
-=======================================================================================
- 07/03/2012     | Maha | 5302.GRNs going to caterwide with incorrect/duplicate refs.
-=======================================================================================
- 12/03/2012     | S Sehgal | 5302.Stop trimming DN ref to 9 Characters. Instead take last 7 characters from DN Ref
-=======================================================================================
- 12/03/2012     | S Sehgal | 5302.Stop converting the Ref to a number within the template/function
-=======================================================================================
--->
+=======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
     <xsl:output method="text" encoding="utf-8"/>
@@ -181,24 +173,10 @@
 					<!-- trim the delivery reference to a maximum of 7 characters so that adding /F does not exceed the maximum of 9 characters -->
 					<xsl:choose>
 						<xsl:when test="normalize-space(LineExtraData/DeliveryNoteSuffix) = ''">
-							<xsl:choose>
-								<xsl:when test="string-length($DNRef) >= 7">
-									<xsl:value-of select="substring($DNRef,string-length($DNRef)-6,7)"/>
-								</xsl:when>
-								<xsl:otherwise>
-									<xsl:value-of select="$DNRef"/>
-								</xsl:otherwise>
-							</xsl:choose>
+							<xsl:value-of select="substring($DNRef,1,7)"/>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:choose>
-								<xsl:when test="string-length($DNRef) >= 7">
-									<xsl:value-of select="concat(substring($DNRef,string-length($DNRef)-6,7),concat('/',LineExtraData/DeliveryNoteSuffix))"/>
-								</xsl:when>
-								<xsl:otherwise>
-									<xsl:value-of select="concat($DNRef,concat('/',LineExtraData/DeliveryNoteSuffix))"/>
-								</xsl:otherwise>
-							</xsl:choose>
+							<xsl:value-of select="concat(substring($DNRef,1,7),concat('/',LineExtraData/DeliveryNoteSuffix))"/>
 						</xsl:otherwise>
 					</xsl:choose>				
 					
@@ -406,11 +384,12 @@
 		
 		<xsl:choose>
 			<xsl:when test="number($sNewRef) != number($sNewRef)">
-				<!-- just return the original value-->
-				<xsl:value-of select="$vsDNRef"/>
+				<!-- just return the original value trimmed to the maximum length of 9 characters -->
+				<xsl:value-of select="substring($vsDNRef, 1, 9)"/>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:value-of select="$sNewRef"/>
+				<!-- convert the input value to a number to strip leading zeros. -->
+				<xsl:value-of select="substring(number($sNewRef), 1, 9)"/>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
