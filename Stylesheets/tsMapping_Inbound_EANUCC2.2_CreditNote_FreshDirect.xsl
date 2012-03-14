@@ -10,6 +10,8 @@ Date				| Name					| Comments
 13/10/11			|	KOshaughnessy		|Bugfix 4943
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 24/11/11			|	H Robson		|Bugfix 5061
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+13/03/12			|	H Robson		|Bugfix 5312 SuppliersCode for ShipTo to be same as SendersCodeForRecipient to stop credits being suspended.
 *************************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:sh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" xmlns:eanucc="urn:ean.ucc:2" xmlns:pay="urn:ean.ucc:pay:2" xmlns:vat="urn:ean.ucc:pay:vat:2">
 	<xsl:output encoding="UTF-8"/> 
@@ -64,7 +66,8 @@ Date				| Name					| Comments
 											<xsl:value-of select="//shipTo/additionalPartyIdentification[additionalPartyIdentificationType='BUYER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue"/>
 										</BuyersCode>
 										<SuppliersCode>
-											<xsl:value-of select="//shipTo/additionalPartyIdentification[additionalPartyIdentificationType='SELLER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue"/>
+											<!-- 2012-03-13 id-5312 get code from same place as Sender's code for recipient -->
+											<xsl:value-of select="substring-before(//seller/additionalPartyIdentification/additionalPartyIdentificationValue,'|')"/>
 										</SuppliersCode>
 									</ShipToLocationID>
 								</ShipTo>
