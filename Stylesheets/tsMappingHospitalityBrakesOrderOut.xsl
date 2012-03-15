@@ -144,7 +144,11 @@ H Robson		| 2012-03-02		| 5295 New template to return BuyersCode from a fixed li
 												</xsl:when>
 												<xsl:otherwise>
 													<!-- 2012-03-02 HR 5295 Call a new template to return a code from a fixed list of codes that Brakes have agreed to receive -->
-													<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/BuyersCode"/>
+													<xsl:call-template name="determineBuyersCode">
+														<xsl:with-param name="vendorGLN" select="PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN"/>
+														<xsl:with-param name="senderGLN" select="PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/>
+														<xsl:with-param name="buyersCode" select="PurchaseOrderHeader/Supplier/SuppliersLocationID/BuyersCode"/>
+													</xsl:call-template>
 												</xsl:otherwise>
 											</xsl:choose>	
 											
