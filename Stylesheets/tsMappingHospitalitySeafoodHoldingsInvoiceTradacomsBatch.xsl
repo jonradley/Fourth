@@ -24,17 +24,30 @@
 	
 	<!-- Start point - ensure required outer BatchRoot tag is applied -->
 	<xsl:template match="/">
-		<BatchRoot>
-			<Document>	
-				<xsl:attribute name="TypePrefix">INV</xsl:attribute>
-				<xsl:apply-templates/>
-			</Document>
-			<Document>
-				<xsl:attribute name="TypePrefix">DNB</xsl:attribute>				
-				<xsl:call-template name="createDeliveryNotes"/>
-				<xsl:apply-templates/>
-			</Document>
-		</BatchRoot>
+	<xsl:choose>
+		<xsl:when test="Batch/BatchDocuments/BatchDocument/Invoice/InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode != '5060166760083' ">
+			<BatchRoot>
+				<Document>	
+					<xsl:attribute name="TypePrefix">INV</xsl:attribute>
+					<xsl:apply-templates/>
+				</Document>
+				<Document>
+					<xsl:attribute name="TypePrefix">DNB</xsl:attribute>				
+					<xsl:call-template name="createDeliveryNotes"/>
+					<xsl:apply-templates/>
+				</Document>
+			</BatchRoot>
+		</xsl:when>
+		<xsl:otherwise>
+			<BatchRoot>
+				<Document>	
+					<xsl:attribute name="TypePrefix">INV</xsl:attribute>
+					<xsl:apply-templates/>
+				</Document>
+			</BatchRoot>
+		</xsl:otherwise>
+	</xsl:choose>
+
 	</xsl:template>
 	
 	<!-- GENERIC HANDLER to copy unchanged nodes, will be overridden by any node-specific templates below -->
