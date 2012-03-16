@@ -53,7 +53,7 @@ K Oshaughnessy| 11/11/2011	| 5008: Created.
 	<xsl:text>*</xsl:text>
 	<xsl:text>IN</xsl:text>
 	<xsl:text>*</xsl:text>
-	<xsl:text>VENDXXX</xsl:text>
+	<xsl:text>3663</xsl:text>
 	<xsl:text>*</xsl:text>
 	<xsl:call-template name="DateFormat">
 		<xsl:with-param name="sDateFormat" select="GoodsReceivedNoteHeader/GoodsReceivedNoteReferences/GoodsReceivedNoteDate"/>
@@ -70,7 +70,7 @@ K Oshaughnessy| 11/11/2011	| 5008: Created.
 	<!--Transaction Set Header-->
 	<xsl:text>ST*</xsl:text>
 	<xsl:text>810*</xsl:text>
-	<xsl:value-of select="//FileGenerationNumber"/>
+	<xsl:value-of select="format-number(//FileGenerationNumber,'0000')"/>
 	<xsl:text>&#13;&#10;</xsl:text>
 	
 	<!--Beginning Segment for Invoice-->
@@ -101,14 +101,12 @@ K Oshaughnessy| 11/11/2011	| 5008: Created.
 	
 	<!--Name - Seller-->
 	<xsl:text>N1*</xsl:text>
-	<xsl:text>SE*</xsl:text>
+	<xsl:text>ST*</xsl:text>
 	<xsl:value-of select="GoodsReceivedNoteHeader/Supplier/SuppliersName"/>
 	<xsl:text>*</xsl:text>
 	<xsl:text>91</xsl:text>
 	<xsl:text>*</xsl:text>
-	<xsl:text>*</xsl:text>
-	<xsl:text>*</xsl:text>
-	<xsl:text>*</xsl:text>
+	<xsl:value-of select="GoodsReceivedNoteHeader/ShipTo/ShipToLocationID/BuyersCode"/>
 	<xsl:text>&#13;&#10;</xsl:text>
 	
 	<!--Address Information - Buyer-->
@@ -152,7 +150,7 @@ K Oshaughnessy| 11/11/2011	| 5008: Created.
 	<xsl:text>&#13;&#10;</xsl:text>
 	
 	<!--Date  Information -->
-	<xsl:text>DMT*</xsl:text>
+	<xsl:text>DTM*</xsl:text>
 	<xsl:text>011*</xsl:text>
 	<xsl:call-template name="DateFormat">
 		<xsl:with-param name="sDateFormat" select="GoodsReceivedNoteHeader/DeliveryNoteReferences/DeliveryNoteDate"/>
@@ -243,7 +241,7 @@ K Oshaughnessy| 11/11/2011	| 5008: Created.
 	
 	<!--Total Monetary Value Summary-->
 	<xsl:text>TDS*</xsl:text>
-	<xsl:value-of select="sum(GoodsReceivedNoteDetail/GoodsReceivedNoteLine/LineValueExclVAT)"/>
+	<xsl:value-of select="translate(format-number(sum(GoodsReceivedNoteDetail/GoodsReceivedNoteLine/LineValueExclVAT),'0.00'),'.','')"/>
 	<xsl:text>&#13;&#10;</xsl:text>
 	
 	<!--Transaction Totals-->
