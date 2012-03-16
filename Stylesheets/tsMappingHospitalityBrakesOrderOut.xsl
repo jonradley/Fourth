@@ -488,6 +488,8 @@ H Robson		| 2012-03-02		| 5295 New template to return BuyersCode from a fixed li
 			<xsl:when test="$vendorGLN = '5036036000030' and $senderGLN = '5060166760007'">S20293538800</xsl:when>
 			<xsl:when test="$vendorGLN = '5036036000030' and $senderGLN = '5060166761042'">CBRA02</xsl:when>
 			<xsl:when test="$vendorGLN = '5036036000030' and $senderGLN = '5024875116663'">BRAKES</xsl:when>
+			<!-- Bay Restaurant Group -->
+			<xsl:when test="$vendorGLN = '5036036000030' and $senderGLN = '5060166760243'">S20293538800</xsl:when>			
 			
 			<!-- codes to be sent for future customers we integrate -->
 			<xsl:when test="$vendorGLN = '5013546026886'">MJSEAFOOD</xsl:when>
