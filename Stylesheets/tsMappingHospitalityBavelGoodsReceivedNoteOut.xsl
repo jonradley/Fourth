@@ -8,7 +8,7 @@ R Cambridge	| 2009-07-07		| 2991 Created Module
 **********************************************************************
 R Cambridge	| 2010-10-14		| 3951 Created generic Bavel version from Aramark Spain version
 **********************************************************************
-				|						|				
+H Robson		| 2012-03-20		| 5335 Changes to structure of Bavel GRN mapper			
 **********************************************************************
 				|						|
 **********************************************************************
@@ -141,24 +141,23 @@ R Cambridge	| 2010-10-14		| 3951 Created generic Bavel version from Aramark Spai
 					
 			</Customers>
 			
-	
+			<!-- 2012-03-20 case 5335 - added 'Reference' element -->
 			<References>
-				
-				<xsl:attribute name="DNRef">
-					<xsl:value-of select="/GoodsReceivedNote/GoodsReceivedNoteHeader/DeliveryNoteReferences/DeliveryNoteReference"/>
-				</xsl:attribute>
-				<xsl:attribute name="PORef">
-					<xsl:value-of select="GoodsReceivedNoteHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
-				</xsl:attribute>
-				
-				<xsl:attribute name="DNRefDate">
-					<xsl:value-of select="/GoodsReceivedNote/GoodsReceivedNoteHeader/DeliveryNoteReferences/DeliveryNoteDate"/>
-				</xsl:attribute>
-				<xsl:attribute name="PORefDate">
-					<xsl:value-of select="GoodsReceivedNoteHeader/PurchaseOrderReferences/PurchaseOrderDate"/>
-				</xsl:attribute>		
-				 
-			
+				<Reference>
+					<xsl:attribute name="DNRef">
+						<xsl:value-of select="/GoodsReceivedNote/GoodsReceivedNoteHeader/DeliveryNoteReferences/DeliveryNoteReference"/>
+					</xsl:attribute>
+					<xsl:attribute name="PORef">
+						<xsl:value-of select="GoodsReceivedNoteHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
+					</xsl:attribute>
+					
+					<xsl:attribute name="DNRefDate">
+						<xsl:value-of select="/GoodsReceivedNote/GoodsReceivedNoteHeader/DeliveryNoteReferences/DeliveryNoteDate"/>
+					</xsl:attribute>
+					<xsl:attribute name="PORefDate">
+						<xsl:value-of select="GoodsReceivedNoteHeader/PurchaseOrderReferences/PurchaseOrderDate"/>
+					</xsl:attribute>		
+				</Reference>
 			</References>
 			
 			<ProductList>
@@ -191,22 +190,23 @@ R Cambridge	| 2010-10-14		| 3951 Created generic Bavel version from Aramark Spai
 							<xsl:value-of select="LineValueExclVAT"/>
 						</xsl:attribute>		
 						
-						
-						<References>				
-							<xsl:attribute name="DNRef">
-								<xsl:value-of select="/GoodsReceivedNote/GoodsReceivedNoteHeader/DeliveryNoteReferences/DeliveryNoteReference"/>
-							</xsl:attribute>
-							<xsl:attribute name="PORef">
-								<xsl:value-of select="/*/GoodsReceivedNoteHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
-							</xsl:attribute>
-							<xsl:attribute name="DNRefDate">
-								<xsl:value-of select="/GoodsReceivedNote/GoodsReceivedNoteHeader/DeliveryNoteReferences/DeliveryNoteDate"/>
-							</xsl:attribute>
-							<xsl:attribute name="PORefDate">
-								<xsl:value-of select="/*/GoodsReceivedNoteHeader/PurchaseOrderReferences/PurchaseOrderDate"/>
-							</xsl:attribute> 						
-						</References>			
-						
+						<!-- 2012-03-20 case 5335 - added 'Reference' element -->
+						<References>
+							<Reference>				
+								<xsl:attribute name="DNRef">
+									<xsl:value-of select="/GoodsReceivedNote/GoodsReceivedNoteHeader/DeliveryNoteReferences/DeliveryNoteReference"/>
+								</xsl:attribute>
+								<xsl:attribute name="PORef">
+									<xsl:value-of select="/*/GoodsReceivedNoteHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
+								</xsl:attribute>
+								<xsl:attribute name="DNRefDate">
+									<xsl:value-of select="/GoodsReceivedNote/GoodsReceivedNoteHeader/DeliveryNoteReferences/DeliveryNoteDate"/>
+								</xsl:attribute>
+								<xsl:attribute name="PORefDate">
+									<xsl:value-of select="/*/GoodsReceivedNoteHeader/PurchaseOrderReferences/PurchaseOrderDate"/>
+								</xsl:attribute> 						
+							</Reference>			
+						</References>	
 					</Product>
 					
 				</xsl:for-each>
