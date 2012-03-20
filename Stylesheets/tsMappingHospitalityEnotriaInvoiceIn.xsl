@@ -61,7 +61,11 @@ R Cambridge	| 27/03/2007	| FB941 Handle catchweight items (derived from
 			<xsl:apply-templates select="LineNumber"/>
 			<xsl:apply-templates select="PurchaseOrderReferences"/>
 			<xsl:apply-templates select="PurchaseOrderConfirmationReferences"/>
-			<xsl:apply-templates select="DeliveryNoteReferences"/>
+				
+			<xsl:if test="//Batch/BatchDocuments/BatchDocument/Invoice/InvoiceDetail/InvoiceLine/DeliveryNoteReferences/DeliveryNoteReference[1] != '' ">
+				<xsl:apply-templates select="DeliveryNoteReferences"/>
+			</xsl:if>
+			
 			<xsl:apply-templates select="GoodsReceivedNoteReferences"/>
 			<xsl:apply-templates select="ProductID"/>
 			<xsl:apply-templates select="ProductDescription"/>
