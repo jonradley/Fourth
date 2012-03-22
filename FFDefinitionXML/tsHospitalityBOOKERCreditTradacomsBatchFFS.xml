@@ -8,7 +8,7 @@ R Cambridge	| 17/04/2007	| 940 Created based on tsHospitalityCreditTradacomsBatc
 **********************************************************************
 M Dimant		| 06/10/2008	| Based on tsHospitalityCreditTradacomsBatch_CLOC3_FFS.xml. Changed location of PO Reference to match that which is sent in by Booker
 **********************************************************************
-				|					|
+M Emanuel	| 21/03/2012  | Mapped Credit note date as the Invoice date as Booker are unable to supply Invoice date from their SAP system and SSP need this info
 *******************************************************************-->
 <ffsFlatFileSchema>
 	<ffsSettings>
@@ -182,7 +182,7 @@ M Dimant		| 06/10/2008	| Based on tsHospitalityCreditTradacomsBatch_CLOC3_FFS.xm
 								<!-- OPTIONAL Original Invoice Number, OPTIONAL, CREDIT – OIR – INVN, A unique invoice number for the date, if applicable -->
 								<InvoiceReference RecordPos="OIR=" LPos="2"/>
 								<!-- OPTIONAL Original Invoice Date, OPTIONAL, CREDIT – OIR – IVDT, YYMMDD, The date the invoice was issued, if applicable -->
-								<InvoiceDate RecordPos="OIR=" LPos="3"/>
+								<InvoiceDate RecordPos="CRF=" LPos="2"/>
 								<!-- Fix -->
 								<VATRegNo RecordPos="SDT=" LPos="4"/>
 							</InvoiceReferences>
