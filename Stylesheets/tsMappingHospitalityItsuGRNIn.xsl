@@ -2,7 +2,7 @@
 <!--======================================================================================
  Overview
  
- TRG mapper for goods received notes from Alphameric 
+itsu mapper for goods received notes from Caterwide 
 
  © Alternative Business Solutions Ltd, 2006.
 ==========================================================================================
@@ -19,6 +19,8 @@
  13/05/2009	| Rave Tech 		| 2878 Removed MaxSplits logic to implement CaseSize logic in processor.
 ==========================================================================================
  16/03/2011	| Andrew Barber	| 4243 Copied TRG Caterwide map for itsu GRN's.
+ ==========================================================================================
+ 27/03/2012	| Andrew Barber	| 5361 Added logic to use DN ref as order ref where OrderID = 0.
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
@@ -50,14 +52,33 @@
 					
 					<PurchaseOrderReferences>
 					
-						<PurchaseOrderReference><xsl:value-of select="@OrderID"/></PurchaseOrderReference>
-						<PurchaseOrderDate><xsl:value-of select="substring-before(@OrderDateTime,'T')"/></PurchaseOrderDate>
+						<PurchaseOrderReference>
+							<xsl:choose>
+								<xsl:when test="@OrderID = 0">
+									<xsl:value-of select="@SupplierReference"/>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="@OrderID"/>
+								</xsl:otherwise>
+							</xsl:choose>
+						</PurchaseOrderReference>
+						
+						<PurchaseOrderDate>
+							<xsl:choose>
+								<xsl:when test="@OrderID = 0">
+									<xsl:value-of select="substring-before(@DateEntered,'T')"/>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="substring-before(@OrderDateTime,'T')"/>
+								</xsl:otherwise>
+							</xsl:choose>
+						</PurchaseOrderDate>
 							
 					</PurchaseOrderReferences>
 					
 					
 					<DeliveryNoteReferences>
-						<DeliveryNoteReference><xsl:value-of select="@UserReference"/></DeliveryNoteReference>
+						<DeliveryNoteReference><xsl:value-of select="@SupplierReference"/></DeliveryNoteReference>
 						<DeliveryNoteDate><xsl:value-of select="substring-before(@DateEntered,'T')"/></DeliveryNoteDate>
 					</DeliveryNoteReferences>					
 					
