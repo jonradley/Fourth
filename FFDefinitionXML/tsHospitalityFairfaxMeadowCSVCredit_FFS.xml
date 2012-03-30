@@ -1,4 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--**************************************************************************************
+ Overview
+
+	Fairfax Meadow's csv delivery note format
+
+******************************************************************************************
+ Module History
+******************************************************************************************
+ Date         | Name       		| Description of modification
+******************************************************************************************
+     ?       	|       ?       	| Created
+******************************************************************************************
+ 30/03/2012		| H Robson	 	| 5193 handle CSV correctly, ensure field totals are correct in ffs
+******************************************************************************************
+	          	|              	|                                                        
+***************************************************************************************-->
 <ffsFlatFileSchema>
 	<ffsSettings>
 		<ffsRecordPositionType>named</ffsRecordPositionType>
@@ -10,11 +26,11 @@
 		<ffsGroups>
 			<ffsGroup>
 				<!--References below which MEAN RecordPos 'H' with LPos 1 would be CODED as 'D' and LPos 14 (13+1)-->
-				<ffsGroupRecord RecordPos="&quot;HEAD&quot;" FieldTotal="40"/>
-				<ffsSubGroupRecord RecordPos="&quot;LINE&quot;" FieldTotal="39"/>
+				<ffsGroupRecord RecordPos="HEAD" FieldTotal="40"/>
+				<ffsSubGroupRecord RecordPos="LINE" FieldTotal="39"/>
 			</ffsGroup>
 		</ffsGroups>
-		<ffsSplitBatchRecord RecordPos="&quot;HEAD&quot;"/>
+		<ffsSplitBatchRecord RecordPos="HEAD"/>
 	</ffsSettings>
 	<ffsRoot>
 		<Batch>
@@ -44,13 +60,13 @@
 				<BatchDocument>
 					<CreditNote>
 						<TradeSimpleHeader>
-							<SendersCodeForRecipient RecordPos="&quot;HEAD&quot;" LPos="4"/>
-							<SendersBranchReference RecordPos="&quot;HEAD&quot;" LPos="40"/>
+							<SendersCodeForRecipient RecordPos="HEAD" LPos="4"/>
+							<SendersBranchReference RecordPos="HEAD" LPos="40"/>
 						</TradeSimpleHeader>
 						<CreditNoteHeader>
 							<Buyer>
 								<BuyersLocationID>
-									<SuppliersCode RecordPos="&quot;HEAD&quot;" LPos="3"/>
+									<SuppliersCode RecordPos="HEAD" LPos="3"/>
 								</BuyersLocationID>
 								<!--BuyersName RecordPos="HEAD" LPos="17"/-->
 								<!--BuyersAddress>
@@ -76,49 +92,49 @@
 							</Supplier-->
 							<ShipTo>
 								<ShipToLocationID>
-									<BuyersCode RecordPos="&quot;HEAD&quot;" LPos="24"/>
-									<SuppliersCode RecordPos="&quot;HEAD&quot;" LPos="4"/>
+									<BuyersCode RecordPos="HEAD" LPos="24"/>
+									<SuppliersCode RecordPos="HEAD" LPos="4"/>
 								</ShipToLocationID>
 								<!--ShipToName RecordPos="HEAD" LPos="17"/-->
 							</ShipTo>
 							<InvoiceReferences>
-								<InvoiceReference RecordPos="&quot;HEAD&quot;" LPos="28"/>
-								<InvoiceDate RecordPos="&quot;HEAD&quot;" LPos="29"/>
+								<InvoiceReference RecordPos="HEAD" LPos="28"/>
+								<InvoiceDate RecordPos="HEAD" LPos="29"/>
 							</InvoiceReferences>
 							<CreditNoteReferences>
-								<CreditNoteReference RecordPos="&quot;HEAD&quot;" LPos="5"/>
-								<CreditNoteDate RecordPos="&quot;HEAD&quot;" LPos="6"/>
-								<TaxPointDate RecordPos="&quot;HEAD&quot;" LPos="6"/>
+								<CreditNoteReference RecordPos="HEAD" LPos="5"/>
+								<CreditNoteDate RecordPos="HEAD" LPos="6"/>
+								<TaxPointDate RecordPos="HEAD" LPos="6"/>
 							</CreditNoteReferences>
 						</CreditNoteHeader>
 						<CreditNoteDetail>
 							<CreditNoteLine>
 								<CreditRequestReferences>
-									<CreditRequestReference RecordPos="&quot;LINE&quot;" LPos="48"/>
-									<CreditRequestDate RecordPos="&quot;LINE&quot;" LPos="49"/>
+									<CreditRequestReference RecordPos="LINE" LPos="48"/>
+									<CreditRequestDate RecordPos="LINE" LPos="49"/>
 								</CreditRequestReferences>
 								<PurchaseOrderReferences>
-									<PurchaseOrderReference RecordPos="&quot;LINE&quot;" LPos="67"/>
-									<PurchaseOrderDate RecordPos="&quot;LINE&quot;" LPos="68"/>
+									<PurchaseOrderReference RecordPos="LINE" LPos="67"/>
+									<PurchaseOrderDate RecordPos="LINE" LPos="68"/>
 									<TradeAgreement>
-										<ContractReference RecordPos="&quot;LINE&quot;" LPos="79"/>
+										<ContractReference RecordPos="LINE" LPos="79"/>
 									</TradeAgreement>
 								</PurchaseOrderReferences>
 								<DeliveryNoteReferences>
-									<DeliveryNoteReference RecordPos="&quot;LINE&quot;" LPos="67"/>
-									<DeliveryNoteDate RecordPos="&quot;LINE&quot;" LPos="68"/>
+									<DeliveryNoteReference RecordPos="LINE" LPos="67"/>
+									<DeliveryNoteDate RecordPos="LINE" LPos="68"/>
 								</DeliveryNoteReferences>
 								<ProductID>
-									<SuppliersProductCode RecordPos="&quot;LINE&quot;" LPos="2"/>
+									<SuppliersProductCode RecordPos="LINE" LPos="2"/>
 								</ProductID>
-								<ProductDescription RecordPos="&quot;LINE&quot;" LPos="25"/>
+								<ProductDescription RecordPos="LINE" LPos="25"/>
 								<!-- Hijacked to overcome a weirdness in the flat file -->
-								<OrderedQuantity RecordPos="&quot;LINE&quot;" LPos="7"/>
-								<CreditedQuantity RecordPos="&quot;LINE&quot;" LPos="8"/>
-								<PackSize RecordPos="&quot;LINE&quot;" LPos="6"/>
-								<UnitValueExclVAT RecordPos="&quot;LINE&quot;" LPos="10"/>
-								<LineValueExclVAT RecordPos="&quot;LINE&quot;" LPos="15"/>
-								<VATCode RecordPos="&quot;LINE&quot;" LPos="14"/>
+								<OrderedQuantity RecordPos="LINE" LPos="7"/>
+								<CreditedQuantity RecordPos="LINE" LPos="8"/>
+								<PackSize RecordPos="LINE" LPos="6"/>
+								<UnitValueExclVAT RecordPos="LINE" LPos="10"/>
+								<LineValueExclVAT RecordPos="LINE" LPos="15"/>
+								<VATCode RecordPos="LINE" LPos="14"/>
 							</CreditNoteLine>
 						</CreditNoteDetail>
 						<!--CreditNoteTrailer>
