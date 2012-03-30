@@ -1,4 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--**************************************************************************************
+ Overview
+
+	Fairfax Meadow's csv delivery note format
+
+******************************************************************************************
+ Module History
+******************************************************************************************
+ Date         | Name       		| Description of modification
+******************************************************************************************
+     ?       	|       ?       	| Created
+******************************************************************************************
+ 30/03/2012		| H Robson	 	| 5193 handle CSV correctly, ensure field totals are correct in ffs
+******************************************************************************************
+	          	|              	|                                                        
+***************************************************************************************-->
 <ffsFlatFileSchema>
 	<ffsSettings>
 		<ffsRecordPositionType>named</ffsRecordPositionType>
@@ -10,11 +26,11 @@
 		<ffsGroups>
 			<ffsGroup>
 				<!--References below which MEAN RecordPos 'H' with LPos 1 would be CODED as 'D' and LPos 14 (13+1)-->
-				<ffsGroupRecord RecordPos="&quot;HEAD&quot;" FieldTotal="40"/>
-				<ffsSubGroupRecord RecordPos="&quot;LINE&quot;" FieldTotal="40"/>
+				<ffsGroupRecord RecordPos="HEAD" FieldTotal="40"/>
+				<ffsSubGroupRecord RecordPos="LINE" FieldTotal="40"/>
 			</ffsGroup>
 		</ffsGroups>
-		<ffsSplitBatchRecord RecordPos="&quot;HEAD&quot;"/>
+		<ffsSplitBatchRecord RecordPos="HEAD"/>
 	</ffsSettings>
 	<ffsRoot>
 		<Batch>
@@ -54,15 +70,15 @@
 				<BatchDocument>
 					<Invoice>
 						<TradeSimpleHeader>
-							<SendersCodeForRecipient RecordPos="&quot;HEAD&quot;" LPos="4"/>
-							<SendersBranchReference RecordPos="&quot;HEAD&quot;" LPos="40"/>
+							<SendersCodeForRecipient RecordPos="HEAD" LPos="4"/>
+							<SendersBranchReference RecordPos="HEAD" LPos="40"/>
 						</TradeSimpleHeader>
 						<InvoiceHeader>
 							<Buyer>
 								<BuyersLocationID>
-									<SuppliersCode RecordPos="&quot;HEAD&quot;" LPos="3"/>
+									<SuppliersCode RecordPos="HEAD" LPos="3"/>
 								</BuyersLocationID>
-								<!--BuyersName RecordPos="&quot;HEAD&quot;" LPos="17"/-->
+								<!--BuyersName RecordPos="HEAD" LPos="17"/-->
 								<!--BuyersAddress>
 									<AddressLine1 RecordPos="CUSTOMER" LPos="4"/>
 									<AddressLine2 RecordPos="CUSTOMER" LPos="5"/>
@@ -86,10 +102,10 @@
 							</Supplier-->
 							<ShipTo>
 								<ShipToLocationID>
-									<BuyersCode RecordPos="&quot;HEAD&quot;" LPos="24"/>
-									<SuppliersCode RecordPos="&quot;HEAD&quot;" LPos="4"/>
+									<BuyersCode RecordPos="HEAD" LPos="24"/>
+									<SuppliersCode RecordPos="HEAD" LPos="4"/>
 								</ShipToLocationID>
-								<!--ShipToName RecordPos="&quot;HEAD&quot;" LPos="17"/-->
+								<!--ShipToName RecordPos="HEAD" LPos="17"/-->
 								<!--ShipToAddress>
 									<AddressLine1 RecordPos="INVHDR" LPos="4"/>
 									<AddressLine2 RecordPos="INVHDR" LPos="5"/>
@@ -99,43 +115,43 @@
 								</ShipToAddress-->
 							</ShipTo>
 							<InvoiceReferences>
-								<InvoiceReference RecordPos="&quot;HEAD&quot;" LPos="5"/>
-								<InvoiceDate RecordPos="&quot;HEAD&quot;" LPos="6"/>
-								<TaxPointDate RecordPos="&quot;HEAD&quot;" LPos="6"/>
+								<InvoiceReference RecordPos="HEAD" LPos="5"/>
+								<InvoiceDate RecordPos="HEAD" LPos="6"/>
+								<TaxPointDate RecordPos="HEAD" LPos="6"/>
 								<!--VATRegNo RecordPos="SUPPLIER" LPos="12"/-->
 							</InvoiceReferences>
 							<!--Currency RecordPos="SUPPLIER" LPos="11"/-->
 							<!-- Hijacked for Payment Due Date -->
-							<SequenceNumber RecordPos="&quot;HEAD&quot;" LPos="15"/>
+							<SequenceNumber RecordPos="HEAD" LPos="15"/>
 						</InvoiceHeader>
 						<InvoiceDetail>
 							<InvoiceLine>
 								<!--<LineNumber RecordPos="" LPos=""/>-->
 								<PurchaseOrderReferences>
-									<PurchaseOrderReference RecordPos="&quot;LINE&quot;" LPos="47	"/>
-									<PurchaseOrderDate RecordPos="&quot;LINE&quot;" LPos="48"/>
+									<PurchaseOrderReference RecordPos="LINE" LPos="47"/>
+									<PurchaseOrderDate RecordPos="LINE" LPos="48"/>
 									<TradeAgreement>
-										<ContractReference RecordPos="&quot;LINE&quot;" LPos="80"/>
+										<ContractReference RecordPos="LINE" LPos="80"/>
 									</TradeAgreement>
 								</PurchaseOrderReferences>
 								<DeliveryNoteReferences>
-									<DeliveryNoteReference RecordPos="&quot;LINE&quot;" LPos="51"/>
+									<DeliveryNoteReference RecordPos="LINE" LPos="51"/>
 									<!-- use invoice date, dn date is wrong. -->
-									<DeliveryNoteDate RecordPos="&quot;LINE&quot;" LPos="46"/>
+									<DeliveryNoteDate RecordPos="LINE" LPos="46"/>
 								</DeliveryNoteReferences>
 								<ProductID>
-									<SuppliersProductCode RecordPos="&quot;LINE&quot;" LPos="2"/>
+									<SuppliersProductCode RecordPos="LINE" LPos="2"/>
 								</ProductID>
-								<ProductDescription RecordPos="&quot;LINE&quot;" LPos="25"/>
+								<ProductDescription RecordPos="LINE" LPos="25"/>
 								<!-- Hijacked to overcome a weirdness in the inbound file with qtys -->
-								<OrderedQuantity RecordPos="&quot;LINE&quot;" LPos="7"/>
-								<InvoicedQuantity RecordPos="&quot;LINE&quot;" LPos="8">
-									<ffsAttribute1 name="UnitOfMeasure" RecordPos="&quot;LINE&quot;" LPos="6"/>
+								<OrderedQuantity RecordPos="LINE" LPos="7"/>
+								<InvoicedQuantity RecordPos="LINE" LPos="8">
+									<ffsAttribute1 name="UnitOfMeasure" RecordPos="LINE" LPos="6"/>
 								</InvoicedQuantity>
-								<PackSize RecordPos="&quot;LINE&quot;" LPos="40"/>
-								<UnitValueExclVAT RecordPos="&quot;LINE&quot;" LPos="10"/>
-								<LineValueExclVAT RecordPos="&quot;LINE&quot;" LPos="15"/>
-								<VATCode RecordPos="&quot;LINE&quot;" LPos="14"/>
+								<PackSize RecordPos="LINE" LPos="40"/>
+								<UnitValueExclVAT RecordPos="LINE" LPos="10"/>
+								<LineValueExclVAT RecordPos="LINE" LPos="15"/>
+								<VATCode RecordPos="LINE" LPos="14"/>
 								<!--VATRate RecordPos="LINE" LPos="12"/-->
 								<!-- TBC -->
 								<!--Measure>
@@ -162,11 +178,11 @@
 							<!--ffsAttribute1 name="VATRate" RecordPos="VAT" LPos="10"/-->
 							<!--/VATSubTotal-->
 							<!--/VATSubTotals-->
-							<DocumentTotalExclVAT RecordPos="&quot;TRAIL&quot;" LPos="2"/>
+							<DocumentTotalExclVAT RecordPos="TRAIL" LPos="2"/>
 							<!--SettlementDiscount RecordPos="TRAIL" LPos="6"/-->
 							<!--SettlementTotalExclVAT RecordPos="TRAIL" LPos="2"/-->
-							<VATAmount RecordPos="&quot;TRAIL&quot;" LPos="7"/>
-							<DocumentTotalInclVAT RecordPos="&quot;TRAIL&quot;" LPos="9"/>
+							<VATAmount RecordPos="TRAIL" LPos="7"/>
+							<DocumentTotalInclVAT RecordPos="TRAIL" LPos="9"/>
 							<!--SettlementTotalInclVAT RecordPos="TRAIL" LPos="9"/-->
 						</InvoiceTrailer>
 					</Invoice>
