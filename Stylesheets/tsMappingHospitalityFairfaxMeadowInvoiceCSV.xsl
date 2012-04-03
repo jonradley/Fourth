@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
+<!--======================================================================================
+ Overview
 
+ © Alternative Business Solutions Ltd., 2000.
+==========================================================================================
+ Module History
+==========================================================================================
+ Version		| 
+==========================================================================================
+ Date      	| Name 					| Description of modification
+==========================================================================================
+     ?     	|        ?				| ?
+==========================================================================================
+ 2012-03-30	| H Robson     	| 5193 Adjustments to accomdate the fact that " text delimiters are now removed in the flat file mapper
+==========================================================================================
+           	|                 	|
+=======================================================================================-->
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 	<xsl:output method="xml" encoding="UTF-8"/>
 	
 	<!-- Start point - ensure required outer BatchRoot tag is applied -->
@@ -216,6 +232,8 @@
 	<xsl:template name="decodePacksize">
 		<xsl:param name="sInput"/>
 		<xsl:choose>
+			<xsl:when test="$sInput = 'KG'">KGM</xsl:when>
+			<xsl:when test="$sInput = 'EACH'">EA</xsl:when>
 			<xsl:when test="$sInput = '&quot;KG&quot;'">KGM</xsl:when>
 		</xsl:choose>
 	</xsl:template>
