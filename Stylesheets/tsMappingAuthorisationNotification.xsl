@@ -24,6 +24,8 @@
 ******************************************************************************************
 03/03/2010 | Steve Hewitt | Branch file turned into live. Rolled out 3270 and 3328. 2269 was already gone as changes were unnecessary.
 ******************************************************************************************
+04/04/2012 | Sandeep Sehgal | 5379 Encode the comments before posting the form
+******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:user="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl user">
 	<xsl:output method="html"/>
@@ -575,9 +577,9 @@
 						<tr>
 							<td colspan="2" align="center">
 								<input type="hidden" name="txtExtraQueryString" value=""/>
-								<input type="submit" name="btnAction" value="Approve" onclick="document.getElementById('txtExtraQueryString').value = '&amp;Action=Approve&amp;Comment=' + document.getElementById('txtRejectionComment').value"/>
-								<input type="submit" name="btnAction" value="Reject" onclick="document.getElementById('txtExtraQueryString').value = '&amp;Action=Reject&amp;Comment=' + document.getElementById('txtRejectionComment').value"/>
-								<input type="submit" name="btnAction" value="Amend" onclick="document.getElementById('txtExtraQueryString').value = '&amp;Action=Amend&amp;Comment=' + document.getElementById('txtRejectionComment').value"/>
+								<input type="submit" name="btnAction" value="Approve" onclick="document.getElementById('txtExtraQueryString').value = '&amp;Action=Approve&amp;Comment=' + encodeURIComponent(document.getElementById('txtRejectionComment').value)"/>
+								<input type="submit" name="btnAction" value="Reject" onclick="document.getElementById('txtExtraQueryString').value = '&amp;Action=Reject&amp;Comment=' + encodeURIComponent(document.getElementById('txtRejectionComment').value)"/>
+								<input type="submit" name="btnAction" value="Amend" onclick="document.getElementById('txtExtraQueryString').value = '&amp;Action=Amend&amp;Comment=' + encodeURIComponent(document.getElementById('txtRejectionComment').value)"/>
 							</td>
 						</tr>
 					</table>					
