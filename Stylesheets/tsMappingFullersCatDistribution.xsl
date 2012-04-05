@@ -1,9 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--**************************************************************************************
+ Overview
 
+
+******************************************************************************************
+ Module History
+******************************************************************************************
+ Version     | 
+******************************************************************************************
+ Date            | Name                       | Description of modification
+******************************************************************************************
+05/04/2012  | Sandeep Sehgal	| FB5348 Translate accented characters 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                    |                   |                                                                               
+******************************************************************************************
+-->
 <xsl:stylesheet version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns="http://www.w3.org/1999/xhtml">
   <xsl:output method="html"/>
+  <xsl:include href="HospitalityInclude.xsl"/>
   <xsl:template match="/">
     <html>
       <head>
@@ -63,13 +79,13 @@
             <tr>
               <td>Catalogue Description:</td>
               <td>
-			<xsl:value-of select="/PriceCatalog/PriceCatHeader/ListOfDescription/Description"/>
+			<xsl:call-template name="TranslateAccentedCharacters"><xsl:with-param name="InputString" select="/PriceCatalog/PriceCatHeader/ListOfDescription/Description"/></xsl:call-template>
               </td>
             </tr>
             <tr>
               <td>Catalogue Reference Code:</td>
               <td>
-                <xsl:value-of select="/PriceCatalog/PriceCatHeader/CatHdrRef/PriceCat/RefNum"/>
+                <xsl:call-template name="TranslateAccentedCharacters"><xsl:with-param name="InputString" select="/PriceCatalog/PriceCatHeader/CatHdrRef/PriceCat/RefNum"/></xsl:call-template>
               </td>
             </tr>
             <tr>
@@ -103,7 +119,7 @@
             <tr>
               <td>Catalogue Type:</td>
               <td>
-                <xsl:value-of select="/PriceCatalog/@CatType"/>
+                <xsl:call-template name="TranslateAccentedCharacters"><xsl:with-param name="InputString" select="/PriceCatalog/@CatType"/></xsl:call-template>
               </td>
             </tr>
           </tbody>
@@ -145,7 +161,7 @@
         <xsl:value-of select="./PriceCatDetail/PartNum/PartID"/>
       </td>
       <td>
-        <xsl:value-of select="./PriceCatDetail/ListOfDescription/Description"/>
+        <xsl:call-template name="TranslateAccentedCharacters"><xsl:with-param name="InputString" select="./PriceCatDetail/ListOfDescription/Description"/></xsl:call-template>
       </td>
       <td>
         <xsl:value-of select="./PriceCatDetail/ListOfKeyVal/KeyVal[@Keyword='PackSize']"/>
@@ -157,10 +173,10 @@
         <xsl:value-of select="./PriceCatDetail/ListOfPrice/Price/UnitPrice"/>
       </td>
       <td>
-        <xsl:value-of select="./PriceCatDetail/ListOfKeyVal/KeyVal[@Keyword='Group']"/>
+        <xsl:call-template name="TranslateAccentedCharacters"><xsl:with-param name="InputString" select="./PriceCatDetail/ListOfKeyVal/KeyVal[@Keyword='Group']"/></xsl:call-template>
       </td>
       <td>
-        <xsl:value-of select="./PriceCatDetail/ListOfKeyVal/KeyVal[@Keyword='SubGroup']"/>
+        <xsl:call-template name="TranslateAccentedCharacters"><xsl:with-param name="InputString" select="./PriceCatDetail/ListOfKeyVal/KeyVal[@Keyword='SubGroup']"/></xsl:call-template>
       </td>
       <td>
         <xsl:choose>

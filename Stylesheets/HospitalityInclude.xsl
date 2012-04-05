@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:user="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl user">
+	<xsl:template name="TranslateAccentedCharacters">
+		<xsl:param name="InputString"/>
+		<xsl:value-of select="translate($InputString,'áàâäéèêëíìîïóòôöúùûüÁÀÂÄÉÈÊËÍÌÎÏÓÒÔÖÚÙÛÜ','aaaaeeeeiiiioooouuuuAAAAEEEEIIIIOOOOUUUU')"></xsl:value-of>
+	</xsl:template>
 	<msxsl:script language="JScript" implements-prefix="user"><![CDATA[ 
 
 /*=========================================================================================

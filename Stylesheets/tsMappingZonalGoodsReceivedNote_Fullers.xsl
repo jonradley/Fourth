@@ -24,9 +24,12 @@
  ******************************************************************************************
  24/11/2009	| Lee Boyton	| 3261. Truncate the OrderNo field to the maximum length of 15 characters.
 ******************************************************************************************
+ 05/04/2012	| Sandeep Sehgal	| FB5348 Translate accented characters 
+******************************************************************************************
 -->
 <xsl:stylesheet 	version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output method="xml" encoding="ISO-8859-1"/>
+<xsl:include href="HospitalityInclude.xsl"/>
 	<!-- store the Aztec Compressed Output product code in a local variable
 	     this is an optional field and if non-blank will result in only a single product line being output -->
 	<xsl:variable name="CompressedOutput">
@@ -100,9 +103,9 @@
 					<xsl:for-each select="//GoodsReceivedNoteLine | //CreditNoteLine">
 						<Line>
 							<xsl:attribute name="LineNo"><xsl:value-of select="LineNumber"/></xsl:attribute>
-							<xsl:attribute name="ImpExpRef"><xsl:value-of select="ProductID/SuppliersProductCode"/></xsl:attribute>
+							<xsl:attribute name="ImpExpRef"><xsl:call-template name="TranslateAccentedCharacters"><xsl:with-param name="InputString" select="ProductID/SuppliersProductCode"/></xsl:call-template></xsl:attribute>
 							<xsl:if test="ProductDescription">
-								<xsl:attribute name="Description"><xsl:value-of select="ProductDescription"/></xsl:attribute>
+								<xsl:attribute name="Description"><xsl:call-template name="TranslateAccentedCharacters"><xsl:with-param name="InputString" select="ProductDescription"/></xsl:call-template></xsl:attribute>
 							</xsl:if>
 							<xsl:attribute name="Quantity">
 								<xsl:choose>

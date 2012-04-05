@@ -20,12 +20,15 @@ Takes the internal version of a Credit Note and map it directly into the same fo
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 08/10/2009  | Steve Hewitt		| FB3169 Format numbers and the test flag consistently
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+05/04/2012  | Sandeep Sehgal	| FB5348 Translate accented characters 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                     |                   |                                                                               
 ******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 
 <xsl:output method="xml" encoding="UTF-8"/>
+<xsl:include href="HospitalityInclude.xsl"/>
 	<xsl:template match="CreditNote">
 		<xsl:element name="CreditNote">
 			<!-- TradeSimpleHeader -->
@@ -43,22 +46,22 @@ Takes the internal version of a Credit Note and map it directly into the same fo
 								
 				<!-- Senders Name -->				
 				<xsl:element name="SendersName">
-					<xsl:value-of select="TradeSimpleHeader/SendersName"/>
+					<xsl:call-template name="TranslateAccentedCharacters"><xsl:with-param name="InputString" select="TradeSimpleHeader/SendersName"/></xsl:call-template>
 				</xsl:element>
 				
 				<!-- Senders Address -->
 				<xsl:element name="SendersAddress">						
 					<xsl:element name="AddressLine1">
-						<xsl:value-of select="TradeSimpleHeader/SendersAddress/AddressLine1"/>
+						<xsl:call-template name="TranslateAccentedCharacters"><xsl:with-param name="InputString" select="TradeSimpleHeader/SendersAddress/AddressLine1"/></xsl:call-template>
 					</xsl:element>							
 					<xsl:element name="AddressLine2">
-						<xsl:value-of select="TradeSimpleHeader/SendersAddress/AddressLine2"/>
+						<xsl:call-template name="TranslateAccentedCharacters"><xsl:with-param name="InputString" select="TradeSimpleHeader/SendersAddress/AddressLine2"/></xsl:call-template>
 					</xsl:element>
 					<xsl:element name="AddressLine3">
-						<xsl:value-of select="TradeSimpleHeader/SendersAddress/AddressLine3"/>
+						<xsl:call-template name="TranslateAccentedCharacters"><xsl:with-param name="InputString" select="TradeSimpleHeader/SendersAddress/AddressLine3"/></xsl:call-template>
 					</xsl:element>
 					<xsl:element name="AddressLine4">
-						<xsl:value-of select="TradeSimpleHeader/SendersAddress/AddressLine4"/>
+						<xsl:call-template name="TranslateAccentedCharacters"><xsl:with-param name="InputString" select="TradeSimpleHeader/SendersAddress/AddressLine4"/></xsl:call-template>
 					</xsl:element>
 					<xsl:element name="PostCode">
 						<xsl:value-of select="TradeSimpleHeader/SendersAddress/PostCode"/>
@@ -77,22 +80,22 @@ Takes the internal version of a Credit Note and map it directly into the same fo
 				
 				<!-- RecipientsName -->
 				<xsl:element name="RecipientsName">
-					<xsl:value-of select="TradeSimpleHeader/RecipientsName"/>
+					<xsl:call-template name="TranslateAccentedCharacters"><xsl:with-param name="InputString" select="TradeSimpleHeader/RecipientsName"/></xsl:call-template>
 				</xsl:element>
 				
 				<!-- RecipientsAddress -->
 				<xsl:element name="RecipientsAddress">						
-					<xsl:element name="AddressLine1">
-						<xsl:value-of select="TradeSimpleHeader/RecipientsAddress/AddressLine1"/>
+					<xsl:element name="AddressLine1">						
+						<xsl:call-template name="TranslateAccentedCharacters"><xsl:with-param name="InputString" select="TradeSimpleHeader/RecipientsAddress/AddressLine1"/></xsl:call-template>
 					</xsl:element>							
-					<xsl:element name="AddressLine2">
-						<xsl:value-of select="TradeSimpleHeader/RecipientsAddress/AddressLine2"/>
+					<xsl:element name="AddressLine2">						
+						<xsl:call-template name="TranslateAccentedCharacters"><xsl:with-param name="InputString" select="TradeSimpleHeader/RecipientsAddress/AddressLine2"/></xsl:call-template>
 					</xsl:element>
-					<xsl:element name="AddressLine3">
-						<xsl:value-of select="TradeSimpleHeader/RecipientsAddress/AddressLine3"/>
+					<xsl:element name="AddressLine3">						
+						<xsl:call-template name="TranslateAccentedCharacters"><xsl:with-param name="InputString" select="TradeSimpleHeader/RecipientsAddress/AddressLine3"/></xsl:call-template>
 					</xsl:element>
-					<xsl:element name="AddressLine4">
-						<xsl:value-of select="TradeSimpleHeader/RecipientsAddress/AddressLine4"/>
+					<xsl:element name="AddressLine4">						
+						<xsl:call-template name="TranslateAccentedCharacters"><xsl:with-param name="InputString" select="TradeSimpleHeader/RecipientsAddress/AddressLine4"/></xsl:call-template>
 					</xsl:element>
 					<xsl:element name="PostCode">
 						<xsl:value-of select="TradeSimpleHeader/RecipientsAddress/PostCode"/>
@@ -164,22 +167,22 @@ Takes the internal version of a Credit Note and map it directly into the same fo
 						</xsl:element>
 					</xsl:element>							
 						
-					<xsl:element name="BuyersName">
-						<xsl:value-of select="CreditNoteHeader/Buyer/BuyersName"/>
+					<xsl:element name="BuyersName">						
+						<xsl:call-template name="TranslateAccentedCharacters"><xsl:with-param name="InputString" select="CreditNoteHeader/Buyer/BuyersName"/></xsl:call-template>
 					</xsl:element>
 					
 					<xsl:element name="BuyersAddress">							
-						<xsl:element name="AddressLine1">
-							<xsl:value-of select="CreditNoteHeader/Buyer/BuyersAddress/AddressLine1"/>
+						<xsl:element name="AddressLine1">							
+							<xsl:call-template name="TranslateAccentedCharacters"><xsl:with-param name="InputString" select="CreditNoteHeader/Buyer/BuyersAddress/AddressLine1"/></xsl:call-template>
 						</xsl:element>							
-						<xsl:element name="AddressLine2">
-							<xsl:value-of select="CreditNoteHeader/Buyer/BuyersAddress/AddressLine2"/>
+						<xsl:element name="AddressLine2">							
+							<xsl:call-template name="TranslateAccentedCharacters"><xsl:with-param name="InputString" select="CreditNoteHeader/Buyer/BuyersAddress/AddressLine2"/></xsl:call-template>
 						</xsl:element>
-						<xsl:element name="AddressLine3">
-							<xsl:value-of select="CreditNoteHeader/Buyer/BuyersAddress/AddressLine3"/>
+						<xsl:element name="AddressLine3">							
+							<xsl:call-template name="TranslateAccentedCharacters"><xsl:with-param name="InputString" select="CreditNoteHeader/Buyer/BuyersAddress/AddressLine3"/></xsl:call-template>
 						</xsl:element>
-						<xsl:element name="AddressLine4">
-							<xsl:value-of select="CreditNoteHeader/Buyer/BuyersAddress/AddressLine4"/>
+						<xsl:element name="AddressLine4">							
+							<xsl:call-template name="TranslateAccentedCharacters"><xsl:with-param name="InputString" select="CreditNoteHeader/Buyer/BuyersAddress/AddressLine4"/></xsl:call-template>
 						</xsl:element>
 						<xsl:element name="PostCode">
 							<xsl:value-of select="CreditNoteHeader/Buyer/BuyersAddress/PostCode"/>
@@ -201,21 +204,21 @@ Takes the internal version of a Credit Note and map it directly into the same fo
 						</xsl:element>
 					</xsl:element>							
 						
-					<xsl:element name="SuppliersName">
-						<xsl:value-of select="CreditNoteHeader/Supplier/SuppliersName"/>
+					<xsl:element name="SuppliersName">						
+						<xsl:call-template name="TranslateAccentedCharacters"><xsl:with-param name="InputString" select="CreditNoteHeader/Supplier/SuppliersName"/></xsl:call-template>
 					</xsl:element>
 					<xsl:element name="SuppliersAddress">							
-						<xsl:element name="AddressLine1">
-							<xsl:value-of select="CreditNoteHeader/Supplier/SuppliersAddress/AddressLine1"/>
+						<xsl:element name="AddressLine1">							
+							<xsl:call-template name="TranslateAccentedCharacters"><xsl:with-param name="InputString" select="CreditNoteHeader/Supplier/SuppliersAddress/AddressLine1"/></xsl:call-template>
 						</xsl:element>								
-						<xsl:element name="AddressLine2">
-							<xsl:value-of select="CreditNoteHeader/Supplier/SuppliersAddress/AddressLine2"/>
+						<xsl:element name="AddressLine2">							
+							<xsl:call-template name="TranslateAccentedCharacters"><xsl:with-param name="InputString" select="CreditNoteHeader/Supplier/SuppliersAddress/AddressLine2"/></xsl:call-template>
 						</xsl:element>
-						<xsl:element name="AddressLine3">
-							<xsl:value-of select="CreditNoteHeader/Supplier/SuppliersAddress/AddressLine3"/>
+						<xsl:element name="AddressLine3">							
+							<xsl:call-template name="TranslateAccentedCharacters"><xsl:with-param name="InputString" select="CreditNoteHeader/Supplier/SuppliersAddress/AddressLine3"/></xsl:call-template>
 						</xsl:element>
-						<xsl:element name="AddressLine4">
-							<xsl:value-of select="CreditNoteHeader/Supplier/SuppliersAddress/AddressLine4"/>
+						<xsl:element name="AddressLine4">							
+							<xsl:call-template name="TranslateAccentedCharacters"><xsl:with-param name="InputString" select="CreditNoteHeader/Supplier/SuppliersAddress/AddressLine4"/></xsl:call-template>
 						</xsl:element>
 						<xsl:element name="PostCode">
 							<xsl:value-of select="CreditNoteHeader/Supplier/SuppliersAddress/PostCode"/>
@@ -243,30 +246,30 @@ Takes the internal version of a Credit Note and map it directly into the same fo
 					</xsl:element>	
 											
 					<!-- ShipToName -->
-					<xsl:element name="ShipToName">
-						<xsl:value-of select="CreditNoteHeader/ShipTo/ShipToName"/>
+					<xsl:element name="ShipToName">						
+						<xsl:call-template name="TranslateAccentedCharacters"><xsl:with-param name="InputString" select="CreditNoteHeader/ShipTo/ShipToName"/></xsl:call-template>
 					</xsl:element>
 											
 					<!-- ShipToAddress-->
 					<xsl:element name="ShipToAddress">						
-						<xsl:element name="AddressLine1">
-							<xsl:value-of select="CreditNoteHeader/ShipTo/ShipToAddress/AddressLine1"/>
+						<xsl:element name="AddressLine1">							
+							<xsl:call-template name="TranslateAccentedCharacters"><xsl:with-param name="InputString" select="CreditNoteHeader/ShipTo/ShipToAddress/AddressLine1"/></xsl:call-template>
 						</xsl:element>						
-						<xsl:element name="AddressLine2">
-							<xsl:value-of select="CreditNoteHeader/ShipTo/ShipToAddress/AddressLine2"/>
+						<xsl:element name="AddressLine2">							
+							<xsl:call-template name="TranslateAccentedCharacters"><xsl:with-param name="InputString" select="CreditNoteHeader/ShipTo/ShipToAddress/AddressLine2"/></xsl:call-template>
 						</xsl:element>
-						<xsl:element name="AddressLine3">
-							<xsl:value-of select="CreditNoteHeader/ShipTo/ShipToAddress/AddressLine3"/>
+						<xsl:element name="AddressLine3">							
+							<xsl:call-template name="TranslateAccentedCharacters"><xsl:with-param name="InputString" select="CreditNoteHeader/ShipTo/ShipToAddress/AddressLine3"/></xsl:call-template>
 						</xsl:element>
-						<xsl:element name="AddressLine4">
-							<xsl:value-of select="CreditNoteHeader/ShipTo/ShipToAddress/AddressLine4"/>
+						<xsl:element name="AddressLine4">							
+							<xsl:call-template name="TranslateAccentedCharacters"><xsl:with-param name="InputString" select="CreditNoteHeader/ShipTo/ShipToAddress/AddressLine4"/></xsl:call-template>
 						</xsl:element>
 						<xsl:element name="PostCode">
 							<xsl:value-of select="CreditNoteHeader/ShipTo/ShipToAddress/PostCode"/>
 						</xsl:element>
 					</xsl:element>	
 					<xsl:element name="ContactName">
-						<xsl:value-of select="CreditNoteHeader/ShipTo/ContactName"/>
+						<xsl:call-template name="TranslateAccentedCharacters"><xsl:with-param name="InputString" select="CreditNoteHeader/ShipTo/ContactName"/></xsl:call-template>
 					</xsl:element>												
 				</xsl:element>
 				
@@ -363,11 +366,11 @@ Takes the internal version of a Credit Note and map it directly into the same fo
 							<xsl:element name="VATRegNo">
 								<xsl:value-of select="CreditRequestReferences/VATRegNo"/>
 							</xsl:element>
-							<xsl:element name="ContactName">
-								<xsl:value-of select="CreditRequestReferences/ContactName"/>
+							<xsl:element name="ContactName">								
+								<xsl:call-template name="TranslateAccentedCharacters"><xsl:with-param name="InputString" select="CreditRequestReferences/ContactName"/></xsl:call-template>
 							</xsl:element>								
-							<xsl:element name="SuppliersName">
-								<xsl:value-of select="CreditRequestReferences/SuppliersName"/>
+							<xsl:element name="SuppliersName">								
+								<xsl:call-template name="TranslateAccentedCharacters"><xsl:with-param name="InputString" select="CreditRequestReferences/SuppliersName"/></xsl:call-template>
 							</xsl:element>
 							<xsl:element name="CreditRequestStatus">
 								<xsl:value-of select="CreditRequestReferences/CreditRequestStatus"/>
@@ -439,17 +442,17 @@ Takes the internal version of a Credit Note and map it directly into the same fo
 							<xsl:element name="GTIN">
 								<xsl:value-of select="ProductID/GTIN"/>
 							</xsl:element>							
-							<xsl:element name="SuppliersProductCode">
-								<xsl:value-of select="ProductID/SuppliersProductCode"/>
+							<xsl:element name="SuppliersProductCode">								
+								<xsl:call-template name="TranslateAccentedCharacters"><xsl:with-param name="InputString" select="ProductID/SuppliersProductCode"/></xsl:call-template>
 							</xsl:element>
-							<xsl:element name="BuyersProductCode">
-								<xsl:value-of select="ProductID/BuyersProductCode"/>
+							<xsl:element name="BuyersProductCode">								
+								<xsl:call-template name="TranslateAccentedCharacters"><xsl:with-param name="InputString" select="ProductID/BuyersProductCode"/></xsl:call-template>
 							</xsl:element>
 						</xsl:element>							
 						
 						<!-- ProductDescription -->						
-						<xsl:element name="ProductDescription">
-							<xsl:value-of select="ProductDescription"/>
+						<xsl:element name="ProductDescription">							
+							<xsl:call-template name="TranslateAccentedCharacters"><xsl:with-param name="InputString" select="ProductDescription"/></xsl:call-template>
 						</xsl:element>
 						
 						<!-- Quantities-->	
