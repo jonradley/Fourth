@@ -14,7 +14,7 @@
 ******************************************************************************************
  04/03/2009  | R Cambridge   | 2787 Only try to prepend Recipient's branch ref to buyer's unit code if it exists
 ******************************************************************************************
-             |               |  
+  10/04/2012 |K Oshaughnessy  | Small temporary hack to allow order though a child Food partners member for Caffe Nero  
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" 
 				xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -153,16 +153,26 @@
 					<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/GLN"/>
 				</ShipToGLN>
 			
-				<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode">			
+			<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode != ''">
+				<xsl:choose>
+					<xsl:when test="/PurchaseOrder/TradeSimpleHeader/RecipientsBranchReference = 'Food' ">
+						<BuyerAssigned scheme="OTHER">
+							<xsl:value-of select="/PurchaseOrder/TradeSimpleHeader/RecipientsCodeForSender"/>
+						</BuyerAssigned>
+					</xsl:when>
+					<xsl:when test="string(/PurchaseOrder/TradeSimpleHeader/RecipientsBranchReference) != ''">
 					<BuyerAssigned scheme="OTHER">
-						<xsl:if test="string(/PurchaseOrder/TradeSimpleHeader/RecipientsBranchReference) != ''">
-							<xsl:value-of select="/PurchaseOrder/TradeSimpleHeader/RecipientsBranchReference"/>
-							<xsl:text>/</xsl:text>
-						</xsl:if>
-						<xsl:value-of select="/PurchaseOrder/TradeSimpleHeader/RecipientsCodeForSender"/>						
+						<xsl:value-of select="/PurchaseOrder/TradeSimpleHeader/RecipientsBranchReference"/>
+						<xsl:text>/</xsl:text>
+						<xsl:value-of select="/PurchaseOrder/TradeSimpleHeader/RecipientsCodeForSender"/>
 					</BuyerAssigned>
-				</xsl:if>				
-
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="/PurchaseOrder/TradeSimpleHeader/RecipientsCodeForSender"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:if>
+			
 				<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode">
 					<SellerAssigned scheme="OTHER">
 						<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
