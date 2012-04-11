@@ -7,7 +7,11 @@ Name		| Date		   	| Change
 H Robson	| 2011-10-19		| 4958 Created Module
 **********************************************************************
 H Robson	| 2011-12-02		| 4958 Jacksons changed address format
+**********************************************************************
+S Bowers	| 2012-04-11		| 5402 Jacksons Credit Note alteration with Fullers
 **********************************************************************-->
+
+
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:import href="tsMappingHospitalityJacksonsIncludes.xsl"/>
 	<xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes"/>
@@ -50,9 +54,8 @@ H Robson	| 2011-12-02		| 4958 Jacksons changed address format
 									</ShipTo>
 									
 									<InvoiceReferences>
-										<xsl:if test="translate(YOUR_ORDER_NUMBER,'RE.INV ',' ') != ''">
-											<InvoiceReference><xsl:value-of select="translate(YOUR_ORDER_NUMBER,'RE.INV ',' ')"/></InvoiceReference>
-										</xsl:if>
+										<!--| 2012-04-11		| 5402 Jacksons Credit Note alteration with Fullers-->
+											<InvoiceReference><xsl:value-of select="INVOICEREFNO"/></InvoiceReference>
 										<!-- for now we will just use the credit note date but need to ask Jacksons for real invoice dates -->
 										<InvoiceDate>
 											<xsl:call-template name="jacksonsDateToInternal">
@@ -83,9 +86,9 @@ H Robson	| 2011-12-02		| 4958 Jacksons changed address format
 									<xsl:for-each select="LINE[PRODUCT_CODE != ''][QTY_ORD != ''][LIST_PRICE != ''][VC != '']">
 										<CreditNoteLine>
 											<LineNumber><xsl:value-of select="position()"/></LineNumber>
+											<!--| 2012-04-11		| 5402 Jacksons Credit Note alteration with Fullers-->
 											<PurchaseOrderReferences>
-												<PurchaseOrderReference>test</PurchaseOrderReference>
-												<PurchaseOrderDate>2011-10-21</PurchaseOrderDate>
+												<PurchaseOrderReference><xsl:value-of select="YOUR_ORDER_NUMBER"/></PurchaseOrderReference>
 											</PurchaseOrderReferences>
 											<ProductID>
 												<SuppliersProductCode><xsl:value-of select="PRODUCT_CODE"/></SuppliersProductCode>
