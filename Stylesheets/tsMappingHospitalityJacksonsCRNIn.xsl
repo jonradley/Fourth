@@ -88,7 +88,11 @@ S Bowers	| 2012-04-11		| 5402 Jacksons Credit Note alteration with Fullers
 											<LineNumber><xsl:value-of select="position()"/></LineNumber>
 											<!--| 2012-04-11		| 5402 Jacksons Credit Note alteration with Fullers-->
 											<PurchaseOrderReferences>
-												<PurchaseOrderReference><xsl:value-of select="YOUR_ORDER_NUMBER"/></PurchaseOrderReference>
+												<PurchaseOrderReference><xsl:value-of select="../YOUR_ORDER_NUMBER"/></PurchaseOrderReference>
+												<PurchaseOrderDate><xsl:call-template name="jacksonsDateToInternal">
+												<xsl:with-param name="inputDate" select="../CREDIT_DATE"/>
+											</xsl:call-template>
+											</PurchaseOrderDate>
 											</PurchaseOrderReferences>
 											<ProductID>
 												<SuppliersProductCode><xsl:value-of select="PRODUCT_CODE"/></SuppliersProductCode>
