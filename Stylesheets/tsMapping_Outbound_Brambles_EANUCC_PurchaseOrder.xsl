@@ -14,7 +14,7 @@
 ******************************************************************************************
  04/03/2009  | R Cambridge   | 2787 Only try to prepend Recipient's branch ref to buyer's unit code if it exists
 ******************************************************************************************
-  10/04/2012 |K Oshaughnessy  | Small temporary hack to allow order though a child Food partners member for Caffe Nero  
+  10/04/2012 |K Oshaughnessy  | 5399 Small temporary hack to allow order though a child Food partners member for Caffe Nero  
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" 
 				xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
