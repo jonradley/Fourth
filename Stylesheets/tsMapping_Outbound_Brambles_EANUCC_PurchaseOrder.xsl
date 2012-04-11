@@ -154,23 +154,21 @@
 				</ShipToGLN>
 			
 			<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode != ''">
-				<xsl:choose>
-					<xsl:when test="/PurchaseOrder/TradeSimpleHeader/RecipientsBranchReference = 'Food' ">
-						<BuyerAssigned scheme="OTHER">
+				<BuyerAssigned scheme="OTHER">
+					<xsl:choose>
+						<xsl:when test="/PurchaseOrder/TradeSimpleHeader/RecipientsBranchReference = 'Food' ">
 							<xsl:value-of select="/PurchaseOrder/TradeSimpleHeader/RecipientsCodeForSender"/>
-						</BuyerAssigned>
-					</xsl:when>
-					<xsl:when test="string(/PurchaseOrder/TradeSimpleHeader/RecipientsBranchReference) != ''">
-					<BuyerAssigned scheme="OTHER">
-						<xsl:value-of select="/PurchaseOrder/TradeSimpleHeader/RecipientsBranchReference"/>
-						<xsl:text>/</xsl:text>
-						<xsl:value-of select="/PurchaseOrder/TradeSimpleHeader/RecipientsCodeForSender"/>
-					</BuyerAssigned>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:value-of select="/PurchaseOrder/TradeSimpleHeader/RecipientsCodeForSender"/>
-					</xsl:otherwise>
-				</xsl:choose>
+						</xsl:when>
+						<xsl:when test="string(/PurchaseOrder/TradeSimpleHeader/RecipientsBranchReference) != ''">
+							<xsl:value-of select="/PurchaseOrder/TradeSimpleHeader/RecipientsBranchReference"/>
+							<xsl:text>/</xsl:text>
+							<xsl:value-of select="/PurchaseOrder/TradeSimpleHeader/RecipientsCodeForSender"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="/PurchaseOrder/TradeSimpleHeader/RecipientsCodeForSender"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</BuyerAssigned>
 			</xsl:if>
 			
 				<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode">
