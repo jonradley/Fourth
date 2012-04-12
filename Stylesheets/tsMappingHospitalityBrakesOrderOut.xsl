@@ -18,8 +18,10 @@ R Cambridge	| 2010-01-04		| 3310 handle MITIE PL accounts in //sh:Receiver/sh:Id
 R Cambridge	| 2010-02-01		| 3310 set sh:Sender and sh:Receiver according to GLN of the relevant party
 **********************************************************************
 H Robson		| 2012-03-02		| 5295 New template to return BuyersCode from a fixed list of codes that Brakes have agreed to receive
+**********************************************************************
+H Robson		| 2012-04-10		| 5394 FnB orders don't supply the order time so lets add that in. 
 *******************************************************************-->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:sh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" xmlns:eanucc="urn:ean.ucc:2" xmlns:order="urn:ean.ucc:order:2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" >
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:sh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" xmlns:eanucc="urn:ean.ucc:2" xmlns:order="urn:ean.ucc:order:2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:vbscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
 	
 	
@@ -63,8 +65,19 @@ H Robson		| 2012-03-02		| 5295 New template to return BuyersCode from a fixed li
 					<!--Fixed value-->
 					<sh:Type>"Purchase Order"</sh:Type>
 					<!--date and time Format  YYYY-mm-ddTHH:MM:SS-timezone offset -->
+					<!-- 2012-04-10 HR 5394 - add PurchaseOrderTime if not exists -->
+					<xsl:variable name="poTime">
+						<xsl:choose>
+							<xsl:when test="PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderTime != ''">
+								<xsl:value-of select="PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderTime"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="vbscript:msTime()"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:variable>
 					<sh:CreationDateAndTime>
-						<xsl:value-of select="concat(PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderDate,'T',PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderTime)"/>
+						<xsl:value-of select="concat(PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderDate,'T',$poTime)"/>
 					</sh:CreationDateAndTime>
 				</sh:DocumentIdentification>
 			</sh:StandardBusinessDocumentHeader>
@@ -504,6 +517,15 @@ H Robson		| 2012-03-02		| 5295 New template to return BuyersCode from a fixed li
 		</xsl:choose>	
 		
 	</xsl:template>
-	
-	
+
+<!-- output time -->
+<msxsl:script language="VBScript" implements-prefix="vbscript"><![CDATA[ 
+
+Function msTime
+
+msTime= CStr(TimeValue(Now))
+
+End Function
+]]></msxsl:script>
+
 </xsl:stylesheet>
