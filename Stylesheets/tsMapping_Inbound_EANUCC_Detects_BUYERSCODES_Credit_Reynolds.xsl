@@ -18,6 +18,8 @@
 '******************************************************************************************
 ' 14/12/2009 |S Sehgal  	| Case 3286 Changed to handle VAT changing back to 17.5% from 1-Jan-2010
 '******************************************************************************************
+' 19/04/2012 | H Robson  	| 5422 When a UOM of PC is sent convert to EA for all customers.
+'******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	<xsl:output method="xml"/>
@@ -427,14 +429,33 @@
 										<!-- Product Description is populated by subsequent processors -->
 										<xsl:if test="InvoiceQuantity">
 											<InvoicedQuantity>
-												<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="normalize-space(InvoiceQuantity/@unitCode)"/></xsl:attribute>
+												<!-- 2012-04-19 5422 When a UOM of PC is sent convert to EA for all customers.-->
+												<xsl:attribute name="UnitOfMeasure">
+													<xsl:variable name="InvoiceUoM" select="normalize-space(InvoiceQuantity/@unitCode)"/>
+													<xsl:choose>
+														<xsl:when test="$InvoiceUoM = 'PC'">EA</xsl:when>
+														<xsl:otherwise><xsl:value-of select="$InvoiceUoM"/></xsl:otherwise>
+													</xsl:choose>	
+												</xsl:attribute>
 												<xsl:value-of select="format-number(InvoiceQuantity, '0.000')"/>
 											</InvoicedQuantity>
 										</xsl:if>
 										
 										<!-- Credited quantity is not mandatory in EAN.UCC but is in our internal format, default it if not found -->
 										<CreditedQuantity>
-											<xsl:attribute name="UnitOfMeasure"><xsl:choose><xsl:when test="CreditQuantity"><xsl:value-of select="normalize-space(CreditQuantity/@unitCode)"/></xsl:when><xsl:otherwise><xsl:value-of select="$defaultUnitOfMeasure"/></xsl:otherwise></xsl:choose></xsl:attribute>
+											<!-- 2012-04-19 5422 When a UOM of PC is sent convert to EA for all customers.-->
+											<xsl:attribute name="UnitOfMeasure">
+												<xsl:choose>
+													<xsl:when test="CreditQuantity">
+														<xsl:variable name="CreditUoM" select="normalize-space(CreditQuantity/@unitCode)"/>
+														<xsl:choose>
+															<xsl:when test="$CreditUoM= 'PC'">EA</xsl:when>
+															<xsl:otherwise><xsl:value-of select="$CreditUoM"/></xsl:otherwise>
+														</xsl:choose>	
+													</xsl:when>
+													<xsl:otherwise><xsl:value-of select="$defaultUnitOfMeasure"/></xsl:otherwise>
+												</xsl:choose>
+											</xsl:attribute>
 											<xsl:choose>
 												<xsl:when test="CreditQuantity">
 													<!--if CreditLineIndicator is '1', make the CreditQuantity a negative number-->
