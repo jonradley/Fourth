@@ -51,9 +51,6 @@
 								</OrderedQuantity>
 							</PurchaseOrderLine>
 						</PurchaseOrderDetail>
-						<PurchaseOrderTrailer>
-							<NumberOfLines RecordPos="CTT" LPos="2"/>
-						</PurchaseOrderTrailer>
 					</PurchaseOrder>
 				</BatchDocument>
 			</BatchDocuments>
