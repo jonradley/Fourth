@@ -434,9 +434,9 @@
 								<xsl:copy-of select="InvoiceHeader/Buyer"/>
 								<xsl:copy-of select="InvoiceHeader/Supplier"/>
 								<xsl:copy-of select="InvoiceHeader/ShipTo"/>
-								<xsl:if test="InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderReference != '' and InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderDate != ''">
+								<xsl:if test="//InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderReference != '' ">
 									<PurchaseOrderReferences>
-										<xsl:if test="InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderReference != ''">
+										<xsl:if test="InvoiceDetail/InvoiceLine/PurchaseOrderReferences/PurchaseOrderReference != ''">
 											<PurchaseOrderReference>
 												<xsl:value-of select="InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderReference"/>
 											</PurchaseOrderReference>
@@ -450,7 +450,7 @@
 											</PurchaseOrderDate>
 										</xsl:if>
 									</PurchaseOrderReferences>
-								</xsl:if>
+								</xsl:if>	
 								<DeliveryNoteReferences>
 									<DeliveryNoteReference>
 										<xsl:value-of select="InvoiceDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteReference"/>
@@ -464,7 +464,7 @@
 								</DeliveryNoteReferences>
 							</DeliveryNoteHeader>
 							<DeliveryNoteDetail>
-								<xsl:for-each select="InvoiceDetail/InvoiceLine[not(ProductID/BuyersProductCode = '1')]">
+								<xsl:for-each select="InvoiceDetail/InvoiceLine">
 									<DeliveryNoteLine>
 										<xsl:copy-of select="ProductID"/>
 										<xsl:copy-of select="ProductDescription"/>
