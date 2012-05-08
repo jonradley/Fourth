@@ -77,7 +77,7 @@ Graham Neicho	| 30/03/2010	| FB3436 Added OriginalPurchaseOrderReference
 					<ConfirmedQuantity RecordPos="D" LPos="6">
 						<ffsAttribute1 name="UnitOfMeasure" RecordPos="D" LPos="11"/>
 					</ConfirmedQuantity>
-					<DespatchedQuantity RecordPos="D" LPos="7">
+					<DespatchedQuantity RecordPos="D" LPos="8">
 						<ffsAttribute1 name="UnitOfMeasure" RecordPos="D" LPos="12"/>
 					</DespatchedQuantity>
 					<PackSize RecordPos="D" LPos="4"/>
