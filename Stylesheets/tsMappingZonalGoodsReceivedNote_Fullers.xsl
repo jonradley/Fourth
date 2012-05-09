@@ -26,6 +26,8 @@
 ******************************************************************************************
  05/04/2012	| Sandeep Sehgal	| FB5348 Translate accented characters 
 ******************************************************************************************
+09/05/2012	| Mark Emanuel	| FB 5462 Set OrderNo as DN ref for all suppliers. (reverting the changes made in FB2950)
+******************************************************************************************
 -->
 <xsl:stylesheet 	version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output method="xml" encoding="ISO-8859-1"/>
@@ -55,21 +57,12 @@
 				</xsl:choose>
 			</xsl:attribute>
 			<xsl:attribute name="Supplier"><xsl:value-of select="/GoodsReceivedNote/TradeSimpleHeader/SendersCodeForRecipient | /CreditNote/TradeSimpleHeader/RecipientsCodeForSender"/></xsl:attribute>
+		
+		
+			<!-- Setting OrderNo as DN Ref for all Suppliers and moving away from supplier specific change delivered as per FB no 2950 -->
 			
-			<xsl:variable name="SCR">
-				<xsl:value-of select="translate(//TradeSimpleHeader/SendersCodeForRecipient, 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')"/>
-			</xsl:variable>
+			<xsl:attribute name="OrderNo"><xsl:value-of select="substring(//GoodsReceivedNoteHeader/DeliveryNoteReferences/DeliveryNoteReference | //CreditNoteReference,1,15)"/></xsl:attribute>
 
-			<!--Set OrderNo as PO Ref rather than DN ref for BrakesFrozen and BrakesGrocery suppliers-->
-			<xsl:choose>
-				<xsl:when test="$SCR = 'BRAKESFROZEN' or $SCR = 'BRAKESGROCERY'">
-					<xsl:attribute name="OrderNo"><xsl:value-of select="substring(//GoodsReceivedNoteHeader/PurchaseOrderReferences/PurchaseOrderReference | //CreditNoteReference,1,15)"/></xsl:attribute>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:attribute name="OrderNo"><xsl:value-of select="substring(//GoodsReceivedNoteHeader/DeliveryNoteReferences/DeliveryNoteReference | //CreditNoteReference,1,15)"/></xsl:attribute>
-				</xsl:otherwise>
-			</xsl:choose>
-			
 			<!-- If the compressed Aztec output product code exists then there will only be a single line -->
 			<xsl:attribute name="Lines">
 				<xsl:choose>
