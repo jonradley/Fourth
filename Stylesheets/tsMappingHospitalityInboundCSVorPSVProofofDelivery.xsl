@@ -52,7 +52,7 @@
 		</xsl:copy>
 	</xsl:template>
 	
-	<xsl:template match="PurchaseOrderDate | DeliveryNoteDate | DespatchDate | DeliveryDate | ExpiryDate | SellByDate">
+	<xsl:template match="PurchaseOrderDate | ProofOfDeliveryDate | DeliveryNoteDate | DespatchDate | DeliveryDate | ExpiryDate | SellByDate">
 		<xsl:element name="{name()}">
 			<xsl:value-of select="concat(substring(., 1, 4), '-', substring(., 5, 2), '-', substring(., 7, 2))"/>
 		</xsl:element>
