@@ -90,9 +90,8 @@
 						</PurchaseOrderReferences>
 						<xsl:if test="ItemOut[1]/@requestedDeliveryDate!='' and ItemOut[1]/@requestedDeliveryDate!=' '">
 							<OrderedDeliveryDetails>
-								<DeliveryDate>
-									<xsl:value-of select="ItemOut[1]/@requestedDeliveryDate"/>
-									<!--xsl:value-of select="substring-before(ItemOut[1]/@requestedDeliveryDate,'T')"/-->
+								<DeliveryDate>									
+									<xsl:value-of select="substring-before(ItemOut[1]/@requestedDeliveryDate,'T')"/>
 								</DeliveryDate>
 								<xsl:if test="OrderRequestHeader/Extrinsic[@name='DeliveryInstruction'] != ''">
 									<SpecialDeliveryInstructions>
@@ -118,7 +117,10 @@
 								</ProductDescription>
 								<OrderedQuantity>
 									<xsl:attribute name="UnitOfMeasure">
-										<xsl:value-of select="ItemDetail/UnitOfMeasure"/>
+										<xsl:choose>
+											<xsl:when test="ItemDetail/UnitOfMeasure='KG'">KGM</xsl:when>
+											<xsl:otherwise><xsl:value-of select="ItemDetail/UnitOfMeasure"/></xsl:otherwise>
+										</xsl:choose>										
 									</xsl:attribute>
 									<xsl:value-of select="@quantity"/>
 								</OrderedQuantity>
