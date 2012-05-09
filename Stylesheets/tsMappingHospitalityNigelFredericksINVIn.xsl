@@ -285,12 +285,12 @@
 														<xsl:text>55555555555555</xsl:text>
 													</xsl:otherwise>
 												</xsl:choose>
-											</GTIN>
+											</GTIN>											
 											<xsl:if test="ItemIdentifier/AlternateCode">
 												<SuppliersProductCode>
 													<xsl:value-of select="normalize-space(ItemIdentifier/AlternateCode)"/>
 												</SuppliersProductCode>
-											</xsl:if>
+											</xsl:if>								
 										</ProductID>
 										<ProductDescription>
 											<xsl:value-of select="LineItemDescription"/>

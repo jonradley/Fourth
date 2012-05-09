@@ -193,7 +193,7 @@
 			</xsl:if>
 			<xsl:text>:</xsl:text>
 			<!-- truncate to 17 CLOC 2 = 3001 = AN..17 -->
-			<xsl:value-of select="js:msSafeText(string(InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode),17)"/>
+			<xsl:value-of select="js:msSafeText(string(InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode),17)"/>
 			<xsl:text>:</xsl:text>
 			<!-- truncate to 17 CLOC 3 = 300A = AN..17 -->
 			<xsl:value-of select="js:msSafeText(string(InvoiceHeader/ShipTo/ShipToLocationID/SuppliersCode),17)"/>
@@ -315,13 +315,23 @@
 							<xsl:text>+:</xsl:text>
 							<xsl:value-of select="format-number(InvoicedQuantity,'0')"/>
 							<xsl:text>:</xsl:text>
-							<xsl:value-of select="InvoicedQuantity/@UnitOfMeasure"/>
+							<xsl:choose>
+								<xsl:when test="InvoicedQuantity/@UnitOfMeasure='CS'">PK</xsl:when>
+								<xsl:when test="InvoicedQuantity/@UnitOfMeasure='KGM'">KG</xsl:when>
+								<xsl:when test="InvoicedQuantity/@UnitOfMeasure='DZN'">DZ</xsl:when>
+								<xsl:otherwise><xsl:value-of select="InvoicedQuantity/@UnitOfMeasure"/></xsl:otherwise>
+							</xsl:choose>							
 							<xsl:text>+</xsl:text>
 							<xsl:value-of select="format-number(InvoicedQuantity,'0')"/>
 							<xsl:text>:</xsl:text>
 							<xsl:value-of select="translate(format-number(InvoicedQuantity,'#.000'),'.','')"/>
 							<xsl:text>:</xsl:text>
-							<xsl:value-of select="InvoicedQuantity/@UnitOfMeasure"/>
+							<xsl:choose>
+								<xsl:when test="InvoicedQuantity/@UnitOfMeasure='CS'">PK</xsl:when>
+								<xsl:when test="InvoicedQuantity/@UnitOfMeasure='KGM'">KG</xsl:when>
+								<xsl:when test="InvoicedQuantity/@UnitOfMeasure='DZN'">DZ</xsl:when>
+								<xsl:otherwise><xsl:value-of select="InvoicedQuantity/@UnitOfMeasure"/></xsl:otherwise>
+							</xsl:choose>			
 							<xsl:text>+</xsl:text>
 							<xsl:value-of select="translate(format-number(UnitValueExclVAT,'#.0000'),'.','')"/>
 							<xsl:text>+</xsl:text>
