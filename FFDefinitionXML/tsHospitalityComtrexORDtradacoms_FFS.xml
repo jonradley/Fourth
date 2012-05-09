@@ -101,7 +101,7 @@ Date			| Name		| Change
 							</Supplier>
 							<ShipTo>
 								<ShipToLocationID>
-									<SuppliersCode RecordPos="CLO=" LPos="1" SFPos="2"/>
+									<BuyersCode RecordPos="CLO=" LPos="1" SFPos="2"/>
 								</ShipToLocationID>
 								<ShipToName RecordPos="CLO=" LPos="2"/>
 								<ShipToAddress>
@@ -134,8 +134,8 @@ Date			| Name		| Change
 									<ffsAttribute1 name="UnitOfMeasure" RecordPos="OLD=" LPos="6" SFPos="3"/>
 								</OrderedQuantity>
 								<UnitValueExclVAT RecordPos="OLD=" LPos="7" SFPos="1"/>
-								<!-- If a product is ordered in EA, quantity is placed in a different location. We put it here and sort it out in the stylesheet -->							
-								<PackSize RecordPos="OLD=" LPos="6" SFPos="1"/>								
+								<!-- If a product is ordered in EA, quantity is placed in a different location. We put it here and sort it out in the stylesheet -->
+								<PackSize RecordPos="OLD=" LPos="6" SFPos="1"/>
 							</PurchaseOrderLine>
 						</PurchaseOrderDetail>
 					</PurchaseOrder>
