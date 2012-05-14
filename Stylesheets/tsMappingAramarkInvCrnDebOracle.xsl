@@ -21,8 +21,6 @@
 ******************************************************************************************
 04/01/2012       | S Sehgal | 5147 Upgrade file format for Oracle r12. New fields added to Header and Line rows and couple of existing header fields set to blank
 ******************************************************************************************
-26/01/2012       | S Sehgal | 5216 Field 63 for Line level set to empty
-******************************************************************************************
 -->
 
 <xsl:stylesheet version="1.0"
@@ -319,6 +317,7 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			<xsl:value-of select="$separator"/>
+			<xsl:text>MOD340NONE</xsl:text>
 		</xsl:for-each>
 	  
 	</xsl:template>
