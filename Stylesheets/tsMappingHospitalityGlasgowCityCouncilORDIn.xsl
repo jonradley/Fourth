@@ -88,7 +88,7 @@
 								<xsl:value-of select="substring-before(OrderRequestHeader/@orderDate,'T')"/>
 							</PurchaseOrderDate>
 						</PurchaseOrderReferences>
-						<xsl:if test="ItemOut[1]/@requestedDeliveryDate!='' and ItemOut[1]/@requestedDeliveryDate!=' '">
+						<xsl:if test="ItemOut[1]/@requestedDeliveryDate!='' and ItemOut[1]/@requestedDeliveryDate!=' ' and  ItemOut[1]/@requestedDeliveryDate!='0000-00-00T00:00:00'">
 							<OrderedDeliveryDetails>
 								<DeliveryDate>									
 									<xsl:value-of select="substring-before(ItemOut[1]/@requestedDeliveryDate,'T')"/>
@@ -119,6 +119,7 @@
 									<xsl:attribute name="UnitOfMeasure">
 										<xsl:choose>
 											<xsl:when test="ItemDetail/UnitOfMeasure='KG'">KGM</xsl:when>
+											<xsl:when test="ItemDetail/UnitOfMeasure='CA'">CS</xsl:when>								
 											<xsl:otherwise><xsl:value-of select="ItemDetail/UnitOfMeasure"/></xsl:otherwise>
 										</xsl:choose>										
 									</xsl:attribute>
