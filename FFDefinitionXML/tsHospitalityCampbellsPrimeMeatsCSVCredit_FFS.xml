@@ -58,7 +58,7 @@ R Cambridge	| 29/09/2009	| 3142 read units codes into SCR and Supplier's code fo
 					<CreditNote>
 						<TradeSimpleHeader>
 							<SendersCodeForRecipient RecordPos="HEAD" LPos="24"/>
-							<SendersCodeForRecipient RecordPos="HEAD" LPos="23"/>
+							<SendersBranchReference RecordPos="HEAD" LPos="23"/>
 						</TradeSimpleHeader>
 						<CreditNoteHeader>
 							<Buyer>
