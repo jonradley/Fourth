@@ -8,7 +8,7 @@ Name			| Date			| Change
 **********************************************************************
 R Cambridge	| 29/09/2009	| 3142 read units codes into SCR and Supplier's code for ship to
 **********************************************************************
-          	|           	| 
+M Dimant      | 16/05/2012  | 5473 Bug fixed - SendersBranchReference was incorrectly being mapped as SendersCodeForRecipient. 
 **********************************************************************
 				|					|
 *******************************************************************-->
