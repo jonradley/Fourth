@@ -21,6 +21,10 @@
 ******************************************************************************************
 04/01/2012       | S Sehgal | 5147 Upgrade file format for Oracle r12. New fields added to Header and Line rows and couple of existing header fields set to blank
 ******************************************************************************************
+26/01/2012       | S Sehgal | 5216 Field 63 for Line level set to empty
+******************************************************************************************
+14/05/2012       | Graham Neicho | FB5450 Reversed previous change, so Field 63 contains "MOD340NONE" once again
+******************************************************************************************
 -->
 
 <xsl:stylesheet version="1.0"
