@@ -51,7 +51,6 @@ K Oshaughnessy	| 26/04/2012		| Created FFS
 								<ProductDescription RecordLength="34" RecordPos="*" LPos="18"/>
 								<InvoicedQuantity RecordLength="34" RecordPos="*" LPos="14"/>
 								<UnitValueExclVAT RecordLength="34" RecordPos="*" LPos="21"/>
-								<LineValueExclVAT RecordLength="34" RecordPos="*" LPos="13"/>
 								<VATCode RecordLength="34" RecordPos="*" LPos="7"/>
 								<VATRate RecordLength="34" RecordPos="*" LPos="8"/>
 							</InvoiceLine>
