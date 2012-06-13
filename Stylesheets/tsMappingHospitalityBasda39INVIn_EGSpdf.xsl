@@ -110,16 +110,28 @@ R Cambridge	| 2012-04-26		| 5435 Created Module
 													</DeliveryNoteDate>
 												</DeliveryNoteReferences>
 											</xsl:for-each>
+											
 											<ProductID>
 												<GTIN>
 													<xsl:text>55555555555555</xsl:text>
 												</GTIN>
-												<xsl:for-each select="Product/SuppliersProductCode[. != ''][1]">
+												<!--xsl:for-each select="Product/SuppliersProductCode[. != ''][1]">
 													<SuppliersProductCode>
 														<xsl:value-of select="."/>
 													</SuppliersProductCode>
-												</xsl:for-each>
+												</xsl:for-each-->
+												<SuppliersProductCode>
+													<xsl:choose>
+														<xsl:when test="Product/SuppliersProductCode != ''">
+															<xsl:value-of select="Product/SuppliersProductCode"/>
+														</xsl:when>
+														<xsl:otherwise>
+															<xsl:text>CHARGE</xsl:text>
+														</xsl:otherwise>
+													</xsl:choose>
+												</SuppliersProductCode>
 											</ProductID>
+											
 											<ProductDescription>
 												<xsl:value-of select="Product/Description"/>
 											</ProductDescription>
@@ -130,10 +142,17 @@ R Cambridge	| 2012-04-26		| 5435 Created Module
 											<UnitValueExclVAT>
 												<xsl:value-of select="format-number(Price/UnitPrice, '0.00')"/>
 											</UnitValueExclVAT>
-											<LineValueExclVAT>
+											
+											<!-- Standard BASDA mappings -->
+											<!--LineValueExclVAT>
 												<xsl:value-of select="format-number(LineTotal, '0.00')"/>
+											</LineValueExclVAT-->
+											
+											<!-- Proof of concept, temp adjustments -->
+											<LineValueExclVAT>
+												<xsl:value-of select="format-number(Quantity/Amount * Price/UnitPrice, '0.00')"/>
 											</LineValueExclVAT>
-											<!-- we default VATCode and Rate if not found in the EAN.UCC document -->
+
 											<VATCode>
 												<xsl:value-of select="LineTax/TaxRate/@Code"/>
 											</VATCode>
@@ -151,10 +170,9 @@ R Cambridge	| 2012-04-26		| 5435 Created Module
 									<NumberOfItems>
 										<xsl:value-of select="sum(//InvoiceLine/Quantity/Amount)"/>
 									</NumberOfItems>
-									<!-- EAN.UCC only allows for one delivery per Invoice -->
-									<NumberOfDeliveries>
+									<!--NumberOfDeliveries>
 										<xsl:text>1</xsl:text>
-									</NumberOfDeliveries>
+									</NumberOfDeliveries-->
 									<DocumentDiscountRate>
 										<xsl:choose>
 											<xsl:when test="InvoiceTotals/DocumentDiscountRate">
@@ -191,8 +209,8 @@ R Cambridge	| 2012-04-26		| 5435 Created Module
 												<xsl:attribute name="VATCode"><xsl:value-of select="$currentVATCode"/></xsl:attribute>
 												<xsl:attribute name="VATRate"><xsl:value-of select="format-number($currentVATRate,'0.00')"/></xsl:attribute>
 												
-												<!-- EAN.UCC does not count the lines at a specific rate so we have to work it out. Code and Rate must be the same -->
-												<NumberOfLinesAtRate>
+												<!-- Standard BASDA mappings -->
+												<!--NumberOfLinesAtRate>
 													<xsl:value-of select="NumberOfLinesAtRate"/>
 												</NumberOfLinesAtRate>
 												<xsl:for-each select="TotalValueAtRate[1]">
@@ -224,20 +242,92 @@ R Cambridge	| 2012-04-26		| 5435 Created Module
 													<SettlementTotalInclVATAtRate>
 														<xsl:value-of select="format-number(.,'0.00')"/>
 													</SettlementTotalInclVATAtRate>
+												</xsl:for-each-->
+												
+												<!-- Proof of concept, temp adjustments -->
+												<NumberOfLinesAtRate>
+													<xsl:value-of select="NumberOfLinesAtRate"/>
+												</NumberOfLinesAtRate>
+												<xsl:for-each select="SettlementDiscountAtRate[1]">
+													<DocumentTotalExclVATAtRate>
+														<xsl:value-of select="format-number(.,'0.00')"/>
+													</DocumentTotalExclVATAtRate>
 												</xsl:for-each>
+												<xsl:for-each select="SettlementDiscountAtRate[1]">
+													<SettlementDiscountAtRate>
+														<xsl:value-of select="format-number(., '0.00')"/>
+													</SettlementDiscountAtRate>
+												</xsl:for-each>
+												<xsl:for-each select="TaxableValueAtRate[1]">
+													<SettlementTotalExclVATAtRate>
+														<xsl:value-of select="format-number(., '0.00')"/>
+													</SettlementTotalExclVATAtRate>
+												</xsl:for-each>
+												<xsl:for-each select="TaxAtRate[1]">
+													<VATAmountAtRate>
+														<xsl:value-of select="format-number(., '0.00')"/>
+													</VATAmountAtRate>
+												</xsl:for-each>
+												<xsl:for-each select="GrossPaymentAtRate[1]">
+													<DocumentTotalInclVATAtRate>
+														<xsl:value-of select="format-number(.,'0.00')"/>
+													</DocumentTotalInclVATAtRate>
+												</xsl:for-each>
+												<xsl:for-each select="GrossPaymentAtRate[1]">
+													<SettlementTotalInclVATAtRate>
+														<xsl:value-of select="format-number(.,'0.00')"/>
+													</SettlementTotalInclVATAtRate>
+												</xsl:for-each>
+
+												
+												
 											</VATSubTotal>
 										</xsl:for-each>
 									</VATSubTotals>
+									
+									<!-- Standard BASDA mappings -->
+									<!--DiscountedLinesTotalExclVAT>
+										<xsl:value-of select="format-number(InvoiceTotal/LineValueTotal, '0.00')"/>
+									</DiscountedLinesTotalExclVAT>
+									<DocumentDiscount>
+										<xsl:value-of select="format-number($defaultDocumentDiscountValue,'0.00')"/>
+									</DocumentDiscount>
+									<DocumentTotalExclVAT>
+										<xsl:value-of select="format-number(InvoiceTotal/LineValueTotal, '0.00')"/>
+									</DocumentTotalExclVAT>
+									<xsl:for-each select="InvoiceTotal/SettlementDiscountTotal[1]">
+										<SettlementDiscount>
+											<xsl:value-of select="format-number(., '0.00')"/>
+										</SettlementDiscount>
+									</xsl:for-each>
+									<xsl:for-each select="InvoiceTotal/TaxableTotal[1]">
+										<SettlementTotalExclVAT>
+											<xsl:value-of select="format-number(., '0.00')"/>
+										</SettlementTotalExclVAT>
+									</xsl:for-each>
+									<xsl:for-each select="InvoiceTotal/TaxTotal[1]">
+										<VATAmount>
+											<xsl:value-of select="format-number(., '0.00')"/>
+										</VATAmount>
+									</xsl:for-each>
+									<DocumentTotalInclVAT>
+										<xsl:value-of select="format-number(InvoiceTotal/GrossPaymentTotal, '0.00')"/>
+									</DocumentTotalInclVAT>
+									<SettlementTotalInclVAT>
+										<xsl:value-of select="format-number(InvoiceTotal/NetPaymentTotal, '0.00')"/>
+									</SettlementTotalInclVAT-->
+									
+									<!-- Proof of concept, temp adjustments -->
 									<!-- DiscountedLinesTotalExclVAT is mandatory in our schema but not EAN.UCC. If we find none then just default the value -->
 									<DiscountedLinesTotalExclVAT>
-										<xsl:value-of select="format-number(InvoiceTotal/LineValueTotal, '0.00')"/>
+										<xsl:value-of select="format-number(InvoiceTotal/TaxableTotal, '0.00')"/>
 									</DiscountedLinesTotalExclVAT>
 									<!-- DocumentDiscount is mandatory in our schema but not EAN.UCC. If we find none then just default the value -->
 									<DocumentDiscount>
 										<xsl:value-of select="format-number($defaultDocumentDiscountValue,'0.00')"/>
 									</DocumentDiscount>
 									<DocumentTotalExclVAT>
-										<xsl:value-of select="format-number(InvoiceTotal/LineValueTotal, '0.00')"/>
+										<xsl:value-of select="format-number(InvoiceTotal/TaxableTotal, '0.00')"/>
 									</DocumentTotalExclVAT>
 									<!-- SettlementDiscount is mandatory in our schema but not EAN.UCC. If we find none then just default the value -->
 									<xsl:for-each select="InvoiceTotal/SettlementDiscountTotal[1]">
@@ -262,8 +352,11 @@ R Cambridge	| 2012-04-26		| 5435 Created Module
 									</DocumentTotalInclVAT>
 									<!-- we need a SettlementTotalInclVAT internally but it is optional in EAN.UCC so we work it out if it is missing -->
 									<SettlementTotalInclVAT>
-										<xsl:value-of select="format-number(InvoiceTotal/NetPaymentTotal, '0.00')"/>
+										<xsl:value-of select="format-number(InvoiceTotal/GrossPaymentTotal, '0.00')"/>
 									</SettlementTotalInclVAT>
+
+									
+									
 								</InvoiceTrailer>
 							</Invoice>
 							
