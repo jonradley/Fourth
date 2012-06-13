@@ -4,9 +4,9 @@
 **************************************************************************************************************
 Date			| Name		| Change
 **************************************************************************************************************
-08/11/2011 	| M Dimant	| 5004. Created FFS for Prezzo inbound tradacoms orders
+08/11/2011 	| M Dimant	| 5004. Created FFS for Comtrex inbound tradacoms orders
 **************************************************************************************************************
-				|				|
+27/04/2012	| M Dimant	| Added mapping for Unit of Measure
 **************************************************************************************************************
 -->
 <ffsFlatFileSchema>
@@ -67,7 +67,7 @@ Date			| Name		| Change
 	<ffsRoot>
 		<Batch>
 			<BatchDocuments>
-				<BatchDocument>				
+				<BatchDocument>
 					<PurchaseOrder>
 						<TradeSimpleHeader>
 							<SendersCodeForRecipient RecordPos="SDT=" LPos="1" SFPos="2"/>
@@ -101,7 +101,7 @@ Date			| Name		| Change
 							</Supplier>
 							<ShipTo>
 								<ShipToLocationID>
-									<SuppliersCode RecordPos="CLO=" LPos="1" SFPos="2"/>
+									<BuyersCode RecordPos="CLO=" LPos="1" SFPos="2"/>
 								</ShipToLocationID>
 								<ShipToName RecordPos="CLO=" LPos="2"/>
 								<ShipToAddress>
@@ -130,12 +130,15 @@ Date			| Name		| Change
 									<BuyersProductCode RecordPos="OLD=" LPos="4" SFPos="2"/>
 								</ProductID>
 								<ProductDescription RecordPos="OLD=" LPos="10" SFPos="1"/>
-								<OrderedQuantity RecordPos="OLD=" LPos="6" SFPos="1"/>
+								<OrderedQuantity RecordPos="OLD=" LPos="6" SFPos="2">
+									<ffsAttribute1 name="UnitOfMeasure" RecordPos="OLD=" LPos="6" SFPos="3"/>
+								</OrderedQuantity>
 								<UnitValueExclVAT RecordPos="OLD=" LPos="7" SFPos="1"/>
-								<Narrative RecordPos="DNB=" LPos="5" SFPos="1"/>
+								<!-- If a product is ordered in EA, quantity is placed in a different location. We put it here and sort it out in the stylesheet -->
+								<PackSize RecordPos="OLD=" LPos="6" SFPos="1"/>
 							</PurchaseOrderLine>
 						</PurchaseOrderDetail>
-					</PurchaseOrder>					
+					</PurchaseOrder>
 				</BatchDocument>
 			</BatchDocuments>
 		</Batch>

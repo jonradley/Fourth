@@ -7,7 +7,7 @@ Name			| Date			| Change
 R Cambridge	| 27/03/2007	| FB941 Handle catchweight items (derived from 
 										tsMappingHospitalityInvoiceTradacomsBatch.xsl)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-				|             	|	
+K Oshaughnessy| 28/05/2012 	|FB5493 bugfix to check if delivery note reference is populated before mapping delivery note date 	
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 				|             	|
 **********************************************************************
@@ -150,6 +150,7 @@ R Cambridge	| 27/03/2007	| FB941 Handle catchweight items (derived from
 						InvoiceTrailer/SettlementTotalInclVAT">
 		<xsl:call-template name="copyCurrentNodeExplicit2DP"/>
 	</xsl:template>	
+	
 	<!-- SIMPLE CONVERSION IMPLICIT TO EXPLICIT 3 D.P -->
 	<!-- Add any XPath whose text node needs to be converted from implicit to explicit 3 D.P. -->
 	<xsl:template match="OrderingMeasure | 
@@ -181,6 +182,39 @@ R Cambridge	| 27/03/2007	| FB941 Handle catchweight items (derived from
 			<xsl:value-of select="concat('20', substring(., 1, 2), '-', substring(., 3, 2), '-', substring(., 5, 2))"/>
 		</xsl:copy>
 	</xsl:template>
+	
+	<!-- Check for pairing of Purchase Order Date & Purchase Order Reference -->
+	<xsl:template match="//PurchaseOrderReferences">
+		<xsl:variable name="sPORefDate" select="translate(PurchaseOrderDate,' ','')"/>
+		<xsl:variable name="sPORefReference" select="translate(PurchaseOrderReference,' ','')"/>
+		<xsl:if test="string($sPORefDate) !='' and string($sPORefReference) != '' ">
+			<PurchaseOrderReferences>
+				<PurchaseOrderReference>
+					<xsl:value-of select="$sPORefReference"/>
+				</PurchaseOrderReference>
+				<PurchaseOrderDate>
+					<xsl:value-of select="concat('20',substring($sPORefDate,1,2),'-',substring($sPORefDate,3,2),'-',substring($sPORefDate,5,2))"/>
+				</PurchaseOrderDate>
+			</PurchaseOrderReferences>
+		</xsl:if>
+	</xsl:template>	
+	
+	<!-- Check for pairing of Delivery note Date & Delivery note Reference -->
+	<xsl:template match="//DeliveryNoteReferences">
+		<xsl:variable name="sDNDate" select="translate(DeliveryNoteDate,' ','')"/>
+		<xsl:variable name="sDNRefReference" select="translate(DeliveryNoteReference,' ','')"/>
+		<xsl:if test="string($sDNDate) !='' and string($sDNRefReference) != '' ">
+			<DeliveryNoteReferences>
+				<DeliveryNoteReference>
+					<xsl:value-of select="$sDNRefReference"/>
+				</DeliveryNoteReference>
+				<DeliveryNoteDate>
+					<xsl:value-of select="concat('20',substring($sDNDate,1,2),'-',substring($sDNDate,3,2),'-',substring($sDNDate,5,2))"/>
+				</DeliveryNoteDate>
+			</DeliveryNoteReferences>
+		</xsl:if>
+	</xsl:template>	
+	
 	<!-- DATE CONVERSION YYMMDD:[HHMMSS] to xsd:dateTime CCYY-MM-DDTHH:MM:SS+00:00 -->
 	<xsl:template match="BatchInformation/SendersTransmissionDate">
 		<xsl:copy>
@@ -278,22 +312,6 @@ R Cambridge	| 27/03/2007	| FB941 Handle catchweight items (derived from
 		</xsl:copy>
 	</xsl:template>
 	<!-- END of MHDSegment HANDLER -->
-	
-	<!-- Check for pairing of Purchase Order Date & Purchase Order Reference -->
-	<xsl:template match="//PurchaseOrderReferences">
-		<xsl:variable name="sPORefDate" select="translate(PurchaseOrderDate,' ','')"/>
-		<xsl:variable name="sPORefReference" select="translate(PurchaseOrderReference,' ','')"/>
-		<xsl:if test="string($sPORefDate) !='' and string($sPORefReference) != '' ">
-			<PurchaseOrderReferences>
-				<PurchaseOrderReference>
-					<xsl:value-of select="$sPORefReference"/>
-				</PurchaseOrderReference>
-				<PurchaseOrderDate>
-					<xsl:value-of select="concat('20',substring($sPORefDate,1,2),'-',substring($sPORefDate,3,2),'-',substring($sPORefDate,5,2))"/>
-				</PurchaseOrderDate>
-			</PurchaseOrderReferences>
-		</xsl:if>
-	</xsl:template>	
 	
 	<msxsl:script language="JScript" implements-prefix="jscript"><![CDATA[ 
 		function toUpperCase(vs) {

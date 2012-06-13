@@ -1,23 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--======================================================================================
- Overview
-
- © Alternative Business Solutions Ltd, 2006.
-==========================================================================================
  Module History
 ==========================================================================================
  Version		| 
 ==========================================================================================
  Date      	| Name 						|	Description of modification
 ==========================================================================================
- 13/02/2006	| R Cambridge			|	Created module
-==========================================================================================
- 13/03/2006	| Lee Boyton      	|	H574. Turned into Tradacoms version 9.
-==========================================================================================
- 23/05/2007	|	Nigel Emsen			|	FB 972: Amendments to handle Marstons promotions.
-==========================================================================================
- 07/01/2008	| R Cambridge			|	1556 don't truncate product description
+ 11/04/2012	| K Oshaughnessy		|	Created module
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -189,7 +179,9 @@
 					<xsl:with-param name="vobjNode" select="ProductID/BuyersProductCode"/>
 					<xsl:with-param name="vnLength" select="30"/>
 				</xsl:call-template>
-				<xsl:text>+::</xsl:text>
+				<xsl:text>+</xsl:text>
+					<xsl:text>1</xsl:text>
+				<xsl:text>::</xsl:text>
 				<xsl:value-of select="OrderedQuantity/@UnitOfMeasure"/>
 				<xsl:text>+</xsl:text>
 				<xsl:value-of select="format-number(OrderedQuantity,'0')"/>

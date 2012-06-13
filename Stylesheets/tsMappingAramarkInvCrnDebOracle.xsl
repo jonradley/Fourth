@@ -23,6 +23,8 @@
 ******************************************************************************************
 26/01/2012       | S Sehgal | 5216 Field 63 for Line level set to empty
 ******************************************************************************************
+14/05/2012       | Graham Neicho | FB5450 Reversed previous change, so Field 63 contains "MOD340NONE" once again
+******************************************************************************************
 -->
 
 <xsl:stylesheet version="1.0"
@@ -319,6 +321,7 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			<xsl:value-of select="$separator"/>
+			<xsl:text>MOD340NONE</xsl:text>
 		</xsl:for-each>
 	  
 	</xsl:template>

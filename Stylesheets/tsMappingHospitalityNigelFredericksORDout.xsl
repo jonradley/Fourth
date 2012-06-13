@@ -38,7 +38,23 @@
 
 			
 	<xsl:template match="TradeSimpleHeader"/>
-		
+	
+	<xsl:template match="ShipTo/ShipToLocationID/SuppliersCode">
+		<SuppliersCode><xsl:value-of select="/PurchaseOrder/TradeSimpleHeader/RecipientsCodeForSender"/></SuppliersCode>
+	</xsl:template>
+
+	<xsl:template match="@UnitOfMeasure">
+		<xsl:attribute name="UnitOfMeasure">
+			<xsl:choose>
+				<xsl:when test=".='CS'">PK</xsl:when>				
+				<xsl:otherwise>
+					<xsl:value-of select="."/>
+				</xsl:otherwise>
+			</xsl:choose>
+
+			
+		</xsl:attribute>
+	</xsl:template>
 
 	
 </xsl:stylesheet>
