@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>chr(13)chr(10)</ffsRecordSeparator>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>,</ffsFieldSeparator>
+		</ffsFieldSeparators>
+		<ffsSplitBatchRecord RecordPos="SYKCO"/>
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<TradeSimpleHeader>
+				<SendersCodeForRecipient RecordPos="SYKCO" LPos="8"/>
+			</TradeSimpleHeader>
+			<BatchDocuments>
+				<BatchDocument>
+					<Invoice>
+						<TradeSimpleHeader>
+							<SendersCodeForRecipient RecordPos="SYKCO" LPos="8"/>
+						</TradeSimpleHeader>
+						<InvoiceHeader>
+							<Buyer>
+								<BuyersLocationID>
+									<SuppliersCode RecordPos="SYKCO" LPos="8"/>
+								</BuyersLocationID>
+							</Buyer>
+							<ShipTo>
+								<ShipToLocationID>
+									<SuppliersCode RecordPos="SYKCO" LPos="8"/>
+								</ShipToLocationID>
+							</ShipTo>
+							<InvoiceReferences>
+								<InvoiceReference RecordPos="SYKCO" LPos="4"/>
+								<InvoiceDate RecordPos="SYKCO" LPos="10"/>
+								<TaxPointDate RecordPos="SYKCO" LPos="10"/>
+							</InvoiceReferences>
+							<!--PurchaseOrderConfirmationReferences>
+								<PurchaseOrderConfirmationReference RecordPos="SYKCO" LPos="2"/>
+								<PurchaseOrderConfirmationDate RecordPos="SYKCO" LPos="10"/>
+							</PurchaseOrderConfirmationReferences>
+							<ConfirmedDeliveryDetails>
+								<DeliveryDate RecordPos="SYKCO" LPos="10"/>
+							</ConfirmedDeliveryDetails-->
+							<Currency RecordPos="SYKCO" LPos="12"/>
+						</InvoiceHeader>
+						<InvoiceDetail>
+							<InvoiceLine>
+								<LineNumber RecordPos="SZKCO" LPos="8"/>
+								<PurchaseOrderReferences>
+									<PurchaseOrderReference RecordPos="SZKCO" LPos="20"/>
+									<PurchaseOrderDate RecordPos="SZKCO" LPos="56"/>
+								</PurchaseOrderReferences>
+								<DeliveryNoteReferences>
+									<DeliveryNoteReference RecordPos="SZKCO" LPos="20"/>
+									<DeliveryNoteDate RecordPos="SZKCO" LPos="58"/>
+								</DeliveryNoteReferences>
+								<ProductID>
+									<SuppliersProductCode RecordPos="SZKCO" LPos="22"/>
+								</ProductID>
+								<ProductDescription RecordPos="SZKCO" LPos="24"/>
+								<InvoicedQuantity name="UnitOfMeasure" RecordPos="SZKCO" LPos="28"/>
+								<PackSize RecordPos="SZKCO" LPos="26"/>
+								<UnitValueExclVAT RecordPos="SZKCO" LPos="32"/>
+								<LineValueExclVAT RecordPos="SZKCO" LPos="34"/>
+								<VATCode RecordPos="SZKCO" LPos="38"/>
+								<VATRate RecordPos="SZKCO" LPos="38"/>
+							</InvoiceLine>
+						</InvoiceDetail>
+						<InvoiceTrailer>
+							<!--NumberOfLines RecordPos="SZKCO" LPos="16"/-->
+						</InvoiceTrailer>
+					</Invoice>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>
