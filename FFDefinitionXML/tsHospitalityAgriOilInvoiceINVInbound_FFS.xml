@@ -1,0 +1,63 @@
+<!--
+**********************************************************************
+Alterations
+**********************************************************************
+Name			| Date			| Change
+**********************************************************************
+K Oshaughnessy	| 26/04/2012		| Created FFS
+**********************************************************************
+-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>sequenced</ffsRecordPositionType>
+		<ffsRecordSeparator>chr(13)chr(10)</ffsRecordSeparator>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>,</ffsFieldSeparator>
+		</ffsFieldSeparators>
+		<ffsSplitBatchRecord LPos="1"/>
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<BatchDocuments>
+				<BatchDocument>
+					<Invoice>
+						<TradeSimpleHeader>
+							<SendersCodeForRecipient RecordLength="34" RecordPos="*" LPos="4"/>
+						</TradeSimpleHeader>
+						<InvoiceHeader>
+							<Buyer>
+								<BuyersLocationID>
+									<SuppliersCode RecordLength="34" RecordPos="*" LPos="10"/>
+								</BuyersLocationID>
+							</Buyer>
+							<ShipTo>
+								<ShipToLocationID>
+									<SuppliersCode RecordLength="34" RecordPos="*" LPos="4"/>
+								</ShipToLocationID>
+							</ShipTo>
+							<InvoiceReferences>
+								<InvoiceReference RecordLength="34" RecordPos="*" LPos="5"/>
+								<InvoiceDate RecordLength="34" RecordPos="*" LPos="3"/>
+							</InvoiceReferences>
+						</InvoiceHeader>
+						<InvoiceDetail>
+							<InvoiceLine>
+								<PurchaseOrderReferences>
+									<PurchaseOrderReference RecordLength="34" RecordPos="*" LPos="16"/>
+								</PurchaseOrderReferences>
+								<ProductID>
+									<SuppliersProductCode RecordLength="34" RecordPos="*" LPos="17"/>
+								</ProductID>
+								<ProductDescription RecordLength="34" RecordPos="*" LPos="18"/>
+								<InvoicedQuantity RecordLength="34" RecordPos="*" LPos="14"/>
+								<UnitValueExclVAT RecordLength="34" RecordPos="*" LPos="21"/>
+								<VATCode RecordLength="34" RecordPos="*" LPos="7"/>
+								<VATRate RecordLength="34" RecordPos="*" LPos="8"/>
+							</InvoiceLine>
+						</InvoiceDetail>
+					</Invoice>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>

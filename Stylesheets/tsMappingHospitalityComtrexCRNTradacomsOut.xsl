@@ -78,13 +78,13 @@
 			<xsl:text>+</xsl:text>
 			<xsl:choose>
 				<xsl:when test="CreditNote/TradeSimpleHeader/TestFlag = 'false' or CreditNote/TradeSimpleHeader/TestFlag = '0'">
-					<xsl:text>CREFIL</xsl:text>
+					<xsl:text>CREHDR</xsl:text>
 				</xsl:when>
 				<xsl:otherwise><xsl:text>CRETES</xsl:text></xsl:otherwise>
 			</xsl:choose>
 		<xsl:value-of select="$sRecordSep"/>
 		
-		<xsl:text>MHD=1+CREFIL:9</xsl:text>
+		<xsl:text>MHD=1+CREHDR:9</xsl:text>
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:text>TYP=</xsl:text>
@@ -187,12 +187,12 @@
 			<xsl:value-of select="$sRecordSep"/>
 	
 			<xsl:text>CLO=</xsl:text>
-			<xsl:if test="CreditNoteHeader/ShipTo/ShipToLocationID/GLN != '5555555555555'">
-				<xsl:value-of select="CreditNoteHeader/ShipTo/ShipToLocationID/GLN"/>
+			<xsl:if test="InvoiceHeader/ShipTo/ShipToLocationID/GLN != '5555555555555'">
+				<xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/GLN"/>
 			</xsl:if>
 			<xsl:text>:</xsl:text>
 			<!-- truncate to 17 CLOC 2 = 3001 = AN..17 -->
-			<xsl:value-of select="js:msSafeText(string(CreditNoteHeader/Supplier/SuppliersLocationID/BuyersCode),17)"/>
+			<xsl:value-of select="js:msSafeText(string(CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode),17)"/>
 			<xsl:text>:</xsl:text>
 			<!-- truncate to 17 CLOC 3 = 300A = AN..17 -->
 			<xsl:value-of select="js:msSafeText(string(CreditNoteHeader/ShipTo/ShipToLocationID/SuppliersCode),17)"/>
@@ -209,7 +209,7 @@
 			<xsl:value-of select="js:msSafeText(string(CreditNoteHeader/ShipTo/ShipToAddress/PostCode),8)"/>
 			<xsl:value-of select="$sRecordSep"/>
 	
-			<xsl:text>IRF=</xsl:text>
+			<xsl:text>CRF=</xsl:text>
 			<xsl:call-template name="msCheckField">
 				<xsl:with-param name="vobjNode" select="CreditNoteHeader/CreditNoteReferences/CreditNoteReference"/>
 				<xsl:with-param name="vnLength" select="17"/>
@@ -234,59 +234,18 @@
 					<xsl:sort select="DeliveryNoteReferences/DeliveryNoteReference" data-type="text"/>
 					<xsl:variable name="DNReference" select="concat('¬',DeliveryNoteReferences/DeliveryNoteReference)"/>
 					
-						<!-- now that we have our distinct and sorted list of lines we can output the required delivery line and associated detail lines-->
-						<xsl:text>ODD=</xsl:text>
-						<xsl:variable name="DeliveryNumber" select="position()"/>					
-						<xsl:value-of select="$DeliveryNumber"/>
-						<xsl:text>+</xsl:text>
-						<!-- truncate to 17 ORNO 1 = 5010 = AN..17 -->
-						<xsl:call-template name="msCheckField">
-							<xsl:with-param name="vobjNode" select="PurchaseOrderReferences/PurchaseOrderReference"/>
-							<xsl:with-param name="vnLength" select="17"/>
-						</xsl:call-template>
-						<xsl:text>::</xsl:text>
-						<xsl:call-template name="msFormateDate">
-							<xsl:with-param name="vsUTCDate" select="PurchaseOrderReferences/PurchaseOrderDate"/>
-						</xsl:call-template>					
-						<xsl:text>+</xsl:text>
-						<!-- truncate to 17 DELN 1 = 5040 = AN..17 -->
-						<xsl:choose>
-							<xsl:when test="DeliveryNoteReferences/DeliveryNoteReference!=''">						
-								<xsl:call-template name="msCheckField">
-									<xsl:with-param name="vobjNode" select="DeliveryNoteReferences/DeliveryNoteReference"/>
-									<xsl:with-param name="vnLength" select="17"/>
-								</xsl:call-template>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:value-of select="/CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteReference"/>
-							</xsl:otherwise>
-						</xsl:choose>
+									
+						<xsl:text>OIR=</xsl:text>						
+						<xsl:text>1+</xsl:text>
+						<xsl:text>+++::</xsl:text>											
 						<xsl:text>:</xsl:text>
-						<xsl:choose>
-							<xsl:when test="DeliveryNoteReferences/DeliveryNoteDate!=''">
-								<xsl:call-template name="msFormateDate">
-									<xsl:with-param name="vsUTCDate" select="DeliveryNoteReferences/DeliveryNoteDate"/>
-								</xsl:call-template>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:call-template name="msFormateDate">
-									<xsl:with-param name="vsUTCDate" select="/CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteDate"/>
-								</xsl:call-template>
-							</xsl:otherwise>
-						</xsl:choose>
-						
-						<xsl:text>+++:</xsl:text>
-						<xsl:call-template name="msFormateDate">
-							<xsl:with-param name="vsUTCDate" select="DeliveryNoteReferences/DespatchDate"/>
-						</xsl:call-template>
 						<xsl:value-of select="$sRecordSep"/>
 						
 						<!-- now output all the lines for the current PO reference and DN reference combination -->
 						<xsl:for-each select="key('keyLinesByPOAndDN',concat($POReference,'::',$DNReference))">
 						
-							<xsl:text>ILD=</xsl:text>
-							<xsl:value-of select="$DeliveryNumber"/>
-							<xsl:text>+</xsl:text>
+							<xsl:text>CLD=</xsl:text>							
+							<xsl:text>1+</xsl:text>
 							<xsl:value-of select="position()"/>
 							<xsl:text>+</xsl:text>
 							<!-- use GTIN here if 13 digit EAN number -->
@@ -312,15 +271,25 @@
 								<xsl:with-param name="vnLength" select="30"/>
 							</xsl:call-template>
 							<xsl:text>+:</xsl:text>
-							<xsl:value-of select="format-number(CreditedQuantity,'0')"/>
+							<xsl:value-of select="translate(format-number(CreditedQuantity,'#.000'),'.','')"/>
 							<xsl:text>:</xsl:text>
-							<xsl:value-of select="CreditedQuantity/@UnitOfMeasure"/>
+						<xsl:choose>
+								<xsl:when test="InvoicedQuantity /@UnitOfMeasure='CS'">PK</xsl:when>
+								<xsl:when test="InvoicedQuantity /@UnitOfMeasure='KGM'">KG</xsl:when>
+								<xsl:when test="InvoicedQuantity /@UnitOfMeasure='DZN'">DZ</xsl:when>
+								<xsl:otherwise><xsl:value-of select="InvoicedQuantity /@UnitOfMeasure"/></xsl:otherwise>
+							</xsl:choose>	
 							<xsl:text>+</xsl:text>
 							<xsl:value-of select="format-number(CreditedQuantity,'0')"/>
 							<xsl:text>:</xsl:text>
 							<xsl:value-of select="translate(format-number(CreditedQuantity,'#.000'),'.','')"/>
 							<xsl:text>:</xsl:text>
-							<xsl:value-of select="CreditedQuantity/@UnitOfMeasure"/>
+							<xsl:choose>
+								<xsl:when test="CreditedQuantity/@UnitOfMeasure='CS'">PK</xsl:when>
+								<xsl:when test="CreditedQuantity/@UnitOfMeasure='KGM'">KG</xsl:when>
+								<xsl:when test="CreditedQuantity/@UnitOfMeasure='DZN'">DZ</xsl:when>
+								<xsl:otherwise><xsl:value-of select="CreditedQuantity/@UnitOfMeasure"/></xsl:otherwise>
+							</xsl:choose>
 							<xsl:text>+</xsl:text>
 							<xsl:value-of select="translate(format-number(UnitValueExclVAT,'#.0000'),'.','')"/>
 							<xsl:text>+</xsl:text>
@@ -341,7 +310,7 @@
 			
 			<xsl:for-each select="CreditNoteTrailer/VATSubTotals/VATSubTotal">
 			
-				<xsl:text>STL=</xsl:text>
+				<xsl:text>CST=</xsl:text>
 				<xsl:value-of select="position()"/>
 				<xsl:text>+</xsl:text>
 				<!-- VATC = 4030 = AN..1 -->
@@ -370,7 +339,7 @@
 			
 			</xsl:for-each>
 			
-			<xsl:text>TLR=</xsl:text>	
+			<xsl:text>CTR=</xsl:text>	
 			<!--xsl:value-of select="CreditNoteTrailer/NumberOfLines"/-->
 			<xsl:text>1+</xsl:text>
 			<xsl:value-of select="translate(format-number(CreditNoteTrailer/DiscountedLinesTotalExclVAT,'#.00'),'.','')"/>

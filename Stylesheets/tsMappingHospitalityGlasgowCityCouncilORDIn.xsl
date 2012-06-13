@@ -8,8 +8,8 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 =========================================================================================
 -->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="fo msxsl">
-	<xsl:template match="cXML">	
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="fo msxsl" xmlns:ns0="http://access/prototypes/PECOSCXML">
+	<xsl:template match="ns0:cXML">	
 		<BatchRoot>		
 			<xsl:for-each select="Request/OrderRequest">			
 				<PurchaseOrder>
@@ -88,11 +88,10 @@
 								<xsl:value-of select="substring-before(OrderRequestHeader/@orderDate,'T')"/>
 							</PurchaseOrderDate>
 						</PurchaseOrderReferences>
-						<xsl:if test="ItemOut[1]/@requestedDeliveryDate!='' and ItemOut[1]/@requestedDeliveryDate!=' '">
+						<xsl:if test="ItemOut[1]/@requestedDeliveryDate!='' and ItemOut[1]/@requestedDeliveryDate!=' ' and  ItemOut[1]/@requestedDeliveryDate!='0000-00-00T00:00:00'">
 							<OrderedDeliveryDetails>
-								<DeliveryDate>
-									<xsl:value-of select="ItemOut[1]/@requestedDeliveryDate"/>
-									<!--xsl:value-of select="substring-before(ItemOut[1]/@requestedDeliveryDate,'T')"/-->
+								<DeliveryDate>									
+									<xsl:value-of select="substring-before(ItemOut[1]/@requestedDeliveryDate,'T')"/>
 								</DeliveryDate>
 								<xsl:if test="OrderRequestHeader/Extrinsic[@name='DeliveryInstruction'] != ''">
 									<SpecialDeliveryInstructions>
@@ -118,7 +117,11 @@
 								</ProductDescription>
 								<OrderedQuantity>
 									<xsl:attribute name="UnitOfMeasure">
-										<xsl:value-of select="ItemDetail/UnitOfMeasure"/>
+										<xsl:choose>
+											<xsl:when test="ItemDetail/UnitOfMeasure='KG'">KGM</xsl:when>
+											<xsl:when test="ItemDetail/UnitOfMeasure='CA'">CS</xsl:when>								
+											<xsl:otherwise><xsl:value-of select="ItemDetail/UnitOfMeasure"/></xsl:otherwise>
+										</xsl:choose>										
 									</xsl:attribute>
 									<xsl:value-of select="@quantity"/>
 								</OrderedQuantity>

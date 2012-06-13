@@ -7,15 +7,17 @@ Alterations
 **********************************************************************
 Name			| Date				| Change
 **********************************************************************
-     ?     	|       ?    		| Created Module
+     ?     		|       ?    			| Created Module
 **********************************************************************
-R Cambridge	|	2008-10-15		| PO ref mod	
+R Cambridge 	|	2008-10-15	| PO ref mod	
 **********************************************************************
-Lee Boyton        | 2009-04-28 | 2867. Translate product codes for SSP
-                          |                     | to ensure they are unique (product code plus UOM on the end).				
+Lee Boyton  	| 2009-04-28 		| 2867. Translate product codes for SSP
+                    |                     	| to ensure they are unique (product code plus UOM on the end).				
 **********************************************************************
-H Robson		|	2012-02-01		| 5226 change Aramark onto the default way of handling the Product Code			
-*******************************************************************-->
+H Robson		|	2012-02-01	| 5226 change Aramark onto the default way of handling the Product Code
+*********************************************************************		
+KOshaughnessy| 2012-05-24	| 5490 Change for new Olympic vendor agreement (Compass)	
+*********************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
 	
@@ -41,6 +43,7 @@ H Robson		|	2012-02-01		| 5226 change Aramark onto the default way of handling t
 			<xsl:when test="$accountCode = 'ARANET'"><xsl:value-of select="$ARAMARK"/></xsl:when>
 			<xsl:when test="$accountCode = 'BEACON'"><xsl:value-of select="$BEACON_PURCHASING"/></xsl:when>
 			<xsl:when test="$accountCode = 'MIL14T'"><xsl:value-of select="$COMPASS"/></xsl:when>
+			<xsl:when test="$accountCode = 'COM2012T'"><xsl:value-of select="$COMPASS"/></xsl:when>
 			<xsl:when test="$accountCode = 'KIN04D'"><xsl:value-of select="$COOP"/></xsl:when>
 			<xsl:when test="$accountCode = 'KIN04T'"><xsl:value-of select="$COOP"/></xsl:when>
 			<xsl:when test="$accountCode = 'fishworks'"><xsl:value-of select="$FISHWORKS"/></xsl:when>
@@ -108,14 +111,7 @@ H Robson		|	2012-02-01		| 5226 change Aramark onto the default way of handling t
 		<TradeSimpleHeader>
 			<SendersCodeForRecipient>
 				<xsl:choose>
-					<!--xsl:when test="SendersBranchReference = 'MIL14T'">MIL14T</xsl:when>
-					<xsl:when test="SendersBranchReference = 'FMC01T'">FMC01T</xsl:when>
-					<xsl:when test="SendersBranchReference = 'TES01T'">TES01T</xsl:when>					
-					<xsl:when test="SendersBranchReference = 'TES08T'">TES08T</xsl:when>					
-					<xsl:when test="SendersBranchReference = 'TES12T'">TES12T</xsl:when>					
-					<xsl:when test="SendersBranchReference = 'TES15T'">TES15T</xsl:when>					
-					<xsl:when test="SendersBranchReference = 'TES25T'">TES25T</xsl:when-->	
-					
+				
 					<xsl:when test="$CustomerFlag = $COMPASS or $CustomerFlag = $TESCO or $CustomerFlag = $BEACON_PURCHASING">
 						<xsl:value-of select="SendersBranchReference"/>
 					</xsl:when>			
@@ -127,44 +123,24 @@ H Robson		|	2012-02-01		| 5226 change Aramark onto the default way of handling t
 				</xsl:choose>
 			</SendersCodeForRecipient>
 			
-			<!--xsl:if test="SendersBranchReference = 'MIL14T' or SendersBranchReference = 'FMC01T' or SendersBranchReference = 'TES01T'"-->
-			<!--xsl:if test="SendersBranchReference">
-			<xsl:if test="contains('MIL14T~FMC01T~TES01T~TES08T~TES12T~TES15T~TES25T',SendersBranchReference)"-->
 			<xsl:if test="$CustomerFlag = $COMPASS or $CustomerFlag = $TESCO or $CustomerFlag = $ARAMARK">
 				<SendersBranchReference>
 					<xsl:value-of select="SendersBranchReference"/>
 				</SendersBranchReference>
 			</xsl:if>
-			<!--/xsl:if>
-			</xsl:if-->
 		</TradeSimpleHeader>
 	</xsl:template>
-	
-	<!--xsl:template match="ShipToLocationID">
-		<ShipToLocationID>
-			<SuppliersCode>
-				<xsl:value-of select="SuppliersCode"/>
-			</SuppliersCode>
-			<xsl:if test="//TradeSimpleHeader/SendersBranchReference = 'MIL14T' or //TradeSimpleHeader/SendersBranchReference = 'FMC01T'">
-				<BuyersCode>
-					<xsl:value-of select="SuppliersCode"/>
-				</BuyersCode>
-			</xsl:if>
-		</ShipToLocationID>
-	</xsl:template-->
 	
 	<xsl:template match="ShipTo">
 		<ShipTo>
 			<xsl:if test="ShipToLocationID or $CustomerFlag = $TESCO">
 				<ShipToLocationID>
-					<!--xsl:if test="//TradeSimpleHeader/SendersBranchReference != '' and contains('TES01T~TES08T~TES12T~TES15T~TES25T',//TradeSimpleHeader/SendersBranchReference)"-->
 					<xsl:if test="$CustomerFlag = $TESCO">
 						<GLN>
 							<xsl:value-of select="ShipToAddress/AddressLine1"/>
 						</GLN>
 					</xsl:if>
 					<xsl:copy-of select="ShipToLocationID/SuppliersCode"/>
-					<!--xsl:if test="//TradeSimpleHeader/SendersBranchReference = 'MIL14T' or //TradeSimpleHeader/SendersBranchReference = 'FMC01T'"-->
 					<xsl:if test="$CustomerFlag = $COMPASS or $CustomerFlag = $BEACON_PURCHASING">
 						<BuyersCode>
 							<xsl:value-of select="ShipToLocationID/SuppliersCode"/>
@@ -179,7 +155,6 @@ H Robson		|	2012-02-01		| 5226 change Aramark onto the default way of handling t
 	
 	<xsl:template match="InvoiceHeader/Supplier">
 		<Supplier>
-			<!--xsl:if test="//TradeSimpleHeader/SendersBranchReference = 'MIL14T' or //TradeSimpleHeader/SendersBranchReference = 'FMC01T'"-->
 			<xsl:if test="$CustomerFlag = $COMPASS">
 				<SuppliersLocationID>
 					<SuppliersCode>Bibendum</SuppliersCode>
@@ -189,8 +164,6 @@ H Robson		|	2012-02-01		| 5226 change Aramark onto the default way of handling t
 			<xsl:copy-of select="SuppliersAddress"/>
 		</Supplier>
 	</xsl:template>
-	
-
 	
 	<!-- sort all the dates in the file -->
 	<xsl:template match="InvoiceHeader/BatchInformation/FileCreationDate">
@@ -220,16 +193,6 @@ H Robson		|	2012-02-01		| 5226 change Aramark onto the default way of handling t
 			</xsl:element>
 		</xsl:if>
 	</xsl:template>
-	<!-- Currently not provided -->
-	<!--xsl:template match="InvoiceLine/PurchaseOrderReferences/PurchaseOrderDate">
-		<xsl:if test=". != ''">
-			<xsl:element name="PurchaseOrderDate" >
-				<xsl:call-template name="fixDate">
-					<xsl:with-param name="sDate" select="."/>
-				</xsl:call-template>
-			</xsl:element>
-		</xsl:if>
-	</xsl:template-->
 	<xsl:template match="InvoiceLine/DeliveryNoteReferences/DeliveryNoteDate">
 		<xsl:if test=". != ''">
 			<xsl:element name="DeliveryNoteDate" >
@@ -239,16 +202,6 @@ H Robson		|	2012-02-01		| 5226 change Aramark onto the default way of handling t
 			</xsl:element>
 		</xsl:if>
 	</xsl:template>
-	<!-- Currently not provided -->
-	<!--xsl:template match="InvoiceLine/DeliveryNoteReferences/DeliveryNoteDate">
-		<xsl:if test=". != ''">
-			<xsl:element name="DeliveryNoteDate" >
-				<xsl:call-template name="fixDate">
-					<xsl:with-param name="sDate" select="."/>
-				</xsl:call-template>
-			</xsl:element>
-		</xsl:if>
-	</xsl:template-->
 	
 	<!-- Sort out some Addresses -->
 	<xsl:template match="BuyersAddress">
@@ -276,7 +229,6 @@ H Robson		|	2012-02-01		| 5226 change Aramark onto the default way of handling t
 			</xsl:if>
 		</xsl:element>
 	</xsl:template>
-
 
 	<xsl:template match="SuppliersAddress">
 		<xsl:element name="SuppliersAddress">
@@ -329,7 +281,6 @@ H Robson		|	2012-02-01		| 5226 change Aramark onto the default way of handling t
 			</xsl:if>
 		</xsl:element>
 	</xsl:template>
-
 	
 	<!-- Sort out some numbers -->
 	<xsl:template match="VATRate">
@@ -387,11 +338,6 @@ H Robson		|	2012-02-01		| 5226 change Aramark onto the default way of handling t
 			<xsl:value-of select="format-number(. div 100,'0.00')"/>
 		</xsl:element>
 	</xsl:template>
-	<!--xsl:template match="UnitValueExclVAT">
-		<xsl:element name="UnitValueExclVAT">
-			<xsl:value-of select="format-number(. div 10000,'0.0000')"/>
-		</xsl:element>
-	</xsl:template-->
 	<xsl:template match="LineValueExclVAT">
 		<xsl:element name="LineValueExclVAT">
 			<xsl:value-of select="format-number(. div 10000,'0.0000')"/>
@@ -498,7 +444,6 @@ H Robson		|	2012-02-01		| 5226 change Aramark onto the default way of handling t
 			<xsl:if test="$UnitsInOrderedPack != 	''">
 				<!-- Round to 3dp for Compass or 2 for everyone else -->
 				<xsl:choose>
-					<!--xsl:when test="../../../TradeSimpleHeader/SendersBranchReference = 'MIL14T' or ../../../TradeSimpleHeader/SendersBranchReference = 'FMC01T'"-->
 					<xsl:when test="$CustomerFlag = $COMPASS">
 						<xsl:value-of select="format-number($UnitValue div ($UnitsInPricedPack div $UnitsInOrderedPack),'0.000')"/>
 					</xsl:when>
@@ -520,16 +465,6 @@ H Robson		|	2012-02-01		| 5226 change Aramark onto the default way of handling t
 		</xsl:element>
 	</xsl:template>
 
-	<!--xsl:template match="TradeAgreement">
-		<xsl:if test="normalize-space(ContractReference) != 'TRADE'">
-			<TradeAgreement>
-				<ContractReference>
-					<xsl:value-of select="normalize-space(ContractReference)"/>
-				</ContractReference>
-			</TradeAgreement>
-		</xsl:if>
-	</xsl:template-->
-	
 	<xsl:template match="PurchaseOrderReferences">
 		
 		<PurchaseOrderReferences>
@@ -540,9 +475,7 @@ H Robson		|	2012-02-01		| 5226 change Aramark onto the default way of handling t
 				
 					<xsl:when test="$CustomerFlag = $TESCO">
 					
-						<!-- PO ref and date are stored in PO ref field
-								format = nnn-nnnnn yymmdd or nnnnnnnn yymmdd -->
-								
+						<!-- PO ref and date are stored in PO ref field format = nnn-nnnnn yymmdd or nnnnnnnn yymmdd -->
 						<xsl:variable name="allNumericPORef" select="translate(substring-before(PurchaseOrderReference,' '),'-','')"/>
 						
 						<xsl:value-of select="$allNumericPORef"/>
@@ -574,7 +507,6 @@ H Robson		|	2012-02-01		| 5226 change Aramark onto the default way of handling t
 				
 				</PurchaseOrderDate>
 						
-			
 			</xsl:if>
 				
 			<xsl:if test="not(normalize-space(TradeAgreement/ContractReference) = 'TRADE' or normalize-space(TradeAgreement/ContractReference) = '')">
@@ -588,8 +520,6 @@ H Robson		|	2012-02-01		| 5226 change Aramark onto the default way of handling t
 		</PurchaseOrderReferences>
 		
 	</xsl:template>
-
-
 
 	<!-- Sort VATCodes -->
 	<xsl:template match="VATCode">
@@ -607,7 +537,6 @@ H Robson		|	2012-02-01		| 5226 change Aramark onto the default way of handling t
 		</xsl:attribute>
 	</xsl:template>
 
-	
 	<xsl:template match="LineNumber">
 	</xsl:template>
 	
