@@ -244,8 +244,7 @@
 						<!-- now output all the lines for the current PO reference and DN reference combination -->
 						<xsl:for-each select="key('keyLinesByPOAndDN',concat($POReference,'::',$DNReference))">
 						
-							<xsl:text>CLD=</xsl:text>							
-							<xsl:text>1+</xsl:text>
+							<xsl:text>CLD=</xsl:text>
 							<xsl:value-of select="position()"/>
 							<xsl:text>+</xsl:text>
 							<!-- use GTIN here if 13 digit EAN number -->
