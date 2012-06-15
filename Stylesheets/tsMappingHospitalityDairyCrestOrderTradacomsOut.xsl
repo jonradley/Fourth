@@ -223,7 +223,11 @@
 					<xsl:with-param name="vnLength" select="30"/>
 				</xsl:call-template>
 				<xsl:text>+::</xsl:text>
-				<xsl:value-of select="OrderedQuantity/@UnitOfMeasure"/>
+				<xsl:choose>
+					<xsl:when test="OrderedQuantity/@UnitOfMeasure='EA'">1</xsl:when>
+					<xsl:when test="OrderedQuantity/@UnitOfMeasure='KGM'">KG</xsl:when>
+					<xsl:otherwise><xsl:value-of select="OrderedQuantity/@UnitOfMeasure"/></xsl:otherwise>
+				</xsl:choose>				
 				<xsl:text>+</xsl:text>
 				<xsl:value-of select="format-number(OrderedQuantity,'0')"/>
 				<xsl:text>:</xsl:text>
