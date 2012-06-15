@@ -4,7 +4,7 @@
 		<BatchRoot>
 			<Batch>
 				<BatchDocuments>
-					<BatchDocument DocumentTypeno="86">
+					<BatchDocument DocumentTypeNo="86">
 						<Invoice>
 							<xsl:for-each select="Header">
 								<TradeSimpleHeader>
