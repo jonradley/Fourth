@@ -10,9 +10,9 @@
 '******************************************************************************************
 ' Date             | Name              | Description of modification
 '******************************************************************************************
-' 10/05/2011  | M Dimant | Created
+' 10/05/2011  | M Dimant | Created Changes to accomodate inclusion of UOM by Comtrex
 '******************************************************************************************
-
+' 11/06/2012  | M Dimant | 5532: Changes to include correct UOM
 '******************************************************************************************
 
 -->
@@ -292,7 +292,15 @@
 										</InvoicedQuantity>
 										<xsl:if test="CreditQuantity">
 											<CreditedQuantity>
-												<!--xsl:attribute name="UnitOfMeasure"><xsl:value-of select="CreditQuantity/@unitCode"/></xsl:attribute-->
+												<xsl:attribute name="UnitOfMeasure">											
+													<xsl:choose>
+														<xsl:when test="InvoiceQuantity/@unitCode = 'KG'">KGM</xsl:when>
+														<xsl:when test="InvoiceQuantity/@unitCode = 'NO'">EA</xsl:when>
+														<xsl:when test="InvoiceQuantity/@unitCode = 'DZ'">DZN</xsl:when>
+														<xsl:when test="InvoiceQuantity/@unitCode = 'PK'">CS</xsl:when>
+														<xsl:when test="InvoiceQuantity/@unitCode = 'BX'">CS</xsl:when>																										<xsl:otherwise><xsl:value-of select="InvoiceQuantity/@unitCode"/></xsl:otherwise>	
+													</xsl:choose>		
+												</xsl:attribute>
 												<xsl:value-of select="format-number(CreditQuantity, '0.000')"/>
 											</CreditedQuantity>
 										</xsl:if>
