@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+*******************************************************************************************************************
+21/06/2012	| Mark Emanuel	| FB 5529 New Credit Note Mapper for John Sheppard
+*******************************************************************************************************************
+-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 	<xsl:output method="xml" encoding="utf-8"/>
 	
 	<!-- we use constants for most default values -->
-	<xsl:variable name="defaultTaxCategory" select="'S'"/>
-	<xsl:variable name="NewTaxRate" select="'20.0'"/>
-	<xsl:variable name="defaultTaxRate" select="'17.5'"/>
-	<xsl:variable name="defaultDocumentStatus" select="'Original'"/>
-	<xsl:variable name="defaultUnitOfMeasure" select="'EA'"/>
-	<xsl:variable name="defaultCreditQuantity" select="'1'"/>
 	<xsl:variable name="defaultDocumentDiscountRate" select="'0'"/>
 	<xsl:variable name="defaultSettlementDiscountRate" select="'0'"/>
-	<xsl:variable name="defaultDiscountedLinesTotalExclVAT" select="'0'"/>
 	<xsl:variable name="defaultDocumentDiscountValue" select="'0'"/>
-	<xsl:variable name="defaultSettlementDiscountValue" select="'0'"/>
 	
 	<xsl:template match="/CreditNotes">
 	
@@ -202,21 +199,6 @@
 									</xsl:choose>
 								</SettlementDiscountRate>
 							
-							<!--
-								<VATSubTotals>
-									<xsl:for-each select="CreditTotals">
-										<VATSubTotal>
-											<VATCode>
-												<xsl:value-of select="VATRateTotals/VATDetails/TaxCategory"/>										
-											</VATCode>
-											<VATRate>
-												<xsl:value-of select="VATRateTotals/VATDetails/TaxRate"/>
-											</VATRate>
-		
-										</VATSubTotal>
-									</xsl:for-each>
-									</VATSubTotals>
-							-->		
 									<!-- DiscountedLinesTotalExclVAT is mandatory in our schema but not EAN.UCC. If we find none then just default the value -->
 									<DiscountedLinesTotalExclVAT>
 										<xsl:value-of select="format-number(CreditTotals/CreditNoteSubTotal, '0.00')"/>

@@ -1,20 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+*******************************************************************************************************************
+21/06/2012	| Mark Emanuel	| FB 5529 New Invoice and Delivery Note Mapper for John Sheppard
+*******************************************************************************************************************
+-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 	<xsl:output method="xml" encoding="utf-8"/>
 	
 	<!-- we use constants for default values -->
-	<xsl:variable name="defaultTaxCategory" select="'S'"/>
-	<xsl:variable name="defaultTaxRate" select="'17.5'"/>
-	<xsl:variable name="defaultDocumentStatus" select="'Original'"/>
-	<xsl:variable name="defaultUnitOfMeasure" select="'EA'"/>
-	<xsl:variable name="defaultInvoiceQuantity" select="'1'"/>
 	<xsl:variable name="defaultDocumentDiscountRate" select="'0'"/>
 	<xsl:variable name="defaultSettlementDiscountRate" select="'0'"/>
-	<xsl:variable name="defaultDiscountedLinesTotalExclVAT" select="'0'"/>
 	<xsl:variable name="defaultDocumentDiscountValue" select="'0'"/>
-	<xsl:variable name="defaultSettlementDiscountValue" select="'0'"/>
-	<xsl:variable name="creditLineIndicator" select="'2'"/>
-	<xsl:variable name="invoiceLineIndicator" select="'1'"/>
 	
 	<xsl:template match="/Invoices">
 	
@@ -186,16 +182,16 @@
 											<xsl:value-of select="count(InvoiceItem)"/>
 										</NumberOfLines>
 										<NumberOfItems>
-											<xsl:value-of select="format-number(sum	(InvoiceItem/InvoiceQuantity),'0.00')"/>
+											<xsl:value-of select="format-number(sum(InvoiceItem/InvoiceQuantity),'0.00')"/>
 										</NumberOfItems>
 										
 									<DocumentDiscountRate>
 										<xsl:choose>
 											<xsl:when test="InvoiceTotals/DocumentDiscountRate">
-												<xsl:value-of select="format-number	(InvoiceTotals/DocumentDiscountRate, '0.00')"/>
+												<xsl:value-of select="format-number(InvoiceTotals/DocumentDiscountRate, '0.00')"/>
 											</xsl:when>
 											<xsl:otherwise>
-												<xsl:value-of select="format-number	($defaultDocumentDiscountRate, '0.00')"/>
+												<xsl:value-of select="format-number($defaultDocumentDiscountRate, '0.00')"/>
 											</xsl:otherwise>
 										</xsl:choose>
 									</DocumentDiscountRate>
@@ -203,62 +199,50 @@
 									<SettlementDiscountRate>
 										<xsl:choose>
 											<xsl:when 	test="InvoiceTotals/SettlementDiscountRate">
-												<xsl:value-of select="format-number	(InvoiceTotals/SettlementDiscountRate, '0.00')"/>
+												<xsl:value-of select="format-number(InvoiceTotals/SettlementDiscountRate, '0.00')"/>
 											</xsl:when>
 											<xsl:otherwise>
-												<xsl:value-of select="format-number	($defaultSettlementDiscountRate, '0.00')"/>
+												<xsl:value-of select="format-number($defaultSettlementDiscountRate, '0.00')"/>
 											</xsl:otherwise>
 										</xsl:choose>
 									</SettlementDiscountRate>
 									
-									<!-- <VATSubTotals> this is not valid, let the InFiller 	put in valid VATSubTotals HR 2012-06-11
-										<xsl:for-each select="InvoiceTotals">
-											<VATSubTotal>
-												<VATCode>
-													<xsl:value-of 	select="VATRateTotals/VATDetails/TaxCategory"/>											
-												</VATCode>
-												<VATRate>
-													<xsl:value-of 	select="VATRateTotals/VATDetails/TaxRate"/>
-												</VATRate>			
-											</VATSubTotal>
-										</xsl:for-each>
-									</VATSubTotals> -->
-									
+												
 									<!-- DiscountedLinesTotalExclVAT is mandatory in our 	schema but not EAN.UCC. If we find none then just default the value -->
 									<DiscountedLinesTotalExclVAT>
-										<xsl:value-of select="format-number	(InvoiceTotals/InvoiceSubTotal, '0.00')"/>
+										<xsl:value-of select="format-number(InvoiceTotals/InvoiceSubTotal, '0.00')"/>
 									</DiscountedLinesTotalExclVAT>
 									<!-- DocumentDiscount is mandatory in our schema but not 	EAN.UCC. If we find none then just default the value -->
 									<DocumentDiscount>
-										<xsl:value-of select="format-number	($defaultDocumentDiscountValue,'0.00')"/>
+										<xsl:value-of select="format-number($defaultDocumentDiscountValue,'0.00')"/>
 									</DocumentDiscount>
 									<DocumentTotalExclVAT>
-										<xsl:value-of select="format-number	(InvoiceTotals/InvoiceSubTotal, '0.00')"/>
+										<xsl:value-of select="format-number(InvoiceTotals/InvoiceSubTotal, '0.00')"/>
 									</DocumentTotalExclVAT>
 									<!-- SettlementDiscount is mandatory in our schema but not 	EAN.UCC. If we find none then just default the value -->
 									<xsl:if test="InvoiceTotals/SettlementDiscountTotal">
 										<SettlementDiscount>
-											<xsl:value-of select="format-number	(InvoiceTotals/SettlementDiscountTotal, '0.00')"/>
+											<xsl:value-of select="format-number(InvoiceTotals/SettlementDiscountTotal, '0.00')"/>
 										</SettlementDiscount>
 									</xsl:if>
 									<!-- we need a SettlementTotalExclVAT internally but it is 	optional in EAN.UCC so we work it out if it is missing -->
 									<xsl:if test="InvoiceTotals/SettlementSubTotal">
 										<SettlementTotalExclVAT>
-											<xsl:value-of select="format-number	(InvoiceTotals/SettlementSubTotal, '0.00')"/>
+											<xsl:value-of select="format-number(InvoiceTotals/SettlementSubTotal, '0.00')"/>
 										</SettlementTotalExclVAT>
 									</xsl:if>
 									<!-- we need a VATAmount internally but it is optional in 	EAN.UCC so we work it out if it is missing -->
 									<xsl:if test="InvoiceTotals/VATTotal">
 										<VATAmount>
-											<xsl:value-of select="format-number	(InvoiceTotals/VATTotal, '0.00')"/>
+											<xsl:value-of select="format-number(InvoiceTotals/VATTotal, '0.00')"/>
 										</VATAmount>
 									</xsl:if>
 									<DocumentTotalInclVAT>
-										<xsl:value-of select="format-number	(InvoiceTotals/TotalPayable, '0.00')"/>
+										<xsl:value-of select="format-number(InvoiceTotals/TotalPayable, '0.00')"/>
 									</DocumentTotalInclVAT>
 									<!-- we need a SettlementTotalInclVAT internally but it is 	optional in EAN.UCC so we work it out if it is missing -->
 									<SettlementTotalInclVAT>
-										<xsl:value-of select="format-number	(InvoiceTotals/TotalPayable, '0.00')"/>
+										<xsl:value-of select="format-number(InvoiceTotals/TotalPayable, '0.00')"/>
 									</SettlementTotalInclVAT>
 	
 										
