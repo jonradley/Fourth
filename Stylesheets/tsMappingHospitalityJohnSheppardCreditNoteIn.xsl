@@ -199,30 +199,30 @@
 									</xsl:choose>
 								</SettlementDiscountRate>
 							
-									<!-- DiscountedLinesTotalExclVAT is mandatory in our schema but not EAN.UCC. If we find none then just default the value -->
+									<!-- DiscountedLinesTotalExclVAT is mandatory in our schema but not John Sheppard If we find none then just default the value -->
 									<DiscountedLinesTotalExclVAT>
 										<xsl:value-of select="format-number(CreditTotals/CreditNoteSubTotal, '0.00')"/>
 									</DiscountedLinesTotalExclVAT>
-									<!-- DocumentDiscount is mandatory in our schema but not EAN.UCC. If we find none then just default the value -->
+									<!-- DocumentDiscount is mandatory in our schema but not John Sheppard If we find none then just default the value -->
 									<DocumentDiscount>
 										<xsl:value-of select="format-number($defaultDocumentDiscountValue,'0.00')"/>
 									</DocumentDiscount>
 									<DocumentTotalExclVAT>
 										<xsl:value-of select="format-number(CreditTotals/CreditNoteSubTotal, '0.00')"/>
 									</DocumentTotalExclVAT>
-									<!-- SettlementDiscount is mandatory in our schema but not EAN.UCC. If we find none then just default the value -->
+									<!-- SettlementDiscount is mandatory in our schema but not John Sheppard If we find none then just default the value -->
 									<xsl:if test="InvoiceTotals/SettlementDiscountTotal">
 										<SettlementDiscount>
 											<xsl:value-of select="format-number(CreditTotals/SettlementDiscountTotal, '0.00')"/>
 										</SettlementDiscount>
 									</xsl:if>
-									<!-- we need a SettlementTotalExclVAT internally but it is optional in EAN.UCC so we work it out if it is missing -->
+									<!-- we need a SettlementTotalExclVAT internally but it is optional in John Sheppard so we work it out if it is missing -->
 									<xsl:if test="InvoiceTotals/SettlementSubTotal">
 										<SettlementTotalExclVAT>
 											<xsl:value-of select="format-number(CreditTotals/SettlementSubTotal, '0.00')"/>
 										</SettlementTotalExclVAT>
 									</xsl:if>
-									<!-- we need a VATAmount internally but it is optional in EAN.UCC so we work it out if it is missing -->
+									<!-- we need a VATAmount internally but it is optional in John Sheppard so we work it out if it is missing -->
 									<xsl:if test="InvoiceTotals/VATTotal">
 										<VATAmount>
 											<xsl:value-of select="format-number(CreditTotals/VATTotal, '0.00')"/>
@@ -231,7 +231,7 @@
 									<DocumentTotalInclVAT>
 										<xsl:value-of select="format-number(CreditTotals/TotalPayable, '0.00')"/>
 									</DocumentTotalInclVAT>
-									<!-- we need a SettlementTotalInclVAT internally but it is optional in EAN.UCC so we work it out if it is missing -->
+									<!-- we need a SettlementTotalInclVAT internally but it is optional in John Sheppard so we work it out if it is missing -->
 									<SettlementTotalInclVAT>
 										<xsl:value-of select="format-number(CreditTotals/TotalPayable, '0.00')"/>
 									</SettlementTotalInclVAT>

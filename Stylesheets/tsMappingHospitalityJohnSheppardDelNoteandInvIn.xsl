@@ -26,7 +26,7 @@
 		
 						<xsl:for-each select="Invoice">
 						
-							<BatchDocument> <!-- moved from outside the for-each to inside 	it, as each Invoice is a new BatchDocument 2012-06-11 HR -->
+							<BatchDocument> <!-- moved from outside the for-each to inside it, as each Invoice is a new BatchDocument 2012-06-11 HR -->
 								<xsl:attribute name="DocumentTypeNo">86</xsl:attribute>
 							
 								<Invoice>
@@ -208,30 +208,30 @@
 									</SettlementDiscountRate>
 									
 												
-									<!-- DiscountedLinesTotalExclVAT is mandatory in our 	schema but not EAN.UCC. If we find none then just default the value -->
+									<!-- DiscountedLinesTotalExclVAT is mandatory in our schema but not John Sheppard. If we find none then just default the value -->
 									<DiscountedLinesTotalExclVAT>
 										<xsl:value-of select="format-number(InvoiceTotals/InvoiceSubTotal, '0.00')"/>
 									</DiscountedLinesTotalExclVAT>
-									<!-- DocumentDiscount is mandatory in our schema but not 	EAN.UCC. If we find none then just default the value -->
+									<!-- DocumentDiscount is mandatory in our schema but not John Sheppard. If we find none then just default the value -->
 									<DocumentDiscount>
 										<xsl:value-of select="format-number($defaultDocumentDiscountValue,'0.00')"/>
 									</DocumentDiscount>
 									<DocumentTotalExclVAT>
 										<xsl:value-of select="format-number(InvoiceTotals/InvoiceSubTotal, '0.00')"/>
 									</DocumentTotalExclVAT>
-									<!-- SettlementDiscount is mandatory in our schema but not 	EAN.UCC. If we find none then just default the value -->
+									<!-- SettlementDiscount is mandatory in our schema but not John Sheppard. If we find none then just default the value -->
 									<xsl:if test="InvoiceTotals/SettlementDiscountTotal">
 										<SettlementDiscount>
 											<xsl:value-of select="format-number(InvoiceTotals/SettlementDiscountTotal, '0.00')"/>
 										</SettlementDiscount>
 									</xsl:if>
-									<!-- we need a SettlementTotalExclVAT internally but it is 	optional in EAN.UCC so we work it out if it is missing -->
+									<!-- we need a SettlementTotalExclVAT internally but it is optional in John Sheppard so we work it out if it is missing -->
 									<xsl:if test="InvoiceTotals/SettlementSubTotal">
 										<SettlementTotalExclVAT>
 											<xsl:value-of select="format-number(InvoiceTotals/SettlementSubTotal, '0.00')"/>
 										</SettlementTotalExclVAT>
 									</xsl:if>
-									<!-- we need a VATAmount internally but it is optional in 	EAN.UCC so we work it out if it is missing -->
+									<!-- we need a VATAmount internally but it is optional in John Sheppard so we work it out if it is missing -->
 									<xsl:if test="InvoiceTotals/VATTotal">
 										<VATAmount>
 											<xsl:value-of select="format-number(InvoiceTotals/VATTotal, '0.00')"/>
@@ -240,7 +240,7 @@
 									<DocumentTotalInclVAT>
 										<xsl:value-of select="format-number(InvoiceTotals/TotalPayable, '0.00')"/>
 									</DocumentTotalInclVAT>
-									<!-- we need a SettlementTotalInclVAT internally but it is 	optional in EAN.UCC so we work it out if it is missing -->
+									<!-- we need a SettlementTotalInclVAT internally but it is optional in John Sheppard so we work it out if it is missing -->
 									<SettlementTotalInclVAT>
 										<xsl:value-of select="format-number(InvoiceTotals/TotalPayable, '0.00')"/>
 									</SettlementTotalInclVAT>
@@ -250,7 +250,7 @@
 									
 								</Invoice>
 								
-								</BatchDocument> <!-- moved from outside the for-each to 	inside it, as each Invoice is a new BatchDocument 2012-06-11 HR -->
+								</BatchDocument> <!-- moved from outside the for-each to inside it, as each Invoice is a new BatchDocument 2012-06-11 HR -->
 							
 							</xsl:for-each>
 				
@@ -385,17 +385,10 @@
 										</DeliveryNoteDetail>
 										
 										<DeliveryNoteTrailer>
+										
 											<NumberOfLines>
 												<xsl:value-of select="count(InvoiceItem)"/>
 											</NumberOfLines>
-											
-											<!--
-											
-											<NumberOfItems>
-												<xsl:value-of select="format-number(sum(InvoiceItem/InvoiceQuantity),'0.00')"/>
-											</NumberOfItems>
-											
-											-->
 											
 										</DeliveryNoteTrailer>
 								
