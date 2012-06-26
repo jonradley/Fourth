@@ -140,7 +140,7 @@
 		-->
 		
 		<xsl:text>FIL=</xsl:text>
-			<xsl:value-of select="PurchaseOrderHeader/FileGenerationNumber"/><xsl:text>+</xsl:text>
+			<xsl:value-of select="$FGN"/><xsl:text>+</xsl:text>
 			<xsl:text>1+</xsl:text>
 			<xsl:value-of select="$sFileGenerationDate"/>
 		<xsl:value-of select="$sRecordSep"/>
