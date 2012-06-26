@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!--======================================================================================
+<!--
+======================================================================================
  Overview
 
  © Alternative Business Solutions Ltd, 2006.
@@ -11,16 +12,21 @@
 ==========================================================================================
  Date      	| Name 						|	Description of modification
 ==========================================================================================
- 25/01/2011	| M Dimant			|	Based on standard tradacoms mapper
+25/01/2011	| M Dimant			| Based on standard tradacoms mapper
 ==========================================================================================
- 
-=======================================================================================-->
+15/06/2012    | M Dimant			| 5534: Update to UOM so EA is output as 1
+==========================================================================================
+25/06/2012	| M Dimant			| 5534: Use 4 Digit FGN
+==========================================================================================
+-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 	xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript"
 	xmlns:vb="http://www.abs-ltd.com/dummynamespaces/vbscript"
 	xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	<xsl:output method="text" encoding="utf-8"/>
+	
+		
 
 <!--xsl:param name="nBatchID">Not Provided</xsl:param-->
 	
@@ -33,6 +39,12 @@
 		</xsl:variable>
 		
 		<xsl:variable name="sFileGenerationDate" select="vb:msFileGenerationDate()"/>
+		
+		<xsl:variable name="FGN">
+			<xsl:variable name="FourDigitFGN" select="format-number(PurchaseOrderHeader/FileGenerationNumber,'0000')"/>			
+			<!-- Dairy Crest can only accept 4 digit FGNs, so get the 4 right hand digits -->
+			<xsl:value-of select="substring($FourDigitFGN, string-length($FourDigitFGN)-3)"/>			
+		</xsl:variable>
 	
 		<xsl:text>STX=</xsl:text>
 			<xsl:text>ANA:1+</xsl:text>
@@ -55,7 +67,7 @@
 			<xsl:text>+</xsl:text>
 			<xsl:value-of select="$sFileGenerationDate"/><xsl:text>:</xsl:text><xsl:value-of select="vb:msFileGenerationTime()"/>
 			<xsl:text>+</xsl:text>
-			<xsl:value-of select="PurchaseOrderHeader/FileGenerationNumber"/>
+			<xsl:value-of select="$FGN"/>
 			<xsl:text>+</xsl:text>
 			<xsl:text>+</xsl:text>		
 			<xsl:choose>
