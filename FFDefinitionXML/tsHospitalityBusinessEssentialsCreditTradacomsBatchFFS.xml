@@ -212,10 +212,10 @@ K Oshaughnessy	| 16/05/2012	| Created
 									<!-- OPTIONAL Supplier’s Product Code, MANDATORY, CREDIT – CLD – SPRO(2), Your unique code for this product -->
 									<SuppliersProductCode RecordPos="CLD=" LPos="2" SFPos="2"/>
 									<!-- NOT BuyersProductCode, actually CLD - DRLI used by stylesheet to action -1.0 multiplier on QTYC and EXLV -->
-									<BuyersProductCode RecordPos="CLD=" LPos="13"/>
+									<BuyersProductCode RecordPos="CLD=" LPos="12"/>
 								</ProductID>
 								<!-- MANDATORY Product Description, OPTIONAL, CREDIT – CLD – TDES(1), While not strictly mandatory, this is a very useful textual piece of information.  This will always contain something but may be set to ‘Not Provided’ -->
-								<ProductDescription RecordPos="CLD=" LPos="14" SFPos="1"/>
+								<BuyersProductCode RecordPos="CLD=" LPos="13"/>
 								<!-- MANDATORY Quantity Credited, OPTIONAL, CREDIT – CLD – QTYC(1), If CREDIT – CLD – DRLI <> {blank} then multiply by –1	Must be greater or equal to zero if provided -->
 								<CreditedQuantity RecordPos="CLD=" LPos="6" SFPos="1"/>
 								<!-- MANDATORY Unit Credit Value Ex VAT, OPTIONAL, CREDIT – CLD – UCRV(1), 4 d.p. implied, If provided, must be numeric (it may be either positive or negative) and must have only two places of decimal -->
