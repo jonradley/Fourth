@@ -14,23 +14,13 @@
 									<SendersName>
 										<xsl:value-of select="SupplierName"/>
 									</SendersName>
-									<SendersAddress>
-										<AddressLine1>
-											<xsl:value-of select="SupplierAddressLine1"/>
-										</AddressLine1>
-										<AddressLine2>
-											<xsl:value-of select="SupplierAddressLine2"/>
-										</AddressLine2>
-										<AddressLine3>
-											<xsl:value-of select="SupplierAddressLine3"/>
-										</AddressLine3>
-										<AddressLine4>
-											<xsl:value-of select="SupplierAddressLine4"/>
-										</AddressLine4>
-										<PostCode>
-											<xsl:value-of select="SupplierAddressPostcode"/>
-										</PostCode>
-									</SendersAddress>
+										<SendersAddress>
+											<xsl:if test="SupplierAddressLine1 != ''"><AddressLine1><xsl:value-of select="SupplierAddressLine1"/></AddressLine1></xsl:if>
+											<xsl:if test="SupplierAddressLine2 != ''"><AddressLine2><xsl:value-of select="SupplierAddressLine2"/></AddressLine2></xsl:if>
+											<xsl:if test="SupplierAddressLine3 != ''"><AddressLine3><xsl:value-of select="SupplierAddressLine3"/></AddressLine3></xsl:if>
+											<xsl:if test="SupplierAddressLine4 != ''"><AddressLine4><xsl:value-of select="SupplierAddressLine4"/></AddressLine4></xsl:if>
+											<xsl:if test="SupplierAddressPostcode != ''"><PostCode><xsl:value-of select="SupplierAddressPostcode"/></PostCode></xsl:if>
+										</SendersAddress>
 								</TradeSimpleHeader>
 								<InvoiceHeader>
 									<Supplier>
@@ -38,21 +28,11 @@
 											<xsl:value-of select="SupplierName"/>
 										</SuppliersName>
 										<SuppliersAddress>
-											<AddressLine1>
-												<xsl:value-of select="SupplierAddressLine1"/>
-											</AddressLine1>
-											<AddressLine2>
-												<xsl:value-of select="SupplierAddressLine2"/>
-											</AddressLine2>
-											<AddressLine3>
-												<xsl:value-of select="SupplierAddressLine3"/>
-											</AddressLine3>
-											<AddressLine4>
-												<xsl:value-of select="SupplierAddressLine4"/>
-											</AddressLine4>
-											<PostCode>
-												<xsl:value-of select="SupplierAddressPostcode"/>
-											</PostCode>
+											<xsl:if test="SupplierAddressLine1 != ''"><AddressLine1><xsl:value-of select="SupplierAddressLine1"/></AddressLine1></xsl:if>
+											<xsl:if test="SupplierAddressLine2 != ''"><AddressLine2><xsl:value-of select="SupplierAddressLine2"/></AddressLine2></xsl:if>
+											<xsl:if test="SupplierAddressLine3 != ''"><AddressLine3><xsl:value-of select="SupplierAddressLine3"/></AddressLine3></xsl:if>
+											<xsl:if test="SupplierAddressLine4 != ''"><AddressLine4><xsl:value-of select="SupplierAddressLine4"/></AddressLine4></xsl:if>
+											<xsl:if test="SupplierAddressPostcode != ''"><PostCode><xsl:value-of select="SupplierAddressPostcode"/></PostCode></xsl:if>
 										</SuppliersAddress>
 									</Supplier>
 									<ShipTo>
@@ -65,21 +45,11 @@
 											<xsl:value-of select="DeliveryLocationName"/>
 										</ShipToName>
 										<ShipToAddress>
-											<AddressLine1>
-												<xsl:value-of select="DeliveryLocationAddressLine1"/>
-											</AddressLine1>
-											<AddressLine2>
-												<xsl:value-of select="DeliveryLocationAddressLine2"/>
-											</AddressLine2>
-											<AddressLine3>
-												<xsl:value-of select="DeliveryLocationAddressLine3"/>
-											</AddressLine3>
-											<AddressLine4>
-												<xsl:value-of select="DeliveryLocationAddressLine4"/>
-											</AddressLine4>
-											<PostCode>
-												<xsl:value-of select="DeliveryLocationAddressPostcode"/>
-											</PostCode>
+											<xsl:if test="DeliveryLocationAddressLine1 != ''"><AddressLine1><xsl:value-of select="DeliveryLocationAddressLine1"/></AddressLine1></xsl:if>
+											<xsl:if test="DeliveryLocationAddressLine2 != ''"><AddressLine2><xsl:value-of select="DeliveryLocationAddressLine2"/></AddressLine2></xsl:if>
+											<xsl:if test="DeliveryLocationAddressLine3 != ''"><AddressLine3><xsl:value-of select="DeliveryLocationAddressLine3"/></AddressLine3></xsl:if>
+											<xsl:if test="DeliveryLocationAddressLine4 != ''"><AddressLine4><xsl:value-of select="DeliveryLocationAddressLine4"/></AddressLine4></xsl:if>
+											<xsl:if test="DeliveryLocationAddressPostcode != ''"><PostCode><xsl:value-of select="DeliveryLocationAddressPostcode"/></PostCode></xsl:if>
 										</ShipToAddress>
 										<ContactName/>
 									</ShipTo>
@@ -137,6 +107,7 @@
 									</InvoiceLine>
 								</xsl:for-each>
 							</InvoiceDetail>
+							
 							<xsl:for-each select="InvoiceTrailer">
 								<InvoiceTrailer>
 									<NumberOfLines>
