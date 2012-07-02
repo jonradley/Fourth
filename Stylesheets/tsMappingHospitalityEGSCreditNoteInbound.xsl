@@ -6,7 +6,7 @@ Date		|	owner				|	details
 ************************************************************************
 			|						|
 **********************************************************************-->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format"  xmlns:egs="urn:eGS:marketplace:eBIS:Extension:1.0">
 <xsl:output method="xml"/>
 
 <xsl:template match="Batch">
@@ -149,13 +149,13 @@ Date		|	owner				|	details
 									</xsl:if>
 								</ShipTo>
 								
-								<xsl:if test="Extensions/OriginalInvoiceNumber !='' ">
+								<xsl:if test="Extensions/egs:Extension/egs:Extrinsic[1] !='' ">
 									<InvoiceReferences>
 										<InvoiceReference>
-											<xsl:value-of select="Extensions/OriginalInvoiceNumber"/>
+											<xsl:value-of select="Extensions/egs:Extension/egs:Extrinsic[1]"/>
 										</InvoiceReference>
 										<InvoiceDate>
-											<xsl:value-of select="substring-before(/Extensions/OriginalInvoiceDate,'T')"/>
+											<xsl:value-of select="substring-before(Extensions/egs:Extension/egs:Extrinsic[2],'T')"/>
 										</InvoiceDate>
 									</InvoiceReferences>
 								</xsl:if>
@@ -219,6 +219,35 @@ Date		|	owner				|	details
 								</xsl:variable>
 								
 								<CreditNoteLine>
+								
+									<xsl:for-each select="../InvoiceReferences/BuyersOrderNumber[. != ''][1]">
+										<PurchaseOrderReferences>
+											<PurchaseOrderReference>
+												<xsl:value-of select="."/>
+											</PurchaseOrderReference>
+											<xsl:if test="/InvoiceLineReferenes/OriginaOrderDate !=''">
+												<PurchaseOrderDate>
+													<xsl:value-of select="substring-before(../../InvoiceLineReferenes/OriginaOrderDate,'T')"/>
+												</PurchaseOrderDate>
+											</xsl:if>
+											<xsl:if test="/InvoiceLineReferenes/OriginaOrderDate !=''">
+												<PurchaseOrderTime>
+													<xsl:value-of select="substring-after(../../InvoiceLineReferenes/OriginaOrderDate,'T')"/>
+												</PurchaseOrderTime>
+											</xsl:if>
+										</PurchaseOrderReferences>
+									</xsl:for-each>	
+								
+									<xsl:for-each select="../InvoiceReferences/DeliveryNoteNumber[. != ''][1]">
+											<DeliveryNoteReferences>
+												<DeliveryNoteReference>
+													<xsl:value-of select="."></xsl:value-of>
+												</DeliveryNoteReference>
+												<DeliveryNoteDate>
+													<xsl:value-of select="substring-before(../../Delivery/ActualDeliveryDate,'T')"/>
+												</DeliveryNoteDate>
+											</DeliveryNoteReferences>
+										</xsl:for-each>	
 
 										<ProductID>
 											<SuppliersProductCode>
@@ -252,6 +281,20 @@ Date		|	owner				|	details
 										<VATRate>
 											<xsl:value-of select="$VATRate"/>
 										</VATRate>
+										
+										<!--Reason for credit-->
+										<xsl:choose>
+											<xsl:when test="../Extensions/ReasonForCredit !=''">
+												<Narrative>
+													<xsl:value-of select="../Extensions/ReasonForCredit"/>
+												</Narrative>
+											</xsl:when>
+											<xsl:when test="../Extensions/egs:Extension[4] !=''">
+												<Narrative>
+													<xsl:value-of select="../Extensions/egs:Extension[4]"/>
+												</Narrative>
+											</xsl:when>
+										</xsl:choose>
 										
 									</CreditNoteLine>
 								</xsl:for-each>	
