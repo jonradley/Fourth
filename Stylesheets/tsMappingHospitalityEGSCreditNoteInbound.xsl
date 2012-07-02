@@ -42,7 +42,6 @@ Date		|	owner				|	details
 											<xsl:value-of select="Buyer/Party"/>
 										</BuyersName>
 									</xsl:if>
-	
 									<xsl:if test="Buyer/Address/AddressLine[1] != '' ">
 										<BuyersAddress>
 											<xsl:if test="Buyer/Address/AddressLine[1] != ''">
@@ -156,7 +155,7 @@ Date		|	owner				|	details
 											<xsl:value-of select="Extensions/OriginalInvoiceNumber"/>
 										</InvoiceReference>
 										<InvoiceDate>
-											<xsl:value-of select="/Extensions/OriginalInvoiceDate"/>
+											<xsl:value-of select="substring-before(/Extensions/OriginalInvoiceDate,'T')"/>
 										</InvoiceDate>
 									</InvoiceReferences>
 								</xsl:if>
@@ -166,23 +165,24 @@ Date		|	owner				|	details
 										<xsl:value-of select="InvoiceReferences/SuppliersInvoiceNumber"/>
 									</CreditNoteReference>
 									<CreditNoteDate>
-										<xsl:value-of select="InvoiceDate"/>
+										<xsl:value-of select="substring-before(InvoiceDate,'T')"/>
 									</CreditNoteDate>
 									<TaxPointDate>
 										<xsl:choose>
 											<xsl:when test="TaxPointDate !='' ">
-												<xsl:value-of select="TaxPointDate"/>
+												<xsl:value-of select="substring-before(TaxPointDate,'T')"/>
 											</xsl:when>
 											<xsl:otherwise>
-												<xsl:value-of select="InvoiceDate"/>
+												<xsl:value-of select="substring-before(InvoiceDate,'T')"/>
 											</xsl:otherwise>
 										</xsl:choose>
 									</TaxPointDate>
 								</CreditNoteReferences>	
 							</CreditNoteHeader>
 							
-							<CreditNoteDetail>							
-							<xsl:for-each select="InvoiceLine[Product/SuppliersProductCode !='']">
+							<CreditNoteDetail>	
+							<!--This is to filter out any lines that do not have a product code and the line value is 0 -->						
+							<xsl:for-each select="InvoiceLine[Product/SuppliersProductCode !='' and NetLineTotal != 0]">
 							
 								<xsl:variable name="VATCode">
 									<xsl:choose>
@@ -281,7 +281,7 @@ Date		|	owner				|	details
 											<xsl:when test="TaxRate/@Code = ''">
 												<xsl:text>Z</xsl:text>
 											</xsl:when>
-											<xsl:otherwise>Z</xsl:otherwise>
+											<xsl:otherwise>Unrecognised VAT code:<xsl:value-of select="TaxRate/@Code"/></xsl:otherwise>
 										</xsl:choose>	
 									</xsl:variable>
 								
@@ -291,7 +291,7 @@ Date		|	owner				|	details
 											<xsl:when test="TaxRate = ''">
 												<xsl:text>0.00</xsl:text>
 											</xsl:when>
-											<xsl:when test="TaxRate = ''">
+											<xsl:when test="TaxRate/@Code = ''">
 												<xsl:text>0.00</xsl:text>
 											</xsl:when>
 											<xsl:otherwise>
@@ -300,35 +300,38 @@ Date		|	owner				|	details
 										</xsl:choose>
 									</xsl:variable>
 									
-										<VATSubTotal>
-										
-											<xsl:attribute name="VATCode"><xsl:value-of select="$TotalCode"/></xsl:attribute>
-											<xsl:attribute name="VATRate"><xsl:value-of select="$TotalRate"/></xsl:attribute>
+										<!--This is to remove VAT subtrailors that contain VAT codes that do not match mapped line VAT codes-->
+										<xsl:if test="../InvoiceLine[LineTax/TaxRate/@Code=$TotalCode and LineTax/TaxRate=$TotalRate][Product/SuppliersProductCode !='' and NetLineTotal != 0]">
+											<VATSubTotal>
 											
-											<DiscountedLinesTotalExclVATAtRate>
-												<xsl:value-of select="TaxablTotalAtRate"/>
-											</DiscountedLinesTotalExclVATAtRate>
+												<xsl:attribute name="VATCode"><xsl:value-of select="$TotalCode"/></xsl:attribute>
+												<xsl:attribute name="VATRate"><xsl:value-of select="$TotalRate"/></xsl:attribute>
+												
+												<DiscountedLinesTotalExclVATAtRate>
+													<xsl:value-of select="TaxablTotalAtRate"/>
+												</DiscountedLinesTotalExclVATAtRate>
+												
+												<xsl:for-each select="AmountDiscount/Amount[. != ''][1]">
+													<DocumentDiscountAtRate>
+														<xsl:value-of select="format-number(.,'0.00')"/>
+													</DocumentDiscountAtRate>
+												</xsl:for-each>
+												
+												<DocumentTotalExclVATAtRate>
+													<xsl:value-of select="TaxableValueAtRate"/>
+												</DocumentTotalExclVATAtRate>
 											
-											<xsl:for-each select="AmountDiscount/Amount[. != ''][1]">
-												<DocumentDiscountAtRate>
-													<xsl:value-of select="format-number(.,'0.00')"/>
-												</DocumentDiscountAtRate>
-											</xsl:for-each>
-											
-											<DocumentTotalExclVATAtRate>
-												<xsl:value-of select="TaxableValueAtRate"/>
-											</DocumentTotalExclVATAtRate>
-										
-											<VATAmountAtRate>
-												<xsl:value-of select="TaxAtRate"/>
-											</VATAmountAtRate>
-											
-											<DocumentTotalInclVATAtRate>
-												<xsl:value-of select="GrossPaymentAtRate"/>
-											</DocumentTotalInclVATAtRate>
-
-											<VATTrailerExtraData/>
-										</VATSubTotal>
+												<VATAmountAtRate>
+													<xsl:value-of select="TaxAtRate"/>
+												</VATAmountAtRate>
+												
+												<DocumentTotalInclVATAtRate>
+													<xsl:value-of select="GrossPaymentAtRate"/>
+												</DocumentTotalInclVATAtRate>
+	
+												<VATTrailerExtraData/>
+											</VATSubTotal>
+										</xsl:if>
 									</xsl:for-each>	
 								</VATSubTotals>
 								</xsl:if>	
