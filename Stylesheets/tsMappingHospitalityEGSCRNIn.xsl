@@ -284,9 +284,9 @@ Date		|	owner				|	details
 										
 										<!--Reason for credit-->
 										<xsl:choose>
-											<xsl:when test="../Extensions/ReasonForCredit !=''">
+											<xsl:when test="../Extensions/egs:Extension/egs:Extrinsic[2] !=''">
 												<Narrative>
-													<xsl:value-of select="../Extensions/ReasonForCredit"/>
+													<xsl:value-of select="../Extensions/egs:Extension/egs:Extrinsic[2]"/>
 												</Narrative>
 											</xsl:when>
 											<xsl:when test="../Extensions/egs:Extension[4] !=''">
