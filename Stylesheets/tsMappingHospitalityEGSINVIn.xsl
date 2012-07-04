@@ -335,31 +335,31 @@ Date		|	owner				|	details
 		<InvoiceLine>
 		
 		<xsl:if test="../InvoiceReferences/DeliveryNoteNumber !=''">
-			<PurchaseOrderReferences>
-				<PurchaseOrderReference>
-					<xsl:choose>
-						<xsl:when test="../InvoiceReferences/BuyersOrderNumber !='' ">
-							<xsl:value-of select="../InvoiceReferences/BuyersOrderNumber"/>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="../InvoiceReferences/DeliveryNoteNumber"/>
-						</xsl:otherwise>
-					</xsl:choose>
-				</PurchaseOrderReference>	
-				<PurchaseOrderDate>
-					<xsl:choose>
-						<xsl:when test="../InvoiceLineReferenes/OriginaOrderDate !='' ">
-							<xsl:value-of select="substring-before(../InvoiceLineReferenes/OriginaOrderDate,'T')"/>
-						</xsl:when>
-						<xsl:when test="../Delivery/ActualDeliveryDate !=''">
-							<xsl:value-of select="substring-before(../Delivery/ActualDeliveryDate,'T')"/>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="substring-before(../InvoiceDate,'T')"/>
-						</xsl:otherwise>
-					</xsl:choose>
-				</PurchaseOrderDate>
-			</PurchaseOrderReferences>
+				<PurchaseOrderReferences>
+					<PurchaseOrderReference>
+						<xsl:choose>
+							<xsl:when test="../InvoiceReferences/BuyersOrderNumber !='' ">
+								<xsl:value-of select="../InvoiceReferences/BuyersOrderNumber"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="../InvoiceReferences/DeliveryNoteNumber"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</PurchaseOrderReference>	
+					<PurchaseOrderDate>
+						<xsl:choose>
+							<xsl:when test="../InvoiceLineReferenes/OriginaOrderDate !='' ">
+								<xsl:value-of select="substring-before(../InvoiceLineReferenes/OriginaOrderDate,'T')"/>
+							</xsl:when>
+							<xsl:when test="../Delivery/ActualDeliveryDate !=''">
+								<xsl:value-of select="substring-before(../Delivery/ActualDeliveryDate,'T')"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="substring-before(../InvoiceDate,'T')"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</PurchaseOrderDate>
+				</PurchaseOrderReferences>
 			</xsl:if>
 			
 			<DeliveryNoteReferences>
