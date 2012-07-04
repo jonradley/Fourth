@@ -74,20 +74,29 @@
 										</LineNumber>
 										<PurchaseOrderReferences>
 											<PurchaseOrderReference>
-												<xsl:value-of select="PurchaseOrderReference"/>
+												<xsl:value-of select="Header/PurchaseOrderReference"/>
 											</PurchaseOrderReference>
 											<PurchaseOrderDate>
-												<xsl:value-of select="PurchaseOrderDate"/>
+												<xsl:value-of select="Header/PurchaseOrderDate"/>
 											</PurchaseOrderDate>
 										</PurchaseOrderReferences>
-										<ProductID>
+										<DeliveryNoteReferences>
+											<DeliveryNoteReference>
+											<xsl:value-of select="Header/DeliveryNoteReference"/>
+											</DeliveryNoteReference>
+											<DeliveryNoteDate>
+											<xsl:value-of select="Header/DeliveryNoteDate"/>
+											</DeliveryNoteDate>
+										</DeliveryNoteReferences>
+											
+											<ProductID>
 											<SuppliersProductCode>
 												<xsl:value-of select="SuppliersProductCode"/>
 											</SuppliersProductCode>
 										</ProductID>
 										<ProductDescription/>
 										<InvoicedQuantity>
-											<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="QuantityInvoiced"/></xsl:attribute>
+											<xsl:attribute name="UnitOfMeasure">EA</xsl:attribute><xsl:value-of select="QuantityInvoiced"/>
 										</InvoicedQuantity>
 										<PackSize>
 											<xsl:value-of select="PackSize"/>
