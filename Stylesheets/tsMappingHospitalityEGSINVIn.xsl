@@ -334,6 +334,7 @@ Date		|	owner				|	details
 	
 		<InvoiceLine>
 		
+		<xsl:if test="../InvoiceReferences/DeliveryNoteNumber !=''">
 			<PurchaseOrderReferences>
 				<PurchaseOrderReference>
 					<xsl:choose>
@@ -341,7 +342,7 @@ Date		|	owner				|	details
 							<xsl:value-of select="../InvoiceReferences/BuyersOrderNumber"/>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:value-of select="InvoiceLineReferences/BuyersOrderNumber"/>
+							<xsl:value-of select="../InvoiceReferences/DeliveryNoteNumber"/>
 						</xsl:otherwise>
 					</xsl:choose>
 				</PurchaseOrderReference>	
@@ -359,6 +360,7 @@ Date		|	owner				|	details
 					</xsl:choose>
 				</PurchaseOrderDate>
 			</PurchaseOrderReferences>
+			</xsl:if>
 			
 			<DeliveryNoteReferences>
 				<DeliveryNoteReference>
@@ -463,6 +465,7 @@ Date		|	owner				|	details
 			
 		<InvoiceLine>
 		
+		<xsl:if test="../InvoiceReferences/DeliveryNoteNumber !=''">
 			<PurchaseOrderReferences>
 				<PurchaseOrderReference>
 					<xsl:choose>
@@ -470,7 +473,7 @@ Date		|	owner				|	details
 							<xsl:value-of select="../InvoiceReferences/BuyersOrderNumber"/>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:value-of select="InvoiceLineReferences/BuyersOrderNumber"/>
+							<xsl:value-of select="../InvoiceReferences/DeliveryNoteNumber"/>
 						</xsl:otherwise>
 					</xsl:choose>
 				</PurchaseOrderReference>	
@@ -488,6 +491,7 @@ Date		|	owner				|	details
 					</xsl:choose>
 				</PurchaseOrderDate>
 			</PurchaseOrderReferences>
+			</xsl:if>
 			
 			<DeliveryNoteReferences>
 				<DeliveryNoteReference>
