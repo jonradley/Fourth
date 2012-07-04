@@ -59,31 +59,35 @@
 										<xsl:value-of select="Header/PurchaseOrderDate"/>
 									</PurchaseOrderDate>
 								</PurchaseOrderReferences>
-								<!--<PurchaseOrderConfirmationReferences>
-									<PurchaseOrderConfirmationReference/>
-									<PurchaseOrderConfirmationDate/>
-								</PurchaseOrderConfirmationReferences>-->
+								<PurchaseOrderConfirmationReferences>
+									<PurchaseOrderConfirmationReference>
+										<xsl:value-of select="Header/PurchaseOrderConfirmationReference"/>
+									</PurchaseOrderConfirmationReference>
+									<PurchaseOrderConfirmationDate>
+										<xsl:value-of select="Header/PurchaseOrderConfirmationDate"/>
+									</PurchaseOrderConfirmationDate>
+								</PurchaseOrderConfirmationReferences>
 								<DeliveryNoteReferences>
 									<xsl:if test="DeliveryNoteReference !=''">
 										<DeliveryNoteReference>
-											<xsl:value-of select="DeliveryNoteReference"/>
+											<xsl:value-of select="Header/DeliveryNoteReference"/>
 										</DeliveryNoteReference>
 									</xsl:if>
 									<xsl:if test="DeliveryNoteDate !=''">
 										<DeliveryNoteDate>
-											<xsl:value-of select="DeliveryNoteDate"/>
+											<xsl:value-of select="Header/DeliveryNoteDate"/>
 										</DeliveryNoteDate>
 									</xsl:if>
 									<xsl:if test="ActualDeliveryDate !=''">
 										<DespatchDate>
-											<xsl:value-of select="ActualDeliveryDate"/>
+											<xsl:value-of select="Header/ActualDeliveryDate"/>
 										</DespatchDate>
 									</xsl:if>
 								</DeliveryNoteReferences>
 								<DeliveredDeliveryDetails>
 									<xsl:if test="ActualDeliveryDate !=''">
 										<DeliveryDate>
-											<xsl:value-of select="ActualDeliveryDate"/>
+											<xsl:value-of select="Header/ActualDeliveryDate"/>
 										</DeliveryDate>
 									</xsl:if>
 								</DeliveredDeliveryDetails>
@@ -96,12 +100,14 @@
 										</LineNumber>
 										<ProductID>
 											<SuppliersProductCode>
-												<xsl:value-of select="Header/SuppliersProductCode"/>
+												<xsl:value-of select="SuppliersProductCode"/>
 											</SuppliersProductCode>
 										</ProductID>
+										<xsl:if test="ProductDescription !=''">
 										<ProductDescription>
 										<xsl:value-of select="ProductDescription"/>
 										</ProductDescription>
+										</xsl:if>
 										<xsl:if test="QuantityRequired !=''">
 										<OrderedQuantity>
 											<xsl:attribute name="UnitOfMeasure">EA</xsl:attribute>
