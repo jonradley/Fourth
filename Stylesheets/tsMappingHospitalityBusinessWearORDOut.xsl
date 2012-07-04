@@ -2,7 +2,7 @@
 <!--======================================================================================
  Overview
 
-	Internal XML to EANUCC (OFSCI) PO - with CrLfs and indenting
+	Internal XML to tsmaapinghospitalitybusinesswearORDOut
 	
 
  © Alternative Business Solutions Ltd, 2006.
@@ -13,14 +13,44 @@
 ==========================================================================================
  Date      	| Name 					| Description of modification
 ==========================================================================================
- 12/04/2005	| Steven Hewitt		| Created module
+ 4/7/2012	| Stephen Bowers		| Created module
 ==========================================================================================
- 23/03/2006	| R Cambridge			| H578 Pretty printing
+			| 				| 
 ==========================================================================================
            	|                 	|
 =======================================================================================-->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="xsl msxsl">
+<xsl:stylesheet 
+	version="1.0" 
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+	xmlns:msxsl="urn:schemas-microsoft-com:xslt"
+	exclude-result-prefixes="xsl msxsl">
+	
 	<xsl:output method="xml" encoding="utf-8"/>
+	<!-- GENERIC HANDLER to copy unchanged nodes, will be overridden by any node-specific templates below -->
+			<xsl:template match="*">
+				<!-- Copy the node unchanged -->
+				<xsl:copy>
+					<!--Then let attributes be copied/not copied/modified by other more specific templates -->
+					<xsl:apply-templates select="@*"/>
+					<!-- Then within this node, continue processing children -->
+					<xsl:apply-templates/>
+				</xsl:copy>
+			</xsl:template>
+			<!-- GENERIC ATTRIBUTE HANDLER to copy unchanged attributes, will be overridden by any attribute-specific templates below-->
+			<xsl:template match="@*">
+				<!-- Copy the attribute unchanged -->
+				<xsl:copy/>
+			</xsl:template>
+			<!-- END of GENERIC HANDLERS -->
+			<xsl:template match="OrderedDeliveryDetails">
+				<OrderedDeliveryDetails>
+					<xsl:apply-templates/>
+					<xsl:if test="not(SpecialDeliveryInstructions)">
+						<SpecialDeliveryInstructions/>
+					</xsl:if>
+				</OrderedDeliveryDetails>
+			</xsl:template>
+
 	<!--=======================================================================================
   Routine        : msPrettyPrint()
   Description    : Writes whitespace between XML elements, recursively.
@@ -32,16 +62,20 @@
   Author         : Robert Cambridge
   Alterations    : 
  =======================================================================================-->
- 
- 	<xsl:template match="/">
+	<xsl:template match="/">
+		<xsl:variable name="DocINV">
+			<xsl:apply-templates select="/*"	/>
+		</xsl:variable>
+		
 		<!-- Pretty-print the XML -->
 		<xsl:call-template name="msPrettyPrint">
-			<xsl:with-param name="vobNode" select="/"/>
-			<xsl:with-param name="vsPadding" select="'&#13;&#10;'"/>	
-			<xsl:with-param name="depth" select="0"/>	
+			<xsl:with-param name="vobNode" select="msxsl:node-set($DocINV)"/>
+			<xsl:with-param name="vsPadding" select="'&#13;&#10;'"/>
+			<xsl:with-param name="depth" select="0"/>
 		</xsl:call-template>
+
+		
 	</xsl:template>
- 
 	<xsl:template name="msPrettyPrint">
 		<xsl:param name="vobNode"/>
 		<xsl:param name="vsPadding"/>
