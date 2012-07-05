@@ -74,18 +74,18 @@
 										</LineNumber>
 										<PurchaseOrderReferences>
 											<PurchaseOrderReference>
-												<xsl:value-of select="Header/PurchaseOrderReference"/>
+												<xsl:value-of select="../Header/PurchaseOrderReference"/>
 											</PurchaseOrderReference>
 											<PurchaseOrderDate>
-												<xsl:value-of select="Header/PurchaseOrderDate"/>
+												<xsl:value-of select="../Header/PurchaseOrderDate"/>
 											</PurchaseOrderDate>
 										</PurchaseOrderReferences>
 										<DeliveryNoteReferences>
 											<DeliveryNoteReference>
-											<xsl:value-of select="Header/DeliveryNoteReference"/>
+											<xsl:value-of select="../Header/DeliveryNoteReference"/>
 											</DeliveryNoteReference>
 											<DeliveryNoteDate>
-											<xsl:value-of select="Header/DeliveryNoteDate"/>
+											<xsl:value-of select="../Header/DeliveryNoteDate"/>
 											</DeliveryNoteDate>
 										</DeliveryNoteReferences>
 											
