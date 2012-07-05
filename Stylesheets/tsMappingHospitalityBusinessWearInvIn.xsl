@@ -51,7 +51,6 @@
 											<xsl:if test="DeliveryLocationAddressLine4 != ''"><AddressLine4><xsl:value-of select="DeliveryLocationAddressLine4"/></AddressLine4></xsl:if>
 											<xsl:if test="DeliveryLocationAddressPostcode != ''"><PostCode><xsl:value-of select="DeliveryLocationAddressPostcode"/></PostCode></xsl:if>
 										</ShipToAddress>
-										<ContactName/>
 									</ShipTo>
 									<InvoiceReferences>
 										<InvoiceReference>
