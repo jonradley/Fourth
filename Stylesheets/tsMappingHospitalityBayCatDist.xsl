@@ -8,7 +8,10 @@ Date				| Name					| Comments
 ****************************************************************************************************
 07/09/2011		|	R Cambridge			| 4810 Ensure 'slash-less' codes are copied to the output
 ****************************************************************************************************
-11/11/2011		|	H Robson				| 5015 Set output encoding to UTF-8			
+11/11/2011		|	H Robson				| 5015 Set output encoding to UTF-8
+****************************************************************************************************
+02/07/2012		| M Emanuel				| Stonegate changed their code for Brakes logistics to S20293538803
+												| Hard Coding traslation rule to map S20293538803 to S20293538800				  
 *************************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
                               xmlns:fo="http://www.w3.org/1999/XSL/Format"
@@ -28,6 +31,10 @@ Date				| Name					| Comments
 					<xsl:choose>
 						<xsl:when test="contains(TradeSimpleHeader/RecipientsCodeForSender,'/')">
 							<xsl:value-of select="substring-before(TradeSimpleHeader/RecipientsCodeForSender,'/')"/>
+						</xsl:when>
+						<!-- 5560, M Emanuel Hard Coding traslation rule to map S20293538803 to S20293538800-->
+						<xsl:when test="TradeSimpleHeader/RecipientsCodeForSender='S20293538803'">
+							<xsl:text>S20293538800</xsl:text>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:value-of select="TradeSimpleHeader/RecipientsCodeForSender"/>

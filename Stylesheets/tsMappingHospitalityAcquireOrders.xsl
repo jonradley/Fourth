@@ -8,7 +8,9 @@
 '******************************************************************************************
 ' 22/04/2003 | C Scott         | Created
 '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-' 18/08/2011 |K Oshaughnessy|Delivery instructions to be mapped 
+' 18/08/2011 | K Oshaughnessy  | Delivery instructions to be mapped 
+'******************************************************************************************
+' 2012-06-25 | H Robson        | Strip Carriage Returns out of Delivery Instructions
 '******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
@@ -49,8 +51,9 @@
 						<DeliveryDate>
 							<xsl:value-of select="$sReqDate"/>
 						</DeliveryDate>
+						<!-- 2012-06-25 HR -->
 						<SpecialDeliveryInstructions>
-							<xsl:value-of select="N/L2[2]"/>
+							<xsl:value-of select="normalize-space(N/L2[2])"/>
 						</SpecialDeliveryInstructions>
 					</OrderedDeliveryDetails>
 				</PurchaseOrderHeader>

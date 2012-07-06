@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+**********************************************************************
+Alterations
+**********************************************************************
+Name			| Date			| Change
+**********************************************************************
+H Robson	| 2012-06-27		| 5551 Created FFS
+**********************************************************************
+-->
+<!-- 15 fields in a record -->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>sequenced</ffsRecordPositionType>
+		<ffsRecordSeparator>chr(13)chr(10)</ffsRecordSeparator>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>,</ffsFieldSeparator>
+		</ffsFieldSeparators>
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<BatchDocuments>
+				<BatchDocument>
+					<Invoice>
+						<TradeSimpleHeader>
+							<SendersCodeForRecipient RecordLength="15" RecordPos="5	" LPos="13"/>
+						</TradeSimpleHeader>
+						<InvoiceHeader>
+							<InvoiceReferences>
+								<InvoiceReference RecordLength="15" RecordPos="2" LPos="13"/>
+								<InvoiceDate RecordLength="15" RecordPos="3" LPos="13"/>
+								<TaxPointDate RecordLength="15" RecordPos="3" LPos="13"/>
+							</InvoiceReferences>
+						</InvoiceHeader>
+						<InvoiceDetail>
+							<InvoiceLine>
+								<ProductID>
+									<SuppliersProductCode RecordLength="15" RecordPos="*" LPos="5"/>
+								</ProductID>
+								<ProductDescription RecordLength="15" RecordPos="*" LPos="6"/>
+								<InvoicedQuantity RecordLength="15" RecordPos="*" LPos="3"/>
+								<UnitValueExclVAT RecordLength="15" RecordPos="*" LPos="8"/>
+							</InvoiceLine>
+						</InvoiceDetail>
+						<InvoiceTrailer>
+							<DocumentTotalExclVAT RecordLength="15" RecordPos="-3" LPos="12"/>
+							<VATAmount RecordLength="15" RecordPos="-2" LPos="12"/>
+							<DocumentTotalInclVAT RecordLength="15" RecordPos="-1" LPos="12"/>
+						</InvoiceTrailer>
+					</Invoice>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>
