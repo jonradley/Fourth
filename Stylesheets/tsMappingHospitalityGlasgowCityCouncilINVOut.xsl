@@ -16,7 +16,7 @@
 			<Header>
 				<From>
 					<Credential domain="SupplierID">
-						<Identity>1001053</Identity>
+						<Identity>1001006</Identity>
 					</Credential>
 				</From>
 				<To>
@@ -35,7 +35,9 @@
 				<InvoiceDetailRequest>
 						<InvoiceDetailRequestHeader>
 							<xsl:attribute name="invoiceID"><xsl:value-of select="InvoiceHeader/InvoiceReferences/InvoiceReference"/></xsl:attribute>
-							<xsl:attribute name="invoiceDate"><xsl:value-of select="concat(InvoiceHeader/InvoiceReferences/invoiceDate,'T00:00:00')"/></xsl:attribute>
+							<xsl:attribute name="purpose">standard</xsl:attribute>
+							<xsl:attribute name="operation">new</xsl:attribute>
+							<xsl:attribute name="invoiceDate"><xsl:value-of select="concat(InvoiceHeader/InvoiceReferences/InvoiceDate,'T00:00:00')"/></xsl:attribute>
 							<InvoiceDetailLineIndicator isTaxInLine="yes"/>
 							<InvoicePartner>
 								<Contact role="soldTo" addressID="GCC">
@@ -79,17 +81,17 @@
 								<OrderReference orderID="1424620" orderDate="2011-06-13T00:00:00+00:00">
 									<xsl:attribute name="orderID"><xsl:value-of select="InvoiceDetail/InvoiceLine/PurchaseOrderReferences/PurchaseOrderReference"/></xsl:attribute>
 									<xsl:attribute name="orderDate"><xsl:value-of select="InvoiceDetail/InvoiceLine/PurchaseOrderReferences/PurchaseOrderDate"/></xsl:attribute>
-									<DocumentReference payloadID="201106171716.INV.108514@kewill.com"/>
+									<!--DocumentReference payloadID="201106171716.INV.108514@kewill.com"/-->
 								</OrderReference>
 							</InvoiceDetailOrderInfo>						
 							<xsl:for-each select="InvoiceDetail/InvoiceLine">
 								<InvoiceDetailItem>
 									<xsl:attribute name="invoiceLineNumber"><xsl:value-of select="LineNumber"/></xsl:attribute>
-									<xsl:attribute name="quantity"><xsl:value-of select="InvoicedQuantity"/></xsl:attribute>
+									<xsl:attribute name="quantity"><xsl:value-of select="format-number(InvoicedQuantity,'0.00')"/></xsl:attribute>
 									<UnitOfMeasure><xsl:value-of select="InvoicedQuantity/@UnitOfMeasure"/></UnitOfMeasure>
 									<UnitPrice>
 										<Money currency="GBP">
-											<xsl:value-of select="UnitValueExclVAT"/>
+											<xsl:value-of select="format-number(UnitValueExclVAT,'0.00')"/>
 										</Money>
 									</UnitPrice>
 									<InvoiceDetailItemReference lineNumber="1">
@@ -100,38 +102,36 @@
 										<Description xml:lang="en"><xsl:value-of select="ProductDescription"/></Description>
 									</InvoiceDetailItemReference>
 									<SubtotalAmount>
-										<Money currency="GBP"><xsl:value-of select="LineValueExclVAT"/></Money>
-									</SubtotalAmount>
-									<!-- 
+										<Money currency="GBP"><xsl:value-of select="format-number(LineValueExclVAT,'0.00')"/></Money>
+									</SubtotalAmount>								
 									<Tax>
-										<Money currency="GBP">4.29</Money>
+										<Money currency="GBP"><xsl:value-of select="format-number((VATRate div 100)*(LineValueExclVAT),'0.00')"/></Money>
 										<Description xml:lang="en">total item tax</Description>
-										<TaxDetail purpose="tax" category="VAT" percentageRate="20.00">
+										<TaxDetail purpose="tax" category="VAT">
+										<xsl:attribute name="percentageRate"><xsl:value-of select="VATRate"/></xsl:attribute>
 											<TaxableAmount>
-												<Money currency="GBP">21.44</Money>
+												<Money currency="GBP"><xsl:value-of select="format-number(LineValueExclVAT,'0.00')"/></Money>
 											</TaxableAmount>
 											<TaxAmount>
-												<Money currency="GBP">4.29</Money>
+												<Money currency="GBP"><xsl:value-of select="format-number((VATRate div 100)*(LineValueExclVAT),'0.00')"/></Money>
 											</TaxAmount>
 										</TaxDetail>
 									</Tax>
 									<GrossAmount>
-										<Money currency="GBP">25.73</Money>
+										<Money currency="GBP"><xsl:value-of select="format-number(LineValueExclVAT,'0.00')"/></Money>
 									</GrossAmount>
 									<NetAmount>
-										<Money currency="GBP">25.73</Money>
+										<Money currency="GBP"><xsl:value-of select="format-number(LineValueExclVAT+((VATRate div 100)*LineValueExclVAT),'0.00')"/></Money>
 									</NetAmount>
-									<Extrinsic name="LinePurchaseOrderNumber">1424620</Extrinsic>
-									-->
-								</InvoiceDetailItem>							
+									<Extrinsic name="LinePurchaseOrderNumber"><xsl:value-of select="PurchaseOrderReferences/PurchaseOrderReference"/></Extrinsic>													</InvoiceDetailItem>							
 							</xsl:for-each>							
 						</InvoiceDetailOrder>
 						<InvoiceDetailSummary>
 							<SubtotalAmount>
-								<Money currency="GBP"><xsl:value-of select="InvoiceTrailer/DocumentTotalExclVAT"/></Money>
+								<Money currency="GBP"><xsl:value-of select="format-number(InvoiceTrailer/DocumentTotalExclVAT,'0.00')"/></Money>
 							</SubtotalAmount>
 							<Tax>
-								<Money currency="GBP"><xsl:value-of select="InvoiceTrailer/VATAmount"/></Money>
+								<Money currency="GBP"><xsl:value-of select="format-number(InvoiceTrailer/VATAmount,'0.00')"/></Money>
 								<Description xml:lang="en">total tax</Description>
 								<xsl:for-each select="InvoiceTrailer/VATSubTotals/VATSubTotal">
 									<TaxDetail>
@@ -139,22 +139,22 @@
 										<xsl:attribute name="category">VAT</xsl:attribute>
 										<xsl:attribute name="percentageRate"><xsl:value-of select="@VATRate"/></xsl:attribute>
 										<TaxableAmount>
-											<Money currency="GBP"><xsl:value-of select="DocumentTotalExclVATAtRate"/></Money>
+											<Money currency="GBP"><xsl:value-of select="format-number(DocumentTotalExclVATAtRate,'0.00')"/></Money>
 										</TaxableAmount>
 										<TaxAmount>
-											<Money currency="GBP"><xsl:value-of select="VATAmountAtRate"/></Money>
+											<Money currency="GBP"><xsl:value-of select="format-number(VATAmountAtRate,'0.00')"/></Money>
 										</TaxAmount>
 									</TaxDetail>
 								</xsl:for-each>
 							</Tax>
 							<GrossAmount>
-								<Money currency="GBP"><xsl:value-of select="InvoiceTrailer/DocumentTotalInclVAT"/></Money>
+								<Money currency="GBP"><xsl:value-of select="format-number(InvoiceTrailer/DocumentTotalInclVAT,'0.00')"/></Money>
 							</GrossAmount>
 							<NetAmount>
-								<Money currency="GBP"><xsl:value-of select="InvoiceTrailer/DocumentTotalInclVAT"/></Money>
+								<Money currency="GBP"><xsl:value-of select="format-number(InvoiceTrailer/DocumentTotalInclVAT,'0.00')"/></Money>
 							</NetAmount>
 							<DueAmount>
-								<Money currency="GBP"><xsl:value-of select="InvoiceTrailer/SettlementTotalInclVAT"/></Money>
+								<Money currency="GBP"><xsl:value-of select="format-number(InvoiceTrailer/SettlementTotalInclVAT,'0.00')"/></Money>
 							</DueAmount>
 						</InvoiceDetailSummary>
 				</InvoiceDetailRequest>

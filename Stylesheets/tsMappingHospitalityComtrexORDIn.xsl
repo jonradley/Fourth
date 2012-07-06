@@ -5,7 +5,9 @@ Purchase Order translation following tradacoms flat file mapping for Comtrex.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Name         	| Date       	| Change
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-M Dimant		| 08/11/2011	| 5004: Created. 
+M Dimant		| 08/11/2011	| 5004: Created. Mapped in UOM from inbound order
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+M Dimant		| 01/05/2012	| 5448: Mapped in UOM from inbound order
 **********************************************************************************************************
 -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
