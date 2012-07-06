@@ -2,7 +2,7 @@
 <!--======================================================================================
  Overview
 
-	Businesswear Invoice to Internal XML tsmapinghospitalitybusinesswearInvIn
+	Businesswear Invoice to Internal XML tsmapinghospitalitybusinesswearINVIn
 	
 
  © Alternative Business Solutions Ltd, 2006.
