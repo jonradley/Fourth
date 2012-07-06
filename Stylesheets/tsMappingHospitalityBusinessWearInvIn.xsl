@@ -66,7 +66,7 @@
 								</InvoiceHeader>
 							</xsl:for-each>
 							<InvoiceDetail>
-								<xsl:for-each select="Detail[QuantityInvoiced &gt; 0]">
+								<xsl:for-each select="Detail">
 									<InvoiceLine>
 										<LineNumber>
 											<xsl:value-of select="position()"/>
@@ -119,7 +119,7 @@
 							<xsl:for-each select="InvoiceTrailer">
 								<InvoiceTrailer>
 									<NumberOfLines>
-										<xsl:value-of select="count(../Detail[QuantityInvoiced &gt; 0])"/>
+										<xsl:value-of select="NumberOfLines"/>
 									</NumberOfLines>
 									<NumberOfItems>
 										<xsl:value-of select="NumberOfItems"/>
