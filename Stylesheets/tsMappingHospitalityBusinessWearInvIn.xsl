@@ -2,7 +2,7 @@
 <!--======================================================================================
  Overview
 
-	Internal XML to tsmaapinghospitalitybusinesswearORDOut
+	Businesswear Invoice to Internal XML tsmapinghospitalitybusinesswearInvIn
 	
 
  © Alternative Business Solutions Ltd, 2006.
