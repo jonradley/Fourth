@@ -79,33 +79,25 @@
 										<xsl:value-of select="Header/PurchaseOrderDate"/>
 									</PurchaseOrderDate>
 								</PurchaseOrderReferences>
-								<PurchaseOrderConfirmationReferences>
-									<PurchaseOrderConfirmationReference>
-										<xsl:value-of select="Header/PurchaseOrderConfirmationReference"/>
-									</PurchaseOrderConfirmationReference>
-									<PurchaseOrderConfirmationDate>
-										<xsl:value-of select="Header/PurchaseOrderConfirmationDate"/>
-									</PurchaseOrderConfirmationDate>
-								</PurchaseOrderConfirmationReferences>
 								<DeliveryNoteReferences>
-									<xsl:if test="DeliveryNoteReference !=''">
+									<xsl:if test="Header/DeliveryNoteReference !=''">
 										<DeliveryNoteReference>
 											<xsl:value-of select="Header/DeliveryNoteReference"/>
 										</DeliveryNoteReference>
 									</xsl:if>
-									<xsl:if test="DeliveryNoteDate !=''">
+									<xsl:if test="Header/DeliveryNoteDate !=''">
 										<DeliveryNoteDate>
 											<xsl:value-of select="Header/DeliveryNoteDate"/>
 										</DeliveryNoteDate>
 									</xsl:if>
-									<xsl:if test="ActualDeliveryDate !=''">
+									<xsl:if test="Header/ActualDeliveryDate !=''">
 										<DespatchDate>
 											<xsl:value-of select="Header/ActualDeliveryDate"/>
 										</DespatchDate>
 									</xsl:if>
 								</DeliveryNoteReferences>
 								<DeliveredDeliveryDetails>
-									<xsl:if test="ActualDeliveryDate !=''">
+									<xsl:if test="Header/ActualDeliveryDate !=''">
 										<DeliveryDate>
 											<xsl:value-of select="Header/ActualDeliveryDate"/>
 										</DeliveryDate>
