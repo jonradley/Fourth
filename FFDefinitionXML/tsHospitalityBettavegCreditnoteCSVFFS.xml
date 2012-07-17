@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+**********************************************************************
+Alterations
+**********************************************************************
+Name			| Date			| Change
+**********************************************************************
+KOshaughnessy	| 2012-06-27		| 5551 Created FFS
+**********************************************************************
+-->
+<!-- 16 fields in a record -->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>sequenced</ffsRecordPositionType>
+		<ffsRecordSeparator>chr(13)chr(10)</ffsRecordSeparator>
+		<ffsEscapeChars>
+			<ffsEscapeChar>
+				<ffsNative>""</ffsNative>
+				<ffsTradesimple>¬Q</ffsTradesimple>
+				<ffsLiteral>"</ffsLiteral>
+			</ffsEscapeChar>
+		</ffsEscapeChars>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>,</ffsFieldSeparator>
+		</ffsFieldSeparators>
+	</ffsSettings>
+	<ffsRoot>
+		<BatchCode>
+			<BatchDocuments>
+				<BatchDocument>
+					<CreditNote>
+						<TradeSimpleHeader>
+							<SendersCodeForRecipient RecordLength="18" RecordPos="*" LPos="1"/>
+						</TradeSimpleHeader>
+						<CreditNoteHeader>
+							<ShipTo>
+								<ShipToLocationID>
+									<SuppliersCode RecordLength="18" RecordPos="*" LPos="1"/>
+								</ShipToLocationID>
+								<ShipToAddress>
+									<AddressLine1 RecordLength="18" RecordPos="*" LPos="2"/>
+								</ShipToAddress>
+							</ShipTo>
+							<InvoiceReferences>
+								<InvoiceReference RecordLength="18" RecordPos="*" LPos="17"/>
+								<InvoiceDate RecordLength="18" RecordPos="*" LPos="18"/>
+								<TaxPointDate RecordLength="18" RecordPos="*" LPos="18"/>
+							</InvoiceReferences>
+							<CreditNoteReferences>
+								<CreditNoteReference RecordLength="18" RecordPos="*" LPos="4"/>
+								<CreditNoteDate RecordLength="18" RecordPos="*" LPos="3"/>
+								<TaxPointDate RecordLength="18" RecordPos="*" LPos="3"/>
+							</CreditNoteReferences>
+						</CreditNoteHeader>
+						<CreditNoteDetail>
+							<CreditNoteLine>
+								<DeliveryNoteReferences>
+									<DeliveryNoteReference RecordLength="18" RecordPos="*" LPos="17"/>
+									<DeliveryNoteDate RecordLength="18" RecordPos="*" LPos="18"/>
+									<DespatchDate RecordLength="18" RecordPos="*" LPos="18"/>
+								</DeliveryNoteReferences>
+								<ProductID>
+									<SuppliersProductCode RecordLength="18" RecordPos="*" LPos="6"/>
+								</ProductID>
+								<ProductDescription RecordLength="18" RecordPos="*" LPos="7"/>
+								<CreditedQuantity RecordLength="18" RecordPos="*" LPos="8"/>
+								<UnitValueExclVAT RecordLength="18" RecordPos="*" LPos="9"/>
+								<LineValueExclVAT RecordLength="18" RecordPos="*" LPos="10"/>
+								<VATCode RecordLength="18" RecordPos="*" LPos="15"/>
+								<VATRate RecordLength="18" RecordPos="*" LPos="16"/>
+							</CreditNoteLine>
+						</CreditNoteDetail>
+						<CreditNoteTrailer>
+							<DiscountedLinesTotalExclVAT RecordLength="18" RecordPos="*" LPos="13"/>
+							<DocumentTotalExclVAT RecordLength="18" RecordPos="*" LPos="13"/>
+							<SettlementTotalExclVAT RecordLength="18" RecordPos="*" LPos="13"/>
+							<VATAmount RecordLength="18" RecordPos="*" LPos="12"/>
+							<DocumentTotalInclVAT RecordLength="18" RecordPos="*" LPos="14"/>
+							<SettlementTotalInclVAT RecordLength="18" RecordPos="*" LPos="14"/>
+						</CreditNoteTrailer>
+					</CreditNote>
+				</BatchDocument>
+			</BatchDocuments>
+		</BatchCode>
+	</ffsRoot>
+</ffsFlatFileSchema>
