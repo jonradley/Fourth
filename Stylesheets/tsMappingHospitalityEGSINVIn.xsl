@@ -174,7 +174,7 @@ Date		|	owner				|	details
 								<!--This is looking for all lines which have product codes (see templates below) -->
 								<InvoiceDetail>
 									<!--This is to filter out any lines that do not have a product code and the line value is 0 -->	
-									<xsl:apply-templates select="InvoiceLine[Product/SuppliersProductCode !='' and NetLineTotal != 0]"/>
+									<xsl:apply-templates select="InvoiceLine[not(NetLineTotal = 0 and Product/SuppliersProductCode ='')]"/>
 								</InvoiceDetail>
 								
 								<InvoiceTrailer>
@@ -219,7 +219,7 @@ Date		|	owner				|	details
 												</xsl:variable>
 												
 												<!--This is to remove VAT subtrailors that contain VAT codes that do not match mapped line VAT codes-->
-												<xsl:if test="../InvoiceLine[LineTax/TaxRate/@Code=$TotalCode and LineTax/TaxRate=$TotalRate][Product/SuppliersProductCode !='' and NetLineTotal != 0]">
+												<xsl:if test="../InvoiceLine[LineTax/TaxRate/@Code=$TotalCode and LineTax/TaxRate=$TotalRate][Product/SuppliersProductCode !='' and NetLineTotal = 0]">
 											
 													<VATSubTotal>
 													
@@ -298,7 +298,7 @@ Date		|	owner				|	details
 	</xsl:template>
 	
 	<!--This is looking for credit note lines-->
-	<xsl:template match="/Batch/Invoice/InvoiceLine[Extensions/egs:Extension/egs:Extrinsic/@name = '']">
+	<xsl:template match="/Batch/Invoice/InvoiceLine[contains(Price/UnitPrice,'-') or Extensions/egs:Extension/egs:Extrinsic/@name = '']">
 	
 		<xsl:variable name="VATCode">
 			<xsl:choose>
@@ -336,34 +336,27 @@ Date		|	owner				|	details
 	
 		<InvoiceLine>
 		
-		<xsl:if test="../InvoiceReferences/DeliveryNoteNumber !=''">
-				<PurchaseOrderReferences>
-					<PurchaseOrderReference>
-						<xsl:choose>
-							<xsl:when test="../InvoiceReferences/BuyersOrderNumber !='' ">
-								<xsl:value-of select="../InvoiceReferences/BuyersOrderNumber"/>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:value-of select="../InvoiceReferences/DeliveryNoteNumber"/>
-							</xsl:otherwise>
-						</xsl:choose>
-					</PurchaseOrderReference>	
-					<PurchaseOrderDate>
-						<xsl:choose>
-							<xsl:when test="../InvoiceLineReferenes/OriginaOrderDate !='' ">
-								<xsl:value-of select="substring-before(../InvoiceLineReferenes/OriginaOrderDate,'T')"/>
-							</xsl:when>
-							<xsl:when test="../Delivery/ActualDeliveryDate !=''">
-								<xsl:value-of select="substring-before(../Delivery/ActualDeliveryDate,'T')"/>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:value-of select="substring-before(../InvoiceDate,'T')"/>
-							</xsl:otherwise>
-						</xsl:choose>
-					</PurchaseOrderDate>
-				</PurchaseOrderReferences>
-			</xsl:if>
-			
+		<xsl:if test="../InvoiceReferences/BuyersOrderNumber !=''">
+			<PurchaseOrderReferences>
+				<PurchaseOrderReference>
+					<xsl:value-of select="../InvoiceReferences/BuyersOrderNumber"/>
+				</PurchaseOrderReference>	
+				<PurchaseOrderDate>
+					<xsl:choose>
+						<xsl:when test="not(InvoiceLineReferences/OriginalOrderDate)">
+							<xsl:value-of select="substring-before(//InvoiceLineReferences/OriginalOrderDate,'T')"/>
+						</xsl:when>
+						<xsl:when test="InvoiceLineReferences/OriginalOrderDate !=''">
+							<xsl:value-of select="substring-before(InvoiceLineReferences/OriginalOrderDate,'T')"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="substring-before(/Batch/Invoice/InvoiceDate,'T')"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</PurchaseOrderDate>
+			</PurchaseOrderReferences>
+		</xsl:if>	
+		
 			<DeliveryNoteReferences>
 				<DeliveryNoteReference>
 					<xsl:choose>
@@ -467,33 +460,26 @@ Date		|	owner				|	details
 			
 		<InvoiceLine>
 		
-		<xsl:if test="../InvoiceReferences/DeliveryNoteNumber !=''">
+		<xsl:if test="../InvoiceReferences/BuyersOrderNumber !=''">
 			<PurchaseOrderReferences>
 				<PurchaseOrderReference>
-					<xsl:choose>
-						<xsl:when test="../InvoiceReferences/BuyersOrderNumber !='' ">
-							<xsl:value-of select="../InvoiceReferences/BuyersOrderNumber"/>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="../InvoiceReferences/DeliveryNoteNumber"/>
-						</xsl:otherwise>
-					</xsl:choose>
+					<xsl:value-of select="../InvoiceReferences/BuyersOrderNumber"/>
 				</PurchaseOrderReference>	
 				<PurchaseOrderDate>
 					<xsl:choose>
-						<xsl:when test="../InvoiceLineReferenes/OriginaOrderDate !='' ">
-							<xsl:value-of select="substring-before(../InvoiceLineReferenes/OriginaOrderDate,'T')"/>
+						<xsl:when test="not(InvoiceLineReferences/OriginalOrderDate)">
+							<xsl:value-of select="substring-before(//InvoiceLineReferences/OriginalOrderDate,'T')"/>
 						</xsl:when>
-						<xsl:when test="../Delivery/ActualDeliveryDate !=''">
-							<xsl:value-of select="substring-before(../Delivery/ActualDeliveryDate,'T')"/>
+						<xsl:when test="InvoiceLineReferences/OriginalOrderDate !=''">
+							<xsl:value-of select="substring-before(InvoiceLineReferences/OriginalOrderDate,'T')"/>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:value-of select="substring-before(../InvoiceDate,'T')"/>
+							<xsl:value-of select="substring-before(/Batch/Invoice/InvoiceDate,'T')"/>
 						</xsl:otherwise>
 					</xsl:choose>
 				</PurchaseOrderDate>
 			</PurchaseOrderReferences>
-			</xsl:if>
+		</xsl:if>	
 			
 			<DeliveryNoteReferences>
 				<DeliveryNoteReference>
