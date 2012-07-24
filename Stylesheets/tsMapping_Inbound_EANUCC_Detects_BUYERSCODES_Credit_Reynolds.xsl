@@ -20,6 +20,8 @@
 '******************************************************************************************
 ' 19/04/2012 | H Robson  	| 5422 When a UOM of PC is sent convert to EA for all customers.
 '******************************************************************************************
+' 24/07/2012 | M Dimant | 5591 Changes to handle discounts in the trailer.
+'******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	<xsl:output method="xml"/>
@@ -741,7 +743,7 @@
 											</xsl:if>
 											<xsl:if test="DiscountedLineTotals and VATPayable">
 												<DocumentTotalInclVATAtRate>
-													<xsl:value-of select="format-number(number(DiscountedLineTotals) + number(VATPayable),'0.00')"/>
+													<xsl:value-of select="format-number(number(DiscountedLineTotals - DocumentDiscountValue) + number(VATPayable),'0.00')"/>
 												</DocumentTotalInclVATAtRate>
 											</xsl:if>
 											<xsl:if test="TaxableAmount and VATPayable">
