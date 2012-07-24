@@ -14,7 +14,7 @@
 '******************************************************************************************
 ' 11/12/2009 |S Sehgal  	| Case 3286 Added back code for VAT rate change from 17.5 to 15 and adapted to handle VAT changing back to 17.5% from 1-Jan-2010
 '******************************************************************************************
-'
+' 24/07/2012 | M Dimant | 5591 Changes to handle discounts in the trailer.
 '******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:data="blah">
@@ -615,7 +615,7 @@
 											</xsl:if>
 											<xsl:if test="DiscountedLineTotals and VATPayable">
 												<DocumentTotalInclVATAtRate>
-													<xsl:value-of select="format-number(number(DiscountedLineTotals) + number(VATPayable),'0.00')"/>
+													<xsl:value-of select="format-number(number(DiscountedLineTotals - DocumentDiscountValue) + number(VATPayable),'0.00')"/>
 												</DocumentTotalInclVATAtRate>
 											</xsl:if>
 											<xsl:if test="TaxableAmount and VATPayable">
