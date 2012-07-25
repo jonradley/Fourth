@@ -2,9 +2,9 @@
 <!-- 
  Date       		| Name        	| Description of modification
 =========================================================================================
- 26/07/2011	| M Dimant    | Created. Maps inbound cXML orders from Glasgow City Council.
+26/07/2011	| M Dimant    | 4651: Created. Maps inbound cXML orders from Glasgow City Council.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-				|				|
+19/07/2012	| M Dimant	| 4651: Map GCC's UOMs into our internal UOMs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 =========================================================================================
 -->
@@ -119,8 +119,15 @@
 									<xsl:attribute name="UnitOfMeasure">
 										<xsl:choose>
 											<xsl:when test="ItemDetail/UnitOfMeasure='KG'">KGM</xsl:when>
-											<xsl:when test="ItemDetail/UnitOfMeasure='CA'">CS</xsl:when>								
-											<xsl:otherwise><xsl:value-of select="ItemDetail/UnitOfMeasure"/></xsl:otherwise>
+											<xsl:when test="ItemDetail/UnitOfMeasure='CA'">CS</xsl:when>
+											<xsl:when test="ItemDetail/UnitOfMeasure='PAK'">CS</xsl:when>
+											<xsl:when test="ItemDetail/UnitOfMeasure='BAG'">CS</xsl:when>										
+											<xsl:when test="ItemDetail/UnitOfMeasure='KAN'">CS</xsl:when>
+											<xsl:when test="ItemDetail/UnitOfMeasure='DZ'">DZN</xsl:when>
+											<xsl:when test="ItemDetail/UnitOfMeasure='G'">GRM</xsl:when>	
+											<xsl:when test="ItemDetail/UnitOfMeasure='10'">001</xsl:when>	
+											<xsl:when test="ItemDetail/UnitOfMeasure='L'">LTR</xsl:when>							
+											<xsl:otherwise>EA</xsl:otherwise>
 										</xsl:choose>										
 									</xsl:attribute>
 									<xsl:value-of select="@quantity"/>
