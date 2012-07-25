@@ -155,7 +155,20 @@ Date		|	owner				|	details
 											<xsl:value-of select="Extensions/egs:Extension/egs:Extrinsic[1]"/>
 										</InvoiceReference>
 										<InvoiceDate>
-											<xsl:value-of select="substring-before(Extensions/egs:Extension/egs:Extrinsic[2],'T')"/>
+											<xsl:choose>
+												<xsl:when test="Extensions/egs:Extension/egs:Extrinsic[2] !=''">
+													<xsl:value-of select="substring-before(Extensions/egs:Extension/egs:Extrinsic[2],'T')"/>
+												</xsl:when>
+												<xsl:when test="Extensions/egs:Extension/egs:Extrinsic[2] = '' and InvoiceReferences/DeliveryNoteNumber !='' ">
+													<xsl:value-of select="substring-before(InvoiceReferences/DeliveryNoteNumber,'T')"/>
+												</xsl:when>
+												<xsl:when test="Extensions/egs:Extension/egs:Extrinsic[2] = '' and InvoiceReferences/DeliveryNoteNumber ='' and InvoiceLineReferenes/OriginaOrderDate !='' ">
+													<xsl:value-of select="substring-before(InvoiceLineReferenes/OriginaOrderDate,'T')"/>
+												</xsl:when>
+												<xsl:otherwise>
+													<xsl:value-of select="substring-before(InvoiceDate,'T')"/>
+												</xsl:otherwise>
+											</xsl:choose>
 										</InvoiceDate>
 									</InvoiceReferences>
 								</xsl:if>
@@ -182,7 +195,7 @@ Date		|	owner				|	details
 							
 							<CreditNoteDetail>	
 							<!--This is to filter out any lines that do not have a product code and the line value is 0 -->						
-							<xsl:for-each select="InvoiceLine[Product/SuppliersProductCode !='' and NetLineTotal != 0]">
+							<xsl:for-each select="InvoiceLine[not(Product/SuppliersProductCode !='' and NetLineTotal = 0)]">
 							
 								<xsl:variable name="VATCode">
 									<xsl:choose>
