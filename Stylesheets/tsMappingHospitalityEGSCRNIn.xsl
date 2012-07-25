@@ -149,25 +149,25 @@ Date		|	owner				|	details
 									</xsl:if>
 								</ShipTo>
 								
-								<xsl:if test="Extensions/egs:Extension/egs:Extrinsic[1] !='' ">
+								<xsl:if test="Extensions/egs:Extension/egs:Extrinsic[@name = 'OriginalInvoiceNumber'] !='' ">
 									<InvoiceReferences>
 										<InvoiceReference>
-											<xsl:value-of select="Extensions/egs:Extension/egs:Extrinsic[1]"/>
+											<xsl:value-of select="Extensions/egs:Extension/egs:Extrinsic[@name = 'OriginalInvoiceNumber']"/>
 										</InvoiceReference>
 										<InvoiceDate>
 											<xsl:choose>
-												<xsl:when test="Extensions/egs:Extension/egs:Extrinsic[2] !=''">
-													<xsl:value-of select="substring-before(Extensions/egs:Extension/egs:Extrinsic[2],'T')"/>
+												<xsl:when test="Extensions/egs:Extension/egs:Extrinsic ">
+													<xsl:value-of select="substring-before(Extensions/egs:Extension/egs:Extrinsic[@name = 'OriginalInvoiceDate'],'T')"/>
 												</xsl:when>
-												<xsl:when test="Extensions/egs:Extension/egs:Extrinsic[2] = '' and InvoiceReferences/DeliveryNoteNumber !='' ">
+												<xsl:when test="InvoiceReferences/DeliveryNoteNumber !='' ">
 													<xsl:value-of select="substring-before(InvoiceReferences/DeliveryNoteNumber,'T')"/>
 												</xsl:when>
-												<xsl:when test="Extensions/egs:Extension/egs:Extrinsic[2] = '' and InvoiceReferences/DeliveryNoteNumber ='' and InvoiceLineReferenes/OriginaOrderDate !='' ">
+												<xsl:when test="InvoiceLineReferenes/OriginaOrderDate">
 													<xsl:value-of select="substring-before(InvoiceLineReferenes/OriginaOrderDate,'T')"/>
 												</xsl:when>
-												<xsl:otherwise>
+												<xsl:when test="InvoiceDate">
 													<xsl:value-of select="substring-before(InvoiceDate,'T')"/>
-												</xsl:otherwise>
+												</xsl:when>
 											</xsl:choose>
 										</InvoiceDate>
 									</InvoiceReferences>
@@ -297,9 +297,9 @@ Date		|	owner				|	details
 										
 										<!--Reason for credit-->
 										<xsl:choose>
-											<xsl:when test="../Extensions/egs:Extension/egs:Extrinsic[2] !=''">
+											<xsl:when test="../Extensions/egs:Extension/egs:Extrinsic/@name = 'ReasonsForCredit'">
 												<Narrative>
-													<xsl:value-of select="../Extensions/egs:Extension/egs:Extrinsic[2]"/>
+													<xsl:value-of select="../Extensions/egs:Extension/egs:Extrinsic[@name = 'ReasonsForCredit']"/>
 												</Narrative>
 											</xsl:when>
 											<xsl:when test="../Extensions/egs:Extension[4] !=''">
