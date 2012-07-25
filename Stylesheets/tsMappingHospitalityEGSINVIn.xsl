@@ -171,10 +171,37 @@ Date		|	owner				|	details
 									</InvoiceReferences>
 								</InvoiceHeader>
 								
-								<!--This is looking for all lines which have product codes (see templates below) -->
 								<InvoiceDetail>
-									<!--This is to filter out any lines that do not have a product code and the line value is 0 -->	
-									<xsl:apply-templates select="InvoiceLine[not(NetLineTotal = 0 and Product/SuppliersProductCode ='')]"/>
+									<!-- If there are no line details create a node and fill with zero values -->
+									<xsl:if test="not(InvoiceLine)">
+										<InvoiceLine>
+											<ProductID>
+												<SuppliersProductCode>No lines on Invoice</SuppliersProductCode>
+											</ProductID>
+											<ProductDescription>No lines on Invoice</ProductDescription>
+											<InvoicedQuantity>0</InvoicedQuantity>
+											<UnitValueExclVAT>0</UnitValueExclVAT>
+											<LineValueExclVAT>0</LineValueExclVAT>
+											<VATCode>No lines on Invoice</VATCode>
+											<VATRate>0</VATRate>
+										</InvoiceLine>		
+									</xsl:if>
+									
+									<!-- For every line that has a total and valid product code, create the nodes as usual -->
+									<xsl:for-each select="InvoiceLine">
+										<xsl:if test="not(NetLineTotal = 0 and Product/SuppliersProductCode ='')">								
+												<xsl:choose>
+													<xsl:when test="contains(Price/UnitPrice,'-') or Extensions/egs:Extension/egs:Extrinsic[@name ='CreditLineIndicator'] != '' ">
+														<xsl:call-template name="CreditNoteLine"/>
+													</xsl:when>
+													<xsl:when test="Extensions/egs:Extension/egs:Extrinsic[@name = 'CreditLineIndicator'] = ''">
+														<xsl:call-template name="InvoiceLine"/>
+													</xsl:when>
+													
+												</xsl:choose>
+											</xsl:if>																	
+									</xsl:for-each>
+																				
 								</InvoiceDetail>
 								
 								<InvoiceTrailer>
@@ -298,8 +325,8 @@ Date		|	owner				|	details
 	</xsl:template>
 	
 	<!--This is looking for credit note lines-->
-	<xsl:template match="/Batch/Invoice/InvoiceLine[contains(Price/UnitPrice,'-') or Extensions/egs:Extension/egs:Extrinsic/@name = '']">
-	
+	<xsl:template name="CreditNoteLine">
+
 		<xsl:variable name="VATCode">
 			<xsl:choose>
 				<xsl:when test="LineTax/TaxRate/@Code = 'S'">
@@ -343,11 +370,11 @@ Date		|	owner				|	details
 				</PurchaseOrderReference>	
 				<PurchaseOrderDate>
 					<xsl:choose>
-						<xsl:when test="not(InvoiceLineReferences/OriginalOrderDate)">
-							<xsl:value-of select="substring-before(//InvoiceLineReferences/OriginalOrderDate,'T')"/>
-						</xsl:when>
 						<xsl:when test="InvoiceLineReferences/OriginalOrderDate !=''">
 							<xsl:value-of select="substring-before(InvoiceLineReferences/OriginalOrderDate,'T')"/>
+						</xsl:when>
+						<xsl:when test="not(InvoiceLineReferences/OriginalOrderDate) and //InvoiceLineReferences/OriginalOrderDate !=''">
+							<xsl:value-of select="substring-before(//InvoiceLineReferences/OriginalOrderDate,'T')"/>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:value-of select="substring-before(/Batch/Invoice/InvoiceDate,'T')"/>
@@ -422,7 +449,7 @@ Date		|	owner				|	details
 	</xsl:template>
 	
 	<!--This is looking at true invoice lines-->
-	<xsl:template match="InvoiceLine[Extensions/egs:Extension/egs:Extrinsic/@name != '']">
+	<xsl:template name="InvoiceLine">
 	
 		<xsl:variable name="VATCode">
 			<xsl:choose>
@@ -467,11 +494,11 @@ Date		|	owner				|	details
 				</PurchaseOrderReference>	
 				<PurchaseOrderDate>
 					<xsl:choose>
-						<xsl:when test="not(InvoiceLineReferences/OriginalOrderDate)">
-							<xsl:value-of select="substring-before(//InvoiceLineReferences/OriginalOrderDate,'T')"/>
-						</xsl:when>
 						<xsl:when test="InvoiceLineReferences/OriginalOrderDate !=''">
 							<xsl:value-of select="substring-before(InvoiceLineReferences/OriginalOrderDate,'T')"/>
+						</xsl:when>
+						<xsl:when test="not(InvoiceLineReferences/OriginalOrderDate) and //InvoiceLineReferences/OriginalOrderDate !='' ">
+							<xsl:value-of select="substring-before(//InvoiceLineReferences/OriginalOrderDate,'T')"/>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:value-of select="substring-before(/Batch/Invoice/InvoiceDate,'T')"/>
@@ -538,5 +565,21 @@ Date		|	owner				|	details
 			</VATRate>
 
 		</InvoiceLine>
+		
 	</xsl:template>
+	
+	<xsl:template match="Invoice[not(InvoiceLine)]">
+		<InvoiceLine>
+			<ProductID>
+				<SuppliersProductCode>No lines on Invoice</SuppliersProductCode>
+			</ProductID>
+			<ProductDescription>No lines on Invoice</ProductDescription>
+			<InvoicedQuantity>0</InvoicedQuantity>
+			<UnitValueExclVAT>0</UnitValueExclVAT>
+			<LineValueExclVAT>0</LineValueExclVAT>
+			<VATCode>No lines on Invoice</VATCode>
+			<VATRate>0</VATRate>
+		</InvoiceLine>
+	</xsl:template>
+	
 </xsl:stylesheet>
