@@ -208,6 +208,9 @@
 			<xsl:when test="starts-with($sWorking,'&quot;') and substring($sWorking,string-length($sWorking),1) = '&quot;'">
 				<xsl:value-of select="substring($sWorking,2,string-length($sWorking)-2)"/>
 			</xsl:when>
+			<xsl:when test="substring($sWorking,string-length($sWorking),1) = '&quot;'">
+				<xsl:value-of select="substring($sWorking,1,string-length($sWorking)-1)"/>
+			</xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="$sWorking"/>
 			</xsl:otherwise>
