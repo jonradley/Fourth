@@ -14,7 +14,7 @@
 ==========================================================================================
  25/01/2012	| M Dimant     	| Created.
 ==========================================================================================
-           	|                 	|
+ 27/07/2012	| M Dimant      	| 5532: Removed incorrect field in CLD segment. Removed commented out code. Added UOM translations.               
 ==========================================================================================
            	|                 	|
 =======================================================================================-->
@@ -161,13 +161,6 @@
 		<!-- truncate to 8 (just in case) CADD 5 = 3033 = AN..8-->
 		<xsl:value-of select="js:msSafeText(string(CreditNote/CreditNoteHeader/Buyer/BuyersAddress/PostCode),8)"/>
 		<xsl:value-of select="$sRecordSep"/>
-		
-		<!--
-		<xsl:text>DNA=</xsl:text>
-		<xsl:text>1++073:</xsl:text>
-		<xsl:value-of select="js:msSafeText(string(CreditNoteHeader/Currency),3)"/>
-		<xsl:value-of select="$sRecordSep"/>
-		-->
 		
 		<xsl:text>FIL=</xsl:text>
 		<xsl:value-of select="/CreditNote/CreditNoteHeader/BatchInformation/FileGenerationNo"/>
@@ -339,7 +332,6 @@
 			</xsl:for-each>
 			
 			<xsl:text>CTR=</xsl:text>	
-			<!--xsl:value-of select="CreditNoteTrailer/NumberOfLines"/-->
 			<xsl:text>1+</xsl:text>
 			<xsl:value-of select="translate(format-number(CreditNoteTrailer/DiscountedLinesTotalExclVAT,'#.00'),'.','')"/>
 			<xsl:text>+++++</xsl:text>
