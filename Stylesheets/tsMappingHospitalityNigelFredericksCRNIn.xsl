@@ -215,10 +215,7 @@
 												<xsl:if test="../OrderReference/PurchaseOrderNumber and ../OrderReference/PurchaseOrderNumber != ''">
 													<PurchaseOrderDate>
 														<xsl:value-of select="../OrderReference/PurchaseOrderDate"/>
-													</PurchaseOrderDate>
-													<!--PurchaseOrderTime>
-														<xsl:value-of select="substring-after(OrderReference/PurchaseOrderDate,'T')"/>
-													</PurchaseOrderTime-->
+													</PurchaseOrderDate>													
 												</xsl:if>
 												<xsl:if test="../TradeAgreementReference/ContractReferenceNumber != ''">
 													<TradeAgreement>
@@ -266,18 +263,6 @@
 										<ProductDescription>
 											<xsl:value-of select="LineItemDescription"/>
 										</ProductDescription>
-										<!--xsl:if test="OrderedQuantity">
-											<OrderedQuantity>
-												<!xsl:attribute name="UnitOfMeasure">
-												<xsl:choose>
-													<xsl:when test="OrderedQuantity/@unitCode = KG">KGM</xsl:when>
-													<xsl:when test="OrderedQuantity/@unitCode"><xsl:value-of select="OrderedQuantity/@unitCode"/></xsl:when>
-													<xsl:otherwise><xsl:value-of select="CreditQuantity/@unitCode"/></xsl:otherwise>
-												</xsl:choose>
-											</xsl:attribute>
-												<xsl:value-of select="format-number(OrderedQuantity, '0.000')"/>
-											</OrderedQuantity>
-										</xsl:if-->
 										<InvoicedQuantity>
 											<xsl:attribute name="UnitOfMeasure">											
 												<xsl:choose>
@@ -394,11 +379,7 @@
 								</NumberOfLines>
 								<NumberOfItems>
 									<xsl:value-of select="sum(CreditItem/CreditQuantity)"/>
-								</NumberOfItems>
-								<!-- EAN.UCC only allows for one delivery per CreditNote -->
-								<!--NumberOfDeliveries>
-									<xsl:text>1</xsl:text>
-								</NumberOfDeliveries-->
+								</NumberOfItems>								
 								<DocumentDiscountRate>
 									<xsl:choose>
 										<xsl:when test="CreditTotals/DocumentDiscountRate">
@@ -519,12 +500,7 @@
 													<xsl:if test="VATDetails/TaxCategory and VATDetails/TaxRate">
 														<xsl:value-of select="format-number(sum(../../CreditItem[VATDetails/TaxCategory=$currentVATCode  and format-number(VATDetails/TaxRate, '0.00') = format-number($currentVATRate, '0.00')]/CreditQuantity), '0.000')"/>
 													</xsl:if>
-											</NumberOfItemsAtRate>
-											<!--xsl:if test="DiscountedLineTotals">
-												<DiscountedLinesTotalExclVATAtRate>
-													<xsl:value-of select="format-number(DiscountedLineTotals , '0.00')"/>
-												</DiscountedLinesTotalExclVATAtRate>
-											</xsl:if-->
+											</NumberOfItemsAtRate>											
 											<xsl:if test="DocumentDiscountValue">
 												<DocumentDiscountAtRate>
 													<xsl:value-of select="format-number(DocumentDiscountValue, '0.00')"/>
@@ -558,18 +534,6 @@
 										</VATSubTotal>
 									</xsl:for-each>
 								</VATSubTotals>
-								<!-- DiscountedLinesTotalExclVAT is mandatory in our schema but not EAN.UCC. If we find none then just default the value -->
-								<!--DiscountedLinesTotalExclVAT>
-									<xsl:choose>
-										<xsl:when test="count(//VATRateTotals/DiscountedLineTotals) &gt; 0">
-											<xsl:value-of select="format-number(sum(//VATRateTotals/DiscountedLineTotals),'0.00')"/>
-										</xsl:when>
-										<xsl:otherwise>
-											<xsl:value-of select="format-number($defaultDiscountedLinesTotalExclVAT,'0.00')"/>
-										</xsl:otherwise>
-									</xsl:choose>
-								</DiscountedLinesTotalExclVAT-->
-								<!-- DocumentDiscount is mandatory in our schema but not EAN.UCC. If we find none then just default the value -->
 								<DocumentDiscount>
 									<xsl:choose>
 										<xsl:when test="count(//VATRateTotals/DocumentDiscountValue) &gt; 0">
@@ -579,10 +543,7 @@
 											<xsl:value-of select="format-number($defaultDocumentDiscountValue,'0.00')"/>
 										</xsl:otherwise>
 									</xsl:choose>
-								</DocumentDiscount>
-								<!--DocumentTotalExclVAT>
-									<xsl:value-of select="format-number(CreditTotals/CreditNoteSubTotal, '0.00')"/>
-								</DocumentTotalExclVAT-->
+								</DocumentDiscount>								
 								<!-- SettlementDiscount is mandatory in our schema but not EAN.UCC. If we find none then just default the value -->
 								<SettlementDiscount>
 									<xsl:choose>
