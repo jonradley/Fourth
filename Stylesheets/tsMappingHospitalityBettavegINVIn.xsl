@@ -98,14 +98,26 @@ Date		|	Name				|	Comment
 	<xsl:template match="VATCode">
 		<xsl:element name="VATCode">
 			<xsl:call-template name="VATDecode">
-				<xsl:with-param name="Translate" select="."/>
+				<xsl:with-param name="Translate">
+					<xsl:call-template name="stripQuotes">
+						<xsl:with-param name="sInput">
+							<xsl:value-of select="."/>
+						</xsl:with-param>
+					</xsl:call-template>
+				</xsl:with-param>
 			</xsl:call-template>
 		</xsl:element>
 	</xsl:template>
 	<xsl:template match="@VATCode">
 		<xsl:attribute name="VATCode">
 			<xsl:call-template name="VATDecode">
-				<xsl:with-param name="Translate" select="."/>
+				<xsl:with-param name="Translate">
+					<xsl:call-template name="stripQuotes">
+						<xsl:with-param name="sInput">
+							<xsl:value-of select="."/>
+						</xsl:with-param>
+					</xsl:call-template>
+				</xsl:with-param>
 			</xsl:call-template>
 		</xsl:attribute>
 	</xsl:template>
