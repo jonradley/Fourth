@@ -8,7 +8,9 @@ R Cambridge	| 2008-12-02		| 2600 Created Module (based on tsMappingHospitalityIn
 **********************************************************************
 K O'shaughnessy|	2009-08-13	| 3062 change to pick up invoiced quanity from pack size not amount
 **********************************************************************
-M Dimant			|	2011-02-08	| 4213 change to reflect new location of  UOM			
+M Dimant			|	2011-02-08	| 4213 change to reflect new location of  UOM		
+**********************************************************************
+H Robson		|	2012-07-27	| 5606 Map in the SCB	
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	<xsl:output method="xml"/>
@@ -53,7 +55,14 @@ M Dimant			|	2011-02-08	| 4213 change to reflect new location of  UOM
 								<DocumentStatus>
 									<xsl:text>Original</xsl:text>
 								</DocumentStatus>
-								
+										<!-- HR 2012-07-27 --> 
+										<Buyer>
+											<BuyersLocationID>
+												<SuppliersCode>
+													<xsl:value-of select="/Invoice/Supplier/Contact/Department"/>	
+												</SuppliersCode>
+											</BuyersLocationID>
+										</Buyer>								
 								
 								<!--Buyer>
 									<BuyersLocationID>
@@ -72,6 +81,8 @@ M Dimant			|	2011-02-08	| 4213 change to reflect new location of  UOM
 												<xsl:value-of select="/Invoice/Buyer/SellerAssigned"/>
 											</SuppliersCode>
 										</xsl:if-->
+										
+									
 										<!--
 										<xsl:for-each select="(/Invoice/Buyer/BuyerGLN | /Invoice/Buyer/SellerAssigned )[1]">
 											<SuppliersCode>
