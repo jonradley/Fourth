@@ -16,10 +16,7 @@
 					<TradeSimpleHeader>
 						<SendersCodeForRecipient>
 							<xsl:value-of select="../../Header/From/Credential/Identity"/>
-						</SendersCodeForRecipient>
-						<!--SendersBranchReference>
-							<xsl:value-of select="OrderRequestHeader/BillTo/Address/@addressID"/>
-						</SendersBranchReference-->
+						</SendersCodeForRecipient>						
 					</TradeSimpleHeader>					
 					<PurchaseOrderHeader>
 						<ShipTo>

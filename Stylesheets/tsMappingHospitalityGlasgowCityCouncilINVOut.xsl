@@ -80,8 +80,7 @@
 							<InvoiceDetailOrderInfo>
 								<OrderReference orderID="1424620" orderDate="2011-06-13T00:00:00+00:00">
 									<xsl:attribute name="orderID"><xsl:value-of select="InvoiceDetail/InvoiceLine/PurchaseOrderReferences/PurchaseOrderReference"/></xsl:attribute>
-									<xsl:attribute name="orderDate"><xsl:value-of select="InvoiceDetail/InvoiceLine/PurchaseOrderReferences/PurchaseOrderDate"/></xsl:attribute>
-									<!--DocumentReference payloadID="201106171716.INV.108514@kewill.com"/-->
+									<xsl:attribute name="orderDate"><xsl:value-of select="InvoiceDetail/InvoiceLine/PurchaseOrderReferences/PurchaseOrderDate"/></xsl:attribute>			
 								</OrderReference>
 							</InvoiceDetailOrderInfo>						
 							<xsl:for-each select="InvoiceDetail/InvoiceLine">
