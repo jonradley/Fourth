@@ -20,6 +20,10 @@ R Cambridge	| 2010-02-01		| 3310 set sh:Sender and sh:Receiver according to GLN 
 H Robson		| 2012-03-02		| 5295 New template to return BuyersCode from a fixed list of codes that Brakes have agreed to receive
 **********************************************************************
 H Robson		| 2012-04-10		| 5394 FnB orders don't supply the order time so lets add that in. 
+**********************************************************************
+R Cambridge	| 2012-08-02		| 5611 MandJ buyers-code-for-vendor masking issue for JW Lees
+**********************************************************************
+        		|           		|  
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:sh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" xmlns:eanucc="urn:ean.ucc:2" xmlns:order="urn:ean.ucc:order:2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:vbscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
@@ -427,6 +431,7 @@ H Robson		| 2012-04-10		| 5394 FnB orders don't supply the order time so lets ad
   Inputs         : Nodes containing GLNs
   Returns        : A string with a code/name
   Author         : H Robson 	2012-03-02
+  Alterations    : R Cambridge 2012-08-02 FB5611 removed exception for MandJ and JWLees
   Alterations    : 
  =======================================================================================-->	
 	<xsl:template name="determineBuyersCode">
@@ -461,7 +466,7 @@ H Robson		| 2012-04-10		| 5394 FnB orders don't supply the order time so lets ad
 			<xsl:when test="$vendorGLN = '5013546026886' and $senderGLN = '5060166760106'">MJS001</xsl:when>
 			<xsl:when test="$vendorGLN = '5013546026886' and $senderGLN = '5060166760090'">MJS001</xsl:when>
 			<xsl:when test="$vendorGLN = '5013546026886' and $senderGLN = '5060166760083'">MJSEAFOOD</xsl:when>
-			<xsl:when test="$vendorGLN = '5013546026886' and $senderGLN = '5060166760274'">m&amp;jSEAFOOD</xsl:when>
+			<!-- 5611 MandJ + JWLees code removed from here -->
 			<xsl:when test="$vendorGLN = '5013546026886' and $senderGLN = '5060166761004'">MJSE01</xsl:when>
 			<xsl:when test="$vendorGLN = '5013546026886' and $senderGLN = '5060166761028'">803/1</xsl:when>
 			<xsl:when test="$vendorGLN = '5013546026886' and $senderGLN = '5060166761066'">752907</xsl:when>
