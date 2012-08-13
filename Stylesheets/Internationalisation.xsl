@@ -1,4 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+******************************************************************************************
+ $Header: /trunk/Stylesheets/Internationalisation.xsl   
+ Overview
+
+ This XSL file provides come common routines for translating and formatting the report contents 
+
+ © Fourth Hospitality., 2012.
+******************************************************************************************
+ Module History
+******************************************************************************************
+ Date            | Name           | Description of modification
+******************************************************************************************
+ 13/08/2012 | S Sehgal | FB 5618Escape double quotes within a column
+******************************************************************************************
+-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:user="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl user">
 
 <xsl:variable name="TranslationsXML" select="document(concat($RootFolderPath,'/',$LocaleID,'/',$TranslationFile))/listoftext"/>
@@ -308,6 +324,7 @@
 		' Returns       	 : String
 		' Author             : A Sheppard, 23/08/2004.
 		' Alterations   	 :  S Sehgal, 24/04/2010. FB 3536 Converted to VB script
+		' Alterations   	 :  S Sehgal, 24/04/2010. FB 5618 Escape " with two " ("")
 		'========================================================================================
 		Function msFormatForCSV(vsString)
 		
@@ -326,7 +343,7 @@
 						
 			sString= replace(sString,"""","¬")
 			
-			sString= replace(sString,"¬","""")
+			sString= replace(sString,"¬","""""")
 			
 			if InStr(sString,"""")> 0 or InStr(sString,",") Then
 				sString= """" & sString& """"
