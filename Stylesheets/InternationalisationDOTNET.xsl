@@ -1,4 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+******************************************************************************************
+ $Header: /trunk/Stylesheets/Internationalisation.xsl   
+ Overview
+
+ This XSL file provides come common routines for translating and formatting the report contents 
+
+ © Fourth Hospitality., 2012.
+******************************************************************************************
+ Module History
+******************************************************************************************
+ Date            | Name           | Description of modification
+******************************************************************************************
+ 13/08/2012 | S Sehgal | FB 5618Escape double quotes within a column
+******************************************************************************************
+-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:user="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl user">
 
 <xsl:variable name="TranslationsXML" select="document(concat($RootFolderPath,'/',$LocaleID,'/',$TranslationFile))/listoftext"/>
@@ -89,13 +105,21 @@
     ' Returns       	  : String
     ' Author            : 
     ' Alterations   	  : S Sehgal, 13/04/2011. 4272 Converted to c#
+    ' Alterations   	  : S Sehgal, 13/04/2011. 5618 Escape Double Quotes(")
     '========================================================================================*/
     public string msFormatForCSV(string vsString)
     {
-      if(vsString.IndexOf(",")>0)
+         
+       if(vsString.IndexOf("\"")>0)
+      {
+        vsString= "\""  +  vsString.Replace("\"", "\"\"") +  "\"";
+      }
+
+         if(vsString.IndexOf(",")>0)
       {
         vsString= "\""  +  vsString +  "\"";
       }
+
 
       return vsString;
 
