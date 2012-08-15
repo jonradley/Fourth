@@ -15,12 +15,12 @@
 ******************************************************************************************
  20/01/2012		| R Cambridge	 	| 5193 handle CSV correctly, ensure field totals are correct in ffs
 ******************************************************************************************
-	          	|              	|                                                        
+ 15/08/2012   	| H Robson	 	| 5602 set ffsRecordSeparator to CrLf to match format of inbound files
 ***************************************************************************************-->
 <ffsFlatFileSchema>
 	<ffsSettings>
 		<ffsRecordPositionType>named</ffsRecordPositionType>
-		<ffsRecordSeparator>chr(10)</ffsRecordSeparator>
+		<ffsRecordSeparator>chr(13)chr(10)</ffsRecordSeparator>
 		<ffsFieldSeparators>
 			<ffsFieldSeparator>,</ffsFieldSeparator>
 		</ffsFieldSeparators>
