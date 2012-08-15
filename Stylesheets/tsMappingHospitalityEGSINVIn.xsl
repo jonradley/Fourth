@@ -3,9 +3,9 @@ Date		|	owner				|	details
 ************************************************************************
 21/06/2012| KOshaughnessy	| Created FB5542
 ************************************************************************
-05/06/2012|KOshaughnessy	| FB 5567 - bugfix to PO reference
+05/06/2012|KOshaughnessy	| FB 5562 - bugfix to PO reference
 ************************************************************************
-			|						|			
+08/08/2012|KOshaughnessy	| FB 5567 Various Bugfixes			
 **********************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:egs="urn:eGS:marketplace:eBIS:Extension:1.0">
 	<xsl:output method="xml"/>
