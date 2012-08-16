@@ -180,6 +180,11 @@ Date		|	owner				|	details
 												</xsl:otherwise>
 											</xsl:choose>
 										</TaxPointDate>
+										<xsl:if test="Extensions/egs:Extension/egs:Extrinsic[@name = 'InvoiceImage'] !=''">
+											<PDFURL>
+												<xsl:value-of select="Extensions/egs:Extension/egs:Extrinsic[@name = 'InvoiceImage']"/>
+											</PDFURL>
+										</xsl:if>
 									</CreditNoteReferences>
 								</CreditNoteHeader>
 								<!--***********************************************************************************************************************************************************************************************************************************-->
