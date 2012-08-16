@@ -168,6 +168,11 @@ Date		|	owner				|	details
 												<xsl:value-of select="InvoiceHead/InvoiceCurrency/CurrencyCode"/>
 											</Currency>
 										</xsl:if>
+										<xsl:if test="Extensions/egs:Extension/egs:Extrinsic[@name = 'InvoiceImage'] !=''">
+											<PDFURL>
+												<xsl:value-of select="Extensions/egs:Extension/egs:Extrinsic[@name = 'InvoiceImage']"/>
+											</PDFURL>
+										</xsl:if>
 									</InvoiceReferences>
 								</InvoiceHeader>
 								
