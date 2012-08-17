@@ -7,7 +7,8 @@ K Oshaughnessy| 2010-10-27		| 3450
 **********************************************************************
 R Cambridge		| 2011-07-26		| 4632 Added supplier's code for buyer (to allow tsProcessorHosptransSBR to remove SBR when required)
 **********************************************************************
-M Emanuel		| 2012-08-14		|	Copied Delivery Note Mapper for Waverley TBS
+M Emanuel		| 2012-08-17		|	Copied Delivery Note Mapper for Waverley TBS from FreshDirectDeliveryNoteIn Mapper. 
+We couldnt reference to the Fresh Direct Mapper as some mapping had to be bespoke to Waverley's message format
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 	xmlns:sh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" 
