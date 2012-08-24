@@ -10,7 +10,7 @@ R Cambridge	| 2011-06-07		| 4520 Added back order quantity and unit price
 **********************************************************************
 M Emanuel	|	24/02/2012	| Created PO Confirmation Mapper for Booker				|						|				
 **********************************************************************
-				|						|
+K Oshaughnessy|17/08/2012	| FB 5607 adding SBR
 **********************************************************************
 				|						|
 *******************************************************************-->
@@ -28,6 +28,11 @@ M Emanuel	|	24/02/2012	| Created PO Confirmation Mapper for Booker				|						|
 									<SendersCodeForRecipient>
 									<xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/>
 									</SendersCodeForRecipient>
+									<xsl:if test="TradeSimpleHeader/SendersBranchReference">
+										<SendersBranchReference>
+											<xsl:value-of select="TradeSimpleHeader/SendersBranchReference"/>
+										</SendersBranchReference>
+									</xsl:if>
 								</TradeSimpleHeader>
 								<PurchaseOrderConfirmationHeader>
 									<DocumentStatus>Original</DocumentStatus>
