@@ -31,6 +31,11 @@ M Emanuel	|	24/02/2012	| Created Delivery Note Mapper for Booker
 									<SendersCodeForRecipient>
 										<xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/>
 									</SendersCodeForRecipient>
+									<xsl:if test="TradeSimpleHeader/SendersBranchReference">
+										<SendersBranchReference>
+											<xsl:value-of select="TradeSimpleHeader/SendersBranchReference"/>
+										</SendersBranchReference>
+									</xsl:if>
 								</TradeSimpleHeader>
 								<DeliveryNoteHeader>
 								
