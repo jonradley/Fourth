@@ -8,7 +8,9 @@ Name			| Date			| Change
 **********************************************************************
 M Dimant	| 06/01/2009	| 2262 Created bespoke mapper to satisfy location of Suppliers Product Code 
 **********************************************************************
-M Emanuel	|	24/02/2012	| Created Delivery Note FF Mapper for Booker				|					|
+M Emanuel	|	24/02/2012	| Created Delivery Note FF Mapper for Booker
+*********************************************************************
+K Oshaughnessy| 08/08/201 | FB 5607 Senders branch reference added
 *******************************************************************-->
 <ffsFlatFileSchema>
 	<ffsSettings>
@@ -73,6 +75,7 @@ M Emanuel	|	24/02/2012	| Created Delivery Note FF Mapper for Booker				|					|
 					<DeliveryNote>
 						<TradeSimpleHeader>
 							<SendersCodeForRecipient RecordPos="CLO=" LPos="1" SFPos="3"/>
+							<SendersBranchReference RecordPos="CDT=" LPos="1" SFPos="2"/>
 						</TradeSimpleHeader>
 						<DeliveryNoteHeader>
 							<Buyer>
