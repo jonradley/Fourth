@@ -116,7 +116,7 @@ Date		|	owner				|	details
 														</xsl:with-param>
 													</xsl:call-template>
 												</xsl:attribute>
-												<xsl:value-of select="Quantity/Amount"/>
+												<xsl:value-of select="Price/Units"/>
 											</CreditedQuantity>
 																		
 											<UnitValueExclVAT>
