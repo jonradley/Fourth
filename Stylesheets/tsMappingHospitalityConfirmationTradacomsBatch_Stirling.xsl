@@ -14,6 +14,8 @@ H Mahbub		|	2010-05-17		| Created file
 R Cambridge	|	2011-08-24		| 4743 change product code manipulation to be default (hard code a list of customer that will no require it)
 **********************************************************************
 H Robson		|	2012-02-01		| 5226 change Aramark onto the default way of handling the Product Code
+*********************************************************************
+K Oshaughnessy|2012-08-29| Additional customer added (Mitie) FB 5664	
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output encoding="utf-8"/>
@@ -31,7 +33,7 @@ H Robson		|	2012-02-01		| 5226 change Aramark onto the default way of handling t
 	<xsl:variable name="SEARCYS" select="'SEARCYS'"/>
 	<xsl:variable name="SODEXO_PRESTIGE" select="'SODEXO_PRESTIGE'"/>
 	<xsl:variable name="TESCO" select="'TESCO'"/>
-	<xsl:variable name="MITIE" select="MITIE"/>
+	<xsl:variable name="MITIE" select="'MITIE'"/>
 	
 	
 	<xsl:variable name="CustomerFlag">
@@ -55,7 +57,7 @@ H Robson		|	2012-02-01		| 5226 change Aramark onto the default way of handling t
 			<xsl:when test="$accountCode = 'SEA01T'"><xsl:value-of select="$SEARCYS"/></xsl:when>
 			<xsl:when test="$accountCode = 'GAR06T'"><xsl:value-of select="$SODEXO_PRESTIGE"/></xsl:when>
 			<xsl:when test="$accountCode = 'SOD99T'"><xsl:value-of select="$SODEXO_PRESTIGE"/></xsl:when>	
-			<xsl:when test="$accountCode = 'MIT16T'"><xsl:value-of select="$MITIE"/></xsl:when>		
+			<xsl:when test="$accountCode = 'MIT16T'"><xsl:value-of select="$MITIE"/></xsl:when>			
 						
 			<xsl:when test="$accountCode = 'TES01T'"><xsl:value-of select="$TESCO"/></xsl:when>
 			<xsl:when test="$accountCode = 'TES08T'"><xsl:value-of select="$TESCO"/></xsl:when>
@@ -76,7 +78,7 @@ H Robson		|	2012-02-01		| 5226 change Aramark onto the default way of handling t
 					<SendersCodeForRecipient>
 						<xsl:choose>	
 					
-							<xsl:when test="$CustomerFlag = $COMPASS or $CustomerFlag = $TESCO or $CustomerFlag = $BEACON_PURCHASING ">
+							<xsl:when test=" $CustomerFlag = $COMPASS or $CustomerFlag = $TESCO or $CustomerFlag = $BEACON_PURCHASING ">
 								<xsl:value-of select="/PurchaseOrderConfirmation/TradeSimpleHeader/SendersBranchReference"/>
 							</xsl:when>			
 										
