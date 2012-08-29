@@ -11,6 +11,8 @@ Lee Boyton        | 2009-04-28 | 2867. Translate product codes for SSP
                           |                     | to ensure they are unique (product code plus UOM on the end).				
 **********************************************************************
 H Robson		|	2012-02-01		| 5226 change Aramark onto the default way of handling the Product Code
+*********************************************************************
+K Oshaughnessy|2012-08-29| Additional customer added (Mitie) FB 5664	
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 	<xsl:output method="xml" encoding="UTF-8"/>
@@ -25,6 +27,7 @@ H Robson		|	2012-02-01		| 5226 change Aramark onto the default way of handling t
 	<xsl:variable name="SEARCYS" select="'SEARCYS'"/>
 	<xsl:variable name="SODEXO_PRESTIGE" select="'SODEXO_PRESTIGE'"/>
 	<xsl:variable name="TESCO" select="'TESCO'"/>
+	<xsl:variable name="MITIE" select="'MITIE'"/>
 	
 	<xsl:variable name="CustomerFlag">
 		<xsl:variable name="accountCode" select="string(//TradeSimpleHeader/SendersBranchReference)"/>
@@ -44,7 +47,8 @@ H Robson		|	2012-02-01		| 5226 change Aramark onto the default way of handling t
 			<xsl:when test="$accountCode = 'PBR16T'"><xsl:value-of select="$ORCHID"/></xsl:when>
 			<xsl:when test="$accountCode = 'SEA01T'"><xsl:value-of select="$SEARCYS"/></xsl:when>
 			<xsl:when test="$accountCode = 'GAR06T'"><xsl:value-of select="$SODEXO_PRESTIGE"/></xsl:when>
-			<xsl:when test="$accountCode = 'SOD99T'"><xsl:value-of select="$SODEXO_PRESTIGE"/></xsl:when>			
+			<xsl:when test="$accountCode = 'SOD99T'"><xsl:value-of select="$SODEXO_PRESTIGE"/></xsl:when>
+			<xsl:when test="$accountCode = 'MIT16T'"><xsl:value-of select="$MITIE"/></xsl:when>			
 						
 			<xsl:when test="$accountCode = 'TES01T'"><xsl:value-of select="$TESCO"/></xsl:when>
 			<xsl:when test="$accountCode = 'TES08T'"><xsl:value-of select="$TESCO"/></xsl:when>
@@ -114,7 +118,7 @@ H Robson		|	2012-02-01		| 5226 change Aramark onto the default way of handling t
 			</SendersCodeForRecipient>
 			
 			<!--xsl:if test="SendersBranchReference = 'MIL14T' or SendersBranchReference = 'FMC01T' or SendersBranchReference = 'TES01T'"-->
-			<xsl:if test="contains('MIL14T~FMC01T~TES01T~TES08T~TES12T~TES15T~TES25T',SendersBranchReference)">
+			<xsl:if test="contains('MIL14T~FMC01T~TES01T~TES08T~TES12T~TES15T~TES25T~MIT16T',SendersBranchReference)">
 				<SendersBranchReference>
 					<xsl:value-of select="SendersBranchReference"/>
 				</SendersBranchReference>
