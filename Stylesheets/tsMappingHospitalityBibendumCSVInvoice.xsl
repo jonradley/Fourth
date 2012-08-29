@@ -17,6 +17,8 @@ Lee Boyton  	| 2009-04-28 		| 2867. Translate product codes for SSP
 H Robson		|	2012-02-01	| 5226 change Aramark onto the default way of handling the Product Code
 *********************************************************************		
 KOshaughnessy| 2012-05-24	| 5490 Change for new Olympic vendor agreement (Compass)	
+*********************************************************************
+K Oshaughnessy|2012-08-29| Additional customer added (Mitie) FB 5664	
 *********************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
@@ -34,6 +36,7 @@ KOshaughnessy| 2012-05-24	| 5490 Change for new Olympic vendor agreement (Compas
 	<xsl:variable name="SEARCYS" select="'SEARCYS'"/>
 	<xsl:variable name="SODEXO_PRESTIGE" select="'SODEXO_PRESTIGE'"/>
 	<xsl:variable name="TESCO" select="'TESCO'"/>
+	<xsl:variable name="MITIE" select="'MITIE'"/>
 	
 	<xsl:variable name="CustomerFlag">
 		<xsl:variable name="accountCode" select="string(//Invoice/TradeSimpleHeader/SendersBranchReference)"/>
@@ -54,7 +57,8 @@ KOshaughnessy| 2012-05-24	| 5490 Change for new Olympic vendor agreement (Compas
 			<xsl:when test="$accountCode = 'PBR16T'"><xsl:value-of select="$ORCHID"/></xsl:when>
 			<xsl:when test="$accountCode = 'SEA01T'"><xsl:value-of select="$SEARCYS"/></xsl:when>
 			<xsl:when test="$accountCode = 'GAR06T'"><xsl:value-of select="$SODEXO_PRESTIGE"/></xsl:when>
-			<xsl:when test="$accountCode = 'SOD99T'"><xsl:value-of select="$SODEXO_PRESTIGE"/></xsl:when>			
+			<xsl:when test="$accountCode = 'SOD99T'"><xsl:value-of select="$SODEXO_PRESTIGE"/></xsl:when>	
+			<xsl:when test="$accountCode = 'MIT16T'"><xsl:value-of select="$MITIE"/></xsl:when>		
 						
 			<xsl:when test="$accountCode = 'TES01T'"><xsl:value-of select="$TESCO"/></xsl:when>
 			<xsl:when test="$accountCode = 'TES08T'"><xsl:value-of select="$TESCO"/></xsl:when>
@@ -123,7 +127,7 @@ KOshaughnessy| 2012-05-24	| 5490 Change for new Olympic vendor agreement (Compas
 				</xsl:choose>
 			</SendersCodeForRecipient>
 			
-			<xsl:if test="$CustomerFlag = $COMPASS or $CustomerFlag = $TESCO or $CustomerFlag = $ARAMARK">
+			<xsl:if test="$CustomerFlag = $MITIE or $CustomerFlag = $COMPASS or $CustomerFlag = $TESCO or $CustomerFlag = $ARAMARK">
 				<SendersBranchReference>
 					<xsl:value-of select="SendersBranchReference"/>
 				</SendersBranchReference>
@@ -560,6 +564,9 @@ KOshaughnessy| 2012-05-24	| 5490 Change for new Olympic vendor agreement (Compas
 		<xsl:param name="sBibPack"/>
 		<xsl:choose>
 			<xsl:when test="normalize-space($sBibPack) = 'EACH' or normalize-space($sBibPack) = 'BOTTLE'">1</xsl:when>
+			<xsl:when test="normalize-space(substring($sBibPack,1,5)) = 'STRIP'">
+					<xsl:value-of select="substring(normalize-space($sBibPack),6)"/>
+			</xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="substring(normalize-space($sBibPack),5)"/>
 			</xsl:otherwise>
