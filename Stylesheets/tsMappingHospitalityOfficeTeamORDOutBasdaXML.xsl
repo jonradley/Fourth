@@ -87,7 +87,7 @@ KOShaughnessy | 10/08/2012	| FB5609 created
 			
 				<DeliverToReferences>
 					<BuyersCodeForLocation>
-						<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode"/>
+						<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
 					</BuyersCodeForLocation>
 				</DeliverToReferences>
 				
