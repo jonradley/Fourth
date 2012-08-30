@@ -9,6 +9,8 @@ Name			| Date			| Change
 R Cambridge	| 29/10/2007	| 1556 Create module
 **********************************************************************
 H Robson		|	2012-02-01		| 5226 change Aramark onto the default way of handling the Product Code
+*********************************************************************
+K Oshaughnessy|2012-08-29		| Additional customer added (Mitie) FB 5665	
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="xml" encoding="utf-8"/>
@@ -26,6 +28,7 @@ H Robson		|	2012-02-01		| 5226 change Aramark onto the default way of handling t
 	<xsl:variable name="SEARCYS" select="'SEARCYS'"/>
 	<xsl:variable name="SODEXO_PRESTIGE" select="'SODEXO_PRESTIGE'"/>
 	<xsl:variable name="TESCO" select="'TESCO'"/>
+	<xsl:variable name="MITIE" select="'MITIE'"/>
 	
 	<xsl:variable name="CustomerFlag">
 		<xsl:variable name="accountCode" select="string(//DeliveryNote/TradeSimpleHeader/SendersBranchReference)"/>
@@ -45,7 +48,8 @@ H Robson		|	2012-02-01		| 5226 change Aramark onto the default way of handling t
 			<xsl:when test="$accountCode = 'PBR16T'"><xsl:value-of select="$ORCHID"/></xsl:when>
 			<xsl:when test="$accountCode = 'SEA01T'"><xsl:value-of select="$SEARCYS"/></xsl:when>
 			<xsl:when test="$accountCode = 'GAR06T'"><xsl:value-of select="$SODEXO_PRESTIGE"/></xsl:when>
-			<xsl:when test="$accountCode = 'SOD99T'"><xsl:value-of select="$SODEXO_PRESTIGE"/></xsl:when>			
+			<xsl:when test="$accountCode = 'SOD99T'"><xsl:value-of select="$SODEXO_PRESTIGE"/></xsl:when>	
+			<xsl:when test="$accountCode = 'MIT16T'"><xsl:value-of select="$MITIE"/></xsl:when>		
 						
 			<xsl:when test="$accountCode = 'TES01T'"><xsl:value-of select="$TESCO"/></xsl:when>
 			<xsl:when test="$accountCode = 'TES08T'"><xsl:value-of select="$TESCO"/></xsl:when>
@@ -69,14 +73,7 @@ H Robson		|	2012-02-01		| 5226 change Aramark onto the default way of handling t
 								<TradeSimpleHeader>
 									<SendersCodeForRecipient>
 										<xsl:choose>
-											<!--xsl:when test="SendersBranchReference = 'MIL14T'">MIL14T</xsl:when>
-											<xsl:when test="SendersBranchReference = 'FMC01T'">FMC01T</xsl:when>
-											<xsl:when test="SendersBranchReference = 'TES01T'">TES01T</xsl:when>					
-											<xsl:when test="SendersBranchReference = 'TES08T'">TES08T</xsl:when>					
-											<xsl:when test="SendersBranchReference = 'TES12T'">TES12T</xsl:when>					
-											<xsl:when test="SendersBranchReference = 'TES15T'">TES15T</xsl:when>					
-											<xsl:when test="SendersBranchReference = 'TES25T'">TES25T</xsl:when-->	
-					
+	
 										<xsl:when test="$CustomerFlag = $COMPASS or $CustomerFlag = $TESCO or $CustomerFlag = $BEACON_PURCHASING ">
 										<xsl:value-of select="TradeSimpleHeader/SendersBranchReference"/>
 										</xsl:when>			
@@ -88,41 +85,22 @@ H Robson		|	2012-02-01		| 5226 change Aramark onto the default way of handling t
 										</xsl:choose>
 								</SendersCodeForRecipient>
 			
-										<!--xsl:if test="SendersBranchReference = 'MIL14T' or SendersBranchReference = 'FMC01T' or SendersBranchReference = 'TES01T'"-->
-										<!--xsl:if test="SendersBranchReference">
-										<xsl:if test="contains('MIL14T~FMC01T~TES01T~TES08T~TES12T~TES15T~TES25T',SendersBranchReference)"-->
-										<xsl:if test="$CustomerFlag = $COMPASS or $CustomerFlag = $TESCO or $CustomerFlag = $ARAMARK">
+										<xsl:if test="$CustomerFlag = $MITIE or $CustomerFlag = $COMPASS or $CustomerFlag = $TESCO or $CustomerFlag = $ARAMARK">
 								<SendersBranchReference>
 									<xsl:value-of select="TradeSimpleHeader/SendersBranchReference"/>
 								</SendersBranchReference>
 										</xsl:if>
-										<!--/xsl:if>
-										</xsl:if-->
 							</TradeSimpleHeader>	
-								<!--TradeSimpleHeader>
-									<SendersCodeForRecipient><xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/></SendersCodeForRecipient>
-									<xsl:for-each select="TradeSimpleHeader/SendersBranchReference[1]">
-										<SendersBranchReference><xsl:value-of select="."/></SendersBranchReference>
-									</xsl:for-each>
-								</TradeSimpleHeader-->
 								<DeliveryNoteHeader>
 								
 									<Buyer>
 										<BuyersLocationID>
-											<!--GLN><xsl:value-of select="DeliveryNoteHeader/Buyer/BuyersLocationID/GLN"/></GLN-->
 											<xsl:for-each select="DeliveryNoteHeader/Buyer/BuyersLocationID/SuppliersCode[1]">
 												<SuppliersCode><xsl:value-of select="."/></SuppliersCode>
 											</xsl:for-each>											
 										</BuyersLocationID>
 									</Buyer>
-									
-									<!--Supplier>
-										<SuppliersLocationID>
-											<GLN><xsl:value-of select="DeliveryNoteHeader/Supplier/SuppliersLocationID/GLN"/></GLN>
-											<SuppliersCode><xsl:value-of select="DeliveryNoteHeader/Supplier/SuppliersLocationID/GLN"/></SuppliersCode>
-										</SuppliersLocationID>
-									</Supplier-->
-									
+																	
 									<ShipTo>
 										<ShipToLocationID>
 											<GLN>5555555555555</GLN>
