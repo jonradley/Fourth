@@ -12,11 +12,12 @@ Date		|	owner				|	details
 	
 	<xsl:template match="/OrderResponse">
 	<BatchRoot>
+	<xsl:attribute name="TypePrefix">ACB</xsl:attribute>
 		<Batch>
 			<BatchDocuments>
 				<BatchDocument>
 					<xsl:for-each select="/OrderResponse">
-					
+						<xsl:attribute name="DocumentTypeNo">84</xsl:attribute>
 						<PurchaseOrderAcknowledgement>
 						
 							<TradeSimpleHeader>
