@@ -5,6 +5,8 @@ Date		|	owner				|	details
 27/06/2012| KOshaughnessy	| Created FB5542
 ************************************************************************
 08/08/2012|KOshaughnessy	| FB 5567 Various Bugfixes		
+************************************************************************
+05/09/2012 | Graham Neicho | FB5598 Putting PDFURL into HeaderExtraData
 **********************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:egs="urn:eGS:marketplace:eBIS:Extension:1.0">
 	<xsl:output method="xml"/>
@@ -180,12 +182,14 @@ Date		|	owner				|	details
 												</xsl:otherwise>
 											</xsl:choose>
 										</TaxPointDate>
-										<xsl:if test="Extensions/egs:Extension/egs:Extrinsic[@name = 'InvoiceImage'] !=''">
+									</CreditNoteReferences>
+									<xsl:if test="Extensions/egs:Extension/egs:Extrinsic[@name = 'InvoiceImage'] !=''">
+										<HeaderExtraData>
 											<PDFURL>
 												<xsl:value-of select="Extensions/egs:Extension/egs:Extrinsic[@name = 'InvoiceImage']"/>
 											</PDFURL>
-										</xsl:if>
-									</CreditNoteReferences>
+										</HeaderExtraData>
+									</xsl:if>
 								</CreditNoteHeader>
 								<!--***********************************************************************************************************************************************************************************************************************************-->
 								<!--credit note details-->

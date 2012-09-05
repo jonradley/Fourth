@@ -6,6 +6,8 @@ Date		|	owner				|	details
 05/06/2012|KOshaughnessy	| FB 5562 - bugfix to PO reference
 ************************************************************************
 08/08/2012|KOshaughnessy	| FB 5567 Various Bugfixes			
+************************************************************************
+05/09/2012 | Graham Neicho | FB5598 Putting PDFURL into HeaderExtraData
 **********************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:egs="urn:eGS:marketplace:eBIS:Extension:1.0">
 	<xsl:output method="xml"/>
@@ -168,12 +170,14 @@ Date		|	owner				|	details
 												<xsl:value-of select="InvoiceHead/InvoiceCurrency/CurrencyCode"/>
 											</Currency>
 										</xsl:if>
-										<xsl:if test="Extensions/egs:Extension/egs:Extrinsic[@name = 'InvoiceImage'] !=''">
+									</InvoiceReferences>
+									<xsl:if test="Extensions/egs:Extension/egs:Extrinsic[@name = 'InvoiceImage'] !=''">
+										<HeaderExtraData>
 											<PDFURL>
 												<xsl:value-of select="Extensions/egs:Extension/egs:Extrinsic[@name = 'InvoiceImage']"/>
 											</PDFURL>
-										</xsl:if>
-									</InvoiceReferences>
+										</HeaderExtraData>
+									</xsl:if>
 								</InvoiceHeader>
 								
 								<InvoiceDetail>
