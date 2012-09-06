@@ -22,7 +22,7 @@ Date		|	owner				|	details
 						
 							<TradeSimpleHeader>
 								<SendersCodeForRecipient>
-									<xsl:value-of select="Delivery/DeliverFrom/DeliverFromReferences/SuppliersCodeForLocation"/>
+									<xsl:value-of select="Delivery/DeliverTo/DeliverToReferences/BuyersCodeForLocation"/>
 								</SendersCodeForRecipient>
 							</TradeSimpleHeader>
 							
@@ -36,54 +36,14 @@ Date		|	owner				|	details
 											<xsl:value-of select="//Buyer/BuyerReferences/SuppliersCodeForBuyer"/>
 										</SuppliersCode>
 									</BuyersLocationID>
-									<BuyersName>
-										<xsl:value-of select="Buyer/Party"/>
-									</BuyersName>
-									<BuyersAddress>
-										<AddressLine1>
-											<xsl:value-of select="Buyer/Address/AddressLine[1]"/>
-										</AddressLine1>
-										<AddressLine2>
-											<xsl:value-of select="Buyer/Address/AddressLine[2]"/>
-										</AddressLine2>
-										<AddressLine3>
-											<xsl:value-of select="Buyer/Address/AddressLine[3]"/>
-										</AddressLine3>
-										<AddressLine4>
-											<xsl:value-of select="Buyer/Address/AddressLine[4]"/>
-										</AddressLine4>
-										<PostCode>
-											<xsl:value-of select="Buyer/Address/PostCode"/>
-										</PostCode>
-									</BuyersAddress>
 								</Buyer>
 								
 								<ShipTo>
 									<ShipToLocationID>
 										<SuppliersCode>
-											<xsl:value-of select="Delivery/DeliverFrom/DeliverFromReferences/SuppliersCodeForLocation"/>
+											<xsl:value-of select="Delivery/DeliverTo/DeliverToReferences/BuyersCodeForLocation"/>
 										</SuppliersCode>
 									</ShipToLocationID>
-									<ShipToName>
-										<xsl:value-of select="Delivery/DeliverTo/Party"/>
-									</ShipToName>
-									<ShipToAddress>
-										<AddressLine1>
-											<xsl:value-of select="Delivery/DeliverTo/Address/AddressLine[1]"/>
-										</AddressLine1>
-										<AddressLine2>
-											<xsl:value-of select="Delivery/DeliverTo/Address/AddressLine[2]"/>
-										</AddressLine2>
-										<AddressLine3>
-											<xsl:value-of select="Delivery/DeliverTo/Address/AddressLine[3]"/>
-										</AddressLine3>
-										<AddressLine4>
-											<xsl:value-of select="Delivery/DeliverTo/Address/AddressLine[4]"/>
-										</AddressLine4>
-										<PostCode>
-											<xsl:value-of select="Delivery/DeliverTo/Address/PostCode"/>
-										</PostCode>
-									</ShipToAddress>
 								</ShipTo>
 								
 								<PurchaseOrderReferences>
@@ -111,7 +71,7 @@ Date		|	owner				|	details
 									<xsl:value-of select="count(OrderResponseLine/LineNumber)"/>
 								</NumberOfLines>
 								<TotalExclVAT>
-									<xsl:value-of select="sum(OrderResponseLine/LineTotal)"/>
+									<xsl:value-of select="format-number(sum(OrderResponseLine/LineTotal),'0.00')"/>
 								</TotalExclVAT>
 							</PurchaseOrderAcknowledgementTrailer>
 							
