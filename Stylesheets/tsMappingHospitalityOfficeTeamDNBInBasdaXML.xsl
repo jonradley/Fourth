@@ -41,14 +41,6 @@ Date		|	owner				|	details
 											<xsl:value-of select="Delivery/DeliverTo/DeliverToReferences/BuyersCodeForLocation"/>
 										</SuppliersCode>
 									</ShipToLocationID>
-									<ShipToName>
-										<xsl:value-of select="Delivery/DeliverTo/Party"/>
-									</ShipToName>
-									<ShipToAddress>
-										<AddressLine1>
-											<xsl:value-of select="Delivery/DeliverTo/Address/AddressLine"/>
-										</AddressLine1>
-									</ShipToAddress>
 								</ShipTo>
 								
 								<PurchaseOrderReferences>
@@ -93,15 +85,15 @@ Date		|	owner				|	details
 										</ProductDescription>
 										
 										<OrderedQuantity>
-											<xsl:value-of select="OriginalQuantity/Amount"/>
+											<xsl:value-of select="format-number(OriginalQuantity/Amount,'0.00')"/>
 										</OrderedQuantity>
 										
 										<DespatchedQuantity>
-											<xsl:value-of select="Quantity/Amount"/>
+											<xsl:value-of select="format-number(Quantity/Amount,'0.00')"/>
 										</DespatchedQuantity>
 										
 										<UnitValueExclVAT>
-											<xsl:value-of select="Price/UnitPrice"/>
+											<xsl:value-of select="format-number(Price/UnitPrice,'0.00')"/>
 										</UnitValueExclVAT>
 										
 									</DeliveryNoteLine>
