@@ -4,7 +4,7 @@ Date		|	owner				|	details
 ************************************************************************
 16/08/2012| KOshaughnessy	| Created FB5609
 ************************************************************************
-			|						| 	
+06/09/2012|KOshaughnessy	| 	Bugfix FB 5678
 **********************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:egs="urn:eGS:marketplace:eBIS:Extension:1.0">
 
