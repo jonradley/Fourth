@@ -15,6 +15,9 @@
 		<xsl:text>,</xsl:text>
 		<!-- 4. Customer Order Number -->
 		<xsl:value-of select="PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
+		<xsl:text>,</xsl:text>
+		<!-- 5. Delivery Date -->
+		<xsl:value-of select="PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate"/>
 
 		<xsl:text>&#13;&#10;</xsl:text>
 		
