@@ -245,6 +245,9 @@
 							</xsl:if>
 							
 							<ProductID>
+								<GTIN>
+									<xsl:value-of select="ProductID/GTIN"/>
+								</GTIN>
 								<SuppliersProductCode>
 									<xsl:value-of select="ProductID/SuppliersProductCode"/>
 								</SuppliersProductCode>
