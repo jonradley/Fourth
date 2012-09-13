@@ -243,6 +243,8 @@ Date	|Name		| Information
 		
 		<!--This segment is a mandatory UN/EDIFACT segment. It must always be the last segment in the message-->
 		<xsl:text>UNT+</xsl:text>
+			<xsl:value-of select="count(//PurchaseOrderConfirmationLine)"/>
+			<xsl:text>+</xsl:text>
 			<!--xsl:text>35+</xsl:text-->
 			<xsl:value-of select="PurchaseOrderConfirmationHeader/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationReference"/>
 		<xsl:text>'&#13;&#10;</xsl:text>
