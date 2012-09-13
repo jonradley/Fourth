@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- *******************************************************
+Date	|Name		| Information
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2012-09-13	| M Emanauel	| Made Changes to map in required delivery date
+************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="text" encoding="UTF-8"/>
 	
@@ -17,8 +22,8 @@
 		<xsl:value-of select="PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
 		<xsl:text>,</xsl:text>
 		<!-- 5. Delivery Date -->
-		<xsl:value-of select="PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate"/>
-
+		<xsl:variable name="ReqDelDate" select="PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate"/>
+		<xsl:value-of select="concat(substring($ReqDelDate,9,2),'/',substring($ReqDelDate,6,2),'/',substring($ReqDelDate,1,4))"/>
 		<xsl:text>&#13;&#10;</xsl:text>
 		
 		<xsl:for-each select="PurchaseOrderDetail/PurchaseOrderLine">
