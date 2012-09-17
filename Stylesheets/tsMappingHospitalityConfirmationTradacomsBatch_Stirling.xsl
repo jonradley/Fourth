@@ -15,7 +15,9 @@ R Cambridge	|	2011-08-24		| 4743 change product code manipulation to be default 
 **********************************************************************
 H Robson		|	2012-02-01		| 5226 change Aramark onto the default way of handling the Product Code
 *********************************************************************
-K Oshaughnessy|2012-08-29| Additional customer added (Mitie) FB 5664	
+K Oshaughnessy|2012-08-29| Additional customer added (Mitie) FB 5664
+*********************************************************************
+A Barber		|	2012-08-29		| 5709 Added no UOM append product code handling for PBR.	
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output encoding="utf-8"/>
@@ -34,6 +36,7 @@ K Oshaughnessy|2012-08-29| Additional customer added (Mitie) FB 5664
 	<xsl:variable name="SODEXO_PRESTIGE" select="'SODEXO_PRESTIGE'"/>
 	<xsl:variable name="TESCO" select="'TESCO'"/>
 	<xsl:variable name="MITIE" select="'MITIE'"/>
+	<xsl:variable name="PBR" select="'PBR'"/>
 	
 	
 	<xsl:variable name="CustomerFlag">
@@ -57,7 +60,8 @@ K Oshaughnessy|2012-08-29| Additional customer added (Mitie) FB 5664
 			<xsl:when test="$accountCode = 'SEA01T'"><xsl:value-of select="$SEARCYS"/></xsl:when>
 			<xsl:when test="$accountCode = 'GAR06T'"><xsl:value-of select="$SODEXO_PRESTIGE"/></xsl:when>
 			<xsl:when test="$accountCode = 'SOD99T'"><xsl:value-of select="$SODEXO_PRESTIGE"/></xsl:when>	
-			<xsl:when test="$accountCode = 'MIT16T'"><xsl:value-of select="$MITIE"/></xsl:when>			
+			<xsl:when test="$accountCode = 'MIT16T'"><xsl:value-of select="$MITIE"/></xsl:when>
+			<xsl:when test="$accountCode = 'PBR01T'"><xsl:value-of select="$PBR"/></xsl:when>			
 						
 			<xsl:when test="$accountCode = 'TES01T'"><xsl:value-of select="$TESCO"/></xsl:when>
 			<xsl:when test="$accountCode = 'TES08T'"><xsl:value-of select="$TESCO"/></xsl:when>
@@ -145,6 +149,7 @@ K Oshaughnessy|2012-08-29| Additional customer added (Mitie) FB 5664
 										$CustomerFlag = $FISHWORKS or
 										$CustomerFlag = $MCC  or
 										$CustomerFlag = $ORCHID or
+										$CustomerFlag = $PBR or
 										$CustomerFlag = $SEARCYS or
 										$CustomerFlag = $SODEXO_PRESTIGE)">	
 										<xsl:choose>

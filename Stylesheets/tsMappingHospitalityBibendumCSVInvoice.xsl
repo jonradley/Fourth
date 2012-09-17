@@ -19,6 +19,8 @@ H Robson		|	2012-02-01	| 5226 change Aramark onto the default way of handling th
 KOshaughnessy| 2012-05-24	| 5490 Change for new Olympic vendor agreement (Compass)	
 *********************************************************************
 K Oshaughnessy|2012-08-29| Additional customer added (Mitie) FB 5664	
+*********************************************************************
+A Barber		|	2012-08-29		| 5709 Added no UOM append product code handling for PBR.	
 *********************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
@@ -37,6 +39,7 @@ K Oshaughnessy|2012-08-29| Additional customer added (Mitie) FB 5664
 	<xsl:variable name="SODEXO_PRESTIGE" select="'SODEXO_PRESTIGE'"/>
 	<xsl:variable name="TESCO" select="'TESCO'"/>
 	<xsl:variable name="MITIE" select="'MITIE'"/>
+	<xsl:variable name="PBR" select="'PBR'"/>
 	
 	<xsl:variable name="CustomerFlag">
 		<xsl:variable name="accountCode" select="string(//Invoice/TradeSimpleHeader/SendersBranchReference)"/>
@@ -58,7 +61,8 @@ K Oshaughnessy|2012-08-29| Additional customer added (Mitie) FB 5664
 			<xsl:when test="$accountCode = 'SEA01T'"><xsl:value-of select="$SEARCYS"/></xsl:when>
 			<xsl:when test="$accountCode = 'GAR06T'"><xsl:value-of select="$SODEXO_PRESTIGE"/></xsl:when>
 			<xsl:when test="$accountCode = 'SOD99T'"><xsl:value-of select="$SODEXO_PRESTIGE"/></xsl:when>	
-			<xsl:when test="$accountCode = 'MIT16T'"><xsl:value-of select="$MITIE"/></xsl:when>		
+			<xsl:when test="$accountCode = 'MIT16T'"><xsl:value-of select="$MITIE"/></xsl:when>
+			<xsl:when test="$accountCode = 'PBR01T'"><xsl:value-of select="$PBR"/></xsl:when>		
 						
 			<xsl:when test="$accountCode = 'TES01T'"><xsl:value-of select="$TESCO"/></xsl:when>
 			<xsl:when test="$accountCode = 'TES08T'"><xsl:value-of select="$TESCO"/></xsl:when>
@@ -384,7 +388,7 @@ K Oshaughnessy|2012-08-29| Additional customer added (Mitie) FB 5664
 			<xsl:choose>
 				<!-- UoM may not be added to product codes for these customers -->
 				<!-- 2012-02-01 - removed ARAMARK from this list, UoM SHOULD be added to product codes for them -->
-				<xsl:when test="not($CustomerFlag = $COMPASS or $CustomerFlag = $COOP  or $CustomerFlag = $FISHWORKS or $CustomerFlag = $MCC  or $CustomerFlag = $ORCHID or $CustomerFlag = $SEARCYS or $CustomerFlag = $SODEXO_PRESTIGE)">
+				<xsl:when test="not($CustomerFlag = $COMPASS or $CustomerFlag = $COOP  or $CustomerFlag = $FISHWORKS or $CustomerFlag = $MCC  or $CustomerFlag = $ORCHID or $CustomerFlag = $PBR or $CustomerFlag = $SEARCYS or $CustomerFlag = $SODEXO_PRESTIGE)">
 
 					<!-- translate the Units In Pack value and then append this to the product code -->
 					<xsl:variable name="UOMRaw">
