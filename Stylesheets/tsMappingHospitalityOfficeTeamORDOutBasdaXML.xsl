@@ -1,7 +1,7 @@
 <!--================================================
 KOShaughnessy | 10/08/2012	| FB5609 created
 *****************************************************************************
-					|				|
+KOShaughnessy | 17/09/2012	| FB 5708 bugfix to change the location of suppliers code for unit.
 ================================================-->					
 
 
@@ -87,7 +87,7 @@ KOShaughnessy | 10/08/2012	| FB5609 created
 			
 				<DeliverToReferences>
 					<BuyersCodeForLocation>
-						<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
+						<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
 					</BuyersCodeForLocation>
 				</DeliverToReferences>
 				
