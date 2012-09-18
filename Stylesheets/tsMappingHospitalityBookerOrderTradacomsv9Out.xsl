@@ -81,10 +81,10 @@
 			<!--xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN"/-->
 			<xsl:text>5011295000016</xsl:text>
 			<xsl:text>:</xsl:text>
-			<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersName"/>
+			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersName),17)"/>
 			<xsl:text>+</xsl:text>
 			<!-- truncate to 40 SNAM = 3060 = AN..40-->
-			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersName),40)"/>
+			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersName),17)"/>
 			<xsl:text>+</xsl:text>
 			<!-- truncate to 35 SADD 1-4 = 3062 = AN..35-->	
 
@@ -100,13 +100,12 @@
 			<!-- truncate to 8 (just in case) SADD 5 = 3063 = AN..8-->		
 
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersAddress/PostCode),8)"/>	
-	
-			<!--xsl:text>+</xsl:text>
-			<xsl:value-of select=""/-->
+
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:text>CDT=</xsl:text>
-			<!--xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/-->
+			<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/>
+			<xsl:text>:</xsl:text>
 			<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
 			<xsl:text>+</xsl:text>
 			<!-- truncate to 40 CNAM = 3060 = AN..40-->
@@ -131,10 +130,6 @@
 		<xsl:text>MTR=</xsl:text>
 			<xsl:text>6</xsl:text>
 		<xsl:value-of select="$sRecordSep"/>
-	
-
-	
-		<!--xsl:value-of select="HelperObj:ResetCounter('DataNarativeA')"/-->
 	
 		<xsl:text>MHD=</xsl:text>	
 			<!--xsl:value-of select="HelperObj:GetNextCounterValue('MessageHeader')"/-->
