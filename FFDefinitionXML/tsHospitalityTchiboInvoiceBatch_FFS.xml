@@ -9,6 +9,8 @@ Moty Dimant	| 06/03/2009	| Created FSS
 **********************************************************************
 Andrew Barber	| 17/11/2009 | Added product description (Len=40)
 **********************************************************************
+Mark Emanuel	| 26/09/2012 | FB Case No 5735: Made changes to include branch reference
+**********************************************************************
 -->
 <ffsFlatFileSchema>
 	<ffsSettings>
@@ -31,6 +33,7 @@ Andrew Barber	| 17/11/2009 | Added product description (Len=40)
 					<Invoice>
 						<TradeSimpleHeader>
 							<SendersCodeForRecipient RecordPos="HEAD" LPos="46" UPos="65"/>
+							<SendersBranchReference RecordPos="HEAD" LPos="26" UPos="45"/>
 						</TradeSimpleHeader>
 						<InvoiceHeader>
 							<BatchInformation>
