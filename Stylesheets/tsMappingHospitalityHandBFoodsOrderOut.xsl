@@ -366,7 +366,11 @@ K Oshaughnessy|2011-08-18	|
 		<xsl:text xml:space="preserve">                    </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
 		
-		<xsl:text xml:space="preserve">                    </xsl:text>
+		<!--Map Line Number-->
+		<xsl:call-template name="padRight">
+			<xsl:with-param name="inputText" select="LineNumber"/>
+			<xsl:with-param name="fieldSize" select="20"/>
+		</xsl:call-template>                   
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
 		
 		<xsl:text xml:space="preserve">                    </xsl:text>

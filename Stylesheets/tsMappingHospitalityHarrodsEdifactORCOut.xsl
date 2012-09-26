@@ -85,7 +85,8 @@ Date	|Name		| Information
 			<!--Date/time/period qualifier-->
 			<xsl:text>137:</xsl:text>
 			<!--Order Response Date YYYYMMDD-->
-			<xsl:value-of select="PurchaseOrderConfirmationHeader/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationDate"/>
+			<xsl:variable name="POConfDate" select="PurchaseOrderConfirmationHeader/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationDate"/>
+			<xsl:value-of select="concat(substring($POConfDate,1,4),substring($POConfDate,6,2),substring($POConfDate,9,2))"/>
 			<!--Date/time/period qualifier-->
 			<xsl:text>:102</xsl:text>
 		<xsl:text>'&#13;&#10;</xsl:text>
@@ -123,8 +124,9 @@ Date	|Name		| Information
 			<!--Reference qualifier-->
 			<!-- Change 1 -->
 			<!--xsl:text>IA:</xsl:text-->
-			<xsl:text>IA</xsl:text>
+			<xsl:text>IA:</xsl:text>
 			<!--Buyers code for supplier-->
+			<xsl:value-of select="TradeSimpleHeader/RecipientsCodeForSender"/>
 			<!--xsl:value-of select=""/-->
 		<xsl:text>'&#13;&#10;</xsl:text>
 		
@@ -161,6 +163,7 @@ Date	|Name		| Information
 			<xsl:text>PIA+</xsl:text>
 				<xsl:text>1+</xsl:text>
 				<!--Buyers product code-->
+				<xsl:value-of select="ProductID/GTIN"/>
 				<xsl:text>:BP</xsl:text>
 			<xsl:text>'&#13;&#10;</xsl:text>
 			
@@ -204,18 +207,23 @@ Date	|Name		| Information
 			<xsl:text>RFF+</xsl:text>
 				<!-- Change 2 -->
 				<!--xsl:text>ON:</xsl:text-->
-				<xsl:text>ON</xsl:text>
+				<xsl:text>ON:</xsl:text>
 				<!--Customer order number-->
+				<xsl:value-of select="//PurchaseOrderReferences/PurchaseOrderReference"/>
+				<xsl:text>:</xsl:text>
+				<!-- Customer Order Line No-->
+				<xsl:value-of select="LineNumber"/>
 			<xsl:text>'&#13;&#10;</xsl:text>
 			
 			<!--This segment is used to identify the location of delivery for a split delivery order-->
-			<!--
+			
 			<xsl:text>LOC+</xsl:text>
-				<xsl:text>7</xsl:text>
-				Supplier code for location
+				<xsl:text>7+</xsl:text>
+				<!--Supplier code for location-->
+				
 				<xsl:text>::9</xsl:text>
 			<xsl:text>'&#13;&#10;</xsl:text>
-			-->
+			
 			<!--This segment is used to indicate the delivery quantity for the delivery location specified in the previous LOC segment-->
 			<xsl:text>QTY+</xsl:text>
 				<xsl:text>11:</xsl:text>
