@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+Name			| Date			| Change
+************************************************************************************************************************
+M Emanuel 	|	26/09/2012	| FB Case No 5735: Made changes to include branch reference
+************************************************************************************************************************
+-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:blah="http://blah.blah.blah" 
 										 xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:vbscript="http://blah.blah.blah"
 										 exclude-result-prefixes="blah msxsl vbscript">
@@ -17,6 +23,11 @@
 							<Invoice>
 								<TradeSimpleHeader>
 									<SendersCodeForRecipient><xsl:value-of select="Invoice/TradeSimpleHeader/SendersCodeForRecipient"/></SendersCodeForRecipient>
+							
+									<SendersBranchReference>
+										<xsl:value-of select="Invoice/TradeSimpleHeader/SendersBranchReference"/>
+									</SendersBranchReference>
+								
 								</TradeSimpleHeader>
 								<InvoiceHeader>
 									<BatchInformation>
