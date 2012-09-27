@@ -55,7 +55,7 @@ Outbound Purchase Order Stylesheet, based on Maginus CSV format.
 		<xsl:value-of select="vbscript:msGetTime()"/>
 		<xsl:text>,</xsl:text>		
 		<!-- 13.MSGN - '16' in position thirteen indicates that this is a quote-->
-		<xsl:text>16,</xsl:text>
+		<xsl:text>,</xsl:text>
 		<!-- 14. MSGFNDESC -->
 		<xsl:text>SALES ORDER,</xsl:text>
 		<!-- 15. REF1  -  Populating position 15 with 'EDI' will cause Maginus to hold the order until J&B release it -->
