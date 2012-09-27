@@ -3,6 +3,8 @@
 Name			| Date				| Change
 **********************************************************************
 K Oshaughnessy| 24/09/2012	| Created FB5520
+*********************************************************************
+K Oshaughnessy| 26/009/2012| Bugfix to map suppliers code for unit FB5738
 **********************************************************************.-->
 
 <xsl:stylesheet version="1.0" 
@@ -67,7 +69,7 @@ xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 							
 							<!-- Customer account number -->
 							<CustAccount>
-								<xsl:value-of select="PurchaseOrder/TradeSimpleHeader/SendersCodeForRecipient"/>
+								<xsl:value-of select="PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
 							</CustAccount>
 							
 							<!-- Customer's reference number if they have one -->
