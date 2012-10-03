@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 Name			| Date			| Change
-************************************************************************************************************************
-M Emanuel 	|	26/09/2012	| FB Case No 5735: Made changes to include branch reference
-************************************************************************************************************************
+************************************************************************************************************************************
+M Emanuel	| 03/10/2012 | FB Case No 5735: Made changes to include branch reference, Invoice Reference and added a get date JScript
+************************************************************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:blah="http://blah.blah.blah" 
 										 xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:vbscript="http://blah.blah.blah"
-										 exclude-result-prefixes="blah msxsl vbscript">
+										 exclude-result-prefixes="blah msxsl vbscript" xmlns:user="http://mycompany.com/mynamespace">
 	
 	<xsl:template match="/">
 	
@@ -54,6 +54,17 @@ M Emanuel 	|	26/09/2012	| FB Case No 5735: Made changes to include branch refere
 											<SuppliersCode><xsl:value-of select="CreditNote/CreditNoteHeader/ShipTo/ShipToLocationID/SuppliersCode"/></SuppliersCode>
 										</ShipToLocationID>
 									</ShipTo>
+									<InvoiceReferences>
+										<InvoiceReference>
+											<xsl:value-of select="CreditNote/CreditNoteHeader/InvoiceReferences/InvoiceReference"/>
+										</InvoiceReference>
+										<InvoiceDate>
+											<xsl:value-of select="user:msGetDate()"/>
+										</InvoiceDate>
+										<TaxPointDate>
+											<xsl:value-of select="user:msGetDate()"/>
+										</TaxPointDate>
+									</InvoiceReferences>
 									<CreditNoteReferences>
 										<CreditNoteReference><xsl:value-of select="CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteReference"/></CreditNoteReference>
 										<CreditNoteDate>
@@ -153,5 +164,31 @@ M Emanuel 	|	26/09/2012	| FB Case No 5735: Made changes to include branch refere
 		
 		End Function		
 	]]></msxsl:script>
+	
+	<msxsl:script language="JScript" implements-prefix="user"><![CDATA[
+
+		function msGetDate()
+		{
+		var dtDate = new Date();
+			
+			var sDate = dtDate.getDate();
+			if(sDate<10)
+			{
+				sDate = '0' + sDate;
+			}
+			
+			var sMonth = dtDate.getMonth() + 1;
+			if(sMonth<10)
+			{
+				sMonth = '0' + sMonth;
+			}
+						
+			var sYear  = dtDate.getYear() ;
+			
+		
+			return sYear + '-'+ sMonth +'-'+ sDate;
+		}
+		
+]]></msxsl:script>
 
 </xsl:stylesheet>
