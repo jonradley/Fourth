@@ -72,10 +72,14 @@ M Emanuel	| 03/10/2012 | FB Case No 5735: Made changes to include branch referen
 								<InvoiceDetail>
 									<xsl:for-each select="Invoice/InvoiceDetail/InvoiceLine">
 										<InvoiceLine>
-											<PurchaseOrderReferences>
-												<PurchaseOrderReference>
-													<xsl:value-of select="//PurchaseOrderReferences/PurchaseOrderReference"/>	
-												</PurchaseOrderReference>																												</PurchaseOrderReferences>
+											<xsl:choose>
+												<xsl:when test="//PurchaseOrderReferences/PurchaseOrderReference!=''">
+													<PurchaseOrderReferences>
+														<PurchaseOrderReference>
+															<xsl:value-of select="//PurchaseOrderReferences/PurchaseOrderReference"/>	
+														</PurchaseOrderReference>																													</PurchaseOrderReferences>
+												</xsl:when>
+											</xsl:choose>
 											<ProductID>
 												<SuppliersProductCode><xsl:value-of select="ProductID/SuppliersProductCode"/></SuppliersProductCode>
 											</ProductID>
