@@ -2,7 +2,7 @@
 <!--
 Name			| Date			| Change
 ************************************************************************************************************************
-M Emanuel 	|	26/09/2012	| FB Case No 5735: Made changes to include branch reference
+M Emanuel	| 03/10/2012 | FB Case No 5735: Made changes to include branch reference and PO Reference
 ************************************************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:blah="http://blah.blah.blah" 
@@ -72,6 +72,10 @@ M Emanuel 	|	26/09/2012	| FB Case No 5735: Made changes to include branch refere
 								<InvoiceDetail>
 									<xsl:for-each select="Invoice/InvoiceDetail/InvoiceLine">
 										<InvoiceLine>
+											<PurchaseOrderReferences>
+												<PurchaseOrderReference>
+													<xsl:value-of select="//PurchaseOrderReferences/PurchaseOrderReference"/>	
+												</PurchaseOrderReference>																												</PurchaseOrderReferences>
 											<ProductID>
 												<SuppliersProductCode><xsl:value-of select="ProductID/SuppliersProductCode"/></SuppliersProductCode>
 											</ProductID>
