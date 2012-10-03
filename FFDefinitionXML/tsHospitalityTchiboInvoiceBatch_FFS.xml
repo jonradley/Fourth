@@ -8,9 +8,9 @@ Name			| Date			| Change
 Moty Dimant	| 06/03/2009	| Created FSS
 **********************************************************************
 Andrew Barber	| 17/11/2009 | Added product description (Len=40)
-**********************************************************************
-Mark Emanuel	| 26/09/2012 | FB Case No 5735: Made changes to include branch reference
-**********************************************************************
+********************************************************************************************************
+Mark Emanuel	| 03/10/2012 | FB Case No 5735: Made changes to include branch reference and PO Reference
+*********************************************************************************************************
 -->
 <ffsFlatFileSchema>
 	<ffsSettings>
@@ -59,6 +59,9 @@ Mark Emanuel	| 26/09/2012 | FB Case No 5735: Made changes to include branch refe
 						</InvoiceHeader>
 						<InvoiceDetail>
 							<InvoiceLine>
+								<PurchaseOrderReferences>
+									<PurchaseOrderReference RecordPos="HEAD" LPos="102" UPos="126"/>
+								</PurchaseOrderReferences>
 								<ProductID>
 									<SuppliersProductCode RecordPos="DTL" LPos="6" UPos="35"/>
 								</ProductID>
