@@ -54,17 +54,21 @@ M Emanuel	| 03/10/2012 | FB Case No 5735: Made changes to include branch referen
 											<SuppliersCode><xsl:value-of select="CreditNote/CreditNoteHeader/ShipTo/ShipToLocationID/SuppliersCode"/></SuppliersCode>
 										</ShipToLocationID>
 									</ShipTo>
-									<InvoiceReferences>
-										<InvoiceReference>
-											<xsl:value-of select="CreditNote/CreditNoteHeader/InvoiceReferences/InvoiceReference"/>
-										</InvoiceReference>
-										<InvoiceDate>
-											<xsl:value-of select="user:msGetDate()"/>
-										</InvoiceDate>
-										<TaxPointDate>
-											<xsl:value-of select="user:msGetDate()"/>
-										</TaxPointDate>
-									</InvoiceReferences>
+									<xsl:choose>
+										<xsl:when test="CreditNote/CreditNoteHeader/InvoiceReferences/InvoiceReference!=''">
+											<InvoiceReferences>
+												<InvoiceReference>
+													<xsl:value-of select="CreditNote/CreditNoteHeader/InvoiceReferences/InvoiceReference"/>
+												</InvoiceReference>
+												<InvoiceDate>
+													<xsl:value-of select="user:msGetDate()"/>
+												</InvoiceDate>
+												<TaxPointDate>
+													<xsl:value-of select="user:msGetDate()"/>
+												</TaxPointDate>
+											</InvoiceReferences>
+										</xsl:when>
+									</xsl:choose>
 									<CreditNoteReferences>
 										<CreditNoteReference><xsl:value-of select="CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteReference"/></CreditNoteReference>
 										<CreditNoteDate>
