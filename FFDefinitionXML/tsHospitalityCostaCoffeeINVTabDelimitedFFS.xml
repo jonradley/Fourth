@@ -54,6 +54,11 @@
 									<PurchaseOrderReference RecordPos="LINE" LPos="75"/>
 									<PurchaseOrderDate RecordPos="LINE" LPos="74"/>
 								</PurchaseOrderReferences>
+								<DeliveryNoteReferences>
+									<DeliveryNoteReference RecordPos="HEAD" LPos="23"/>
+									<DeliveryNoteDate RecordPos="HEAD" LPos="24"/>
+									<DespatchDate RecordPos="HEAD" LPos="24"/>
+								</DeliveryNoteReferences>
 								<ProductID>
 									<SuppliersProductCode RecordPos="LINE" LPos="2"/>
 								</ProductID>
