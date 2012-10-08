@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--******************************************************************
+Rail Gourmet CSV Purchase Order Batch FFS
+
+**********************************************************************
+Name		| Date			| Change
+*********************************************************************
+A Barber	| 10/10/2012		| 5761 Rail Gourmet Order Batch
+*******************************************************************-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>chr(10)</ffsRecordSeparator>
+		<ffsEscapeChars>
+			<ffsEscapeChar>
+				<ffsNative>chr(13)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>""</ffsNative>
+				<ffsTradesimple>¬Q</ffsTradesimple>
+				<ffsLiteral>"</ffsLiteral>
+			</ffsEscapeChar>
+		</ffsEscapeChars>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>,</ffsFieldSeparator>
+		</ffsFieldSeparators>
+		<ffsSplitBatchRecord RecordPos="H"/>
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<BatchDocuments>
+				<BatchDocument>
+					<PurchaseOrder>
+						<TradeSimpleHeader>
+							<SendersCodeForRecipient RecordPos="H" LPos="2"/>
+							<SendersBranchReference RecordPos="H" LPos="10"/>
+							<TestFlag RecordPos="H" LPos="3"/>
+						</TradeSimpleHeader>
+						<PurchaseOrderHeader>
+							<Buyer>
+								<BuyersLocationID>
+									<SuppliersCode RecordPos="H" LPos="10"/>
+								</BuyersLocationID>
+							</Buyer>
+							<PurchaseOrderReferences>
+								<PurchaseOrderReference RecordPos="H" LPos="4"/>
+								<PurchaseOrderDate RecordPos="H" LPos="5"/>
+							</PurchaseOrderReferences>
+							<OrderedDeliveryDetails>
+								<DeliveryDate RecordPos="H" LPos="6"/>
+							</OrderedDeliveryDetails>
+						</PurchaseOrderHeader>
+						<PurchaseOrderDetail>
+							<PurchaseOrderLine>
+								<LineNumber RecordPos="D" LPos="2"/>
+								<ProductID>
+									<SuppliersProductCode RecordPos="D" LPos="3"/>
+								</ProductID>
+								<OrderedQuantity RecordPos="D" LPos="4"/>
+								<UnitValueExclVAT RecordPos="D" LPos="5"/>
+								<LineValueExclVAT RecordPos="D" LPos="6"/>
+							</PurchaseOrderLine>
+						</PurchaseOrderDetail>
+						<PurchaseOrderTrailer>
+							<NumberOfLines RecordPos="H" LPos="7"/>
+							<NumberOfItems RecordPos="H" LPos="8"/>
+							<TotalExclVAT RecordPos="H" LPos="9"/>
+						</PurchaseOrderTrailer>
+					</PurchaseOrder>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>
