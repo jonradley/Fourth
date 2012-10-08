@@ -15,6 +15,8 @@ Outbound Purchase Order Stylesheet, based on Maginus CSV format.
  01/03/2011	| Moty Dimant	| Created.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 04/10/2011	| Moty Dimant	| Improved logic around UOM so that packsize can contain non numberic characters.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+27/09/2012	| Andrew Barber	| Removed fixed value in head position 13 reflecting document as sales quote.
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 	xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:vbscript="http://abs-ltd.com/blah">
