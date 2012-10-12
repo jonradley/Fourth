@@ -15,6 +15,8 @@ H Robson		|	2012-02-01		| 5226 change Aramark onto the default way of handling t
 K Oshaughnessy|2012-08-29| Additional customer added (Mitie) FB 5664	
 *********************************************************************
 A Barber		|	2012-08-29		| 5709 Added no UOM append product code handling for PBR.	
+*******************************************************************
+H Mahbub		|	2012-10-12		| Adding new Compass Vendor code FB 5780
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 	<xsl:output method="xml" encoding="UTF-8"/>
@@ -40,6 +42,7 @@ A Barber		|	2012-08-29		| 5709 Added no UOM append product code handling for PBR
 			<xsl:when test="$accountCode = 'ARANET'"><xsl:value-of select="$ARAMARK"/></xsl:when>
 			<xsl:when test="$accountCode = 'BEACON'"><xsl:value-of select="$BEACON_PURCHASING"/></xsl:when>
 			<xsl:when test="$accountCode = 'MIL14T'"><xsl:value-of select="$COMPASS"/></xsl:when>
+			<xsl:when test="$accountCode = 'COM2012T'"><xsl:value-of select="$COMPASS"/></xsl:when>			
 			<xsl:when test="$accountCode = 'KIN04D'"><xsl:value-of select="$COOP"/></xsl:when>
 			<xsl:when test="$accountCode = 'KIN04T'"><xsl:value-of select="$COOP"/></xsl:when>
 			<xsl:when test="$accountCode = 'fishworks'"><xsl:value-of select="$FISHWORKS"/></xsl:when>
@@ -108,6 +111,7 @@ A Barber		|	2012-08-29		| 5709 Added no UOM append product code handling for PBR
 			<SendersCodeForRecipient>
 				<xsl:choose>
 					<xsl:when test="SendersBranchReference = 'MIL14T'">MIL14T</xsl:when>
+					<xsl:when test="SendersBranchReference = 'COM2012T'">COM2012T</xsl:when>
 					<xsl:when test="SendersBranchReference = 'FMC01T'">FMC01T</xsl:when>
 					<xsl:when test="SendersBranchReference = 'TES01T'">TES01T</xsl:when>					
 					<xsl:when test="SendersBranchReference = 'TES08T'">TES08T</xsl:when>					
@@ -122,7 +126,7 @@ A Barber		|	2012-08-29		| 5709 Added no UOM append product code handling for PBR
 			</SendersCodeForRecipient>
 			
 			<!--xsl:if test="SendersBranchReference = 'MIL14T' or SendersBranchReference = 'FMC01T' or SendersBranchReference = 'TES01T'"-->
-			<xsl:if test="contains('MIL14T~FMC01T~TES01T~TES08T~TES12T~TES15T~TES25T~MIT16T',SendersBranchReference)">
+			<xsl:if test="contains('MIL14T~COM2012T~FMC01T~TES01T~TES08T~TES12T~TES15T~TES25T~MIT16T',SendersBranchReference)">
 				<SendersBranchReference>
 					<xsl:value-of select="SendersBranchReference"/>
 				</SendersBranchReference>
@@ -135,7 +139,7 @@ A Barber		|	2012-08-29		| 5709 Added no UOM append product code handling for PBR
 			<SuppliersCode>
 				<xsl:value-of select="SuppliersCode"/>
 			</SuppliersCode>
-			<xsl:if test="//TradeSimpleHeader/SendersBranchReference = 'MIL14T' or //TradeSimpleHeader/SendersBranchReference = 'FMC01T'">
+			<xsl:if test="//TradeSimpleHeader/SendersBranchReference = 'MIL14T' or //TradeSimpleHeader/SendersBranchReference = 'COM2012T' or //TradeSimpleHeader/SendersBranchReference = 'FMC01T'">
 				<BuyersCode>
 					<xsl:value-of select="SuppliersCode"/>
 				</BuyersCode>
@@ -145,7 +149,7 @@ A Barber		|	2012-08-29		| 5709 Added no UOM append product code handling for PBR
 	
 	<xsl:template match="CreditNoteHeader/Supplier">
 		<Supplier>
-			<xsl:if test="//TradeSimpleHeader/SendersBranchReference = 'MIL14T' or //TradeSimpleHeader/SendersBranchReference = 'FMC01T'">
+			<xsl:if test="//TradeSimpleHeader/SendersBranchReference = 'MIL14T' or //TradeSimpleHeader/SendersBranchReference = 'COM2012T' or //TradeSimpleHeader/SendersBranchReference = 'FMC01T'">
 					<SuppliersLocationID>
 					<SuppliersCode>Bibendum</SuppliersCode>
 				</SuppliersLocationID>
