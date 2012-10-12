@@ -5,6 +5,8 @@ Date		|	Name				|	Comment
 08/11/2011	|	KOshaughnessy	| Created
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 05/10/2012 |	A Barber			| Added code to map in invoice reference and date as the delivery note reference and date FB CaseNo:5759
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+11/10/2012|`K Oshaughnessy | FB 5778 bugfix to fix a spelling mistake
 ***************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 	<xsl:output method="xml" encoding="UTF-8"/>
@@ -104,7 +106,7 @@ Date		|	Name				|	Comment
 			</xsl:choose>
 			<xsl:apply-templates select="GoodsReceivedNoteReferences"/>
 			<xsl:apply-templates select="ProductID"/>
-			<xsl:apply-templates select="ProductDescriptions"/>
+			<xsl:apply-templates select="ProductDescription"/>
 			<xsl:apply-templates select="OrderedQuantity"/>
 			<xsl:apply-templates select="ConfirmedQuantity"/>
 			<xsl:apply-templates select="DeliveredQuantity"/>
