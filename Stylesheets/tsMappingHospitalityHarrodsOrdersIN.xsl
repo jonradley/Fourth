@@ -57,8 +57,7 @@ Date		|	Name				|	Comment
 	<xsl:template match="PurchaseOrderLine">
 		<xsl:if test="OrderedQuantity">
 			<PurchaseOrderLine>
-					<!--xsl:apply-templates select="LineNumber"/-->
-					
+										
 					<LineNumber>
 						<xsl:value-of select="LineNumber"/>
 					</LineNumber>
