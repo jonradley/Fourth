@@ -219,6 +219,10 @@
 					
 						<PurchaseOrderConfirmationLine>
 						
+							<LineNumber>
+								<xsl:value-of select="LineNumber"/>
+							</LineNumber>
+						
 							<!-- translate the inbound line status -->
 							<xsl:if test="@LineStatus != ''">
 								<xsl:attribute name="LineStatus">
