@@ -10,7 +10,7 @@ R Cambridge	| 2011-02-23		| 4260 added delivery instructions support
 **********************************************************************
 K Oshaughnessy|2011-08-18	|
 **********************************************************************
-				|						|				
+M Emanuel		| 2012-10-17	| Mapped in Line number and Harrod Internal Site no
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	<xsl:output method="text" encoding="ascii"/>
@@ -190,12 +190,16 @@ K Oshaughnessy|2011-08-18	|
 		</xsl:call-template>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
 		
+		
+		<!-- Mapping Harrods internal site code -->	
+		<xsl:call-template name="padRight">
+			<xsl:with-param name="inputText" select="PurchaseOrderHeader/PurchaseOrderReferences/CustomerPurchaseOrderReference"/>
+			<xsl:with-param name="fieldSize" select="20"/>
+		</xsl:call-template>
+		
 		<xsl:text xml:space="preserve">                    </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		
-		<xsl:text xml:space="preserve">          </xsl:text>
-		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		
+				
 		<xsl:text xml:space="preserve">                              </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
 		
