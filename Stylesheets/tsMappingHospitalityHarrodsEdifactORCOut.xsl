@@ -212,7 +212,7 @@ Date	|Name		| Information
 				<xsl:value-of select="//PurchaseOrderReferences/PurchaseOrderReference"/>
 				<xsl:text>:</xsl:text>
 				<!-- Customer Order Line No-->
-				<xsl:value-of select="LineNumber"/>
+				<xsl:value-of select="Narrative"/>
 			<xsl:text>'&#13;&#10;</xsl:text>
 			
 			<!--This segment is used to identify the location of delivery for a split delivery order-->
