@@ -52,6 +52,7 @@
 			</PurchaseOrderConfirmationHeader>
 			<PurchaseOrderConfirmationDetail>
 				<PurchaseOrderConfirmationLine>
+					<LineNumber RecordPos="D" LPos="14"/>
 					<ProductID>
 						<SuppliersProductCode RecordPos="D" LPos="3"/>
 						<GTIN RecordPos="D" LPos="12"/>
@@ -64,8 +65,7 @@
 					<PackSize RecordPos="D" LPos="6"/>
 					<UnitValueExclVAT RecordPos="D" LPos="9"/>
 					<LineValueExclVAT RecordPos="D" LPos="10"/>
-					<Narrative RecordPos="D" LPos="11"/>
-					<ffsAttribute1 name="LineStatus" RecordPos="D" LPos="2"/>
+					<Narrative RecordPos="D" LPos="14"/>
 				</PurchaseOrderConfirmationLine>
 			</PurchaseOrderConfirmationDetail>
 		</PurchaseOrderConfirmation>
