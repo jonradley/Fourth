@@ -73,6 +73,7 @@ Date		| Name		| Change
 				<PurchaseOrderReferences>
 					<PurchaseOrderReference RecordPos="BGM" LPos="3"/>
 					<PurchaseOrderDate RecordPos="DTM+137" LPos="2" SFPos="2"/>
+					<CustomerPurchaseOrderReference RecordPos="NAD+DP" LPos="3" SFPos="1"/>
 				</PurchaseOrderReferences>
 				<OrderedDeliveryDetails>
 					<DeliveryDate RecordPos="DTM+199" LPos="2" SFPos="2"/>
@@ -82,13 +83,12 @@ Date		| Name		| Change
 				<PurchaseOrderLine>
 					<LineNumber RecordPos="LIN" LPos="2"/>
 					<ProductID>
+						<GTIN RecordPos="LIN" LPos="4"/>
 						<SuppliersProductCode RecordPos="PIA" LPos="3"/>
 						<BuyersProductCode RecordPos="PIA" LPos="3"/>
 					</ProductID>
 					<ProductDescription RecordPos="IMD+F" LPos="4" SFPos="4"/>
-					<OrderedQuantity RecordPos="QTY+21" LPos="2" SFPos="1">
-						<ffsAttribute1 name="UnitOfMeasure" RecordPos="QTY+21" LPos="2" SFPos="3"/>
-					</OrderedQuantity>
+					<OrderedQuantity RecordPos="QTY+21" LPos="2" SFPos="1"/>
 					<LineValueExclVAT RecordPos="MOA+203" LPos="2" SFPos="2"/>
 				</PurchaseOrderLine>
 			</PurchaseOrderDetail>
