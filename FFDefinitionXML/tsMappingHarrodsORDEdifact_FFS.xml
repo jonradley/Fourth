@@ -88,7 +88,7 @@ Date		| Name		| Change
 						<BuyersProductCode RecordPos="PIA" LPos="3"/>
 					</ProductID>
 					<ProductDescription RecordPos="IMD+F" LPos="4" SFPos="4"/>
-					<OrderedQuantity RecordPos="QTY+21" LPos="2" SFPos="1"/>
+					<OrderedQuantity RecordPos="QTY+21" LPos="2" SFPos="2"/>
 					<LineValueExclVAT RecordPos="MOA+203" LPos="2" SFPos="2"/>
 				</PurchaseOrderLine>
 			</PurchaseOrderDetail>
