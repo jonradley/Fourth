@@ -4,6 +4,8 @@
 M Emanuel	|	24/02/2012	| Created OrderConfirmation FF Mapper for Booker	
 *********************************************************************
 K Oshaughnessy|08/082012	| FB 5607 Senders branch references added
+***********************************************************************
+K Oshaughnessy|23/102012	| FB 5831 Bugfix to include unit of measure
 *******************************************************************-->
 <ffsFlatFileSchema>
 	<ffsSettings>
@@ -105,7 +107,6 @@ K Oshaughnessy|08/082012	| FB 5607 Senders branch references added
 							</Supplier>
 							<ShipTo>
 								<ShipToLocationID>
-									<!--BuyersCode RecordPos="CLO=" LPos="1" SFPos="2"/-->
 									<SuppliersCode RecordPos="CLO=" LPos="1" SFPos="3"/>
 								</ShipToLocationID>
 								<ShipToName RecordPos="CLO=" LPos="2" SFPos="1"/>
@@ -140,7 +141,9 @@ K Oshaughnessy|08/082012	| FB 5607 Senders branch references added
 								</ProductID>
 								<ProductDescription RecordPos="ALD=" LPos="9" SFPos="1"/>
 								<OrderedQuantity RecordPos="ALD=" LPos="6" SFPos="1"/>
-								<ConfirmedQuantity RecordPos="AQD" LPos="4" SFPos="1"/>
+								<ConfirmedQuantity RecordPos="AQD" LPos="4" SFPos="1">
+									<ffsAttribute1 name="UnitOfMeasure" RecordPos="ALD=" LPos="5" SFPos="3"/>
+								</ConfirmedQuantity>
 								<UnitValueExclVAT RecordPos="ALD=" LPos="7" SFPos="1"/>
 							</PurchaseOrderConfirmationLine>
 						</PurchaseOrderConfirmationDetail>
