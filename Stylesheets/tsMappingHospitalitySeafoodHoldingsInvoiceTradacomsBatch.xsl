@@ -77,6 +77,32 @@
 		</xsl:copy>
 	</xsl:template>
 	
+	<!--Bugfix to test whether supplier is sending their own code for the buyers code for unit FB 5817-->
+	<xsl:template match="Invoice/InvoiceHeader/ShipTo/ShipToLocationID">
+		<ShipToLocationID>
+			<xsl:choose>
+				<xsl:when test="BuyersCode != SuppliersCode">
+				
+					<xsl:apply-templates select="GLN"/>
+					
+					<xsl:element name="BuyersCode">
+						<xsl:value-of select="BuyersCode"/>
+					</xsl:element>
+					
+					<xsl:apply-templates select="SuppliersCode"/>
+					
+				</xsl:when>
+				<xsl:otherwise>
+				
+					<xsl:apply-templates select="GLN"/>
+					
+					<xsl:apply-templates select="SuppliersCode"/>
+					
+				</xsl:otherwise>
+			</xsl:choose>
+		</ShipToLocationID>	
+	</xsl:template>
+	
 	<!-- INVOIC-ILD-QTYI (InvoiceLine/InvoicedQuantity) needs to be multiplied by -1 if (InvoiceLine/ProductID/BuyersProductCode) is NOT blank -->
 	<!-- 941 read catchweight values if present -->
 	<!--xsl:template match="InvoiceLine/InvoicedQuantity">
