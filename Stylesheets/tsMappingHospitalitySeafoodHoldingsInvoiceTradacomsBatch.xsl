@@ -12,7 +12,7 @@
 ==========================================================================================
  21/07/2011	| K OShaughnessy		|	Created
 ==========================================================================================
-
+24/10/2012   | S Bowers					| FB 5817 - code added so Harrrisons Catering  invoice has buyers code inserted 
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
