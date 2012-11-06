@@ -86,9 +86,9 @@ K Oshaughnessy|23/102012	| FB 5831 Bugfix to include unit of measure
 												<xsl:value-of select="format-number(OrderedQuantity,'0.00')"/>
 											</OrderedQuantity>
 											<ConfirmedQuantity>
-												<xsl:attribute name="UnitOfMeasure">
-													<xsl:value-of select="ConfirmedQuantity/@UnitOfMeasure"/>
-												</xsl:attribute>	
+												<xsl:if test="ConfirmedQuantity/@UnitOfMeasure != '' ">
+													<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="ConfirmedQuantity/@UnitOfMeasure"/></xsl:attribute>
+												</xsl:if>		
 												<xsl:value-of select="format-number(ConfirmedQuantity,'0.00')"/>
 											</ConfirmedQuantity>
 											<xsl:for-each select="BackOrderQuantity[.!=''][1]">
