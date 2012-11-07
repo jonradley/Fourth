@@ -19,6 +19,8 @@
  17/08/2007   | Lee Boyton  | 1383. Strip commas from reference fields as it is the field separator.
 =========================================================================================
  14/07/2008   | A Sheppard | 2283. Changed into TCG version
+ ========================================================================================
+ 07/11/2012	| KOshaughnessy| FB 5836 change to limit product descriptions for 49 characters
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -180,7 +182,7 @@
 				</xsl:choose>															
 				<xsl:text>,</xsl:text>
 				
-				<xsl:value-of select="translate(ProductDescription,',','')"/>
+				<xsl:value-of select="substring(translate(ProductDescription,',',''),1,49)"/>
 				<xsl:text>,</xsl:text>
 				
 				<xsl:text>,</xsl:text>
