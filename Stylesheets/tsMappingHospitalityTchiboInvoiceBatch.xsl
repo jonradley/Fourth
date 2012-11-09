@@ -4,6 +4,8 @@ Name			| Date			| Change
 ************************************************************************************************************************
 M Emanuel	| 03/10/2012 | FB Case No 5735: Made changes to include branch reference and PO Reference
 ************************************************************************************************************************
+M Emanuel	| 09/11/2012 | FB Case No 5839: Mapping in Order Reference as the Delivery note reference
+************************************************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:blah="http://blah.blah.blah" 
 										 xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:vbscript="http://blah.blah.blah"
@@ -78,6 +80,15 @@ M Emanuel	| 03/10/2012 | FB Case No 5735: Made changes to include branch referen
 														<PurchaseOrderReference>
 															<xsl:value-of select="//PurchaseOrderReferences/PurchaseOrderReference"/>	
 														</PurchaseOrderReference>																													</PurchaseOrderReferences>
+												</xsl:when>
+											</xsl:choose>
+											<xsl:choose>
+												<xsl:when test="//DeliveryNoteReferences/DeliveryNoteReference !=''">
+													<DeliveryNoteReferences>
+														<DeliveryNoteReference>
+															<xsl:value-of select="//DeliveryNoteReferences/DeliveryNoteReference"/>
+														</DeliveryNoteReference>
+													</DeliveryNoteReferences>
 												</xsl:when>
 											</xsl:choose>
 											<ProductID>
