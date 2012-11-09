@@ -10,7 +10,7 @@ R Cambridge	| 29/09/2009	| 3142 read units codes into SCR and Supplier's code fo
 **********************************************************************
 M Dimant      | 16/05/2012  | 5473 Bug fixed - SendersBranchReference was incorrectly being mapped as SendersCodeForRecipient. 
 **********************************************************************
-				|					|
+M Emanuel		|	09/11/2012	| 5840 Made changes to remap buyer and supplier codes to accomodate Elior Vendor Codes
 *******************************************************************-->
 <ffsFlatFileSchema>
 	<ffsSettings>
