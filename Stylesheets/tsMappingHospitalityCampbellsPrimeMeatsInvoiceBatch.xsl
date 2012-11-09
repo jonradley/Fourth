@@ -11,14 +11,12 @@ Maha	| 04/10/2011 | 4913: Map vatcode S8 to vatrate 20 and 17.5
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
-	
 	<!-- Start point - ensure required outer BatchRoot tag is applied -->
 	<xsl:template match="/">
-<BatchRoot>
-		<xsl:apply-templates/>
-</BatchRoot>
+		<BatchRoot>
+			<xsl:apply-templates/>
+		</BatchRoot>
 	</xsl:template>
-	
 	<!-- GENERIC HANDLER to copy unchanged nodes, will be overridden by any node-specific templates below -->
 	<xsl:template match="*">
 		<!-- Copy the node unchanged -->
@@ -35,7 +33,6 @@ Maha	| 04/10/2011 | 4913: Map vatcode S8 to vatrate 20 and 17.5
 		<xsl:copy/>
 	</xsl:template>
 	<!-- END of GENERIC HANDLERS -->
-
 	<!-- insert VAT Rates -->
 	<!--xsl:template match="InvoiceLine">
 		<xsl:copy>
@@ -47,38 +44,44 @@ Maha	| 04/10/2011 | 4913: Map vatcode S8 to vatrate 20 and 17.5
 			</xsl:element>
 		</xsl:copy>
 	</xsl:template-->
-
-
 	<!-- Remove any 0 value invoices -->
 	<xsl:template match=" BatchDocument[Invoice/InvoiceTrailer/DocumentTotalExclVAT=0]"/>
-	
-	
-	<xsl:template match="Buyer">		
-			<Buyer>
-				<BuyersLocationID>				
-					<xsl:choose>
-						<xsl:when test="substring-before(BuyersLocationID/BuyersCode,'/') !=''">
-							<BuyersCode><xsl:value-of select="substring-before(BuyersLocationID/BuyersCode,'/')"/></BuyersCode>
-						</xsl:when>
-						<xsl:when test="BuyersLocationID/BuyersCode !=''">
-							<BuyersCode><xsl:value-of select="BuyersLocationID/BuyersCode"/></BuyersCode>
-						</xsl:when>
-					</xsl:choose>					
-					<SuppliersCode><xsl:value-of select="BuyersLocationID/SuppliersCode"/></SuppliersCode>
-				</BuyersLocationID>
-				<BuyersName><xsl:value-of select="BuyersName"/></BuyersName>
-			</Buyer>
-			
-			<xsl:if test="substring-after(BuyersLocationID/BuyersCode,'/') !=''">
-				<Supplier>
-					<SuppliersLocationID>
-						<BuyersCode><xsl:value-of select="substring-after(BuyersLocationID/BuyersCode,'/')"/></BuyersCode>
-					</SuppliersLocationID>
-				</Supplier>
-			</xsl:if>	
-	</xsl:template>		
-
-
+	<xsl:template match="Buyer">
+		<Buyer>
+			<BuyersLocationID>
+				<xsl:choose>
+					<xsl:when test="substring-before(BuyersLocationID/BuyersCode,'/') !=''">
+						<BuyersCode>
+							<xsl:value-of select="substring-before(BuyersLocationID/BuyersCode,'/')"/>
+						</BuyersCode>
+					</xsl:when>
+					<xsl:when test="BuyersLocationID/BuyersCode !=''">
+						<BuyersCode>
+							<xsl:value-of select="BuyersLocationID/BuyersCode"/>
+						</BuyersCode>
+					</xsl:when>
+				</xsl:choose>
+				<SuppliersCode>
+					<xsl:value-of select="BuyersLocationID/SuppliersCode"/>
+				</SuppliersCode>
+			</BuyersLocationID>
+			<BuyersName>
+				<xsl:value-of select="BuyersName"/>
+			</BuyersName>
+		</Buyer>
+	</xsl:template>
+	<xsl:template match="ShipTo">
+		<ShipTo>
+			<ShipToLocationID>
+				<SuppliersCode>
+					<xsl:value-of select="substring-after(ShipToLocationID/SuppliersCode,'/')"/>
+				</SuppliersCode>
+			</ShipToLocationID>
+			<ShipToName>
+				<xsl:value-of select="ShipToName"/>
+			</ShipToName>
+		</ShipTo>
+	</xsl:template>
 	<xsl:template match="InvoiceLine">
 		<InvoiceLine>
 			<PurchaseOrderReferences>
@@ -125,8 +128,6 @@ Maha	| 04/10/2011 | 4913: Map vatcode S8 to vatrate 20 and 17.5
 			</xsl:element>
 		</InvoiceLine>
 	</xsl:template>
-
-
 	<!-- tradesimple VAT codes -->
 	<xsl:template match="VATCode">
 		<xsl:element name="VATCode">
@@ -136,13 +137,8 @@ Maha	| 04/10/2011 | 4913: Map vatcode S8 to vatrate 20 and 17.5
 		</xsl:element>
 	</xsl:template>
 	<xsl:template match="@VATCode">
-		<xsl:attribute name="VATCode">
-			<xsl:call-template name="decodeVATCodes">
-				<xsl:with-param name="sVATCode" select="."/>
-			</xsl:call-template>
-		</xsl:attribute>
+		<xsl:attribute name="VATCode"><xsl:call-template name="decodeVATCodes"><xsl:with-param name="sVATCode" select="."/></xsl:call-template></xsl:attribute>
 	</xsl:template>
-	
 	<!-- Sort the dates -->
 	<xsl:template match="InvoiceDate">
 		<xsl:element name="InvoiceDate">
@@ -158,28 +154,21 @@ Maha	| 04/10/2011 | 4913: Map vatcode S8 to vatrate 20 and 17.5
 			</xsl:call-template>
 		</xsl:element>
 	</xsl:template>
-	
-	
 	<!-- Date sorter -->
 	<xsl:template name="sortDate">
 		<xsl:param name="sDate"/>
 		<xsl:value-of select="concat(substring($sDate,7,4),'-',substring($sDate,4,2),'-',substring($sDate,1,2))"/>
 	</xsl:template>
-
-
 	<!-- Decodes and lookups -->
 	<!-- Decode the VATCodes -->
 	<xsl:template name="decodeVATCodes">
-	<xsl:param name="sVATCode"/>
+		<xsl:param name="sVATCode"/>
 		<xsl:choose>
 			<xsl:when test="$sVATCode = 'S0'">Z</xsl:when>
 			<xsl:when test="$sVATCode = 'S1'">S</xsl:when>
-			<xsl:otherwise> </xsl:otherwise>
+			<xsl:otherwise/>
 		</xsl:choose>
 	</xsl:template>
-	
-
-	
 	<xsl:template name="lookupVATRate">
 		<xsl:param name="sVATCode"/>
 		<xsl:variable name="sInvDate" select="ancestor::Invoice/InvoiceHeader/InvoiceReferences/InvoiceDate"/>
@@ -190,8 +179,9 @@ Maha	| 04/10/2011 | 4913: Map vatcode S8 to vatrate 20 and 17.5
 			<xsl:when test="$sVATCode = 'S1' and $sVATDate &lt; 20110104">17.50</xsl:when>
 			<xsl:when test="$sVATCode = 'S8' and $sVATDate &gt; 20110104">20.00</xsl:when>
 			<xsl:when test="$sVATCode = 'S8' and $sVATDate &lt; 20110104">17.50</xsl:when>
-			<xsl:otherwise><xsl:value-of select="$sVATDate"/></xsl:otherwise>
+			<xsl:otherwise>
+				<xsl:value-of select="$sVATDate"/>
+			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-
 </xsl:stylesheet>
