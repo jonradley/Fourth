@@ -67,7 +67,7 @@ R Cambridge	| 29/09/2009	| 3142 read units codes into SCR and Supplier's code fo
 				<BatchDocument>
 					<Invoice>
 						<TradeSimpleHeader>
-							<SendersCodeForRecipient RecordPos="HEAD" LPos="24"/>
+							<SendersCodeForRecipient RecordPos="HEAD" LPos="23"/>
 							<SendersBranchReference RecordPos="HEAD" LPos="23"/>
 						</TradeSimpleHeader>
 						<InvoiceHeader>
@@ -93,10 +93,10 @@ R Cambridge	| 29/09/2009	| 3142 read units codes into SCR and Supplier's code fo
 									<PostCode RecordPos="CUSTOMER" LPos="8"/>
 								</BuyersAddress-->
 							</Buyer>
-							<!--Supplier-->
-							<!--SuppliersLocationID>
-									<SuppliersCode RecordPos="" LPos=""/>
-								</SuppliersLocationID-->
+							<Supplier>
+							<SuppliersLocationID>
+									<BuyersCode RecordPos="HEAD" LPos="24"/>
+								</SuppliersLocationID>
 							<!--SuppliersName RecordPos="SUPPLIER" LPos="3"/>
 								<SuppliersAddress>
 									<AddressLine1 RecordPos="SUPPLIER" LPos="4"/>
@@ -104,11 +104,11 @@ R Cambridge	| 29/09/2009	| 3142 read units codes into SCR and Supplier's code fo
 									<AddressLine3 RecordPos="SUPPLIER" LPos="6"/>
 									<AddressLine4 RecordPos="SUPPLIER" LPos="7"/>
 									<PostCode RecordPos="SUPPLIER" LPos="8"/>
-								</SuppliersAddress>
-							</Supplier-->
+								</SuppliersAddress-->
+							</Supplier>
 							<ShipTo>
 								<ShipToLocationID>
-									<SuppliersCode RecordPos="HEAD" LPos="24"/>
+									<SuppliersCode RecordPos="HEAD" LPos="23"/>
 								</ShipToLocationID>
 								<ShipToName RecordPos="HEAD" LPos="17"/>
 								<!--ShipToAddress>
