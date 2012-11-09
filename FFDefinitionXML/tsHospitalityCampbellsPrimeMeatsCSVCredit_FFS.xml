@@ -57,7 +57,7 @@ M Dimant      | 16/05/2012  | 5473 Bug fixed - SendersBranchReference was incorr
 				<BatchDocument>
 					<CreditNote>
 						<TradeSimpleHeader>
-							<SendersCodeForRecipient RecordPos="HEAD" LPos="24"/>
+							<SendersCodeForRecipient RecordPos="HEAD" LPos="23"/>
 							<SendersBranchReference RecordPos="HEAD" LPos="23"/>
 						</TradeSimpleHeader>
 						<CreditNoteHeader>
@@ -75,22 +75,22 @@ M Dimant      | 16/05/2012  | 5473 Bug fixed - SendersBranchReference was incorr
 									<PostCode RecordPos="CDT=" LPos="3" SFPos="5"/>
 								</BuyersAddress-->
 							</Buyer>
-							<!--Supplier>
+							<Supplier>
 								<SuppliersLocationID>
-									<SuppliersCode RecordPos="HEAD" LPos="3"/>
+									<BuyersCode RecordPos="HEAD" LPos="24"/>
 								</SuppliersLocationID>
-								<SuppliersName RecordPos="HEAD" LPos="3"/>
+								<!--SuppliersName RecordPos="HEAD" LPos="3"/>
 								<SuppliersAddress>
 									<AddressLine1 RecordPos="SDT=" LPos="3" SFPos="1"/>
 									<AddressLine2 RecordPos="SDT=" LPos="3" SFPos="2"/>
 									<AddressLine3 RecordPos="SDT=" LPos="3" SFPos="3"/>
 									<AddressLine4 RecordPos="SDT=" LPos="3" SFPos="4"/>
 									<PostCode RecordPos="SDT=" LPos="3" SFPos="5"/>
-								</SuppliersAddress>
-							</Supplier-->
+								</SuppliersAddress-->
+							</Supplier>
 							<ShipTo>
 								<ShipToLocationID>
-									<SuppliersCode RecordPos="HEAD" LPos="24"/>
+									<SuppliersCode RecordPos="HEAD" LPos="23"/>
 								</ShipToLocationID>
 								<ShipToName RecordPos="HEAD" LPos="17"/>
 							</ShipTo>
