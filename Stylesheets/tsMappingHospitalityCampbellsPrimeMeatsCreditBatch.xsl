@@ -46,6 +46,7 @@
 				<xsl:value-of select="BuyersName"/>
 			</BuyersName>
 		</Buyer>
+		<!--
 		<xsl:if test="substring-after(BuyersLocationID/BuyersCode,'/') !=''">
 			<Supplier>
 				<SuppliersLocationID>
@@ -55,6 +56,19 @@
 				</SuppliersLocationID>
 			</Supplier>
 		</xsl:if>
+		-->
+	</xsl:template>
+	<xsl:template match="ShipTo">
+		<ShipTo>
+			<ShipToLocationID>
+				<SuppliersCode>
+					<xsl:value-of select="substring-after(ShipToLocationID/SuppliersCode,'/')"/>
+				</SuppliersCode>
+			</ShipToLocationID>
+			<ShipToName>
+				<xsl:value-of select="ShipToName"/>
+			</ShipToName>
+		</ShipTo>
 	</xsl:template>
 	<!-- insert VAT Rates -->
 	<xsl:template match="InvoiceLine">
