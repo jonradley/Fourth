@@ -196,8 +196,9 @@ M Emanuel		| 2012-10-17	| Mapped in Line number and Harrod Internal Site no
 			<xsl:with-param name="inputText" select="PurchaseOrderHeader/PurchaseOrderReferences/CustomerPurchaseOrderReference"/>
 			<xsl:with-param name="fieldSize" select="20"/>
 		</xsl:call-template>
+		<xsl:value-of select="$FIELD_SEPERATOR"/>
 		
-		<xsl:text xml:space="preserve">                    </xsl:text>
+		<xsl:text xml:space="preserve">          </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
 				
 		<xsl:text xml:space="preserve">                              </xsl:text>
