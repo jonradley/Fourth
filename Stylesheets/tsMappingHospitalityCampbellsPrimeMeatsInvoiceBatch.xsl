@@ -6,7 +6,7 @@ Name	| Date		 | Change
 **********************************************************************
 Maha	| 04/10/2011 | 4913: Map vatcode S8 to vatrate 20 and 17.5
 **********************************************************************
-				|             	|
+M Emanuel		|	09/11/2012	| 5840 Made changes to remap buyer and supplier codes to accomodate Elior Vendor Codes				|             	|
 **********************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
