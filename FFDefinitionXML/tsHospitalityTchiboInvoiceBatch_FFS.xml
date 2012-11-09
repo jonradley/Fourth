@@ -11,6 +11,8 @@ Andrew Barber	| 17/11/2009 | Added product description (Len=40)
 ********************************************************************************************************
 Mark Emanuel	| 03/10/2012 | FB Case No 5735: Made changes to include branch reference and PO Reference
 *********************************************************************************************************
+Mark Emanuel	| 09/11/2012 | FB Case No 5839: Mapping in Order Reference as the Delivery note reference
+*********************************************************************************************************
 -->
 <ffsFlatFileSchema>
 	<ffsSettings>
@@ -62,6 +64,9 @@ Mark Emanuel	| 03/10/2012 | FB Case No 5735: Made changes to include branch refe
 								<PurchaseOrderReferences>
 									<PurchaseOrderReference RecordPos="HEAD" LPos="102" UPos="126"/>
 								</PurchaseOrderReferences>
+								<DeliveryNoteReferences>
+									<DeliveryNoteReference RecordPos="HEAD" LPos="102" UPos="126"/>
+								</DeliveryNoteReferences>
 								<ProductID>
 									<SuppliersProductCode RecordPos="DTL" LPos="6" UPos="35"/>
 								</ProductID>
