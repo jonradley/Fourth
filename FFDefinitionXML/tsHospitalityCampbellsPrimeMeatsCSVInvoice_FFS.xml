@@ -8,7 +8,7 @@ Name			| Date			| Change
 **********************************************************************
 R Cambridge	| 29/09/2009	| 3142 read units codes into SCR and Supplier's code for ship to
 **********************************************************************
-          	|           	| 
+M Emanuel	|	09/11/2012	| 5840 Made changes to remap buyer and supplier codes to accomodate Elior Vendor Codes         	|           	| 
 **********************************************************************
 				|					|
 *******************************************************************-->
@@ -94,10 +94,10 @@ R Cambridge	| 29/09/2009	| 3142 read units codes into SCR and Supplier's code fo
 								</BuyersAddress-->
 							</Buyer>
 							<Supplier>
-							<SuppliersLocationID>
+								<SuppliersLocationID>
 									<BuyersCode RecordPos="HEAD" LPos="24"/>
 								</SuppliersLocationID>
-							<!--SuppliersName RecordPos="SUPPLIER" LPos="3"/>
+								<!--SuppliersName RecordPos="SUPPLIER" LPos="3"/>
 								<SuppliersAddress>
 									<AddressLine1 RecordPos="SUPPLIER" LPos="4"/>
 									<AddressLine2 RecordPos="SUPPLIER" LPos="5"/>
