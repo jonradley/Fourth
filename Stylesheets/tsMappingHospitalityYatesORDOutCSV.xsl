@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--*************************************************************************
+Date			|	Name					|	Description of modification
+****************************************************************************
+02/10/2012	|	K OShaughnessy	| Created Module
+***************************************************************************
+				|							|		
+****************************************************************************				
+-->
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript" xmlns:vb="http://www.abs-ltd.com/dummynamespaces/vbscript" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+
+	<xsl:output method="text" encoding="utf-8"/>
+	
+	<xsl:template match="PurchaseOrder">
+		
+		<xsl:variable name="FormatORDDate" select="PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate"/>
+		<xsl:variable name="FormatTime" select="PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderTime"/>
+		<xsl:variable name="FormatDLDate" select="PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate"/>
+		<xsl:variable name="sFileGenerationDate" select="vb:msFileGenerationDate()"/>
+		
+		<!--Header record-->
+		<xsl:text>HDR</xsl:text>	
+		<xsl:text>,</xsl:text>
+		<xsl:text>,</xsl:text>
+		<!--Suppliers code for Buyer-->
+		<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
+		<xsl:text>,</xsl:text>
+		<xsl:text>,</xsl:text>
+		<!--Customer Name-->
+		<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersName"/>
+		<xsl:text>,</xsl:text>
+		<!--Supplier ANA-->
+		<xsl:if test="PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN != '5555555555555' ">
+			<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN"/>
+		</xsl:if>
+		<xsl:text>,</xsl:text>
+		<!--Customers Code for Supplier-->
+		<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/BuyersCode"/>
+		<xsl:text>,</xsl:text>
+		<!--Supplier Name-->
+		<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersName"/>
+		<xsl:text>,</xsl:text>
+		<xsl:text>,</xsl:text>
+		<xsl:text>,</xsl:text>
+		<!--Supplier Code For Delivery Location-->
+		<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
+		<xsl:text>,</xsl:text>
+		<!--Delivery Address-->
+		<xsl:if test="PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine1 != '' ">
+			<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine1"/>
+		</xsl:if>
+		<xsl:text>,</xsl:text>
+		<xsl:if test="PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine1 != '' ">
+			<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine2"/>
+		</xsl:if>
+		<xsl:text>,</xsl:text>
+		<xsl:if test="PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine1 != '' ">
+			<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine3"/>
+		</xsl:if>
+		<xsl:text>,</xsl:text>
+		<xsl:if test="PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine1 != '' ">
+			<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine4"/>
+		</xsl:if>
+		<xsl:text>,</xsl:text>
+		<xsl:text>,</xsl:text>
+		<xsl:if test="PurchaseOrderHeader/ShipTo/ShipToAddress/PostCode != '' ">
+			<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToAddress/PostCode"/>
+		</xsl:if>
+		<xsl:text>,</xsl:text>
+		<!--Customer Order Number-->
+		<xsl:value-of select="PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
+		<xsl:text>,</xsl:text>
+		<!--Customer Order Date-->
+		<xsl:value-of select="concat(substring($FormatORDDate,9,2),substring($FormatORDDate,6,2),substring($FormatORDDate,3,2))"/>
+		<xsl:text>,</xsl:text>
+		<!--Date Order Transmitted by Customer-->	
+		<xsl:value-of select="concat(substring($FormatORDDate,9,2),substring($FormatORDDate,6,2),substring($FormatORDDate,3,2))"/>
+		<xsl:text>,</xsl:text>
+		<!--Time Order Transmitted by Customer-->
+		<xsl:value-of select="concat(substring($FormatTime,4,2),substring($FormatTime,1,2))"/>
+		<xsl:text>,</xsl:text>
+		<xsl:text>,</xsl:text>
+		<!--Requested Delivery Date-->
+		<xsl:value-of select="concat(substring($FormatDLDate,9,2),substring($FormatDLDate,6,2),substring($FormatDLDate,3,2))"/>
+		<xsl:text>,</xsl:text>
+		<xsl:text>,</xsl:text>	
+		<xsl:text>,</xsl:text>	
+		<xsl:text>,</xsl:text>	
+		<xsl:text>,</xsl:text>	
+		<xsl:text>,</xsl:text>	
+		<xsl:text>,</xsl:text>	
+		<xsl:text>,</xsl:text>	
+		<xsl:text>,</xsl:text>	
+		<!--File Generation Number-->
+		
+		<xsl:text>,</xsl:text>
+		<!--File Generation Date-->
+		<xsl:value-of select="$sFileGenerationDate"/>
+		<xsl:text>&#13;&#10;</xsl:text>
+		
+		
+		<xsl:for-each select="PurchaseOrderDetail/PurchaseOrderLine">
+		
+			<!--Order line Record-->
+			<xsl:text>OLD</xsl:text>
+			<xsl:text>,</xsl:text>
+			<!--Item EAN/ANA (Bar Code)-->
+			<xsl:if test="ProductID/GTIN != '55555555555555' ">
+				<xsl:value-of select="ProductID/GTIN"/>
+			</xsl:if>
+			<xsl:text>,</xsl:text>
+			<!--Supplier Item Code-->
+			<xsl:value-of select="ProductID/SuppliersProductCode"/>
+			<xsl:text>,</xsl:text>
+			<!--Customer Item Code-->
+			<xsl:if test="ProductID/BuyersProductCode != '' ">
+				<xsl:value-of select="ProductID/BuyersProductCode"/>
+			</xsl:if>
+			<xsl:text>,</xsl:text>
+			<!--Qty Ordered-->
+			<xsl:value-of select="format-number(OrderedQuantity,'0')"/>
+			<xsl:text>,</xsl:text>
+			<xsl:text>,</xsl:text>
+			<!--Measure Indicator-->
+			<xsl:value-of select="OrderedQuantity/@UnitOfMeasure"/>
+			<xsl:text>,</xsl:text>
+			<!--Price-->
+			<xsl:value-of select="format-number(UnitValueExclVAT,'0.00')"/>
+			<xsl:text>,</xsl:text>
+			<!--Item Description 1-->
+			<xsl:value-of select="substring(ProductDescription,1,40)"/>
+			<xsl:text>,</xsl:text>
+			<!--Item Description 2-->
+			<xsl:value-of select="substring(ProductDescription,40)"/>
+			<xsl:text>&#13;&#10;</xsl:text>
+		</xsl:for-each>
+		
+	</xsl:template>
+
+	<msxsl:script language="VBScript" implements-prefix="vb"><![CDATA[	
+'==========================================================================================
+' Routine        : msFileGenerationDate()
+' Description    : 
+' Inputs         :  
+' Outputs        : 
+' Returns        : A string
+' Author         : K Oshaughnessy
+' Version        : 1.0
+' Alterations    : (none)
+'==========================================================================================
+
+Function msFileGenerationDate()
+
+Dim sNow
+
+	sNow = CStr(Date)
+
+	msFileGenerationDate = Right(sNow,2) & Mid(sNow,4,2) & Left(sNow,2)
+		
+End Function	]]></msxsl:script>
+
+</xsl:stylesheet>
