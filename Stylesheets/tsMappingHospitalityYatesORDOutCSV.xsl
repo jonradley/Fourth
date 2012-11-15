@@ -127,11 +127,7 @@ Date			|	Name					|	Description of modification
 			<!--Price-->
 			<xsl:value-of select="format-number(UnitValueExclVAT,'0.00')"/>
 			<xsl:text>,</xsl:text>
-			<!--Item Description 1-->
-			<xsl:value-of select="substring(ProductDescription,1,40)"/>
 			<xsl:text>,</xsl:text>
-			<!--Item Description 2-->
-			<xsl:value-of select="substring(ProductDescription,40)"/>
 			<xsl:text>&#13;&#10;</xsl:text>
 		</xsl:for-each>
 		
