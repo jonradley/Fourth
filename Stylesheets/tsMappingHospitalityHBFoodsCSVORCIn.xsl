@@ -47,6 +47,13 @@
 						</SendersBranchReference>
 					</xsl:if>
 					
+					<!--Mapping Recipient's Branch Reference for Harrods Order Confirmations only -->
+					<xsl:if test="string(TradeSimpleHeader/RecipientsBranchReference) != ''">
+						<RecipientsBranchReference>
+							<xsl:value-of select="TradeSimpleHeader/RecipientsBranchReference"/>
+						</RecipientsBranchReference>
+					</xsl:if>
+					
 					<xsl:if test="TradeSimpleHeader/TestFlag != ''">
 						<TestFlag>
 							<xsl:choose>
@@ -67,17 +74,28 @@
 				
 					<xsl:if test="PurchaseOrderConfirmationHeader/ShipTo/ShipToName != '' or PurchaseOrderConfirmationHeader/ShipTo/ShipToAddress/AddressLine1 != '' or PurchaseOrderConfirmationHeader/ShipTo/ShipToAddress/AddressLine2 != '' or PurchaseOrderConfirmationHeader/ShipTo/ShipToAddress/AddressLine3 != '' or PurchaseOrderConfirmationHeader/ShipTo/ShipToAddress/AddressLine4 != '' or PurchaseOrderConfirmationHeader/ShipTo/ShipToAddress/PostCode != '' or PurchaseOrderConfirmationHeader/ShipTo/ContactName != ''">
 						<ShipTo>
-							<xsl:if test="string(TradeSimpleHeader/SendersBranchReference) != '' and contains('HILTON',TradeSimpleHeader/SendersBranchReference)">
-								<ShipToLocationID>
+							<!-- Inserting a choose statement here to leave the existing code as it and also include the Harrod's Own location otherwise -->
+							<xsl:choose>
+								<xsl:when test="string(TradeSimpleHeader/SendersBranchReference) != '' and contains('HILTON',TradeSimpleHeader/SendersBranchReference)">
+									<ShipToLocationID>
 									<!--GLN/-->
-									<BuyersCode>
-										<xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/>
-									</BuyersCode>
-									<SuppliersCode>
-										<xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/>
-									</SuppliersCode>
-								</ShipToLocationID>
-							</xsl:if>
+										<BuyersCode>
+											<xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/>
+										</BuyersCode>
+										<SuppliersCode>
+											<xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/>
+										</SuppliersCode>
+									</ShipToLocationID>
+								</xsl:when>
+								<xsl:otherwise>
+									<ShipToLocationID>
+									<!--GLN/-->
+										<BuyersCode>
+											<xsl:value-of select="PurchaseOrderConfirmationHeader/ShipTo/ShipToLocationID/BuyersCode"/>
+										</BuyersCode>
+									</ShipToLocationID>
+								</xsl:otherwise>
+							</xsl:choose>
 							<xsl:if test="PurchaseOrderConfirmationHeader/ShipTo/ShipToName != ''">
 								<ShipToName>
 									<xsl:value-of select="PurchaseOrderConfirmationHeader/ShipTo/ShipToName"/>
@@ -298,7 +316,9 @@
 									<xsl:value-of select="LineValueExclVAT"/>
 								</LineValueExclVAT>
 							</xsl:if>
-
+							
+							<!-- We are storing Harrods Line Numbers in this element, without with Harrods Order Confirmation won't work. May need to reconsider if
+							we need to use this element for storing actual Narrative information for another customer -->
 							<xsl:if test="Narrative != ''">
 								<Narrative>
 									<xsl:value-of select="Narrative"/>

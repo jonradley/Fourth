@@ -152,6 +152,9 @@ Date	|Name		| Information
 					<xsl:when test="@LineStatus = 'Rejected'">
 						<xsl:text>7</xsl:text>
 					</xsl:when>
+					<xsl:when test="@LineStatus = 'Changed'">
+						<xsl:text>3</xsl:text>
+					</xsl:when>
 					<xsl:otherwise>error</xsl:otherwise>
 				</xsl:choose>
 				<xsl:text>+</xsl:text>
@@ -219,8 +222,8 @@ Date	|Name		| Information
 			
 			<xsl:text>LOC+</xsl:text>
 				<xsl:text>7+</xsl:text>
-				<!--Supplier code for location-->
-				
+				<!--EAN Location Number - Buyer's code for location-->
+				<xsl:value-of select="../../PurchaseOrderConfirmationHeader/ShipTo/ShipToLocationID/BuyersCode"/>
 				<xsl:text>::9</xsl:text>
 			<xsl:text>'&#13;&#10;</xsl:text>
 			
