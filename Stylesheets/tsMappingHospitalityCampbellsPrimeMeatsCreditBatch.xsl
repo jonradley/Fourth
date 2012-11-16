@@ -52,17 +52,6 @@ M Emanuel		|	09/11/2012	| 5840 Made changes to remap buyer and supplier codes to
 				<xsl:value-of select="BuyersName"/>
 			</BuyersName>
 		</Buyer>
-		<!--
-		<xsl:if test="substring-after(BuyersLocationID/BuyersCode,'/') !=''">
-			<Supplier>
-				<SuppliersLocationID>
-					<BuyersCode>
-						<xsl:value-of select="substring-after(BuyersLocationID/BuyersCode,'/')"/>
-					</BuyersCode>
-				</SuppliersLocationID>
-			</Supplier>
-		</xsl:if>
-		-->
 	</xsl:template>
 	<xsl:template match="ShipTo">
 		<ShipTo>
@@ -122,24 +111,6 @@ M Emanuel		|	09/11/2012	| 5840 Made changes to remap buyer and supplier codes to
 			</xsl:call-template>
 		</xsl:element>
 	</xsl:template>
-	<!--
-	<xsl:template match="InvoiceReferences">
-		<xsl:if test="InvoiceReference != 'NONE'">
-			<xsl:copy/>
-			<xsl:apply-templates/>
-		</xsl:if>
-	</xsl:template>
--->
-	<!--xsl:template match="CreditNoteHeader">
-		<xsl:element name="CreditNoteHeader">
-			<xsl:copy-of select="Buyer"/>
-			<xsl:copy-of select="ShipTo"/>
-			<xsl:if test="InvoiceReferences/InvoiceReference != 'NONE'">
-				<xsl:copy-of select="InvoiceReferences"/>
-			</xsl:if>
-			<xsl:copy-of select="CreditNoteReferences"/>
-		</xsl:element>
-	</xsl:template-->
 	<!-- Date sorter -->
 	<xsl:template name="sortDate">
 		<xsl:param name="sDate"/>
