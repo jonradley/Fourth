@@ -26,6 +26,9 @@
 			</TradeSimpleHeader>
 			<PurchaseOrderConfirmationHeader>
 				<ShipTo>
+					<ShipToLocationID>
+						<BuyersCode RecordPos="H" LPos="20"/>
+					</ShipToLocationID>
 					<ShipToName RecordPos="H" LPos="11"/>
 					<ShipToAddress>
 						<AddressLine1 RecordPos="H" LPos="12"/>
