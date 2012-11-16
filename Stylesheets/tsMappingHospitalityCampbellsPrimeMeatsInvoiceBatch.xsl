@@ -33,17 +33,6 @@ M Emanuel		|	09/11/2012	| 5840 Made changes to remap buyer and supplier codes to
 		<xsl:copy/>
 	</xsl:template>
 	<!-- END of GENERIC HANDLERS -->
-	<!-- insert VAT Rates -->
-	<!--xsl:template match="InvoiceLine">
-		<xsl:copy>
-			<xsl:apply-templates/>
-			<xsl:element name="VATRate">
-				<xsl:call-template name="lookupVATRate">
-					<xsl:with-param name="sVATCode" select="VATCode"/>
-				</xsl:call-template>
-			</xsl:element>
-		</xsl:copy>
-	</xsl:template-->
 	<!-- Remove any 0 value invoices -->
 	<xsl:template match=" BatchDocument[Invoice/InvoiceTrailer/DocumentTotalExclVAT=0]"/>
 	<xsl:template match="Buyer">
