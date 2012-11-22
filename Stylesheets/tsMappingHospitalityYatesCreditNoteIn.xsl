@@ -36,7 +36,7 @@ Date 			|	Name				|	Description
 	<!-- To Manipulate unit of measure string to our standard-->
 	<xsl:template match="@UnitOfMeasure">
 		<xsl:call-template name="UOM">
-			<xsl:with-param name="UOMdecode"/>
+			<xsl:with-param name="UOMdecode" select="."/>
 		</xsl:call-template>
 	</xsl:template>
 	
