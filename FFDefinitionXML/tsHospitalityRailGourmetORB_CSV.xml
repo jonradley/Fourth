@@ -6,6 +6,8 @@ Rail Gourmet CSV Purchase Order Batch FFS
 Name		| Date			| Change
 *********************************************************************
 A Barber	| 10/10/2012		| 5761 Rail Gourmet Order Batch
+*********************************************************************
+A Barber	| 22/11/2012		| 5871 Addition of UOM mapping
 *******************************************************************-->
 <ffsFlatFileSchema>
 	<ffsSettings>
@@ -58,7 +60,9 @@ A Barber	| 10/10/2012		| 5761 Rail Gourmet Order Batch
 								<ProductID>
 									<SuppliersProductCode RecordPos="D" LPos="3"/>
 								</ProductID>
-								<OrderedQuantity RecordPos="D" LPos="4"/>
+								<OrderedQuantity RecordPos="D" LPos="4">
+									<ffsAttribute1 Name="UnitOfMeasure" RecordPos="D" LPos="7"/>
+								</OrderedQuantity>
 								<UnitValueExclVAT RecordPos="D" LPos="5"/>
 								<LineValueExclVAT RecordPos="D" LPos="6"/>
 							</PurchaseOrderLine>
