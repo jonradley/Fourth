@@ -6,8 +6,9 @@ Purchase Order Batch Transform for Rail Gourmet
 Name         	| Date       		| Change
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 A Barber	| 08/10/2012		| 5761 Created
-**********************************************************************************************************
--->
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+A Barber	| 22/11/2012		| 5871 Addition of UOM mapping
+**************************************************************************************************-->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 	<xsl:output method="xml"/>
 
@@ -40,7 +41,6 @@ A Barber	| 08/10/2012		| 5761 Created
 		</xsl:element>
 	</xsl:template>
 	
-	
 	<xsl:template match="DeliveryDate">
 		<xsl:element name="DeliveryDate">
 		<xsl:call-template name="DateConversion">
@@ -58,6 +58,19 @@ A Barber	| 08/10/2012		| 5761 Created
 		<xsl:element name="TestFlag">
 			<xsl:text>1</xsl:text>
 		</xsl:element>
+	</xsl:template>
+	
+	<xsl:template match="@UnitOfMeasure">
+		<xsl:attribute name="UnitOfMeasure">
+			<xsl:choose>
+				<xsl:when test="'CA'">
+					<xsl:text>CS</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:text>EA</xsl:text>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:attribute>
 	</xsl:template>
 	
 </xsl:stylesheet>
