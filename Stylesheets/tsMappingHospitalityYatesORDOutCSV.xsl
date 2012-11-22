@@ -80,10 +80,10 @@ Date			|	Name					|	Description of modification
 		<xsl:value-of select="concat(substring($FormatTime,4,2),substring($FormatTime,1,2))"/>
 		<xsl:text>,</xsl:text>
 		<xsl:text>,</xsl:text>
-		<!--Requested Delivery Date-->
-		<xsl:value-of select="concat(substring($FormatDLDate,9,2),substring($FormatDLDate,6,2),substring($FormatDLDate,3,2))"/>
 		<xsl:text>,</xsl:text>
 		<xsl:text>,</xsl:text>	
+		<!--Requested Delivery Date-->
+		<xsl:value-of select="concat(substring($FormatDLDate,9,2),substring($FormatDLDate,6,2),substring($FormatDLDate,3,2))"/>
 		<xsl:text>,</xsl:text>	
 		<xsl:text>,</xsl:text>	
 		<xsl:text>,</xsl:text>	
@@ -92,7 +92,6 @@ Date			|	Name					|	Description of modification
 		<xsl:text>,</xsl:text>	
 		<xsl:text>,</xsl:text>	
 		<!--File Generation Number-->
-		
 		<xsl:text>,</xsl:text>
 		<!--File Generation Date-->
 		<xsl:value-of select="$sFileGenerationDate"/>
