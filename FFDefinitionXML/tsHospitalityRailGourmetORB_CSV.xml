@@ -48,7 +48,6 @@ A Barber	| 22/11/2012		| 5871 Addition of UOM mapping
 							</Buyer>
 							<PurchaseOrderReferences>
 								<PurchaseOrderReference RecordPos="H" LPos="4"/>
-								<PurchaseOrderDate RecordPos="H" LPos="5"/>
 							</PurchaseOrderReferences>
 							<OrderedDeliveryDetails>
 								<DeliveryDate RecordPos="H" LPos="6"/>
@@ -61,7 +60,7 @@ A Barber	| 22/11/2012		| 5871 Addition of UOM mapping
 									<SuppliersProductCode RecordPos="D" LPos="3"/>
 								</ProductID>
 								<OrderedQuantity RecordPos="D" LPos="4">
-									<ffsAttribute1 Name="UnitOfMeasure" RecordPos="D" LPos="7"/>
+									<ffsAttribute1 name="UnitOfMeasure" RecordPos="D" LPos="7"/>
 								</OrderedQuantity>
 								<UnitValueExclVAT RecordPos="D" LPos="5"/>
 								<LineValueExclVAT RecordPos="D" LPos="6"/>
