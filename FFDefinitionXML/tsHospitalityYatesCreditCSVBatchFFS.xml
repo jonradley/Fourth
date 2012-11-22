@@ -80,7 +80,7 @@ Date			| Name				|	Description
 						<CreditNoteDetail>
 							<CreditNoteLine>
 								<PurchaseOrderReferences>
-									<PurchaseOrderReference RecordPos="CLD" LPos="45"/>
+									<PurchaseOrderReference RecordPos="CLD" LPos="43"/>
 									<PurchaseOrderDate RecordPos="CLD" LPos="46"/>
 								</PurchaseOrderReferences>
 								<ProductID>
