@@ -234,13 +234,13 @@ Date	|Name		| Information
 			<xsl:text>'&#13;&#10;</xsl:text>
 			
 			<!--This segment is used to indicate the date/time on which the split delivery will take place to the location identified in the LOC segment-->
-			<!--
+			<xsl:variable name="DelDate" select="../../PurchaseOrderConfirmationHeader/ConfirmedDeliveryDetails/DeliveryDate"/>
 			<xsl:text>DTM+</xsl:text>
 				<xsl:text>2:</xsl:text>
-				<xsl:value-of select="PurchaseOrderConfirmationHeader/ConfirmedDeliveryDetails/DeliveryDate"/>
+				<xsl:value-of select="concat(substring($DelDate,1,4),substring($DelDate,6,2),substring($DelDate,9,2))"/>
 				<xsl:text>:102</xsl:text>
 			<xsl:text>'&#13;&#10;</xsl:text>
-		-->
+		
 		</xsl:for-each>
 		
 		<!--This segment is used to separate the detail and summary sections of the message-->
@@ -259,10 +259,10 @@ Date	|Name		| Information
 			
 			<xsl:choose>
 				<xsl:when test="$TotalLines = 1">
-					<xsl:text>19</xsl:text>
+					<xsl:text>20</xsl:text>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:value-of select="($TotalLines) * 8 + 11"/>
+					<xsl:value-of select="($TotalLines) * 9 + 11"/>
 				</xsl:otherwise>
 			</xsl:choose>
 
@@ -277,9 +277,10 @@ Date	|Name		| Information
 		<xsl:text>UNZ+</xsl:text>
 			
 			<!-- 0036, Interchange Control Count -->
+			
 			<xsl:text>1+</xsl:text>
 			
-			<!-- 0020, Interchange Control Reference -->
+			<!--	 0020, Interchange Control Reference -->
 			<xsl:value-of select="PurchaseOrderConfirmationHeader/FileGenerationNumber"/>
 			<xsl:text>'</xsl:text>
 			<xsl:text>&#13;&#10;</xsl:text>
