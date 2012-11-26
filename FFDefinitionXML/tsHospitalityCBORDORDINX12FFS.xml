@@ -1,3 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--******************************************************************
+Aramark CBORD Order FFS
+
+**********************************************************************
+Name		| Date			| Change
+**********************************************************************
+A Barber	| 26/11/2012		| 5856 Updated to accept price and added revision history.
+*******************************************************************-->
 <ffsFlatFileSchema>
 	<ffsSettings>
 		<ffsRecordPositionType>named</ffsRecordPositionType>
@@ -13,7 +22,7 @@
 				<BatchDocument>
 					<PurchaseOrder>
 						<TradeSimpleHeader>
-							<SendersCodeForRecipient RecordPos="BEG" LPos="4"/>
+							<SendersCodeForRecipient RecordPos="BEG" LPos="7"/>
 							<SendersBranchReference RecordPos="N1" LPos="5"/>
 						</TradeSimpleHeader>
 						<PurchaseOrderHeader>
@@ -49,6 +58,7 @@
 								<OrderedQuantity RecordPos="PO1" LPos="3">
 									<ffsAttribute1 name="UnitOfMeasure" RecordPos="PO1" LPos="4"/>
 								</OrderedQuantity>
+								<UnitValueExclVAT RecordPos="PO1" LPos="5"/>
 							</PurchaseOrderLine>
 						</PurchaseOrderDetail>
 					</PurchaseOrder>
