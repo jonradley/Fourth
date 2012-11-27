@@ -70,11 +70,11 @@ Date			|	Name					|	Description of modification
 		<!--Customer Order Number-->
 		<xsl:value-of select="PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
 		<xsl:text>,</xsl:text>
-		<!--Customer Order Date-->
-		<xsl:value-of select="concat(substring($FormatORDDate,9,2),substring($FormatORDDate,6,2),substring($FormatORDDate,3,2))"/>
+		<!--File Generation Date-->
+		<xsl:value-of select="$sFileGenerationDate"/>
 		<xsl:text>,</xsl:text>
-		<!--Date Order Transmitted by Customer-->	
-		<xsl:value-of select="concat(substring($FormatORDDate,9,2),substring($FormatORDDate,6,2),substring($FormatORDDate,3,2))"/>
+		<!--File Generation Date-->
+		<xsl:value-of select="$sFileGenerationDate"/>
 		<xsl:text>,</xsl:text>
 		<!--Time Order Transmitted by Customer-->
 		<xsl:value-of select="concat(substring($FormatTime,4,2),substring($FormatTime,1,2))"/>
@@ -150,7 +150,7 @@ Dim sNow
 
 	sNow = CStr(Date)
 
-	msFileGenerationDate = Right(sNow,2) & Mid(sNow,4,2) & Left(sNow,2)
+	msFileGenerationDate =  Left(sNow,2) & Mid(sNow,4,2) & Right(sNow,2)
 		
 End Function	]]></msxsl:script>
 
