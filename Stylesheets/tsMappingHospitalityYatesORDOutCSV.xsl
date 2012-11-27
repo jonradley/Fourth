@@ -81,9 +81,9 @@ Date			|	Name					|	Description of modification
 		<xsl:text>,</xsl:text>
 		<xsl:text>,</xsl:text>
 		<xsl:text>,</xsl:text>
-		<xsl:text>,</xsl:text>	
 		<!--Requested Delivery Date-->
 		<xsl:value-of select="concat(substring($FormatDLDate,9,2),substring($FormatDLDate,6,2),substring($FormatDLDate,3,2))"/>
+		<xsl:text>,</xsl:text>	
 		<xsl:text>,</xsl:text>	
 		<xsl:text>,</xsl:text>	
 		<xsl:text>,</xsl:text>	
