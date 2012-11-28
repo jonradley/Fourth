@@ -6,7 +6,8 @@ Name	| Date		 | Change
 **********************************************************************
 Maha	| 04/10/2011 | 4913: Map vatcode S8 to vatrate 20 and 17.5
 **********************************************************************
-M Emanuel		|	09/11/2012	| 5840 Made changes to remap buyer and supplier codes to accomodate Elior Vendor Codes				|             	|
+M Emanuel	| 28/11/2012  	| 5876 Changes to accomodate swapped codes 
+									for Elior's invoices but not affect other customers
 **********************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
@@ -58,13 +59,31 @@ M Emanuel		|	09/11/2012	| 5840 Made changes to remap buyer and supplier codes to
 				<xsl:value-of select="BuyersName"/>
 			</BuyersName>
 		</Buyer>
+		<xsl:if test="substring-after(BuyersLocationID/BuyersCode,'/') !=''">
+			<Supplier>
+				<SuppliersLocationID>
+					<BuyersCode>
+						<xsl:value-of select="../ShipTo/ShipToLocationID/SuppliersCode"/>
+					</BuyersCode>
+				</SuppliersLocationID>
+			</Supplier>
+		</xsl:if>
 	</xsl:template>
 	<xsl:template match="ShipTo">
 		<ShipTo>
 			<ShipToLocationID>
-				<SuppliersCode>
-					<xsl:value-of select="substring-after(ShipToLocationID/SuppliersCode,'/')"/>
-				</SuppliersCode>
+				<xsl:choose>
+					<xsl:when test="substring-after(../Buyer/BuyersLocationID/BuyersCode,'/') !=''">
+						<SuppliersCode>
+							<xsl:value-of select="substring-after(../Buyer/BuyersLocationID/BuyersCode,'/')"/>
+						</SuppliersCode>
+					</xsl:when>
+					<xsl:otherwise>
+						<SuppliersCode>
+							<xsl:value-of select="ShipToLocationID/SuppliersCode"/>
+						</SuppliersCode>
+					</xsl:otherwise>
+				</xsl:choose>
 			</ShipToLocationID>
 			<ShipToName>
 				<xsl:value-of select="ShipToName"/>
