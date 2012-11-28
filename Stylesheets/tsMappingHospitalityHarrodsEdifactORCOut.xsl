@@ -259,10 +259,10 @@ Date	|Name		| Information
 			
 			<xsl:choose>
 				<xsl:when test="$TotalLines = 1">
-					<xsl:text>20</xsl:text>
+					<xsl:text>21</xsl:text>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:value-of select="($TotalLines) * 9 + 11"/>
+					<xsl:value-of select="($TotalLines) * 9 + 12"/>
 				</xsl:otherwise>
 			</xsl:choose>
 
