@@ -8,7 +8,7 @@ Name			| Date			| Change
 **********************************************************************
 R Cambridge	| 29/09/2009	| 3142 read units codes into SCR and Supplier's code for ship to
 **********************************************************************
-M Emanuel	|	09/11/2012	| 5840 Made changes to remap buyer and supplier codes to accomodate Elior Vendor Codes         	|           	| 
+M Emanuel	| 28/11/2012  	| Rolled back changes made to 5840 and cleaning up commented code          	|           	| 
 **********************************************************************
 				|					|
 *******************************************************************-->
@@ -36,7 +36,7 @@ M Emanuel	|	09/11/2012	| 5840 Made changes to remap buyer and supplier codes to 
 				<BatchDocument>
 					<Invoice>
 						<TradeSimpleHeader>
-							<SendersCodeForRecipient RecordPos="HEAD" LPos="23"/>
+							<SendersCodeForRecipient RecordPos="HEAD" LPos="24"/>
 							<SendersBranchReference RecordPos="HEAD" LPos="23"/>
 						</TradeSimpleHeader>
 						<InvoiceHeader>
@@ -47,14 +47,9 @@ M Emanuel	|	09/11/2012	| 5840 Made changes to remap buyer and supplier codes to 
 								</BuyersLocationID>
 								<BuyersName RecordPos="HEAD" LPos="17"/>
 							</Buyer>
-							<Supplier>
-								<SuppliersLocationID>
-									<BuyersCode RecordPos="HEAD" LPos="24"/>
-								</SuppliersLocationID>
-							</Supplier>
 							<ShipTo>
 								<ShipToLocationID>
-									<SuppliersCode RecordPos="HEAD" LPos="23"/>
+									<SuppliersCode RecordPos="HEAD" LPos="24"/>
 								</ShipToLocationID>
 								<ShipToName RecordPos="HEAD" LPos="17"/>
 							</ShipTo>
