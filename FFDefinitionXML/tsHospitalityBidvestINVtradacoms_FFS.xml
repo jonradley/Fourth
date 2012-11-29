@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by ABS Ltd (ABS Ltd) -->
+<!--
+
+Bidvest Logistics invoice FFS
+
+06/11/2012	M Dimant		5834: Created. Based on 3663 FFS.
+
+-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>'</ffsRecordSeparator>
+		<ffsEscapeChars>
+			<ffsEscapeChar>
+				<ffsNative>chr(13)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>chr(10)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?=</ffsNative>
+				<ffsTradesimple>¬E</ffsTradesimple>
+				<ffsLiteral>=</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?+</ffsNative>
+				<ffsTradesimple>¬P</ffsTradesimple>
+				<ffsLiteral>+</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?:</ffsNative>
+				<ffsTradesimple>¬C</ffsTradesimple>
+				<ffsLiteral>:</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?'</ffsNative>
+				<ffsTradesimple>¬A</ffsTradesimple>
+				<ffsLiteral>'</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>??</ffsNative>
+				<ffsTradesimple>¬Q</ffsTradesimple>
+				<ffsLiteral>?</ffsLiteral>
+			</ffsEscapeChar>
+		</ffsEscapeChars>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>+</ffsFieldSeparator>
+			<ffsSubFieldSeparator>:</ffsSubFieldSeparator>
+		</ffsFieldSeparators>
+		<ffsPadding/>
+		<ffsBatchHeader>
+			<!--list of records that make up the header, this will be added to each document in the batch -->
+			<ffsHeaderRecord RecordPos="STX="/>
+			<ffsHeaderRecord RecordPos="TYP="/>
+			<ffsHeaderRecord RecordPos="SDT="/>
+			<ffsHeaderRecord RecordPos="CDT="/>
+			<ffsHeaderRecord RecordPos="FIL="/>
+		</ffsBatchHeader>
+		<ffsGroups>
+			<ffsGroup>
+				<!--References below which mean RecordPos ODD= with LPos 1 would be coded as ILD= and LPos 26 (25+1)-->
+				<ffsGroupRecord RecordPos="ODD=" FieldTotal="11"/>
+				<ffsSubGroupRecord RecordPos="ILD=" FieldTotal="25"/>
+			</ffsGroup>
+		</ffsGroups>
+		<ffsSplitBatchRecord RecordPos="CLO="/>
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<BatchHeader>
+				<MHDSegment>
+					<MHDHeader RecordPos="MHD=" LPos="2" SFPos="1"/>
+					<MHDVersion RecordPos="MHD=" LPos="2" SFPos="2"/>
+				</MHDSegment>
+				<VATSubTotals>
+					<VATSubTotal>
+						<DocumentTotalExclVATAtRate RecordPos="VRS=" LPos="4"/>		
+						<SettlementTotalExclVATAtRate RecordPos="VRS=" LPos="5"/>			
+						<VATAmountAtRate RecordPos="VRS=" LPos="6"/>		
+						<DocumentTotalInclVATAtRate RecordPos="VRS=" LPos="7"/>			
+						<SettlementTotalInclVATAtRate RecordPos="VRS=" LPos="8"/>
+						<ffsAttribute1 name="VATCode" RecordPos="VRS=" LPos="2"/>
+						<ffsAttribute1 name="VATRate" RecordPos="VRS=" LPos="3"/>
+					</VATSubTotal>
+				</VATSubTotals>	
+				<DocumentTotalExclVAT RecordPos="TOT=" LPos="1"/>	
+				<SettlementTotalExclVAT RecordPos="TOT=" LPos="2"/>
+				<VATAmount RecordPos="TOT=" LPos="3"/>				
+				<SettlementTotalInclVAT RecordPos="TOT=" LPos="5"/>
+			</BatchHeader>
+			<BatchDocuments>
+				<BatchDocument>
+					<Invoice>
+						<TradeSimpleHeader>					
+							<SendersCodeForRecipient RecordPos="CLO=" LPos="1" SFPos="2"/>			
+							<SendersBranchReference RecordPos="CDT=" LPos="1" SFPos="2"/>
+						</TradeSimpleHeader>
+						<InvoiceHeader>
+							<BatchInformation>								
+								<FileGenerationNo RecordPos="FIL=" LPos="1"/>								
+								<FileVersionNo RecordPos="FIL=" LPos="2"/>								
+								<FileCreationDate RecordPos="FIL=" LPos="3"/>						
+								<SendersTransmissionReference RecordPos="STX=" LPos="5"/>						
+								<SendersTransmissionDate RecordPos="STX=" LPos="4"/>
+							</BatchInformation>
+							<Buyer>
+								<BuyersLocationID>						
+									<SuppliersCode RecordPos="STX=" LPos="3" SFPos="1"/>
+								</BuyersLocationID>		
+								<BuyersName RecordPos="CDT=" LPos="2"/>
+								<BuyersAddress>				
+									<AddressLine1 RecordPos="CDT=" LPos="3" SFPos="1"/>
+									<AddressLine2 RecordPos="CDT=" LPos="3" SFPos="2"/>
+									<AddressLine3 RecordPos="CDT=" LPos="3" SFPos="3"/>
+									<AddressLine4 RecordPos="CDT=" LPos="3" SFPos="4"/>
+									<PostCode RecordPos="CDT=" LPos="3" SFPos="5"/>
+								</BuyersAddress>
+							</Buyer>
+							<Supplier>
+								<SuppliersLocationID>								
+									<SuppliersCode RecordPos="SDT=" LPos="1" SFPos="1"/>
+								</SuppliersLocationID>						
+								<SuppliersName RecordPos="SDT=" LPos="2"/>
+								<SuppliersAddress>						
+									<AddressLine1 RecordPos="SDT=" LPos="3" SFPos="1"/>
+									<AddressLine2 RecordPos="SDT=" LPos="3" SFPos="2"/>
+									<AddressLine3 RecordPos="SDT=" LPos="3" SFPos="3"/>
+									<AddressLine4 RecordPos="SDT=" LPos="3" SFPos="4"/>
+									<PostCode RecordPos="SDT=" LPos="3" SFPos="5"/>
+								</SuppliersAddress>
+							</Supplier>
+							<ShipTo>
+								<ShipToLocationID>	
+									<SuppliersCode RecordPos="CLO=" LPos="1" SFPos="3"/>
+								</ShipToLocationID>
+								<ShipToName RecordPos="CLO=" LPos="2"/>
+								<ShipToAddress>				
+									<AddressLine1 RecordPos="CLO=" LPos="3" SFPos="1"/>
+									<AddressLine2 RecordPos="CLO=" LPos="3" SFPos="2"/>
+									<AddressLine3 RecordPos="CLO=" LPos="3" SFPos="3"/>
+									<AddressLine4 RecordPos="CLO=" LPos="3" SFPos="4"/>
+									<PostCode RecordPos="CLO=" LPos="3" SFPos="5"/>
+								</ShipToAddress>
+							</ShipTo>
+							<InvoiceReferences>
+								<InvoiceReference RecordPos="IRF=" LPos="1"/>								
+								<InvoiceDate RecordPos="IRF=" LPos="2"/>						
+								<TaxPointDate RecordPos="IRF=" LPos="3"/>					
+								<VATRegNo RecordPos="SDT=" LPos="4"/>
+							</InvoiceReferences>
+						</InvoiceHeader>
+						<InvoiceDetail>
+							<InvoiceLine>
+								<LineNumber RecordPos="ILD=" LPos="2"/>
+								<PurchaseOrderReferences>								
+									<PurchaseOrderReference RecordPos="ILD=" LPos="27" SFPos="1"/>									
+									<PurchaseOrderDate RecordPos="ILD=" LPos="27" SFPos="3"/>
+								</PurchaseOrderReferences>
+								<DeliveryNoteReferences>								
+									<DeliveryNoteReference RecordPos="ILD=" LPos="28" SFPos="1"/>							
+									<DeliveryNoteDate RecordPos="ILD=" LPos="28" SFPos="2"/>							
+									<DespatchDate RecordPos="ILD=" LPos="28" SFPos="2"/>
+								</DeliveryNoteReferences>
+								<ProductID>								
+									<GTIN RecordPos="ILD=" LPos="13"/>									
+									<SuppliersProductCode RecordPos="ILD=" LPos="3" SFPos="2"/>									
+									<BuyersProductCode RecordPos="ILD=" LPos="1" SFPos="1"/>
+								</ProductID>							
+								<ProductDescription RecordPos="ILD=" LPos="14" SFPos="1"/>						
+								<InvoicedQuantity RecordPos="ILD=" LPos="7" SFPos="1"/>								
+								<PackSize RecordPos="ILD=" LPos="6" SFPos="3"/>							
+								<UnitValueExclVAT RecordPos="ILD=" LPos="8" SFPos="1"/>							
+								<LineValueExclVAT RecordPos="ILD=" LPos="9"/>							
+								<VATCode RecordPos="ILD=" LPos="10"/>				
+								<VATRate RecordPos="ILD=" LPos="11"/>
+								<Measure>									
+									<UnitsInPack RecordPos="ILD=" LPos="6" SFPos="1"/>							
+									<OrderingMeasure RecordPos="ILD=" LPos="6" SFPos="2"/>								
+									<MeasureIndicator RecordPos="ILD=" LPos="6" SFPos="3"/>								
+									<TotalMeasure RecordPos="ILD=" LPos="7" SFPos="2"/>								
+									<TotalMeasureIndicator RecordPos="ILD=" LPos="7" SFPos="3"/>
+								</Measure>
+								<LineExtraData>			
+									<ProductGroup RecordPos="ILD=" LPos="22"/>			
+									<StandardPriceUnitCode RecordPos="ILD=" LPos="15" SFPos="1"/>
+									<StandardDeliveryUnitCost RecordPos="ILD=" LPos="15" SFPos="2"/>		
+									<ProductDescription2 RecordPos="ILD=" LPos="14" SFPos="2"/>
+									<CustomersConceptProductCode RecordPos="ILD=" LPos="5" SFPos="2"/>
+								</LineExtraData>
+							</InvoiceLine>
+						</InvoiceDetail>
+						<InvoiceTrailer>
+							<VATSubTotals>
+								<VATSubTotal>																								
+									<DocumentTotalExclVATAtRate RecordPos="STL=" LPos="11"/>	
+									<SettlementTotalExclVATAtRate RecordPos="STL=" LPos="13"/>									
+									<VATAmountAtRate RecordPos="STL=" LPos="14"/>									
+									<DocumentTotalInclVATAtRate RecordPos="STL=" LPos="15"/>
+									<SettlementTotalInclVATAtRate RecordPos="STL=" LPos="16"/>								
+									<ffsAttribute1 name="VATCode" RecordPos="STL=" LPos="3"/>
+									<ffsAttribute1 name="VATRate" RecordPos="STL=" LPos="4"/>
+								</VATSubTotal>
+							</VATSubTotals>							
+							<DocumentTotalExclVAT RecordPos="TLR=" LPos="7"/>							
+							<SettlementDiscount RecordPos="TLR=" LPos="8"/>							
+							<SettlementTotalExclVAT RecordPos="TLR=" LPos="9"/>							
+							<VATAmount RecordPos="TLR=" LPos="10"/>							
+							<DocumentTotalInclVAT RecordPos="TLR=" LPos="11"/>							
+							<SettlementTotalInclVAT RecordPos="TLR=" LPos="12"/>
+						</InvoiceTrailer>
+					</Invoice>
+					<ffsAttribute1 name="DocumentTypeNo" RecordPos="TYP=" LPos="1"/>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>
