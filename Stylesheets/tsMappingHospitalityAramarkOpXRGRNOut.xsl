@@ -86,6 +86,7 @@ K Oshaughnessy| 11/11/2011	| 5008: Created.
 	<xsl:value-of select="GoodsReceivedNoteHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
 	<xsl:text>*</xsl:text>
 	<xsl:text>*</xsl:text>
+	<xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/>
 	<xsl:text>*</xsl:text>
 	<xsl:text>DI</xsl:text>
 	<xsl:text>&#13;&#10;</xsl:text>	
