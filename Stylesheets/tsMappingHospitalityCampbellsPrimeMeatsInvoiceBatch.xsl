@@ -5,10 +5,13 @@ Alterations
 Name	| Date		 | Change
 **********************************************************************
 Maha	| 04/10/2011 | 4913: Map vatcode S8 to vatrate 20 and 17.5
-**********************************************************************
-M Emanuel	| 28/11/2012  	| 5876 Changes to accomodate swapped codes 
-									for Elior's invoices but not affect other customers
-**********************************************************************
+*************************************************************************
+M Emanuel	|	09/11/2012	| 5840 Made changes to remap buyer and supplier 
+											codes to accomodate Elior Vendor Codes
+*************************************************************************
+M Emanuel	| 30/11/2012  	| 5876 Had to roll back changes made to 5840 as it caused invoices to all customers other than Elior to fail. 
+									 	Mapper updated to ensure that changes relevant to Elior does not affect any other customers. 
+*************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
