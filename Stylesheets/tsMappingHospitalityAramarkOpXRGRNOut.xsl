@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 *******************************************************************
-Purchase Order translation following tradacoms flat file mapping for Prezzo.
+Alternative GRN out for Aramark OpX.
 *******************************************************************
 Name         	| Date       	| Change
 *******************************************************************
-K Oshaughnessy| 11/11/2011	| 5008: Created. 
+K Oshaughnessy	| 11/11/2011	| 5008: Created.
+*******************************************************************
+A Barber			| 03/12/2012	| 5886: Renamed to identify destination recipient and system, also mappingsenders code for recipient.
 **********************************************************************************************************
 -->
 <xsl:stylesheet  version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
