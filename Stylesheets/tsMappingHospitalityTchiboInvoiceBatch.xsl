@@ -6,6 +6,8 @@ M Emanuel	| 03/10/2012 | FB Case No 5735: Made changes to include branch referen
 ************************************************************************************************************************
 M Emanuel	| 09/11/2012 | FB Case No 5839: Mapping in Order Reference as the Delivery note reference
 ************************************************************************************************************************
+M Emanuel	| 06/12/2012 | FB Case No 5905: Bugfix on mapping PO Reference
+************************************************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:blah="http://blah.blah.blah" 
 										 xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:vbscript="http://blah.blah.blah"
@@ -75,18 +77,18 @@ M Emanuel	| 09/11/2012 | FB Case No 5839: Mapping in Order Reference as the Deli
 									<xsl:for-each select="Invoice/InvoiceDetail/InvoiceLine">
 										<InvoiceLine>
 											<xsl:choose>
-												<xsl:when test="//PurchaseOrderReferences/PurchaseOrderReference!=''">
+												<xsl:when test="../InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderReference!=''">
 													<PurchaseOrderReferences>
 														<PurchaseOrderReference>
-															<xsl:value-of select="//PurchaseOrderReferences/PurchaseOrderReference"/>	
+															<xsl:value-of select="../InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderReference"/>	
 														</PurchaseOrderReference>																													</PurchaseOrderReferences>
 												</xsl:when>
 											</xsl:choose>
 											<xsl:choose>
-												<xsl:when test="//DeliveryNoteReferences/DeliveryNoteReference !=''">
+												<xsl:when test="../InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteReference !=''">
 													<DeliveryNoteReferences>
 														<DeliveryNoteReference>
-															<xsl:value-of select="//DeliveryNoteReferences/DeliveryNoteReference"/>
+															<xsl:value-of select="../InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteReference"/>
 														</DeliveryNoteReference>
 													</DeliveryNoteReferences>
 												</xsl:when>
