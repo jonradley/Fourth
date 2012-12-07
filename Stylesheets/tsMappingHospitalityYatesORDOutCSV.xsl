@@ -4,7 +4,7 @@ Date			|	Name					|	Description of modification
 ****************************************************************************
 02/10/2012	|	K OShaughnessy	| Created Module
 ***************************************************************************
-				|							|		
+07/12/2012	|	K Oshaughnessy	| FB 5906 changes requested by yates		
 ****************************************************************************				
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript" xmlns:vb="http://www.abs-ltd.com/dummynamespaces/vbscript" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
@@ -45,6 +45,8 @@ Date			|	Name					|	Description of modification
 		<!--Supplier Code For Delivery Location-->
 		<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
 		<xsl:text>,</xsl:text>
+		<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToName"/>
+		<xsl:text>,</xsl:text>
 		<!--Delivery Address-->
 		<xsl:if test="PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine1 != '' ">
 			<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine1"/>
@@ -61,7 +63,6 @@ Date			|	Name					|	Description of modification
 		<xsl:if test="PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine1 != '' ">
 			<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine4"/>
 		</xsl:if>
-		<xsl:text>,</xsl:text>
 		<xsl:text>,</xsl:text>
 		<xsl:if test="PurchaseOrderHeader/ShipTo/ShipToAddress/PostCode != '' ">
 			<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToAddress/PostCode"/>
