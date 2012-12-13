@@ -8,6 +8,9 @@ Name		| Date			| Change
 A Barber	| 10/10/2012		| 5761 Rail Gourmet Order Batch
 *********************************************************************
 A Barber	| 22/11/2012		| 5871 Addition of UOM mapping
+
+M Emanuel| 13/12/2012 | Case 5909 Removed BuyerLocation Map in 
+to allow the processor to write the H/O code
 *******************************************************************-->
 <ffsFlatFileSchema>
 	<ffsSettings>
@@ -41,11 +44,6 @@ A Barber	| 22/11/2012		| 5871 Addition of UOM mapping
 							<TestFlag RecordPos="H" LPos="3"/>
 						</TradeSimpleHeader>
 						<PurchaseOrderHeader>
-							<Buyer>
-								<BuyersLocationID>
-									<SuppliersCode RecordPos="H" LPos="10"/>
-								</BuyersLocationID>
-							</Buyer>
 							<PurchaseOrderReferences>
 								<PurchaseOrderReference RecordPos="H" LPos="4"/>
 							</PurchaseOrderReferences>
