@@ -140,6 +140,7 @@
 									<DeliveryNoteDate RecordPos="LINE" LPos="46"/>
 								</DeliveryNoteReferences>
 								<ProductID>
+									<GTIN RecordPos="LINE" LPos="3"/>
 									<SuppliersProductCode RecordPos="LINE" LPos="2"/>
 								</ProductID>
 								<ProductDescription RecordPos="LINE" LPos="25"/>
