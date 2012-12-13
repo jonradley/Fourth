@@ -165,7 +165,13 @@
 	</xsl:template>
 	<xsl:template match="ProductID">
 		<ProductID>
-			<GTIN>55555555555555</GTIN>
+			<GTIN>
+			<xsl:call-template name="stripQuotes">
+				<xsl:with-param name="sInput">
+					<xsl:value-of select="GTIN"/>
+				</xsl:with-param>
+			</xsl:call-template>
+			</GTIN>
 			<SuppliersProductCode>
 				<xsl:call-template name="stripQuotes">
 					<xsl:with-param name="sInput">
