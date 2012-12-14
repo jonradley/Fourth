@@ -8,6 +8,8 @@ Name         	| Date       		| Change
 A Barber	| 08/10/2012		| 5761 Created
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 A Barber	| 22/11/2012		| 5871 Addition of UOM mapping
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+M Emanuel	| 14/12/2012		| 5909 Changed how test flag is mapped in from FF
 **************************************************************************************************-->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 	<xsl:output method="xml"/>
@@ -53,11 +55,26 @@ A Barber	| 22/11/2012		| 5871 Addition of UOM mapping
 		<xsl:param name="FormatDate"/>
 		<xsl:value-of select="concat('20',substring($FormatDate, 3, 2), '-', substring($FormatDate, 5, 2), '-', substring($FormatDate, 7, 2))"/>
 	</xsl:template>
-	
+
 	<xsl:template match="TestFlag">
-		<xsl:element name="TestFlag">
-			<xsl:text>1</xsl:text>
-		</xsl:element>
+		<xsl:call-template name="TestFlag">
+			<xsl:with-param name="Translate" select="."/>
+		</xsl:call-template>
+	</xsl:template>
+
+	<xsl:template name="TestFlag">
+		<xsl:param name="Translate"/>
+		<xsl:copy>
+			<xsl:choose>
+				<xsl:when test="$Translate='N' ">
+					<xsl:text>0</xsl:text>
+				</xsl:when>
+				<xsl:when test="$Translate='Y' ">
+					<xsl:text>1</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>error</xsl:otherwise>
+			</xsl:choose>
+		</xsl:copy>	
 	</xsl:template>
 	
 	<xsl:template match="@UnitOfMeasure">
