@@ -17,6 +17,8 @@
  24/04/2012	| M Emanuel				| Copying Novus Leisure Inv mapper to create Glendola Leisure Inv mapper
  =======================================================================================
  06/06/2012	| A Babrer				| FB5506 Introduced additional fields and nominal descripiton lookup
+ =======================================================================================
+ 17/12/2012	| A Babrer				| FB5910 Fixed descripiton for credit note VAT line.
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="text" encoding="UTF-8"/>
@@ -288,6 +290,8 @@
 		<xsl:value-of select="$varCreditNoteDate"/>
 		<xsl:text>,</xsl:text>
 		<xsl:value-of select="$valCreditNoteReference"/>
+		<xsl:text>,</xsl:text>
+		<xsl:text>VAT Output (CR)</xsl:text>
 		<xsl:text>,</xsl:text>
 		<xsl:value-of select="$valBuyersCode"/>
 		<xsl:text>,</xsl:text>
