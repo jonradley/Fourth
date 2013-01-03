@@ -14,6 +14,8 @@
 ' 06/12/2012  | KO  | Created
 '******************************************************************************************
 ' 23/02/2012 | H Robson              | 5271 All UoMs to be mapped as EA regardless of what is in the order
+******************************************************************************************
+'03/01/2013	| K Oshaughnessy	| 5926 Additional fields in header row 
 '******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
@@ -53,6 +55,19 @@
 	<!--Purchase order reference-->
 	<xsl:text>OR_</xsl:text>
 	<xsl:value-of select="PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
+	<xsl:text>|</xsl:text>
+	
+	<!--Contact details-->
+	<xsl:if test="PurchaseOrderHeader/ShipTo/ContactName != '' ">
+		<xsl:value-of select="substring(PurchaseOrderHeader/ShipTo/ContactName,1,40)"/>
+	</xsl:if>
+	<xsl:text>|</xsl:text>
+	
+	<!--Special Delivery instructions-->
+	<xsl:if test="PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions != '' ">
+		<xsl:value-of select="substring(PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions,1,450)"/>
+	</xsl:if>
+	
 	<xsl:text>&#13;&#10;</xsl:text>
 	
 	<xsl:for-each select="PurchaseOrderDetail/PurchaseOrderLine">
