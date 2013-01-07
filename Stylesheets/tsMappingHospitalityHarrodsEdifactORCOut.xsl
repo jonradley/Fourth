@@ -166,7 +166,14 @@ Date	|Name		| Information
 			<xsl:text>PIA+</xsl:text>
 				<xsl:text>1+</xsl:text>
 				<!--Buyers product code-->
-				<xsl:value-of select="ProductID/GTIN"/>
+				<xsl:choose>
+					<xsl:when test="ProductID/BuyersProductCode !=''">
+						<xsl:value-of select="ProductID/BuyersProductCode"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="ProductID/GTIN"/>
+					</xsl:otherwise>
+				</xsl:choose>
 				<xsl:text>:BP</xsl:text>
 			<xsl:text>'&#13;&#10;</xsl:text>
 			
@@ -203,7 +210,7 @@ Date	|Name		| Information
 			<!--This segment is used to detail the price for the current product identified in the LIN segment-->
 			<xsl:text>PRI+</xsl:text>
 				<xsl:text>AAA:</xsl:text>
-				<xsl:value-of select="LineValueExclVAT"/>
+				<xsl:value-of select="UnitValueExclVAT"/>
 			<xsl:text>'&#13;&#10;</xsl:text>
 			
 			<!--This segment is used to refer to the Purchase Order Item or Purchase Order Change Request to which the Purchase Order Response is responding-->
