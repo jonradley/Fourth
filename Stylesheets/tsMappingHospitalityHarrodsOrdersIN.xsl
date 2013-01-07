@@ -62,20 +62,22 @@ Date		|	Name				|	Comment
 						<xsl:value-of select="LineNumber"/>
 					</LineNumber>
 					
+					<xsl:variable name="lineNumber" select="count(preceding-sibling::*) + 1"/>
+					
 					<ProductID>
 						<xsl:apply-templates select="ProductID/GTIN"/>
 						<SuppliersProductCode>
 							<xsl:choose>
-								<xsl:when test="//PurchaseOrderDetail/PurchaseOrderLine[substring-after(ProductID/BuyersProductCode,':') = 'BP']/ProductID/SuppliersProductCode ">
-									<xsl:value-of select="substring-before(//PurchaseOrderDetail/PurchaseOrderLine[substring-after(ProductID/BuyersProductCode,':') = 'BP']/ProductID/SuppliersProductCode,':')"/>
+								<xsl:when test="../../PurchaseOrderDetail/PurchaseOrderLine[substring-after(ProductID/BuyersProductCode,':') = 'SA'][$lineNumber]/ProductID/SuppliersProductCode ">
+									<xsl:value-of select="substring-before(../../PurchaseOrderDetail/PurchaseOrderLine[substring-after(ProductID/BuyersProductCode,':') = 'SA'][$lineNumber]/ProductID/SuppliersProductCode,':')"/>
 								</xsl:when>
 								<xsl:otherwise>error</xsl:otherwise>
 							</xsl:choose>
 						</SuppliersProductCode>
 						<BuyersProductCode>
 							<xsl:choose>
-								<xsl:when test="//PurchaseOrderDetail/PurchaseOrderLine[substring-after(ProductID/BuyersProductCode,':') = 'SA']/ProductID/SuppliersProductCode">
-									<xsl:value-of select="substring-before(//PurchaseOrderDetail/PurchaseOrderLine[substring-after(ProductID/BuyersProductCode,':') = 'SA']/ProductID/SuppliersProductCode,':')"/>
+								<xsl:when test="../../PurchaseOrderDetail/PurchaseOrderLine[substring-after(ProductID/BuyersProductCode,':') = 'BP'][$lineNumber]/ProductID/SuppliersProductCode">
+									<xsl:value-of select="substring-before(../../PurchaseOrderDetail/PurchaseOrderLine[substring-after(ProductID/BuyersProductCode,':') = 'BP'][$lineNumber]/ProductID/SuppliersProductCode,':')"/>
 								</xsl:when>
 								<xsl:otherwise>error</xsl:otherwise>
 							</xsl:choose>
