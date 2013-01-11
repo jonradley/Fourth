@@ -84,7 +84,16 @@ Koshaughnessy 	|  30/05/2012 | Created Module
 
 	<!--Add line number-->
 	<xsl:template match="//LineNumber">
-		<LineNumber><xsl:value-of select="vbscript:getLineNumber()"/></LineNumber>
+		<LineNumber>
+			<xsl:choose>
+				<xsl:when test="//LineNumber!=''">
+					<xsl:value-of select="../LineNumber"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="vbscript:getLineNumber()"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</LineNumber>
 	</xsl:template>
 	
 	<!--Append extra values to Product description field-->
