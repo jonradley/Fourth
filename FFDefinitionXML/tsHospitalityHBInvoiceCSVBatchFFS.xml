@@ -93,7 +93,7 @@ Date		|	Name				|	Comments
 						<InvoiceDetail>
 							<InvoiceLine>
 								<!--Set dummy value (Line-7) to LineNo and correct it in stylesheet.-->
-								<LineNumber RecordPos="LINE" LPos="7"/>
+								<LineNumber RecordPos="LINE" LPos="24"/>
 								<PurchaseOrderReferences>
 									<PurchaseOrderReference RecordPos="LINE" LPos="63"/>
 									<PurchaseOrderDate RecordPos="LINE" LPos="64"/>
@@ -110,6 +110,7 @@ Date		|	Name				|	Comments
 								<ProductID>
 									<GTIN RecordPos="LINE" LPos="18"/>
 									<SuppliersProductCode RecordPos="LINE" LPos="2"/>
+									<BuyersProductCode RecordPos="LINE" LPos="19"/>
 								</ProductID>
 								<ProductDescription RecordPos="LINE" LPos="25"/>
 								<InvoicedQuantity RecordPos="LINE" LPos="8">
