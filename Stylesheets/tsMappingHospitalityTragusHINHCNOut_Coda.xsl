@@ -1,279 +1,416 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--======================================================================================
+ Overview
+ 
+ Tragus map for invoices and credits to Code in consolidated format.
+
+ © Fourth Hospitality, 2012.
+==========================================================================================
+ Module History
+==========================================================================================
+ Version	| 
+==========================================================================================
+ Date      	| Name 					| Description of modification
+==========================================================================================
+ 09/01/2012	| A Barber				| FB5159	Created module 
+=======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl script">
 	<xsl:output method="text"/>
-	<xsl:template match="/BatchRoot">
-		<!-- Invoices -->
-		<xsl:for-each select="Invoice">
-			<!-- INVOICE DETAIL -->
-			<xsl:for-each select="InvoiceDetail/InvoiceLine">
-				<!-- Company Code -->
-				<xsl:value-of select="script:msPad('TRAGUS1', 12)"/>
-				<!-- Transaction Type -->
-				<xsl:value-of select="script:msPad('PINEDI', 12)"/>
-				<!-- Transaction Number - {blank}-->
-				<xsl:value-of select="script:msPad('', 12)"/>
-				<!-- Transaction Date -->
-				<xsl:value-of select="concat(substring(../../InvoiceHeader/InvoiceReferences/InvoiceDate,9,2), substring(../../InvoiceHeader/InvoiceReferences/InvoiceDate,6,2), substring(../../InvoiceHeader/InvoiceReferences/InvoiceDate,1,4))"/>
-				<!-- Reference 1 - Invoice Reference -->
-				<xsl:value-of select="script:msPad(../../InvoiceHeader/InvoiceReferences/InvoiceReference, 32)"/>
-				<!-- Reference 2 - {blank} -->
-				<xsl:value-of select="script:msPad('', 32)"/>
-				<!-- Reference 3 - Original Invoice Number (CRN only) -->
-				<xsl:value-of select="script:msPad('', 32)"/>
-				<!-- Reference 4 - Delivery Date -->
-				<xsl:value-of select="script:msPad(concat(substring(DeliveryNoteReferences/DeliveryNoteDate[1],9,2),substring(DeliveryNoteReferences/DeliveryNoteDate[1],6,2),substring(DeliveryNoteReferences/DeliveryNoteDate[1],1,4)), 32)"/>
-				<!-- Reference 5 - File Sequence Number -->
-				<xsl:value-of select="script:msPad(../../InvoiceHeader/BatchInformation/FileGenerationNo, 32)"/>
-				<!-- Reference 6 - File Transmission Date -->
-				<xsl:value-of select="script:msPad(concat(substring(../../InvoiceHeader/BatchInformation/SendersTransmissionDate,9,2),substring(../../InvoiceHeader/BatchInformation/SendersTransmissionDate,6,2),substring(../../InvoiceHeader/BatchInformation/SendersTransmissionDate,1,4)), 32)"/>
-				<!-- Line Type -->
-				<xsl:text>158</xsl:text>
-				<!-- Account Code String -->
-				<xsl:value-of select="script:msPad(concat('+.',../../TradeSimpleHeader/RecipientsBranchReference,'.',LineExtraData/AccountCode), 79)"/>
-				<!-- Value -->
-				<xsl:value-of select="script:msPadNumber(LineValueExclVAT, 15, 2)"/>
-				<!-- Vat Code -->
-				<xsl:choose>
-					<xsl:when test="VATCode = 'S'">
-						<xsl:text>VISTD</xsl:text>
-					</xsl:when>
-					<xsl:when test="VATCode = 'Z'">
-						<xsl:text>VIZER</xsl:text>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:text>VIEXP</xsl:text>
-					</xsl:otherwise>
-				</xsl:choose>
-				<!-- Line description -->
-				<xsl:value-of select="script:msPad(concat('EDI/',../../InvoiceHeader/Supplier/SuppliersName), 36)"/>
-				<!-- VAT Value - {blank} -->
-				<xsl:value-of select="script:msPad('', 15)"/>
-				<!-- LF/CR -->
-				<xsl:text>&#13;&#10;</xsl:text>
-			</xsl:for-each>
-			<!-- VAT SUMMARIES -->
-			<xsl:for-each select="InvoiceTrailer/VATSubTotals">
-				<xsl:variable name="VATCode">
-					<xsl:choose>
-						<xsl:when test="VATSubTotal/@VATCode = 'S'">
-							<xsl:text>VISTD</xsl:text>
-						</xsl:when>
-						<xsl:when test="VATSubTotal/@VATCode = 'Z'">
-							<xsl:text>VIZER</xsl:text>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:text>VIEXP</xsl:text>
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:variable>
-				<!-- Company Code -->
-				<xsl:value-of select="script:msPad('TRAGUS1', 12)"/>
-				<!-- Transaction Type -->
-				<xsl:value-of select="script:msPad('PINEDI', 12)"/>
-				<!-- Transaction Number - {blank}-->
-				<xsl:value-of select="script:msPad('', 12)"/>
-				<!-- Transaction Date -->
-				<xsl:value-of select="concat(substring(../../InvoiceHeader/InvoiceReferences/InvoiceDate,9,2), substring(../../InvoiceHeader/InvoiceReferences/InvoiceDate,6,2), substring(../../InvoiceHeader/InvoiceReferences/InvoiceDate,1,4))"/>
-				<!-- Reference 1 - Invoice Reference -->
-				<xsl:value-of select="script:msPad(../../InvoiceHeader/InvoiceReferences/InvoiceReference, 32)"/>
-				<!-- Reference 2 - {blank} -->
-				<xsl:value-of select="script:msPad('', 32)"/>
-				<!-- Reference 3 - Original Invoice Number (CRN only) -->
-				<xsl:value-of select="script:msPad('', 32)"/>
-				<!-- Reference 4 - Delivery Date -->
-				<xsl:value-of select="script:msPad(concat(substring(../../InvoiceDetail/InvoiceLine/DeliveryNoteReferences/DeliveryNoteDate[1],9,2),substring(../../InvoiceDetail/InvoiceLine/DeliveryNoteReferences/DeliveryNoteDate[1],6,2),substring(../../InvoiceDetail/InvoiceLine/DeliveryNoteReferences/DeliveryNoteDate[1],1,4)), 32)"/>
-				<!-- Reference 5 - File Sequence Number -->
-				<xsl:value-of select="script:msPad(../../InvoiceHeader/BatchInformation/FileGenerationNo, 32)"/>
-				<!-- Reference 6 - File Transmission Date -->
-				<xsl:value-of select="script:msPad(concat(substring(../../InvoiceHeader/BatchInformation/SendersTransmissionDate,9,2),substring(../../InvoiceHeader/BatchInformation/SendersTransmissionDate,6,2),substring(../../InvoiceHeader/BatchInformation/SendersTransmissionDate,1,4)), 32)"/>
-				<!-- Line Type -->
-				<xsl:text>159</xsl:text>
-				<!-- Account Code String -->
-				<!--xsl:value-of select="script:msPad(concat('+.000RR53.',../../InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode,'.',$VATCode), 79)"/-->
-				<xsl:value-of select="script:msPad(concat('+.000RR53.124200.',$VATCode), 79)"/>
-				<!-- Value -->
-				<xsl:value-of select="script:msPadNumber(VATSubTotal/VATAmountAtRate, 15, 2)"/>
-				<!-- Vat Code -->
-				<xsl:value-of select="$VATCode"/>
-				<!-- Line description -->
-				<xsl:value-of select="script:msPad(concat('EDI/',../../InvoiceHeader/Supplier/SuppliersName), 36)"/>
-				<!-- VAT Value - {blank} -->
-				<xsl:value-of select="script:msPad('', 15)"/>
-				<!-- LF/CR -->
-				<xsl:text>&#13;&#10;</xsl:text>
-			</xsl:for-each>
-			<!-- HEADER RECORD -->
-			<!-- Company Code -->
+	
+	<!--Define key to be used for finding distinct line information. -->
+	<xsl:key name="keyInvoiceLinesByAccount" match="InvoiceLine | CreditNoteLine" use="concat(translate(LineExtraData/AccountCode,'&quot;',''),'+',VATCode)"/>
+
+	<!-- INVOICE -->
+
+	<xsl:template match="/Invoice">
+			
+		<!-- Store the Company Code -->
+		<xsl:variable name="varCompanyCode">
 			<xsl:value-of select="script:msPad('TRAGUS1', 12)"/>
-			<!-- Transaction Type -->
+		</xsl:variable>
+		
+		<!-- Store the Transaction Type -->
+		<xsl:variable name="varTransactionType">
 			<xsl:value-of select="script:msPad('PINEDI', 12)"/>
-			<!-- Transaction Number - {blank}-->
+		</xsl:variable>
+
+		<!-- Store the Transaction Number - {blank}-->
+		<xsl:variable name="varTransactionNumber">
 			<xsl:value-of select="script:msPad('', 12)"/>
-			<!-- Transaction Date -->
-			<xsl:value-of select="concat(substring(InvoiceHeader/InvoiceReferences/InvoiceDate,9,2), substring(InvoiceHeader/InvoiceReferences/InvoiceDate,6,2), substring(InvoiceHeader/InvoiceReferences/InvoiceDate,1,4))"/>
-			<!-- Reference 1 - Invoice Reference -->
-			<xsl:value-of select="script:msPad(InvoiceHeader/InvoiceReferences/InvoiceReference, 32)"/>
-			<!-- Reference 2 - {blank} -->
+		</xsl:variable>
+		
+		<!-- Store the Transaction Date-->
+		<xsl:variable name="varTransactionDate">
+			<xsl:call-template name="formatDate">
+				<xsl:with-param name="ddmmyyyyFormat" select="InvoiceHeader/InvoiceReferences/InvoiceDate"/>
+			</xsl:call-template>
+		</xsl:variable>
+		
+		<!-- Store the Reference 1 - Invoice Reference -->
+		
+		<xsl:variable name="varTransactionReference1">
+			<xsl:value-of select="script:msPad(concat(InvoiceHeader/InvoiceReferences/InvoiceReference,substring(InvoiceHeader/InvoiceReferences/InvoiceDate,3,2)), 32)"/>
+		</xsl:variable>
+
+		<!-- Store the Reference 2 - {blank} -->
+		<xsl:variable name="varTransactionReference2">
 			<xsl:value-of select="script:msPad('', 32)"/>
-			<!-- Reference 3 - Original Invoice Number (CRN only) -->
+		</xsl:variable>
+		
+		<!-- Store the Reference 3 - Original Invoice Number (CRN only) -->
+		<xsl:variable name="varTransactionReference3">
 			<xsl:value-of select="script:msPad('', 32)"/>
-			<!-- Reference 4 - Delivery Date -->
-			<xsl:value-of select="script:msPad(concat(substring(InvoiceDetail/InvoiceLine/DeliveryNoteReferences/DeliveryNoteDate[1],9,2),substring(InvoiceDetail/InvoiceLine/DeliveryNoteReferences/DeliveryNoteDate[1],6,2),substring(InvoiceDetail/InvoiceLine/DeliveryNoteReferences/DeliveryNoteDate[1],1,4)), 32)"/>
-			<!-- Reference 5 - File Sequence Number -->
+		</xsl:variable>
+		
+		<!-- Store the Reference 4 - Delivery Date-->
+		<xsl:variable name="varTransactionReference4">
+			<xsl:call-template name="formatDate">
+				<xsl:with-param name="ddmmyyyyFormat" select="InvoiceDetail/InvoiceLine/DeliveryNoteReferences/DeliveryNoteDate[1]"/>
+			</xsl:call-template>
+		</xsl:variable>
+		
+		<!-- Store the Reference 5 - File Sequence Number -->
+		<xsl:variable name="varTransactionReference5">
 			<xsl:value-of select="script:msPad(InvoiceHeader/BatchInformation/FileGenerationNo, 32)"/>
-			<!-- Reference 6 - File Transmission Date -->
-			<xsl:value-of select="script:msPad(concat(substring(InvoiceHeader/BatchInformation/SendersTransmissionDate,9,2),substring(InvoiceHeader/BatchInformation/SendersTransmissionDate,6,2),substring(InvoiceHeader/BatchInformation/SendersTransmissionDate,1,4)), 32)"/>
-			<!-- Line Type -->
-			<xsl:text>157</xsl:text>
-			<!-- Account Code String -->
-			<xsl:value-of select="script:msPad(concat('+.000RR53.',InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode,'.S',InvoiceHeader/InvoiceReferences/VATRegNo,'000'), 79)"/>
-			<!-- Value -->
-			<xsl:value-of select="script:msPadNumber(InvoiceTrailer/DocumentTotalInclVAT, 15, 2)"/>
-			<!-- Vat Code -->
-			<xsl:value-of select="script:msPad('', 5)"/>
-			<!-- Line description -->
+		</xsl:variable>
+		
+		<!-- Store the Reference 6 - File Transmission Date -->
+		<xsl:variable name="varTransactionReference6">
+			<xsl:call-template name="formatDate">
+				<xsl:with-param name="ddmmyyyyFormat" select="InvoiceHeader/BatchInformation/SendersTransmissionDate"/>
+			</xsl:call-template>
+		</xsl:variable>
+		
+		<!-- Store the Line description -->
+		<xsl:variable name="varLineDescription">
 			<xsl:value-of select="script:msPad(concat('EDI/',InvoiceHeader/Supplier/SuppliersName), 36)"/>
-			<!-- VAT Value - {blank} -->
+		</xsl:variable>
+		
+		<!-- Store the VAT Value - {blank} -->
+		<xsl:variable name="varVATValue">
 			<xsl:value-of select="script:msPad('', 15)"/>
-			<!-- LF/CR -->
+		</xsl:variable>
+		
+		<!-- Store Recipient's Branch Reference -->
+		<xsl:variable name="varRecipientsBranchReference">
+			<xsl:value-of select="TradeSimpleHeader/RecipientsBranchReference"/>
+		</xsl:variable>
+		
+		<!-- Store Ledger Code -->
+		<xsl:variable name="varLedgerCode">
+			<xsl:value-of select="InvoiceHeader/HeaderExtraData/STXSupplierCode"/>
+		</xsl:variable>
+		
+		<!-- LF/CR -->
+		<xsl:variable name="varNewLine">
 			<xsl:text>&#13;&#10;</xsl:text>
+		</xsl:variable>
+
+		<!-- INVOICE DETAIL -->			
+		<xsl:for-each select="(InvoiceDetail/InvoiceLine)[generate-id() = generate-id(key('keyInvoiceLinesByAccount',concat(translate(LineExtraData/AccountCode,'&quot;',''),'+',VATCode))[1])]">
+			
+			<xsl:sort select="concat(translate(LineExtraData/AccountCode,'&quot;',''),'+',VATCode)" data-type="text"/>
+			
+			<xsl:variable name="AccountCode" select="concat(translate(LineExtraData/AccountCode,'&quot;',''),'+',VATCode)"/>
+			
+			<xsl:value-of select="$varCompanyCode"/>
+			<xsl:value-of select="$varTransactionType"/>
+			<xsl:value-of select="$varTransactionNumber"/>
+			<xsl:value-of select="$varTransactionDate"/>
+			<xsl:value-of select="$varTransactionReference1"/>
+			<xsl:value-of select="$varTransactionReference2"/>
+			<xsl:value-of select="$varTransactionReference3"/>
+			<xsl:value-of select="script:msPad($varTransactionReference4, 32)"/>
+			<xsl:value-of select="$varTransactionReference5"/>
+			<xsl:value-of select="script:msPad($varTransactionReference6, 32)"/>
+			
+			<!-- Account Code String -->
+			<xsl:value-of select="script:msPad(concat('158','+.',$varRecipientsBranchReference,'.',substring-before($AccountCode,'+')), 82)"/>
+			<!-- Value -->
+			<xsl:value-of select="script:msPadNumber(format-number(sum(../InvoiceLine[concat(translate(LineExtraData/AccountCode,'&quot;',''),'+',VATCode) = $AccountCode]/LineValueExclVAT)-sum(../InvoiceLine[concat(translate(LineExtraData/AccountCode,'&quot;',''),'+',VATCode) = $AccountCode]/LineDiscountValue),'0.00'),15,2)"/>
+			<!-- Vat Code -->
+			<xsl:choose>
+				<xsl:when test="VATCode='S'">
+					<xsl:text>VISTD</xsl:text>
+				</xsl:when>
+				<xsl:when test="VATCode='Z'">
+					<xsl:text>VIZER</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:text></xsl:text>
+				</xsl:otherwise>
+			</xsl:choose>
+			
+			<xsl:value-of select="$varLineDescription"/>
+			<xsl:value-of select="$varVATValue"/>
+			<xsl:value-of select="$varNewLine"/>
+			
 		</xsl:for-each>
-		<!-- Credit Notes -->
-		<xsl:for-each select="CreditNote">
-			<!-- INVOICE DETAIL -->
-			<xsl:for-each select="CreditNoteDetail/CreditNoteLine">
-				<!-- Company Code -->
-				<xsl:value-of select="script:msPad('TRAGUS1', 12)"/>
-				<!-- Transaction Type -->
-				<xsl:value-of select="script:msPad('PCREDI', 12)"/>
-				<!-- Transaction Number - {blank}-->
-				<xsl:value-of select="script:msPad('', 12)"/>
-				<!-- Transaction Date -->
-				<xsl:value-of select="concat(substring(/CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteDate,9,2), substring(/CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteDate,6,2), substring(/CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteDate,1,4))"/>
-				<!-- Reference 1 - Invoice Reference -->
-				<xsl:value-of select="script:msPad(/CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteReference, 32)"/>
-				<!-- Reference 2 - {blank} -->
-				<xsl:value-of select="script:msPad('', 32)"/>
-				<!-- Reference 3 - Original Invoice Number (CRN only) -->
-				<xsl:value-of select="script:msPad(//CreditNoteHeader/InvoiceReferences/InvoiceReference, 32)"/>
-				<!-- Reference 4 - Delivery Date -->
-				<xsl:value-of select="script:msPad(concat(substring(/CreditNote/CreditNoteDetail/CreditNoteLine/DeliveryNoteReferences/DeliveryNoteDate[1],9,2),substring(/CreditNote/CreditNoteDetail/CreditNoteLine/DeliveryNoteReferences/DeliveryNoteDate[1],6,2),substring(/CreditNote/CreditNoteDetail/CreditNoteLine/DeliveryNoteReferences/DeliveryNoteDate[1],1,4)), 32)"/>
-				<!-- Reference 5 - File Sequence Number -->
-				<xsl:value-of select="script:msPad(//CreditNoteHeader/SequenceNumber, 32)"/>
-				<!-- Reference 6 - File Transmission Date -->
-				<xsl:value-of select="script:msPad(concat(substring(/CreditNote/CreditNoteHeader/BatchInformation/SendersTransmissionDate,9,2),substring(/CreditNote/CreditNoteHeader/BatchInformation/SendersTransmissionDate,6,2),substring(/CreditNote/CreditNoteHeader/BatchInformation/SendersTransmissionDate,1,4)), 32)"/>
-				<!-- Line Type -->
-				<xsl:text>158</xsl:text>
-				<!-- Account Code String -->
-				<xsl:value-of select="script:msPad(concat('+.',//TradeSimpleHeader/RecipientsBranchReference,'.',LineExtraData/AccountCode), 79)"/>
-				<!-- Value -->
-				<xsl:value-of select="script:msPadNumber(-1 * LineValueExclVAT, 15, 2)"/>
-				<!-- Vat Code -->
+		
+		<!-- VAT SUMMARIES -->
+		<xsl:for-each select="InvoiceTrailer/VATSubTotals/VATSubTotal">
+		
+			<!-- VAT Code -->
+			<xsl:variable name="VATCode">
 				<xsl:choose>
-					<xsl:when test="VATCode = 'S'">
+					<xsl:when test="@VATCode='S'">
 						<xsl:text>VISTD</xsl:text>
 					</xsl:when>
-					<xsl:when test="VATCode = 'Z'">
+					<xsl:when test="@VATCode='Z'">
 						<xsl:text>VIZER</xsl:text>
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:text>VIEXP</xsl:text>
 					</xsl:otherwise>
 				</xsl:choose>
-				<!-- Line description -->
-				<xsl:value-of select="script:msPad(concat('EDI/',/CreditNote/CreditNoteHeader/Supplier/SuppliersName), 36)"/>
-				<!-- VAT Value - {blank} -->
-				<xsl:value-of select="script:msPad('', 15)"/>
-				<!-- LF/CR -->
-				<xsl:text>&#13;&#10;</xsl:text>
-			</xsl:for-each>
-			<!-- VAT SUMMARIES -->
-			<xsl:for-each select="CreditNoteTrailer/VATSubTotals">
-				<xsl:variable name="VATCode">
-					<xsl:choose>
-						<xsl:when test="VATSubTotal/@VATCode = 'S'">
-							<xsl:text>VISTD</xsl:text>
-						</xsl:when>
-						<xsl:when test="VATSubTotal/@VATCode = 'Z'">
-							<xsl:text>VIZER</xsl:text>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:text>VIEXP</xsl:text>
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:variable>
-				<!-- Company Code -->
-				<xsl:value-of select="script:msPad('TRAGUS1', 12)"/>
-				<!-- Transaction Type -->
-				<xsl:value-of select="script:msPad('PCREDI', 12)"/>
-				<!-- Transaction Number - {blank}-->
-				<xsl:value-of select="script:msPad('', 12)"/>
-				<!-- Transaction Date -->
-				<xsl:value-of select="concat(substring(/CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteDate,9,2), substring(/CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteDate,6,2), substring(/CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteDate,1,4))"/>
-				<!-- Reference 1 - Invoice Reference -->
-				<xsl:value-of select="script:msPad(/CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteReference, 32)"/>
-				<!-- Reference 2 - {blank} -->
-				<xsl:value-of select="script:msPad('', 32)"/>
-				<!-- Reference 3 - Original Invoice Number (CRN only) -->
-				<xsl:value-of select="script:msPad(//CreditNoteHeader/InvoiceReferences/InvoiceReference, 32)"/>
-				<!-- Reference 4 - Delivery Date -->
-				<xsl:value-of select="script:msPad(concat(substring(/CreditNote/CreditNoteDetail/CreditNoteLine/DeliveryNoteReferences/DeliveryNoteDate[1],9,2),substring(/CreditNote/CreditNoteDetail/CreditNoteLine/DeliveryNoteReferences/DeliveryNoteDate[1],6,2),substring(/CreditNote/CreditNoteDetail/CreditNoteLine/DeliveryNoteReferences/DeliveryNoteDate[1],1,4)), 32)"/>
-				<!-- Reference 5 - File Sequence Number -->
-				<xsl:value-of select="script:msPad(//CreditNoteHeader/SequenceNumber, 32)"/>
-				<!-- Reference 6 - File Transmission Date -->
-				<xsl:value-of select="script:msPad(concat(substring(/CreditNote/CreditNoteHeader/BatchInformation/SendersTransmissionDate,9,2),substring(/CreditNote/CreditNoteHeader/BatchInformation/SendersTransmissionDate,6,2),substring(/CreditNote/CreditNoteHeader/BatchInformation/SendersTransmissionDate,1,4)), 32)"/>
-				<!-- Line Type -->
-				<xsl:text>159</xsl:text>
-				<!-- Account Code String -->
-				<xsl:value-of select="script:msPad(concat('+.000RR53.',//CreditNoteHeader/Supplier/SuppliersLocationID/BuyersCode,'.',$VATCode), 79)"/>
-				<!-- Value -->
-				<xsl:value-of select="script:msPadNumber(-1 * VATSubTotal/VATAmountAtRate, 15, 2)"/>
-				<!-- Vat Code -->
-				<xsl:value-of select="$VATCode"/>
-				<!-- Line description -->
-				<xsl:value-of select="script:msPad(concat('EDI/',/CreditNote/CreditNoteHeader/Supplier/SuppliersName), 36)"/>
-				<!-- VAT Value - {blank} -->
-				<xsl:value-of select="script:msPad('', 15)"/>
-				<!-- LF/CR -->
-				<xsl:text>&#13;&#10;</xsl:text>
-			</xsl:for-each>
-			<!-- HEADER RECORD -->
-			<!-- Company Code -->
-			<xsl:value-of select="script:msPad('TRAGUS1', 12)"/>
-			<!-- Transaction Type -->
-			<xsl:value-of select="script:msPad('PCREDI', 12)"/>
-			<!-- Transaction Number - {blank}-->
-			<xsl:value-of select="script:msPad('', 12)"/>
-			<!-- Transaction Date -->
-			<xsl:value-of select="concat(substring(/CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteDate,9,2), substring(/CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteDate,6,2), substring(/CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteDate,1,4))"/>
-			<!-- Reference 1 - Invoice Reference -->
-			<xsl:value-of select="script:msPad(/CreditNote/CreditNoteHeader/CreditNoteReferences/CreditNoteReference, 32)"/>
-			<!-- Reference 2 - {blank} -->
-			<xsl:value-of select="script:msPad('', 32)"/>
-			<!-- Reference 3 - Original Invoice Number (CRN only) -->
-			<xsl:value-of select="script:msPad(CreditNoteHeader/InvoiceReferences/InvoiceReference, 32)"/>
-			<!-- Reference 4 - Delivery Date -->
-			<xsl:value-of select="script:msPad(concat(substring(/CreditNote/CreditNoteDetail/CreditNoteLine/DeliveryNoteReferences/DeliveryNoteDate[1],9,2),substring(/CreditNote/CreditNoteDetail/CreditNoteLine/DeliveryNoteReferences/DeliveryNoteDate[1],6,2),substring(/CreditNote/CreditNoteDetail/CreditNoteLine/DeliveryNoteReferences/DeliveryNoteDate[1],1,4)) , 32)"/>
-			<!-- Reference 5 - File Sequence Number -->
-			<xsl:value-of select="script:msPad(CreditNoteHeader/SequenceNumber, 32)"/>
-			<!-- Reference 6 - File Transmission Date -->
-			<xsl:value-of select="script:msPad(concat(substring(/CreditNote/CreditNoteHeader/BatchInformation/SendersTransmissionDate,9,2),substring(/CreditNote/CreditNoteHeader/BatchInformation/SendersTransmissionDate,6,2),substring(/CreditNote/CreditNoteHeader/BatchInformation/SendersTransmissionDate,1,4)), 32)"/>
-			<!-- Line Type -->
-			<xsl:text>157</xsl:text>
+			</xsl:variable>
+		
+			<xsl:value-of select="$varCompanyCode"/>
+			<xsl:value-of select="$varTransactionType"/>
+			<xsl:value-of select="$varTransactionNumber"/>
+			<xsl:value-of select="$varTransactionDate"/>
+			<xsl:value-of select="$varTransactionReference1"/>
+			<xsl:value-of select="$varTransactionReference2"/>
+			<xsl:value-of select="$varTransactionReference3"/>
+			<xsl:value-of select="script:msPad($varTransactionReference4, 32)"/>
+			<xsl:value-of select="$varTransactionReference5"/>
+			<xsl:value-of select="script:msPad($varTransactionReference6, 32)"/>
+			
 			<!-- Account Code String -->
-			<xsl:value-of select="script:msPad(concat('+.000RR53.',CreditNoteHeader/Supplier/SuppliersLocationID/BuyersCode,'.S',CreditNoteHeader/CreditNoteReferences/VATRegNo,'000'), 79)"/>
+			<xsl:value-of select="script:msPad(concat('159','+.000RR53.124200','.',$VATCode), 82)"/>
 			<!-- Value -->
-			<xsl:value-of select="script:msPadNumber(-1 * CreditNoteTrailer/DocumentTotalInclVAT, 15, 2)"/>
+			<xsl:value-of select="script:msPadNumber(VATAmountAtRate, 15, 2)"/>
 			<!-- Vat Code -->
-			<xsl:value-of select="script:msPad('', 5)"/>
-			<!-- Line description -->
-			<xsl:value-of select="script:msPad(concat('EDI/',/CreditNote/CreditNoteHeader/Supplier/SuppliersName), 36)"/>
-			<!-- VAT Value - {blank} -->
-			<xsl:value-of select="script:msPad('', 15)"/>
-			<!-- LF/CR -->
-			<xsl:text>&#13;&#10;</xsl:text>
+			<xsl:value-of select="$VATCode"/>
+
+			<xsl:value-of select="$varLineDescription"/>
+			<xsl:value-of select="$varVATValue"/>
+			<xsl:value-of select="$varNewLine"/>
+				
 		</xsl:for-each>
+		
+		<!-- HEADER RECORD -->
+		<xsl:value-of select="$varCompanyCode"/>
+		<xsl:value-of select="$varTransactionType"/>
+		<xsl:value-of select="$varTransactionNumber"/>
+		<xsl:value-of select="$varTransactionDate"/>
+		<xsl:value-of select="$varTransactionReference1"/>
+		<xsl:value-of select="$varTransactionReference2"/>
+		<xsl:value-of select="$varTransactionReference3"/>
+		<xsl:value-of select="script:msPad($varTransactionReference4, 32)"/>
+		<xsl:value-of select="$varTransactionReference5"/>
+		<xsl:value-of select="script:msPad($varTransactionReference6, 32)"/>
+
+		<!-- Account Code String -->
+		<xsl:value-of select="script:msPad(concat('157','+.000RR53.122001','.',$varLedgerCode), 82)"/>
+		<!-- Value -->
+		<xsl:value-of select="script:msPadNumber(InvoiceTrailer/DocumentTotalInclVAT, 15, 2)"/>
+
+		<xsl:value-of select="script:msPad('', 5)"/>
+		<xsl:value-of select="$varLineDescription"/>
+		<xsl:value-of select="$varVATValue"/>
+		<xsl:value-of select="$varNewLine"/>
+			
 	</xsl:template>
+	
+	<!-- CREDIT NOTE -->
+	
+	<xsl:template match="/CreditNote">
+			
+		<!-- Store the Company Code -->
+		<xsl:variable name="varCompanyCode">
+			<xsl:value-of select="script:msPad('TRAGUS1', 12)"/>
+		</xsl:variable>
+		
+		<!-- Store the Transaction Type -->
+		<xsl:variable name="varTransactionType">
+			<xsl:value-of select="script:msPad('PINEDI', 12)"/>
+		</xsl:variable>
+
+		<!-- Store the Transaction Number - {blank}-->
+		<xsl:variable name="varTransactionNumber">
+			<xsl:value-of select="script:msPad('', 12)"/>
+		</xsl:variable>
+		
+		<!-- Store the Transaction Date-->
+		<xsl:variable name="varTransactionDate">
+			<xsl:call-template name="formatDate">
+				<xsl:with-param name="ddmmyyyyFormat" select="CreditNoteHeader/CreditNoteReferences/CreditNoteDate"/>
+			</xsl:call-template>
+		</xsl:variable>
+		
+		<!-- Store the Reference 1 - Invoice Reference -->
+		
+		<xsl:variable name="varTransactionReference1">
+			<xsl:value-of select="script:msPad(concat(CreditNoteHeader/CreditNoteReferences/CreditNoteReference,substring(CreditNoteHeader/CreditNoteReferences/CreditNoteDate,3,2)), 32)"/>
+		</xsl:variable>
+
+		<!-- Store the Reference 2 - {blank} -->
+		<xsl:variable name="varTransactionReference2">
+			<xsl:value-of select="script:msPad('', 32)"/>
+		</xsl:variable>
+		
+		<!-- Store the Reference 3 - Original Invoice Number (CRN only) -->
+		<xsl:variable name="varTransactionReference3">
+			<xsl:value-of select="script:msPad(concat(CreditNoteHeader/InvoiceReferences/InvoiceReference,substring(CreditNoteHeader/InvoiceReferences/InvoiceDate,3,2)), 32)"/>
+		</xsl:variable>
+		
+		<!-- Store the Reference 4 - Delivery Date-->
+		<xsl:variable name="varTransactionReference4">
+			<xsl:call-template name="formatDate">
+				<xsl:with-param name="ddmmyyyyFormat" select="CreditNoteHeader/InvoiceReferences/InvoiceDate"/>
+			</xsl:call-template>
+		</xsl:variable>
+		
+		<!-- Store the Reference 5 - File Sequence Number -->
+		<xsl:variable name="varTransactionReference5">
+			<xsl:value-of select="script:msPad(CreditNoteHeader/BatchInformation/FileGenerationNo, 32)"/>
+		</xsl:variable>
+		
+		<!-- Store the Reference 6 - File Transmission Date -->
+		<xsl:variable name="varTransactionReference6">
+			<xsl:call-template name="formatDate">
+				<xsl:with-param name="ddmmyyyyFormat" select="CreditNoteHeader/BatchInformation/SendersTransmissionDate"/>
+			</xsl:call-template>
+		</xsl:variable>
+		
+		<!-- Store the Line description -->
+		<xsl:variable name="varLineDescription">
+			<xsl:value-of select="script:msPad(concat('EDI/',CreditNoteHeader/Supplier/SuppliersName), 36)"/>
+		</xsl:variable>
+		
+		<!-- Store the VAT Value - {blank} -->
+		<xsl:variable name="varVATValue">
+			<xsl:value-of select="script:msPad('', 15)"/>
+		</xsl:variable>
+		
+		<!-- Store Recipient's Branch Reference -->
+		<xsl:variable name="varRecipientsBranchReference">
+			<xsl:value-of select="TradeSimpleHeader/RecipientsBranchReference"/>
+		</xsl:variable>
+		
+		<!-- Store Ledger Code -->
+		<xsl:variable name="varLedgerCode">
+			<xsl:value-of select="CreditNoteHeader/HeaderExtraData/STXSupplierCode"/>
+		</xsl:variable>
+		
+		<!-- LF/CR -->
+		<xsl:variable name="varNewLine">
+			<xsl:text>&#13;&#10;</xsl:text>
+		</xsl:variable>
+
+		<!-- CREDIT NOTE DETAIL -->			
+		<xsl:for-each select="(CreditNoteDetail/CreditNoteLine)[generate-id() = generate-id(key('keyInvoiceLinesByAccount',concat(translate(LineExtraData/AccountCode,'&quot;',''),'+',VATCode))[1])]">
+			
+			<xsl:sort select="translate(LineExtraData/AccountCode,'&quot;','')" data-type="text"/>
+			
+			<xsl:variable name="AccountCode" select="concat(translate(LineExtraData/AccountCode,'&quot;',''),'+',VATCode)"/>
+			
+			<xsl:value-of select="$varCompanyCode"/>
+			<xsl:value-of select="$varTransactionType"/>
+			<xsl:value-of select="$varTransactionNumber"/>
+			<xsl:value-of select="$varTransactionDate"/>
+			<xsl:value-of select="$varTransactionReference1"/>
+			<xsl:value-of select="$varTransactionReference2"/>
+			<xsl:value-of select="$varTransactionReference3"/>
+			<xsl:value-of select="script:msPad($varTransactionReference4, 32)"/>
+			<xsl:value-of select="$varTransactionReference5"/>
+			<xsl:value-of select="script:msPad($varTransactionReference6, 32)"/>
+			
+			<!-- Account Code String -->
+			<xsl:value-of select="script:msPad(concat('158','+.',$varRecipientsBranchReference,'.',substring-before($AccountCode,'+')), 82)"/>
+			<!-- Value -->
+			<xsl:value-of select="script:msPadNumber(-1 * format-number(sum(../CreditNoteLine[concat(translate(LineExtraData/AccountCode,'&quot;',''),'+',VATCode) = $AccountCode]/LineValueExclVAT)-sum(../CreditNoteLine[concat(translate(LineExtraData/AccountCode,'&quot;',''),'+',VATCode) = $AccountCode]/LineDiscountValue),'0.00'),15,2)"/>
+			<!-- Vat Code -->
+			<xsl:choose>
+				<xsl:when test="VATCode='S'">
+					<xsl:text>VISTD</xsl:text>
+				</xsl:when>
+				<xsl:when test="VATCode='Z'">
+					<xsl:text>VIZER</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:text></xsl:text>
+				</xsl:otherwise>
+			</xsl:choose>
+			
+			<xsl:value-of select="$varLineDescription"/>
+			<xsl:value-of select="$varVATValue"/>
+			<xsl:value-of select="$varNewLine"/>
+			
+		</xsl:for-each>
+		
+		<!-- VAT SUMMARIES -->
+		<xsl:for-each select="CreditNoteTrailer/VATSubTotals/VATSubTotal">
+		
+			<!-- VAT Code -->
+			<xsl:variable name="VATCode">
+				<xsl:choose>
+					<xsl:when test="@VATCode='S'">
+						<xsl:text>VISTD</xsl:text>
+					</xsl:when>
+					<xsl:when test="@VATCode='Z'">
+						<xsl:text>VIZER</xsl:text>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>VIEXP</xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:variable>
+		
+			<xsl:value-of select="$varCompanyCode"/>
+			<xsl:value-of select="$varTransactionType"/>
+			<xsl:value-of select="$varTransactionNumber"/>
+			<xsl:value-of select="$varTransactionDate"/>
+			<xsl:value-of select="$varTransactionReference1"/>
+			<xsl:value-of select="$varTransactionReference2"/>
+			<xsl:value-of select="$varTransactionReference3"/>
+			<xsl:value-of select="script:msPad($varTransactionReference4, 32)"/>
+			<xsl:value-of select="$varTransactionReference5"/>
+			<xsl:value-of select="script:msPad($varTransactionReference6, 32)"/>
+			
+			<!-- Account Code String -->
+			<xsl:value-of select="script:msPad(concat('159','+.000RR53.124200','.',$VATCode), 82)"/>
+			<!-- Value -->
+			<xsl:value-of select="script:msPadNumber(-1 * VATAmountAtRate, 15, 2)"/>
+			<!-- Vat Code -->
+			<xsl:value-of select="$VATCode"/>
+
+			<xsl:value-of select="$varLineDescription"/>
+			<xsl:value-of select="$varVATValue"/>
+			<xsl:value-of select="$varNewLine"/>
+				
+		</xsl:for-each>
+		
+		<!-- HEADER RECORD -->
+		<xsl:value-of select="$varCompanyCode"/>
+		<xsl:value-of select="$varTransactionType"/>
+		<xsl:value-of select="$varTransactionNumber"/>
+		<xsl:value-of select="$varTransactionDate"/>
+		<xsl:value-of select="$varTransactionReference1"/>
+		<xsl:value-of select="$varTransactionReference2"/>
+		<xsl:value-of select="$varTransactionReference3"/>
+		<xsl:value-of select="script:msPad($varTransactionReference4, 32)"/>
+		<xsl:value-of select="$varTransactionReference5"/>
+		<xsl:value-of select="script:msPad($varTransactionReference6, 32)"/>
+
+		<!-- Account Code String -->
+		<xsl:value-of select="script:msPad(concat('157','+.000RR53.122001','.',$varLedgerCode), 82)"/>
+		<!-- Value -->
+		<xsl:value-of select="script:msPadNumber(-1 * CreditNoteTrailer/DocumentTotalInclVAT, 15, 2)"/>
+
+		<xsl:value-of select="script:msPad('', 5)"/>
+		<xsl:value-of select="$varLineDescription"/>
+		<xsl:value-of select="$varVATValue"/>
+		<xsl:value-of select="$varNewLine"/>
+			
+	</xsl:template>
+	
+	<xsl:template name="formatDate">
+		<xsl:param name="ddmmyyyyFormat"/>
+		<xsl:value-of select="concat(substring($ddmmyyyyFormat,9,2),substring($ddmmyyyyFormat,6,2),substring($ddmmyyyyFormat,1,4))"/>
+	</xsl:template>
+	
 	<msxsl:script language="JScript" implements-prefix="script"><![CDATA[ 
 		var mbIsFirstLine = true;
 		function mbIsNotFirstLine()
@@ -340,12 +477,12 @@
 		' Returns       	 : The string padded/truncated as necessary
 		' Author       		 : A Sheppard, 07/05/2008
 		' Alterations   	 : Rave Tech,   18/08/2009 FB3047 Handle negative value totals.
+		'						 : R Cambridge, 10/01/2013   5159 For negatives, put minus sign immediately before numeric characters, not at left hand end of the padding
 		'========================================================================================*/
 		function msPadNumber(vvNumber, vlLength, vlDPs)
 		{
 			var sNumber = '';
-			var neg = false;
-			
+						
 			try
 			{
 				sNumber = vvNumber(0).text;
@@ -355,25 +492,11 @@
 				sNumber = vvNumber.toString();
 			}
 			
-			
-			if(sNumber.search(/-/)!=-1)
-			{
-				sNumber = sNumber.replace(/-/,'');
-				neg=true;
-			}		
-
-			
 			if(sNumber.indexOf('.') != -1)
 			{
 				var lDPs;
-				if(neg) 
-				{
-				     lDPs = sNumber.length - sNumber.indexOf('.') - 2;
-				 }
-				 else
-				 {
-				     lDPs = sNumber.length - sNumber.indexOf('.') - 1;
-				 } 
+		 
+				lDPs = sNumber.length - sNumber.indexOf('.') - 1;
 				
 				if(lDPs > vlDPs)
 				{
@@ -393,18 +516,17 @@
 			
 			sNumber = sNumber.replace('.','');
 			
+			
 			while(sNumber.length < vlLength)
 			{
 				sNumber = ' ' + sNumber;
 			}
 			
-			if(neg) 
-			{
-				sNumber = '-' + sNumber;
-			}
+			
 			return sNumber.substr(0, vlLength);
 				
 		}
 
 	]]></msxsl:script>
+	
 </xsl:stylesheet>
