@@ -38,6 +38,7 @@
 		<xsl:text>,</xsl:text>
 		
 		<!-- Recipient's Code for Unit -->
+		
 		<xsl:if test="contains(TradeSimpleHeader/RecipientsCodeForSender,',')">
 			<xsl:text>"</xsl:text>
 		</xsl:if>
@@ -46,7 +47,6 @@
 			<xsl:text>"</xsl:text>
 		</xsl:if>
 		<xsl:text>,</xsl:text>
-		
 		<!-- Test Flag -->
 		<xsl:choose>
 			<xsl:when test="TradeSimpleHeader/TestFlag = '0'">N</xsl:when>
