@@ -34,19 +34,30 @@ M Emanuel    | 07/01/2012 | FB 5885 Created from tsHospitalityInboundConfirmatio
 		</ffsFieldSeparators>
 	</ffsSettings>
 	<ffsRoot>
+		<!-- All LPos above 21 are no existent in the inbound message -->
 		<PurchaseOrderConfirmation>
 			<TradeSimpleHeader>
 				<SendersCodeForRecipient RecordPos="H" LPos="2"/>
-				<SendersBranchReference RecordPos="H" LPos="20"/>
 				<TestFlag RecordPos="H" LPos="3"/>
 			</TradeSimpleHeader>
 			<PurchaseOrderConfirmationHeader>
 				<Buyer>
 					<BuyersLocationID>
+						<BuyersCode RecordPos="H" LPos="22"/>
 						<SuppliersCode RecordPos="H" LPos="21"/>
 					</BuyersLocationID>
 				</Buyer>
+				<Supplier>
+					<SuppliersLocationID>
+						<BuyersCode RecordPos="H" LPos="23"/>
+						<SuppliersCode RecordPos="H" LPos="24"/>
+					</SuppliersLocationID>
+				</Supplier>
 				<ShipTo>
+					<ShipToLocationID>
+						<BuyersCode RecordPos="H" LPos="25"/>
+						<SuppliersCode RecordPos="H" LPos="2"/>
+					</ShipToLocationID>
 					<ShipToName RecordPos="H" LPos="11"/>
 					<ShipToAddress>
 						<AddressLine1 RecordPos="H" LPos="12"/>
@@ -66,10 +77,6 @@ M Emanuel    | 07/01/2012 | FB 5885 Created from tsHospitalityInboundConfirmatio
 				</OrderedDeliveryDetails>
 				<ConfirmedDeliveryDetails>
 					<DeliveryDate RecordPos="H" LPos="7"/>
-					<DeliverySlot>
-						<SlotStart RecordPos="H" LPos="8"/>
-						<SlotEnd RecordPos="H" LPos="9"/>
-					</DeliverySlot>
 				</ConfirmedDeliveryDetails>
 			</PurchaseOrderConfirmationHeader>
 			<PurchaseOrderConfirmationDetail>
