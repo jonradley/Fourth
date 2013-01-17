@@ -224,7 +224,7 @@
 		
 		<!-- Store the Transaction Type -->
 		<xsl:variable name="varTransactionType">
-			<xsl:value-of select="script:msPad('PINEDI', 12)"/>
+			<xsl:value-of select="script:msPad('PCREDI', 12)"/>
 		</xsl:variable>
 
 		<!-- Store the Transaction Number - {blank}-->
