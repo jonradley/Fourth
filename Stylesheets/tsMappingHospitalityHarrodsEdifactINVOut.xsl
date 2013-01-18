@@ -177,7 +177,7 @@ xmlns:userfuncs="http://mycompany.com/mynamespace" >
 		<!--Party qualifier  -->
 		<xsl:text>IV+</xsl:text>
 		<!--Unit EAN Location Number -->
-		<xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/GLN"/>
+		<xsl:text>0604619000002</xsl:text>
 		<xsl:text>::9</xsl:text>
 		<xsl:text>++</xsl:text>
 		<!--Name Invoicee -->
