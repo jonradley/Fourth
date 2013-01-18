@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-Maps Bidvest tradacoms credits into internal XML
+<!--======================================================================================
 
-06/11/2012	M Dimant		5834: Created. Based on 3663 stylesheet.
+Maps Bidvest tradacoms invoices into internal XML
 
--->
+==========================================================================================
+ Module History
+==========================================================================================
+ Version		| 
+==========================================================================================
+ Date      		| Name 						|	Description of modification
+==========================================================================================
+06/11/2012	| M Dimant					|	5834: Created. Based on 3663 stylesheet.
+=======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
 	<!-- NOTE that these string literals are not only enclosed with double quotes, but have single quotes within also-->
