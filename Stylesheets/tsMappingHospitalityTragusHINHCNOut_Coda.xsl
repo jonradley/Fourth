@@ -2,17 +2,23 @@
 <!--======================================================================================
  Overview
  
- Tragus map for invoices and credits to Code in consolidated format.
+ Tragus map for invoices and credits to Coda in consolidated format.
 
- © Fourth Hospitality, 2012.
+ © Fourth Hospitality, 2013.
 ==========================================================================================
  Module History
 ==========================================================================================
  Version	| 
 ==========================================================================================
  Date      	| Name 					| Description of modification
+ ==========================================================================================
+ 01/10/2012	| A Barber				| FB5749	Created module 
+ ==========================================================================================
+ 08/10/2012	| A Barber				| FB5749	Updates to XPath start positions to be referenced in output.
+ ==========================================================================================
+ 15/01/2013	| A Barber				| FB5749	Updated for output each doc to batch queue, significant logic changes.
 ==========================================================================================
- 09/01/2012	| A Barber				| FB5159	Created module 
+ 17/01/2013	| A Barber				| FB5749	Update credit record line identifier.
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl script">
 	<xsl:output method="text"/>
