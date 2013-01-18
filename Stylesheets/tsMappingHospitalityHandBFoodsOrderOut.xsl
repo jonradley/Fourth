@@ -378,10 +378,18 @@ M Emanuel		| 2012-10-17	| Mapped in Line number and Harrod Internal Site no
 		</xsl:call-template>                   
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
 		
-		<xsl:text xml:space="preserve">                    </xsl:text>
+		<!-- Mapping Harrod's Ship To GLN -->
+		<xsl:call-template name="padRight">
+			<xsl:with-param name="inputText" select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/>
+			<xsl:with-param name="fieldSize" select="20"/>
+		</xsl:call-template> 
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
 		
-		<xsl:text xml:space="preserve">                    </xsl:text>
+		<!-- Mapping Harrod's Purchasing Dept GLN -->
+		<xsl:call-template name="padRight">
+			<xsl:with-param name="inputText" select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/GLN"/>
+			<xsl:with-param name="fieldSize" select="20"/>
+		</xsl:call-template> 
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
 		
 		<xsl:text xml:space="preserve">        </xsl:text>
