@@ -7,7 +7,10 @@ Date		|	owner				|	details
 08/08/2012|KOshaughnessy	| FB 5567 Various Bugfixes		
 ************************************************************************
 05/09/2012 | Graham Neicho | FB5598 Putting PDFURL into HeaderExtraData
-**********************************************************************-->
+**********************************************************************
+25/01/2012 | Graham Neicho | FB5915 Corrected errors with inserting original invoice data
+**********************************************************************
+-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:egs="urn:eGS:marketplace:eBIS:Extension:1.0">
 	<xsl:output method="xml"/>
 	<xsl:template match="Batch">
@@ -152,11 +155,11 @@ Date		|	owner				|	details
 													<xsl:when test="Extensions/egs:Extension/egs:Extrinsic[@name = 'OriginalInvoiceDate'] ">
 														<xsl:value-of select="substring-before(Extensions/egs:Extension/egs:Extrinsic[@name = 'OriginalInvoiceDate'],'T')"/>
 													</xsl:when>
-													<xsl:when test="InvoiceReferences/DeliveryNoteNumber ='' ">
+													<xsl:when test="InvoiceReferences/DeliveryNoteNumber !='' ">
 														<xsl:value-of select="substring-before(InvoiceReferences/DeliveryNoteNumber,'T')"/>
 													</xsl:when>
-													<xsl:when test="InvoiceLineReferenes/OriginaOrderDate">
-														<xsl:value-of select="substring-before(InvoiceLineReferenes/OriginaOrderDate,'T')"/>
+													<xsl:when test="InvoiceLineReferences/OriginalOrderDate">
+														<xsl:value-of select="substring-before(InvoiceLineReferences/OriginalOrderDate,'T')"/>
 													</xsl:when>
 													<xsl:when test="InvoiceDate">
 														<xsl:value-of select="substring-before(InvoiceDate,'T')"/>
