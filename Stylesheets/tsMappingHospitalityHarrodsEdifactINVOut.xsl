@@ -41,7 +41,7 @@ xmlns:userfuncs="http://mycompany.com/mynamespace" >
 			<xsl:text>+</xsl:text>
 		
 			<!-- S003/0010, Interchange recipient -->
-			<xsl:value-of select="InvoiceHeader/Buyer/BuyersLocationID/GLN"/>
+			<xsl:text>0604619000019</xsl:text>
 			<xsl:text>+</xsl:text>
 		
 			<!-- S004/0017, Date -->
@@ -54,11 +54,6 @@ xmlns:userfuncs="http://mycompany.com/mynamespace" >
 		
 			<!-- 0020, control reference -->
 			<xsl:value-of select="InvoiceHeader/BatchInformation/FileGenerationNo"/>
-			<!--
-			<xsl:text>+</xsl:text>
-			<xsl:text>+</xsl:text>
-			<xsl:text>ORDERS</xsl:text>
-			-->
 			<xsl:text>'</xsl:text>
 			<xsl:text>&#13;&#10;</xsl:text>
 			
