@@ -63,21 +63,22 @@ Date		|	Name				|	Comment
 					</LineNumber>
 					
 					<xsl:variable name="lineNumber" select="count(preceding-sibling::*) + 1"/>
-					
+					<!-- Supplier's Product code and Buyer's product code is swapped around to make this work with Cheese Seller's existing order mapper.
+					This will have to be kept in mind while hooking up Harrod's with any other new supplier -->
 					<ProductID>
 						<xsl:apply-templates select="ProductID/GTIN"/>
 						<SuppliersProductCode>
 							<xsl:choose>
-								<xsl:when test="../../PurchaseOrderDetail/PurchaseOrderLine[substring-after(ProductID/BuyersProductCode,':') = 'SA'][$lineNumber]/ProductID/SuppliersProductCode ">
-									<xsl:value-of select="substring-before(../../PurchaseOrderDetail/PurchaseOrderLine[substring-after(ProductID/BuyersProductCode,':') = 'SA'][$lineNumber]/ProductID/SuppliersProductCode,':')"/>
+								<xsl:when test="../../PurchaseOrderDetail/PurchaseOrderLine[substring-after(ProductID/BuyersProductCode,':') = 'BP'][$lineNumber]/ProductID/SuppliersProductCode ">
+									<xsl:value-of select="substring-before(../../PurchaseOrderDetail/PurchaseOrderLine[substring-after(ProductID/BuyersProductCode,':') = 'BP'][$lineNumber]/ProductID/SuppliersProductCode,':')"/>
 								</xsl:when>
 								<xsl:otherwise>error</xsl:otherwise>
 							</xsl:choose>
 						</SuppliersProductCode>
 						<BuyersProductCode>
 							<xsl:choose>
-								<xsl:when test="../../PurchaseOrderDetail/PurchaseOrderLine[substring-after(ProductID/BuyersProductCode,':') = 'BP'][$lineNumber]/ProductID/SuppliersProductCode">
-									<xsl:value-of select="substring-before(../../PurchaseOrderDetail/PurchaseOrderLine[substring-after(ProductID/BuyersProductCode,':') = 'BP'][$lineNumber]/ProductID/SuppliersProductCode,':')"/>
+								<xsl:when test="../../PurchaseOrderDetail/PurchaseOrderLine[substring-after(ProductID/BuyersProductCode,':') = 'SA'][$lineNumber]/ProductID/SuppliersProductCode">
+									<xsl:value-of select="substring-before(../../PurchaseOrderDetail/PurchaseOrderLine[substring-after(ProductID/BuyersProductCode,':') = 'SA'][$lineNumber]/ProductID/SuppliersProductCode,':')"/>
 								</xsl:when>
 								<xsl:otherwise>error</xsl:otherwise>
 							</xsl:choose>
