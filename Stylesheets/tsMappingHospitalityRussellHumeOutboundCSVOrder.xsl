@@ -187,7 +187,14 @@
 			<xsl:if test="contains(user:msEscapeQuotes(substring(PackSize,1,40)),',')">
 				<xsl:text>"</xsl:text>
 			</xsl:if>
-			<xsl:value-of select="user:msEscapeQuotes(substring(PackSize,1,40))"/>
+			<xsl:choose>
+				<xsl:when test="contains(ProductID/SuppliersProductCode,'-')">
+					<xsl:value-of select="substring-after(ProductID/SuppliersProductCode,'-')"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="user:msEscapeQuotes(substring(PackSize,1,40))"/>
+				</xsl:otherwise>
+			</xsl:choose>
 			<xsl:if test="contains(user:msEscapeQuotes(substring(PackSize,1,40)),',')">
 				<xsl:text>"</xsl:text>
 			</xsl:if>
