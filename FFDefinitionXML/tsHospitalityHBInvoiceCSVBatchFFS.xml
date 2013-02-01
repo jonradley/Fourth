@@ -4,7 +4,7 @@ Date		|	Name				|	Comments
 *************************************************************************************
 30/05/2012| KOShaughnessy	| Bugfix
 *************************************************************************************
-			|						|
+29/01/2013| M Emanuel	| FB 5841 Mapping Buyer GLN
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~			
 -->
 <ffsFlatFileSchema>
@@ -45,12 +45,13 @@ Date		|	Name				|	Comments
 							<!--Set dummy value (HEAD-3) to DocumentStatus and correct it in stylesheet.-->
 							<DocumentStatus RecordPos="HEAD" LPos="3"/>
 							<BatchInformation>
-								<FileGenerationNo RecordPos="HEAD" LPos="25"/>
+								<!--FileGenerationNo RecordPos="HEAD" LPos="25"/-->
 								<FileVersionNo RecordPos="HEAD" LPos="26"/>
 								<FileCreationDate RecordPos="HEAD" LPos="27"/>
 							</BatchInformation>
 							<Buyer>
 								<BuyersLocationID>
+									<GLN RecordPos="HEAD" LPos="25"/>
 									<SuppliersCode RecordPos="HEAD" LPos="3"/>
 									<BuyersCode RecordPos="HEAD" LPos="2"/>
 								</BuyersLocationID>
