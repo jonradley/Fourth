@@ -14,7 +14,7 @@
 ==========================================================================================
  2012-03-30	| H Robson     	| 5541 Adjustments to accomdate the fact that " text delimiters are now removed in the flat file mapper
 ==========================================================================================
-           	|                 	|
+ 02/02/2013	| M Emanuel      	| 5969 Mapping changes to inlcude GTIN, was earlier committed to 5864 but missed deploying to live
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 	<xsl:output method="xml" encoding="UTF-8"/>
@@ -165,6 +165,7 @@
 	</xsl:template>
 	<xsl:template match="ProductID">
 		<ProductID>
+		<!-- Map in GTIN when supplied -->
 			<GTIN>
 				<xsl:choose>
 					<xsl:when test="GTIN !=''">
