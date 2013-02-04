@@ -18,7 +18,7 @@
 ==========================================================================================
 22/11/2012  | M Emanuel  			| 5864 Copied from tsMappingHospitalityInvoiceTradacomsv9Out.xsl and amended
 ==========================================================================================
-01/02/2013  | M Emanuel  			| 5969 Hardcoding recipient's mailbox number and some general clean up
+01/02/2013  | M Emanuel  			| 5969 Hardcoding recipient's mailbox number, correcting mailbox mapping and some general clean up
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript" xmlns:vb="http://www.abs-ltd.com/dummynamespaces/vbscript" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	<xsl:output method="text"/>
@@ -37,7 +37,7 @@
 		<xsl:text>ANA:1+</xsl:text>
 		<!--Our mailbox reference-->
 		<xsl:choose>
-			<xsl:when test="Invoice/TradeSimpleHeader/TestFlag = 'false' or Invoice/TradeSimpleHeader/TestFlag = '0'">
+			<xsl:when test="TradeSimpleHeader/TestFlag = 'false' or TradeSimpleHeader/TestFlag = '0'">
 				<xsl:text>5013546145710</xsl:text>
 			</xsl:when>
 			<xsl:otherwise>
