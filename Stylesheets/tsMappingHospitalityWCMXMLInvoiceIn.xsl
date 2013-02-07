@@ -10,12 +10,12 @@ Date		|	owner				|	details
 	<xsl:output method="xml" version="1.0"/>
 	<xsl:template match="Buyer"/>
 	<xsl:template match="Seller"/>
-	<xsl:template match="/">
+	<xsl:template match="/Invoices">
 		<BatchRoot>
 			<Batch>
 				<BatchDocuments>
-					<BatchDocument>
-						<xsl:for-each select="/Invoice">
+					<xsl:for-each select="Invoice">
+						<BatchDocument>
 							<Invoice>
 								<TradeSimpleHeader>
 									<SendersCodeForRecipient>
@@ -142,8 +142,8 @@ Date		|	owner				|	details
 									</DocumentTotalInclVAT>
 								</InvoiceTrailer>
 							</Invoice>
-						</xsl:for-each>
-					</BatchDocument>
+						</BatchDocument>
+					</xsl:for-each>
 				</BatchDocuments>
 			</Batch>
 		</BatchRoot>
