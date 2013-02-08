@@ -15,7 +15,7 @@
 ******************************************************************************************
  15/08/2012   	| H Robson	 	| 5602 set ffsRecordSeparator to CrLf to match format of inbound files
  ******************************************************************************************
- 01/02/2013   	| M Emanuel	 	| 5969 General clean up and including GTIN number
+ 01/02/2013   	| M Emanuel	 	| 5864 General clean up and changes to include GTIN number
 ***************************************************************************************-->
 <ffsFlatFileSchema>
 	<ffsSettings>
