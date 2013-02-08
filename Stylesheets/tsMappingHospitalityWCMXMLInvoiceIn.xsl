@@ -26,30 +26,41 @@ Date		|	owner				|	details
 									</SendersBranchReference>
 								</TradeSimpleHeader>
 								<InvoiceHeader>
-									<DocumentStatus>Original</DocumentStatus>
-									<Supplier>
-										<SuppliersLocationID>
-											<BuyersCode>
+									<Buyer>
+										<BuyersLocationID>
+											<SuppliersCode>
 												<xsl:value-of select="../Buyer/PricingAccount"/>
-											</BuyersCode>
-										</SuppliersLocationID>
-										<SuppliersName>
-											<xsl:value-of select="../Seller/Name"/>
-										</SuppliersName>
-										<SuppliersAddress>
-											<AddressLine1>
-												<xsl:value-of select="../Seller/Address/BuildingIdentifier"/>
-											</AddressLine1>
-											<AddressLine2>
-												<xsl:value-of select="../Seller/Address/StreetName"/>
-											</AddressLine2>
-											<AddressLine3>
-												<xsl:value-of select="../Seller/Address/City"/>
-											</AddressLine3>
-											<PostCode>
-												<xsl:value-of select="../Seller/Address/Postcode"/>
-											</PostCode>
-										</SuppliersAddress>
+											</SuppliersCode>
+										</BuyersLocationID>
+									</Buyer>
+									<Supplier>
+										<xsl:if test="../Seller/Name !=''">
+											<SuppliersName>
+												<xsl:value-of select="../Seller/Name"/>
+											</SuppliersName>
+										</xsl:if>
+										<xsl:if test="../Seller/Address/BuildingIdentifier !=''">
+											<SuppliersAddress>
+												<AddressLine1>
+													<xsl:value-of select="../Seller/Address/BuildingIdentifier"/>
+												</AddressLine1>
+												<xsl:if test="../Seller/Address/StreetName !=''">
+													<AddressLine2>
+														<xsl:value-of select="../Seller/Address/StreetName"/>
+													</AddressLine2>
+												</xsl:if>
+												<xsl:if test="../Seller/Address/City !=''">
+												<AddressLine3>
+													<xsl:value-of select="../Seller/Address/City"/>
+												</AddressLine3>
+												</xsl:if>
+												<xsl:if test="../Seller/Address/Postcode !=''">
+												<PostCode>
+													<xsl:value-of select="../Seller/Address/Postcode"/>
+												</PostCode>
+												</xsl:if>
+											</SuppliersAddress>
+										</xsl:if>
 									</Supplier>
 									<ShipTo>
 										<ShipToLocationID>
@@ -57,9 +68,11 @@ Date		|	owner				|	details
 												<xsl:value-of select="BuyingUnit/AccountCode"/>
 											</SuppliersCode>
 										</ShipToLocationID>
-										<ShipToName>
-											<xsl:value-of select="BuyingUnit/Name"/>
-										</ShipToName>
+										<xsl:if test="BuyingUnit/Name !=''">
+											<ShipToName>
+												<xsl:value-of select="BuyingUnit/Name"/>
+											</ShipToName>
+										</xsl:if>
 									</ShipTo>
 									<InvoiceReferences>
 										<InvoiceReference>
@@ -118,15 +131,15 @@ Date		|	owner				|	details
 								</InvoiceDetail>
 								<InvoiceTrailer>
 									<VATSubTotals>
-										<xsl:for-each select="InvoiceTotals">
+										<xsl:for-each select="InvoiceTotals/VatRateTotals">
 											<VATSubTotal>
-												<xsl:attribute name="VATCode"><xsl:value-of select="VatRateTotals/VatDetails/VatCode"/></xsl:attribute>
-												<xsl:attribute name="VATRate"><xsl:value-of select="VatRateTotals/VatDetails/VatRate"/></xsl:attribute>
+												<xsl:attribute name="VATCode"><xsl:value-of select="VatDetails/VatCode"/></xsl:attribute>
+												<xsl:attribute name="VATRate"><xsl:value-of select="VatDetails/VatRate"/></xsl:attribute>
 												<DocumentTotalExclVATAtRate>
-													<xsl:value-of select="format-number(VatRateTotals/TaxableAmount,'0.00')"/>
+													<xsl:value-of select="format-number(TaxableAmount,'0.00')"/>
 												</DocumentTotalExclVATAtRate>
 												<VATAmountAtRate>
-													<xsl:value-of select="format-number(VatRateTotals/VatPayable,'0.00')"/>
+													<xsl:value-of select="format-number(VatPayable,'0.00')"/>
 												</VATAmountAtRate>
 											</VATSubTotal>
 										</xsl:for-each>
