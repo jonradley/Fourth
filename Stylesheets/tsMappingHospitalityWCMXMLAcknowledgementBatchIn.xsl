@@ -11,7 +11,7 @@ Date			| Created				| Description
 			<Batch>
 				<BatchDocuments>
 					<xsl:for-each select="passed_orders/order">
-						<BatchDocument>
+						<BatchDocument DocumentTypeNo="84">
 							<PurchaseOrderAcknowledgement>
 								<TradeSimpleHeader>
 									<SendersCodeForRecipient>
