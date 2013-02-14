@@ -92,19 +92,23 @@
 											<LineNumber>
 												<xsl:value-of select="product/@p_count"/>
 											</LineNumber>
-											<PurchaseOrderReferences>
-												<PurchaseOrderReference>
-													<xsl:value-of select="../OrderNumber"/>
-												</PurchaseOrderReference>
-											</PurchaseOrderReferences>
-											<DeliveryNoteReferences>
-												<DeliveryNoteReference>
-													<xsl:value-of select="../delivery_note"/>
-												</DeliveryNoteReference>
-												<DeliveryNoteDate>
-													<xsl:value-of select="../delivery_date"/>
-												</DeliveryNoteDate>
-											</DeliveryNoteReferences>
+											<xsl:if test="../OrderNumber !=''">
+												<PurchaseOrderReferences>
+													<PurchaseOrderReference>
+														<xsl:value-of select="../OrderNumber"/>
+													</PurchaseOrderReference>
+												</PurchaseOrderReferences>
+											</xsl:if>
+											<xsl:if test="../delivery_note !=''">
+												<DeliveryNoteReferences>
+													<DeliveryNoteReference>
+														<xsl:value-of select="../delivery_note"/>
+													</DeliveryNoteReference>
+													<DeliveryNoteDate>
+														<xsl:value-of select="../delivery_date"/>
+													</DeliveryNoteDate>
+												</DeliveryNoteReferences>
+											</xsl:if>	
 											<ProductID>
 												<SuppliersProductCode>
 													<xsl:value-of select="product/product_code"/>
