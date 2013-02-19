@@ -8,6 +8,8 @@ Date			| Name		| Change
 **************************************************************************************************************
 27/04/2012	| M Dimant	| 5448: Added mapping for Unit of Measure
 **************************************************************************************************************
+04/02/2013	| M Dimant	| 5983: Map in ShipTo SuppliersCode instead of BuyersCode
+**************************************************************************************************************
 -->
 <ffsFlatFileSchema>
 	<ffsSettings>
@@ -101,7 +103,7 @@ Date			| Name		| Change
 							</Supplier>
 							<ShipTo>
 								<ShipToLocationID>
-									<BuyersCode RecordPos="CLO=" LPos="1" SFPos="2"/>
+									<SuppliersCode RecordPos="CLO=" LPos="1" SFPos="2"/>
 								</ShipToLocationID>
 								<ShipToName RecordPos="CLO=" LPos="2"/>
 								<ShipToAddress>
