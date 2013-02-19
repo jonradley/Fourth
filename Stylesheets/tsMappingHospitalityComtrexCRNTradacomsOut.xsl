@@ -5,19 +5,21 @@
 
  Maps internal XML into an EDI Tradacoms v9 format for Comtrex.
  
-==========================================================================================
+=========================================================================================================
  Module History
-==========================================================================================
+=========================================================================================================
  Version		| 
-==========================================================================================
+=========================================================================================================
  Date      	| Name 					| Description of modification
-==========================================================================================
+=========================================================================================================
  25/01/2012	| M Dimant     	| Created.
-==========================================================================================
+=========================================================================================================
  27/07/2012	| M Dimant      	| 5532: Removed incorrect field in CLD segment. Removed commented out code. Added UOM translations.               
-==========================================================================================
-           	|                 	|
-=======================================================================================-->
+=========================================================================================================
+ 12/02/2013	| M Dimant      	| 5983: Added missing totals in CST and CTR segments and Populated OIR segment with invoice references and dates
+=========================================================================================================
+
+-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 	xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript"
@@ -229,7 +231,16 @@
 									
 						<xsl:text>OIR=</xsl:text>						
 						<xsl:text>1+</xsl:text>
-						<xsl:text>+++::</xsl:text>											
+						<xsl:value-of select="//InvoiceReferences/InvoiceReference"/>
+						<xsl:text>+</xsl:text>
+						<xsl:call-template name="msFormateDate">
+							<xsl:with-param name="vsUTCDate" select="//InvoiceReferences/InvoiceDate"/>
+						</xsl:call-template>					
+						<xsl:text>+</xsl:text>
+						<xsl:call-template name="msFormateDate">
+							<xsl:with-param name="vsUTCDate" select="//InvoiceReferences/TaxPointDate"/>
+						</xsl:call-template>	
+						<xsl:text>+::</xsl:text>									
 						<xsl:text>:</xsl:text>
 						<xsl:value-of select="$sRecordSep"/>
 						
@@ -303,8 +314,7 @@
 			
 				<xsl:text>CST=</xsl:text>
 				<xsl:value-of select="position()"/>
-				<xsl:text>+</xsl:text>
-				<!-- VATC = 4030 = AN..1 -->
+				<xsl:text>+</xsl:text>				
 				<xsl:value-of select="@VATCode"/>
 				<xsl:text>+</xsl:text>
 				<xsl:value-of select="translate(format-number(@VATRate,'#.000'),'.','')"/>
@@ -312,12 +322,12 @@
 				<xsl:value-of select="NumberOfLinesAtRate"/>
 				<xsl:text>+</xsl:text>
 				<xsl:value-of select="translate(format-number(DiscountedLinesTotalExclVATAtRate,'#.00'),'.','')"/>
-				<xsl:text>+++++</xsl:text>
+				<xsl:text>+++</xsl:text>
 				<xsl:value-of select="translate(format-number(DocumentTotalExclVATAtRate,'#.00'),'.','')"/>
-				<xsl:text>+</xsl:text>
-				<xsl:if test="number(SettlementDiscountAtRate) != 0">
-					<xsl:value-of select="translate(format-number(SettlementDiscountAtRate,'#.00'),'.','')"/>
-				</xsl:if>
+				<xsl:text>++</xsl:text>
+				<xsl:value-of select="translate(format-number(DocumentTotalExclVATAtRate,'#.00'),'.','')"/>
+				<xsl:text>+</xsl:text>				
+				<xsl:value-of select="translate(format-number(SettlementDiscountAtRate,'#.00'),'.','')"/>				
 				<xsl:text>+</xsl:text>
 				<xsl:value-of select="translate(format-number(SettlementTotalExclVATAtRate,'#.00'),'.','')"/>
 				<xsl:text>+</xsl:text>
@@ -333,12 +343,12 @@
 			<xsl:text>CTR=</xsl:text>	
 			<xsl:text>1+</xsl:text>
 			<xsl:value-of select="translate(format-number(CreditNoteTrailer/DiscountedLinesTotalExclVAT,'#.00'),'.','')"/>
-			<xsl:text>+++++</xsl:text>
+			<xsl:text>+++</xsl:text>
+			<xsl:value-of select="translate(format-number(CreditNoteTrailer/SettlementTotalExclVAT,'#.00'),'.','')"/>
+			<xsl:text>++</xsl:text>
 			<xsl:value-of select="translate(format-number(CreditNoteTrailer/DocumentTotalExclVAT,'#.00'),'.','')"/>
-			<xsl:text>+</xsl:text>
-			<xsl:if test="number(CreditNoteTrailer/SettlementDiscount) != 0">
-				<xsl:value-of select="translate(format-number(CreditNoteTrailer/SettlementDiscount,'#.00'),'.','')"/>
-			</xsl:if>
+			<xsl:text>+</xsl:text>			
+			<xsl:value-of select="translate(format-number(CreditNoteTrailer/SettlementDiscount,'#.00'),'.','')"/>
 			<xsl:text>+</xsl:text>
 			<xsl:value-of select="translate(format-number(CreditNoteTrailer/SettlementTotalExclVAT,'#.00'),'.','')"/>
 			<xsl:text>+</xsl:text>
