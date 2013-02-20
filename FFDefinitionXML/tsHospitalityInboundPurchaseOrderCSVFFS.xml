@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--******************************************************************
+CSV Purchase Order mapper
+
+**********************************************************************
+Name         | Date       | Change
+*********************************************************************
+M Dimant  | 12/10/2010 | Created.
+**********************************************************************
+             |            |                                    
+**********************************************************************
+             |            |
+*******************************************************************-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>chr(10)</ffsRecordSeparator>
+		<ffsEscapeChars>
+			<ffsEscapeChar>
+				<ffsNative>chr(13)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>""</ffsNative>
+				<ffsTradesimple>¬Q</ffsTradesimple>
+				<ffsLiteral>"</ffsLiteral>
+			</ffsEscapeChar>
+		</ffsEscapeChars>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>,</ffsFieldSeparator>
+		</ffsFieldSeparators>
+	</ffsSettings>
+	<ffsRoot>
+		<PurchaseOrder>
+			<TradeSimpleHeader>
+				<SendersCodeForRecipient RecordPos="H" LPos="2"/>
+				<SendersBranchReference RecordPos="H" LPos="19"/>
+				<TestFlag RecordPos="H" LPos="3"/>
+			</TradeSimpleHeader>
+			<PurchaseOrderHeader>
+				<Buyer>
+					<BuyersLocationID>
+						<SuppliersCode RecordPos="H" LPos="21"/>
+					</BuyersLocationID>
+				</Buyer>
+				<ShipTo>
+					<ShipToName RecordPos="H" LPos="10"/>
+					<ShipToAddress>
+						<AddressLine1 RecordPos="H" LPos="11"/>
+						<AddressLine2 RecordPos="H" LPos="12"/>
+						<AddressLine3 RecordPos="H" LPos="13"/>
+						<AddressLine4 RecordPos="H" LPos="14"/>
+						<PostCode RecordPos="H" LPos="15"/>
+					</ShipToAddress>
+					<ContactName RecordPos="H" LPos="10"/>
+				</ShipTo>
+				<PurchaseOrderReferences>
+					<PurchaseOrderReference RecordPos="H" LPos="4"/>
+					<PurchaseOrderDate RecordPos="H" LPos="5"/>
+				</PurchaseOrderReferences>
+				<OrderedDeliveryDetails>
+					<DeliveryDate RecordPos="H" LPos="6"/>
+				</OrderedDeliveryDetails>				
+			</PurchaseOrderHeader>
+			<PurchaseOrderDetail>
+				<PurchaseOrderLine>
+					<ProductID>
+						<SuppliersProductCode RecordPos="D" LPos="2"/>
+					</ProductID>					
+					<ProductDescription RecordPos="D" LPos="3"/>
+					<OrderedQuantity RecordPos="D" LPos="5"/>								
+					<PackSize RecordPos="D" LPos="4"/>
+					<UnitValueExclVAT RecordPos="D" LPos="6"/>
+					<LineValueExclVAT RecordPos="D" LPos="7"/>				
+				</PurchaseOrderLine>
+			</PurchaseOrderDetail>
+			<PurchaseOrderTrailer>
+				<NumberOfLines RecordPos="H" LPos="16"/>
+				<NumberOfItems RecordPos="H" LPos="17"/>
+				<TotalExclVAT RecordPos="H" LPos="18"/>
+			</PurchaseOrderTrailer>
+		</PurchaseOrder>
+	</ffsRoot>
+</ffsFlatFileSchema>
