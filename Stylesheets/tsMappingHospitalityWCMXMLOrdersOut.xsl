@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+************************************************************************************************
+Date				|	Name						|	Desc
+************************************************************************************************
+21/02/2013		| M Emanuel					| 5943 Order Mapper for West Country Milk, added BatchID counter
+************************************************************************************************
+************************************************************************************************
+
+-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes"/>
+	<!-- The Batch Processor assigns the Batch ID -->
+	<xsl:param name="nBatchID">NotProvided</xsl:param>
 	
 	<xsl:template match="/BatchRoot[PurchaseOrder]">
 	
 		<order_batch>
 			<xsl:attribute name="batch_id">
-				<xsl:value-of select="PurchaseOrder/PurchaseOrderHeader/FileGenerationNumber"/>
+				<xsl:value-of select="$nBatchID"/>
 			</xsl:attribute>
 		
 			<order_header>
