@@ -22,7 +22,7 @@
 '******************************************************************************************
 ' 03/09/2008  | R Cambridge  | FB case 2459 Amphire require ship to GLN to be default
 '******************************************************************************************
-'             |              | 
+' 28/09/2013  | A Barber		|  6118 Introduced logic around handling of split product code for Tragus.
 '******************************************************************************************
 -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -301,7 +301,7 @@
 						<xsl:if test="ProductID/SuppliersProductCode">
 							<AlternateCode scheme="OTHER">
 								<xsl:choose>
-									<xsl:when test="$IsSplitLine">
+									<xsl:when test="$IsSplitLine and ../../PurchaseOrderHeader/Buyer/BuyersLocationID/GLN != '5060166761189'">
 										<xsl:value-of select="substring(substring(ProductID/SuppliersProductCode,1,string-length(ProductID/SuppliersProductCode)-1),1,18)"/>
 									</xsl:when>
 									<xsl:otherwise>
