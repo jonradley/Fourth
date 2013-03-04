@@ -16,7 +16,7 @@
 '******************************************************************************************
 ' 21/02/2005  | Lee Boyton   | Created
 '******************************************************************************************
-'             |              | 
+' 28/02/2013  | A Barber       | 6118 Added logic not to apply an 'S' to split lines for Tragus.
 '******************************************************************************************
 -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -43,7 +43,7 @@
 			<xsl:if test="AlternateCode and AlternateCode != ''">
 				<AlternateCode scheme="OTHER">
 					<xsl:value-of select="AlternateCode"/>
-					<xsl:if test="substring(../RequestedQuantity/@unitCode,1,2) = 'EA'">
+					<xsl:if test="substring(../RequestedQuantity/@unitCode,1,2) = 'EA' and //Buyer/BuyerGLN != '5060166761189'">
 						<xsl:text>S</xsl:text>
 					</xsl:if>
 				</AlternateCode>
