@@ -6,6 +6,7 @@ Purchase Order translation following tradacoms flat file mapping for Prezzo.
 Name         	| Date       	| Change
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 K Oshaughnessy| 01/01/2012	| 5008: Created. 
+A Barber	| 28/02/2013		| 6188 Set RecipientsCodeForSender to identify supplier in header, fixed effective date against each detail record.
 **********************************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
@@ -17,7 +18,7 @@ K Oshaughnessy| 01/01/2012	| 5008: Created.
 	<!--Header-->
 	<xsl:text>FMSVEND</xsl:text>
 	<xsl:text>0001</xsl:text>
-	<xsl:text>3663</xsl:text>
+	<xsl:value-of select="TradeSimpleHeader/RecipientsCodeForSender"/>
 	<xsl:value-of select="script:msDeliveryDayTranslateDateToString"/>
 	<xsl:text>&#13;&#10;</xsl:text>
 	
@@ -72,7 +73,7 @@ K Oshaughnessy| 01/01/2012	| 5008: Created.
 		
 		<!--effective date-->
 		<xsl:call-template name="padRight">
-			<xsl:with-param name="inputText" select="PriceCatHeader/ValidStartDate"/>
+			<xsl:with-param name="inputText" select="concat(substring(//PriceCatHeader/ValidStartDate,4,2),substring(//PriceCatHeader/ValidStartDate,1,2),substring(//PriceCatHeader/ValidStartDate,7,4))"/>
 			<xsl:with-param name="fieldSize" select="8"/>
 		</xsl:call-template>
 		

@@ -18,8 +18,9 @@
 =========================================================================================================
  12/02/2013	| M Dimant      	| 5983: Added missing totals in CST and CTR segments and Populated OIR segment with invoice references and dates
 =========================================================================================================
+ 04/03/2013 	| M Dimant    | 6192: Limit FGN to 4 digits.
+=========================================================================================================-->
 
--->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 	xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript"
@@ -45,6 +46,11 @@
 			<xsl:value-of select="$nBatchID"/>					
 		</xsl:variable>
 			
+		<xsl:variable name="FourDigitFGN">
+			<xsl:variable name="OriginalFGN" select="format-number(//CreditNoteHeader/FileGenerationNumber,'0000')"/>			
+			<!-- Comtrex can only accept 4 digit FGNs, so get the 4 right hand digits -->
+			<xsl:value-of select="substring($OriginalFGN, string-length($OriginalFGN)-3)"/>			
+		</xsl:variable>	
 			
 		<xsl:variable name="sFileGenerationDate" select="vb:msFileGenerationDate()"/>
 	
@@ -164,7 +170,7 @@
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:text>FIL=</xsl:text>
-		<xsl:value-of select="/CreditNote/CreditNoteHeader/BatchInformation/FileGenerationNo"/>
+		<xsl:value-of select="$FourDigitFGN"/>
 		<xsl:text>+1+</xsl:text>
 		<xsl:value-of select="$sFileGenerationDate"/>
 		<xsl:value-of select="$sRecordSep"/>
