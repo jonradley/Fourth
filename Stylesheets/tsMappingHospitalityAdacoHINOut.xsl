@@ -9,7 +9,7 @@
 ******************************************************************************************
  Date        | Name         	| Description of modification
 ******************************************************************************************
- 2013-02-21  | R Cambridge 	| FB6038 Created Module
+ 2013-02-21  | R Cambridge 	| FB6038 Created Module (based on FnB outbound mapper)
 ******************************************************************************************
              |            	| 
 ******************************************************************************************
@@ -18,72 +18,99 @@
              |             	|           
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+	<xsl:output method="xml" encoding="UTF-8"/>
+	
+	<xsl:include href="./tsMappingHospitalityAdacoCommon.xsl"/>
 
-<xsl:output method="xml" encoding="UTF-8"/>
+
 	<xsl:template match="Invoice">
-		<xsl:element name="Invoice">
-			<xsl:element name="TradeSimpleHeader">
+	
+		<Invoice>
+		
+			<TradeSimpleHeader>
 				<xsl:copy-of select="TradeSimpleHeader/SendersCodeForRecipient"/>
 				<xsl:copy-of select="TradeSimpleHeader/SendersBranchReference"/>
 				<xsl:copy-of select="TradeSimpleHeader/RecipientsCodeForSender"/>
-				<xsl:copy-of select="TradeSimpleHeader/RecipientsBranchReference"/>
-			</xsl:element>
-			<xsl:element name="InvoiceHeader">
+				<RecipientsBranchReference>
+					<xsl:value-of select="substring-before(concat(TradeSimpleHeader/RecipientsBranchReference, $HOTEL_SUBDIVISION_SEPERATOR), $HOTEL_SUBDIVISION_SEPERATOR)"/>
+				</RecipientsBranchReference>
+			</TradeSimpleHeader>
+			
+			<InvoiceHeader>
 				<xsl:copy-of select="InvoiceHeader/BatchInformation"/>
 				<xsl:copy-of select="InvoiceHeader/Buyer"/>
 				<xsl:copy-of select="InvoiceHeader/Supplier"/>
-				<xsl:element name="ShipTo">
-					<xsl:element name="ShipToLocationID">
+				<ShipTo>
+					<ShipToLocationID>
 						<xsl:copy-of select="InvoiceHeader/ShipTo/ShipToLocationID/GLN"/>
-						<xsl:element name="SuppliersCode">
+						<SuppliersCode>
 							<xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
-						</xsl:element>
-					</xsl:element>
+						</SuppliersCode>
+					</ShipToLocationID>
 					<xsl:copy-of select="InvoiceHeader/ShipTo/ShipToName"/>
 					<xsl:copy-of select="InvoiceHeader/ShipTo/ShipToAddress"/>
-				</xsl:element>
+				</ShipTo>
 				<!--xsl:element name="InvoiceReferences">
 					<xsl:copy-of select="InvoiceHeader/InvoiceReferences/InvoiceReference"/>
 					<xsl:copy-of select="InvoiceHeader/InvoiceReferences/InvoiceDate"/>
 				</xsl:element-->
-				<xsl:copy-of select="InvoiceHeader/InvoiceReferences"/>
+				<InvoiceReferences>
+					<InvoiceReference>
+						<!-- Prefix invoice reference with I_ to ensure Adaco.Net doesn't confuse this doc with a credit from the same vendor with the same reference -->
+						<xsl:text>I_</xsl:text>
+						<xsl:value-of select="InvoiceHeader/InvoiceReferences/InvoiceReference"/>
+					</InvoiceReference>
+					<InvoiceDate>
+						<xsl:value-of select="InvoiceHeader/InvoiceReferences/InvoiceDate"/>
+					</InvoiceDate>
+					<TaxPointDate>
+						<xsl:value-of select="InvoiceHeader/InvoiceReferences/TaxPointDate"/>
+					</TaxPointDate>
+					<VATRegNo>
+						<xsl:value-of select="InvoiceHeader/InvoiceReferences/VATRegNo"/>
+					</VATRegNo>
+				</InvoiceReferences>
 				<xsl:copy-of select="InvoiceHeader/Currency"/>
-			</xsl:element>
-			<xsl:element name="InvoiceDetail">
+			</InvoiceHeader>
+			
+			<InvoiceDetail>
+			
 				<xsl:for-each select="InvoiceDetail/InvoiceLine">
-					<xsl:element name="InvoiceLine">
+					<InvoiceLine>
 						<xsl:copy-of select="LineNumber"/>
 						<xsl:copy-of select="PurchaseOrderReferences"/>
 						<xsl:copy-of select="DeliveryNoteReferences"/>
-						<xsl:element name="ProductID">
+						<ProductID>
 							<xsl:copy-of select="ProductID/GTIN"/>
 							<xsl:copy-of select="ProductID/SuppliersProductCode"/>
-							<xsl:element name="BuyersProductCode">
+							<BuyersProductCode>
 								<xsl:value-of select="InvoiceDetail/InvoiceLine/ProductID/BuyersProductCode"/>
-							</xsl:element>
-						</xsl:element>
+							</BuyersProductCode>
+						</ProductID>
 						<xsl:copy-of select="ProductDescription"/>
-						<xsl:element name="InvoicedQuantity">
+						<InvoicedQuantity>
 							<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="PackSize"/></xsl:attribute>
 							<xsl:value-of select="InvoicedQuantity"/>
-						</xsl:element>
+						</InvoicedQuantity>
 						<xsl:copy-of select="PackSize"/>
 						<xsl:copy-of select="UnitValueExclVAT"/>
 						<xsl:copy-of select="LineValueExclVAT"/>
 						<xsl:copy-of select="VATCode"/>
 						<xsl:copy-of select="VATRate"/>
-					</xsl:element>
+					</InvoiceLine>
 				</xsl:for-each>
-			</xsl:element>
-			<xsl:element name="InvoiceTrailer">
+				
+			</InvoiceDetail>
+			
+			<InvoiceTrailer>
 				<xsl:copy-of select="InvoiceTrailer/NumberOfLines"/>
 				<xsl:copy-of select="InvoiceTrailer/NumberOfItems"/>
 				<xsl:copy-of select="InvoiceTrailer/NumberOfDeliveries"/>
 				<xsl:copy-of select="InvoiceTrailer/DocumentDiscountRate"/>
 				<xsl:copy-of select="InvoiceTrailer/SettlementDiscountRate"/>
-				<xsl:element name="VATSubTotals">
+				<VATSubTotals>
 					<xsl:for-each select="InvoiceTrailer/VATSubTotals/VATSubTotal">
-						<xsl:element name="VATSubTotal">
+						<VATSubTotal>
 							<xsl:attribute name="VATCode">
 								<xsl:value-of select="@VATCode"/>
 							</xsl:attribute>
@@ -100,9 +127,9 @@
 							<xsl:copy-of select="VATAmountAtRate"/>
 							<xsl:copy-of select="DocumentTotalInclVATAtRate"/>
 							<xsl:copy-of select="SettlementTotalInclVATAtRate"/>
-						</xsl:element>
+						</VATSubTotal>
 					</xsl:for-each>
-				</xsl:element>
+				</VATSubTotals>
 				<xsl:copy-of select="InvoiceTrailer/DiscountedLinesTotalExclVAT"/>
 				<xsl:copy-of select="InvoiceTrailer/DocumentDiscount"/>
 				<xsl:copy-of select="InvoiceTrailer/DocumentTotalExclVAT"/>
@@ -111,8 +138,8 @@
 				<xsl:copy-of select="InvoiceTrailer/VATAmount"/>
 				<xsl:copy-of select="InvoiceTrailer/DocumentTotalInclVAT"/>
 				<xsl:copy-of select="InvoiceTrailer/SettlementTotalInclVAT"/>
-			</xsl:element>
-		</xsl:element>
+			</InvoiceTrailer>
+		</Invoice>
 	</xsl:template>
 
 

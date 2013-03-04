@@ -9,7 +9,7 @@
 ******************************************************************************************
  Date        | Name         	| Description of modification
 ******************************************************************************************
- 2013-02-21  | R Cambridge 	| FB6038 Created Module
+ 2013-02-21  | R Cambridge 	| FB6038 Created Module (from FnB inbound order mapper)
 ******************************************************************************************
 		        |            	| 
 ******************************************************************************************
@@ -19,6 +19,8 @@
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="xml" encoding="UTF-8"/>
+	
+	<xsl:include href="./tsMappingHospitalityAdacoCommon.xsl"/>
 	
 	<xsl:variable name="LINE_BREAK_STRING" select="'&amp;lt;br&amp;gt;'"/>
 
@@ -53,53 +55,75 @@
 	<!-- END of GENERIC HANDLERS -->
 
 	
+	<!-- Determine SBR (also used as buyer's code for ship to -->
+	<xsl:variable name="SendersBranchReference">
+		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Property/BuyersCode"/>
+		<xsl:value-of select="$HOTEL_SUBDIVISION_SEPERATOR"/>
+		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/BuyersCode"/>
+	</xsl:variable>
+
+	
 	<!-- Change TradeSimpleHeaderSent to TradeSimpleHeader -->
 	<xsl:template match="TradeSimpleHeaderSent">
-		<xsl:element name="TradeSimpleHeader">
-			<xsl:copy-of select="./*"/>
-		</xsl:element>
+		<TradeSimpleHeader>
+			<SendersCodeForRecipient>
+				<xsl:value-of select="SendersCodeForRecipient"/>
+			</SendersCodeForRecipient>
+			<SendersBranchReference>
+				<xsl:value-of select="$SendersBranchReference"/>
+			</SendersBranchReference>
+		</TradeSimpleHeader>
 	</xsl:template>
 
 	
 	<!-- Buyer GLN -->
 	<xsl:template match="BuyersLocationID">
-		<xsl:element name="BuyersLocationID">
+		<BuyersLocationID>
 			<!--xsl:element name="GLN">5555555555555</xsl:element-->
 			<xsl:copy-of select="BuyersCode"/>
-		</xsl:element>
+		</BuyersLocationID>
 	</xsl:template>
 	
 	<!-- Seller GLN -->
 	<xsl:template match="SuppliersLocationID">
-		<xsl:element name="SuppliersLocationID">
+		<SuppliersLocationID>
 			<!--xsl:element name="GLN">5555555555555</xsl:element-->
 			<xsl:copy-of select="BuyersCode"/>
-		</xsl:element>
+		</SuppliersLocationID>
 	</xsl:template>
 	
-	<!-- Ship-to GLN -->
-	<xsl:template match="ShipToLocationID">
-		<xsl:element name="ShipToLocationID">
-			<!--xsl:element name="GLN">5555555555555</xsl:element-->
-			<xsl:copy-of select="BuyersCode"/>
-		</xsl:element>
+	
+	
+	<xsl:template match="Property | Outlet"/>
+	
+	<xsl:template match="ShipTo">
+		<ShipTo>
+			<ShipToLocationID>
+				<BuyersCode>
+					<xsl:value-of select="$SendersBranchReference"/>
+				</BuyersCode>
+			</ShipToLocationID>
+			<ContactName>
+				<xsl:value-of select="ContactName"/>
+			</ContactName>
+		</ShipTo>
 	</xsl:template>
 	
-	<!-- remove any weird characters from text fields -->
+	<!-- remove any weird characters from text fields - >
 	<xsl:template match="SpecialDeliveryInstructions | BuyersName | AddressLine1 | AddressLine2 | AddressLine3 | AddressLine4 | PostCode | SuppliersName | ShipToName | ContactName |  ProductDescription | OrderedDeliveryDetailsLineLevel">
 		<xsl:element name="{name()}">
 			<xsl:value-of select="normalize-space(.)"/>
 		</xsl:element>
 	</xsl:template>
 
-	<!-- remove any weird characters from text fields -->
+	< - remove any weird characters from text fields - >
 	<xsl:template match="BuyersName | AddressLine1 | AddressLine2 | AddressLine3 | AddressLine4">
 		<xsl:element name="{name()}">
 			<xsl:value-of select="normalize-space(.)"/>
 		</xsl:element>
 	</xsl:template>
 	
-	<!-- 3414 remove line break character sequences -->
+	< - 3414 remove line break character sequences - >
 	<xsl:template match="SpecialDeliveryInstructions | AddressLine1 | AddressLine2 | AddressLine3 | AddressLine4 ">
 		<xsl:copy>
 			<xsl:call-template name="msReplace">
@@ -108,24 +132,20 @@
 				<xsl:with-param name="vsNewValue" select="', '" />
 			</xsl:call-template>	
 		</xsl:copy>
-	</xsl:template>
+	</xsl:template-->
 			
 	<!-- Remove Customer Order REf -->
-	<xsl:template match="CustomerPurchaseOrderReference">
-	</xsl:template>
+	<!--xsl:template match="CustomerPurchaseOrderReference"/-->
 		
 	<!-- Remove OrderID -->
-	<xsl:template match="OrderID">
-	</xsl:template>
+	<!--xsl:template match="OrderID"/-->
 	
 	<!-- Remove Line Value and Total Value-->
-	<xsl:template match="LineValueExclVAT">
-	</xsl:template>
+	<!--xsl:template match="LineValueExclVAT"/-->
 	
-	<xsl:template match="PurchaseOrderTrailer">
-	</xsl:template>
+	<!--xsl:template match="PurchaseOrderTrailer"/-->
 	
-	<xsl:template name="msReplace">
+	<!--xsl:template name="msReplace">
 		<xsl:param name="vsInput" />
 		<xsl:param name="vsTarget" />
 		<xsl:param name="vsNewValue" />
@@ -143,7 +163,7 @@
 				<xsl:value-of select="$vsInput" />
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template>
+	</xsl:template-->
 
 	
 	
