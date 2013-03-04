@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--**************************************************************************************
+ Overview
+
+Map in the BEK fixed-width Invoice format (V16)
+"LPos"		start position of the field within the record
+"UPos"		end position of field/subfield
+******************************************************************************************
+ Module History
+******************************************************************************************
+ Date         | Name       		| Description of modification
+******************************************************************************************
+ 01/03/2013	| Harold Robson		| FB6189 Created module 
+******************************************************************************************
+				| 							|
+***************************************************************************************-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>chr(13)chr(10)</ffsRecordSeparator>
+		<ffsPadding/>
+		<ffsBatchHeader>
+			<ffsHeaderRecord RecordPos="FH"/>
+		</ffsBatchHeader>
+		<ffsSplitBatchRecord RecordPos="IH"/>
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<BatchHeader/>
+			<BatchDocuments>
+				<BatchDocument>
+					<Invoice>
+						<TradeSimpleHeader>
+							<SendersCodeForRecipient RecordPos="IH" LPos=" 25" UPos="40"/>
+							<SendersBranchReference RecordPos="IH" LPos=" 2" UPos="5"/>
+						</TradeSimpleHeader>
+						<InvoiceHeader>
+							<Buyer>
+								<BuyersLocationID>
+									<SuppliersCode RecordPos="IH" LPos=" 25" UPos="40"/>
+								</BuyersLocationID>
+							</Buyer>
+							<ShipTo>
+								<ShipToLocationID>
+									<SuppliersCode RecordPos="IH" LPos=" 25" UPos="40"/>
+								</ShipToLocationID>
+							</ShipTo>
+							<InvoiceReferences>
+								<InvoiceReference RecordPos="IH" LPos=" 5" UPos="25"/>
+								<InvoiceDate RecordPos="IH" LPos=" 56" UPos="64"/>
+								<TaxPointDate RecordPos="IH" LPos=" 56" UPos="64"/>
+							</InvoiceReferences>
+						</InvoiceHeader>
+						<InvoiceDetail>
+							<InvoiceLine>
+								<PurchaseOrderReferences>
+									<PurchaseOrderReference RecordPos="IH" LPos=" 64" UPos="79"/>
+									<PurchaseOrderDate RecordPos="IH" LPos=" 48" UPos="56"/>
+									<TradeAgreement>
+										<ContractReference RecordPos="IH" LPos=" 135" UPos="155"/>
+									</TradeAgreement>
+								</PurchaseOrderReferences>
+								<ProductID>
+									<GTIN RecordPos="ID" LPos=" 201" UPos="215"/>
+									<SuppliersProductCode RecordPos="ID" LPos=" 32" UPos="52"/>
+								</ProductID>
+								<ProductDescription RecordPos="ID" LPos=" 101" UPos="181"/>
+								<OrderedQuantity RecordPos="ID" LPos=" 54" UPos="61"/>
+								<InvoicedQuantity RecordPos="ID" LPos=" 61" UPos="68">
+									<ffsAttribute1 name="UnitOfMeasure" RecordPos="ID" LPos=" 52" UPos="54"/>
+								</InvoicedQuantity>
+								<UnitValueExclVAT RecordPos="ID" LPos=" 75" UPos="88"/>
+							</InvoiceLine>
+						</InvoiceDetail>
+					</Invoice>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>
