@@ -7,7 +7,7 @@ Map Out to the BEK Order format (V16)
 ==========================================================================================
  Date			| Name 					| Description of modification
 ==========================================================================================
- 01/03/2013	| Harold Robson		| Created module
+ 01/03/2013	| Harold Robson		| FB6189 Created module
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 				| 							|
 =======================================================================================-->
@@ -18,17 +18,27 @@ Map Out to the BEK Order format (V16)
 	<xsl:variable name="delimiter" select="'|'"/> <!-- pipe or comma allowed by BEKv16 spec -->
 
 	<xsl:template match="/PurchaseOrder">
+		
+		<!-- BEK Branch indicator and BEK Customer number are concatenated to the TR code with a hyphen -->
+		<xsl:variable name="branchIndicator" select="substring-before(/PurchaseOrder/TradeSimpleHeader/SendersCodeForRecipient,'-')"/>
 	
 		<xsl:for-each select="PurchaseOrderDetail/PurchaseOrderLine">
 
 			<!-- Branch Indicator -->
-			<!-- TO DO ONCE CONFIRMED LOGIC -->
+			<xsl:value-of select="$branchIndicator"/>
 			<xsl:value-of select="$delimiter"/>
 			<!-- Security Access code -->
-			<!-- TO DO ONCE CONFIRMED LOGIC -->
+			<xsl:choose>
+				<xsl:when test="$branchIndicator= 'FDF'"><xsl:text>19000</xsl:text></xsl:when>
+				<xsl:when test="$branchIndicator= 'FSA'"><!--<xsl:text>19000</xsl:text>--></xsl:when>
+				<xsl:when test="$branchIndicator= 'FOK'"><!--<xsl:text>19000</xsl:text>--></xsl:when>
+				<xsl:when test="$branchIndicator= 'FAM'"><!--<xsl:text>19000</xsl:text>--></xsl:when>
+				<xsl:when test="$branchIndicator= 'FLR'"><!--<xsl:text>19000</xsl:text>--></xsl:when>
+				<xsl:when test="$branchIndicator= 'FAQ'"><!--<xsl:text>19000</xsl:text>--></xsl:when>
+			</xsl:choose>
 			<xsl:value-of select="$delimiter"/>
 			<!-- BEK Customer number -->
-			<!-- TO DO ONCE CONFIRMED LOGIC -->
+			<xsl:value-of select="substring-after(/PurchaseOrder/TradeSimpleHeader/SendersCodeForRecipient,'-')"/>
 			<xsl:value-of select="$delimiter"/>
 			<!-- BEK Item number -->
 			<xsl:value-of select="ProductID/SuppliersProductCode"/>
