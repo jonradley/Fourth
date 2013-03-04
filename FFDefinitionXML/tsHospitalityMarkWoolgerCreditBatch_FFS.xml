@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+**********************************************************************
+Alterations
+**********************************************************************
+Name			| Date			| Change
+**********************************************************************
+Moty Dimant	| 28/07/2007	| 1096 Created FFS 
+**********************************************************************
+				|				|
+**********************************************************************
+-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>sequenced</ffsRecordPositionType>
+		<ffsRecordSeparator FixedSize="false">chr(13)chr(10)</ffsRecordSeparator>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>,</ffsFieldSeparator>
+		</ffsFieldSeparators>
+		<ffsSplitBatchRecord LPos="5"/>
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<BatchDocuments>
+				<BatchDocument>
+					<CreditNote>
+						<TradeSimpleHeader>
+							<SendersCodeForRecipient RecordLength="14" RecordPos="*" LPos="3"/>
+						</TradeSimpleHeader>
+						<CreditNoteHeader>
+							<Buyer>
+								<BuyersLocationID>
+									<SuppliersCode RecordLength="14" RecordPos="*" LPos="2"/>
+								</BuyersLocationID>
+							</Buyer>
+							<ShipTo>
+								<ShipToLocationID>
+									<SuppliersCode RecordLength="14" RecordPos="*" LPos="3"/>
+								</ShipToLocationID>
+								<ShipToName RecordLength="14" RecordPos="*" LPos="4"/>
+							</ShipTo>
+							<CreditNoteReferences>
+								<CreditNoteReference RecordLength="14" RecordPos="*" LPos="5"/>
+								<CreditNoteDate RecordLength="14" RecordPos="*" LPos="14"/>
+								<TaxPointDate RecordLength="14" RecordPos="*" LPos="14"/>
+							</CreditNoteReferences>
+						</CreditNoteHeader>
+						<CreditNoteDetail>
+							<CreditNoteLine>
+								<ProductID>
+									<SuppliersProductCode RecordLength="14" RecordPos="*" LPos="8"/>
+								</ProductID>
+								<ProductDescription RecordLength="14" RecordPos="*" LPos="9"/>
+								<CreditedQuantity RecordLength="14" RecordPos="*" LPos="10"/>
+								<UnitValueExclVAT RecordLength="14" RecordPos="*" LPos="11"/>
+								<LineValueExclVAT RecordLength="14" RecordPos="*" LPos="12"/>
+								<VATCode RecordLength="14" RecordPos="*" LPos="13"/>
+							</CreditNoteLine>
+						</CreditNoteDetail>
+						<!--CreditNoteTrailer>
+							<DocumentTotalInclVAT RecordLength="14" RecordPos="*" LPos="7"/>
+						</CreditNoteTrailer-->
+					</CreditNote>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>
