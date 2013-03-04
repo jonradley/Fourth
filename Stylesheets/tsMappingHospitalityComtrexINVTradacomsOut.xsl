@@ -13,12 +13,12 @@
 ==========================================================================================
  Date      	| Name 					| Description of modification
 ==========================================================================================
- 05/01/2012	| M Dimant     | Based on tsMappingHospitalityInvoiceTradacomsv9Out.xsl
+ 05/01/2012	| M Dimant    | Based on tsMappingHospitalityInvoiceTradacomsv9Out.xsl
 ==========================================================================================
  09/05/2012   | M Dimant    	| 5448: Changes to accomodate inclusion of UOM by Comtrex
 ==========================================================================================
-           	|                 	|
-=======================================================================================-->
+ 04/03/2013 	| M Dimant    | 6192: Limit FGN to 4 digits.
+==========================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 	xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript"
@@ -33,6 +33,7 @@
 	     note 2) the extra ¬ character is needed because PO and DN references are optional. -->
 	<xsl:key name="keyLinesByPO" match="//InvoiceLine" use="concat('¬',//PurchaseOrderReferences/PurchaseOrderReference)"/>
 	<xsl:key name="keyLinesByPOAndDN" match="//InvoiceDetail/InvoiceLine" use="concat('¬',//PurchaseOrderReferences/PurchaseOrderReference,'::¬',//DeliveryNoteReferences/DeliveryNoteReference)"/>
+
 	
 	<xsl:template match="/">
 
@@ -45,6 +46,11 @@
 			<xsl:value-of select="$nBatchID"/>					
 		</xsl:variable>
 			
+		<xsl:variable name="FourDigitFGN">
+			<xsl:variable name="OriginalFGN" select="format-number(//InvoiceHeader/FileGenerationNumber,'0000')"/>			
+			<!-- Comtrex can only accept 4 digit FGNs, so get the 4 right hand digits -->
+			<xsl:value-of select="substring($OriginalFGN, string-length($OriginalFGN)-3)"/>			
+		</xsl:variable>	
 			
 		<xsl:variable name="sFileGenerationDate" select="vb:msFileGenerationDate()"/>
 	
@@ -171,7 +177,7 @@
 		-->
 		
 		<xsl:text>FIL=</xsl:text>
-		<xsl:value-of select="/Invoice/InvoiceHeader/BatchInformation/FileGenerationNo"/>
+		<xsl:value-of select="$FourDigitFGN"/>
 		<xsl:text>+1+</xsl:text>
 		<xsl:value-of select="$sFileGenerationDate"/>
 		<xsl:value-of select="$sRecordSep"/>
