@@ -116,6 +116,9 @@ M Emanuel	| 29/01/2013	| FB Case 5946 Created New Invoice out mapper
 									<xsl:element name="LineDiscountAmount">
 										<xsl:value-of select="LineDiscountValue"/>
 									</xsl:element>
+									<xsl:element name="AgreementCode">
+										<xsl:value-of select="PurchaseOrderReferences/TradeAgreement/ContractReference"/>
+									</xsl:element>
 								</xsl:element>
 							</xsl:for-each>
 						</xsl:element>
