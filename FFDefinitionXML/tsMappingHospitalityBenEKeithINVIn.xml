@@ -31,47 +31,75 @@ Map in the BEK fixed-width Invoice format (V16)
 				<BatchDocument>
 					<Invoice>
 						<TradeSimpleHeader>
-							<SendersCodeForRecipient RecordPos="IH" LPos=" 25" UPos="40"/>
-							<SendersBranchReference RecordPos="IH" LPos=" 2" UPos="5"/>
+							<SendersCodeForRecipient RecordPos="IH" LPos="26" UPos="41"/>
+							<SendersBranchReference RecordPos="IH" LPos="3" UPos="6"/>
 						</TradeSimpleHeader>
 						<InvoiceHeader>
 							<Buyer>
 								<BuyersLocationID>
-									<SuppliersCode RecordPos="IH" LPos=" 25" UPos="40"/>
+									<SuppliersCode RecordPos="IH" LPos="26" UPos="41"/>
 								</BuyersLocationID>
+								<BuyersName RecordPos="IH" LPos="176" UPos="226"/>
+								<BuyersAddress>
+									<AddressLine1 RecordPos="IH" LPos="226" UPos="256"/>
+									<AddressLine2 RecordPos="IH" LPos="256" UPos="286"/>
+									<AddressLine3 RecordPos="IH" LPos="286" UPos="316"/>
+									<AddressLine4 RecordPos="IH" LPos="316" UPos="318"/>
+									<PostCode RecordPos="IH" LPos="318" UPos="328"/>
+								</BuyersAddress>
 							</Buyer>
 							<ShipTo>
 								<ShipToLocationID>
-									<SuppliersCode RecordPos="IH" LPos=" 25" UPos="40"/>
+									<SuppliersCode RecordPos="IH" LPos="26" UPos="41"/>
 								</ShipToLocationID>
+								<ShipToName RecordPos="IH" LPos="328" UPos="378"/>
+								<ShipToAddress>
+									<AddressLine1 RecordPos="IH" LPos="378" UPos="408"/>
+									<AddressLine2 RecordPos="IH" LPos="408" UPos="438"/>
+									<AddressLine3 RecordPos="IH" LPos="438" UPos="468"/>
+									<AddressLine4 RecordPos="IH" LPos="468" UPos="470"/>
+									<PostCode RecordPos="IH" LPos="470" UPos="480"/>
+								</ShipToAddress>
 							</ShipTo>
 							<InvoiceReferences>
-								<InvoiceReference RecordPos="IH" LPos=" 5" UPos="25"/>
-								<InvoiceDate RecordPos="IH" LPos=" 56" UPos="64"/>
-								<TaxPointDate RecordPos="IH" LPos=" 56" UPos="64"/>
+								<InvoiceReference RecordPos="IH" LPos="6" UPos="26"/>
+								<InvoiceDate RecordPos="IH" LPos="57" UPos="65"/>
+								<TaxPointDate RecordPos="IH" LPos="57" UPos="65"/>
 							</InvoiceReferences>
 						</InvoiceHeader>
 						<InvoiceDetail>
 							<InvoiceLine>
 								<PurchaseOrderReferences>
-									<PurchaseOrderReference RecordPos="IH" LPos=" 64" UPos="79"/>
-									<PurchaseOrderDate RecordPos="IH" LPos=" 48" UPos="56"/>
+									<PurchaseOrderReference RecordPos="IH" LPos="65" UPos="80"/>
+									<PurchaseOrderDate RecordPos="IH" LPos="49" UPos="57"/>
 									<TradeAgreement>
-										<ContractReference RecordPos="IH" LPos=" 135" UPos="155"/>
+										<ContractReference RecordPos="IH" LPos="136" UPos="156"/>
 									</TradeAgreement>
 								</PurchaseOrderReferences>
 								<ProductID>
-									<GTIN RecordPos="ID" LPos=" 201" UPos="215"/>
-									<SuppliersProductCode RecordPos="ID" LPos=" 32" UPos="52"/>
+									<GTIN RecordPos="ID" LPos="202" UPos="216"/>
+									<SuppliersProductCode RecordPos="ID" LPos="33" UPos="53"/>
 								</ProductID>
-								<ProductDescription RecordPos="ID" LPos=" 101" UPos="181"/>
-								<OrderedQuantity RecordPos="ID" LPos=" 54" UPos="61"/>
-								<InvoicedQuantity RecordPos="ID" LPos=" 61" UPos="68">
-									<ffsAttribute1 name="UnitOfMeasure" RecordPos="ID" LPos=" 52" UPos="54"/>
+								<ProductDescription RecordPos="ID" LPos="102" UPos="182"/>
+								<OrderedQuantity RecordPos="ID" LPos="55" UPos="62">
+									<ffsAttribute1 name="UnitOfMeasure" RecordPos="ID" LPos="53" UPos="55"/>
+								</OrderedQuantity>
+								<DeliveredQuantity RecordPos="ID" LPos="69" UPos="76">
+									<ffsAttribute1 name="UnitOfMeasure" RecordPos="ID" LPos="53" UPos="55"/>
+								</DeliveredQuantity>
+								<InvoicedQuantity RecordPos="ID" LPos="62" UPos="69">
+									<ffsAttribute1 name="UnitOfMeasure" RecordPos="ID" LPos="53" UPos="55"/>
 								</InvoicedQuantity>
-								<UnitValueExclVAT RecordPos="ID" LPos=" 75" UPos="88"/>
+								<UnitValueExclVAT RecordPos="ID" LPos="76" UPos="89"/>
 							</InvoiceLine>
 						</InvoiceDetail>
+						<InvoiceTrailer>
+							<NumberOfLines RecordPos="ID" LPos="549" UPos="556"/>
+							<NumberOfItems RecordPos="ID" LPos="542" UPos="549"/>
+							<DocumentTotalExclVAT RecordPos="ID" LPos="84" UPos="97"/>
+							<VATAmount RecordPos="ID" LPos="97" UPos="110"/>
+							<DocumentTotalInclVAT RecordPos="ID" LPos="123" UPos="136"/>
+						</InvoiceTrailer>
 					</Invoice>
 				</BatchDocument>
 			</BatchDocuments>
