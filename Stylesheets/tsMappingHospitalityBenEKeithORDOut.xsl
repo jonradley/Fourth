@@ -21,6 +21,7 @@ Map Out to the BEK Order format (V16)
 		
 		<!-- BEK Branch indicator and BEK Customer number are concatenated to the TR code with a hyphen -->
 		<xsl:variable name="branchIndicator" select="substring-before(/PurchaseOrder/TradeSimpleHeader/SendersCodeForRecipient,'-')"/>
+		<xsl:variable name="deliveryDate" select="/PurchaseOrder/PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate"/> <!-- YYYY-MM-DD -->
 	
 		<xsl:for-each select="PurchaseOrderDetail/PurchaseOrderLine">
 
@@ -43,11 +44,15 @@ Map Out to the BEK Order format (V16)
 			<!-- BEK Item number -->
 			<xsl:value-of select="ProductID/SuppliersProductCode"/>
 			<xsl:value-of select="$delimiter"/>
-			<!-- Delivery Date -->
-			<xsl:value-of select="OrderedDeliveryDetailsLineLevel/DeliveryDate"/>
+			<!-- Delivery Date MMDDYYYY -->
+			<xsl:if test="$deliveryDate != ''">
+				<xsl:value-of select="substring($deliveryDate,6,2)"/>
+				<xsl:value-of select="substring($deliveryDate,9,2)"/>
+				<xsl:value-of select="substring($deliveryDate,1,4)"/>
+			</xsl:if>
 			<xsl:value-of select="$delimiter"/>
-			<!-- Order quantity -->
-			<xsl:value-of select="OrderedQuantity"/>
+			<!-- Order quantity, no decimal places - padded to 5 digits-->
+			<xsl:value-of select="format-number(OrderedQuantity,'00000')"/>
 			<xsl:value-of select="$delimiter"/>
 			<!-- Item UOM -Format (C=case, E=each) -->
 			<xsl:choose>
@@ -60,7 +65,7 @@ Map Out to the BEK Order format (V16)
 			<!-- PO Number -->
 			<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
 			<!-- new line -->
-			<xsl:text>&#13;&#10;</xsl:text>
+			<xsl:if test="position() != last()"><xsl:text>&#13;&#10;</xsl:text></xsl:if>
 			
 		</xsl:for-each>
 		
