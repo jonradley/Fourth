@@ -5,9 +5,9 @@
 	
 	<xsl:output method="text"/>
 	
-	<xsl:variable name="FormatDescription" select="'STANDARD #2 format'"/>
-	<xsl:variable name="RecordSeperator" select="'&#13;&#10;&#13;&#10;'"/>
-	<xsl:variable name="FieldSeperator" select="'|'"/>
+	<xsl:variable name="FormatDescription" select="'Carluccios BESPOKE format'"/>
+	<xsl:variable name="RecordSeperator" select="'&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;'"/>
+	<xsl:variable name="FieldSeperator" select="'-~=~-'"/>
 		
 	
 </xsl:stylesheet>
