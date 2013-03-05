@@ -77,10 +77,10 @@ Map in the BEK fixed-width Invoice format (V16)
 									</TradeAgreement>
 								</PurchaseOrderReferences>
 								<ProductID>
-									<GTIN RecordPos="ID" LPos="202" UPos="215"/>
+									<GTIN RecordPos="ID" LPos="211" UPos="224"/>
 									<SuppliersProductCode RecordPos="ID" LPos="33" UPos="52"/>
 								</ProductID>
-								<ProductDescription RecordPos="ID" LPos="102" UPos="181"/>
+								<ProductDescription RecordPos="ID" LPos="111" UPos="190"/>
 								<OrderedQuantity RecordPos="ID" LPos="55" UPos="61">
 									<ffsAttribute1 name="UnitOfMeasure" RecordPos="ID" LPos="53" UPos="54"/>
 								</OrderedQuantity>
