@@ -5,13 +5,16 @@ Alterations
 Name			| Date				| Change
 **********************************************************************
 R Cambridge	| 2008-12-02		| 2600 Created Module (based on tsMappingHospitalityInverarity_Inbound_BASDA_Invoice.xsl)
-**********************************************************************
+********************************************************************************************************************************************
 K O'shaughnessy|	2009-08-13	| 3062 change to pick up invoiced quanity from pack size not amount
-**********************************************************************
-M Dimant			|	2011-02-08	| 4213 change to reflect new location of  UOM		
-**********************************************************************
+********************************************************************************************************************************************
+M Dimant		|	2011-02-08	| 4213 change to reflect new location of  UOM		
+********************************************************************************************************************************************
 H Robson		|	2012-07-27	| 5606 Map in the SCB	
-*******************************************************************-->
+*****************************************************************************************************************************************
+M Dimant		|	2013-03-05	| 6116 Map quantity and UOM from a different location. Translate catch-weight UOMs	.	
+********************************************************************************************************************************************
+-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	<xsl:output method="xml"/>
 	<!-- we use constants for default values -->
@@ -260,11 +263,11 @@ H Robson		|	2012-07-27	| 5606 Map in the SCB
 											<xsl:attribute name="UnitOfMeasure">
 												<xsl:call-template name="decodeUoM">
 													<xsl:with-param name="sInput">
-													<xsl:value-of select="Price/@UOMDescription"/>
+													<xsl:value-of select="Quantity/@UOMDescription"/>
 													</xsl:with-param>
 												</xsl:call-template>
 											</xsl:attribute>
-											<xsl:value-of select="format-number(Price/Units, '0.000')"/>
+											<xsl:value-of select="format-number(Quantity/Amount, '0.000')"/>
 										</InvoicedQuantity>
 										<!-- Pack Size is populated by subsequent processors -->
 										<UnitValueExclVAT>
@@ -454,6 +457,8 @@ H Robson		|	2012-07-27	| 5606 Map in the SCB
 				<xsl:when test="$sInput ='PACK'">CS</xsl:when>
 				<xsl:when test="$sInput ='TRAY'">EA</xsl:when>
 				<xsl:when test="$sInput ='TUB'">EA</xsl:when>
+				<xsl:when test="$sInput ='KG'">KGM</xsl:when>
+				<xsl:when test="$sInput ='Kg'">KGM</xsl:when>
 				<xsl:otherwise>
 						<xsl:value-of select="$sInput"></xsl:value-of>
 				</xsl:otherwise>
