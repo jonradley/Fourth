@@ -48,7 +48,7 @@ Perform transformations on the XML version of the flat file
 
 	<xsl:template name="formatDates">
 		<xsl:param name="sInput"/>
-		<xsl:value-of select="concat(substring($sInput,1,4),'-',substring($sInput5,2),'-',substring($sInput,7,2))"/>
+		<xsl:value-of select="concat(substring($sInput,1,4),'-',substring($sInput,5,2),'-',substring($sInput,7,2))"/>
 	</xsl:template>
 	
 </xsl:stylesheet>
