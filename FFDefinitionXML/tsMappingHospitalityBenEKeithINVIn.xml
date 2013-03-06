@@ -92,6 +92,15 @@ Map in the BEK fixed-width Invoice format (V16)
 								</InvoicedQuantity>
 								<UnitValueExclVAT RecordPos="ID" LPos="76" UPos="88"/>
 							</InvoiceLine>
+							<!-- second invoice line for fees, this method might not work - TEST-->
+							<InvoiceLine>
+								<ProductID>
+									<SuppliersProductCode RecordPos="IE" LPos="23" UPos="32"/>
+								</ProductID>							
+								<ProductDescription RecordPos="IE" LPos="33" UPos="36"/>
+								<UnitValueExclVAT RecordPos="IE" LPos="37" UPos="49"/>
+							</InvoiceLine>
+							<!-- /////////////////////////////// -->
 						</InvoiceDetail>
 						<InvoiceTrailer>
 							<NumberOfLines RecordPos="IH" LPos="549" UPos="555"/>
