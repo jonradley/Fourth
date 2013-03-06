@@ -21,7 +21,7 @@ M Emanuel	| 29/01/2013	| FB Case 5946 Created New Credit note out mapper
 			</xsl:element>
 			<xsl:element name="CreditNote">
 				<xsl:element name="CustomerCode">
-					<xsl:value-of select="CreditNoteHeader/Supplier/SuppliersLocationID/BuyersCode"/>
+					<xsl:value-of select="CreditNoteHeader/Buyer/BuyersLocationID/GLN"/>
 				</xsl:element>
 				<xsl:element name="UnitCode">
 					<xsl:value-of select="CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode"/>

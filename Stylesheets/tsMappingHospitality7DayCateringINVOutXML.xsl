@@ -15,7 +15,7 @@ M Emanuel	| 29/01/2013	| FB Case 5946 Created New Invoice out mapper
 			</xsl:element>
 			<xsl:element name="Invoice">
 				<xsl:element name="CustomerCode">
-					<xsl:value-of select="InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode"/>
+					<xsl:value-of select="InvoiceHeader/Buyer/BuyersLocationID/GLN"/>
 				</xsl:element>
 				<xsl:element name="UnitCode">
 					<xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode"/>
