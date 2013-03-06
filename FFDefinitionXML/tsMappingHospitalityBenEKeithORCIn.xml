@@ -25,67 +25,60 @@ Map in the BEK fixed-width ORC format (V16)
 		<ffsSplitBatchRecord RecordPos="OH"/>
 	</ffsSettings>
 	<ffsRoot>
-		<Batch>
-			<BatchHeader/>
-			<BatchDocuments>
-				<BatchDocument>
-					<PurchaseOrderConfirmation>
-						<TradeSimpleHeader>
-							<SendersCodeForRecipient RecordPos="OH" LPos="11" UPos="25"/>
-							<SendersBranchReference RecordPos="OH" LPos="3" UPos="5"/>
-						</TradeSimpleHeader>
-						<PurchaseOrderConfirmationHeader>
-							<Buyer>
-								<BuyersLocationID>
-									<SuppliersCode RecordPos="OH" LPos="11" UPos="25"/>
-								</BuyersLocationID>
-							</Buyer>
-							<ShipTo>
-								<ShipToLocationID>
-									<SuppliersCode RecordPos="OH" LPos="11" UPos="25"/>
-								</ShipToLocationID>
-							</ShipTo>
-							<PurchaseOrderReferences>
-								<PurchaseOrderReference RecordPos="OH" LPos="70" UPos="84"/>
-							</PurchaseOrderReferences>
-							<PurchaseOrderConfirmationReferences>
-								<PurchaseOrderConfirmationReference RecordPos="OH" LPos="85" UPos="94"/>
-								<PurchaseOrderConfirmationDate RecordPos="FH" LPos="7" UPos="14"/>
-							</PurchaseOrderConfirmationReferences>
-							<ConfirmedDeliveryDetails>
-								<DeliveryDate RecordPos="OH" LPos="41" UPos="48"/>
-							</ConfirmedDeliveryDetails>
-						</PurchaseOrderConfirmationHeader>
-							<!-- /////////////////////////////// -->
-						<PurchaseOrderConfirmationDetail>
-							<PurchaseOrderConfirmationLine>
-								<ffsAttribute1 name="LineStatus" RecordPos="OD" LPos="135" UPos="135"/>
-								<LineNumber RecordPos="OD" LPos="3" UPos="12"/>
-								<ProductID>
-									<SuppliersProductCode RecordPos="OD" LPos="136" UPos="165"/> <!--Original Ordered item Number -->
-								</ProductID>
-								<SubstitutedProductID>
-									<SuppliersProductCode RecordPos="OD" LPos="13" UPos="42"/> <!-- Item Number -->
-								</SubstitutedProductID>
-								<!-- XSL logic ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-									case: ProductID is blank, SubstitutedProductID is populated									action: swap them
-									case: ProductID and SubstitutedProductID are populated with the same number		action: remove SubstitutedProductID
-									case: ProductID and SubstitutedProductID are populated with different numbers		action: do nothing
-									~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-								<ProductDescription RecordPos="OD" LPos="43" UPos="122"/>
-								<OrderedQuantity RecordPos="OD" LPos="125" UPos="129">
-									<ffsAttribute1 name="UnitOfMeasure" RecordPos="OD" LPos="123" UPos="124"/>
-								</OrderedQuantity>
-								<ConfirmedQuantity RecordPos="OD" LPos="130" UPos="134">
-									<ffsAttribute1 name="UnitOfMeasure" RecordPos="OD" LPos="123" UPos="124"/>
-								</ConfirmedQuantity>
-								<UnitValueExclVAT RecordPos="OD" LPos="166" UPos="178"/>
-							</PurchaseOrderConfirmationLine>
-							<!-- /////////////////////////////// -->
-						</PurchaseOrderConfirmationDetail>
-					</PurchaseOrderConfirmation>
-				</BatchDocument>
-			</BatchDocuments>
-		</Batch>
+	<PurchaseOrderConfirmation>
+		<TradeSimpleHeader>
+			<SendersCodeForRecipient RecordPos="OH" LPos="11" UPos="25"/>
+			<SendersBranchReference RecordPos="OH" LPos="3" UPos="5"/>
+		</TradeSimpleHeader>
+		<PurchaseOrderConfirmationHeader>
+			<Buyer>
+				<BuyersLocationID>
+					<SuppliersCode RecordPos="OH" LPos="11" UPos="25"/>
+				</BuyersLocationID>
+			</Buyer>
+			<ShipTo>
+				<ShipToLocationID>
+					<SuppliersCode RecordPos="OH" LPos="11" UPos="25"/>
+				</ShipToLocationID>
+			</ShipTo>
+			<PurchaseOrderReferences>
+				<PurchaseOrderReference RecordPos="OH" LPos="70" UPos="84"/>
+			</PurchaseOrderReferences>
+			<PurchaseOrderConfirmationReferences>
+				<PurchaseOrderConfirmationReference RecordPos="OH" LPos="85" UPos="94"/>
+				<PurchaseOrderConfirmationDate RecordPos="FH" LPos="7" UPos="14"/>
+			</PurchaseOrderConfirmationReferences>
+			<ConfirmedDeliveryDetails>
+				<DeliveryDate RecordPos="OH" LPos="41" UPos="48"/>
+			</ConfirmedDeliveryDetails>
+		</PurchaseOrderConfirmationHeader>
+			<!-- /////////////////////////////// -->
+		<PurchaseOrderConfirmationDetail>
+			<PurchaseOrderConfirmationLine>
+				<ffsAttribute1 name="LineStatus" RecordPos="OD" LPos="135" UPos="135"/> <!-- if this field is blank in the file, the status is accepted -->
+				<LineNumber RecordPos="OD" LPos="3" UPos="12"/>
+				<ProductID>
+					<SuppliersProductCode RecordPos="OD" LPos="136" UPos="165"/> <!--Original Ordered item Number -->
+				</ProductID>
+				<SubstitutedProductID>
+					<SuppliersProductCode RecordPos="OD" LPos="13" UPos="42"/> <!-- Item Number -->
+				</SubstitutedProductID>
+				<!-- XSL logic ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+					case: ProductID is blank, SubstitutedProductID is populated									action: swap them
+					case: ProductID and SubstitutedProductID are populated with the same number		action: remove SubstitutedProductID
+					case: ProductID and SubstitutedProductID are populated with different numbers		action: do nothing
+					~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+				<ProductDescription RecordPos="OD" LPos="43" UPos="122"/>
+				<OrderedQuantity RecordPos="OD" LPos="125" UPos="129">
+					<ffsAttribute1 name="UnitOfMeasure" RecordPos="OD" LPos="123" UPos="124"/>
+				</OrderedQuantity>
+				<ConfirmedQuantity RecordPos="OD" LPos="130" UPos="134">
+					<ffsAttribute1 name="UnitOfMeasure" RecordPos="OD" LPos="123" UPos="124"/>
+				</ConfirmedQuantity>
+				<UnitValueExclVAT RecordPos="OD" LPos="166" UPos="178"/>
+			</PurchaseOrderConfirmationLine>
+			<!-- /////////////////////////////// -->
+		</PurchaseOrderConfirmationDetail>
+	</PurchaseOrderConfirmation>
 	</ffsRoot>
 </ffsFlatFileSchema>
