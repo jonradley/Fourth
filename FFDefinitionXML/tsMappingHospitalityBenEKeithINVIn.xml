@@ -66,6 +66,8 @@ Map in the BEK fixed-width Invoice format (V16)
 								<InvoiceDate RecordPos="IH" LPos="57" UPos="64"/>
 								<TaxPointDate RecordPos="IH" LPos="57" UPos="64"/>
 							</InvoiceReferences>
+							<!-- map in the doctype (INVO= invoice, CRED=credit ) -->
+							<HeaderExtraData RecordPos="IH" LPos="80" UPos="83"/>
 						</InvoiceHeader>
 						<InvoiceDetail>
 							<InvoiceLine>
