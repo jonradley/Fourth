@@ -238,7 +238,14 @@
 						<PurchaseOrderConfirmationLine>
 						
 							<LineNumber>
-								<xsl:value-of select="LineNumber"/>
+								<xsl:choose>
+									<xsl:when test="LineNumber !=''">
+										<xsl:value-of select="LineNumber"/>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:value-of select="position()"/>
+									</xsl:otherwise>
+								</xsl:choose>
 							</LineNumber>
 						
 							<!-- translate the inbound line status -->
