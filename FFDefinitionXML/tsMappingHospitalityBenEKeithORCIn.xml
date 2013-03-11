@@ -64,9 +64,12 @@ Map in the BEK fixed-width ORC format (V16)
 					<SuppliersProductCode RecordPos="OD" LPos="13" UPos="42"/> <!-- Item Number -->
 				</SubstitutedProductID>
 				<!-- XSL logic ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-					case: ProductID is blank, SubstitutedProductID is populated									action: swap them
 					case: ProductID and SubstitutedProductID are populated with the same number		action: remove SubstitutedProductID
-					case: ProductID and SubstitutedProductID are populated with different numbers		action: do nothing
+					case: ProductID and SubstitutedProductID are populated with different numbers		action: swap them
+					~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+					The way this works is if we’re out of the original item ordered and the customer has approved having substitute or replacement 
+					items then in the item number field is the substitute or replacement we plan on shipping and the original item is placed in the 
+					original ordered item number field and the indicator is a ‘S’ or ‘R’.  
 					~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 				<ProductDescription RecordPos="OD" LPos="43" UPos="122"/>
 				<OrderedQuantity RecordPos="OD" LPos="125" UPos="129">
