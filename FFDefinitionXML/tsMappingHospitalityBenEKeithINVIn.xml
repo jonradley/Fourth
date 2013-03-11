@@ -60,15 +60,26 @@ Map in the BEK fixed-width Invoice format (V16)
 									<AddressLine4 RecordPos="IH" LPos="468" UPos="469"/>
 									<PostCode RecordPos="IH" LPos="470" UPos="479"/>
 								</ShipToAddress>
+								<!-- map in the doctype (INVO= invoice, CRED=credit ) -->
+								<ContactName RecordPos="IH" LPos="80" UPos="83"/>
 							</ShipTo>
 							<InvoiceReferences>
 								<InvoiceReference RecordPos="IH" LPos="6" UPos="25"/>
 								<InvoiceDate RecordPos="IH" LPos="57" UPos="64"/>
 								<TaxPointDate RecordPos="IH" LPos="57" UPos="64"/>
 							</InvoiceReferences>
-							<!-- map in the doctype (INVO= invoice, CRED=credit ) -->
-							<HeaderExtraData RecordPos="IH" LPos="80" UPos="83"/>
 						</InvoiceHeader>
+						<!-- second invoice detail tag for fees, this method might not work - TEST
+						<InvoiceDetail>
+							<InvoiceLine>
+								<ProductID>
+									<SuppliersProductCode RecordPos="IE" LPos="23" UPos="32"/>
+								</ProductID>
+								<ProductDescription RecordPos="IE" LPos="33" UPos="36"/>
+								<UnitValueExclVAT RecordPos="IE" LPos="37" UPos="49"/>
+							</InvoiceLine>
+						</InvoiceDetail>
+						/////////////////////////////// -->
 						<InvoiceDetail>
 							<InvoiceLine>
 								<PurchaseOrderReferences>
@@ -94,15 +105,6 @@ Map in the BEK fixed-width Invoice format (V16)
 								</InvoicedQuantity>
 								<UnitValueExclVAT RecordPos="ID" LPos="76" UPos="88"/>
 							</InvoiceLine>
-							<!-- second invoice line for fees, this method might not work - TEST-->
-							<InvoiceLine>
-								<ProductID>
-									<SuppliersProductCode RecordPos="IE" LPos="23" UPos="32"/>
-								</ProductID>							
-								<ProductDescription RecordPos="IE" LPos="33" UPos="36"/>
-								<UnitValueExclVAT RecordPos="IE" LPos="37" UPos="49"/>
-							</InvoiceLine>
-							<!-- /////////////////////////////// -->
 						</InvoiceDetail>
 						<InvoiceTrailer>
 							<NumberOfLines RecordPos="IH" LPos="549" UPos="555"/>
