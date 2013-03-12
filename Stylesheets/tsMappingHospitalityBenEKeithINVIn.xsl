@@ -32,6 +32,13 @@ Perform transformations on the XML version of the flat file
 		</xsl:call-template>
 	</xsl:template>
 	
+	<!-- concatenate SendersBranchReference and SendersCodeForRecipient fields to SendersCodeForRecipient-->
+	<xsl:template match="SendersCodeForRecipient">
+		<SendersCodeForRecipient>
+			<xsl:value-of select="concat(../SendersBranchReference,'-',.)"/>
+		</SendersCodeForRecipient>
+	</xsl:template>	
+	
 	<!-- format dates for T|S -->
 	<xsl:template match="InvoiceDate | TaxPointDate | PurchaseOrderDate">
 		<xsl:element name="{name()}">
