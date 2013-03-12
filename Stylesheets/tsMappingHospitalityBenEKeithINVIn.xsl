@@ -21,7 +21,7 @@ Perform transformations on the XML version of the flat file
 							then loop through the docs in the variable, applying a different set of trasnformations depending on the doctype
   Author         : H Robson 6189 11/03/2013
  =======================================================================================-->
-	<xsl:template match="/Batch/BatchDocuments">
+	<xsl:template match="/">
 		<!-- variable for new XML -->
 		<xsl:variable name="xmlInboundDocuments">
 			<xsl:apply-templates/>
@@ -95,9 +95,9 @@ Perform transformations on the XML version of the flat file
 										Please use the 8 digit number when referencing invoice number to the customer because that’s what’s on the hard copy.  
 										The credits should be used in the full size of the invoice number because it uses the same 8 digit invoice number so we needed it to be unique.   
 										example credit number: 04551824-C-201302051 example invoice number: 04597847. REMOVE: -I-20130201 -->
-										<xsl:element name="InvoiceReference"><xsl:value-of select="substring(InvoiceReference,1,8)"/></xsl:element>
-										<xsl:element name="InvoiceDate"><xsl:value-of select="InvoiceDate"/></xsl:element>
-										<xsl:element name="TaxPointDate"><xsl:value-of select="TaxPointDate"/></xsl:element>
+										<xsl:element name="InvoiceReference"><xsl:value-of select="substring(InvoiceHeader/InvoiceReferences/InvoiceReference,1,8)"/></xsl:element>
+										<xsl:element name="InvoiceDate"><xsl:value-of select="InvoiceHeader/InvoiceReferences/InvoiceDate"/></xsl:element>
+										<xsl:element name="TaxPointDate"><xsl:value-of select="InvoiceHeader/InvoiceReferences/TaxPointDate"/></xsl:element>
 									</InvoiceReferences>
 								</InvoiceHeader>
 								<InvoiceDetail>
@@ -105,12 +105,12 @@ Perform transformations on the XML version of the flat file
 									<xsl:for-each select="InvoiceDetail/InvoiceLine">
 										<InvoiceLine>
 											<PurchaseOrderReferences>
-												<xsl:element name="PurchaseOrderDate"><xsl:value-of select="PurchaseOrderDate"/></xsl:element>
-												<TradeAgreement><xsl:element name="ContractReference"><xsl:value-of select="ContractReference"/></xsl:element></TradeAgreement>
+												<xsl:element name="PurchaseOrderDate"><xsl:value-of select="PurchaseOrderReferences/PurchaseOrderDate"/></xsl:element>
+												<TradeAgreement><xsl:element name="ContractReference"><xsl:value-of select="PurchaseOrderReferences/TradeAgreement/ContractReference"/></xsl:element></TradeAgreement>
 											</PurchaseOrderReferences>
 											<ProductID>
-												<xsl:element name="GTIN"><xsl:value-of select="GTIN"/></xsl:element>
-												<xsl:element name="SuppliersProductCode"><xsl:value-of select="SuppliersProductCode"/></xsl:element>
+												<xsl:element name="GTIN"><xsl:value-of select="ProductID/GTIN"/></xsl:element>
+												<xsl:element name="SuppliersProductCode"><xsl:value-of select="ProductID/SuppliersProductCode"/></xsl:element>
 											</ProductID>
 											<xsl:element name="ProductDescription"><xsl:value-of select="ProductDescription"/></xsl:element>
 											<xsl:element name="OrderedQuantity">
