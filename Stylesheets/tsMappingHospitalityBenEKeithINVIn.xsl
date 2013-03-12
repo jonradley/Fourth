@@ -70,6 +70,9 @@ Perform transformations on the XML version of the flat file
 					<BatchDocuments>
 						<BatchDocument>
 							<Invoice>
+								<TradeSimpleHeader>
+									<xsl:element name="SendersCodeForRecipient"><xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/></xsl:element>
+								</TradeSimpleHeader>
 								<InvoiceHeader>
 									<Buyer>
 										<BuyersLocationID>
@@ -171,6 +174,9 @@ Perform transformations on the XML version of the flat file
 					<BatchDocuments>
 						<BatchDocument>
 							<CreditNote>
+								<TradeSimpleHeader>
+									<xsl:element name="SendersCodeForRecipient"><xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/></xsl:element>
+								</TradeSimpleHeader>
 								<CreditNoteHeader>
 									<Buyer>
 										<BuyersLocationID>
