@@ -46,6 +46,15 @@ Perform transformations on the XML version of the flat file
 		</xsl:element>
 	</xsl:template>	
 	
+	<!-- convert UoM codes -->
+	<xsl:template match="@UnitOfMeasure">
+		<xsl:choose>
+			<xsl:when test=". = 'CA'"><xsl:text>CS</xsl:text></xsl:when>
+			<xsl:when test=". = 'EA'"><xsl:text>EA</xsl:text></xsl:when>
+			<xsl:when test=". = 'LB'"><xsl:text>PND</xsl:text></xsl:when>
+		</xsl:choose>
+	</xsl:template>
+	
 	<!-- copy template -->
 	<xsl:template match="@*|node()">
 		<xsl:copy>
