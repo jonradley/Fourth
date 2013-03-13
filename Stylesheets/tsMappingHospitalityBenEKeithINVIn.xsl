@@ -46,6 +46,20 @@ Perform transformations on the XML version of the flat file
 		</xsl:element>
 	</xsl:template>	
 	
+	<!-- format values for T|S -->
+	<xsl:template match="OrderedQuantity | DeliveredQuantity | InvoicedQuantity | UnitValueExclVAT | DocumentTotalExclVAT | VATAmount | DocumentTotalInclVAT">
+		<xsl:element name="{name()}">
+			<xsl:value-of select="format-number(.,'#.00')"/>
+		</xsl:element>
+	</xsl:template>	
+	
+	<!-- format numbers for T|S -->
+	<xsl:template match="NumberOfLines | NumberOfItems">
+		<xsl:element name="{name()}">
+			<xsl:value-of select="format-number(.,'#')"/>
+		</xsl:element>
+	</xsl:template>	
+		
 	<!-- convert UoM codes -->
 	<xsl:template match="@UnitOfMeasure">
 		<xsl:choose>
@@ -167,6 +181,16 @@ Perform transformations on the XML version of the flat file
 								<InvoiceTrailer>
 									<xsl:element name="NumberOfLines"><xsl:value-of select="InvoiceTrailer/NumberOfLines"/></xsl:element>
 									<xsl:element name="NumberOfItems"><xsl:value-of select="InvoiceTrailer/NumberOfItems"/></xsl:element>
+									<VATSubTotals>
+										<!-- no VAT in the US so we will create a VAT record showing all lines as tax exempt -->
+										<VATSubTotal VATCode="E" VATRate="0">
+											<NumberOfLinesAtRate><xsl:value-of select="InvoiceTrailer/NumberOfLines"/></NumberOfLinesAtRate>
+											<NumberOfItemsAtRate><xsl:value-of select="InvoiceTrailer/NumberOfItems"/></NumberOfItemsAtRate>
+											<DocumentTotalExclVATAtRate><xsl:value-of select="InvoiceTrailer/DocumentTotalExclVAT"/></DocumentTotalExclVATAtRate>
+											<VATAmountAtRate><xsl:value-of select="number(0)"/></VATAmountAtRate>
+											<DocumentTotalInclVATAtRate><xsl:value-of select="InvoiceTrailer/DocumentTotalInclVAT"/></DocumentTotalInclVATAtRate>
+										</VATSubTotal>
+									</VATSubTotals>
 									<xsl:element name="DocumentTotalExclVAT"><xsl:value-of select="InvoiceTrailer/DocumentTotalExclVAT"/></xsl:element>
 									<xsl:element name="VATAmount"><xsl:value-of select="InvoiceTrailer/VATAmount"/></xsl:element>
 									<xsl:element name="DocumentTotalInclVAT"><xsl:value-of select="InvoiceTrailer/DocumentTotalInclVAT"/></xsl:element>
