@@ -71,9 +71,9 @@ Perform transformations on the XML version of the flat file
 	<xsl:template match="@UnitOfMeasure">
 		<xsl:attribute name="UnitOfMeasure">
 			<xsl:choose>
-				<xsl:when test=". = 'CA'"><xsl:text>CS</xsl:text></xsl:when>
-				<xsl:when test=". = 'EA'"><xsl:text>EA</xsl:text></xsl:when>
-				<xsl:when test=". = 'LB'"><xsl:text>PND</xsl:text></xsl:when>
+				<xsl:when test=". = 'CA'">CS</xsl:when>
+				<xsl:when test=". = 'EA'">EA</xsl:when>
+				<xsl:when test=". = 'LB'">PND</xsl:when>
 			</xsl:choose>
 		</xsl:attribute>
 	</xsl:template>
@@ -124,231 +124,237 @@ Perform transformations on the XML version of the flat file
 		<xsl:param name="vobNode"/>
 
 		<BatchRoot>
-
-			<!-- Generate INVOICES -->
-			<xsl:for-each select="$vobNode/Batch/BatchDocuments/BatchDocument/Invoice[InvoiceHeader/ShipTo/ContactName = 'INVO']">
+			<Document>
+				<xsl:attribute name="TypePrefix"><xsl:text>INV</xsl:text></xsl:attribute>
 				<Batch>
 					<BatchDocuments>
-						<BatchDocument>
-							<Invoice>
-								<TradeSimpleHeader>
-									<xsl:element name="SendersCodeForRecipient"><xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/></xsl:element>
-								</TradeSimpleHeader>
-								<InvoiceHeader>
-									<Buyer>
-										<BuyersLocationID>
-											<xsl:element name="SuppliersCode"><xsl:value-of select="InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode"/></xsl:element>
-										</BuyersLocationID>
-										<xsl:element name="BuyersName"><xsl:value-of select="InvoiceHeader/Buyer/BuyersName"/></xsl:element>
-										<xsl:for-each select="InvoiceHeader/Buyer/BuyersAddress">
-											<BuyersAddress>
-													<xsl:call-template name="addressLineTransformation"/>
-											</BuyersAddress>
+						<!-- Generate INVOICES -->
+						<xsl:for-each select="$vobNode/Batch/BatchDocuments/BatchDocument/Invoice[InvoiceHeader/ShipTo/ContactName = 'INVO']">
+							<BatchDocument>
+								<Invoice>
+									<TradeSimpleHeader>
+										<xsl:element name="SendersCodeForRecipient"><xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/></xsl:element>
+									</TradeSimpleHeader>
+									<InvoiceHeader>
+										<Buyer>
+											<BuyersLocationID>
+												<xsl:element name="SuppliersCode"><xsl:value-of select="InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode"/></xsl:element>
+											</BuyersLocationID>
+											<xsl:element name="BuyersName"><xsl:value-of select="InvoiceHeader/Buyer/BuyersName"/></xsl:element>
+											<xsl:for-each select="InvoiceHeader/Buyer/BuyersAddress">
+												<BuyersAddress>
+														<xsl:call-template name="addressLineTransformation"/>
+												</BuyersAddress>
+											</xsl:for-each>
+										</Buyer>
+										<ShipTo>
+											<ShipToLocationID>
+												<xsl:element name="SuppliersCode"><xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/SuppliersCode"/></xsl:element>
+											</ShipToLocationID>
+											<xsl:element name="ShipToName"><xsl:value-of select="InvoiceHeader/ShipTo/ShipToName"/></xsl:element>
+											<xsl:for-each select="InvoiceHeader/ShipTo/ShipToAddress">
+												<ShipToAddress>
+														<xsl:call-template name="addressLineTransformation"/>
+												</ShipToAddress>
+											</xsl:for-each>
+										</ShipTo>
+										<InvoiceReferences>
+											<!-- On invoice files not credit type the true ben E Keith invoice number is 8 digits and is shown in the first 8 characters of the invoice number field 
+											Please use the 8 digit number when referencing invoice number to the customer because that’s what’s on the hard copy.  
+											The credits should be used in the full size of the invoice number because it uses the same 8 digit invoice number so we needed it to be unique.   
+											example credit number: 04551824-C-201302051 example invoice number: 04597847. REMOVE: -I-20130201 -->
+											<xsl:element name="InvoiceReference"><xsl:value-of select="substring(InvoiceHeader/InvoiceReferences/InvoiceReference,1,8)"/></xsl:element>
+											<xsl:element name="InvoiceDate"><xsl:value-of select="InvoiceHeader/InvoiceReferences/InvoiceDate"/></xsl:element>
+											<xsl:element name="TaxPointDate"><xsl:value-of select="InvoiceHeader/InvoiceReferences/TaxPointDate"/></xsl:element>
+										</InvoiceReferences>
+									</InvoiceHeader>
+									<InvoiceDetail>
+										<!-- LINE DETAIL -->
+										<xsl:for-each select="InvoiceDetail/InvoiceLine">
+											<InvoiceLine>
+												<PurchaseOrderReferences>
+													<xsl:element name="PurchaseOrderReference"><xsl:value-of select="PurchaseOrderReferences/PurchaseOrderReference"/></xsl:element>
+													<xsl:element name="PurchaseOrderDate"><xsl:value-of select="PurchaseOrderReferences/PurchaseOrderDate"/></xsl:element>
+													<TradeAgreement>
+														<xsl:element name="ContractReference"><xsl:value-of select="PurchaseOrderReferences/TradeAgreement/ContractReference"/></xsl:element>
+													</TradeAgreement>
+												</PurchaseOrderReferences>
+												<ProductID>
+													<xsl:element name="GTIN"><xsl:value-of select="ProductID/GTIN"/></xsl:element>
+													<xsl:element name="SuppliersProductCode"><xsl:value-of select="ProductID/SuppliersProductCode"/></xsl:element>
+												</ProductID>
+												<xsl:element name="ProductDescription"><xsl:value-of select="ProductDescription"/></xsl:element>
+												<xsl:element name="OrderedQuantity">
+													<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="OrderedQuantity/@UnitOfMeasure"/></xsl:attribute>
+													<xsl:value-of select="OrderedQuantity"/>
+												</xsl:element>
+												<xsl:element name="DeliveredQuantity">
+													<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="DeliveredQuantity/@UnitOfMeasure"/></xsl:attribute>
+													<xsl:value-of select="DeliveredQuantity"/>
+												</xsl:element>
+												<xsl:element name="InvoicedQuantity">
+													<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="InvoicedQuantity/@UnitOfMeasure"/></xsl:attribute>
+													<xsl:value-of select="InvoicedQuantity"/>
+												</xsl:element>
+												<xsl:element name="UnitValueExclVAT"><xsl:value-of select="UnitValueExclVAT"/></xsl:element>
+												<!-- vat code and rate always exempt -->
+												<VatCode>E</VatCode>
+												<VatRate>0</VatRate>
+											</InvoiceLine>
 										</xsl:for-each>
-									</Buyer>
-									<ShipTo>
-										<ShipToLocationID>
-											<xsl:element name="SuppliersCode"><xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/SuppliersCode"/></xsl:element>
-										</ShipToLocationID>
-										<xsl:element name="ShipToName"><xsl:value-of select="InvoiceHeader/ShipTo/ShipToName"/></xsl:element>
-										<xsl:for-each select="InvoiceHeader/ShipTo/ShipToAddress">
-											<ShipToAddress>
-													<xsl:call-template name="addressLineTransformation"/>
-											</ShipToAddress>
+										<!-- LINE DETAIL: fees and surcharges -->
+										<xsl:for-each select="DeliveryNoteReferences[DeliveryNoteReference != '' and DeliveryNoteDate != '' and DespatchDate !='']">
+											<InvoiceLine>
+												<ProductID>
+													<SuppliersProductCode><xsl:value-of select="concat(DeliveryNoteReference,'-',DeliveryNoteDate)"/></SuppliersProductCode>
+												</ProductID>
+												<ProductDescription>
+													<xsl:choose>
+														<xsl:when test="DeliveryNoteDate = 'FSUR'">Fuel Surcharge</xsl:when>
+														<xsl:when test="DeliveryNoteDate = 'DLVF'">Delivery Fee</xsl:when>
+													</xsl:choose>
+												</ProductDescription>
+												<UnitValueExclVAT><xsl:value-of select="DespatchDate"/></UnitValueExclVAT>
+											</InvoiceLine>
 										</xsl:for-each>
-									</ShipTo>
-									<InvoiceReferences>
-										<!-- On invoice files not credit type the true ben E Keith invoice number is 8 digits and is shown in the first 8 characters of the invoice number field 
-										Please use the 8 digit number when referencing invoice number to the customer because that’s what’s on the hard copy.  
-										The credits should be used in the full size of the invoice number because it uses the same 8 digit invoice number so we needed it to be unique.   
-										example credit number: 04551824-C-201302051 example invoice number: 04597847. REMOVE: -I-20130201 -->
-										<xsl:element name="InvoiceReference"><xsl:value-of select="substring(InvoiceHeader/InvoiceReferences/InvoiceReference,1,8)"/></xsl:element>
-										<xsl:element name="InvoiceDate"><xsl:value-of select="InvoiceHeader/InvoiceReferences/InvoiceDate"/></xsl:element>
-										<xsl:element name="TaxPointDate"><xsl:value-of select="InvoiceHeader/InvoiceReferences/TaxPointDate"/></xsl:element>
-									</InvoiceReferences>
-								</InvoiceHeader>
-								<InvoiceDetail>
-									<!-- LINE DETAIL -->
-									<xsl:for-each select="InvoiceDetail/InvoiceLine">
-										<InvoiceLine>
-											<PurchaseOrderReferences>
-												<xsl:element name="DeliveryNoteReference"><xsl:value-of select="PurchaseOrderReferences/DeliveryNoteReference"/></xsl:element>
-												<xsl:element name="PurchaseOrderDate"><xsl:value-of select="PurchaseOrderReferences/PurchaseOrderDate"/></xsl:element>
-												<TradeAgreement>
-													<xsl:element name="ContractReference"><xsl:value-of select="PurchaseOrderReferences/TradeAgreement/ContractReference"/></xsl:element>
-												</TradeAgreement>
-											</PurchaseOrderReferences>
-											<ProductID>
-												<xsl:element name="GTIN"><xsl:value-of select="ProductID/GTIN"/></xsl:element>
-												<xsl:element name="SuppliersProductCode"><xsl:value-of select="ProductID/SuppliersProductCode"/></xsl:element>
-											</ProductID>
-											<xsl:element name="ProductDescription"><xsl:value-of select="ProductDescription"/></xsl:element>
-											<xsl:element name="OrderedQuantity">
-												<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="OrderedQuantity/@UnitOfMeasure"/></xsl:attribute>
-												<xsl:value-of select="OrderedQuantity"/>
-											</xsl:element>
-											<xsl:element name="DeliveredQuantity">
-												<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="DeliveredQuantity/@UnitOfMeasure"/></xsl:attribute>
-												<xsl:value-of select="DeliveredQuantity"/>
-											</xsl:element>
-											<xsl:element name="InvoicedQuantity">
-												<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="InvoicedQuantity/@UnitOfMeasure"/></xsl:attribute>
-												<xsl:value-of select="InvoicedQuantity"/>
-											</xsl:element>
-											<xsl:element name="UnitValueExclVAT"><xsl:value-of select="UnitValueExclVAT"/></xsl:element>
-											<!-- vat code and rate always exempt -->
-											<VatCode>E</VatCode>
-											<VatRate>0</VatRate>
-										</InvoiceLine>
-									</xsl:for-each>
-									<!-- LINE DETAIL: fees and surcharges -->
-									<xsl:for-each select="DeliveryNoteReferences[DeliveryNoteReference != '' and DeliveryNoteDate != '' and DespatchDate !='']">
-										<InvoiceLine>
-											<ProductID>
-												<SuppliersProductCode><xsl:value-of select="concat(DeliveryNoteReference,'-',DeliveryNoteDate)"/></SuppliersProductCode>
-											</ProductID>
-											<ProductDescription>
-												<xsl:choose>
-													<xsl:when test="DeliveryNoteDate = 'FSUR'">Fuel Surcharge</xsl:when>
-													<xsl:when test="DeliveryNoteDate = 'DLVF'">Delivery Fee</xsl:when>
-												</xsl:choose>
-											</ProductDescription>
-											<UnitValueExclVAT><xsl:value-of select="DespatchDate"/></UnitValueExclVAT>
-										</InvoiceLine>
-									</xsl:for-each>
-								</InvoiceDetail>
-								<!-- Invoice Trailer -->
-								<InvoiceTrailer>
-									<xsl:element name="NumberOfLines"><xsl:value-of select="InvoiceTrailer/NumberOfLines"/></xsl:element>
-									<xsl:element name="NumberOfItems"><xsl:value-of select="InvoiceTrailer/NumberOfItems"/></xsl:element>
-									<VATSubTotals>
-										<!-- no VAT in the US so we will create a VAT record showing all lines as tax exempt -->
-										<VATSubTotal VATCode="E" VATRate="0">
-											<NumberOfLinesAtRate><xsl:value-of select="InvoiceTrailer/NumberOfLines"/></NumberOfLinesAtRate>
-											<NumberOfItemsAtRate><xsl:value-of select="InvoiceTrailer/NumberOfItems"/></NumberOfItemsAtRate>
-											<DocumentTotalExclVATAtRate><xsl:value-of select="InvoiceTrailer/DocumentTotalExclVAT"/></DocumentTotalExclVATAtRate>
-											<VATAmountAtRate><xsl:value-of select="number(0)"/></VATAmountAtRate>
-											<DocumentTotalInclVATAtRate><xsl:value-of select="InvoiceTrailer/DocumentTotalInclVAT"/></DocumentTotalInclVATAtRate>
-										</VATSubTotal>
-									</VATSubTotals>
-									<xsl:element name="DocumentTotalExclVAT"><xsl:value-of select="InvoiceTrailer/DocumentTotalExclVAT"/></xsl:element>
-									<xsl:element name="VATAmount"><xsl:value-of select="InvoiceTrailer/VATAmount"/></xsl:element>
-									<xsl:element name="DocumentTotalInclVAT"><xsl:value-of select="InvoiceTrailer/DocumentTotalInclVAT"/></xsl:element>
-								</InvoiceTrailer>
-							</Invoice>
-						</BatchDocument>
+									</InvoiceDetail>
+									<!-- Invoice Trailer -->
+									<InvoiceTrailer>
+										<xsl:element name="NumberOfLines"><xsl:value-of select="InvoiceTrailer/NumberOfLines"/></xsl:element>
+										<xsl:element name="NumberOfItems"><xsl:value-of select="InvoiceTrailer/NumberOfItems"/></xsl:element>
+										<VATSubTotals>
+											<!-- no VAT in the US so we will create a VAT record showing all lines as tax exempt -->
+											<VATSubTotal VATCode="E" VATRate="0">
+												<NumberOfLinesAtRate><xsl:value-of select="InvoiceTrailer/NumberOfLines"/></NumberOfLinesAtRate>
+												<NumberOfItemsAtRate><xsl:value-of select="InvoiceTrailer/NumberOfItems"/></NumberOfItemsAtRate>
+												<DocumentTotalExclVATAtRate><xsl:value-of select="InvoiceTrailer/DocumentTotalExclVAT"/></DocumentTotalExclVATAtRate>
+												<VATAmountAtRate><xsl:value-of select="number(0)"/></VATAmountAtRate>
+												<DocumentTotalInclVATAtRate><xsl:value-of select="InvoiceTrailer/DocumentTotalInclVAT"/></DocumentTotalInclVATAtRate>
+											</VATSubTotal>
+										</VATSubTotals>
+										<xsl:element name="DocumentTotalExclVAT"><xsl:value-of select="InvoiceTrailer/DocumentTotalExclVAT"/></xsl:element>
+										<xsl:element name="VATAmount"><xsl:value-of select="InvoiceTrailer/VATAmount"/></xsl:element>
+										<xsl:element name="DocumentTotalInclVAT"><xsl:value-of select="InvoiceTrailer/DocumentTotalInclVAT"/></xsl:element>
+									</InvoiceTrailer>
+								</Invoice>
+							</BatchDocument>
+						</xsl:for-each>
 					</BatchDocuments>
 				</Batch>
-			</xsl:for-each>
-		
-			<!-- Generate CREDITS -->
-			<xsl:for-each select="$vobNode/Batch/BatchDocuments/BatchDocument/Invoice[InvoiceHeader/ShipTo/ContactName = 'CRED']">
+			</Document>
+			<Document>
+				<xsl:attribute name="TypePrefix"><xsl:text>CRN</xsl:text></xsl:attribute>
 				<Batch>
 					<BatchDocuments>
-						<BatchDocument>
-							<CreditNote>
-								<TradeSimpleHeader>
-									<xsl:element name="SendersCodeForRecipient"><xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/></xsl:element>
-								</TradeSimpleHeader>
-								<CreditNoteHeader>
-									<Buyer>
-										<BuyersLocationID>
-											<xsl:element name="SuppliersCode"><xsl:value-of select="InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode"/></xsl:element>
-										</BuyersLocationID>
-										<xsl:element name="BuyersName"><xsl:value-of select="InvoiceHeader/Buyer/BuyersName"/></xsl:element>
-										<xsl:for-each select="InvoiceHeader/Buyer/BuyersAddress">
-											<BuyersAddress>
-													<xsl:call-template name="addressLineTransformation"/>
-											</BuyersAddress>
+						<!-- Generate CREDITS -->
+						<xsl:for-each select="$vobNode/Batch/BatchDocuments/BatchDocument/Invoice[InvoiceHeader/ShipTo/ContactName = 'CRED']">
+							<BatchDocument>
+								<CreditNote>
+									<TradeSimpleHeader>
+										<xsl:element name="SendersCodeForRecipient"><xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/></xsl:element>
+									</TradeSimpleHeader>
+									<CreditNoteHeader>
+										<Buyer>
+											<BuyersLocationID>
+												<xsl:element name="SuppliersCode"><xsl:value-of select="InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode"/></xsl:element>
+											</BuyersLocationID>
+											<xsl:element name="BuyersName"><xsl:value-of select="InvoiceHeader/Buyer/BuyersName"/></xsl:element>
+											<xsl:for-each select="InvoiceHeader/Buyer/BuyersAddress">
+												<BuyersAddress>
+														<xsl:call-template name="addressLineTransformation"/>
+												</BuyersAddress>
+											</xsl:for-each>
+										</Buyer>
+										<ShipTo>
+											<ShipToLocationID>
+												<xsl:element name="SuppliersCode"><xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/SuppliersCode"/></xsl:element>
+											</ShipToLocationID>
+											<xsl:element name="ShipToName"><xsl:value-of select="InvoiceHeader/ShipTo/ShipToName"/></xsl:element>
+											<xsl:for-each select="InvoiceHeader/ShipTo/ShipToAddress">
+												<ShipToAddress>
+														<xsl:call-template name="addressLineTransformation"/>
+												</ShipToAddress>
+											</xsl:for-each>
+										</ShipTo>
+										<InvoiceReferences>
+											<!-- On invoice files not credit type the true ben E Keith invoice number is 8 digits and is shown in the first 8 characters of the invoice number field 
+											Please use the 8 digit number when referencing invoice number to the customer because that’s what’s on the hard copy.  
+											The credits should be used in the full size of the invoice number because it uses the same 8 digit invoice number so we needed it to be unique.   
+											example credit number: 04551824-C-201302051 example invoice number: 04597847. REMOVE: -I-20130201 -->
+											<xsl:element name="InvoiceReference"><xsl:value-of select="substring(InvoiceHeader/InvoiceReferences/InvoiceReference,1,8)"/></xsl:element>
+											<xsl:element name="InvoiceDate"><xsl:value-of select="InvoiceHeader/InvoiceReferences/InvoiceDate"/></xsl:element>
+											<xsl:element name="TaxPointDate"><xsl:value-of select="InvoiceHeader/InvoiceReferences/TaxPointDate"/></xsl:element>
+										</InvoiceReferences>
+										<CreditNoteReferences>
+											<xsl:element name="CreditNoteReference"><xsl:value-of select="InvoiceHeader/InvoiceReferences/InvoiceReference"/></xsl:element>
+											<xsl:element name="CreditNoteDate"><xsl:value-of select="InvoiceHeader/InvoiceReferences/InvoiceDate"/></xsl:element>
+											<xsl:element name="TaxPointDate"><xsl:value-of select="InvoiceHeader/InvoiceReferences/TaxPointDate"/></xsl:element>
+										</CreditNoteReferences>									
+									</CreditNoteHeader>
+									<CreditNoteDetail>
+										<!-- LINE DETAIL -->
+										<xsl:for-each select="InvoiceDetail/InvoiceLine">
+											<CreditNoteLine>
+												<PurchaseOrderReferences>
+													<xsl:element name="PurchaseOrderReference"><xsl:value-of select="PurchaseOrderReferences/PurchaseOrderReference"/></xsl:element>
+													<xsl:element name="PurchaseOrderDate"><xsl:value-of select="PurchaseOrderReferences/PurchaseOrderDate"/></xsl:element>
+													<TradeAgreement>
+														<xsl:element name="ContractReference"><xsl:value-of select="PurchaseOrderReferences/TradeAgreement/ContractReference"/></xsl:element>
+													</TradeAgreement>
+												</PurchaseOrderReferences>
+												<ProductID>
+													<xsl:element name="GTIN"><xsl:value-of select="ProductID/GTIN"/></xsl:element>
+													<xsl:element name="SuppliersProductCode"><xsl:value-of select="ProductID/SuppliersProductCode"/></xsl:element>
+												</ProductID>
+												<xsl:element name="ProductDescription"><xsl:value-of select="ProductDescription"/></xsl:element>
+												<xsl:element name="OrderedQuantity">
+													<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="OrderedQuantity/@UnitOfMeasure"/></xsl:attribute>
+													<xsl:value-of select="OrderedQuantity"/>
+												</xsl:element>
+												<xsl:element name="DeliveredQuantity">
+													<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="DeliveredQuantity/@UnitOfMeasure"/></xsl:attribute>
+													<xsl:value-of select="DeliveredQuantity"/>
+												</xsl:element>
+												<xsl:element name="InvoicedQuantity">
+													<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="InvoicedQuantity/@UnitOfMeasure"/></xsl:attribute>
+													<xsl:value-of select="InvoicedQuantity"/>
+												</xsl:element>
+												<xsl:element name="UnitValueExclVAT"><xsl:value-of select="UnitValueExclVAT"/></xsl:element>
+												<!-- vat code and rate always exempt -->
+												<VatCode>E</VatCode>
+												<VatRate>0</VatRate>
+											</CreditNoteLine>
 										</xsl:for-each>
-									</Buyer>
-									<ShipTo>
-										<ShipToLocationID>
-											<xsl:element name="SuppliersCode"><xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/SuppliersCode"/></xsl:element>
-										</ShipToLocationID>
-										<xsl:element name="ShipToName"><xsl:value-of select="InvoiceHeader/ShipTo/ShipToName"/></xsl:element>
-										<xsl:for-each select="InvoiceHeader/ShipTo/ShipToAddress">
-											<ShipToAddress>
-													<xsl:call-template name="addressLineTransformation"/>
-											</ShipToAddress>
+										<!-- LINE DETAIL: fees and surcharges -->
+										<xsl:for-each select="DeliveryNoteReferences[DeliveryNoteReference != '' and DeliveryNoteDate != '' and DespatchDate !='']">
+											<CreditNoteLine>
+												<ProductID>
+													<SuppliersProductCode><xsl:value-of select="concat(DeliveryNoteReference,'-',DeliveryNoteDate)"/></SuppliersProductCode>
+												</ProductID>
+												<ProductDescription>
+													<xsl:choose>
+														<xsl:when test="DeliveryNoteDate = 'FSUR'">Fuel Surcharge</xsl:when>
+														<xsl:when test="DeliveryNoteDate = 'DLVF'">Delivery Fee</xsl:when>
+													</xsl:choose>
+												</ProductDescription>
+												<UnitValueExclVAT><xsl:value-of select="DespatchDate"/></UnitValueExclVAT>
+											</CreditNoteLine>
 										</xsl:for-each>
-									</ShipTo>
-									<InvoiceReferences>
-										<!-- On invoice files not credit type the true ben E Keith invoice number is 8 digits and is shown in the first 8 characters of the invoice number field 
-										Please use the 8 digit number when referencing invoice number to the customer because that’s what’s on the hard copy.  
-										The credits should be used in the full size of the invoice number because it uses the same 8 digit invoice number so we needed it to be unique.   
-										example credit number: 04551824-C-201302051 example invoice number: 04597847. REMOVE: -I-20130201 -->
-										<xsl:element name="InvoiceReference"><xsl:value-of select="substring(InvoiceHeader/InvoiceReferences/InvoiceReference,1,8)"/></xsl:element>
-										<xsl:element name="InvoiceDate"><xsl:value-of select="InvoiceHeader/InvoiceReferences/InvoiceDate"/></xsl:element>
-										<xsl:element name="TaxPointDate"><xsl:value-of select="InvoiceHeader/InvoiceReferences/TaxPointDate"/></xsl:element>
-									</InvoiceReferences>
-									<CreditNoteReferences>
-										<xsl:element name="CreditNoteReference"><xsl:value-of select="InvoiceHeader/InvoiceReferences/InvoiceReference"/></xsl:element>
-										<xsl:element name="CreditNoteDate"><xsl:value-of select="InvoiceHeader/InvoiceReferences/InvoiceDate"/></xsl:element>
-										<xsl:element name="TaxPointDate"><xsl:value-of select="InvoiceHeader/InvoiceReferences/TaxPointDate"/></xsl:element>
-									</CreditNoteReferences>									
-								</CreditNoteHeader>
-								<CreditNoteDetail>
-									<!-- LINE DETAIL -->
-									<xsl:for-each select="InvoiceDetail/InvoiceLine">
-										<CreditNoteLine>
-											<PurchaseOrderReferences>
-												<xsl:element name="PurchaseOrderDate"><xsl:value-of select="PurchaseOrderDate"/></xsl:element>
-												<TradeAgreement><xsl:element name="ContractReference"><xsl:value-of select="ContractReference"/></xsl:element></TradeAgreement>
-											</PurchaseOrderReferences>
-											<ProductID>
-												<xsl:element name="GTIN"><xsl:value-of select="GTIN"/></xsl:element>
-												<xsl:element name="SuppliersProductCode"><xsl:value-of select="SuppliersProductCode"/></xsl:element>
-											</ProductID>
-											<xsl:element name="ProductDescription"><xsl:value-of select="ProductDescription"/></xsl:element>
-											<xsl:element name="OrderedQuantity">
-												<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="OrderedQuantity/@UnitOfMeasure"/></xsl:attribute>
-												<xsl:value-of select="OrderedQuantity"/>
-											</xsl:element>
-											<xsl:element name="DeliveredQuantity">
-												<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="DeliveredQuantity/@UnitOfMeasure"/></xsl:attribute>
-												<xsl:value-of select="DeliveredQuantity"/>
-											</xsl:element>
-											<xsl:element name="InvoicedQuantity">
-												<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="InvoicedQuantity/@UnitOfMeasure"/></xsl:attribute>
-												<xsl:value-of select="InvoicedQuantity"/>
-											</xsl:element>
-											<xsl:element name="UnitValueExclVAT"><xsl:value-of select="UnitValueExclVAT"/></xsl:element>
-											<!-- vat code and rate always exempt -->
-											<VatCode>E</VatCode>
-											<VatRate>0</VatRate>
-										</CreditNoteLine>
-									</xsl:for-each>
-									<!-- LINE DETAIL: fees and surcharges -->
-									<xsl:for-each select="DeliveryNoteReferences[DeliveryNoteReference != '' and DeliveryNoteDate != '' and DespatchDate !='']">
-										<CreditNoteLine>
-											<ProductID>
-												<SuppliersProductCode><xsl:value-of select="concat(DeliveryNoteReference,'-',DeliveryNoteDate)"/></SuppliersProductCode>
-											</ProductID>
-											<ProductDescription>
-												<xsl:choose>
-													<xsl:when test="DeliveryNoteDate = 'FSUR'">Fuel Surcharge</xsl:when>
-													<xsl:when test="DeliveryNoteDate = 'DLVF'">Delivery Fee</xsl:when>
-												</xsl:choose>
-											</ProductDescription>
-											<UnitValueExclVAT><xsl:value-of select="DespatchDate"/></UnitValueExclVAT>
-										</CreditNoteLine>
-									</xsl:for-each>
-								</CreditNoteDetail>		
-								<!-- Credit Note Trailer -->
-								<CreditNoteTrailer>
-									<xsl:element name="NumberOfLines"><xsl:value-of select="InvoiceTrailer/NumberOfLines"/></xsl:element>
-									<xsl:element name="NumberOfItems"><xsl:value-of select="InvoiceTrailer/NumberOfItems"/></xsl:element>
-									<xsl:element name="DocumentTotalExclVAT"><xsl:value-of select="InvoiceTrailer/DocumentTotalExclVAT"/></xsl:element>
-									<xsl:element name="VATAmount"><xsl:value-of select="InvoiceTrailer/VATAmount"/></xsl:element>
-									<xsl:element name="DocumentTotalInclVAT"><xsl:value-of select="InvoiceTrailer/DocumentTotalInclVAT"/></xsl:element>
-								</CreditNoteTrailer>				
-							</CreditNote>
-						</BatchDocument>
+									</CreditNoteDetail>		
+									<!-- Credit Note Trailer -->
+									<CreditNoteTrailer>
+										<xsl:element name="NumberOfLines"><xsl:value-of select="InvoiceTrailer/NumberOfLines"/></xsl:element>
+										<xsl:element name="NumberOfItems"><xsl:value-of select="InvoiceTrailer/NumberOfItems"/></xsl:element>
+										<xsl:element name="DocumentTotalExclVAT"><xsl:value-of select="InvoiceTrailer/DocumentTotalExclVAT"/></xsl:element>
+										<xsl:element name="VATAmount"><xsl:value-of select="InvoiceTrailer/VATAmount"/></xsl:element>
+										<xsl:element name="DocumentTotalInclVAT"><xsl:value-of select="InvoiceTrailer/DocumentTotalInclVAT"/></xsl:element>
+									</CreditNoteTrailer>				
+								</CreditNote>
+							</BatchDocument>
+						</xsl:for-each>
 					</BatchDocuments>
 				</Batch>
-			</xsl:for-each>
-			
+			</Document>
 		</BatchRoot>
 		
 	</xsl:template>
