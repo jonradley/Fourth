@@ -32,6 +32,13 @@ Perform transformations on the XML version of the flat file
 		</xsl:call-template>
 	</xsl:template>
 	
+	<!-- copy template -->
+	<xsl:template match="@*|node()">
+		<xsl:copy>
+			<xsl:apply-templates select="@*|node()"/>
+		</xsl:copy>
+	</xsl:template>
+	
 	<!-- concatenate SendersBranchReference and SendersCodeForRecipient fields to SendersCodeForRecipient-->
 	<xsl:template match="SendersCodeForRecipient">
 		<SendersCodeForRecipient>
@@ -49,7 +56,7 @@ Perform transformations on the XML version of the flat file
 	<!-- format values for T|S -->
 	<xsl:template match="OrderedQuantity | DeliveredQuantity | InvoicedQuantity | UnitValueExclVAT | DocumentTotalExclVAT | VATAmount | DocumentTotalInclVAT">
 		<xsl:element name="{name()}">
-			<xsl:value-of select="format-number(.,'#.00')"/>
+			<xsl:value-of select="format-number(.,'0.00')"/>
 		</xsl:element>
 	</xsl:template>	
 	
@@ -59,24 +66,55 @@ Perform transformations on the XML version of the flat file
 			<xsl:value-of select="format-number(.,'#')"/>
 		</xsl:element>
 	</xsl:template>	
-		
+
 	<!-- convert UoM codes -->
 	<xsl:template match="@UnitOfMeasure">
-		<xsl:choose>
-			<xsl:when test=". = 'CA'"><xsl:text>CS</xsl:text></xsl:when>
-			<xsl:when test=". = 'EA'"><xsl:text>EA</xsl:text></xsl:when>
-			<xsl:when test=". = 'LB'"><xsl:text>PND</xsl:text></xsl:when>
-		</xsl:choose>
-	</xsl:template>
-	
-	<!-- copy template -->
-	<xsl:template match="@*|node()">
-		<xsl:copy>
-			<xsl:apply-templates select="@*|node()"/>
-		</xsl:copy>
+		<xsl:attribute name="UnitOfMeasure">
+			<xsl:choose>
+				<xsl:when test=". = 'CA'"><xsl:text>CS</xsl:text></xsl:when>
+				<xsl:when test=". = 'EA'"><xsl:text>EA</xsl:text></xsl:when>
+				<xsl:when test=". = 'LB'"><xsl:text>PND</xsl:text></xsl:when>
+			</xsl:choose>
+		</xsl:attribute>
 	</xsl:template>
 
-		
+	<!--=======================================================================================
+  Routine		: addressLineTransformation
+  Description	: replaces blank address lines with full stops
+  Author		: H Robson 6189 13/03/2013
+ =======================================================================================-->
+	<xsl:template name="addressLineTransformation">
+		<xsl:element name="AddressLine1">
+			<xsl:choose>
+				<xsl:when test="AddressLine1 != ''"><xsl:value-of select="AddressLine1"/></xsl:when>
+				<xsl:otherwise><xsl:text>.</xsl:text></xsl:otherwise>
+			</xsl:choose>
+		</xsl:element>
+		<xsl:element name="AddressLine2">
+			<xsl:choose>
+				<xsl:when test="AddressLine2 != ''"><xsl:value-of select="AddressLine2"/></xsl:when>
+				<xsl:otherwise><xsl:text>.</xsl:text></xsl:otherwise>
+			</xsl:choose>
+		</xsl:element>
+		<xsl:element name="AddressLine3">
+			<xsl:choose>
+				<xsl:when test="AddressLine3 != ''"><xsl:value-of select="AddressLine3"/></xsl:when>
+				<xsl:otherwise><xsl:text>.</xsl:text></xsl:otherwise>
+			</xsl:choose>
+		</xsl:element>
+		<xsl:element name="AddressLine4">
+			<xsl:choose>
+				<xsl:when test="AddressLine4 != ''"><xsl:value-of select="AddressLine4"/></xsl:when>
+				<xsl:otherwise><xsl:text>.</xsl:text></xsl:otherwise>
+			</xsl:choose>
+		</xsl:element>
+		<xsl:element name="PostCode">
+			<xsl:choose>
+				<xsl:when test="PostCode != ''"><xsl:value-of select="PostCode"/></xsl:when>
+				<xsl:otherwise><xsl:text>.</xsl:text></xsl:otherwise>
+			</xsl:choose>
+		</xsl:element>
+	</xsl:template>
 	<!--=======================================================================================
   Routine        : mainTransformation
   Description    : creates the output xml as before, except now it is acting on a variable and not directly on the input xml
@@ -102,26 +140,22 @@ Perform transformations on the XML version of the flat file
 											<xsl:element name="SuppliersCode"><xsl:value-of select="InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode"/></xsl:element>
 										</BuyersLocationID>
 										<xsl:element name="BuyersName"><xsl:value-of select="InvoiceHeader/Buyer/BuyersName"/></xsl:element>
-										<BuyersAddress>
-											<xsl:element name="AddressLine1"><xsl:value-of select="InvoiceHeader/Buyer/BuyersAddress/AddressLine1"/></xsl:element>
-											<xsl:element name="AddressLine2"><xsl:value-of select="InvoiceHeader/Buyer/BuyersAddress/AddressLine2"/></xsl:element>
-											<xsl:element name="AddressLine3"><xsl:value-of select="InvoiceHeader/Buyer/BuyersAddress/AddressLine3"/></xsl:element>
-											<xsl:element name="AddressLine4"><xsl:value-of select="InvoiceHeader/Buyer/BuyersAddress/AddressLine4"/></xsl:element>
-											<xsl:element name="PostCode"><xsl:value-of select="InvoiceHeader/Buyer/BuyersAddress/PostCode"/></xsl:element>
-										</BuyersAddress>
+										<xsl:for-each select="InvoiceHeader/Buyer/BuyersAddress">
+											<BuyersAddress>
+													<xsl:call-template name="addressLineTransformation"/>
+											</BuyersAddress>
+										</xsl:for-each>
 									</Buyer>
 									<ShipTo>
 										<ShipToLocationID>
 											<xsl:element name="SuppliersCode"><xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/SuppliersCode"/></xsl:element>
 										</ShipToLocationID>
 										<xsl:element name="ShipToName"><xsl:value-of select="InvoiceHeader/ShipTo/ShipToName"/></xsl:element>
-										<ShipToAddress>
-											<xsl:element name="AddressLine1"><xsl:value-of select="InvoiceHeader/ShipTo/ShipToAddress/AddressLine1"/></xsl:element>
-											<xsl:element name="AddressLine2"><xsl:value-of select="InvoiceHeader/ShipTo/ShipToAddress/AddressLine2"/></xsl:element>
-											<xsl:element name="AddressLine3"><xsl:value-of select="InvoiceHeader/ShipTo/ShipToAddress/AddressLine3"/></xsl:element>
-											<xsl:element name="AddressLine4"><xsl:value-of select="InvoiceHeader/ShipTo/ShipToAddress/AddressLine4"/></xsl:element>
-											<xsl:element name="PostCode"><xsl:value-of select="InvoiceHeader/ShipTo/ShipToAddress/PostCode"/></xsl:element>
-										</ShipToAddress>
+										<xsl:for-each select="InvoiceHeader/ShipTo/ShipToAddress">
+											<ShipToAddress>
+													<xsl:call-template name="addressLineTransformation"/>
+											</ShipToAddress>
+										</xsl:for-each>
 									</ShipTo>
 									<InvoiceReferences>
 										<!-- On invoice files not credit type the true ben E Keith invoice number is 8 digits and is shown in the first 8 characters of the invoice number field 
@@ -138,8 +172,11 @@ Perform transformations on the XML version of the flat file
 									<xsl:for-each select="InvoiceDetail/InvoiceLine">
 										<InvoiceLine>
 											<PurchaseOrderReferences>
+												<xsl:element name="DeliveryNoteReference"><xsl:value-of select="PurchaseOrderReferences/DeliveryNoteReference"/></xsl:element>
 												<xsl:element name="PurchaseOrderDate"><xsl:value-of select="PurchaseOrderReferences/PurchaseOrderDate"/></xsl:element>
-												<TradeAgreement><xsl:element name="ContractReference"><xsl:value-of select="PurchaseOrderReferences/TradeAgreement/ContractReference"/></xsl:element></TradeAgreement>
+												<TradeAgreement>
+													<xsl:element name="ContractReference"><xsl:value-of select="PurchaseOrderReferences/TradeAgreement/ContractReference"/></xsl:element>
+												</TradeAgreement>
 											</PurchaseOrderReferences>
 											<ProductID>
 												<xsl:element name="GTIN"><xsl:value-of select="ProductID/GTIN"/></xsl:element>
@@ -159,6 +196,9 @@ Perform transformations on the XML version of the flat file
 												<xsl:value-of select="InvoicedQuantity"/>
 											</xsl:element>
 											<xsl:element name="UnitValueExclVAT"><xsl:value-of select="UnitValueExclVAT"/></xsl:element>
+											<!-- vat code and rate always exempt -->
+											<VatCode>E</VatCode>
+											<VatRate>0</VatRate>
 										</InvoiceLine>
 									</xsl:for-each>
 									<!-- LINE DETAIL: fees and surcharges -->
@@ -216,26 +256,22 @@ Perform transformations on the XML version of the flat file
 											<xsl:element name="SuppliersCode"><xsl:value-of select="InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode"/></xsl:element>
 										</BuyersLocationID>
 										<xsl:element name="BuyersName"><xsl:value-of select="InvoiceHeader/Buyer/BuyersName"/></xsl:element>
-										<BuyersAddress>
-											<xsl:element name="AddressLine1"><xsl:value-of select="InvoiceHeader/Buyer/BuyersAddress/AddressLine1"/></xsl:element>
-											<xsl:element name="AddressLine2"><xsl:value-of select="InvoiceHeader/Buyer/BuyersAddress/AddressLine2"/></xsl:element>
-											<xsl:element name="AddressLine3"><xsl:value-of select="InvoiceHeader/Buyer/BuyersAddress/AddressLine3"/></xsl:element>
-											<xsl:element name="AddressLine4"><xsl:value-of select="InvoiceHeader/Buyer/BuyersAddress/AddressLine4"/></xsl:element>
-											<xsl:element name="PostCode"><xsl:value-of select="InvoiceHeader/Buyer/BuyersAddress/PostCode"/></xsl:element>
-										</BuyersAddress>
+										<xsl:for-each select="InvoiceHeader/Buyer/BuyersAddress">
+											<BuyersAddress>
+													<xsl:call-template name="addressLineTransformation"/>
+											</BuyersAddress>
+										</xsl:for-each>
 									</Buyer>
 									<ShipTo>
 										<ShipToLocationID>
 											<xsl:element name="SuppliersCode"><xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/SuppliersCode"/></xsl:element>
 										</ShipToLocationID>
 										<xsl:element name="ShipToName"><xsl:value-of select="InvoiceHeader/ShipTo/ShipToName"/></xsl:element>
-										<ShipToAddress>
-											<xsl:element name="AddressLine1"><xsl:value-of select="InvoiceHeader/ShipTo/ShipToAddress/AddressLine1"/></xsl:element>
-											<xsl:element name="AddressLine2"><xsl:value-of select="InvoiceHeader/ShipTo/ShipToAddress/AddressLine2"/></xsl:element>
-											<xsl:element name="AddressLine3"><xsl:value-of select="InvoiceHeader/ShipTo/ShipToAddress/AddressLine3"/></xsl:element>
-											<xsl:element name="AddressLine4"><xsl:value-of select="InvoiceHeader/ShipTo/ShipToAddress/AddressLine4"/></xsl:element>
-											<xsl:element name="PostCode"><xsl:value-of select="InvoiceHeader/ShipTo/ShipToAddress/PostCode"/></xsl:element>
-										</ShipToAddress>
+										<xsl:for-each select="InvoiceHeader/ShipTo/ShipToAddress">
+											<ShipToAddress>
+													<xsl:call-template name="addressLineTransformation"/>
+											</ShipToAddress>
+										</xsl:for-each>
 									</ShipTo>
 									<InvoiceReferences>
 										<!-- On invoice files not credit type the true ben E Keith invoice number is 8 digits and is shown in the first 8 characters of the invoice number field 
@@ -278,6 +314,9 @@ Perform transformations on the XML version of the flat file
 												<xsl:value-of select="InvoicedQuantity"/>
 											</xsl:element>
 											<xsl:element name="UnitValueExclVAT"><xsl:value-of select="UnitValueExclVAT"/></xsl:element>
+											<!-- vat code and rate always exempt -->
+											<VatCode>E</VatCode>
+											<VatRate>0</VatRate>
 										</CreditNoteLine>
 									</xsl:for-each>
 									<!-- LINE DETAIL: fees and surcharges -->
