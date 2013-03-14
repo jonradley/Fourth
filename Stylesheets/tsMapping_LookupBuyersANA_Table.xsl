@@ -27,22 +27,15 @@ AUTHOR:
 	Nigel Emsen, 2nd July 2007. 
 		
 ==========================================================================================================
+ Date      	| Name 					| Description of modification
+==========================================================================================================
+ 14/03/2013	| H Robson				| 6261 Remove SSP staging and Live IDs (deactivate bespoke functionality that was previously coded) 
 -->
 	<data:table>
-	<data:record>
-			<data:ANA>5013546200266</data:ANA>
-			<data:ReturnValue>1</data:ReturnValue>
-			<data:Description>Compass's GLN number.</data:Description>
-		</data:record>
 		<data:record>
 			<data:ANA>5013546085276</data:ANA>
 			<data:ReturnValue>1</data:ReturnValue>
 			<data:Description>Compass's GLN number.</data:Description>
-		</data:record>
-		<data:record>
-			<data:ANA>5027615900022</data:ANA>
-			<data:ReturnValue>1</data:ReturnValue>
-			<data:Description>SSP and MOTO GLN number provided by Makella for staging testing.</data:Description>
 		</data:record>
 	</data:table>	
 
