@@ -224,8 +224,16 @@ Perform transformations on the XML version of the flat file
 										</InvoiceDetail>
 										<!-- Invoice Trailer -->
 										<InvoiceTrailer>
-											<xsl:element name="NumberOfLines"><xsl:value-of select="InvoiceTrailer/NumberOfLines"/></xsl:element>
-											<xsl:element name="NumberOfItems"><xsl:value-of select="InvoiceTrailer/NumberOfItems"/></xsl:element>
+											<xsl:if test="InvoiceTrailer/NumberOfLines &gt; 0">
+												<xsl:element name="NumberOfLines">
+													<xsl:value-of select="InvoiceTrailer/NumberOfLines"/>
+												</xsl:element>
+											</xsl:if>
+											<xsl:if test="InvoiceTrailer/NumberOfItems &gt; 0">
+												<xsl:element name="NumberOfItems">
+													<xsl:value-of select="InvoiceTrailer/NumberOfItems"/>
+												</xsl:element>
+											</xsl:if>
 											<VATSubTotals>
 												<!-- no VAT in the US so we will create a VAT record showing all lines as tax exempt -->
 												<VATSubTotal VATCode="E" VATRate="0">
@@ -325,6 +333,10 @@ Perform transformations on the XML version of the flat file
 														<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="InvoicedQuantity/@UnitOfMeasure"/></xsl:attribute>
 														<xsl:value-of select="InvoicedQuantity"/>
 													</xsl:element>
+													<xsl:element name="CreditedQuantity">
+														<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="InvoicedQuantity/@UnitOfMeasure"/></xsl:attribute>
+														<xsl:value-of select="translate(InvoicedQuantity,'-','')"/>
+													</xsl:element>
 													<xsl:element name="UnitValueExclVAT"><xsl:value-of select="UnitValueExclVAT"/></xsl:element>
 													<!-- vat code and rate always exempt -->
 													<VATCode>E</VATCode>
@@ -344,16 +356,27 @@ Perform transformations on the XML version of the flat file
 														</xsl:choose>
 													</ProductDescription>
 													<UnitValueExclVAT><xsl:value-of select="DespatchDate"/></UnitValueExclVAT>
+													<!-- vat code and rate always exempt -->
+													<VATCode>E</VATCode>
+													<VATRate>0</VATRate>
 												</CreditNoteLine>
 											</xsl:for-each>
 										</CreditNoteDetail>		
 										<!-- Credit Note Trailer -->
 										<CreditNoteTrailer>
-											<xsl:element name="NumberOfLines"><xsl:value-of select="InvoiceTrailer/NumberOfLines"/></xsl:element>
-											<xsl:element name="NumberOfItems"><xsl:value-of select="InvoiceTrailer/NumberOfItems"/></xsl:element>
+											<xsl:if test="InvoiceTrailer/NumberOfLines &gt; 0">
+												<xsl:element name="NumberOfLines">
+													<xsl:value-of select="InvoiceTrailer/NumberOfLines"/>
+												</xsl:element>
+											</xsl:if>
+											<xsl:if test="InvoiceTrailer/NumberOfItems &gt; 0">
+												<xsl:element name="NumberOfItems">
+													<xsl:value-of select="InvoiceTrailer/NumberOfItems"/>
+												</xsl:element>
+											</xsl:if>
 											<xsl:element name="DocumentTotalExclVAT"><xsl:value-of select="InvoiceTrailer/DocumentTotalExclVAT"/></xsl:element>
 											<xsl:element name="VATAmount"><xsl:value-of select="InvoiceTrailer/VATAmount"/></xsl:element>
-											<xsl:element name="DocumentTotalInclVAT"><xsl:value-of select="InvoiceTrailer/DocumentTotalInclVAT"/></xsl:element>
+											<xsl:element name="DocumentTotalInclVAT"><xsl:value-of select="translate(InvoiceTrailer/DocumentTotalInclVAT,'-','')"/></xsl:element>
 										</CreditNoteTrailer>				
 									</CreditNote>
 								</BatchDocument>
