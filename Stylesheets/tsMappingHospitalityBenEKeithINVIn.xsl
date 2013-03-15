@@ -374,7 +374,7 @@ Perform transformations on the XML version of the flat file
 													<xsl:value-of select="InvoiceTrailer/NumberOfItems"/>
 												</xsl:element>
 											</xsl:if>
-											<xsl:element name="DocumentTotalExclVAT"><xsl:value-of select="InvoiceTrailer/DocumentTotalExclVAT"/></xsl:element>
+											<xsl:element name="DocumentTotalExclVAT"><xsl:value-of select="translate(InvoiceTrailer/DocumentTotalExclVAT,'-','')"/></xsl:element>
 											<xsl:element name="VATAmount"><xsl:value-of select="InvoiceTrailer/VATAmount"/></xsl:element>
 											<xsl:element name="DocumentTotalInclVAT"><xsl:value-of select="translate(InvoiceTrailer/DocumentTotalInclVAT,'-','')"/></xsl:element>
 										</CreditNoteTrailer>				
