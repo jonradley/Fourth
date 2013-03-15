@@ -32,6 +32,20 @@ Perform transformations on the XML version of the flat file
 		</xsl:call-template>
 	</xsl:template>
 	
+	<!-- convert UoM codes -->
+	<xsl:template match="node()[@UnitOfMeasure]">
+		<xsl:element name="{name()}">
+			<xsl:attribute name="UnitOfMeasure">
+				<xsl:choose>
+					<xsl:when test="./@UnitOfMeasure = 'CA'">CS</xsl:when>
+					<xsl:when test="./@UnitOfMeasure = 'EA'">EA</xsl:when>
+					<xsl:when test="./@UnitOfMeasure = 'LB'">PND</xsl:when>
+				</xsl:choose>
+			</xsl:attribute>
+			<xsl:value-of select="format-number(.,'0.00')"/>
+		</xsl:element>
+	</xsl:template>
+	
 	<!-- copy template -->
 	<xsl:template match="@*|node()">
 		<xsl:copy>
@@ -66,17 +80,6 @@ Perform transformations on the XML version of the flat file
 			<xsl:value-of select="format-number(.,'#')"/>
 		</xsl:element>
 	</xsl:template>	
-
-	<!-- convert UoM codes -->
-	<xsl:template match="@UnitOfMeasure">
-		<xsl:attribute name="UnitOfMeasure">
-			<xsl:choose>
-				<xsl:when test=". = 'CA'">CS</xsl:when>
-				<xsl:when test=". = 'EA'">EA</xsl:when>
-				<xsl:when test=". = 'LB'">PND</xsl:when>
-			</xsl:choose>
-		</xsl:attribute>
-	</xsl:template>
 
 	<!--=======================================================================================
   Routine		: addressLineTransformation
@@ -199,8 +202,8 @@ Perform transformations on the XML version of the flat file
 													</xsl:element>
 													<xsl:element name="UnitValueExclVAT"><xsl:value-of select="UnitValueExclVAT"/></xsl:element>
 													<!-- vat code and rate always exempt -->
-													<VatCode>E</VatCode>
-													<VatRate>0</VatRate>
+													<VATCode>E</VATCode>
+													<VATRate>0</VATRate>
 												</InvoiceLine>
 											</xsl:for-each>
 											<!-- LINE DETAIL: fees and surcharges -->
@@ -324,8 +327,8 @@ Perform transformations on the XML version of the flat file
 													</xsl:element>
 													<xsl:element name="UnitValueExclVAT"><xsl:value-of select="UnitValueExclVAT"/></xsl:element>
 													<!-- vat code and rate always exempt -->
-													<VatCode>E</VatCode>
-													<VatRate>0</VatRate>
+													<VATCode>E</VATCode>
+													<VATRate>0</VATRate>
 												</CreditNoteLine>
 											</xsl:for-each>
 											<!-- LINE DETAIL: fees and surcharges -->
