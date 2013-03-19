@@ -51,8 +51,6 @@
 				
 				<InvoiceReferences>
 					<InvoiceReference>
-						<!-- Prefix invoice reference with I_ to ensure Adaco.Net doesn't confuse this doc with a credit from the same vendor with the same reference -->
-						<xsl:text>I_</xsl:text>
 						<xsl:value-of select="CreditNoteHeader/InvoiceReferences/InvoiceReference"/>
 					</InvoiceReference>
 					<InvoiceDate>
@@ -62,8 +60,6 @@
 				
 				<CreditNoteReferences>
 					<CreditNoteReference>
-						<!-- Prefix credit reference with C_ to ensure Adaco.Net doesn't confuse this doc with an invoice from the same vendor with the same reference -->
-						<xsl:text>C_</xsl:text>
 						<xsl:value-of select="CreditNoteHeader/CreditNoteReferences/CreditNoteReference"/>
 					</CreditNoteReference>
 					<CreditNoteDate>

@@ -59,7 +59,7 @@
 	<xsl:variable name="SendersBranchReference">
 		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Property/BuyersCode"/>
 		<xsl:value-of select="$HOTEL_SUBDIVISION_SEPERATOR"/>
-		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/BuyersCode"/>
+		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Outlet/BuyersCode"/>
 	</xsl:variable>
 
 	
@@ -109,62 +109,22 @@
 		</ShipTo>
 	</xsl:template>
 	
-	<!-- remove any weird characters from text fields - >
-	<xsl:template match="SpecialDeliveryInstructions | BuyersName | AddressLine1 | AddressLine2 | AddressLine3 | AddressLine4 | PostCode | SuppliersName | ShipToName | ContactName |  ProductDescription | OrderedDeliveryDetailsLineLevel">
-		<xsl:element name="{name()}">
-			<xsl:value-of select="normalize-space(.)"/>
-		</xsl:element>
-	</xsl:template>
-
-	< - remove any weird characters from text fields - >
-	<xsl:template match="BuyersName | AddressLine1 | AddressLine2 | AddressLine3 | AddressLine4">
-		<xsl:element name="{name()}">
-			<xsl:value-of select="normalize-space(.)"/>
-		</xsl:element>
-	</xsl:template>
+	<!-- Ensure line elements are in the correct order -->
+	<xsl:template match="PurchaseOrderLine">
 	
-	< - 3414 remove line break character sequences - >
-	<xsl:template match="SpecialDeliveryInstructions | AddressLine1 | AddressLine2 | AddressLine3 | AddressLine4 ">
-		<xsl:copy>
-			<xsl:call-template name="msReplace">
-				<xsl:with-param name="vsInput" select="normalize-space(.)" />
-				<xsl:with-param name="vsTarget" select="$LINE_BREAK_STRING" />
-				<xsl:with-param name="vsNewValue" select="', '" />
-			</xsl:call-template>	
-		</xsl:copy>
-	</xsl:template-->
-			
-	<!-- Remove Customer Order REf -->
-	<!--xsl:template match="CustomerPurchaseOrderReference"/-->
+		<PurchaseOrderLine>
 		
-	<!-- Remove OrderID -->
-	<!--xsl:template match="OrderID"/-->
+			<xsl:copy-of select="LineNumber"/>
+			<xsl:copy-of select="ProductID"/>
+			<xsl:copy-of select="ProductDescription"/>
+			<xsl:copy-of select="OrderedQuantity"/>
+			<xsl:copy-of select="PackSize"/>
+			<xsl:copy-of select="UnitValueExclVAT"/>
+			<xsl:copy-of select="LineValueExclVAT"/>	
+			
+		</PurchaseOrderLine>
 	
-	<!-- Remove Line Value and Total Value-->
-	<!--xsl:template match="LineValueExclVAT"/-->
+	</xsl:template>
 	
-	<!--xsl:template match="PurchaseOrderTrailer"/-->
-	
-	<!--xsl:template name="msReplace">
-		<xsl:param name="vsInput" />
-		<xsl:param name="vsTarget" />
-		<xsl:param name="vsNewValue" />
-		<xsl:choose>
-			<xsl:when test='contains($vsInput,$vsTarget)'>
-				<xsl:value-of select="substring-before($vsInput,$vsTarget)"/>
-				<xsl:value-of select="$vsNewValue"/>
-				<xsl:call-template name="msReplace">
-					<xsl:with-param name="vsInput" select="substring-after($vsInput,$vsTarget)" />
-					<xsl:with-param name="vsTarget" select="$vsTarget" />
-					<xsl:with-param name="vsNewValue" select="$vsNewValue" />
-				</xsl:call-template>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:value-of select="$vsInput" />
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:template-->
-
-	
-	
+		
 </xsl:stylesheet>
