@@ -40,6 +40,7 @@
 				<xsl:copy-of select="InvoiceHeader/BatchInformation"/>
 				<xsl:copy-of select="InvoiceHeader/Buyer"/>
 				<xsl:copy-of select="InvoiceHeader/Supplier"/>
+				
 				<ShipTo>
 					<ShipToLocationID>
 						<xsl:copy-of select="InvoiceHeader/ShipTo/ShipToLocationID/GLN"/>
@@ -50,14 +51,9 @@
 					<xsl:copy-of select="InvoiceHeader/ShipTo/ShipToName"/>
 					<xsl:copy-of select="InvoiceHeader/ShipTo/ShipToAddress"/>
 				</ShipTo>
-				<!--xsl:element name="InvoiceReferences">
-					<xsl:copy-of select="InvoiceHeader/InvoiceReferences/InvoiceReference"/>
-					<xsl:copy-of select="InvoiceHeader/InvoiceReferences/InvoiceDate"/>
-				</xsl:element-->
+				
 				<InvoiceReferences>
 					<InvoiceReference>
-						<!-- Prefix invoice reference with I_ to ensure Adaco.Net doesn't confuse this doc with a credit from the same vendor with the same reference -->
-						<xsl:text>I_</xsl:text>
 						<xsl:value-of select="InvoiceHeader/InvoiceReferences/InvoiceReference"/>
 					</InvoiceReference>
 					<InvoiceDate>
