@@ -2,7 +2,7 @@
 <!--**************************************************************************************
  Overview
 
-Perform transformations on the XML version of the flat file
+Transformations on the XML version of the flat file - create INVs and CRNs
 ******************************************************************************************
  Module History
 ******************************************************************************************
@@ -13,6 +13,7 @@ Perform transformations on the XML version of the flat file
 				| 							|
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="xsl msxsl">
+	<xsl:include href="tsMappingHospitalityBenEKeithIncludes.xsl"/>
 	<xsl:output method="xml" encoding="UTF-8"/>
 	
 	<!--=======================================================================================
@@ -32,7 +33,7 @@ Perform transformations on the XML version of the flat file
 		</xsl:call-template>
 	</xsl:template>
 	
-	<!-- convert UoM codes -->
+	<!-- convert UoM codes MUST BE DONE BEFORE PRODUCT CODE LOGIC which depends on T|S UoMs -->
 	<xsl:template match="node()[@UnitOfMeasure]">
 		<xsl:element name="{name()}">
 			<xsl:attribute name="UnitOfMeasure">
@@ -185,7 +186,12 @@ Perform transformations on the XML version of the flat file
 													</PurchaseOrderReferences>
 													<ProductID>
 														<xsl:element name="GTIN"><xsl:value-of select="ProductID/GTIN"/></xsl:element>
-														<xsl:element name="SuppliersProductCode"><xsl:value-of select="ProductID/SuppliersProductCode"/></xsl:element>
+														<xsl:element name="SuppliersProductCode">
+															<xsl:call-template name="CompoundProductCodeOperations">
+																<xsl:with-param name="ProductCode" select="ProductID/SuppliersProductCode"/>
+																<xsl:with-param name="UoM" select="OrderedQuantity/@UnitOfMeasure"/>
+															</xsl:call-template>
+														</xsl:element>
 													</ProductID>
 													<xsl:element name="ProductDescription"><xsl:value-of select="ProductDescription"/></xsl:element>
 													<xsl:element name="OrderedQuantity">
@@ -318,7 +324,12 @@ Perform transformations on the XML version of the flat file
 													</PurchaseOrderReferences>
 													<ProductID>
 														<xsl:element name="GTIN"><xsl:value-of select="ProductID/GTIN"/></xsl:element>
-														<xsl:element name="SuppliersProductCode"><xsl:value-of select="ProductID/SuppliersProductCode"/></xsl:element>
+														<xsl:element name="SuppliersProductCode">
+															<xsl:call-template name="CompoundProductCodeOperations">
+																<xsl:with-param name="ProductCode" select="ProductID/SuppliersProductCode"/>
+																<xsl:with-param name="UoM" select="OrderedQuantity/@UnitOfMeasure"/>
+															</xsl:call-template>
+														</xsl:element>
 													</ProductID>
 													<xsl:element name="ProductDescription"><xsl:value-of select="ProductDescription"/></xsl:element>
 													<xsl:element name="OrderedQuantity">
