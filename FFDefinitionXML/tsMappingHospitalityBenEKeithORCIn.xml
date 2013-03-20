@@ -55,7 +55,6 @@ Map in the BEK fixed-width ORC format (V16)
 			<!-- /////////////////////////////// -->
 		<PurchaseOrderConfirmationDetail>
 			<PurchaseOrderConfirmationLine>
-				<ffsAttribute1 name="LineStatus" RecordPos="OD" LPos="135" UPos="135"/> <!-- if this field is blank in the file, the status is accepted -->
 				<LineNumber RecordPos="OD" LPos="3" UPos="12"/>
 				<ProductID>
 					<SuppliersProductCode RecordPos="OD" LPos="136" UPos="165"/> <!--Original Ordered item Number -->
