@@ -10,7 +10,7 @@ R Cambridge	| 2010-10-14		| 3951 Created generic Bavel version from Aramark Spai
 **********************************************************************
 Graham Neicho |	 2011-07-25			| 4635 Added ShipTo/ContactName to Transaction/Comments/Comment/@Msg
 **********************************************************************
-				|						|
+Andrew Barber	| 2013-03-20		| 6275 Un-commented attributes and set value selection in TotalSummary
 **********************************************************************
 				|						|
 *******************************************************************-->
@@ -199,9 +199,9 @@ Graham Neicho |	 2011-07-25			| 4635 Added ShipTo/ContactName to Transaction/Com
 			<TaxSummary/>
 			<FeesSummary/>
 			<DueDates/-->
-			<!--TotalSummary>
+			<TotalSummary>
 			
-				<xsl:attribute name="GrossAmount">
+				<!--xsl:attribute name="GrossAmount">
 					<xsl:value-of select=""/>
 				</xsl:attribute> 
 				<xsl:attribute name="NetAmount">
@@ -209,21 +209,21 @@ Graham Neicho |	 2011-07-25			| 4635 Added ShipTo/ContactName to Transaction/Com
 				</xsl:attribute> 
 				<xsl:attribute name="Discounts">
 					<xsl:value-of select=""/>
-				</xsl:attribute> 
-				<xsl:attribute name="SubTotal">
-					<xsl:value-of select=""/>
-				</xsl:attribute> 
-				<xsl:attribute name="Tax">
-					<xsl:value-of select=""/>
-				</xsl:attribute>
+				</xsl:attribute--> 
 				<xsl:attribute name="Total">
-					<xsl:value-of select=""/>
-				</xsl:attribute>				
-				<xsl:attribute name="GreenDot">
-					<xsl:value-of select=""/>
+					<xsl:value-of select="PurchaseOrderTrailer/TotalExclVAT"/>
 				</xsl:attribute>
+				<xsl:attribute name="Tax">
+					<xsl:text>0</xsl:text>
+				</xsl:attribute>
+				<xsl:attribute name="SubTotal">
+					<xsl:value-of select="PurchaseOrderTrailer/TotalExclVAT"/>
+				</xsl:attribute> 			
+				<!--xsl:attribute name="GreenDot">
+					<xsl:value-of select=""/>
+				</xsl:attribute-->
 				
-			</TotalSummary-->
+			</TotalSummary>
 			
 		</Transaction>
 		
