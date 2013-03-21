@@ -12,6 +12,8 @@ Maps 3663 tradacoms invoices into internal XML
 ==========================================================================================
 06/03/2013	| M Dimant					|	6114: Created. Based on 3663 FFS.
 ==========================================================================================
+21/03/2013	| M Dimant					|	6280: Changed the location we pick up the PO reference from
+==========================================================================================
 -->
 <ffsFlatFileSchema>
 	<ffsSettings>
@@ -198,7 +200,7 @@ Maps 3663 tradacoms invoices into internal XML
 								<LineNumber RecordPos="ILD=" LPos="2"/>
 								<PurchaseOrderReferences>
 									<!-- LPos 2 OPTIONAL Purchase Order Reference, OPTIONAL, INVOIC – ODD – ORNO(1), Should be set to the customer’s order reference.  If the order has been generated without a customer reference then the seller’s order reference may be used -->
-									<PurchaseOrderReference RecordPos="ODD=" LPos="2" SFPos="2"/>
+									<PurchaseOrderReference RecordPos="ODD=" LPos="2" SFPos="1"/>
 									<!-- LPos 2 OPTIONAL Purchase Order Date, OPTIONAL, INVOIC – ODD – ORNO(3), YYMMDD, Must be valid date, and should be set to the order date associated with the reference above -->
 									<PurchaseOrderDate RecordPos="ODD=" LPos="2" SFPos="4"/>
 								</PurchaseOrderReferences>
@@ -214,7 +216,7 @@ Maps 3663 tradacoms invoices into internal XML
 									<!-- Not GTIN - Used to store value of ILD-CRLI for stylesheet use-->
 									<GTIN RecordPos="ILD=" LPos="13"/>
 									<!-- OPTIONAL Supplier’s Product Code, MANDATORY, INVOIC – ILD – SPRO(2), Your unique code for this product -->
-									<SuppliersProductCode RecordPos="ILD=" LPos="3" SFPos="2"/>									
+									<SuppliersProductCode RecordPos="ILD=" LPos="3" SFPos="2"/>
 								</ProductID>
 								<!-- MANDATORY Product Description, OPTIONAL, INVOIC – ILD – TDES(1), While not strictly mandatory, this is a very useful textual piece of information. This will always contain something but may be set to ‘Not Provided’ -->
 								<ProductDescription RecordPos="ILD=" LPos="14" SFPos="1"/>
