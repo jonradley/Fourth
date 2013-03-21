@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--******************************************************************
+<!--*******************************************************************************************************************************************************************
 Alterations
-**********************************************************************
-Name			| Date				| Change
-**********************************************************************
-R Cambridge	| 2008-12-02		| 2600 Created Module (based on tsMappingHospitalityInverarity_Inbound_BASDA_Invoice.xsl)
-********************************************************************************************************************************************
-K O'shaughnessy|	2009-08-13	| 3062 change to pick up invoiced quanity from pack size not amount
-********************************************************************************************************************************************
-M Dimant		|	2011-02-08	| 4213 change to reflect new location of  UOM		
-********************************************************************************************************************************************
-H Robson		|	2012-07-27	| 5606 Map in the SCB	
-*****************************************************************************************************************************************
-M Dimant		|	2013-03-05	| 6116 Map quantity and UOM from a different location. Translate catch-weight UOMs	.	
-********************************************************************************************************************************************
+***********************************************************************************************************************************************************************
+Name					| Date				| Change
+***********************************************************************************************************************************************************************
+R Cambridge			| 2008-12-02		| 2600 Created Module (based on tsMappingHospitalityInverarity_Inbound_BASDA_Invoice.xsl)
+*************************************************************************************************************************************************************************
+K O'shaughnessy	|	2009-08-13	| 3062 change to pick up invoiced quanity from pack size not amount
+************************************************************************************************************************************************************************
+M Dimant				|	2011-02-08	| 4213 change to reflect new location of  UOM		
+************************************************************************************************************************************************************************
+H Robson				|	2012-07-27	| 5606 Map in the SCB	
+************************************************************************************************************************************************************************
+M Dimant				|	2013-03-05	| 6116 Map quantity and UOM from a different location. Translate catch-weight UOMs	.	
+************************************************************************************************************************************************************************
+M Dimant				|	2013-03-20	| 6274 Change where we pick up quantities when calculating NumberOfItems. Additional UOM conversions 	
+************************************************************************************************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	<xsl:output method="xml"/>
@@ -294,7 +296,7 @@ M Dimant		|	2013-03-05	| 6116 Map quantity and UOM from a different location. Tr
 									<xsl:value-of select="count(//InvoiceLine)"/>
 								</NumberOfLines>
 								<NumberOfItems>
-									<xsl:value-of select="sum(//InvoiceLine/Price/Units)"/>
+									<xsl:value-of select="sum(//InvoiceLine/Quantity/Amount)"/>
 								</NumberOfItems>
 								<!-- EAN.UCC only allows for one delivery per Invoice -->
 								<NumberOfDeliveries>
@@ -458,7 +460,9 @@ M Dimant		|	2013-03-05	| 6116 Map quantity and UOM from a different location. Tr
 				<xsl:when test="$sInput ='TRAY'">EA</xsl:when>
 				<xsl:when test="$sInput ='TUB'">EA</xsl:when>
 				<xsl:when test="$sInput ='KG'">KGM</xsl:when>
+				<xsl:when test="$sInput ='KILO'">KGM</xsl:when>
 				<xsl:when test="$sInput ='Kg'">KGM</xsl:when>
+				<xsl:when test="$sInput ='kg'">KGM</xsl:when>
 				<xsl:otherwise>
 						<xsl:value-of select="$sInput"></xsl:value-of>
 				</xsl:otherwise>

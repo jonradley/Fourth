@@ -6,7 +6,7 @@ Date			|	owner				|	details
 **********************************************************************************************************************************************
 06/03/2013	| M Dimant			| 6116 Map quantity and UOM from a different location. Translate catch-weight UOMs.	
 **********************************************************************************************************************************************
-				|						|
+2013-03-20	| M Dimant			| 6274 Additional UOM conversions 
 **********************************************************************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:egs="urn:eGS:marketplace:eBIS:Extension:1.0">
 	<xsl:output method="xml"/>
@@ -224,7 +224,10 @@ Date			|	owner				|	details
 			<xsl:when test="$sInput ='TRAY'">EA</xsl:when>
 			<xsl:when test="$sInput ='TUB'">EA</xsl:when>
 			<xsl:when test="$sInput ='KG'">KGM</xsl:when>
+			<xsl:when test="$sInput ='KILO'">KGM</xsl:when>
 			<xsl:when test="$sInput ='Kg'">KGM</xsl:when>
+			<xsl:when test="$sInput ='kg'">KGM</xsl:when>
+			
 			<xsl:otherwise>
 					<xsl:value-of select="$sInput"></xsl:value-of>
 			</xsl:otherwise>
