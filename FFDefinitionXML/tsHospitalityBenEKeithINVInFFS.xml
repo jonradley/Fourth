@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--**************************************************************************************
+ Overview
+
+Map in the BEK fixed-width Invoice format (V16)
+"LPos"		start position of the field within the record
+"UPos"		position of end character in field/subfield
+******************************************************************************************
+ Module History
+******************************************************************************************
+ Date         | Name       		| Description of modification
+******************************************************************************************
+ 01/03/2013	| Harold Robson		| FB6189 Created module 
+******************************************************************************************
+				| 							|
+***************************************************************************************-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>chr(13)chr(10)</ffsRecordSeparator>
+		<ffsPadding/>
+		<ffsBatchHeader>
+			<ffsHeaderRecord RecordPos="FH"/>
+		</ffsBatchHeader>
+		<ffsSplitBatchRecord RecordPos="IH"/>
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<BatchHeader/>
+			<BatchDocuments>
+				<BatchDocument>
+					<Invoice>
+						<TradeSimpleHeader>
+							<SendersCodeForRecipient RecordPos="IH" LPos="26" UPos="40"/>
+							<SendersBranchReference RecordPos="IH" LPos="3" UPos="5"/>
+						</TradeSimpleHeader>
+						<InvoiceHeader>
+							<Buyer>
+								<BuyersLocationID>
+									<SuppliersCode RecordPos="IH" LPos="26" UPos="40"/>
+								</BuyersLocationID>
+								<BuyersName RecordPos="IH" LPos="176" UPos="225"/>
+								<BuyersAddress>
+									<AddressLine1 RecordPos="IH" LPos="226" UPos="255"/>
+									<AddressLine2 RecordPos="IH" LPos="256" UPos="285"/>
+									<AddressLine3 RecordPos="IH" LPos="286" UPos="315"/>
+									<AddressLine4 RecordPos="IH" LPos="316" UPos="317"/>
+									<PostCode RecordPos="IH" LPos="318" UPos="327"/>
+								</BuyersAddress>
+							</Buyer>
+							<ShipTo>
+								<ShipToLocationID>
+									<SuppliersCode RecordPos="IH" LPos="26" UPos="40"/>
+								</ShipToLocationID>
+								<ShipToName RecordPos="IH" LPos="328" UPos="377"/>
+								<ShipToAddress>
+									<AddressLine1 RecordPos="IH" LPos="378" UPos="407"/>
+									<AddressLine2 RecordPos="IH" LPos="408" UPos="437"/>
+									<AddressLine3 RecordPos="IH" LPos="438" UPos="467"/>
+									<AddressLine4 RecordPos="IH" LPos="468" UPos="469"/>
+									<PostCode RecordPos="IH" LPos="470" UPos="479"/>
+								</ShipToAddress>
+								<!-- map in the doctype (INVO= invoice, CRED=credit ) -->
+								<ContactName RecordPos="IH" LPos="80" UPos="83"/>
+							</ShipTo>
+							<InvoiceReferences>
+								<InvoiceReference RecordPos="IH" LPos="6" UPos="25"/>
+								<InvoiceDate RecordPos="IH" LPos="57" UPos="64"/>
+								<TaxPointDate RecordPos="IH" LPos="57" UPos="64"/>
+							</InvoiceReferences>
+						</InvoiceHeader>
+						<InvoiceDetail>
+							<InvoiceLine>
+								<PurchaseOrderReferences>
+									<PurchaseOrderReference RecordPos="IH" LPos="65" UPos="79"/>
+									<PurchaseOrderDate RecordPos="IH" LPos="49" UPos="56"/>
+									<TradeAgreement>
+										<ContractReference RecordPos="IH" LPos="136" UPos="155"/>
+									</TradeAgreement>
+								</PurchaseOrderReferences>
+								<!-- fees/surcharges are sent on a seperate record, they will need to be mapped into InvoiceLines but the FFM will not do that
+								put them here and correct in the XSL -->
+								<DeliveryNoteReferences>
+									<DeliveryNoteReference RecordPos="IE" LPos="23" UPos="32"/> <!--Line Item Number -->
+									<DeliveryNoteDate RecordPos="IE" LPos="33" UPos="36"/> <!-- Fee Code -->
+									<DespatchDate  RecordPos="IE" LPos="37" UPos="49"/> <!-- Fee Amount -->
+								</DeliveryNoteReferences>
+								<!--////////////////////////////// -->
+								<ProductID>
+									<GTIN RecordPos="ID" LPos="211" UPos="224"/>
+									<SuppliersProductCode RecordPos="ID" LPos="33" UPos="52"/>
+								</ProductID>
+								<ProductDescription RecordPos="ID" LPos="111" UPos="190"/>
+								<OrderedQuantity RecordPos="ID" LPos="55" UPos="61">
+									<ffsAttribute1 name="UnitOfMeasure" RecordPos="ID" LPos="53" UPos="54"/>
+								</OrderedQuantity>
+								<DeliveredQuantity RecordPos="ID" LPos="69" UPos="75">
+									<ffsAttribute1 name="UnitOfMeasure" RecordPos="ID" LPos="53" UPos="54"/>
+								</DeliveredQuantity>
+								<InvoicedQuantity RecordPos="ID" LPos="62" UPos="68">
+									<ffsAttribute1 name="UnitOfMeasure" RecordPos="ID" LPos="53" UPos="54"/>
+								</InvoicedQuantity>
+								<UnitValueExclVAT RecordPos="ID" LPos="76" UPos="88"/>
+							</InvoiceLine>
+						</InvoiceDetail>
+						<InvoiceTrailer>
+							<NumberOfLines RecordPos="IH" LPos="549" UPos="555"/>
+							<NumberOfItems RecordPos="IH" LPos="542" UPos="548"/>
+							<DocumentTotalExclVAT RecordPos="IH" LPos="84" UPos="96"/>
+							<VATAmount RecordPos="IH" LPos="97" UPos="109"/>
+							<DocumentTotalInclVAT RecordPos="IH" LPos="123" UPos="135"/>
+						</InvoiceTrailer>
+					</Invoice>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>
