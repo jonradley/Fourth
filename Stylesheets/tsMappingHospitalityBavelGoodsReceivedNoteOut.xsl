@@ -10,7 +10,7 @@ R Cambridge	| 2010-10-14		| 3951 Created generic Bavel version from Aramark Spai
 **********************************************************************
 H Robson		| 2012-03-20		| 5335 Changes to structure of Bavel GRN mapper			
 **********************************************************************
-				|						|
+Andrew Barber	| 2013-03-22		| 6275 Un-commented attributes and set value selection in TotalSummary
 **********************************************************************
 				|						|
 *******************************************************************-->
@@ -218,9 +218,9 @@ H Robson		| 2012-03-20		| 5335 Changes to structure of Bavel GRN mapper
 			<TaxSummary/>
 			<FeesSummary/>
 			<DueDates/-->
-			<!--TotalSummary>
+			<TotalSummary>
 			
-				<xsl:attribute name="GrossAmount">
+				<!--xsl:attribute name="GrossAmount">
 					<xsl:value-of select=""/>
 				</xsl:attribute> 
 				<xsl:attribute name="NetAmount">
@@ -228,21 +228,21 @@ H Robson		| 2012-03-20		| 5335 Changes to structure of Bavel GRN mapper
 				</xsl:attribute> 
 				<xsl:attribute name="Discounts">
 					<xsl:value-of select=""/>
-				</xsl:attribute> 
-				<xsl:attribute name="SubTotal">
-					<xsl:value-of select=""/>
-				</xsl:attribute> 
-				<xsl:attribute name="Tax">
-					<xsl:value-of select=""/>
-				</xsl:attribute>
+				</xsl:attribute--> 
 				<xsl:attribute name="Total">
-					<xsl:value-of select=""/>
-				</xsl:attribute>				
-				<xsl:attribute name="GreenDot">
-					<xsl:value-of select=""/>
+					<xsl:value-of select="GoodsReceivedNoteTrailer/TotalExclVAT"/>
 				</xsl:attribute>
+				<xsl:attribute name="Tax">
+					<xsl:text>0</xsl:text>
+				</xsl:attribute>
+				<xsl:attribute name="SubTotal">
+					<xsl:value-of select="GoodsReceivedNoteTrailer/TotalExclVAT"/>
+				</xsl:attribute> 				
+				<!--xsl:attribute name="GreenDot">
+					<xsl:value-of select=""/>
+				</xsl:attribute-->
 				
-			</TotalSummary-->
+			</TotalSummary>
 			
 		</Transaction>
 		
