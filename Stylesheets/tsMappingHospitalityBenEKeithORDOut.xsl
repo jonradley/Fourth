@@ -20,8 +20,8 @@ Map Out to the BEK Order format (V16)
 	<xsl:template match="/PurchaseOrder">
 		
 		<!-- BEK Branch indicator and BEK Customer number are concatenated to the TR code with a hyphen -->
-		<xsl:variable name="branchIndicator" select="substring-before(/PurchaseOrder/PurchaseOrderHeader/ShipTo/SuppliersCode,'-')"/>
-		<xsl:variable name="deliveryDate" select="/PurchaseOrder/PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate"/> <!-- YYYY-MM-DD -->
+		<xsl:variable name="branchIndicator" select="substring-before(PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode,'-')"/>
+		<xsl:variable name="deliveryDate" select="PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate"/> <!-- YYYY-MM-DD -->
 	
 		<xsl:for-each select="PurchaseOrderDetail/PurchaseOrderLine">
 
@@ -39,7 +39,7 @@ Map Out to the BEK Order format (V16)
 			</xsl:choose>
 			<xsl:value-of select="$delimiter"/>
 			<!-- BEK Customer number -->
-			<xsl:value-of select="substring-after(/PurchaseOrder/PurchaseOrderHeader/ShipTo/SuppliersCode,'-')"/>
+			<xsl:value-of select="substring-after(../../PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode,'-')"/>
 			<xsl:value-of select="$delimiter"/>
 			<!-- BEK Item number -->
 			<xsl:value-of select="ProductID/SuppliersProductCode"/>
@@ -63,7 +63,7 @@ Map Out to the BEK Order format (V16)
 			<!-- This field is intentionally left blank -->
 			<xsl:value-of select="$delimiter"/>
 			<!-- PO Number -->
-			<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
+			<xsl:value-of select="/PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
 			<!-- new line -->
 			<xsl:if test="position() != last()"><xsl:text>&#13;&#10;</xsl:text></xsl:if>
 			
