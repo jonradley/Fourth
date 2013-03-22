@@ -25,41 +25,41 @@ Map in the BEK fixed-width CAT format (V16)
 		<ffsSplitBatchRecord RecordPos="OH"/>
 	</ffsSettings>
 	<ffsRoot>
-		<PriceCatalog>
-			<PriceCatHeader>
-				<ValidStartDate RecordPos="FH" LPos="7" UPos="14"/>
-				<ListOfDescription>
-					<Description>Ben E Keith product catalogue</Description>
-				</ListOfDescription>
-				<CatHdrRef>
-					<PriceCat>
-						<RefNum>bekcat</RefNum>
-					</PriceCat>
-				</CatHdrRef>
-			</PriceCatHeader>
-			<ListOfPriceCatAction>
-				<PriceCatAction>
-					<PriceCatDetail>
-						<PriceAction>Add</PriceAction>
-						<PartNum>
-							<PartID RecordPos="OD" LPos="8" UPos="27"/>
-						</PartNum>
-						<ListOfDescription>
-							<Description RecordPos="OD" LPos="58" UPos="137"/>
-						</ListOfDescription>
-						<ListOfKeyVal>
-							<KeyVal_PackSize RecordPos="OD" LPos="147" UPos="161"/>
-							<KeyVal_UOM RecordPos="OD" LPos="323" UPos="324"/>
-							<!--<KeyVal_Group/>-->
-						</ListOfKeyVal>
-						<ListOfPrice>
-							<Price>
-								<UnitPrice RecordPos="OD" LPos="310" UPos="322"/>
-							</Price>
-						</ListOfPrice>
-					</PriceCatDetail>
-				</PriceCatAction>
-			</ListOfPriceCatAction>
-		</PriceCatalog>
+					<PriceCatalog>
+						<PriceCatHeader>
+							<ValidStartDate RecordPos="FH" LPos="7" UPos="14"/>
+							<!--<ListOfDescription>
+								<Description>Ben E Keith product catalogue</Description>
+							</ListOfDescription>
+							<CatHdrRef>
+								<PriceCat>
+									<RefNum>bekcat</RefNum>
+								</PriceCat>
+							</CatHdrRef>-->
+						</PriceCatHeader>
+						<ListOfPriceCatAction>
+							<PriceCatAction>
+								<PriceCatDetail>
+									<!-- <PriceAction>Add</PriceAction> do this in stylesheet -->
+									<PartNum>
+										<PartID RecordPos="OD" LPos="8" UPos="27"/>
+									</PartNum>
+									<ListOfDescription>
+										<Description RecordPos="OD" LPos="58" UPos="137"/>
+									</ListOfDescription>
+									<ListOfKeyVal>
+										<KeyVal_PackSize RecordPos="OD" LPos="147" UPos="161"/>
+										<KeyVal_UOM RecordPos="OD" LPos="323" UPos="324"/>
+										<!--<KeyVal_Group/>-->
+									</ListOfKeyVal>
+									<ListOfPrice>
+										<Price>
+											<UnitPrice RecordPos="OD" LPos="310" UPos="322"/>
+										</Price>
+									</ListOfPrice>
+								</PriceCatDetail>
+							</PriceCatAction>
+						</ListOfPriceCatAction>
+					</PriceCatalog>
 	</ffsRoot>
 </ffsFlatFileSchema>
