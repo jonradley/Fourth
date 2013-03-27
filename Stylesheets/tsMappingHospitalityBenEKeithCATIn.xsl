@@ -18,13 +18,7 @@ Perform transformations on the XML version of the flat file
 
 	<xsl:template match="/">
 		<BatchRoot>
-			<Batch>
-				<BatchDocuments>
-					<BatchDocument>
-						<xsl:apply-templates/>
-					</BatchDocument>
-				</BatchDocuments>
-			</Batch>
+			<xsl:apply-templates/>
 		</BatchRoot>
 	</xsl:template>
 	
