@@ -63,7 +63,7 @@ Map Out to the BEK Order format (V16)
 			<!-- This field is intentionally left blank -->
 			<xsl:value-of select="$delimiter"/>
 			<!-- PO Number -->
-			<xsl:value-of select="/PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
+			<xsl:value-of select="../../PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
 			<!-- new line -->
 			<xsl:if test="position() != last()"><xsl:text>&#13;&#10;</xsl:text></xsl:if>
 			
