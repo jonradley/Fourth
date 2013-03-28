@@ -22,7 +22,7 @@
 '******************************************************************************************
 ' 24/07/2012 | M Dimant | 5591 Changes to handle discounts in the trailer.
 '******************************************************************************************
-' 27/03/2013 | H Robson | 6290 Remove bespoke functionality added ~6 years ago. Reintegrate SSP
+' 27/03/2013 | H Robson | 6291 Remove bespoke functionality added ~6 years ago. Reintegrate SSP
 '******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
@@ -49,7 +49,7 @@
 					<BatchDocument>
 						<CreditNote>
 						
-								<!-- 27/03/2013 HR 6290 - DONT check for SSPs GLN in the include file, just tell the mapper its not there (even if it is) -->
+								<!-- 27/03/2013 HR 6291 - DONT check for SSPs GLN in the include file, just tell the mapper its not there (even if it is) -->
 								<!-- it does need to be there for other integrations (e.g. BOC) but NOT for Reynolds -->
 								<xsl:variable name="sCheckFlag">
 									<xsl:text>0</xsl:text>
