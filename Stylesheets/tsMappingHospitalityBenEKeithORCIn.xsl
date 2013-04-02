@@ -27,6 +27,20 @@ Perform transformations on the XML version of the flat file
 			</Batch>
 		</BatchRoot>
 	</xsl:template>
+		
+	<!-- convert UoM codes MUST BE DONE BEFORE PRODUCT CODE LOGIC which depends on T|S UoMs -->
+	<xsl:template match="node()[@UnitOfMeasure]">
+		<xsl:element name="{name()}">
+			<xsl:attribute name="UnitOfMeasure">
+				<xsl:choose>
+					<xsl:when test="./@UnitOfMeasure = 'CA'">CS</xsl:when>
+					<xsl:when test="./@UnitOfMeasure = 'EA'">EA</xsl:when>
+					<xsl:when test="./@UnitOfMeasure = 'LB'">PND</xsl:when>
+				</xsl:choose>
+			</xsl:attribute>
+			<xsl:value-of select="format-number(.,'0.00')"/>
+		</xsl:element>
+	</xsl:template>
 	
 	<!-- GENERIC HANDLER to copy unchanged nodes, will be overridden by any node-specific templates below -->
 	<xsl:template match="*">
@@ -54,20 +68,7 @@ Perform transformations on the XML version of the flat file
 	
 	<!-- remove SBR -->
 	<xsl:template match="SendersBranchReference"/>
-	
-	<!-- convert UoM codes MUST BE DONE BEFORE PRODUCT CODE LOGIC which depends on T|S UoMs -->
-	<xsl:template match="node()[@UnitOfMeasure]">
-		<xsl:element name="{name()}">
-			<xsl:attribute name="UnitOfMeasure">
-				<xsl:choose>
-					<xsl:when test="./@UnitOfMeasure = 'CA'">CS</xsl:when>
-					<xsl:when test="./@UnitOfMeasure = 'EA'">EA</xsl:when>
-					<xsl:when test="./@UnitOfMeasure = 'LB'">PND</xsl:when>
-				</xsl:choose>
-			</xsl:attribute>
-			<xsl:value-of select="format-number(.,'0.00')"/>
-		</xsl:element>
-	</xsl:template>
+
 	
 	<!-- Product Code logic ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		The way this works is if we’re out of the original item ordered and the customer has approved having substitute or replacement 
@@ -88,16 +89,7 @@ Perform transformations on the XML version of the flat file
 							</xsl:call-template>
 						</SuppliersProductCode>
 					</ProductID>
-					<ProductDescription><xsl:value-of select="ProductDescription"/></ProductDescription>
-					<OrderedQuantity>
-						<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="OrderedQuantity/@UnitOfMeasure"/></xsl:attribute>
-						<xsl:value-of select="OrderedQuantity"/>
-					</OrderedQuantity>
-					<ConfirmedQuantity>
-						<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="ConfirmedQuantity/@UnitOfMeasure"/></xsl:attribute>
-						<xsl:value-of select="ConfirmedQuantity"/>
-					</ConfirmedQuantity>
-					<UnitValueExclVAT><xsl:value-of select="UnitValueExclVAT"/></UnitValueExclVAT>
+					<xsl:apply-templates/>
 				</PurchaseOrderConfirmationLine>
 				</xsl:when>
 			<!-- case: ProductID and SubstitutedProductID are populated with different numbers		action: swap them -->
@@ -120,16 +112,7 @@ Perform transformations on the XML version of the flat file
 							</xsl:call-template>
 						</SuppliersProductCode>
 					</SubstitutedProductID>
-					<ProductDescription><xsl:value-of select="ProductDescription"/></ProductDescription>
-					<OrderedQuantity>
-						<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="OrderedQuantity/@UnitOfMeasure"/></xsl:attribute>
-						<xsl:value-of select="OrderedQuantity"/>
-					</OrderedQuantity>
-					<ConfirmedQuantity>
-						<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="ConfirmedQuantity/@UnitOfMeasure"/></xsl:attribute>
-						<xsl:value-of select="ConfirmedQuantity"/>
-					</ConfirmedQuantity>
-					<UnitValueExclVAT><xsl:value-of select="UnitValueExclVAT"/></UnitValueExclVAT>
+					<xsl:apply-templates/>
 				</PurchaseOrderConfirmationLine>
 				</xsl:when>
 		</xsl:choose>
