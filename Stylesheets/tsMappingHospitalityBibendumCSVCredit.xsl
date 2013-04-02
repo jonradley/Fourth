@@ -123,6 +123,7 @@ H Robson		|	2013-03-26		| 6285 Added Creative Events
 					<xsl:when test="SendersBranchReference = 'TES15T'">TES15T</xsl:when>					
 					<xsl:when test="SendersBranchReference = 'TES25T'">TES25T</xsl:when>
 					<xsl:when test="SendersBranchReference = 'NOB06T'">ORI05T</xsl:when>
+					<xsl:when test="SendersBranchReference = 'CRE11T'">CRE11T</xsl:when>
 					<xsl:otherwise>
 						<xsl:value-of select="SendersCodeForRecipient"/>
 					</xsl:otherwise>
