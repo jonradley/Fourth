@@ -131,7 +131,7 @@ H Robson		|	2013-03-26		| 6285 Added Creative Events
 			</SendersCodeForRecipient>
 			
 			<!--xsl:if test="SendersBranchReference = 'MIL14T' or SendersBranchReference = 'FMC01T' or SendersBranchReference = 'TES01T'"-->
-			<xsl:if test="contains('MIL14T~COM2012T~FMC01T~TES01T~TES08T~TES12T~TES15T~TES25T~MIT16T',SendersBranchReference)">
+			<xsl:if test="contains('MIL14T~COM2012T~FMC01T~TES01T~TES08T~TES12T~TES15T~TES25T~MIT16T~CRE11T',SendersBranchReference)">
 				<SendersBranchReference>
 					<xsl:value-of select="SendersBranchReference"/>
 				</SendersBranchReference>
