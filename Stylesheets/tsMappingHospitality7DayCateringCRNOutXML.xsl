@@ -93,13 +93,14 @@ M Emanuel	| 29/01/2013	| FB Case 5946 Created New Credit note out mapper
 							<xsl:for-each select="CreditNoteDetail/CreditNoteLine">
 								<xsl:element name="Line">
 									<xsl:element name="ItemEANCode">
-										<xsl:value-of select="ProductID/GTIN"/>
+										<!-- Restrict to first 13 characters -->
+										<xsl:value-of select="substring(ProductID/GTIN,1,13)"/>
 									</xsl:element>
 									<xsl:element name="SuppliersProductCode">
 										<xsl:value-of select="ProductID/SuppliersProductCode"/>
 									</xsl:element>
 									<xsl:element name="Quantity">
-										<xsl:value-of select="CreditNotedQuantity"/>
+										<xsl:value-of select="CreditedQuantity"/>
 									</xsl:element>
 									<xsl:element name="UnitPrice">
 										<xsl:value-of select="UnitValueExclVAT"/>
@@ -112,9 +113,12 @@ M Emanuel	| 29/01/2013	| FB Case 5946 Created New Credit note out mapper
 									</xsl:element>
 									<xsl:element name="ProductDescription">
 										<xsl:value-of select="ProductDescription"/>
-									</xsl:element>
+									</xsl:element>									
 									<xsl:element name="LineDiscountAmount">
-										<xsl:value-of select="LineDiscountValue"/>
+										<xsl:choose>
+											<xsl:when test="LineDiscountValue"><xsl:value-of select="LineDiscountValue"/></xsl:when>
+											<xsl:otherwise>0</xsl:otherwise>
+										</xsl:choose>																					
 									</xsl:element>
 									<xsl:element name="AgreementCode">
 										<xsl:value-of select="PurchaseOrderReferences/TradeAgreement/ContractReference"/>
