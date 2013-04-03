@@ -10,7 +10,7 @@ Perform transformations on the XML version of the flat file
 ******************************************************************************************
  06/03/2013	| Harold Robson		| FB6189 Created module 
 ******************************************************************************************
-				| 							|
+ 02/04/2013	| Harold Robson		| FB6292 Created module 
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 	<xsl:include href="tsMappingHospitalityBenEKeithIncludes.xsl"/>
@@ -75,47 +75,29 @@ Perform transformations on the XML version of the flat file
 		items then in the item number field is the substitute or replacement we plan on shipping and the original item is placed in the 
 		original ordered item number field and the indicator is a ‘S’ or ‘R’.  
 		~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<xsl:template match="PurchaseOrderConfirmationLine">
-		<xsl:choose>
-			<!-- case: ProductID and SubstitutedProductID are populated with the same number		action: remove SubstitutedProductID -->
-			<xsl:when test="ProductID/SuppliersProductCode = SubstitutedProductID/SuppliersProductCode">
-				<PurchaseOrderConfirmationLine>
-					<LineNumber><xsl:value-of select="LineNumber"/></LineNumber>
-					<ProductID>
-						<SuppliersProductCode>
-							<xsl:call-template name="CompoundProductCodeOperations">
-								<xsl:with-param name="ProductCode" select="ProductID/SuppliersProductCode"/>
-								<xsl:with-param name="UoM" select="OrderedQuantity/@UnitOfMeasure"/>
-							</xsl:call-template>
-						</SuppliersProductCode>
-					</ProductID>
-					<xsl:apply-templates/>
-				</PurchaseOrderConfirmationLine>
-				</xsl:when>
-			<!-- case: ProductID and SubstitutedProductID are populated with different numbers		action: swap them -->
-			<xsl:when test="ProductID/SuppliersProductCode != SubstitutedProductID/SuppliersProductCode">
-				<PurchaseOrderConfirmationLine>
-					<LineNumber><xsl:value-of select="LineNumber"/></LineNumber>
-					<ProductID>
-						<SuppliersProductCode>
-							<xsl:call-template name="CompoundProductCodeOperations">
-								<xsl:with-param name="ProductCode" select="SubstitutedProductID/SuppliersProductCode"/>
-								<xsl:with-param name="UoM" select="OrderedQuantity/@UnitOfMeasure"/>
-							</xsl:call-template>
-						</SuppliersProductCode>
-					</ProductID>
-					<SubstitutedProductID>
-						<SuppliersProductCode>
-							<xsl:call-template name="CompoundProductCodeOperations">
-								<xsl:with-param name="ProductCode" select="ProductID/SuppliersProductCode"/>
-								<xsl:with-param name="UoM" select="OrderedQuantity/@UnitOfMeasure"/>
-							</xsl:call-template>
-						</SuppliersProductCode>
-					</SubstitutedProductID>
-					<xsl:apply-templates/>
-				</PurchaseOrderConfirmationLine>
-				</xsl:when>
-		</xsl:choose>
+		
+	<!-- case: ProductID and SubstitutedProductID are populated with different numbers		action: swap them -->
+	<xsl:template match="ProductID/SuppliersProductCode">
+		<SuppliersProductCode>
+			<xsl:call-template name="CompoundProductCodeOperations">
+				<xsl:with-param name="ProductCode" select="../../SubstitutedProductID/SuppliersProductCode"/>
+				<xsl:with-param name="UoM" select="../../OrderedQuantity/@UnitOfMeasure"/>
+			</xsl:call-template>
+		</SuppliersProductCode>
+	</xsl:template>		
+		
+	<!-- case: ProductID and SubstitutedProductID are populated with the same number		action: remove SubstitutedProductID -->
+	<xsl:template match="SubstitutedProductID">
+		<xsl:if test=". != ../ProductID/SuppliersProductCode">
+			<SubstitutedProductID>
+				<SuppliersProductCode>
+					<xsl:call-template name="CompoundProductCodeOperations">
+						<xsl:with-param name="ProductCode" select="../ProductID/SuppliersProductCode"/>
+						<xsl:with-param name="UoM" select="../OrderedQuantity/@UnitOfMeasure"/>
+					</xsl:call-template>
+				</SuppliersProductCode>
+			</SubstitutedProductID>
+		</xsl:if>
 	</xsl:template>
 	
 	<!-- format dates-->
