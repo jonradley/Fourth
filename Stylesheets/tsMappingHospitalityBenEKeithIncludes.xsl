@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--******************************************************************
 Alterations
 **********************************************************************
@@ -18,7 +18,7 @@ H Robson	| 2013-03-19		| 6189 Created Module
 	<xsl:template name="CompoundProductCodeOperations">
 		<xsl:param name="ProductCode" />
 		<xsl:param name="UoM" />
-		<xsl:param name="method" select="join" /> <!-- join, disjoin, validate -->
+		<xsl:param name="method" select="'join'" /> <!-- join, disjoin, validate -->
 		<xsl:param name="separator" select="'&#45;'"/> <!-- minus sign -->
 		
 		<xsl:choose>
@@ -27,9 +27,11 @@ H Robson	| 2013-03-19		| 6189 Created Module
 				<xsl:value-of select="$separator" />
         <!-- Use the Bek UoM codes for the product codes, as they are familiar to them -->
 				<xsl:choose>
-					<xsl:when test="$UoM = 'CS'">CA</xsl:when>
-					<xsl:when test="$UoM = 'EA'">EA</xsl:when>
-					<xsl:when test="$UoM = 'PND'">LB</xsl:when>
+					<xsl:when test="$UoM = 'CA'"><xsl:text>CA</xsl:text></xsl:when>
+					<xsl:when test="$UoM = 'LB'"><xsl:text>LB</xsl:text></xsl:when>
+					<xsl:when test="$UoM = 'CS'"><xsl:text>CA</xsl:text></xsl:when>
+					<xsl:when test="$UoM = 'EA'"><xsl:text>EA</xsl:text></xsl:when>
+					<xsl:when test="$UoM = 'PND'"><xsl:text>LB</xsl:text></xsl:when>
 				</xsl:choose>
 			</xsl:when>
 			<xsl:when test="$method = 'disjoin'">
