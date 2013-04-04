@@ -42,7 +42,7 @@ Map in the BEK fixed-width ORC format (V16)
 				</ShipToLocationID>
 			</ShipTo>
 			<PurchaseOrderReferences>
-				<PurchaseOrderReference RecordPos="OH" LPos="70" UPos="84"/>
+				<PurchaseOrderReference RecordPos="OH" LPos="60" UPos="69"/>
 			</PurchaseOrderReferences>
 			<PurchaseOrderConfirmationReferences>
 				<PurchaseOrderConfirmationReference RecordPos="OH" LPos="85" UPos="94"/>
