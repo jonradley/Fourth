@@ -178,10 +178,10 @@ Transformations on the XML version of the flat file - create INVs and CRNs
 											<xsl:for-each select="InvoiceDetail/InvoiceLine">
 												<InvoiceLine>
 													<PurchaseOrderReferences>
-														<xsl:element name="PurchaseOrderReference"><xsl:value-of select="PurchaseOrderReferences/PurchaseOrderReference"/></xsl:element>
-														<xsl:element name="PurchaseOrderDate"><xsl:value-of select="PurchaseOrderReferences/PurchaseOrderDate"/></xsl:element>
+														<xsl:element name="PurchaseOrderReference"><xsl:value-of select="../InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderReference"/></xsl:element>
+														<xsl:element name="PurchaseOrderDate"><xsl:value-of select="../InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderDate"/></xsl:element>
 														<TradeAgreement>
-															<xsl:element name="ContractReference"><xsl:value-of select="PurchaseOrderReferences/TradeAgreement/ContractReference"/></xsl:element>
+															<xsl:element name="ContractReference"><xsl:value-of select="../InvoiceLine[1]/PurchaseOrderReferences/TradeAgreement/ContractReference"/></xsl:element>
 														</TradeAgreement>
 													</PurchaseOrderReferences>
 													<ProductID>
@@ -316,10 +316,10 @@ Transformations on the XML version of the flat file - create INVs and CRNs
 											<xsl:for-each select="InvoiceDetail/InvoiceLine">
 												<CreditNoteLine>
 													<PurchaseOrderReferences>
-														<xsl:element name="PurchaseOrderReference"><xsl:value-of select="PurchaseOrderReferences/PurchaseOrderReference"/></xsl:element>
-														<xsl:element name="PurchaseOrderDate"><xsl:value-of select="PurchaseOrderReferences/PurchaseOrderDate"/></xsl:element>
+														<xsl:element name="PurchaseOrderReference"><xsl:value-of select="../InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderReference"/></xsl:element>
+														<xsl:element name="PurchaseOrderDate"><xsl:value-of select="../InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderDate"/></xsl:element>
 														<TradeAgreement>
-															<xsl:element name="ContractReference"><xsl:value-of select="PurchaseOrderReferences/TradeAgreement/ContractReference"/></xsl:element>
+															<xsl:element name="ContractReference"><xsl:value-of select="../InvoiceLine[1]/PurchaseOrderReferences/TradeAgreement/ContractReference"/></xsl:element>
 														</TradeAgreement>
 													</PurchaseOrderReferences>
 													<ProductID>
