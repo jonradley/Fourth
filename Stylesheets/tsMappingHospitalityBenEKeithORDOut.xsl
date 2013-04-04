@@ -9,7 +9,7 @@ Map Out to the BEK Order format (V16)
 ==========================================================================================
  01/03/2013	| Harold Robson		| FB6189 Created module
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-				| 							|
+ 01/03/2013	| Harold Robson		| FB6298 BEK requested change (PO ref to be included in both last fields)
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	
@@ -60,8 +60,8 @@ Map Out to the BEK Order format (V16)
 				<xsl:when test="OrderedQuantity/@UnitOfMeasure = 'CS'"><xsl:text>C</xsl:text></xsl:when>
 			</xsl:choose>
 			<xsl:value-of select="$delimiter"/>
-			<!-- This field is intentionally left blank -->
-			<xsl:value-of select="$delimiter"/>
+			<!-- PO Number -->
+			<xsl:value-of select="../../PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
 			<!-- PO Number -->
 			<xsl:value-of select="../../PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
 			<!-- new line -->
