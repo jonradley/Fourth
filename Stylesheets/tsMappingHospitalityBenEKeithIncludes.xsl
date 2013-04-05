@@ -5,6 +5,8 @@ Alterations
 Name		| Date		   	| Change
 **********************************************************************
 H Robson	| 2013-03-19		| 6189 Created Module
+**********************************************************************
+H Robson	| 2013-04-05		| 6298 Disjoin method: if theres no separator just output the whole code
 **********************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes"/>
@@ -37,6 +39,7 @@ H Robson	| 2013-03-19		| 6189 Created Module
 			<xsl:when test="$method = 'disjoin'">
 				<xsl:choose>
 					<xsl:when test="contains($ProductCode,$separator)"><xsl:value-of select="substring-before($ProductCode,$separator)"/></xsl:when>
+					<xsl:otherwise><xsl:value-of select="$ProductCode"/></xsl:otherwise>
 				</xsl:choose>
 			</xsl:when>
 			<xsl:when test="$method = 'validate'">
