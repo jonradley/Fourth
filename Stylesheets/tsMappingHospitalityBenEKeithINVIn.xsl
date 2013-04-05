@@ -10,7 +10,7 @@ Transformations on the XML version of the flat file - create INVs and CRNs
 ******************************************************************************************
  05/03/2013	| Harold Robson		| FB6189 Created module 
 ******************************************************************************************
-				| 							|
+ 05/04/2013	| Harold Robson		| FB6298 fixes
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="xsl msxsl">
 	<xsl:include href="tsMappingHospitalityBenEKeithIncludes.xsl"/>
@@ -174,7 +174,7 @@ Transformations on the XML version of the flat file - create INVs and CRNs
 											</InvoiceReferences>
 										</InvoiceHeader>
 										<InvoiceDetail>
-											<!-- LINE DETAIL -->
+											<!-- INVOICE LINE DETAIL -->
 											<xsl:for-each select="InvoiceDetail/InvoiceLine">
 												<InvoiceLine>
 													<PurchaseOrderReferences>
@@ -185,7 +185,9 @@ Transformations on the XML version of the flat file - create INVs and CRNs
 														</TradeAgreement>
 													</PurchaseOrderReferences>
 													<ProductID>
-														<xsl:element name="GTIN"><xsl:value-of select="ProductID/GTIN"/></xsl:element>
+														<xsl:if test="ProductID/GTIN != ''">
+															<xsl:element name="GTIN"><xsl:value-of select="ProductID/GTIN"/></xsl:element>
+														</xsl:if>
 														<xsl:element name="SuppliersProductCode">
 															<xsl:call-template name="CompoundProductCodeOperations">
 																<xsl:with-param name="ProductCode" select="ProductID/SuppliersProductCode"/>
@@ -312,7 +314,7 @@ Transformations on the XML version of the flat file - create INVs and CRNs
 											</CreditNoteReferences>									
 										</CreditNoteHeader>
 										<CreditNoteDetail>
-											<!-- LINE DETAIL -->
+											<!-- CREDIT LINE DETAIL -->
 											<xsl:for-each select="InvoiceDetail/InvoiceLine">
 												<CreditNoteLine>
 													<PurchaseOrderReferences>
@@ -339,10 +341,6 @@ Transformations on the XML version of the flat file - create INVs and CRNs
 													<xsl:element name="DeliveredQuantity">
 														<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="DeliveredQuantity/@UnitOfMeasure"/></xsl:attribute>
 														<xsl:value-of select="DeliveredQuantity"/>
-													</xsl:element>
-													<xsl:element name="InvoicedQuantity">
-														<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="InvoicedQuantity/@UnitOfMeasure"/></xsl:attribute>
-														<xsl:value-of select="InvoicedQuantity"/>
 													</xsl:element>
 													<xsl:element name="CreditedQuantity">
 														<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="InvoicedQuantity/@UnitOfMeasure"/></xsl:attribute>
