@@ -79,67 +79,72 @@ Date		|	owner				|	details
 											<xsl:value-of select="InvoiceNumber"/>
 										</InvoiceReference>
 										<InvoiceDate>
-											<xsl:value-of select="InvoiceDate"/>
-										</InvoiceDate>
+											<xsl:choose>
+												<xsl:when test="InvoiceDate"><xsl:value-of select="InvoiceDate"/></xsl:when>
+												<xsl:otherwise><xsl:value-of select="WeekEnding"/></xsl:otherwise>
+											</xsl:choose>
+										</InvoiceDate>										
 									</InvoiceReferences>
 								</InvoiceHeader>
 								<InvoiceDetail>
-									<xsl:for-each select="product_lines">
+									<xsl:for-each select="product_lines/product">
 										<InvoiceLine>
 											<LineNumber>
-												<xsl:value-of select="product/@p_count"/>
+												<xsl:value-of select="@p_count"/>
 											</LineNumber>
 											<PurchaseOrderReferences>
 												<PurchaseOrderReference>
-													<xsl:value-of select="../OrderNumber"/>
+													<xsl:value-of select="//Invoices/Invoice/OrderNumber"/>
 												</PurchaseOrderReference>
 											</PurchaseOrderReferences>
-											<DeliveryNoteReferences>
-												<DeliveryNoteReference>
-													<xsl:value-of select="../delivery_note"/>
-												</DeliveryNoteReference>
-												<DeliveryNoteDate>
-													<xsl:value-of select="../delivery_date"/>
-												</DeliveryNoteDate>
-											</DeliveryNoteReferences>
+											<xsl:if test="/Invoices/Invoice/delivery_note !=''">
+												<DeliveryNoteReferences>
+													<DeliveryNoteReference>
+														<xsl:value-of select="/Invoices/Invoice/delivery_note"/>
+													</DeliveryNoteReference>
+													<DeliveryNoteDate>
+														<xsl:value-of select="/Invoices/Invoice/delivery_date"/>
+													</DeliveryNoteDate>
+												</DeliveryNoteReferences>
+											</xsl:if>
 											<ProductID>
 												<SuppliersProductCode>
-													<xsl:value-of select="product/product_code"/>
+													<xsl:value-of select="product_code"/>
 												</SuppliersProductCode>
 											</ProductID>
 											<ProductDescription>
-												<xsl:value-of select="product/product_desc"/>
+												<xsl:value-of select="product_desc"/>
 											</ProductDescription>
 											<InvoicedQuantity>
-												<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="product/Invoice_qty/@size"/></xsl:attribute>
-												<xsl:value-of select="product/Invoice_qty"/>
+												<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="invoice_qty/@size"/></xsl:attribute>
+												<xsl:value-of select="invoice_qty"/>
 											</InvoicedQuantity>
 											<UnitValueExclVAT>
-												<xsl:value-of select="format-number(product/item_price,'0.00')"/>
+												<xsl:value-of select="format-number(item_price,'0.00')"/>
 											</UnitValueExclVAT>
 											<LineValueExclVAT>
-												<xsl:value-of select="format-number(product/item_value,'0.00')"/>
+												<xsl:value-of select="format-number(item_value,'0.00')"/>
 											</LineValueExclVAT>
 											<VATCode>
-												<xsl:value-of select="product/VatDetails/VatCode"/>
+												<xsl:value-of select="VATDetails/VatCode"/>
 											</VATCode>
 											<VATRate>
-												<xsl:value-of select="format-number(product/VatDetails/VatRate,'0.00')"/>
+												<xsl:value-of select="format-number(VATDetails/VatRate,'0.00')"/>
 											</VATRate>
 										</InvoiceLine>
 									</xsl:for-each>
 								</InvoiceDetail>
 								<InvoiceTrailer>
 									<VATSubTotals>
-										<xsl:for-each select="InvoiceTotals/VatRateTotals">
+										<xsl:for-each select="InvoiceTotals/VATRateTotals">
 											<VATSubTotal>
-												<xsl:attribute name="VATCode"><xsl:value-of select="VatDetails/VatCode"/></xsl:attribute>
-												<xsl:attribute name="VATRate"><xsl:value-of select="VatDetails/VatRate"/></xsl:attribute>
+												<xsl:attribute name="VATCode"><xsl:value-of select="VATDetails/VATCode"/></xsl:attribute>
+												<xsl:attribute name="VATRate"><xsl:value-of select="VATDetails/VATRate"/></xsl:attribute>
 												<DocumentTotalExclVATAtRate>
 													<xsl:value-of select="format-number(TaxableAmount,'0.00')"/>
 												</DocumentTotalExclVATAtRate>
 												<VATAmountAtRate>
-													<xsl:value-of select="format-number(VatPayable,'0.00')"/>
+													<xsl:value-of select="format-number(VATPayable,'0.00')"/>
 												</VATAmountAtRate>
 											</VATSubTotal>
 										</xsl:for-each>
@@ -148,7 +153,7 @@ Date		|	owner				|	details
 										<xsl:value-of select="format-number(InvoiceTotals/InvoiceSubTotal,'0.00')"/>
 									</DocumentTotalExclVAT>
 									<VATAmount>
-										<xsl:value-of select="format-number(InvoiceTotals/VatTotal,'0.00')"/>
+										<xsl:value-of select="format-number(InvoiceTotals/VATTotal,'0.00')"/>
 									</VATAmount>
 									<DocumentTotalInclVAT>
 										<xsl:value-of select="format-number(InvoiceTotals/InvoiceTotal,'0.00')"/>
