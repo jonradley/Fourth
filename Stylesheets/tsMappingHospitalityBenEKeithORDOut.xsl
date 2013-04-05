@@ -12,7 +12,7 @@ Map Out to the BEK Order format (V16)
  01/03/2013	| Harold Robson		| FB6298 BEK requested change (PO ref to be included in both last fields)
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
-	
+	<xsl:include href="tsMappingHospitalityBenEKeithIncludes.xsl"/>
 	<xsl:output method="text" encoding="utf-8"/>
 	
 	<xsl:variable name="delimiter" select="'|'"/> <!-- pipe or comma allowed by BEKv16 spec -->
@@ -42,7 +42,10 @@ Map Out to the BEK Order format (V16)
 			<xsl:value-of select="substring-after(../../PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode,'-')"/>
 			<xsl:value-of select="$delimiter"/>
 			<!-- BEK Item number -->
-			<xsl:value-of select="ProductID/SuppliersProductCode"/>
+			<xsl:call-template name="CompoundProductCodeOperations">
+				<xsl:with-param name="ProductCode" select="ProductID/SuppliersProductCode"/>
+				<xsl:with-param name="method" select="'disjoin'"/>
+			</xsl:call-template>
 			<xsl:value-of select="$delimiter"/>
 			<!-- Delivery Date MMDDYYYY -->
 			<xsl:if test="$deliveryDate != ''">
@@ -62,6 +65,7 @@ Map Out to the BEK Order format (V16)
 			<xsl:value-of select="$delimiter"/>
 			<!-- PO Number -->
 			<xsl:value-of select="../../PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
+			<xsl:value-of select="$delimiter"/>
 			<!-- PO Number -->
 			<xsl:value-of select="../../PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
 			<!-- new line -->
