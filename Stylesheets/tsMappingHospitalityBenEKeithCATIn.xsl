@@ -48,8 +48,26 @@ Perform transformations on the XML version of the flat file
 	</xsl:template>
 	
 	<!-- format dates for catalogue loader DD/MM/YYYY -->
+    <xsl:variable name ="MaxStartDate">
+      <xsl:for-each select="//KeyVal_StockItem">
+        <xsl:sort select="KeyVal_StockItem" data-type="number" order="descending"/>
+        <xsl:if test="position() = 1">
+          <xsl:value-of select="." />
+        </xsl:if>
+      </xsl:for-each>
+    </xsl:variable>
+    <xsl:variable name ="MinEndDate">
+      <xsl:for-each select="//KeyVal_IgnorePriceChange">
+        <xsl:sort select="." data-type="number" order="ascending"/>
+        <xsl:if test="position() = 1">
+          <xsl:value-of select="." />
+        </xsl:if>
+      </xsl:for-each>
+    </xsl:variable> 
+    
 	<xsl:template match="ValidStartDate">
-		<ValidStartDate><xsl:value-of select="concat(substring(.,7,2),'/',substring(.,5,2),'/',substring(.,1,4))"/></ValidStartDate>	
+		<ValidStartDate><xsl:value-of select="concat(substring($MaxStartDate,7,2),'/',substring($MaxStartDate,5,2),'/',substring($MaxStartDate,1,4))"/></ValidStartDate>
+		<ValidEndDate><xsl:value-of select="concat(substring($MinEndDate,7,2),'/',substring($MinEndDate,5,2),'/',substring($MinEndDate,1,4))"/></ValidEndDate>
 	</xsl:template>
 	
 	<xsl:template match="PriceCatHeader">
@@ -63,6 +81,12 @@ Perform transformations on the XML version of the flat file
 				</Party>
 			</SupplierParty>
 		</PriceCatHeader>
+	</xsl:template>
+	
+	<xsl:template match="ListOfDescription_Header">
+		<ListOfDescription>
+			<Description><xsl:value-of select="Description_Header"/></Description>
+		</ListOfDescription>
 	</xsl:template>
 	
 	<xsl:template match="PriceCatDetail">
