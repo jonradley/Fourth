@@ -49,6 +49,9 @@ Map in the BEK fixed-width CAT format (V16)
 						<ListOfKeyVal>
 							<KeyVal_PackSize RecordPos="OD" LPos="147" UPos="161"/>
 							<KeyVal_UOM RecordPos="OD" LPos="323" UPos="324"/>
+							<!-- BEK send start and end dates at line level, we'll put them here and move them in the XSL -->
+							<KeyVal_StockItem RecordPos="OD" LPos="294" UPos="301"/> <!-- effective start date -->
+							<KeyVal_IgnorePriceChange RecordPos="OD" LPos="302" UPos="309"/><!-- effective end date -->
 						</ListOfKeyVal>
 						<ListOfPrice>
 							<Price>
