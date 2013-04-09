@@ -23,7 +23,7 @@ Date				|	Name						|	Desc
 			<order_header>
 				<doc_format_ver>1.0</doc_format_ver>
 				<originating_software>
-					<software_name>Mitie Catering</software_name>
+					<software_name><xsl:value-of select="PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersName"/></software_name>
 					<software_ver>1.0</software_ver>
 				</originating_software>
 			</order_header>
@@ -131,7 +131,7 @@ Date				|	Name						|	Desc
 									<item_desc>
 										<xsl:value-of select="ProductDescription"/>
 									</item_desc>
-									<item_variety>Not sure what this is</item_variety>
+									<item_variety></item_variety>
 									<item_size>
 										<xsl:value-of select="PackSize"/>
 									</item_size>
