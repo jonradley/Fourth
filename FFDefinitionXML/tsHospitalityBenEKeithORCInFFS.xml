@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--**************************************************************************************
+ Overview
+
+Map in the BEK fixed-width ORC format (V16)
+"LPos"		start position of the field within the record
+"UPos"		position of end character in field/subfield
+******************************************************************************************
+ Module History
+******************************************************************************************
+ Date         | Name       		| Description of modification
+******************************************************************************************
+ 06/03/2013	| Harold Robson		| FB6189 Created module 
+******************************************************************************************
+				| 							|
+***************************************************************************************-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>chr(13)chr(10)</ffsRecordSeparator>
+		<ffsPadding/>
+		<ffsBatchHeader>
+			<ffsHeaderRecord RecordPos="FH"/>
+		</ffsBatchHeader>
+		<ffsSplitBatchRecord RecordPos="OH"/>
+	</ffsSettings>
+	<ffsRoot>
+	<PurchaseOrderConfirmation>
+		<TradeSimpleHeader>
+			<SendersCodeForRecipient RecordPos="OH" LPos="11" UPos="25"/>
+			<SendersBranchReference RecordPos="OH" LPos="3" UPos="5"/>
+		</TradeSimpleHeader>
+		<PurchaseOrderConfirmationHeader>
+			<Buyer>
+				<BuyersLocationID>
+					<SuppliersCode RecordPos="OH" LPos="11" UPos="25"/>
+				</BuyersLocationID>
+			</Buyer>
+			<ShipTo>
+				<ShipToLocationID>
+					<SuppliersCode RecordPos="OH" LPos="11" UPos="25"/>
+				</ShipToLocationID>
+			</ShipTo>
+			<PurchaseOrderReferences>
+				<PurchaseOrderReference RecordPos="OH" LPos="60" UPos="69"/>
+			</PurchaseOrderReferences>
+			<PurchaseOrderConfirmationReferences>
+				<PurchaseOrderConfirmationReference RecordPos="OH" LPos="85" UPos="94"/>
+				<PurchaseOrderConfirmationDate RecordPos="FH" LPos="7" UPos="14"/>
+			</PurchaseOrderConfirmationReferences>
+			<ConfirmedDeliveryDetails>
+				<DeliveryDate RecordPos="OH" LPos="41" UPos="48"/>
+			</ConfirmedDeliveryDetails>
+		</PurchaseOrderConfirmationHeader>
+			<!-- /////////////////////////////// -->
+		<PurchaseOrderConfirmationDetail>
+			<PurchaseOrderConfirmationLine>
+				<LineNumber RecordPos="OD" LPos="3" UPos="12"/>
+				<ProductID>
+					<SuppliersProductCode RecordPos="OD" LPos="136" UPos="165"/> <!--Original Ordered item Number -->
+				</ProductID>
+				<SubstitutedProductID>
+					<SuppliersProductCode RecordPos="OD" LPos="13" UPos="42"/> <!-- Item Number -->
+				</SubstitutedProductID>
+				<!-- XSL logic ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+					case: ProductID and SubstitutedProductID are populated with the same number		action: remove SubstitutedProductID
+					case: ProductID and SubstitutedProductID are populated with different numbers		action: swap them
+					~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+					The way this works is if we’re out of the original item ordered and the customer has approved having substitute or replacement 
+					items then in the item number field is the substitute or replacement we plan on shipping and the original item is placed in the 
+					original ordered item number field and the indicator is a ‘S’ or ‘R’.  
+					~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+				<ProductDescription RecordPos="OD" LPos="43" UPos="122"/>
+				<OrderedQuantity RecordPos="OD" LPos="125" UPos="129">
+					<ffsAttribute1 name="UnitOfMeasure" RecordPos="OD" LPos="123" UPos="124"/>
+				</OrderedQuantity>
+				<ConfirmedQuantity RecordPos="OD" LPos="130" UPos="134">
+					<ffsAttribute1 name="UnitOfMeasure" RecordPos="OD" LPos="123" UPos="124"/>
+				</ConfirmedQuantity>
+				<UnitValueExclVAT RecordPos="OD" LPos="166" UPos="178"/>
+			</PurchaseOrderConfirmationLine>
+			<!-- /////////////////////////////// -->
+		</PurchaseOrderConfirmationDetail>
+	</PurchaseOrderConfirmation>
+	</ffsRoot>
+</ffsFlatFileSchema>

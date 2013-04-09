@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--******************************************************************
+Alterations
+**********************************************************************
+Name			| Date			| Change
+**********************************************************************
+     ?    	|     ?     	| ?
+**********************************************************************
+R Cambridge	| 29/09/2009	| 3142 read units codes into SCR and Supplier's code for ship to
+**********************************************************************
+M Emanuel	| 28/11/2012  	| Rolled back changes made to 5840 and cleaning up commented code          	|           	| 
+**********************************************************************
+				|					|
+*******************************************************************-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>chr(13)chr(10)</ffsRecordSeparator>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>,</ffsFieldSeparator>
+		</ffsFieldSeparators>
+		<ffsPadding/>
+		<ffsGroups>
+			<ffsGroup>
+				<!--References below which MEAN RecordPos 'H' with LPos 1 would be CODED as 'D' and LPos 14 (13+1)-->
+				<ffsGroupRecord RecordPos="HEAD" FieldTotal="40"/>
+				<ffsSubGroupRecord RecordPos="LINE" FieldTotal="39"/>
+			</ffsGroup>
+		</ffsGroups>
+		<ffsSplitBatchRecord RecordPos="HEAD"/>
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<BatchHeader/>
+			<BatchDocuments>
+				<BatchDocument>
+					<Invoice>
+						<TradeSimpleHeader>
+							<SendersCodeForRecipient RecordPos="HEAD" LPos="24"/>
+							<SendersBranchReference RecordPos="HEAD" LPos="23"/>
+						</TradeSimpleHeader>
+						<InvoiceHeader>
+							<Buyer>
+								<BuyersLocationID>
+									<BuyersCode RecordPos="HEAD" LPos="23"/>
+									<SuppliersCode RecordPos="HEAD" LPos="3"/>
+								</BuyersLocationID>
+								<BuyersName RecordPos="HEAD" LPos="17"/>
+							</Buyer>
+							<ShipTo>
+								<ShipToLocationID>
+									<SuppliersCode RecordPos="HEAD" LPos="24"/>
+								</ShipToLocationID>
+								<ShipToName RecordPos="HEAD" LPos="17"/>
+							</ShipTo>
+							<InvoiceReferences>
+								<InvoiceReference RecordPos="HEAD" LPos="5"/>
+								<InvoiceDate RecordPos="HEAD" LPos="6"/>
+								<TaxPointDate RecordPos="HEAD" LPos="6"/>
+							</InvoiceReferences>
+						</InvoiceHeader>
+						<InvoiceDetail>
+							<InvoiceLine>
+								<PurchaseOrderReferences>
+									<PurchaseOrderReference RecordPos="LINE" LPos="46	"/>
+									<PurchaseOrderDate RecordPos="LINE" LPos="51"/>
+								</PurchaseOrderReferences>
+								<DeliveryNoteReferences>
+									<DeliveryNoteReference RecordPos="LINE" LPos="50"/>
+									<DeliveryNoteDate RecordPos="LINE" LPos="47"/>
+								</DeliveryNoteReferences>
+								<ProductID>
+									<SuppliersProductCode RecordPos="LINE" LPos="2"/>
+								</ProductID>
+								<ProductDescription RecordPos="LINE" LPos="25"/>
+								<!-- Hijacked as invoiced qty can come in two places -->
+								<OrderedQuantity RecordPos="LINE" LPos="7"/>
+								<InvoicedQuantity RecordPos="LINE" LPos="8"/>
+								<PackSize RecordPos="LINE" LPos="4"/>
+								<UnitValueExclVAT RecordPos="LINE" LPos="13"/>
+								<LineValueExclVAT RecordPos="LINE" LPos="16"/>
+								<VATCode RecordPos="LINE" LPos="14"/>
+							</InvoiceLine>
+						</InvoiceDetail>
+						<InvoiceTrailer>
+							<DocumentTotalExclVAT RecordPos="TRAIL" LPos="2"/>
+							<VATAmount RecordPos="TRAIL" LPos="7"/>
+						</InvoiceTrailer>
+					</Invoice>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>
