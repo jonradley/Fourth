@@ -379,7 +379,7 @@ Transformations on the XML version of the flat file - create INVs and CRNs
 												</xsl:element>
 											</xsl:if>
 											<xsl:element name="NumberOfItems">
-												<xsl:value-of select="sum(InvoiceDetail/InvoiceLine/OrderedQuantity)"/>
+												<xsl:value-of select="sum(InvoiceDetail/InvoiceLine/InvoicedQuantity)"/>
 											</xsl:element>
 											<xsl:element name="DocumentTotalExclVAT"><xsl:value-of select="translate(InvoiceTrailer/DocumentTotalExclVAT,'-','')"/></xsl:element>
 											<xsl:element name="VATAmount"><xsl:value-of select="InvoiceTrailer/VATAmount"/></xsl:element>
