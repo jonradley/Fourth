@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--********************************************************************
+Date				|	Owner					|	Details
+************************************************************************
+26/03/2013	|	M Dimant				| 	5943 Created
+************************************************************************
+			|						| 	
+**********************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="xml"/>
 	<xsl:template match="Buyer"/>
@@ -87,10 +94,10 @@
 									</CreditNoteReferences>
 								</CreditNoteHeader>
 								<CreditNoteDetail>
-									<xsl:for-each select="product_lines">
+									<xsl:for-each select="product_lines/product">
 										<CreditNoteLine>
 											<LineNumber>
-												<xsl:value-of select="product/@p_count"/>
+												<xsl:value-of select="@p_count"/>
 											</LineNumber>
 											<xsl:if test="../OrderNumber !=''">
 												<PurchaseOrderReferences>
@@ -111,54 +118,54 @@
 											</xsl:if>	
 											<ProductID>
 												<SuppliersProductCode>
-													<xsl:value-of select="product/product_code"/>
+													<xsl:value-of select="product_code"/>
 												</SuppliersProductCode>
 											</ProductID>
 											<ProductDescription>
-												<xsl:value-of select="product/product_desc"/>
+												<xsl:value-of select="product_desc"/>
 											</ProductDescription>
 											<CreditedQuantity>
-												<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="product/CreditNote_qty/@size"/></xsl:attribute>
-												<xsl:value-of select="product/CreditNote_qty"/>
+												<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="invoice_qty/@size"/></xsl:attribute>
+												<xsl:value-of select="invoice_qty"/>
 											</CreditedQuantity>
 											<UnitValueExclVAT>
-												<xsl:value-of select="format-number(product/item_price,'0.00')"/>
+												<xsl:value-of select="format-number(item_price,'0.00')"/>
 											</UnitValueExclVAT>
 											<LineValueExclVAT>
-												<xsl:value-of select="format-number(product/item_value,'0.00')"/>
+												<xsl:value-of select="format-number(item_value,'0.00')"/>
 											</LineValueExclVAT>
 											<VATCode>
-												<xsl:value-of select="product/VatDetails/VatCode"/>
+												<xsl:value-of select="VATDetails/VatCode"/>
 											</VATCode>
 											<VATRate>
-												<xsl:value-of select="format-number(product/VatDetails/VatRate,'0.00')"/>
+												<xsl:value-of select="format-number(VATDetails/VatRate,'0.00')"/>
 											</VATRate>
 										</CreditNoteLine>
 									</xsl:for-each>
 								</CreditNoteDetail>
 								<CreditNoteTrailer>
 									<VATSubTotals>
-										<xsl:for-each select="CreditNoteTotals/VatRateTotals">
+										<xsl:for-each select="CreditTotals/VATRateTotals">
 											<VATSubTotal>
-												<xsl:attribute name="VATCode"><xsl:value-of select="VatDetails/VatCode"/></xsl:attribute>
-												<xsl:attribute name="VATRate"><xsl:value-of select="VatDetails/VatRate"/></xsl:attribute>
+												<xsl:attribute name="VATCode"><xsl:value-of select="VATDetails/VATCode"/></xsl:attribute>
+												<xsl:attribute name="VATRate"><xsl:value-of select="VATDetails/VATRate"/></xsl:attribute>
 												<DocumentTotalExclVATAtRate>
 													<xsl:value-of select="format-number(TaxableAmount,'0.00')"/>
 												</DocumentTotalExclVATAtRate>
 												<VATAmountAtRate>
-													<xsl:value-of select="format-number(VatPayable,'0.00')"/>
+													<xsl:value-of select="format-number(VATPayable,'0.00')"/>
 												</VATAmountAtRate>
 											</VATSubTotal>
 										</xsl:for-each>
 									</VATSubTotals>
 									<DocumentTotalExclVAT>
-										<xsl:value-of select="format-number(CreditNoteTotals/Credit_NotesubTotal,'0.00')"/>
+										<xsl:value-of select="format-number(CreditTotals/CreditNoteSubTotal,'0.00')"/>
 									</DocumentTotalExclVAT>
 									<VATAmount>
-										<xsl:value-of select="format-number(CreditNoteTotals/VatTotal,'0.00')"/>
+										<xsl:value-of select="format-number(CreditTotals/VATTotal,'0.00')"/>
 									</VATAmount>
 									<DocumentTotalInclVAT>
-										<xsl:value-of select="format-number(CreditNoteTotals/CreditNoteTotal,'0.00')"/>
+										<xsl:value-of select="format-number(CreditTotals/CreditTotal,'0.00')"/>
 									</DocumentTotalInclVAT>
 								</CreditNoteTrailer>
 							</CreditNote>
