@@ -93,7 +93,8 @@ M Emanuel	| 29/01/2013	| FB Case 5946 Created New Invoice out mapper
 							<xsl:for-each select="InvoiceDetail/InvoiceLine">
 								<xsl:element name="Line">
 									<xsl:element name="ItemEANCode">
-										<xsl:value-of select="ProductID/GTIN"/>
+										<!-- Restrict to first 13 characters -->
+										<xsl:value-of select="substring(ProductID/GTIN,1,13)"/>
 									</xsl:element>
 									<xsl:element name="SuppliersProductCode">
 										<xsl:value-of select="ProductID/SuppliersProductCode"/>
