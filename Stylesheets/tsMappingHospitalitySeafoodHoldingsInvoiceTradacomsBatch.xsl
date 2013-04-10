@@ -13,6 +13,8 @@
  21/07/2011	| K OShaughnessy		|	Created
 ==========================================================================================
 24/10/2012   | S Bowers					| FB 5817 - code added so Harrrisons Catering  invoice has buyers code inserted 
+==========================================================================================
+10/04/2013   | H Robson					| FB 6366 Create DCNs for Fullers and all other customers
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
@@ -24,30 +26,17 @@
 	
 	<!-- Start point - ensure required outer BatchRoot tag is applied -->
 	<xsl:template match="/">
-	<xsl:choose>
-		<xsl:when test="Batch/BatchDocuments/BatchDocument/Invoice/InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode != '5060166760083' ">
-			<BatchRoot>
-				<Document>	
-					<xsl:attribute name="TypePrefix">INV</xsl:attribute>
-					<xsl:apply-templates/>
-				</Document>
-				<Document>
-					<xsl:attribute name="TypePrefix">DNB</xsl:attribute>				
-					<xsl:call-template name="createDeliveryNotes"/>
-					<xsl:apply-templates/>
-				</Document>
-			</BatchRoot>
-		</xsl:when>
-		<xsl:otherwise>
-			<BatchRoot>
-				<Document>	
-					<xsl:attribute name="TypePrefix">INV</xsl:attribute>
-					<xsl:apply-templates/>
-				</Document>
-			</BatchRoot>
-		</xsl:otherwise>
-	</xsl:choose>
-
+		<BatchRoot>
+			<Document>	
+				<xsl:attribute name="TypePrefix">INV</xsl:attribute>
+				<xsl:apply-templates/>
+			</Document>
+			<Document>
+				<xsl:attribute name="TypePrefix">DNB</xsl:attribute>				
+				<xsl:call-template name="createDeliveryNotes"/>
+				<xsl:apply-templates/>
+			</Document>
+		</BatchRoot>
 	</xsl:template>
 	
 	<!-- GENERIC HANDLER to copy unchanged nodes, will be overridden by any node-specific templates below -->
