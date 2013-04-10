@@ -99,7 +99,7 @@ Perform transformations on the XML version of the flat file
 	<xsl:template match="ListOfKeyVal">
 		<ListOfKeyVal>
 			<KeyVal Keyword="PackSize"><xsl:value-of select="KeyVal_PackSize"/></KeyVal>
-			<KeyVal Keyword="Group"></KeyVal>
+			<KeyVal Keyword="Group"><xsl:value-of select="translate(KeyVal_Group,'*','')"/></KeyVal>
 			<KeyVal Keyword="StockItem">1</KeyVal>
 			<KeyVal Keyword="IgnorePriceChange">0</KeyVal>
 			<KeyVal Keyword="UOM">
