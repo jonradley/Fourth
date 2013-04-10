@@ -63,13 +63,13 @@ M Emanuel	| 29/01/2013	| FB Case 5946 Created New Credit note out mapper
 				<xsl:element name="CreditNoteCurrency">
 					<xsl:value-of select="CreditNoteHeader/Currency"/>
 				</xsl:element>
-				<xsl:element name="DeliveryNoteNumber">
-					<xsl:value-of select="CreditNoteDetail/CreditNoteLine/DeliveryNoteReferences/DeliveryNoteReference"/>
+				<xsl:element name="ReferenceDocumentNumber">
+					<xsl:value-of select="CreditNoteHeader/InvoiceReferences/InvoiceReference"/>
 				</xsl:element>
-				<xsl:variable name="DelDate" select="CreditNoteDetail/CreditNoteLine/DeliveryNoteReferences/DeliveryNoteDate"/>
-				<xsl:element name="DeliveryNoteDate">
-					<xsl:value-of select="concat(substring($DelDate,1,4),substring($DelDate,6,2),substring($DelDate,9,2))"/>
-				</xsl:element>
+				<xsl:element name="ReferenceDocumentDate">
+					<xsl:variable name="InvDate" select="CreditNoteHeader/InvoiceReferences/InvoiceDate"/>
+					<xsl:value-of select="concat(substring($InvDate,1,4),substring($InvDate,6,2),substring($InvDate,9,2))"/>
+				</xsl:element>			
 				<xsl:element name="PaymentDays">
 					<xsl:text>00</xsl:text>
 				</xsl:element>
