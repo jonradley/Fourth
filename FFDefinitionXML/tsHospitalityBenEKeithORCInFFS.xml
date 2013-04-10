@@ -72,10 +72,10 @@ Map in the BEK fixed-width ORC format (V16)
 					~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 				<ProductDescription RecordPos="OD" LPos="43" UPos="122"/>
 				<OrderedQuantity RecordPos="OD" LPos="125" UPos="129">
-					<ffsAttribute1 name="UnitOfMeasure" RecordPos="OD" LPos="123" UPos="124"/>
+					<ffsAttribute1 name="UnitOfMeasure" RecordPos="OD" LPos="192" UPos="193"/> <!-- price UOM -->
 				</OrderedQuantity>
 				<ConfirmedQuantity RecordPos="OD" LPos="130" UPos="134">
-					<ffsAttribute1 name="UnitOfMeasure" RecordPos="OD" LPos="123" UPos="124"/>
+					<ffsAttribute1 name="UnitOfMeasure" RecordPos="OD" LPos="192" UPos="193"/>
 				</ConfirmedQuantity>
 				<UnitValueExclVAT RecordPos="OD" LPos="166" UPos="178"/>
 			</PurchaseOrderConfirmationLine>
