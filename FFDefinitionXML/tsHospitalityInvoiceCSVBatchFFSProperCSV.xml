@@ -75,9 +75,9 @@ Removed escaping of double-quotes to create a mapper suitable for flatfilemap-pr
 								</SuppliersAddress>
 							</Supplier>
 							<ShipTo>
-								<!--<ShipToLocationID>
-									<SuppliersCode RecordPos="H" LPos=""/>
-								</ShipToLocationID>-->
+								<ShipToLocationID>
+									<SuppliersCode RecordPos="H" LPos="2"/>
+								</ShipToLocationID>
 								<ShipToName RecordPos="H" LPos="20"/>
 								<ShipToAddress>
 									<AddressLine1 RecordPos="H" LPos="21"/>
