@@ -10,7 +10,7 @@ Perform transformations on the XML version of the flat file
 ******************************************************************************************
  06/03/2013	| Harold Robson		| FB6189 Created module 
 ******************************************************************************************
-				| 							|
+ 02/04/2013	| Harold Robson		| FB6292 Created module 
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 	<xsl:include href="tsMappingHospitalityBenEKeithIncludes.xsl"/>
@@ -26,6 +26,20 @@ Perform transformations on the XML version of the flat file
 				</BatchDocuments>
 			</Batch>
 		</BatchRoot>
+	</xsl:template>
+		
+	<!-- convert UoM codes MUST BE DONE BEFORE PRODUCT CODE LOGIC which depends on T|S UoMs -->
+	<xsl:template match="node()[@UnitOfMeasure]">
+		<xsl:element name="{name()}">
+			<xsl:attribute name="UnitOfMeasure">
+				<xsl:choose>
+					<xsl:when test="./@UnitOfMeasure = 'CA'">CS</xsl:when>
+					<xsl:when test="./@UnitOfMeasure = 'EA'">EA</xsl:when>
+					<xsl:when test="./@UnitOfMeasure = 'LB'">PND</xsl:when>
+				</xsl:choose>
+			</xsl:attribute>
+			<xsl:value-of select="format-number(.,'0.00')"/>
+		</xsl:element>
 	</xsl:template>
 	
 	<!-- GENERIC HANDLER to copy unchanged nodes, will be overridden by any node-specific templates below -->
@@ -54,85 +68,36 @@ Perform transformations on the XML version of the flat file
 	
 	<!-- remove SBR -->
 	<xsl:template match="SendersBranchReference"/>
-	
-	<!-- convert UoM codes MUST BE DONE BEFORE PRODUCT CODE LOGIC which depends on T|S UoMs -->
-	<xsl:template match="node()[@UnitOfMeasure]">
-		<xsl:element name="{name()}">
-			<xsl:attribute name="UnitOfMeasure">
-				<xsl:choose>
-					<xsl:when test="./@UnitOfMeasure = 'CA'">CS</xsl:when>
-					<xsl:when test="./@UnitOfMeasure = 'EA'">EA</xsl:when>
-					<xsl:when test="./@UnitOfMeasure = 'LB'">PND</xsl:when>
-				</xsl:choose>
-			</xsl:attribute>
-			<xsl:value-of select="format-number(.,'0.00')"/>
-		</xsl:element>
-	</xsl:template>
+
 	
 	<!-- Product Code logic ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		The way this works is if we’re out of the original item ordered and the customer has approved having substitute or replacement 
 		items then in the item number field is the substitute or replacement we plan on shipping and the original item is placed in the 
 		original ordered item number field and the indicator is a ‘S’ or ‘R’.  
 		~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<xsl:template match="PurchaseOrderConfirmationLine">
-		<xsl:choose>
-			<!-- case: ProductID and SubstitutedProductID are populated with the same number		action: remove SubstitutedProductID -->
-			<xsl:when test="ProductID/SuppliersProductCode = SubstitutedProductID/SuppliersProductCode">
-				<PurchaseOrderConfirmationLine>
-					<LineNumber><xsl:value-of select="LineNumber"/></LineNumber>
-					<ProductID>
-						<SuppliersProductCode>
-							<xsl:call-template name="CompoundProductCodeOperations">
-								<xsl:with-param name="ProductCode" select="ProductID/SuppliersProductCode"/>
-								<xsl:with-param name="UoM" select="OrderedQuantity/@UnitOfMeasure"/>
-							</xsl:call-template>
-						</SuppliersProductCode>
-					</ProductID>
-					<ProductDescription><xsl:value-of select="ProductDescription"/></ProductDescription>
-					<OrderedQuantity>
-						<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="OrderedQuantity/@UnitOfMeasure"/></xsl:attribute>
-						<xsl:value-of select="OrderedQuantity"/>
-					</OrderedQuantity>
-					<ConfirmedQuantity>
-						<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="ConfirmedQuantity/@UnitOfMeasure"/></xsl:attribute>
-						<xsl:value-of select="ConfirmedQuantity"/>
-					</ConfirmedQuantity>
-					<UnitValueExclVAT><xsl:value-of select="UnitValueExclVAT"/></UnitValueExclVAT>
-				</PurchaseOrderConfirmationLine>
-				</xsl:when>
-			<!-- case: ProductID and SubstitutedProductID are populated with different numbers		action: swap them -->
-			<xsl:when test="ProductID/SuppliersProductCode != SubstitutedProductID/SuppliersProductCode">
-				<PurchaseOrderConfirmationLine>
-					<LineNumber><xsl:value-of select="LineNumber"/></LineNumber>
-					<ProductID>
-						<SuppliersProductCode>
-							<xsl:call-template name="CompoundProductCodeOperations">
-								<xsl:with-param name="ProductCode" select="SubstitutedProductID/SuppliersProductCode"/>
-								<xsl:with-param name="UoM" select="OrderedQuantity/@UnitOfMeasure"/>
-							</xsl:call-template>
-						</SuppliersProductCode>
-					</ProductID>
-					<SubstitutedProductID>
-						<SuppliersProductCode>
-							<xsl:call-template name="CompoundProductCodeOperations">
-								<xsl:with-param name="ProductCode" select="ProductID/SuppliersProductCode"/>
-								<xsl:with-param name="UoM" select="OrderedQuantity/@UnitOfMeasure"/>
-							</xsl:call-template>
-						</SuppliersProductCode>
-					</SubstitutedProductID>
-					<ProductDescription><xsl:value-of select="ProductDescription"/></ProductDescription>
-					<OrderedQuantity>
-						<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="OrderedQuantity/@UnitOfMeasure"/></xsl:attribute>
-						<xsl:value-of select="OrderedQuantity"/>
-					</OrderedQuantity>
-					<ConfirmedQuantity>
-						<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="ConfirmedQuantity/@UnitOfMeasure"/></xsl:attribute>
-						<xsl:value-of select="ConfirmedQuantity"/>
-					</ConfirmedQuantity>
-					<UnitValueExclVAT><xsl:value-of select="UnitValueExclVAT"/></UnitValueExclVAT>
-				</PurchaseOrderConfirmationLine>
-				</xsl:when>
-		</xsl:choose>
+		
+	<!-- case: ProductID and SubstitutedProductID are populated with different numbers		action: swap them -->
+	<xsl:template match="ProductID/SuppliersProductCode">
+		<SuppliersProductCode>
+			<xsl:call-template name="CompoundProductCodeOperations">
+				<xsl:with-param name="ProductCode" select="../../SubstitutedProductID/SuppliersProductCode"/>
+				<xsl:with-param name="UoM" select="../../OrderedQuantity/@UnitOfMeasure"/>
+			</xsl:call-template>
+		</SuppliersProductCode>
+	</xsl:template>		
+		
+	<!-- case: ProductID and SubstitutedProductID are populated with the same number		action: remove SubstitutedProductID -->
+	<xsl:template match="SubstitutedProductID">
+		<xsl:if test=". != ../ProductID/SuppliersProductCode">
+			<SubstitutedProductID>
+				<SuppliersProductCode>
+					<xsl:call-template name="CompoundProductCodeOperations">
+						<xsl:with-param name="ProductCode" select="../ProductID/SuppliersProductCode"/>
+						<xsl:with-param name="UoM" select="../OrderedQuantity/@UnitOfMeasure"/>
+					</xsl:call-template>
+				</SuppliersProductCode>
+			</SubstitutedProductID>
+		</xsl:if>
 	</xsl:template>
 	
 	<!-- format dates-->

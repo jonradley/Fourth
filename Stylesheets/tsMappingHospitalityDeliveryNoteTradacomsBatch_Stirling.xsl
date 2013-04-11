@@ -13,6 +13,8 @@ H Robson		|	2012-02-01		| 5226 change Aramark onto the default way of handling t
 K Oshaughnessy|2012-08-29		| Additional customer added (Mitie) FB 5665	
 *********************************************************************
 A Barber		|	2012-08-29		| 5709 Added no UOM append product code handling for PBR.	
+*********************************************************************
+H Robson		|	2013-03-26		| 6285 Added Creative Events	
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="xml" encoding="utf-8"/>
@@ -32,6 +34,7 @@ A Barber		|	2012-08-29		| 5709 Added no UOM append product code handling for PBR
 	<xsl:variable name="TESCO" select="'TESCO'"/>
 	<xsl:variable name="MITIE" select="'MITIE'"/>
 	<xsl:variable name="PBR" select="'PBR'"/>
+	<xsl:variable name="CREATIVE_EVENTS" select="'CREATIVE_EVENTS'"/>
 	
 	<xsl:variable name="CustomerFlag">
 		<xsl:variable name="accountCode" select="string(//DeliveryNote/TradeSimpleHeader/SendersBranchReference)"/>
@@ -54,7 +57,8 @@ A Barber		|	2012-08-29		| 5709 Added no UOM append product code handling for PBR
 			<xsl:when test="$accountCode = 'SOD99T'"><xsl:value-of select="$SODEXO_PRESTIGE"/></xsl:when>	
 			<xsl:when test="$accountCode = 'MIT16T'"><xsl:value-of select="$MITIE"/></xsl:when>
 			<xsl:when test="$accountCode = 'PBR01T'"><xsl:value-of select="$PBR"/></xsl:when>		
-						
+			<xsl:when test="$accountCode = 'CRE11T'"><xsl:value-of select="$CREATIVE_EVENTS"/></xsl:when>	
+			
 			<xsl:when test="$accountCode = 'TES01T'"><xsl:value-of select="$TESCO"/></xsl:when>
 			<xsl:when test="$accountCode = 'TES08T'"><xsl:value-of select="$TESCO"/></xsl:when>
 			<xsl:when test="$accountCode = 'TES12T'"><xsl:value-of select="$TESCO"/></xsl:when>
@@ -77,25 +81,22 @@ A Barber		|	2012-08-29		| 5709 Added no UOM append product code handling for PBR
 								<TradeSimpleHeader>
 									<SendersCodeForRecipient>
 										<xsl:choose>
-	
-										<xsl:when test="$CustomerFlag = $COMPASS or $CustomerFlag = $TESCO or $CustomerFlag = $BEACON_PURCHASING ">
-										<xsl:value-of select="TradeSimpleHeader/SendersBranchReference"/>
-										</xsl:when>			
-									
-										<xsl:otherwise>
-											<xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/>
-										</xsl:otherwise>
-					
+											<xsl:when test="$CustomerFlag = $COMPASS or $CustomerFlag = $TESCO or $CustomerFlag = $BEACON_PURCHASING ">
+												<xsl:value-of select="TradeSimpleHeader/SendersBranchReference"/>
+											</xsl:when>			
+											<xsl:otherwise>
+												<xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/>
+											</xsl:otherwise>
 										</xsl:choose>
-								</SendersCodeForRecipient>
+									</SendersCodeForRecipient>
 			
-										<xsl:if test="$CustomerFlag = $MITIE or $CustomerFlag = $COMPASS or $CustomerFlag = $TESCO or $CustomerFlag = $ARAMARK">
-								<SendersBranchReference>
-									<xsl:value-of select="TradeSimpleHeader/SendersBranchReference"/>
-								</SendersBranchReference>
-										</xsl:if>
+									<xsl:if test="$CustomerFlag = $MITIE or $CustomerFlag = $COMPASS or $CustomerFlag = $TESCO or $CustomerFlag = $ARAMARK or $CustomerFlag = $CREATIVE_EVENTS">
+										<SendersBranchReference>
+											<xsl:value-of select="TradeSimpleHeader/SendersBranchReference"/>
+										</SendersBranchReference>
+									</xsl:if>
 							</TradeSimpleHeader>	
-								<DeliveryNoteHeader>
+							<DeliveryNoteHeader>
 								
 									<Buyer>
 										<BuyersLocationID>

@@ -16,11 +16,12 @@
 '******************************************************************************************
 ' 24/07/2012 | M Dimant | 5591 Changes to handle discounts in the trailer.
 '******************************************************************************************
+' 27/03/2013 | H Robson | 6291 Remove bespoke functionality added ~6 years ago. Reintegrate SSP
+'******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:data="blah">
 	<xsl:output method="xml" encoding="utf-8"/>
-	<!-- Buyers Code detection function and lookup table -->
-	<xsl:include href="tsMapping_LookupBuyersANA_Table.xsl"/>
+
 	<!-- we use constants for default values -->
 	<xsl:variable name="defaultTaxCategory" select="'S'"/>
 	<xsl:variable name="NewTaxRate" select="'20.0'"/>
@@ -44,13 +45,10 @@
 					<BatchDocument>
 						<Invoice>
 						
-						<!-- Check Value, We will use he GLN as this is unique. Before golive we will need to 
-										check that the quoted compass GLN is in facts SSPs. -->
-								<xsl:variable name="sBuyersGLN" select="normalize-space(/Invoice/Buyer/BuyerGLN)"/>
+								<!-- 27/03/2013 HR 6291 - DONT check for SSPs GLN in the include file, just tell the mapper its not there (even if it is) -->
+								<!-- it does need to be there for other integrations (e.g. BOC) but NOT for Reynolds -->
 								<xsl:variable name="sCheckFlag">
-									<xsl:call-template name="msDetectBuyersANA">
-										<xsl:with-param name="sANA" select="$sBuyersGLN"/>
-									</xsl:call-template>
+									<xsl:text>0</xsl:text>
 								</xsl:variable>
 						
 							<!-- ~~~~~~~~~~~~~~~~~~~~~~~
