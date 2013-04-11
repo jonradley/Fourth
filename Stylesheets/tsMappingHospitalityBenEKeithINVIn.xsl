@@ -10,7 +10,7 @@ Transformations on the XML version of the flat file - create INVs and CRNs
 ******************************************************************************************
  05/03/2013	| Harold Robson		| FB6189 Created module 
 ******************************************************************************************
-				| 							|
+ 05/04/2013	| Harold Robson		| FB6298 fixes
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="xsl msxsl">
 	<xsl:include href="tsMappingHospitalityBenEKeithIncludes.xsl"/>
@@ -174,18 +174,20 @@ Transformations on the XML version of the flat file - create INVs and CRNs
 											</InvoiceReferences>
 										</InvoiceHeader>
 										<InvoiceDetail>
-											<!-- LINE DETAIL -->
+											<!-- INVOICE LINE DETAIL -->
 											<xsl:for-each select="InvoiceDetail/InvoiceLine">
 												<InvoiceLine>
 													<PurchaseOrderReferences>
-														<xsl:element name="PurchaseOrderReference"><xsl:value-of select="PurchaseOrderReferences/PurchaseOrderReference"/></xsl:element>
-														<xsl:element name="PurchaseOrderDate"><xsl:value-of select="PurchaseOrderReferences/PurchaseOrderDate"/></xsl:element>
+														<xsl:element name="PurchaseOrderReference"><xsl:value-of select="../InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderReference"/></xsl:element>
+														<xsl:element name="PurchaseOrderDate"><xsl:value-of select="../InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderDate"/></xsl:element>
 														<TradeAgreement>
-															<xsl:element name="ContractReference"><xsl:value-of select="PurchaseOrderReferences/TradeAgreement/ContractReference"/></xsl:element>
+															<xsl:element name="ContractReference"><xsl:value-of select="../InvoiceLine[1]/PurchaseOrderReferences/TradeAgreement/ContractReference"/></xsl:element>
 														</TradeAgreement>
 													</PurchaseOrderReferences>
 													<ProductID>
-														<xsl:element name="GTIN"><xsl:value-of select="ProductID/GTIN"/></xsl:element>
+														<xsl:if test="ProductID/GTIN != ''">
+															<xsl:element name="GTIN"><xsl:value-of select="ProductID/GTIN"/></xsl:element>
+														</xsl:if>
 														<xsl:element name="SuppliersProductCode">
 															<xsl:call-template name="CompoundProductCodeOperations">
 																<xsl:with-param name="ProductCode" select="ProductID/SuppliersProductCode"/>
@@ -237,7 +239,7 @@ Transformations on the XML version of the flat file - create INVs and CRNs
 											</xsl:if>
 											<xsl:if test="InvoiceTrailer/NumberOfItems &gt; 0">
 												<xsl:element name="NumberOfItems">
-													<xsl:value-of select="InvoiceTrailer/NumberOfItems"/>
+													<xsl:value-of select="translate(sum(InvoiceDetail/InvoiceLine/InvoicedQuantity),'-','')"/>
 												</xsl:element>
 											</xsl:if>
 											<VATSubTotals>
@@ -312,14 +314,14 @@ Transformations on the XML version of the flat file - create INVs and CRNs
 											</CreditNoteReferences>									
 										</CreditNoteHeader>
 										<CreditNoteDetail>
-											<!-- LINE DETAIL -->
+											<!-- CREDIT LINE DETAIL -->
 											<xsl:for-each select="InvoiceDetail/InvoiceLine">
 												<CreditNoteLine>
 													<PurchaseOrderReferences>
-														<xsl:element name="PurchaseOrderReference"><xsl:value-of select="PurchaseOrderReferences/PurchaseOrderReference"/></xsl:element>
-														<xsl:element name="PurchaseOrderDate"><xsl:value-of select="PurchaseOrderReferences/PurchaseOrderDate"/></xsl:element>
+														<xsl:element name="PurchaseOrderReference"><xsl:value-of select="../InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderReference"/></xsl:element>
+														<xsl:element name="PurchaseOrderDate"><xsl:value-of select="../InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderDate"/></xsl:element>
 														<TradeAgreement>
-															<xsl:element name="ContractReference"><xsl:value-of select="PurchaseOrderReferences/TradeAgreement/ContractReference"/></xsl:element>
+															<xsl:element name="ContractReference"><xsl:value-of select="../InvoiceLine[1]/PurchaseOrderReferences/TradeAgreement/ContractReference"/></xsl:element>
 														</TradeAgreement>
 													</PurchaseOrderReferences>
 													<ProductID>
@@ -339,10 +341,6 @@ Transformations on the XML version of the flat file - create INVs and CRNs
 													<xsl:element name="DeliveredQuantity">
 														<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="DeliveredQuantity/@UnitOfMeasure"/></xsl:attribute>
 														<xsl:value-of select="DeliveredQuantity"/>
-													</xsl:element>
-													<xsl:element name="InvoicedQuantity">
-														<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="InvoicedQuantity/@UnitOfMeasure"/></xsl:attribute>
-														<xsl:value-of select="InvoicedQuantity"/>
 													</xsl:element>
 													<xsl:element name="CreditedQuantity">
 														<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="InvoicedQuantity/@UnitOfMeasure"/></xsl:attribute>
@@ -380,11 +378,9 @@ Transformations on the XML version of the flat file - create INVs and CRNs
 													<xsl:value-of select="InvoiceTrailer/NumberOfLines"/>
 												</xsl:element>
 											</xsl:if>
-											<xsl:if test="InvoiceTrailer/NumberOfItems &gt; 0">
-												<xsl:element name="NumberOfItems">
-													<xsl:value-of select="InvoiceTrailer/NumberOfItems"/>
-												</xsl:element>
-											</xsl:if>
+											<xsl:element name="NumberOfItems">
+												<xsl:value-of select="translate(sum(InvoiceDetail/InvoiceLine/InvoicedQuantity),'-','')"/>
+											</xsl:element>
 											<xsl:element name="DocumentTotalExclVAT"><xsl:value-of select="translate(InvoiceTrailer/DocumentTotalExclVAT,'-','')"/></xsl:element>
 											<xsl:element name="VATAmount"><xsl:value-of select="InvoiceTrailer/VATAmount"/></xsl:element>
 											<xsl:element name="DocumentTotalInclVAT"><xsl:value-of select="translate(InvoiceTrailer/DocumentTotalInclVAT,'-','')"/></xsl:element>
