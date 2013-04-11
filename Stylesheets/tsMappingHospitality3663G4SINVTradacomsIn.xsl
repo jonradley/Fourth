@@ -12,6 +12,8 @@ Maps 3663 tradacoms invoices into internal XML
 ==========================================================================================
 06/03/2013	| M Dimant					|	6114: Created. Based on 3663 stylesheets.
 ==========================================================================================
+09/04/2013	| M Dimant					|	6364: Fixed  PO reference for every line
+==========================================================================================
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
@@ -390,6 +392,42 @@ Maps 3663 tradacoms invoices into internal XML
 			<xsl:apply-templates/>
 		</xsl:copy>
 	</xsl:template>
+	
+	<xsl:template match="InvoiceDetail">
+		<InvoiceDetail>
+			<xsl:for-each select="InvoiceLine">
+			<xsl:variable name="sPORefDate" select="translate(../InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderDate,' ','')"/>
+			<xsl:variable name="sPORefReference" select="translate(../InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderReference,' ','')"/>			
+					<InvoiceLine>			
+						<xsl:copy-of select="LineNumber"/>
+						<PurchaseOrderReferences>
+							<PurchaseOrderReference>
+								<xsl:value-of select="$sPORefReference"/>
+							</PurchaseOrderReference>
+							<PurchaseOrderDate>
+								<xsl:value-of select="concat('20',substring($sPORefDate,1,2),'-',substring($sPORefDate,3,2),'-',substring($sPORefDate,5,2))"/>
+							</PurchaseOrderDate>
+						</PurchaseOrderReferences>
+						<DeliveryNoteReferences>
+							<xsl:variable name="sDNRefDate" select="translate(../InvoiceLine/DeliveryNoteReferences/DeliveryNoteDate,' ','')"/>
+							<DeliveryNoteReference><xsl:value-of select="../InvoiceLine/DeliveryNoteReferences/DeliveryNoteReference"/></DeliveryNoteReference>
+							<DeliveryNoteDate><xsl:value-of select="concat('20',substring($sDNRefDate,1,2),'-',substring($sDNRefDate,3,2),'-',substring($sDNRefDate,5,2))"/></DeliveryNoteDate>
+							<DespatchDate><xsl:value-of select="concat('20',substring($sDNRefDate,1,2),'-',substring($sDNRefDate,3,2),'-',substring($sDNRefDate,5,2))"/></DespatchDate>
+						</DeliveryNoteReferences>
+						<xsl:copy-of select="ProductID"/>
+						<xsl:copy-of select="ProductDescription"/>
+						<xsl:copy-of select="InvoicedQuantity"/>
+						<xsl:copy-of select="PackSize"/>
+						<xsl:copy-of select="UnitValueExclVAT"/>
+						<xsl:copy-of select="LineValueExclVAT"/>
+						<xsl:copy-of select="VATCode"/>
+						<xsl:copy-of select="VATRate"/>
+						<xsl:copy-of select="Measure"/>
+					</InvoiceLine>			
+			</xsl:for-each>	
+		</InvoiceDetail>
+	</xsl:template>	
+	
 	<!-- END of MHDSegment HANDLER -->
 	
 	<xsl:template name="createDeliveryNotes">
