@@ -61,6 +61,7 @@ Map Out to the BEK Order format (V16)
 			<xsl:choose>
 				<xsl:when test="OrderedQuantity/@UnitOfMeasure = 'EA'"><xsl:text>E</xsl:text></xsl:when>
 				<xsl:when test="OrderedQuantity/@UnitOfMeasure = 'CS'"><xsl:text>C</xsl:text></xsl:when>
+				<xsl:when test="OrderedQuantity/@UnitOfMeasure = 'PND'"><xsl:text>C</xsl:text></xsl:when>
 			</xsl:choose>
 			<xsl:value-of select="$delimiter"/>
 			<!-- PO Number -->
