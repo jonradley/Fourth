@@ -176,6 +176,7 @@ Transformations on the XML version of the flat file - create INVs and CRNs
 										<InvoiceDetail>
 											<!-- INVOICE LINE DETAIL -->
 											<xsl:for-each select="InvoiceDetail/InvoiceLine">
+											
 												<InvoiceLine>
 													<PurchaseOrderReferences>
 														<xsl:element name="PurchaseOrderReference"><xsl:value-of select="../InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderReference"/></xsl:element>
@@ -206,7 +207,11 @@ Transformations on the XML version of the flat file - create INVs and CRNs
 													</xsl:element>
 													<xsl:element name="InvoicedQuantity">
 														<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="InvoicedQuantity/@UnitOfMeasure"/></xsl:attribute>
-														<xsl:value-of select="InvoicedQuantity"/>
+														<!-- handle catchweight products -->
+														<xsl:choose>
+															<xsl:when test="Measure/MeasureIndicator = 'Y'"><xsl:value-of select="Measure/TotalMeasure"/></xsl:when>
+															<xsl:otherwise><xsl:value-of select="InvoicedQuantity"/></xsl:otherwise>
+														</xsl:choose>
 													</xsl:element>
 													<xsl:element name="UnitValueExclVAT"><xsl:value-of select="UnitValueExclVAT"/></xsl:element>
 													<!-- vat code and rate always exempt -->
@@ -239,14 +244,14 @@ Transformations on the XML version of the flat file - create INVs and CRNs
 											</xsl:if>
 											<xsl:if test="InvoiceTrailer/NumberOfItems &gt; 0">
 												<xsl:element name="NumberOfItems">
-													<xsl:value-of select="translate(sum(InvoiceDetail/InvoiceLine/InvoicedQuantity),'-','')"/>
+													<xsl:value-of select="sum(InvoiceDetail/InvoiceLine/InvoicedQuantity[../Measure/MeasureIndicator != 'Y']) + sum(InvoiceDetail/InvoiceLine/Measure/TotalMeasure[../MeasureIndicator = 'Y'])"/>
 												</xsl:element>
 											</xsl:if>
 											<VATSubTotals>
 												<!-- no VAT in the US so we will create a VAT record showing all lines as tax exempt -->
 												<VATSubTotal VATCode="E" VATRate="0">
 													<NumberOfLinesAtRate><xsl:value-of select="InvoiceTrailer/NumberOfLines"/></NumberOfLinesAtRate>
-													<NumberOfItemsAtRate><xsl:value-of select="InvoiceTrailer/NumberOfItems"/></NumberOfItemsAtRate>
+													<NumberOfItemsAtRate><xsl:value-of select="sum(InvoiceDetail/InvoiceLine/InvoicedQuantity[../Measure/MeasureIndicator != 'Y']) + sum(InvoiceDetail/InvoiceLine/Measure/TotalMeasure[../MeasureIndicator = 'Y'])"/></NumberOfItemsAtRate>
 													<DocumentTotalExclVATAtRate><xsl:value-of select="InvoiceTrailer/DocumentTotalExclVAT"/></DocumentTotalExclVATAtRate>
 													<VATAmountAtRate><xsl:value-of select="number(0)"/></VATAmountAtRate>
 													<DocumentTotalInclVATAtRate><xsl:value-of select="InvoiceTrailer/DocumentTotalInclVAT"/></DocumentTotalInclVATAtRate>
@@ -344,7 +349,11 @@ Transformations on the XML version of the flat file - create INVs and CRNs
 													</xsl:element>
 													<xsl:element name="CreditedQuantity">
 														<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="InvoicedQuantity/@UnitOfMeasure"/></xsl:attribute>
-														<xsl:value-of select="translate(InvoicedQuantity,'-','')"/>
+														<!-- handle catchweight products -->
+														<xsl:choose>
+															<xsl:when test="Measure/MeasureIndicator = 'Y'"><xsl:value-of select="translate(Measure/TotalMeasure,'-','')"/></xsl:when>
+															<xsl:otherwise><xsl:value-of select="translate(InvoicedQuantity,'-','')"/></xsl:otherwise>
+														</xsl:choose>
 													</xsl:element>
 													<xsl:element name="UnitValueExclVAT"><xsl:value-of select="UnitValueExclVAT"/></xsl:element>
 													<!-- vat code and rate always exempt -->
@@ -379,7 +388,7 @@ Transformations on the XML version of the flat file - create INVs and CRNs
 												</xsl:element>
 											</xsl:if>
 											<xsl:element name="NumberOfItems">
-												<xsl:value-of select="translate(sum(InvoiceDetail/InvoiceLine/InvoicedQuantity),'-','')"/>
+												<xsl:value-of select="sum(InvoiceDetail/InvoiceLine/InvoicedQuantity[../Measure/MeasureIndicator != 'Y']) + sum(InvoiceDetail/InvoiceLine/Measure/TotalMeasure[../MeasureIndicator = 'Y'])"/>
 											</xsl:element>
 											<xsl:element name="DocumentTotalExclVAT"><xsl:value-of select="translate(InvoiceTrailer/DocumentTotalExclVAT,'-','')"/></xsl:element>
 											<xsl:element name="VATAmount"><xsl:value-of select="InvoiceTrailer/VATAmount"/></xsl:element>
