@@ -251,7 +251,7 @@ Transformations on the XML version of the flat file - create INVs and CRNs
 												<!-- no VAT in the US so we will create a VAT record showing all lines as tax exempt -->
 												<VATSubTotal VATCode="E" VATRate="0">
 													<NumberOfLinesAtRate><xsl:value-of select="InvoiceTrailer/NumberOfLines"/></NumberOfLinesAtRate>
-													<NumberOfItemsAtRate><xsl:value-of select="sum(InvoiceDetail/InvoiceLine/InvoicedQuantity[../Measure/MeasureIndicator != 'Y']) + sum(InvoiceDetail/InvoiceLine/Measure/TotalMeasure[../MeasureIndicator = 'Y'])"/></NumberOfItemsAtRate>
+													<NumberOfItemsAtRate><xsl:value-of select="sum(translate(InvoiceDetail/InvoiceLine/InvoicedQuantity[../Measure/MeasureIndicator != 'Y'],'-','')) + sum(translate(InvoiceDetail/InvoiceLine/Measure/TotalMeasure[../MeasureIndicator = 'Y'],'-',''))"/></NumberOfItemsAtRate>
 													<DocumentTotalExclVATAtRate><xsl:value-of select="InvoiceTrailer/DocumentTotalExclVAT"/></DocumentTotalExclVATAtRate>
 													<VATAmountAtRate><xsl:value-of select="number(0)"/></VATAmountAtRate>
 													<DocumentTotalInclVATAtRate><xsl:value-of select="InvoiceTrailer/DocumentTotalInclVAT"/></DocumentTotalInclVATAtRate>
@@ -388,7 +388,7 @@ Transformations on the XML version of the flat file - create INVs and CRNs
 												</xsl:element>
 											</xsl:if>
 											<xsl:element name="NumberOfItems">
-												<xsl:value-of select="sum(InvoiceDetail/InvoiceLine/InvoicedQuantity[../Measure/MeasureIndicator != 'Y']) + sum(InvoiceDetail/InvoiceLine/Measure/TotalMeasure[../MeasureIndicator = 'Y'])"/>
+												<xsl:value-of select="sum(translate(InvoiceDetail/InvoiceLine/InvoicedQuantity[../Measure/MeasureIndicator != 'Y'],'-','')) + sum(translate(InvoiceDetail/InvoiceLine/Measure/TotalMeasure[../MeasureIndicator = 'Y'],'-',''))"/>
 											</xsl:element>
 											<xsl:element name="DocumentTotalExclVAT"><xsl:value-of select="translate(InvoiceTrailer/DocumentTotalExclVAT,'-','')"/></xsl:element>
 											<xsl:element name="VATAmount"><xsl:value-of select="InvoiceTrailer/VATAmount"/></xsl:element>
