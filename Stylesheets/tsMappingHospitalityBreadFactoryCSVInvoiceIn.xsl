@@ -20,7 +20,9 @@
 	<xsl:template match="VATCode">
 		<VATCode>
 			<xsl:choose>
-				<xsl:when test=". = '2'">Z</xsl:when>
+				<xsl:when test=". = '2'">Z</xsl:when><!-- zero -->
+				<xsl:when test=". = '1'">S</xsl:when><!-- standard -->
+				<xsl:when test=". = '0'">E</xsl:when><!-- exempt -->
 			</xsl:choose>
 		</VATCode>
 	</xsl:template>
