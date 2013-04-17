@@ -157,7 +157,7 @@
 						InvoiceReferences/InvoiceDate |
 						InvoiceReferences/TaxPointDate">
 		<xsl:copy>
-			<xsl:value-of select="concat(substring(., 3, 2), '-', substring(., 5, 2), '-', substring(., 7, 2))"/>
+			<xsl:value-of select="concat(substring(., 1, 4), '-', substring(., 5, 2), '-', substring(., 7, 2))"/>
 		</xsl:copy>
 	</xsl:template>
 	<!-- DATE CONVERSION YYMMDD:[HHMMSS] to xsd:dateTime CCYY-MM-DDTHH:MM:SS+00:00 -->
@@ -166,11 +166,11 @@
 			<xsl:choose>
 				<xsl:when test="string-length(.) &lt; 13">
 					<!-- Convert YYMMDD: to CCYY-MM-DDTHH:MM:SS form (xsd:dateTime) -->
-					<xsl:value-of select="concat(substring(., 3, 2), '-', substring(., 5, 2), '-', substring(., 7, 2), 'T00:00:00')"/>
+					<xsl:value-of select="concat(substring(., 1, 4), '-', substring(., 5, 2), '-', substring(., 7, 2), 'T00:00:00')"/>
 				</xsl:when>
 				<xsl:otherwise>
 					<!-- Convert YYMMDD:HHMMSS to CCYY-MM-DDTHH:MM:SS form (xsd:dateTime) -->
-					<xsl:value-of select="concat(substring(., 3, 2), '-', substring(., 5, 2), '-', substring(., 7, 2), 'T', substring(.,8,2), ':', substring(.,10,2), ':', substring(.,12,2))"/>
+					<xsl:value-of select="concat(substring(., 1, 4), '-', substring(., 5, 2), '-', substring(., 7, 2), 'T', substring(.,8,2), ':', substring(.,10,2), ':', substring(.,12,2))"/>
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:copy>
