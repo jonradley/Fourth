@@ -351,7 +351,10 @@ Transformations on the XML version of the flat file - create INVs and CRNs
 													<xsl:element name="UnitValueExclVAT"><xsl:value-of select="UnitValueExclVAT"/></xsl:element>
 													<!-- vat code and rate always exempt -->
 													<VATCode>E</VATCode>
-													<VATRate>0</VATRate>
+													<!-- work out the rate -->
+													<VATRate>
+														<xsl:value-of select="format-number((100 div LineValueExclVAT) * VATRate,'0.00')"/>
+													</VATRate>
 												</CreditNoteLine>
 											</xsl:for-each>
 											<!-- LINE DETAIL: fees and surcharges -->
@@ -369,10 +372,7 @@ Transformations on the XML version of the flat file - create INVs and CRNs
 													<UnitValueExclVAT><xsl:value-of select="DespatchDate"/></UnitValueExclVAT>
 													<!-- vat code always exempt -->
 													<VATCode>E</VATCode>
-													<!-- work out the rate -->
-													<VATRate>
-														<xsl:value-of select="format-number((100 div LineValueExclVAT) * VATRate,'0.00')"/>
-													</VATRate>
+													<VATRate>0</VATRate>
 												</CreditNoteLine>
 											</xsl:for-each>
 										</CreditNoteDetail>		
@@ -387,7 +387,7 @@ Transformations on the XML version of the flat file - create INVs and CRNs
 												<xsl:value-of select="translate(sum(InvoiceDetail/InvoiceLine/InvoicedQuantity[../Measure/MeasureIndicator != 'Y']),'-','') + translate(sum(InvoiceDetail/InvoiceLine/Measure/TotalMeasure[../MeasureIndicator = 'Y']),'-','')"/>
 											</xsl:element>
 											<xsl:element name="DocumentTotalExclVAT"><xsl:value-of select="translate(InvoiceTrailer/DocumentTotalExclVAT,'-','')"/></xsl:element>
-											<xsl:element name="VATAmount"><xsl:value-of select="InvoiceTrailer/VATAmount"/></xsl:element>
+											<xsl:element name="VATAmount"><xsl:value-of select="translate(InvoiceTrailer/VATAmount,'-','')"/></xsl:element>
 											<xsl:element name="DocumentTotalInclVAT"><xsl:value-of select="translate(InvoiceTrailer/DocumentTotalInclVAT,'-','')"/></xsl:element>
 										</CreditNoteTrailer>				
 									</CreditNote>
