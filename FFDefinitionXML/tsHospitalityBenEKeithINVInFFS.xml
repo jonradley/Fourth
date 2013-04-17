@@ -103,6 +103,8 @@ Map in the BEK fixed-width Invoice format (V16)
 								<PackSize RecordPos="ID" LPos="292" UPos="296"/>
 								<UnitValueExclVAT RecordPos="ID" LPos="76" UPos="88"/>
 								<LineValueExclVAT RecordPos="ID" LPos=" 98" UPos="110"/>
+								<!-- map the line tax amount into vat rate and convert to a rate in the stylesheet -->
+								<VATRate RecordPos="ID" LPos=" 225" UPos="238"/>
 								<!-- use this field as the catchweight flag; is the item catchweight Y/N-->
 								<Measure>
 									<MeasureIndicator RecordPos="ID" LPos=" 241" UPos="241"/>
