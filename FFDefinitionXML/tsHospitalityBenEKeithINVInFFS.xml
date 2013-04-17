@@ -107,8 +107,8 @@ Map in the BEK fixed-width Invoice format (V16)
 								<VATRate RecordPos="ID" LPos=" 225" UPos="238"/>
 								<!-- use this field as the catchweight flag; is the item catchweight Y/N-->
 								<Measure>
-									<MeasureIndicator RecordPos="ID" LPos=" 241" UPos="241"/>
-									<TotalMeasure RecordPos="ID" LPos=" 89" UPos="97"/>
+									<MeasureIndicator RecordPos="ID" LPos="241" UPos="241"/>
+									<TotalMeasure RecordPos="ID" LPos="89" UPos="97"/>
 								</Measure>
 							</InvoiceLine>
 						</InvoiceDetail>
