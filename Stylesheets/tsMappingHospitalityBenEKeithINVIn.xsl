@@ -223,7 +223,7 @@ Transformations on the XML version of the flat file - create INVs and CRNs
 												</InvoiceLine>
 											</xsl:for-each>
 											<!-- LINE DETAIL: fees and surcharges -->
-											<xsl:for-each select="DeliveryNoteReferences[DeliveryNoteReference != '' and DeliveryNoteDate != '' and DespatchDate !='']">
+											<xsl:for-each select="InvoiceDetail/InvoiceLine/DeliveryNoteReferences[DeliveryNoteReference != '' and DeliveryNoteDate != '' and DespatchDate !='']">
 												<InvoiceLine>
 													<ProductID>
 														<SuppliersProductCode><xsl:value-of select="concat(DeliveryNoteReference,'-',DeliveryNoteDate)"/></SuppliersProductCode>
@@ -358,7 +358,7 @@ Transformations on the XML version of the flat file - create INVs and CRNs
 												</CreditNoteLine>
 											</xsl:for-each>
 											<!-- LINE DETAIL: fees and surcharges -->
-											<xsl:for-each select="DeliveryNoteReferences[DeliveryNoteReference != '' and DeliveryNoteDate != '' and DespatchDate !='']">
+											<xsl:for-each select="InvoiceDetail/InvoiceLine/DeliveryNoteReferences[DeliveryNoteReference != '' and DeliveryNoteDate != '' and DespatchDate !='']">
 												<CreditNoteLine>
 													<ProductID>
 														<SuppliersProductCode><xsl:value-of select="concat(DeliveryNoteReference,'-',DeliveryNoteDate)"/></SuppliersProductCode>
