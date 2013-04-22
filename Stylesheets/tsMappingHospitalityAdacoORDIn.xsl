@@ -11,7 +11,8 @@
 ******************************************************************************************
  2013-02-21  | R Cambridge 	| FB6038 Created Module (from FnB inbound order mapper)
 ******************************************************************************************
-		        |            	| 
+ 2013-04-022 | R Cambridge	| 6433 vendor's code for any sub-division of the hotel will now be derived from 
+ 													//PurchaseOrderHeader/Account/BuyersCode  (was //Outlet/BuyersCode)
 ******************************************************************************************
              |            	| 
 ******************************************************************************************
@@ -59,7 +60,7 @@
 	<xsl:variable name="SendersBranchReference">
 		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Property/BuyersCode"/>
 		<xsl:value-of select="$HOTEL_SUBDIVISION_SEPERATOR"/>
-		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Outlet/BuyersCode"/>
+		<xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Account/BuyersCode"/>
 	</xsl:variable>
 
 	
@@ -94,7 +95,7 @@
 	
 	
 	
-	<xsl:template match="Property | Outlet"/>
+	<xsl:template match="Property | Outlet | Account"/>
 	
 	<xsl:template match="ShipTo">
 		<ShipTo>
