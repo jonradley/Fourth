@@ -157,7 +157,7 @@
 						InvoiceReferences/InvoiceDate |
 						InvoiceReferences/TaxPointDate">
 		<xsl:copy>
-			<xsl:value-of select="concat('20', substring(., 3, 2), '-', substring(., 5, 2), '-', substring(., 7, 2))"/>
+			<xsl:value-of select="concat(substring(., 1, 4), '-', substring(., 5, 2), '-', substring(., 7, 2))"/>
 		</xsl:copy>
 	</xsl:template>
 	<!-- DATE CONVERSION YYMMDD:[HHMMSS] to xsd:dateTime CCYY-MM-DDTHH:MM:SS+00:00 -->
@@ -166,11 +166,11 @@
 			<xsl:choose>
 				<xsl:when test="string-length(.) &lt; 13">
 					<!-- Convert YYMMDD: to CCYY-MM-DDTHH:MM:SS form (xsd:dateTime) -->
-					<xsl:value-of select="concat('20', substring(., 3, 2), '-', substring(., 5, 2), '-', substring(., 7, 2), 'T00:00:00')"/>
+					<xsl:value-of select="concat(substring(., 1, 4), '-', substring(., 5, 2), '-', substring(., 7, 2), 'T00:00:00')"/>
 				</xsl:when>
 				<xsl:otherwise>
 					<!-- Convert YYMMDD:HHMMSS to CCYY-MM-DDTHH:MM:SS form (xsd:dateTime) -->
-					<xsl:value-of select="concat('20', substring(., 3, 2), '-', substring(., 5, 2), '-', substring(., 7, 2), 'T', substring(.,8,2), ':', substring(.,10,2), ':', substring(.,12,2))"/>
+					<xsl:value-of select="concat(substring(., 1, 4), '-', substring(., 5, 2), '-', substring(., 7, 2), 'T', substring(.,8,2), ':', substring(.,10,2), ':', substring(.,12,2))"/>
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:copy>
@@ -223,7 +223,7 @@
 					<xsl:value-of select="$sPORefReference"/>
 				</PurchaseOrderReference>
 				<PurchaseOrderDate>
-					<xsl:value-of select="concat('20',substring($sPORefDate,1,2),'-',substring($sPORefDate,3,2),'-',substring($sPORefDate,5,2))"/>
+					<xsl:value-of select="concat(substring($sPORefDate,1,4),'-',substring($sPORefDate,5,2),'-',substring($sPORefDate,7,2))"/>
 				</PurchaseOrderDate>
 			</PurchaseOrderReferences>
 		</xsl:if>
@@ -289,7 +289,7 @@
 												<xsl:value-of select="InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderDate"/>
 											</xsl:variable>
 											<PurchaseOrderDate>
-												<xsl:value-of select="concat('20',substring($sDPODate,3,2),'-',substring($sDPODate,5,2),'-',substring($sDPODate,7,2))"/>
+												<xsl:value-of select="concat(substring($sDPODate,3,2),'-',substring($sDPODate,5,2),'-',substring($sDPODate,7,2))"/>
 											</PurchaseOrderDate>
 										</xsl:if>
 									</PurchaseOrderReferences>
@@ -302,7 +302,7 @@
 										<xsl:value-of select="InvoiceDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteDate"/>
 									</xsl:variable>
 									<DeliveryNoteDate>
-										<xsl:value-of select="concat('20',substring($dDDelNoteDate,3,2),'-',substring($dDDelNoteDate,5,2),'-',substring($dDDelNoteDate,7,2))"/>
+										<xsl:value-of select="concat(substring($dDDelNoteDate,3,2),'-',substring($dDDelNoteDate,5,2),'-',substring($dDDelNoteDate,7,2))"/>
 									</DeliveryNoteDate>
 								</DeliveryNoteReferences>
 							</DeliveryNoteHeader>
