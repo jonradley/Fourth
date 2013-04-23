@@ -30,7 +30,7 @@ K Oshaughnessy| 2011-04-01		| 4349 Created Modele
 			
 			<SupplierInfo>
 				<SupplierId>
-					<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/BuyersCode"/>
+					<xsl:value-of select="TradeSimpleHeader/RecipientsBranchReference"/>
 				</SupplierId>
 				<Name>
 					<xsl:value-of select="TradeSimpleHeader/RecipientsName"/>
@@ -64,7 +64,7 @@ K Oshaughnessy| 2011-04-01		| 4349 Created Modele
 					<xsl:value-of select="TradeSimpleHeader/RecipientsCodeForSender"/>
 				</Name>
 				<LongName>
-					<xsl:value-of select="TradeSimpleHeader/RecipientsCodeForSender"/>
+					<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToName"/>
 				</LongName>
 				<VendorId>
 					<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode"/>
