@@ -234,7 +234,12 @@ Transformations on the XML version of the flat file - create INVs and CRNs
 															<xsl:when test="DeliveryNoteDate = 'DLVF'">Delivery Fee</xsl:when>
 														</xsl:choose>
 													</ProductDescription>
+													<InvoicedQuantity>1</InvoicedQuantity>
 													<UnitValueExclVAT><xsl:value-of select="DespatchDate"/></UnitValueExclVAT>
+													<LineValueExclVAT><xsl:value-of select="DespatchDate"/></LineValueExclVAT>
+													<!-- vat code always exempt -->
+													<VATCode>E</VATCode>
+													<VATRate>0.00</VATRate>
 												</InvoiceLine>
 											</xsl:for-each>
 										</InvoiceDetail>
@@ -242,12 +247,14 @@ Transformations on the XML version of the flat file - create INVs and CRNs
 										<InvoiceTrailer>
 											<xsl:if test="InvoiceTrailer/NumberOfLines &gt; 0">
 												<xsl:element name="NumberOfLines">
-													<xsl:value-of select="InvoiceTrailer/NumberOfLines"/>
+													<!-- add fee lines to the total -->
+													<xsl:value-of select="InvoiceTrailer/NumberOfLines + count(InvoiceDetail/InvoiceLine/DeliveryNoteReferences[DeliveryNoteReference != '' and DeliveryNoteDate != '' and DespatchDate !=''])"/>
 												</xsl:element>
 											</xsl:if>
 											<xsl:if test="InvoiceTrailer/NumberOfItems &gt; 0">
 												<xsl:element name="NumberOfItems">
-													<xsl:value-of select="translate(sum(InvoiceDetail/InvoiceLine/InvoicedQuantity[../Measure/MeasureIndicator != 'Y']),'-','') + translate(sum(InvoiceDetail/InvoiceLine/Measure/TotalMeasure[../MeasureIndicator = 'Y']),'-','')"/>
+													<!-- add fee lines to the total -->
+													<xsl:value-of select="translate(sum(InvoiceDetail/InvoiceLine/InvoicedQuantity[../Measure/MeasureIndicator != 'Y']),'-','') + translate(sum(InvoiceDetail/InvoiceLine/Measure/TotalMeasure[../MeasureIndicator = 'Y']),'-','') + count(InvoiceDetail/InvoiceLine/DeliveryNoteReferences[DeliveryNoteReference != '' and DeliveryNoteDate != '' and DespatchDate !=''])"/>
 												</xsl:element>
 											</xsl:if>
 											<xsl:element name="DocumentTotalExclVAT"><xsl:value-of select="InvoiceTrailer/DocumentTotalExclVAT"/></xsl:element>
@@ -369,10 +376,12 @@ Transformations on the XML version of the flat file - create INVs and CRNs
 															<xsl:when test="DeliveryNoteDate = 'DLVF'">Delivery Fee</xsl:when>
 														</xsl:choose>
 													</ProductDescription>
+													<InvoicedQuantity>1</InvoicedQuantity>
 													<UnitValueExclVAT><xsl:value-of select="DespatchDate"/></UnitValueExclVAT>
+													<LineValueExclVAT><xsl:value-of select="DespatchDate"/></LineValueExclVAT>
 													<!-- vat code always exempt -->
 													<VATCode>E</VATCode>
-													<VATRate>0</VATRate>
+													<VATRate>0.00</VATRate>
 												</CreditNoteLine>
 											</xsl:for-each>
 										</CreditNoteDetail>		
@@ -380,11 +389,13 @@ Transformations on the XML version of the flat file - create INVs and CRNs
 										<CreditNoteTrailer>
 											<xsl:if test="InvoiceTrailer/NumberOfLines &gt; 0">
 												<xsl:element name="NumberOfLines">
-													<xsl:value-of select="InvoiceTrailer/NumberOfLines"/>
+													<!-- add fee lines to the total -->
+													<xsl:value-of select="InvoiceTrailer/NumberOfLines + count(InvoiceDetail/InvoiceLine/DeliveryNoteReferences[DeliveryNoteReference != '' and DeliveryNoteDate != '' and DespatchDate !=''])"/>
 												</xsl:element>
 											</xsl:if>
 											<xsl:element name="NumberOfItems">
-												<xsl:value-of select="translate(sum(InvoiceDetail/InvoiceLine/InvoicedQuantity[../Measure/MeasureIndicator != 'Y']),'-','') + translate(sum(InvoiceDetail/InvoiceLine/Measure/TotalMeasure[../MeasureIndicator = 'Y']),'-','')"/>
+												!-- add fee lines to the total -->
+												<xsl:value-of select="translate(sum(InvoiceDetail/InvoiceLine/InvoicedQuantity[../Measure/MeasureIndicator != 'Y']),'-','') + translate(sum(InvoiceDetail/InvoiceLine/Measure/TotalMeasure[../MeasureIndicator = 'Y']),'-','') + count(InvoiceDetail/InvoiceLine/DeliveryNoteReferences[DeliveryNoteReference != '' and DeliveryNoteDate != '' and DespatchDate !=''])"/>
 											</xsl:element>
 											<xsl:element name="DocumentTotalExclVAT"><xsl:value-of select="translate(InvoiceTrailer/DocumentTotalExclVAT,'-','')"/></xsl:element>
 											<xsl:element name="VATAmount"><xsl:value-of select="translate(InvoiceTrailer/VATAmount,'-','')"/></xsl:element>
