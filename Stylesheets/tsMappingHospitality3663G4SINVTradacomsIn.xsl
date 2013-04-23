@@ -14,6 +14,8 @@ Maps 3663 tradacoms invoices into internal XML
 ==========================================================================================
 09/04/2013	| M Dimant					|	6364: Fixed  PO reference for every line
 ==========================================================================================
+23/04/2013	| M Dimant					|	6457: Fixed a bug surrounding line level prices and VAT rate 
+==========================================================================================
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
@@ -418,10 +420,10 @@ Maps 3663 tradacoms invoices into internal XML
 						<xsl:copy-of select="ProductDescription"/>
 						<xsl:copy-of select="InvoicedQuantity"/>
 						<xsl:copy-of select="PackSize"/>
-						<xsl:copy-of select="UnitValueExclVAT"/>
-						<xsl:copy-of select="LineValueExclVAT"/>
+						<UnitValueExclVAT><xsl:value-of select="format-number(UnitValueExclVAT div 10000.0, '0.00#')"/></UnitValueExclVAT>
+						<LineValueExclVAT><xsl:value-of select="format-number(LineValueExclVAT div 10000.0, '0.00#')"/></LineValueExclVAT>
 						<xsl:copy-of select="VATCode"/>
-						<xsl:copy-of select="VATRate"/>
+						<VATRate><xsl:value-of select="format-number(VATRate div 10000.0, '0.00#')"/></VATRate>
 						<xsl:copy-of select="Measure"/>
 					</InvoiceLine>			
 			</xsl:for-each>	
