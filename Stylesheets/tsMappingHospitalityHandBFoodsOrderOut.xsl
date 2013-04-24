@@ -268,8 +268,11 @@ M Emanuel		| 2012-10-17	| Mapped in Line number and Harrod Internal Site no
 	
 		<xsl:text xml:space="preserve">OLD</xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		
-		<xsl:text xml:space="preserve">    </xsl:text>
+		<!-- FIELD 2 used for Harrods' line number, not required for other integrations -->
+		<!-- prefix with magic number 5 -->
+		<xsl:text xml:space="preserve">5</xsl:text>
+		<!-- pad the line number to 3 digits so the field is always entirely filled -->
+		<xsl:value-of select="format-number(LineNumber,'000')"/>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
 		
 		<!--xsl:text xml:space="preserve">DSCO044               </xsl:text-->
