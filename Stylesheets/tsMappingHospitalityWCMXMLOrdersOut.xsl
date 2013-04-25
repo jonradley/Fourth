@@ -3,8 +3,9 @@
 ************************************************************************************************
 Date				|	Name						|	Desc
 ************************************************************************************************
-21/02/2013		| M Emanuel					| 5943 Order Mapper for West Country Milk, added BatchID counter
+21/02/2013		| M Emanuel					| 5943: Order Mapper for West Country Milk, added BatchID counter
 ************************************************************************************************
+25/04/2013		| M Dimant					| 6464: Corrected structure around product_lines
 ************************************************************************************************
 
 -->
@@ -113,8 +114,8 @@ Date				|	Name						|	Desc
 							</xsl:if>
 						</order_details>
 						
-						<xsl:for-each select="PurchaseOrderDetail/PurchaseOrderLine">
-							<product_lines>
+						<product_lines>
+							<xsl:for-each select="PurchaseOrderDetail/PurchaseOrderLine">							
 								<product>
 									<xsl:attribute name="p_count">
 										<xsl:value-of select="LineNumber"/>
@@ -141,9 +142,9 @@ Date				|	Name						|	Desc
 									<item_value>
 										<xsl:value-of select="LineValueExclVAT"/>
 									</item_value>
-								</product>
-							</product_lines>
-						</xsl:for-each>
+								</product>							
+							</xsl:for-each>
+						</product_lines>
 					</order>
 					
 				</xsl:for-each>
