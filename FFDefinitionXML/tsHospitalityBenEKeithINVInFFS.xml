@@ -115,7 +115,7 @@ Map in the BEK fixed-width Invoice format (V16)
 						<InvoiceTrailer>
 							<NumberOfLines RecordPos="IH" LPos="549" UPos="555"/>
 							<NumberOfItems RecordPos="IH" LPos="542" UPos="548"/>
-							<DocumentTotalExclVAT RecordPos="IH" LPos="123" UPos="135"/>
+							<!--<DocumentTotalExclVAT RecordPos="IH" LPos="123" UPos="135"/> take this out -->
 							<VATAmount RecordPos="IH" LPos="97" UPos="109"/>
 							<DocumentTotalInclVAT RecordPos="IH" LPos="123" UPos="135"/>
 						</InvoiceTrailer>
