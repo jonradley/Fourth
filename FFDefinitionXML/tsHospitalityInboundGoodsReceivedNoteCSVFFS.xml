@@ -10,18 +10,6 @@ Andrew Barber	| 21/04/2013	| Created
 	<ffsSettings>
 		<ffsRecordPositionType>named</ffsRecordPositionType>
 		<ffsRecordSeparator>chr(13)chr(10)</ffsRecordSeparator>
-		<ffsEscapeChars>
-			<ffsEscapeChar>
-				<ffsNative>chr(13)</ffsNative>
-				<ffsTradesimple/>
-				<ffsLiteral/>
-			</ffsEscapeChar>
-			<ffsEscapeChar>
-				<ffsNative>""</ffsNative>
-				<ffsTradesimple>¬Q</ffsTradesimple>
-				<ffsLiteral>"</ffsLiteral>
-			</ffsEscapeChar>
-		</ffsEscapeChars>
 		<ffsFieldSeparators>
 			<ffsFieldSeparator>,</ffsFieldSeparator>
 		</ffsFieldSeparators>
