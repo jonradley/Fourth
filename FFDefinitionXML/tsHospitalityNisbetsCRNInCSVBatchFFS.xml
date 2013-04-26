@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml version="1.0" encoding="UTF-8"?>
 <ffsFlatFileSchema>
 	<ffsSettings>
 		<ffsRecordPositionType>named</ffsRecordPositionType>
@@ -64,9 +63,6 @@
 								</BuyersAddress>
 							</Buyer>
 							<Supplier>
-								<!--<SuppliersLocationID>
-									<SuppliersCode RecordPos="" LPos=""/>
-								</SuppliersLocationID>-->
 								<SuppliersName RecordPos="H" LPos="3"/>
 								<SuppliersAddress>
 									<AddressLine1 RecordPos="H" LPos="4"/>
@@ -77,9 +73,6 @@
 								</SuppliersAddress>
 							</Supplier>
 							<ShipTo>
-								<!--<ShipToLocationID>
-									<SuppliersCode RecordPos="H" LPos=""/>
-								</ShipToLocationID>-->
 								<ShipToName RecordPos="H" LPos="22"/>
 								<ShipToAddress>
 									<AddressLine1 RecordPos="H" LPos="23"/>
@@ -103,7 +96,6 @@
 						</CreditNoteHeader>
 						<CreditNoteDetail>
 							<CreditNoteLine>
-								<!--<LineNumber RecordPos="" LPos=""/>-->
 								<CreditRequestReferences>
 									<CreditRequestReference RecordPos="D" LPos="2"/>
 									<CreditRequestDate RecordPos="D" LPos="3"/>
