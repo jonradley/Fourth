@@ -1,28 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 /******************************************************************************************
-' Date        | Name         | Description of modification
+' Date 			| Name			| Description of modification
 '******************************************************************************************
-16/04/2013  | H Robson  | FB:6363 Branched from tsMappingHospitalityInvoiceCSVBatch.xsl
+16/04/2013		| H Robson		| FB:6363 Branched from tsMappingHospitalityInvoiceCSVBatch.xsl
 '******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:vbscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
-
+	
 	<!-- Start point - ensure required outer BatchRoot tag is applied -->
 	<xsl:template match="/">
-<BatchRoot>
-		<xsl:apply-templates/>
-</BatchRoot>
+		<BatchRoot>
+			<xsl:apply-templates/>
+		</BatchRoot>
 	</xsl:template>
 	
 	<!-- convert VAT codes to T|S -->
 	<xsl:template match="VATCode">
 		<VATCode>
 			<xsl:choose>
-				<xsl:when test=". = '2'">Z</xsl:when><!-- zero -->
-				<xsl:when test=". = '1'">S</xsl:when><!-- standard -->
-				<xsl:when test=". = '0'">E</xsl:when><!-- exempt -->
+				<xsl:when test=". = '2'">Z</xsl:when>
+				<!-- zero -->
+				<xsl:when test=". = '1'">S</xsl:when>
+				<!-- standard -->
+				<xsl:when test=". = '0'">E</xsl:when>
+				<!-- exempt -->
 			</xsl:choose>
 		</VATCode>
 	</xsl:template>
@@ -88,7 +91,7 @@
 			</xsl:choose>
 		</xsl:copy>
 	</xsl:template>
-
+	
 	<!-- DATE CONVERSION YYYYMMDD to xsd:date -->
 	<xsl:template match="BatchInformation/FileCreationDate |
 						InvoiceReferences/InvoiceDate |
@@ -99,6 +102,7 @@
 			<xsl:value-of select="concat(substring(., 1, 4), '-', substring(., 5, 2), '-', substring(., 7, 2))"/>
 		</xsl:copy>
 	</xsl:template>
+	
 	<!-- DATE CONVERSION YYYYMMDD:[HHMMSS] to xsd:dateTime YYYY-MM-DDTHH:MM:SS -->
 	<xsl:template match="BatchInformation/SendersTransmissionDate">
 		<xsl:copy>
@@ -129,6 +133,4 @@
 			lLineNumber = lLineNumber + 1
 		End Function
 ]]></msxsl:script>
-
-
 </xsl:stylesheet>
