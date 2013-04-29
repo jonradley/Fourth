@@ -6,7 +6,7 @@ Name				| Date			| Change
 *********************************************************************
 Andrew Barber	| 21/04/2013	| 6259: Created.
 *******************************************************************-->
-<xsl:stylesheet  version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt"  xmlns:vbscript="http://abs-Ltd.com">
+<xsl:stylesheet  version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt"  xmlns:vbscript="http://tradesimple.net">
 
 	<xsl:template match="/">
 		<BatchRoot>	
