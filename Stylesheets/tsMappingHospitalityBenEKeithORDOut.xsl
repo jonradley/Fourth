@@ -10,9 +10,13 @@ Map Out to the BEK Order format (V16)
  01/03/2013	| Harold Robson		| FB6189 Created module
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  01/03/2013	| Harold Robson		| FB6298 BEK requested change (PO ref to be included in both last fields)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 02/05/2013	| R Cambridge  		| FB6490 Remove product code manipulation with UoM and ensure code is 6 digits
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+           	|              		| 
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
-	<xsl:include href="tsMappingHospitalityBenEKeithIncludes.xsl"/>
+	
 	<xsl:output method="text" encoding="utf-8"/>
 	
 	<xsl:variable name="delimiter" select="'|'"/> <!-- pipe or comma allowed by BEKv16 spec -->
@@ -42,10 +46,7 @@ Map Out to the BEK Order format (V16)
 			<xsl:value-of select="substring-after(../../PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode,'-')"/>
 			<xsl:value-of select="$delimiter"/>
 			<!-- BEK Item number -->
-			<xsl:call-template name="CompoundProductCodeOperations">
-				<xsl:with-param name="ProductCode" select="ProductID/SuppliersProductCode"/>
-				<xsl:with-param name="method" select="'disjoin'"/>
-			</xsl:call-template>
+			<xsl:value-of select="format-number(ProductID/SuppliersProductCode,'000000')"/>
 			<xsl:value-of select="$delimiter"/>
 			<!-- Delivery Date MMDDYYYY -->
 			<xsl:if test="$deliveryDate != ''">

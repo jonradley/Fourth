@@ -11,9 +11,13 @@ Transformations on the XML version of the flat file - create INVs and CRNs
  05/03/2013	| Harold Robson		| FB6189 Created module 
 ******************************************************************************************
  05/04/2013	| Harold Robson		| FB6298 fixes
+******************************************************************************************
+ 02/05/2013	| R Cambridge  		| FB6490 Remove product code manipulation with UoM and strip leading zeros
+******************************************************************************************
+           	|              		| 
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="xsl msxsl">
-	<xsl:include href="tsMappingHospitalityBenEKeithIncludes.xsl"/>
+	
 	<xsl:output method="xml" encoding="UTF-8"/>
 	
 	<!--=======================================================================================
@@ -190,10 +194,7 @@ Transformations on the XML version of the flat file - create INVs and CRNs
 															<xsl:element name="GTIN"><xsl:value-of select="ProductID/GTIN"/></xsl:element>
 														</xsl:if>
 														<xsl:element name="SuppliersProductCode">
-															<xsl:call-template name="CompoundProductCodeOperations">
-																<xsl:with-param name="ProductCode" select="ProductID/SuppliersProductCode"/>
-																<xsl:with-param name="UoM" select="OrderedQuantity/@UnitOfMeasure"/>
-															</xsl:call-template>
+															<xsl:value-of select="format-number(ProductID/SuppliersProductCode, '#')"/>
 														</xsl:element>
 													</ProductID>
 													<xsl:element name="ProductDescription"><xsl:value-of select="ProductDescription"/></xsl:element>
@@ -332,10 +333,7 @@ Transformations on the XML version of the flat file - create INVs and CRNs
 													<ProductID>
 														<xsl:element name="GTIN"><xsl:value-of select="ProductID/GTIN"/></xsl:element>
 														<xsl:element name="SuppliersProductCode">
-															<xsl:call-template name="CompoundProductCodeOperations">
-																<xsl:with-param name="ProductCode" select="ProductID/SuppliersProductCode"/>
-																<xsl:with-param name="UoM" select="OrderedQuantity/@UnitOfMeasure"/>
-															</xsl:call-template>
+															<xsl:value-of select="format-number(ProductID/SuppliersProductCode, '#')"/>
 														</xsl:element>
 													</ProductID>
 													<xsl:element name="ProductDescription"><xsl:value-of select="ProductDescription"/></xsl:element>

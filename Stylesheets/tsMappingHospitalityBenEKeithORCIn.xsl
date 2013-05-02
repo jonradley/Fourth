@@ -11,9 +11,13 @@ Perform transformations on the XML version of the flat file
  06/03/2013	| Harold Robson		| FB6189 Created module 
 ******************************************************************************************
  02/04/2013	| Harold Robson		| FB6292 Created module 
+******************************************************************************************
+ 02/05/2013	| R Cambridge  		| FB6490 Remove product code manipulation with UoM and strip leading zeros
+******************************************************************************************
+           	|              		| 
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
-	<xsl:include href="tsMappingHospitalityBenEKeithIncludes.xsl"/>
+	
 	<xsl:output method="xml" encoding="UTF-8"/>
 	<!-- Start point - ensure required outer BatchRoot tag is applied -->
 	<xsl:template match="/">
@@ -79,10 +83,7 @@ Perform transformations on the XML version of the flat file
 	<!-- case: ProductID and SubstitutedProductID are populated with different numbers		action: swap them -->
 	<xsl:template match="ProductID/SuppliersProductCode">
 		<SuppliersProductCode>
-			<xsl:call-template name="CompoundProductCodeOperations">
-				<xsl:with-param name="ProductCode" select="../../SubstitutedProductID/SuppliersProductCode"/>
-				<xsl:with-param name="UoM" select="../../OrderedQuantity/@UnitOfMeasure"/>
-			</xsl:call-template>
+			<xsl:value-of select="format-number(../../SubstitutedProductID/SuppliersProductCode,'#')"/>
 		</SuppliersProductCode>
 	</xsl:template>		
 		
@@ -91,10 +92,7 @@ Perform transformations on the XML version of the flat file
 		<xsl:if test=". != ../ProductID/SuppliersProductCode">
 			<SubstitutedProductID>
 				<SuppliersProductCode>
-					<xsl:call-template name="CompoundProductCodeOperations">
-						<xsl:with-param name="ProductCode" select="../ProductID/SuppliersProductCode"/>
-						<xsl:with-param name="UoM" select="../OrderedQuantity/@UnitOfMeasure"/>
-					</xsl:call-template>
+					<xsl:value-of select="format-number(../ProductID/SuppliersProductCode,'#')"/>
 				</SuppliersProductCode>
 			</SubstitutedProductID>
 		</xsl:if>
