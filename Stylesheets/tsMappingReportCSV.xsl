@@ -29,6 +29,8 @@
 ******************************************************************************************
  30/04/2013 | Sandeep Sehgal | FB6330/FB6444. Added Report 145
 ******************************************************************************************
+03/05/2013 | Sandeep Sehgal | FB6330/FB6444. Translating status column for Report 145
+******************************************************************************************
 -->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -81,6 +83,9 @@
                       <xsl:call-template name="SelectString"><xsl:with-param name="InputString" select="script:msFormatForCSV(.)"/><xsl:with-param name="ReportID" select="$ReportID"/></xsl:call-template><xsl:value-of select="$CommaCharacter"></xsl:value-of>
                     </xsl:when>
                     <xsl:when test="$ReportID = 129 and position() = 9">
+                      <xsl:call-template name="SelectString"><xsl:with-param name="InputString" select="script:msFormatForCSV(.)"/><xsl:with-param name="ReportID" select="$ReportID"/></xsl:call-template><xsl:value-of select="$CommaCharacter"></xsl:value-of>
+                    </xsl:when>
+                      <xsl:when test="$ReportID = 145 and position() = 9">
                       <xsl:call-template name="SelectString"><xsl:with-param name="InputString" select="script:msFormatForCSV(.)"/><xsl:with-param name="ReportID" select="$ReportID"/></xsl:call-template><xsl:value-of select="$CommaCharacter"></xsl:value-of>
                     </xsl:when>
                     <xsl:otherwise>
