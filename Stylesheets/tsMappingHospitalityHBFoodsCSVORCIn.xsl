@@ -26,6 +26,8 @@
 '******************************************************************************************
 ' 03/07/2012  | H Robson  | FB4970 Created as copy of 'tsMappingHospitalityBunzlUrbiumInboundCSVConfirmation.xsl' with alterations
 '******************************************************************************************
+' 03/05/2013  | H Robson  | FB5841 Don't output GTIN tags if there's no GTIN
+'******************************************************************************************
 -->
 <xsl:stylesheet  version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt"  xmlns:vbscript="http://abs-Ltd.com">
 
@@ -274,9 +276,12 @@
 							</xsl:if>
 							
 							<ProductID>
-								<GTIN>
-									<xsl:value-of select="ProductID/GTIN"/>
-								</GTIN>
+								<!-- FB5841 -->
+								<xsl:if test="ProductID/GTIN != ''">
+									<GTIN>
+										<xsl:value-of select="ProductID/GTIN"/>
+									</GTIN>
+								</xsl:if>
 								<SuppliersProductCode>
 									<xsl:value-of select="ProductID/SuppliersProductCode"/>
 								</SuppliersProductCode>
