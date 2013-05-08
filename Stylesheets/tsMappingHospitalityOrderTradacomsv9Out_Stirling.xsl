@@ -24,7 +24,7 @@
  15/11/2010	| R Cambridge			|	3956 Product code manipulation (remove UoM indicator if present)
  													  If UoM indicator is present use UoM inplace of PackSize (Bibendum's system will lookup pack size)
 ==========================================================================================
-			 	|				 			|	
+ 08/05/2013	| H Robson   			|	6496 handle partial UoMs for PBR/Bibendum  integration	
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -233,11 +233,11 @@
 					<xsl:with-param name="vnLength" select="30"/>
 					<xsl:with-param name="vsModifiedValue">
 						<xsl:choose>
-							<xsl:when test="substring-before(ProductID/SuppliersProductCode,'-EA') != ''">
-								<xsl:value-of select="substring-before(ProductID/SuppliersProductCode,'-EA')"/>
+							<xsl:when test="contains(ProductID/SuppliersProductCode,'-E')">
+								<xsl:value-of select="substring-before(ProductID/SuppliersProductCode,'-E')"/>
 							</xsl:when>
-							<xsl:when test="substring-before(ProductID/SuppliersProductCode,'-CS') != ''">
-								<xsl:value-of select="substring-before(ProductID/SuppliersProductCode,'-CS')"/>
+							<xsl:when test="contains(ProductID/SuppliersProductCode,'-C')">
+								<xsl:value-of select="substring-before(ProductID/SuppliersProductCode,'-C')"/>
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:value-of select="ProductID/SuppliersProductCode"/>
@@ -254,8 +254,8 @@
 				</xsl:call-template>				
 				<xsl:text>+</xsl:text>
 				<xsl:choose>
-					<xsl:when test="substring-before(ProductID/SuppliersProductCode,'-EA') != ''">EA</xsl:when>
-					<xsl:when test="substring-before(ProductID/SuppliersProductCode,'-CS') != ''">CS</xsl:when>
+					<xsl:when test="contains(ProductID/SuppliersProductCode,'-E')">EA</xsl:when>
+					<xsl:when test="contains(ProductID/SuppliersProductCode,'-C')">CS</xsl:when>
 					<xsl:otherwise>
 						<xsl:value-of select="PackSize"/>
 					</xsl:otherwise>
