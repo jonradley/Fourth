@@ -19,6 +19,8 @@ A Barber		|	2012-08-29		| 5709 Added no UOM append product code handling for PBR
 H Mahbub		|	2012-10-12		| Adding new Compass Vendor code FB 5780
 *********************************************************************
 H Robson		|	2013-03-26		| 6285 Added Creative Events	
+*********************************************************************
+H Robson		|	2013-05-07		| 6496 PBR append UoM to product code	
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 	<xsl:output method="xml" encoding="UTF-8"/>
@@ -315,13 +317,13 @@ H Robson		|	2013-03-26		| 6285 Added Creative Events
 		<xsl:copy>
 			<xsl:choose>
 				<!-- 2012-02-01 - removed ARAMARK from this list, UoM SHOULD be added to product codes for them -->
+				<!-- 2013-05-07 - removed PBR from this list, UoM SHOULD be added to product codes for them -->
 				<xsl:when test="not(
 					$CustomerFlag = $COMPASS or
 					$CustomerFlag = $COOP  or
 					$CustomerFlag = $FISHWORKS or
 					$CustomerFlag = $MCC  or
 					$CustomerFlag = $ORCHID or
-					$CustomerFlag = $PBR or
 					$CustomerFlag = $SEARCYS or
 					$CustomerFlag = $SODEXO_PRESTIGE)">
 					<!-- translate the Units In Pack value and then append this to the product code -->
@@ -333,8 +335,18 @@ H Robson		|	2013-03-26		| 6285 Added Creative Events
 
 					<xsl:variable name="UOM">
 						<xsl:choose>
-							<xsl:when test="$UOMRaw = 1">EA</xsl:when>
-							<xsl:otherwise>CS</xsl:otherwise>
+							<xsl:when test="$UOMRaw = 1">
+								<xsl:choose>
+									<xsl:when test="$CustomerFlag = $PBR">E</xsl:when>
+									<xsl:otherwise>EA</xsl:otherwise>
+								</xsl:choose>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:choose>
+									<xsl:when test="$CustomerFlag = $PBR">C</xsl:when>
+									<xsl:otherwise>CS</xsl:otherwise>
+								</xsl:choose>
+							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:variable>
 				
