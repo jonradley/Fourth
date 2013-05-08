@@ -15,6 +15,8 @@ K Oshaughnessy|2012-08-29		| Additional customer added (Mitie) FB 5665
 A Barber		|	2012-08-29		| 5709 Added no UOM append product code handling for PBR.	
 *********************************************************************
 H Robson		|	2013-03-26		| 6285 Added Creative Events	
+*********************************************************************
+H Robson		|	2013-05-07		| 6496 PBR append UoM to product code	
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="xml" encoding="utf-8"/>
@@ -191,19 +193,29 @@ H Robson		|	2013-03-26		| 6285 Added Creative Events
 												<SuppliersProductCode>
 													<xsl:value-of select="ProductID/SuppliersProductCode"/>
 													<!-- 2012-02-01 - removed ARAMARK from this list, UoM SHOULD be added to product codes for them -->
+													<!-- 2013-05-07 - removed PBR from this list, UoM SHOULD be added to product codes for them -->
 													<xsl:if test="not(
 														$CustomerFlag = $COMPASS or
 														$CustomerFlag = $COOP  or
 														$CustomerFlag = $FISHWORKS or
 														$CustomerFlag = $MCC  or
 														$CustomerFlag = $ORCHID or
-														$CustomerFlag = $PBR or
 														$CustomerFlag = $SEARCYS or
 														$CustomerFlag = $SODEXO_PRESTIGE)" >
 														<xsl:choose>
-															<xsl:when test="ConfirmedQuantity/@UnitOfMeasure = 'EA'">-EA</xsl:when>
-															<xsl:when test="ConfirmedQuantity/@UnitOfMeasure = 'CS'">-CS</xsl:when>
-														</xsl:choose>												
+															<xsl:when test="ConfirmedQuantity/@UnitOfMeasure = 'EA'">
+																<xsl:choose>
+																	<xsl:when test="$CustomerFlag = $PBR">-E</xsl:when>
+																	<xsl:otherwise>-EA</xsl:otherwise>
+																</xsl:choose>
+															</xsl:when>
+															<xsl:when test="ConfirmedQuantity/@UnitOfMeasure = 'CS'">
+																<xsl:choose>
+																	<xsl:when test="$CustomerFlag = $PBR">-C</xsl:when>
+																	<xsl:otherwise>-CS</xsl:otherwise>
+																</xsl:choose>
+															</xsl:when>
+														</xsl:choose>	
 													</xsl:if>	
 												</SuppliersProductCode>
 											</ProductID>
