@@ -10,23 +10,11 @@
 '******************************************************************************************
 ' Module History
 '******************************************************************************************
-' Date        | Name         | Description of modification
-'******************************************************************************************
-' 13/09/2005  | Calum Scott  | Created
-'******************************************************************************************
-' 14/10/2005  | Lee Boyton   | H515. Added BatchRoot element required by inbound xsl
-'                            | transform processor. Translate the LineStatus to internal values.
-'******************************************************************************************
-' 08/05/2007  | Nigel Emsen  | Copied for Bunzl. FB: 791.
-'******************************************************************************************
-' 21/07/2009  | Lee Boyton   | FB3016 - Do not map the ShipTo Buyers Code for
-'                                            | non-Hilton confirmations, let the in-filler do it.
-'******************************************************************************************
-' 30/10/2010  | Graham Neicho  | FB3436 Added BackOrderQuantity
-'******************************************************************************************
 ' 03/07/2012  | H Robson  | FB4970 Created as copy of 'tsMappingHospitalityBunzlUrbiumInboundCSVConfirmation.xsl' with alterations
 '******************************************************************************************
 ' 03/05/2013  | H Robson  | FB5841 Don't output GTIN tags if there's no GTIN
+'******************************************************************************************
+' 08/05/2013  | H Robson  | FB5841 bugfix: stop template from stripping out BuyersProductCode
 '******************************************************************************************
 -->
 <xsl:stylesheet  version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt"  xmlns:vbscript="http://abs-Ltd.com">
@@ -282,9 +270,16 @@
 										<xsl:value-of select="ProductID/GTIN"/>
 									</GTIN>
 								</xsl:if>
-								<SuppliersProductCode>
-									<xsl:value-of select="ProductID/SuppliersProductCode"/>
-								</SuppliersProductCode>
+								<xsl:if test="ProductID/SuppliersProductCode != ''">
+									<SuppliersProductCode>
+										<xsl:value-of select="ProductID/SuppliersProductCode"/>
+									</SuppliersProductCode>
+								</xsl:if>
+								<xsl:if test="ProductID/BuyersProductCode != ''">
+									<BuyersProductCode>
+										<xsl:value-of select="ProductID/BuyersProductCode"/>
+									</BuyersProductCode>
+								</xsl:if>
 							</ProductID>
 	
 							<xsl:if test="SubsitutedProductID/SuppliersProductCode != ''">
