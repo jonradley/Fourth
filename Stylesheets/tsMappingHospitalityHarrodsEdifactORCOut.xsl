@@ -164,7 +164,7 @@ Date	|Name		| Information
 				</xsl:choose>
 				<xsl:text>+</xsl:text>
 				<xsl:choose>
-					<xsl:when test="ProductID/GTIN != '' and ProductID/GTIN != '55555555555555'"><xsl:value-of select="ProductID/GTIN"/></xsl:when>y
+					<xsl:when test="ProductID/GTIN != '' and ProductID/GTIN != '55555555555555'"><xsl:value-of select="ProductID/GTIN"/></xsl:when>
 				</xsl:choose>
 				<xsl:text>:EN</xsl:text>
 			<xsl:text>'&#13;&#10;</xsl:text>
