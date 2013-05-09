@@ -26,27 +26,14 @@ M Emanuel	| 29/01/2013	| FB Case 5946 Created New Invoice out mapper
 				<xsl:element name="SuppliersLocationCode">
 					<xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
 				</xsl:element>
-				<xsl:element name="DeliveryLocationEANCode">
-					<xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/GLN"/>
-				</xsl:element>
-				<xsl:element name="LocationName">
-					<xsl:value-of select="InvoiceHeader/ShipTo/ShipToName"/>
-				</xsl:element>
-				<xsl:element name="LocationAddress1">
-					<xsl:value-of select="InvoiceHeader/ShipTo/ShipToAddress/AddressLine1"/>
-				</xsl:element>
-				<xsl:element name="LocationAddress2">
-					<xsl:value-of select="InvoiceHeader/ShipTo/ShipToAddress/AddressLine2"/>
-				</xsl:element>
-				<xsl:element name="LocationAddress3">
-					<xsl:value-of select="InvoiceHeader/ShipTo/ShipToAddress/AddressLine3"/>
-				</xsl:element>
-				<xsl:element name="LocationAddress4">
-					<xsl:value-of select="InvoiceHeader/ShipTo/ShipToAddress/AddressLine4"/>
-				</xsl:element>
-				<xsl:element name="LocationPostalCode">
-					<xsl:value-of select="InvoiceHeader/ShipTo/ShipToAddress/PostCode"/>
-				</xsl:element>
+				<xsl:element name="DeliveryLocationEANCode"/>				
+				<xsl:element name="LocationName"/>				
+				<xsl:element name="LocationAddress1"/>					
+				<xsl:element name="LocationAddress2"/>					
+				<xsl:element name="LocationAddress3"/>					
+				<xsl:element name="LocationAddress4"/>					
+				<xsl:element name="LocationPostalCode"/>
+							
 				<xsl:element name="InvoiceNumber">
 					<xsl:value-of select="InvoiceHeader/InvoiceReferences/InvoiceReference"/>
 				</xsl:element>
