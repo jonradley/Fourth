@@ -147,9 +147,24 @@ Date	|Name		| Information
 			<xsl:text>LIN+</xsl:text>
 				<xsl:value-of select="LineNumber"/>
 				<xsl:text>+</xsl:text>
+				<xsl:choose>
+					<xsl:when test="@LineStatus = 'Added' ">
+						<xsl:text>1</xsl:text>
+					</xsl:when>
+					<xsl:when test="@LineStatus = 'Accepted' ">
+						<xsl:text>5</xsl:text>
+					</xsl:when>
+					<xsl:when test="@LineStatus = 'Rejected'">
+						<xsl:text>7</xsl:text>
+					</xsl:when>
+					<xsl:when test="@LineStatus = 'Changed'">
+						<xsl:text>3</xsl:text>
+					</xsl:when>
+					<xsl:otherwise>error</xsl:otherwise>
+				</xsl:choose>
 				<xsl:text>+</xsl:text>
 				<xsl:choose>
-					<xsl:when test="ProductID/GTIN != '' and ProductID/GTIN != '55555555555555'"><xsl:value-of select="ProductID/GTIN"/></xsl:when>
+					<xsl:when test="ProductID/GTIN != '' and ProductID/GTIN != '55555555555555'"><xsl:value-of select="ProductID/GTIN"/></xsl:when>y
 				</xsl:choose>
 				<xsl:text>:EN</xsl:text>
 			<xsl:text>'&#13;&#10;</xsl:text>
