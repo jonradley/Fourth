@@ -137,19 +137,22 @@ M Dimant		| 01-05-2013		|  5948: Created Module
 										
 										<ProductID>
 											<GTIN><xsl:value-of select="tradeItemUnit/itemContained/containedItemIdentification/gtin"/></GTIN>
-											<SuppliersProductCode><xsl:value-of select="tradeItemUnit/itemContained/containedItemIdentification/additionalTradeItemIdentification[additionalTradeItemIdentificationType='SUPPLIER_ASSIGNED']/additionalTradeItemIdentificationValue"/></SuppliersProductCode>
-											
-										</ProductID>
 										
+											<!-- Tradeteam product code should be GTIN -->
+											<SuppliersProductCode>
+												<xsl:choose> 
+													<xsl:when test="/sh:StandardBusinessDocument/sh:StandardBusinessDocumentHeader/sh:Sender/sh:Identifier='1000017'">
+														<xsl:value-of select="tradeItemUnit/itemContained/containedItemIdentification/gtin"/>
+													</xsl:when>
+													<xsl:otherwise>
+														<xsl:value-of select="tradeItemUnit/itemContained/containedItemIdentification/additionalTradeItemIdentification[additionalTradeItemIdentificationType='SUPPLIER_ASSIGNED']/additionalTradeItemIdentificationValue"/>
+													</xsl:otherwise>
+												</xsl:choose>
+											</SuppliersProductCode>
+										</ProductID>										
 										
-										<xsl:for-each select="tradeItemUnit/itemContained/containedItemIdentification/additionalTradeItemIdentification[additionalTradeItemIdentificationType='BUYER_ASSIGNED']/additionalTradeItemIdentificationValue[1]">
-											<ProductDescription>
-												<xsl:value-of select="."/>
-											</ProductDescription>
-										</xsl:for-each>
-										
-										<DespatchedQuantity>
-										
+						
+										<DespatchedQuantity>										
 											<xsl:attribute name="UnitOfMeasure">
 												<xsl:call-template name="transUoM">
 													<xsl:with-param name="mbUoM" select="tradeItemUnit/itemContained/quantityContained/measurementValue/@unitOfMeasure"/>
