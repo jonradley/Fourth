@@ -4,6 +4,8 @@ Date	|Name		| Information
 2012-06-25 |  H Robson | FB 4970 Created
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 2012-08-28	| M Emanauel	| Made Changes to match Harrod's EDI requirement
+************************************************************
+2013-05-09	| H Robson		| FB 5841 Made Changes to match Harrods' EDI requirement re: LIN segment
 ************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format"  xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:userfuncs="http://mycompany.com/mynamespace">
 	<xsl:output method="text"/>
@@ -145,20 +147,10 @@ Date	|Name		| Information
 			<xsl:text>LIN+</xsl:text>
 				<xsl:value-of select="LineNumber"/>
 				<xsl:text>+</xsl:text>
-				<xsl:choose>
-					<xsl:when test="@LineStatus = 'Accepted' ">
-						<xsl:text>5</xsl:text>
-					</xsl:when>
-					<xsl:when test="@LineStatus = 'Rejected'">
-						<xsl:text>7</xsl:text>
-					</xsl:when>
-					<xsl:when test="@LineStatus = 'Changed'">
-						<xsl:text>3</xsl:text>
-					</xsl:when>
-					<xsl:otherwise>error</xsl:otherwise>
-				</xsl:choose>
 				<xsl:text>+</xsl:text>
-				<xsl:value-of select="ProductID/GTIN"/>
+				<xsl:choose>
+					<xsl:when test="ProductID/GTIN != '' and ProductID/GTIN != '55555555555555'"><xsl:value-of select="ProductID/GTIN"/></xsl:when>
+				</xsl:choose>
 				<xsl:text>:EN</xsl:text>
 			<xsl:text>'&#13;&#10;</xsl:text>
 			
