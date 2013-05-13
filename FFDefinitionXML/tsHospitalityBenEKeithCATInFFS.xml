@@ -12,33 +12,56 @@ Map in the BEK fixed-width CAT format (V16)
 ******************************************************************************************
  06/03/2013	| Harold Robson		| FB6189 Created module 
 ******************************************************************************************
-04/04/2013	| H Robson			| FB6273 We need to keep this as flat as possible to avoid overflowing the 16bit-int recursion counter in the processor
+04/04/2013	| H Robson			| FB6273 Refinements
 ***************************************************************************************-->
 <ffsFlatFileSchema>
 	<ffsSettings>
 		<ffsRecordPositionType>named</ffsRecordPositionType>
 		<ffsRecordSeparator>chr(13)chr(10)</ffsRecordSeparator>
 		<ffsPadding/>
-		<!--<ffsBatchHeader>
+		<ffsBatchHeader>
 			<ffsHeaderRecord RecordPos="FH"/>
-		</ffsBatchHeader>-->
+		</ffsBatchHeader>
 		<ffsSplitBatchRecord RecordPos="OH"/>
 	</ffsSettings>
 	<ffsRoot>
 		<PriceCatalog>
-			<Description_Header RecordPos="OH" LPos="26" UPos="40"/>
-			<RefNum RecordPos="OH" LPos="6" UPos="20"/>
-			<ProductEntry>
-				<PartID RecordPos="OD" LPos="8" UPos="27"/>
-				<Description RecordPos="OD" LPos="58" UPos="137"/>
-				<KeyVal_PackSize RecordPos="OD" LPos="147" UPos="161"/>
-				<KeyVal_Group RecordPos="OD" LPos="263" UPos="292"/>
-				<KeyVal_UOM RecordPos="OD" LPos="323" UPos="324"/> <!-- price uom -->
-				<!-- BEK send start and end dates at line level, we'll put them here and move them in the XSL -->
-				<KeyVal_StockItem RecordPos="OD" LPos="294" UPos="301"/> <!-- effective start date -->
-				<KeyVal_IgnorePriceChange RecordPos="OD" LPos="302" UPos="309"/><!-- effective end date -->
-				<UnitPrice RecordPos="OD" LPos="310" UPos="322"/>
-			</ProductEntry>
+			<PriceCatHeader>
+				<ValidStartDate RecordPos="FH" LPos="7" UPos="14"/>
+				<ListOfDescription_Header>
+					<Description_Header RecordPos="OH" LPos="26" UPos="40"/>
+				</ListOfDescription_Header>
+				<CatHdrRef>
+					<PriceCat>
+						<RefNum RecordPos="OH" LPos="6" UPos="20"/>
+					</PriceCat>
+				</CatHdrRef>
+			</PriceCatHeader>
+			<ListOfPriceCatAction>
+				<PriceCatAction>
+					<PriceCatDetail>
+						<PartNum>
+							<PartID RecordPos="OD" LPos="8" UPos="27"/>
+						</PartNum>
+						<ListOfDescription>
+							<Description RecordPos="OD" LPos="58" UPos="137"/>
+						</ListOfDescription>
+						<ListOfKeyVal>
+							<KeyVal_PackSize RecordPos="OD" LPos="147" UPos="161"/>
+							<KeyVal_Group RecordPos="OD" LPos="263" UPos="292"/>
+							<KeyVal_UOM RecordPos="OD" LPos="323" UPos="324"/>
+							<!-- BEK send start and end dates at line level, we'll put them here and move them in the XSL -->
+							<KeyVal_StockItem RecordPos="OD" LPos="294" UPos="301"/> <!-- effective start date -->
+							<KeyVal_IgnorePriceChange RecordPos="OD" LPos="302" UPos="309"/><!-- effective end date -->
+						</ListOfKeyVal>
+						<ListOfPrice>
+							<Price>
+								<UnitPrice RecordPos="OD" LPos="310" UPos="322"/>
+							</Price>
+						</ListOfPrice>
+					</PriceCatDetail>
+				</PriceCatAction>
+			</ListOfPriceCatAction>
 		</PriceCatalog>
 	</ffsRoot>
 </ffsFlatFileSchema>
