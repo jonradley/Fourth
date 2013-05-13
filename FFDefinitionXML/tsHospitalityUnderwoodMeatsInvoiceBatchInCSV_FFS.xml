@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--******************************************************************
+Alterations
+**********************************************************************
+Name			| Date			| Change
+**********************************************************************
+     ?    	|     ?     	| ?
+**********************************************************************
+R Cambridge	| 29/09/2009	| 3142 read units codes into SCR and Supplier's code for ship to
+**********************************************************************
+M Emanuel	| 28/11/2012  	| Rolled back changes made to 5840 and cleaning up commented code   
+**********************************************************************
+M Emanuel	| 07/01/2013	| FB 5885 Created from tsHospitalityCampbellsPrimeMeatsCSVInvoice_FFS.xml
+*******************************************************************-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>chr(10)</ffsRecordSeparator>
+		<ffsEscapeChars>
+			<ffsEscapeChar>
+				<ffsNative>chr(13)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?=</ffsNative>
+				<ffsTradesimple>¬E</ffsTradesimple>
+				<ffsLiteral>=</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?+</ffsNative>
+				<ffsTradesimple>¬P</ffsTradesimple>
+				<ffsLiteral>+</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?:</ffsNative>
+				<ffsTradesimple>¬C</ffsTradesimple>
+				<ffsLiteral>:</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?'</ffsNative>
+				<ffsTradesimple>¬A</ffsTradesimple>
+				<ffsLiteral>'</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>??</ffsNative>
+				<ffsTradesimple>¬Q</ffsTradesimple>
+				<ffsLiteral>?</ffsLiteral>
+			</ffsEscapeChar>
+		</ffsEscapeChars>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>,</ffsFieldSeparator>
+		</ffsFieldSeparators>
+		<ffsPadding/>
+		<ffsBatchHeader>
+			<!--list of records that make up the header, this will be added to each document in the batch -->
+			<!--ffsHeaderRecord RecordPos="I"/-->
+		</ffsBatchHeader>
+		<ffsGroups>
+			<ffsGroup>
+				<!--References below which MEAN RecordPos 'H' with LPos 1 would be CODED as 'D' and LPos 14 (13+1)-->
+				<ffsGroupRecord RecordPos="H" FieldTotal="34"/>
+				<ffsSubGroupRecord RecordPos="D" FieldTotal="34"/>
+			</ffsGroup>
+		</ffsGroups>
+		<ffsSplitBatchRecord RecordPos="H"/>
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<BatchDocuments>
+				<BatchDocument>
+					<Invoice>
+						<TradeSimpleHer>
+							<SendersCodeForRecipient RecordPos="H" LPos="2"/>
+						</TradeSimpleHer>
+						<InvoiceHer>
+							<Buyer>
+								<BuyersLocationID>
+									<SuppliersCode RecordPos="H" LPos="2"/>
+								</BuyersLocationID>
+								<BuyersName RecordPos="H" LPos="17"/>
+							</Buyer>
+							<Supplier>
+								<SuppliersLocationID>
+									<BuyersCode RecordPos="H" LPos="23"/>
+									<SuppliersCode RecordPos="H" LPos="24"/>
+								</SuppliersLocationID>
+							</Supplier>
+							<ShipTo>
+								<ShipToLocationID>
+									<BuyersCode RecordPos="H" LPos="25"/>
+									<SuppliersCode RecordPos="H" LPos="2"/>
+								</ShipToLocationID>
+								<ShipToName RecordPos="H" LPos="10"/>
+								<ShipToAddress>
+									<AddressLine1 RecordPos="H" LPos="11"/>
+									<AddressLine2 RecordPos="H" LPos="12"/>
+									<AddressLine3 RecordPos="H" LPos="13"/>
+									<AddressLine4 RecordPos="H" LPos="14"/>
+									<PostCode RecordPos="H" LPos="15"/>
+								</ShipToAddress>
+							</ShipTo>
+							<InvoiceReferences>
+								<InvoiceReference RecordPos="H" LPos="16"/>
+								<InvoiceDate RecordPos="H" LPos="17"/>
+								<TaxPointDate RecordPos="H" LPos="17"/>
+							</InvoiceReferences>
+						</InvoiceHer>
+						<InvoiceDetail>
+							<InvoiceD>
+								<PurchaseOrderReferences>
+									<PurchaseOrderReference RecordPos="D" LPos="2"/>
+									<PurchaseOrderDate RecordPos="D" LPos="3"/>
+								</PurchaseOrderReferences>
+								<DeliveryNoteReferences>
+									<DeliveryNoteReference RecordPos="D" LPos="4"/>
+									<DeliveryNoteDate RecordPos="D" LPos="5"/>
+								</DeliveryNoteReferences>
+								<ProductID>
+									<SuppliersProductCode RecordPos="D" LPos="6"/>
+								</ProductID>
+								<ProductDescription RecordPos="D" LPos="7"/>
+								<OrderedQuantity RecordPos="D" LPos="9"/>
+								<InvoicedQuantity RecordPos="D" LPos="9"/>
+								<PackSize RecordPos="D" LPos="8"/>
+								<UnitValueExclVAT RecordPos="D" LPos="10"/>
+								<DValueExclVAT RecordPos="D" LPos="11"/>
+								<VATCode RecordPos="D" LPos="12"/>
+							</InvoiceD>
+						</InvoiceDetail>
+						<!--
+						<InvoiceTrailer>
+							<DocumentTotalExclVAT RecordPos="TRAIL" LPos="2"/>
+							<VATAmount RecordPos="TRAIL" LPos="7"/>
+						</InvoiceTrailer>
+						-->
+					</Invoice>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>
