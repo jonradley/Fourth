@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--***************************************************************
+Order output for Kuehne + Nagel
+*******************************************************************
+Name         	| Date       	| Change
+*******************************************************************
+A Barber	| 23/01/2012	| 5199: Created. 
+*******************************************************************
+A Barber	| 13/05/2013	| 6538: Added recipient branch reference to order header.
+****************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="text" version="1.0" encoding="UTF-8" indent="yes"/>
 	
@@ -66,6 +75,7 @@
 			<xsl:value-of select="substring(PurchaseOrderReferences/PurchaseOrderDate,6,2)"/>
 			<xsl:value-of select="substring(PurchaseOrderReferences/PurchaseOrderDate,9,2)"/>
 			<xsl:text>*</xsl:text>
+			<xsl:value-of select="../TradeSimpleHeader/RecipientsBranchReference"/>
 			<xsl:text>*</xsl:text>
 			<xsl:text>*</xsl:text>
 			<xsl:text>*</xsl:text>
