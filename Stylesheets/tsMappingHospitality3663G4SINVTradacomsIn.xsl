@@ -16,6 +16,8 @@ Maps 3663 tradacoms invoices into internal XML
 ==========================================================================================
 23/04/2013	| M Dimant					|	6457: Fixed a bug surrounding line level prices and VAT rate 
 ==========================================================================================
+14/05/2013	| M Dimant					|	6539: Corrected how VAT Rate is formatted.
+==========================================================================================
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
@@ -423,7 +425,7 @@ Maps 3663 tradacoms invoices into internal XML
 						<UnitValueExclVAT><xsl:value-of select="format-number(UnitValueExclVAT div 10000.0, '0.00#')"/></UnitValueExclVAT>
 						<LineValueExclVAT><xsl:value-of select="format-number(LineValueExclVAT div 10000.0, '0.00#')"/></LineValueExclVAT>
 						<xsl:copy-of select="VATCode"/>
-						<VATRate><xsl:value-of select="format-number(VATRate div 10000.0, '0.00#')"/></VATRate>
+						<VATRate><xsl:value-of select="format-number(VATRate div 1000.0, '0.00#')"/></VATRate>
 						<xsl:copy-of select="Measure"/>
 					</InvoiceLine>			
 			</xsl:for-each>	
