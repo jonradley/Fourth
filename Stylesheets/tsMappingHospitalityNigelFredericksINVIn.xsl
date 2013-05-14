@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-'******************************************************************************************
+'************************************************************************************************************************************
 ' Overview
 '
 ' Maps Nigel Fredericks inbound Invoices 
 '
-'******************************************************************************************
+'************************************************************************************************************************************
 ' Module History
-'******************************************************************************************
+'************************************************************************************************************************************
 ' Date             | Name              | Description of modification
-'******************************************************************************************
+'************************************************************************************************************************************
 ' 10/05/2011  | M Dimant | Created 
-'******************************************************************************************
+'************************************************************************************************************************************
 ' 09/05/2012  | M Dimant | 5448: Changes to accomodate inclusion of UOM 
-'******************************************************************************************
+'************************************************************************************************************************************
+' 14/05/2013  | M Dimant | 6540: Changed mapping of SCR so we can handle Comtrex and FnB customers.
+'************************************************************************************************************************************
 
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
@@ -44,15 +46,15 @@
 							<!-- ~~~~~~~~~~~~~~~~~~~~~~~
 				      TRADESIMPLE HEADER
 				      ~~~~~~~~~~~~~~~~~~~~~~~ -->
-							<TradeSimpleHeader>
-								<!-- SCR comes from Sellers code for buyer if there, else it comes from Buyer GLN -->
+							<TradeSimpleHeader>								
 								<SendersCodeForRecipient>
 									<xsl:choose>
-										<xsl:when test="ShipTo/SellerAssigned">
-											<xsl:value-of select="ShipTo/SellerAssigned"/>
+									<!-- We do not hold shipto details for Comtrex cutomers so we use a different SCR if the invoice is for Cote, Prezzo or Bills -->
+										<xsl:when test="Buyer/BuyerAssigned = 'COTE' or Buyer/BuyerAssigned = 'PREZZO' or Buyer/BuyerAssigned = 'BILLS'">
+											<xsl:value-of select="Seller/SellerAssigned"/>
 										</xsl:when>
 										<xsl:otherwise>
-											<xsl:value-of select="Seller/SellerAssigned"/>
+											<xsl:value-of select="ShipTo/BuyerAssigned"/>
 										</xsl:otherwise>
 									</xsl:choose>
 								</SendersCodeForRecipient>
