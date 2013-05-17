@@ -63,7 +63,12 @@ M Emanuel	| 29/01/2013	| FB Case 5946 Created New Invoice out mapper
 				<xsl:element name="OrderList">
 					<xsl:element name="Order">
 						<xsl:element name="CustomersOrderNumber">
-							<xsl:value-of select="InvoiceDetail/InvoiceLine/PurchaseOrderReferences/PurchaseOrderReference"/>
+							<xsl:choose>
+								<xsl:when test="InvoiceDetail/InvoiceLine/PurchaseOrderReferences/PurchaseOrderReference !=''">
+									<xsl:value-of select="InvoiceDetail/InvoiceLine/PurchaseOrderReferences/PurchaseOrderReference"/>
+								</xsl:when>
+								<xsl:otherwise><xsl:text>Not Provided</xsl:text></xsl:otherwise>
+							</xsl:choose>							
 						</xsl:element>
 						<xsl:variable name="OrdDate" select="InvoiceDetail/InvoiceLine/PurchaseOrderReferences/PurchaseOrderDate"/>
 						<xsl:element name="CustomersOrderDate">
@@ -105,7 +110,12 @@ M Emanuel	| 29/01/2013	| FB Case 5946 Created New Invoice out mapper
 										<xsl:value-of select="LineDiscountValue"/>
 									</xsl:element>
 									<xsl:element name="AgreementCode">
-										<xsl:value-of select="PurchaseOrderReferences/TradeAgreement/ContractReference"/>
+										<xsl:choose>
+											<xsl:when test="PurchaseOrderReferences/TradeAgreement/ContractReference !=''">
+												<xsl:value-of select="PurchaseOrderReferences/TradeAgreement/ContractReference"/>
+											</xsl:when>
+											<xsl:otherwise><xsl:text>*ALL</xsl:text></xsl:otherwise>
+										</xsl:choose>										
 									</xsl:element>
 								</xsl:element>
 							</xsl:for-each>
