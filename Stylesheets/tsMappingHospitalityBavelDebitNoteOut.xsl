@@ -8,11 +8,7 @@ R Cambridge	| 2009-07-07		| 2991 Created Module
 **********************************************************************
 R Cambridge	| 2010-10-14		| 3951 Created generic Bavel version from Aramark Spain version
 **********************************************************************
-				|						|				
-**********************************************************************
-				|						|
-**********************************************************************
-				|						|
+A Barber		| 2013-05-17		| 6548 Amended tax summary output, added tax detail at line level.				
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="xml" encoding="ISO-8859-1"/>	
@@ -286,7 +282,21 @@ R Cambridge	| 2010-10-14		| 3951 Created generic Bavel version from Aramark Spai
 							
 							</Reference>
 											
-						</References>			
+						</References>
+						
+						<Taxes>
+							<Tax>
+								<xsl:attribute name="Type">
+									<xsl:value-of select="VATCode"/>
+								</xsl:attribute>
+								<xsl:attribute name="Rate">
+									<xsl:value-of select="VATRate"/>
+								</xsl:attribute>
+								<xsl:attribute name="Amount">
+									<xsl:value-of select="format-number(LineValueExclVAT * (VATRate div 100),'0.000')"/>
+								</xsl:attribute>							
+							</Tax>
+						</Taxes>			
 						
 					</Product>
 					
@@ -295,27 +305,24 @@ R Cambridge	| 2010-10-14		| 3951 Created generic Bavel version from Aramark Spai
 			</ProductList>
 			
 			<!--GlobalDiscounts/-->
-			
-			<xsl:for-each select="DebitNoteTrailer/VATSubTotals/VATSubTotal">
-				
-				<TaxSummary>
-				
-					<xsl:attribute name="Type">
-						<xsl:value-of select="@VATCode"/>
-					</xsl:attribute>
-					<xsl:attribute name="Rate">
-						<xsl:value-of select="@VATRate"/>
-					</xsl:attribute>
-					<xsl:attribute name="Base">
-						<xsl:value-of select="SettlementTotalExclVATAtRate"/>
-					</xsl:attribute>
-					<xsl:attribute name="Amount">
-						<xsl:value-of select="VATAmountAtRate"/>
-					</xsl:attribute>
-	
-				</TaxSummary>
-				
-			</xsl:for-each>
+			<TaxSummary>
+				<xsl:for-each select="DebitNoteTrailer/VATSubTotals/VATSubTotal">
+						<TaxType>
+							<xsl:attribute name="Type">
+								<xsl:value-of select="@VATCode"/>
+							</xsl:attribute>
+							<xsl:attribute name="Rate">
+								<xsl:value-of select="@VATRate"/>
+							</xsl:attribute>
+							<xsl:attribute name="Base">
+								<xsl:value-of select="SettlementTotalExclVATAtRate"/>
+							</xsl:attribute>
+							<xsl:attribute name="Amount">
+								<xsl:value-of select="VATAmountAtRate"/>
+							</xsl:attribute>
+						</TaxType>
+				</xsl:for-each>
+			</TaxSummary>
 			
 			<!--FeesSummary/>
 			<DueDates/-->
