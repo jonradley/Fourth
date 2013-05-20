@@ -1,9 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--******************************************************************
+Alterations
+**********************************************************************
+Name			| Date				| Change
+**********************************************************************
+S Hussain		|	2013-05-14	| Added more functionality common across customers.
+*******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:user="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl user">
+	<!--Generic Data Formatting Templates-->
+	<!--Format YYYYMMDD as YYYY-MM-DD -->
+	<xsl:template name="fixDate">
+		<xsl:param name="sDate"/>
+		<xsl:value-of select="concat(substring($sDate,1,4),'-',substring($sDate,5,2),'-',substring($sDate,7,2))"/>
+	</xsl:template>
+	
+	<!--Format YYMMDD as YYYY-MM-DD -->
+	<xsl:template name="fixDateYY">
+		<xsl:param name="sDate"/>
+		<xsl:value-of select="concat('20',substring($sDate,1,2),'-',substring($sDate,3,2),'-',substring($sDate,5,2))"/>
+	</xsl:template>
+	
 	<xsl:template name="TranslateAccentedCharacters">
 		<xsl:param name="InputString"/>
 		<xsl:value-of select="translate($InputString,'áàâäéèêëíìîïóòôöúùûüÁÀÂÄÉÈÊËÍÌÎÏÓÒÔÖÚÙÛÜ','aaaaeeeeiiiioooouuuuAAAAEEEEIIIIOOOOUUUU')"></xsl:value-of>
 	</xsl:template>
+	
 	<msxsl:script language="JScript" implements-prefix="user"><![CDATA[ 
 
 /*=========================================================================================

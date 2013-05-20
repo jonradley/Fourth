@@ -22,204 +22,90 @@ A Barber		|	2012-08-29		| 5709 Added no UOM append product code handling for PBR
 H Robson		|	2013-03-26		| 6285 Added Creative Events	
 *********************************************************************
 H Robson		|	2013-05-07		| 6496 PBR append UoM to product code	
+*********************************************************************
+S Hussain		|	2013-05-15		| Optimization
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-	<xsl:output encoding="utf-8"/>
+	<xsl:import href="HospitalityInclude.xsl"/>
+	<xsl:import href="BibendumInclude.xsl"/>	
+	<xsl:output method="xml" encoding="utf-8" indent="no"/>
 		
 	<!-- The structure of the interal XML varries depending on who the customer is -->
 	<!-- UoM may not be added to product codes for these customers -->
-	
-	<xsl:variable name="ARAMARK" select="'ARAMARK'"/>
-	<xsl:variable name="BEACON_PURCHASING" select="'BEACON_PURCHASING'"/>
-	<xsl:variable name="COMPASS" select="'COMPASS'"/>
-	<xsl:variable name="COOP" select="'COOP'"/>
-	<xsl:variable name="FISHWORKS" select="'FISHWORKS'"/>
-	<xsl:variable name="MCC" select="'MCC'"/>
-	<xsl:variable name="ORCHID" select="'ORCHID'"/>
-	<xsl:variable name="SEARCYS" select="'SEARCYS'"/>
-	<xsl:variable name="SODEXO_PRESTIGE" select="'SODEXO_PRESTIGE'"/>
-	<xsl:variable name="TESCO" select="'TESCO'"/>
-	<xsl:variable name="MITIE" select="'MITIE'"/>
-	<xsl:variable name="PBR" select="'PBR'"/>
-	<xsl:variable name="CREATIVE_EVENTS" select="'CREATIVE_EVENTS'"/>
-	
-	<xsl:variable name="CustomerFlag">
-		<xsl:variable name="accountCode" select="string(//PurchaseOrderConfirmation/TradeSimpleHeader/SendersBranchReference)"/>
-	
-		<xsl:choose>
-			
-			<xsl:when test="$accountCode = '203909'"><xsl:value-of select="$ARAMARK"/></xsl:when>
-			<xsl:when test="$accountCode = 'ARA02T'"><xsl:value-of select="$ARAMARK"/></xsl:when>
-			<xsl:when test="$accountCode = 'ARANET'"><xsl:value-of select="$ARAMARK"/></xsl:when>
-			<xsl:when test="$accountCode = 'BEACON'"><xsl:value-of select="$BEACON_PURCHASING"/></xsl:when>
-			<xsl:when test="$accountCode = 'MIL14T'"><xsl:value-of select="$COMPASS"/></xsl:when>
-			<xsl:when test="$accountCode = 'KIN04D'"><xsl:value-of select="$COOP"/></xsl:when>
-			<xsl:when test="$accountCode = 'KIN04T'"><xsl:value-of select="$COOP"/></xsl:when>
-			<xsl:when test="$accountCode = 'fishworks'"><xsl:value-of select="$FISHWORKS"/></xsl:when>
-			<xsl:when test="$accountCode = 'MAR100T'"><xsl:value-of select="$MCC"/></xsl:when>
-			<xsl:when test="$accountCode = 'BLA16T'"><xsl:value-of select="$ORCHID"/></xsl:when>
-			<xsl:when test="$accountCode = 'OPL01T'"><xsl:value-of select="$ORCHID"/></xsl:when>
-			<xsl:when test="$accountCode = 'ORCHID'"><xsl:value-of select="$ORCHID"/></xsl:when>
-			<xsl:when test="$accountCode = 'PBR16T'"><xsl:value-of select="$ORCHID"/></xsl:when>
-			<xsl:when test="$accountCode = 'SEA01T'"><xsl:value-of select="$SEARCYS"/></xsl:when>
-			<xsl:when test="$accountCode = 'GAR06T'"><xsl:value-of select="$SODEXO_PRESTIGE"/></xsl:when>
-			<xsl:when test="$accountCode = 'SOD99T'"><xsl:value-of select="$SODEXO_PRESTIGE"/></xsl:when>	
-			<xsl:when test="$accountCode = 'MIT16T'"><xsl:value-of select="$MITIE"/></xsl:when>
-			<xsl:when test="$accountCode = 'PBR01T'"><xsl:value-of select="$PBR"/></xsl:when>			
-			<xsl:when test="$accountCode = 'CRE11T'"><xsl:value-of select="$CREATIVE_EVENTS"/></xsl:when>	
-			
-			<xsl:when test="$accountCode = 'TES01T'"><xsl:value-of select="$TESCO"/></xsl:when>
-			<xsl:when test="$accountCode = 'TES08T'"><xsl:value-of select="$TESCO"/></xsl:when>
-			<xsl:when test="$accountCode = 'TES12T'"><xsl:value-of select="$TESCO"/></xsl:when>
-			<xsl:when test="$accountCode = 'TES15T'"><xsl:value-of select="$TESCO"/></xsl:when>
-			<xsl:when test="$accountCode = 'TES25T'"><xsl:value-of select="$TESCO"/></xsl:when>
-
-			<xsl:otherwise></xsl:otherwise>
-		</xsl:choose>
-	</xsl:variable>	
-	
 	<!-- Start point - ensure required outer BatchRoot tag is applied -->
 	<xsl:template match="/">
 		<BatchRoot>
-			<PurchaseOrderConfirmation>
-			
-				<TradeSimpleHeader>
-					<SendersCodeForRecipient>
-						<xsl:choose>	
-					
-							<xsl:when test=" $CustomerFlag = $COMPASS or $CustomerFlag = $TESCO or $CustomerFlag = $BEACON_PURCHASING ">
-								<xsl:value-of select="/PurchaseOrderConfirmation/TradeSimpleHeader/SendersBranchReference"/>
-							</xsl:when>			
-										
-							<xsl:otherwise>
-								<xsl:value-of select="/PurchaseOrderConfirmation/TradeSimpleHeader/SendersCodeForRecipient"/>
-							</xsl:otherwise>
-						
-						</xsl:choose>
-					</SendersCodeForRecipient>
-			
-					<xsl:if test="$CustomerFlag = $MITIE or $CustomerFlag = $COMPASS or $CustomerFlag = $TESCO or $CustomerFlag = $ARAMARK or $CustomerFlag = $CREATIVE_EVENTS">
-						<SendersBranchReference>
-							<xsl:value-of select="/PurchaseOrderConfirmation/TradeSimpleHeader/SendersBranchReference"/>
-						</SendersBranchReference>
-					</xsl:if>
-
-				</TradeSimpleHeader>		
-
-				<PurchaseOrderConfirmationHeader>
-				
-					<DocumentStatus>Original</DocumentStatus>
-					<Buyer>
-						<xsl:apply-templates select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/Buyer/*"/>
-					</Buyer>
-					<Supplier>
-						<xsl:apply-templates select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/Supplier/*"/>
-					</Supplier>
-					<ShipTo>
-						<xsl:apply-templates select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/ShipTo/*"/>
-					</ShipTo>
-					<PurchaseOrderReferences>
-						<xsl:apply-templates select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/PurchaseOrderReferences/*"/>
-					</PurchaseOrderReferences>
-					
-					<PurchaseOrderConfirmationReferences>
-						<xsl:apply-templates select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/PurchaseOrderConfirmationReferences/*"/>
-					</PurchaseOrderConfirmationReferences>
-					
-					<OrderedDeliveryDetails>
-						<xsl:apply-templates select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/OrderedDeliveryDetails/DeliveryDate"/>
-					</OrderedDeliveryDetails>
-					<ConfirmedDeliveryDetails>
-						<xsl:apply-templates select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/ConfirmedDeliveryDetails/DeliveryDate"/>
-					</ConfirmedDeliveryDetails>
-					
-				</PurchaseOrderConfirmationHeader>
-				
-				<PurchaseOrderConfirmationDetail>
-				
-					<xsl:for-each select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationDetail/PurchaseOrderConfirmationLine">
-						<PurchaseOrderConfirmationLine>
-							<LineNumber>
-								<xsl:value-of select="count(preceding-sibling::* | self::*)"/>
-							</LineNumber>
-							<ProductID>
-								
-								<SuppliersProductCode>
-									
-									<xsl:value-of select="ProductID/SuppliersProductCode"/>
-									<!-- 2012-02-01 - removed ARAMARK from this list, UoM SHOULD be added to product codes for them -->
-									<!-- 2013-05-07 - removed PBR from this list, UoM SHOULD be added to product codes for them -->
-									<xsl:if test="not(
-										$CustomerFlag = $COMPASS or
-										$CustomerFlag = $COOP  or
-										$CustomerFlag = $FISHWORKS or
-										$CustomerFlag = $MCC  or
-										$CustomerFlag = $ORCHID or
-										$CustomerFlag = $SEARCYS or
-										$CustomerFlag = $SODEXO_PRESTIGE)">	
-										<xsl:choose>
-											<xsl:when test="ConfirmedQuantity/@UnitOfMeasure = 'EA'">
-												<xsl:choose>
-													<xsl:when test="$CustomerFlag = $PBR">-E</xsl:when>
-													<xsl:otherwise>-EA</xsl:otherwise>
-												</xsl:choose>
-											</xsl:when>
-											<xsl:when test="ConfirmedQuantity/@UnitOfMeasure = 'CS'">
-												<xsl:choose>
-													<xsl:when test="$CustomerFlag = $PBR">-C</xsl:when>
-													<xsl:otherwise>-CS</xsl:otherwise>
-												</xsl:choose>
-											</xsl:when>
-										</xsl:choose>						
-									</xsl:if>	
-								</SuppliersProductCode>
-								
-							</ProductID>
-							<ProductDescription>
-								<xsl:value-of select="ProductDescription"/>
-							</ProductDescription>
-
-
-							<ConfirmedQuantity>
-								<xsl:copy-of select="ConfirmedQuantity/@UnitOfMeasure"/>
-								<xsl:value-of select="format-number(ConfirmedQuantity div 1000,'0.00')"/>
-							</ConfirmedQuantity>
-							
-							<xsl:for-each select="PackSize[1]">
-								<PackSize><xsl:value-of select="."/></PackSize>
-							</xsl:for-each>
-							
-						</PurchaseOrderConfirmationLine>
-					</xsl:for-each>
-					
-				</PurchaseOrderConfirmationDetail>
-				
-			</PurchaseOrderConfirmation>
-			
+			<xsl:apply-templates />
 		</BatchRoot>	
-		
 	</xsl:template>
 	
-	<xsl:template match="@* | node()">
+	<!-- GENERIC HANDLER to copy unchanged nodes, will be overridden by any node-specific templates below -->
+	<xsl:template match="*">
+		<!-- Copy the node unchanged -->
 		<xsl:copy>
-			<xsl:apply-templates select="@* | node()"/>
+			<!--Then let attributes be copied/not copied/modified by other more specific templates -->
+			<xsl:apply-templates select="@*"/>
+			<!-- Then within this node, continue processing children -->
+			<xsl:apply-templates/>
 		</xsl:copy>
 	</xsl:template>
+	<!-- GENERIC ATTRIBUTE HANDLER to copy unchanged attributes, will be overridden by any attribute-specific templates below-->
+	<xsl:template match="@*">
+		<!--Copy the attribute unchanged-->
+		<xsl:copy/>
+	</xsl:template>
+	<!-- END of GENERIC HANDLERS -->
+
+	<xsl:template match="PurchaseOrderConfirmationHeader">
+		<PurchaseOrderConfirmationHeader>
+			<DocumentStatus>Original</DocumentStatus>
+			<Buyer><xsl:apply-templates select="Buyer/*"/></Buyer>
+			<Supplier><xsl:apply-templates select="Supplier/*"/></Supplier>
+			<ShipTo><xsl:apply-templates select="ShipTo/*"/></ShipTo>
+			<PurchaseOrderReferences><xsl:apply-templates select="PurchaseOrderReferences/*"/></PurchaseOrderReferences>
+			<PurchaseOrderConfirmationReferences><xsl:apply-templates select="PurchaseOrderConfirmationReferences/*"/></PurchaseOrderConfirmationReferences>
+			<OrderedDeliveryDetails><xsl:apply-templates select="OrderedDeliveryDetails/DeliveryDate"/></OrderedDeliveryDetails>
+			<ConfirmedDeliveryDetails><xsl:apply-templates select="ConfirmedDeliveryDetails/DeliveryDate"/></ConfirmedDeliveryDetails>
+		</PurchaseOrderConfirmationHeader>
+	</xsl:template>
+
+	<xsl:template match="TradeSimpleHeader | BuyersAddress | SuppliersAddress | ShipToAddress">
+		<xsl:apply-imports/>
+	</xsl:template>
 	
-	<xsl:template match="BuyersAddress | SuppliersAddress | ShipToAddress">
-				
-		<xsl:copy>
-			<xsl:for-each select="*[contains(name(),'Address')][string(.) != '']">
-				<xsl:element name="{concat('AddressLine', position())}"><xsl:value-of select="."/></xsl:element>		
+	<xsl:template match="/PurchaseOrderConfirmation/PurchaseOrderConfirmationDetail/PurchaseOrderConfirmationLine">
+		<PurchaseOrderConfirmationLine>
+			<LineNumber>
+				<xsl:value-of select="count(preceding-sibling::* | self::*)"/>
+			</LineNumber>
+			<xsl:apply-templates select="ProductID/SuppliersProductCode"/>
+			<xsl:copy-of select="ProductDescription" />
+			<ConfirmedQuantity>
+				<xsl:copy-of select="ConfirmedQuantity/@UnitOfMeasure"/>
+				<xsl:value-of select="format-number(ConfirmedQuantity div 1000,'0.00')"/>
+			</ConfirmedQuantity>
+			<xsl:for-each select="PackSize[1]">
+				<PackSize><xsl:value-of select="."/></PackSize>
 			</xsl:for-each>
-			<PostCode><xsl:value-of select="PostCode"/></PostCode>
-		</xsl:copy>
-	
+		</PurchaseOrderConfirmationLine>
+	</xsl:template>
+
+	<xsl:template match="ProductID/SuppliersProductCode">
+		<ProductID>
+			<SuppliersProductCode>
+			<xsl:call-template name="FormatSupplierProductCode">
+				<xsl:with-param name="sUOM" select="../../ConfirmedQuantity/@UnitOfMeasure"/>
+				<xsl:with-param name="sProductCode" select="."/>
+			</xsl:call-template>
+			</SuppliersProductCode>
+		</ProductID>
 	</xsl:template>
 	
 	<xsl:template match="PurchaseOrderDate | PurchaseOrderConfirmationDate | DeliveryDate">
 		<xsl:copy>
-			<xsl:value-of select="concat('20',substring(.,1,2),'-',substring(.,3,2),'-',substring(.,5,2))"/>
+				<xsl:call-template name="fixDateYY">
+					<xsl:with-param name="sDate" select="."/>
+				</xsl:call-template>
 		</xsl:copy>
 	</xsl:template>
 	
