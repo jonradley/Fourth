@@ -6,7 +6,7 @@ Name			| Date				| Change
 ********************************************************************************************************************************************
 K Oshaughnessy	| 2011-04-01		| 4349 Created Modele
 ********************************************************************************************************************************************
-M Dimant				| 2013-23-04		| 5948: Use M&B's supplier reference in SupplierId and corrected ShipTo name 				
+M Dimant				| 2013-23-04		| 6547: Use M&B's supplier reference in SupplierId and corrected ShipTo name 				
 ********************************************************************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 	<xsl:output method="xml" encoding="UTF-8"/>
