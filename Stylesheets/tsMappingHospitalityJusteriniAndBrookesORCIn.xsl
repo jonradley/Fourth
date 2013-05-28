@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+******************************************************************************************************************************************
+Name			| Date 			|	Description
+******************************************************************************************************************************************
+M Dimant		| 14/04/2011	| Created
+******************************************************************************************************************************************
+M Dimant		| 28/05/2013	| 6599: Added mapping of SBR and suppliers code for buyer
+******************************************************************************************************************************************
+-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
 	<xsl:template match="SalesAcknowledgementOrQuote">
@@ -8,46 +17,26 @@
 					<BatchDocument>
 						<PurchaseOrderConfirmation>
 							<TradeSimpleHeader>
-								<SendersCodeForRecipient><xsl:value-of select="/SalesAcknowledgementOrQuote/SalesOrderOrQuote/CustomerDetails/Customer/@Account"/></SendersCodeForRecipient>
-							</TradeSimpleHeader>
+								<SendersCodeForRecipient><xsl:value-of select="/SalesAcknowledgementOrQuote/SalesOrderOrQuote/CustomerDetails/Customer/@Account"/></SendersCodeForRecipient>							
+								<SendersBranchReference>
+										<xsl:value-of select="/SalesAcknowledgementOrQuote/SalesOrderOrQuote/CustomerDetails/InvoiceTo/Customer/@Account"/>
+								</SendersBranchReference>								
+							</TradeSimpleHeader>									
 							<PurchaseOrderConfirmationHeader>
-								<!--
 								<Buyer>
-									<BuyersLocationID>
-										<GLN/>
+									<BuyersLocationID>						
+										<SuppliersCode><xsl:value-of select="substring(/SalesAcknowledgementOrQuote/SalesOrderOrQuote/CustomerDetails/InvoiceTo/Customer/@Name,1,20)"/></SuppliersCode>
 									</BuyersLocationID>
 								</Buyer>
-								<Supplier>
-									<SuppliersLocationID>
-										<GLN/>
-									</SuppliersLocationID>
-								</Supplier>
-								-->
-								<ShipTo>
-									<!--
-									<ShipToLocationID>
-										<GLN/>
-									</ShipToLocationID>
-									-->
-									<ShipToName><xsl:value-of select="SalesOrderOrQuote/CustomerDetails/DeliverTo/@Name"/></ShipToName>
-									<!--
-									<ShipToAddress>
-										<AddressLine1/>
-									</ShipToAddress>
-									-->
+								<ShipTo>									
+									<ShipToName><xsl:value-of select="SalesOrderOrQuote/CustomerDetails/DeliverTo/@Name"/></ShipToName>									
 								</ShipTo>
 								<PurchaseOrderReferences>
 									<PurchaseOrderReference><xsl:value-of select="SalesOrderOrQuote/@CustomerOrderNo"/></PurchaseOrderReference>
-									<!--PurchaseOrderDate/-->
 								</PurchaseOrderReferences>
 								<PurchaseOrderConfirmationReferences>
-									<PurchaseOrderConfirmationReference><xsl:value-of select="SalesOrderOrQuote/@Number"/></PurchaseOrderConfirmationReference>					
-									<!--PurchaseOrderConfirmationDate><xsl:value-of select="SalesOrderOrQuote/Dates/Document/@Date"/></PurchaseOrderConfirmationDate-->
+									<PurchaseOrderConfirmationReference><xsl:value-of select="SalesOrderOrQuote/@Number"/></PurchaseOrderConfirmationReference>									
 								</PurchaseOrderConfirmationReferences>
-								<!--OrderedDeliveryDetails>
-									<DeliveryType/>
-									<DeliveryDate/>
-								</OrderedDeliveryDetails-->
 								<ConfirmedDeliveryDetails>
 									<DeliveryType>Delivery</DeliveryType>										
 									<DeliveryDate>
