@@ -307,7 +307,7 @@ A Barber		| 2013-05-17		| 6548 Amended tax summary output, added tax detail at l
 			<!--GlobalDiscounts/-->
 			<TaxSummary>
 				<xsl:for-each select="DebitNoteTrailer/VATSubTotals/VATSubTotal">
-						<TaxType>
+						<Tax>
 							<xsl:attribute name="Type">
 								<xsl:value-of select="@VATCode"/>
 							</xsl:attribute>
@@ -320,7 +320,7 @@ A Barber		| 2013-05-17		| 6548 Amended tax summary output, added tax detail at l
 							<xsl:attribute name="Amount">
 								<xsl:value-of select="VATAmountAtRate"/>
 							</xsl:attribute>
-						</TaxType>
+						</Tax>
 				</xsl:for-each>
 			</TaxSummary>
 			
