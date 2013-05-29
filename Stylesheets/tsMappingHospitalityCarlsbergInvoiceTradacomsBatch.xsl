@@ -16,6 +16,8 @@ N Emsen		|	21/09/2006	|	Case: To only create purchase order
 				|						|	Ready to live.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 A Barber		|	19/10/2011	|	FB 4907: Created POD document type from invoice for Spirit.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+A Barber		|	29/05/2013	|	FB 6600: Added Spirit Franchise to POD creation and applied 'correct' (expected) sender code value mapping in header and ship to.
 **********************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
@@ -31,7 +33,7 @@ A Barber		|	19/10/2011	|	FB 4907: Created POD document type from invoice for Spi
 		<BatchRoot>
 			<xsl:apply-templates/>
 			<!-- Start Generation POD's for Spirit -->
-			<xsl:if test="/Batch/BatchDocuments/BatchDocument/Invoice/InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode='5060166761066'">
+			<xsl:if test="/Batch/BatchDocuments/BatchDocument/Invoice/InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode='5060166761066' | /Batch/BatchDocuments/BatchDocument/Invoice/InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode='5060166761226'">
 				<Document>
 	           			<xsl:attribute name="TypePrefix">POD</xsl:attribute>
 					<Batch>
@@ -128,7 +130,7 @@ A Barber		|	19/10/2011	|	FB 4907: Created POD document type from invoice for Spi
 		<TradeSimpleHeader>
 			<SendersCodeForRecipient>
 				<xsl:choose >
-					<xsl:when test="string(SendersBranchReference)!='1066546'">
+					<xsl:when test="string(SendersBranchReference)!='1066546' | string(SendersBranchReference)!='1083067'">
 						<xsl:value-of select="SendersCodeForRecipient"/>		
 					</xsl:when>
 					<xsl:otherwise>
@@ -150,7 +152,7 @@ A Barber		|	19/10/2011	|	FB 4907: Created POD document type from invoice for Spi
 			</BuyersCode>
 			<SuppliersCode>
 				<xsl:choose>
-					<xsl:when test="string(../../../TradeSimpleHeader/SendersBranchReference)!='1066546'">
+					<xsl:when test="string(../../../TradeSimpleHeader/SendersBranchReference)!='1066546' | string(../../../TradeSimpleHeader/SendersBranchReference)!='1083067'">
 						<xsl:value-of select="BuyersCode"/>
 					</xsl:when>
 					<xsl:otherwise>
