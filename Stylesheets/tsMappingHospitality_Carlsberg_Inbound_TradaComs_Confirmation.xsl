@@ -10,11 +10,13 @@
 '******************************************************************************************
 ' Module History
 '******************************************************************************************
-' Date        | Name         | Description of modification
+' Date			| Name				| Description of modification
 '******************************************************************************************
-' 18/06/2007  | Nigel Emsen		| Created. FB: 1214.
+' 18/06/2007	| Nigel Emsen	| Created. FB: 1214.
 '******************************************************************************************
-' 28/07/2011  | Andrew Barber	| FB4657: Set confirmed qty = 0 where line status = 'Rejected'
+' 28/07/2011	| Andrew Barber	| FB4657: Set confirmed qty = 0 where line status = 'Rejected'
+'******************************************************************************************
+' 29/05/2013	| Andrew Barber	| FB6600: Added test for Spirit Franchise GLN to SendersCodeForRecipient.
 '******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:vbscript="http://abs-Ltd.com">
@@ -85,7 +87,7 @@
 		<TradeSimpleHeader>
 			<SendersCodeForRecipient>
 				<xsl:choose >
-					<xsl:when test="string(SendersBranchReference)!='5060166761066'">
+					<xsl:when test="string(SendersBranchReference)!='5060166761066' | string(SendersBranchReference)!='5060166761226'">
 						<xsl:value-of select="SendersCodeForRecipient"/>		
 					</xsl:when>
 					<xsl:otherwise>
