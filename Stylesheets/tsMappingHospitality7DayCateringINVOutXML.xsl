@@ -27,7 +27,9 @@ M Emanuel	| 29/01/2013	| FB Case 5946 Created New Invoice out mapper
 				<xsl:element name="SuppliersLocationCode">
 					<xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
 				</xsl:element>
-				<xsl:element name="DeliveryLocationEANCode"/>				
+				<xsl:element name="DeliveryLocationEANCode">
+					<xsl:text>0000000000000</xsl:text>
+				</xsl:element>			
 				<xsl:element name="LocationName"/>				
 				<xsl:element name="LocationAddress1"/>					
 				<xsl:element name="LocationAddress2"/>					
