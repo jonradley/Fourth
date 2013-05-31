@@ -34,7 +34,7 @@ M Emanuel	| 29/01/2013	| FB Case 5946 Created New Credit note out mapper
 					<xsl:value-of select="CreditNoteHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
 				</xsl:element>
 				<xsl:element name="DeliveryLocationEANCode">
-					<xsl:value-of select="CreditNoteHeader/ShipTo/ShipToLocationID/GLN"/>
+					<xsl:text>0000000000000</xsl:text>
 				</xsl:element>
 				<xsl:element name="LocationName">
 					<xsl:value-of select="CreditNoteHeader/ShipTo/ShipToName"/>
