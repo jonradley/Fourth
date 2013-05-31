@@ -7,6 +7,9 @@
 '******************************************************************************************
 13/05/2013		| H Robson		| FB:6363 Create DCNs from INVs
 '******************************************************************************************
+31/05/2013		| H Robson		| FB:6610 The infiller does not currently recognise that a VATRate of 0 is the same as 0.00; 
+	because the input file is inconsistent between line level and VAT trailer, decimals will have to be added in the mapper
+'******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:vbscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
@@ -44,6 +47,20 @@
 			</xsl:choose>
 		</VATCode>
 	</xsl:template>
+	
+	<!-- standardise VATRate -->
+	<xsl:template match="VATRate">
+		<VATRate>
+			<xsl:value-of select="format-number(., '0.00')"/>
+		</VATRate>
+	</xsl:template>
+	<xsl:template match="VATSubTotal">
+		<VATSubTotal>
+			<xsl:attribute name="VATCode"><xsl:value-of select="@VATCode"/></xsl:attribute>
+			<xsl:attribute name="VATRate"><xsl:value-of select="format-number(@VATRate, '0.00')"/></xsl:attribute>
+			<xsl:apply-templates/>
+		</VATSubTotal>
+	</xsl:template>	
 	
 	<xsl:template match="InvoiceDetail/InvoiceLine">
 		<xsl:copy>
