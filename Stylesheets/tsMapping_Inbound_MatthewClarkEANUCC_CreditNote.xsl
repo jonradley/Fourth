@@ -39,7 +39,7 @@
 ' 21/05/2013    | S Hussain       | Case 6589: Supplier Product Code Formatting + Optimization
 '******************************************************************************************
 -->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt"  xmlns:user="http://mycompany.com/mynamespace" exclude-result-prefixes="#default xsl msxsl user">
 	<xsl:import href="HospitalityInclude.xsl"/>
 	<xsl:import href="MatthewClarkInclude.xsl"/>
 	<xsl:output method="xml" indent="no"/>
@@ -220,7 +220,7 @@
 														<xsl:if test="/CreditNote/TradeAgreementReference/ContractReferenceDate">
 															<xsl:call-template name="FormatDate">
 																<xsl:with-param name="DateField">ContractDate</xsl:with-param>
-																<xsl:with-param name="DateField" select="/CreditNote/TradeAgreementReference/ContractReferenceDate"/>
+																<xsl:with-param name="Node" select="/CreditNote/TradeAgreementReference/ContractReferenceDate"/>
 															</xsl:call-template>
 														</xsl:if>
 													</TradeAgreement>
@@ -235,7 +235,7 @@
 												<xsl:if test="/CreditNote/OrderConfirmationReference/PurchaseOrderConfirmationDate">
 													<xsl:call-template name="FormatDate">
 														<xsl:with-param name="DateField">PurchaseOrderConfirmationDate</xsl:with-param>
-														<xsl:with-param name="DateField" select="/CreditNote/OrderConfirmationReference/PurchaseOrderConfirmationDate"/>
+														<xsl:with-param name="Node" select="/CreditNote/OrderConfirmationReference/PurchaseOrderConfirmationDate"/>
 													</xsl:call-template>
 												</xsl:if>
 											</PurchaseOrderConfirmationReferences>
@@ -265,7 +265,7 @@
 												<xsl:if test="/CreditNote/ReceiptAdviceReference/ReceiptAdviceDocumentDate">
 													<xsl:call-template name="FormatDate">
 														<xsl:with-param name="DateField">GoodsReceivedNoteDate</xsl:with-param>
-														<xsl:with-param name="DateField" select="/CreditNote/ReceiptAdviceReference/ReceiptAdviceDocumentDate"/>
+														<xsl:with-param name="Node" select="/CreditNote/ReceiptAdviceReference/ReceiptAdviceDocumentDate"/>
 													</xsl:call-template>
 												</xsl:if>
 											</GoodsReceivedNoteReferences>

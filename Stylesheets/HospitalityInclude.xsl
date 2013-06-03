@@ -37,7 +37,7 @@ S Hussain		|	2013-05-14	| Added more functionality common across customers.
 		<xsl:value-of select="translate($InputString,'áàâäéèêëíìîïóòôöúùûüÁÀÂÄÉÈÊËÍÌÎÏÓÒÔÖÚÙÛÜ','aaaaeeeeiiiioooouuuuAAAAEEEEIIIIOOOOUUUU')"></xsl:value-of>
 	</xsl:template>
 	
-<!--<msxsl:script language="JScript" implements-prefix="user"><![CDATA[ 
+<msxsl:script language="JScript" implements-prefix="user"><![CDATA[ 
 /*=========================================================================================
 ' Routine       	 : gsGetRowClass
 ' Description 	 : Gets listrow 0,1,0 etc.
@@ -370,5 +370,5 @@ function msGetTodaysDate()
 function toUpperCase(vs) {
 	return vs.toUpperCase();
 }
-	]]></msxsl:script>-->
+	]]></msxsl:script>
 </xsl:stylesheet>
