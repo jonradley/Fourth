@@ -15,23 +15,24 @@
 '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ' 03/06/2010  | M Dimant       | Matthew Clark require Seller/GLN to always be 5555555555555
 '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+' 21/05/2013  | S Hussain      | Case 6589: Supplier Product Code Formatting + Optimization
+'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 '			  |                         |
 '******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" 
-				xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-				xmlns:fo="http://www.w3.org/1999/XSL/Format" 
-				xmlns:script="http://mycompany.com/mynamespace" 
-				xmlns:msxsl="urn:schemas-microsoft-com:xslt"
+			xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+			xmlns:fo="http://www.w3.org/1999/XSL/Format" 
+			xmlns:script="http://mycompany.com/mynamespace" 
+			xmlns:msxsl="urn:schemas-microsoft-com:xslt"
             xmlns="http://www.eanucc.org/2002/Order/FoodService/FoodService/UK/EanUcc/Order" 
             xmlns:cc="http://www.ean-ucc.org/2002/gsmp/schemas/CoreComponents" 
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-				exclude-result-prefixes="fo script msxsl">
-	<xsl:output method="xml"/>
-	
+			exclude-result-prefixes="fo script msxsl">
+	<xsl:import href="MatthewClarkInclude.xsl"/>
+	<xsl:output method="xml" indent="no"/>
 	<xsl:template match="/">
 		<Order>
-		
 			<!-- ~~~~~~~~~~~~~~~~~~~~~~~
 			      ORDER DOCUMENT DETAILS 
 			      ~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -124,7 +125,7 @@
 			    SELLER
 			      ~~~~~~~~~~~~~~~~~~~~~~~-->
 			<Seller>
-			<!-- Matthew Clark expect this GLN to always be 5555555555555 for routing purposes-->
+			    <!-- Matthew Clark expect this GLN to always be 5555555555555 for routing purposes-->
 				<SellerGLN scheme="GLN">5555555555555</SellerGLN>
 			
 				<xsl:if test="/PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersLocationID/SuppliersCode">
@@ -209,7 +210,10 @@
 						<!-- alternate code is sourced from the Suppliers code -->
 						<xsl:if test="ProductID/SuppliersProductCode"> 
 							<AlternateCode scheme="OTHER">
-								<xsl:value-of select="ProductID/SuppliersProductCode"/>
+								<xsl:call-template name="FormatSupplierProductCode">
+									<xsl:with-param name="sProductCode" select="ProductID/SuppliersProductCode"/>
+									<xsl:with-param name="sUOM" select="OrderedQuantity/@UnitOfMeasure"/>
+								</xsl:call-template>
 							</AlternateCode>
 						</xsl:if>
 					</ItemIdentification>
