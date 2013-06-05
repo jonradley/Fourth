@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--********************************************************************
+<!--
+*****************************************************************************************************************************
 Date				|	Owner					|	Details
-************************************************************************
-26/03/2013	|	M Dimant				| 	5943 Created
-************************************************************************
-			|						| 	
-**********************************************************************-->
+*****************************************************************************************************************************
+26/03/2013	|	M Dimant				| 	5943: Created
+*****************************************************************************************************************************
+05/06/2013	|	M Dimant				| 	6614: Corrected how we mapp the PO ref and DN ref in a batch.		
+*****************************************************************************************************************************
+-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="xml"/>
 	<xsl:template match="Buyer"/>
@@ -99,20 +101,20 @@ Date				|	Owner					|	Details
 											<LineNumber>
 												<xsl:value-of select="@p_count"/>
 											</LineNumber>
-											<xsl:if test="../OrderNumber !=''">
+											<xsl:if test="../../OrderNumber !=''">
 												<PurchaseOrderReferences>
 													<PurchaseOrderReference>
-														<xsl:value-of select="../OrderNumber"/>
+														<xsl:value-of select="../../OrderNumber"/>
 													</PurchaseOrderReference>
 												</PurchaseOrderReferences>
 											</xsl:if>
 											<xsl:if test="../delivery_note !=''">
 												<DeliveryNoteReferences>
 													<DeliveryNoteReference>
-														<xsl:value-of select="../delivery_note"/>
+														<xsl:value-of select="../../delivery_note"/>
 													</DeliveryNoteReference>
 													<DeliveryNoteDate>
-														<xsl:value-of select="../delivery_date"/>
+														<xsl:value-of select="../../delivery_date"/>
 													</DeliveryNoteDate>
 												</DeliveryNoteReferences>
 											</xsl:if>	
