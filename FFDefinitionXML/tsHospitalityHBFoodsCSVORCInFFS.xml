@@ -4,6 +4,8 @@
 16/07/2012 - HR - FB4970 - Created as copy of 'tsHospitalityBunzlUrbiumInboundConfirmationCSV_Amended_FFS.xml' with alterations
 *********************************************************************** 
 04/02/2013| M Emanuel|	FB 5841 Renamed mapper per naming convention
+*********************************************************************** 
+19/06/2013| H Robson |	FB 5841 map in Narrative, remove duplicate mapping of LineNumber from narrative field. 
 ************************************************************************
 -->
 <ffsFlatFileSchema>
@@ -71,7 +73,7 @@
 					<PackSize RecordPos="D" LPos="6"/>
 					<UnitValueExclVAT RecordPos="D" LPos="9"/>
 					<LineValueExclVAT RecordPos="D" LPos="10"/>
-					<Narrative RecordPos="D" LPos="14"/>
+					<Narrative RecordPos="D" LPos="11"/>
 				</PurchaseOrderConfirmationLine>
 			</PurchaseOrderConfirmationDetail>
 		</PurchaseOrderConfirmation>
