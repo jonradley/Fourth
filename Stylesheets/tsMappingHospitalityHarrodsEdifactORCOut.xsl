@@ -9,6 +9,8 @@ Date	|Name		| Information
 ************************************************************
 2013-05-21	| H Robson		| FB 5841 	Fix segment count bug
 										Truncate Product Description to a max of 35 chars
+************************************************************
+2013-06-18	| H Robson		| FB 5841 	Linenumber was erroneously being taken from Narrative field
 ************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format"  xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:userfuncs="http://mycompany.com/mynamespace">
 	<xsl:output method="text"/>
@@ -180,7 +182,10 @@ Date	|Name		| Information
 			<!--This segment is used to detail the price for the current product identified in the LIN segment-->
 			<xsl:text>PRI+</xsl:text>
 			<xsl:text>AAA:</xsl:text>
-			<xsl:value-of select="UnitValueExclVAT"/>
+				<xsl:choose>
+					<xsl:when test="UnitValueExclVAT &gt; 0"><xsl:value-of select="UnitValueExclVAT"/></xsl:when>
+					<xsl:otherwise>0</xsl:otherwise>
+				</xsl:choose>
 			<xsl:text>'&#13;&#10;</xsl:text>
 			
 			<!--This segment is used to refer to the Purchase Order Item or Purchase Order Change Request to which the Purchase Order Response is responding-->
@@ -191,7 +196,7 @@ Date	|Name		| Information
 			<xsl:value-of select="//PurchaseOrderReferences/PurchaseOrderReference"/>
 			<xsl:text>:</xsl:text>
 			<!-- Customer Order Line No-->
-			<xsl:value-of select="Narrative"/>
+			<xsl:value-of select="LineNumber"/>
 			<xsl:text>'&#13;&#10;</xsl:text>
 			
 			<!--This segment is used to identify the location of delivery for a split delivery order-->
@@ -226,6 +231,7 @@ Date	|Name		| Information
 		
 		<!--This segment is a mandatory UN/EDIFACT segment. It must always be the last segment in the message-->
 		<xsl:text>UNT+</xsl:text>
+		<!-- SEGMENT COUNT -->
 		<xsl:variable name="TotalLines" select="count(//PurchaseOrderConfirmationLine)"/>		
 		<xsl:choose>
 			<xsl:when test="$TotalLines = 1">
