@@ -4,7 +4,7 @@ Date		|	Name				|	Comment
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 27/10/2011|	KOshaughnessy	| Created
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-			|						|
+19/06/2013|	H Robson	| FB 5841 Strip ':EN' out of GTINS
 ***************************************************************************-->			
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 <xsl:output method="xml" encoding="UTF-8"/>
@@ -66,7 +66,14 @@ Date		|	Name				|	Comment
 					<!-- Supplier's Product code and Buyer's product code is swapped around to make this work with Cheese Seller's existing order mapper.
 					This will have to be kept in mind while hooking up Harrod's with any other new supplier -->
 					<ProductID>
-						<xsl:apply-templates select="ProductID/GTIN"/>
+						<GTIN>
+							<xsl:choose>
+								<xsl:when test="../../PurchaseOrderDetail/PurchaseOrderLine[substring-after(ProductID/GTIN,':') = 'EN'][$lineNumber]/ProductID/GTIN ">
+									<xsl:value-of select="substring-before(../../PurchaseOrderDetail/PurchaseOrderLine[substring-after(ProductID/GTIN,':') = 'EN'][$lineNumber]/ProductID/GTIN,':')"/>
+								</xsl:when>
+								<xsl:otherwise>error</xsl:otherwise>
+							</xsl:choose>
+						</GTIN>
 						<SuppliersProductCode>
 							<xsl:choose>
 								<xsl:when test="../../PurchaseOrderDetail/PurchaseOrderLine[substring-after(ProductID/BuyersProductCode,':') = 'BP'][$lineNumber]/ProductID/SuppliersProductCode ">
