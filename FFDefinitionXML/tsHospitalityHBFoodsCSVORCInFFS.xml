@@ -6,6 +6,7 @@
 04/02/2013| M Emanuel|	FB 5841 Renamed mapper per naming convention
 *********************************************************************** 
 19/06/2013| H Robson |	FB 5841 map in Narrative, remove duplicate mapping of LineNumber from narrative field. 
+							Map in line status
 ************************************************************************
 -->
 <ffsFlatFileSchema>
@@ -74,6 +75,7 @@
 					<UnitValueExclVAT RecordPos="D" LPos="9"/>
 					<LineValueExclVAT RecordPos="D" LPos="10"/>
 					<Narrative RecordPos="D" LPos="11"/>
+					<ffsAttribute1 name="LineStatus" RecordPos="D" LPos="2"/>
 				</PurchaseOrderConfirmationLine>
 			</PurchaseOrderConfirmationDetail>
 		</PurchaseOrderConfirmation>
