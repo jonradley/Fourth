@@ -7,6 +7,8 @@
 *******************************************************************************************************************
 30/04/2013	| Sahir Husssain| FB 5885 Corrected purchase order date formatting.
 *******************************************************************************************************************
+21/06/2013	| Sahir Husssain| FB 6680 Corrected the UoM Formatting.Issue within INV and DNB
+*******************************************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="utf-8"/>
@@ -76,12 +78,9 @@
 				</xsl:choose>
 			</xsl:variable>
 			<xsl:variable name="sUoM">
-				<xsl:choose>
-					<xsl:when test="string(InvoicedQuantity/@UnitOfMeasure) = 'KG' or string(InvoicedQuantity/@UnitOfMeasure) = 'KGM' ">KGM</xsl:when>
-					<xsl:otherwise>
-						<xsl:value-of select="InvoicedQuantity/@UnitOfMeasure"/>
-					</xsl:otherwise>
-				</xsl:choose>
+				<xsl:call-template name="translateUoM">
+					<xsl:with-param name="givenUoM" select="InvoicedQuantity/@UnitOfMeasure"/>
+				</xsl:call-template>
 			</xsl:variable>
 			<InvoicedQuantity>
 				<xsl:if test="string-length($sUoM) &gt; 0">
@@ -327,7 +326,7 @@
 										</xsl:variable>
 										<xsl:variable name="sUoM">
 											<xsl:call-template name="translateUoM">
-												<xsl:with-param name="givenUoM" select="./Measure/TotalMeasureIndicator"/>
+												<xsl:with-param name="givenUoM" select="InvoicedQuantity/@UnitOfMeasure"/>
 											</xsl:call-template>
 										</xsl:variable>
 										<DespatchedQuantity>
@@ -362,10 +361,4 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-	<msxsl:script language="JScript" implements-prefix="jscript"><![CDATA[ 
-		function toUpperCase(vs) {
-			return vs.toUpperCase();
-			//return vs;
-		}
-	]]></msxsl:script>
 </xsl:stylesheet>
