@@ -77,9 +77,9 @@
 			</xsl:variable>
 			<xsl:variable name="sUoM">
 				<xsl:choose>
-					<xsl:when test="string(./Measure/TotalMeasureIndicator) = 'KG' or string(./Measure/TotalMeasureIndicator) = 'KGM' ">KGM</xsl:when>
+					<xsl:when test="string(InvoicedQuantity/@UnitOfMeasure) = 'KG' or string(InvoicedQuantity/@UnitOfMeasure) = 'KGM' ">KGM</xsl:when>
 					<xsl:otherwise>
-						<xsl:value-of select="@UoM"/>
+						<xsl:value-of select="InvoicedQuantity/@UnitOfMeasure"/>
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:variable>
