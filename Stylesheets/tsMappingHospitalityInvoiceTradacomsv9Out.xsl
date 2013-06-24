@@ -16,13 +16,18 @@
  04/08/2006	| Lee Boyton			| Created module
 ==========================================================================================
  05/05/2010 | Andrew Barber            	| Amended decription to truncate rather than error.
+**********************************************************************
+2013-06-20	| H Robson				| FB 6687  Crated tsMappingHospitalityInvoiceTradacomsv9Out_TraderSpecficOutput.xsl
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 	xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript"
 	xmlns:vb="http://www.abs-ltd.com/dummynamespaces/vbscript"
 	xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+	<xsl:import href="tsMappingHospitalityInvoiceTradacomsv9Out_TraderSpecficOutput.xsl"/>
 	<xsl:output method="text"/>
+	
+	
 
 	<!-- define keys (think of them a bit like database indexes) to be used for finding distinct line information.
 	     note 1) the '::' literal is simply used as a convenient separator for the 2 values that make up the second key.
@@ -31,6 +36,10 @@
 	<xsl:key name="keyLinesByPOAndDN" match="InvoiceDetail/InvoiceLine" use="concat('¬',PurchaseOrderReferences/PurchaseOrderReference,'::¬',DeliveryNoteReferences/DeliveryNoteReference)"/>
 	
 	<xsl:template match="/Invoice">
+	
+		<xsl:variable name="BuyerName-TradeSpecific">
+			<xsl:call-template name="BuyerName-TradeSpecific"/>
+		</xsl:variable>
 
 		<xsl:variable name="sRecordSep">
 			<xsl:text>'</xsl:text>
@@ -56,7 +65,7 @@
 			<!--Your mailbox reference-->
 			<xsl:value-of select="InvoiceHeader/Buyer/BuyersLocationID/GLN"/>
 			<xsl:text>:</xsl:text>
-			<xsl:value-of select="js:msSafeText(string(InvoiceHeader/Buyer/BuyersName), 35)"/>
+			<xsl:value-of select="js:msSafeText(string($BuyerName-TradeSpecific), 35)"/>
 			<xsl:text>+</xsl:text>
 			<xsl:value-of select="$sFileGenerationDate"/>
 			<xsl:text>:</xsl:text>
