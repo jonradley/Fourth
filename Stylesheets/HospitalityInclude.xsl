@@ -5,6 +5,8 @@ Alterations
 Name			| Date				| Change
 **********************************************************************
 S Hussain		|	2013-05-14	| Added more functionality common across customers.
+**********************************************************************
+S Hussain		|	2013-06-24	| Added msGetCurrentTime(), msEscapeQuotes() Functions.
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:user="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl user">
 	<!--Generic Data Formatting Templates-->
@@ -369,6 +371,31 @@ function msGetTodaysDate()
 '========================================================================================*/
 function toUpperCase(vs) {
 	return vs.toUpperCase();
+}
+
+/*=========================================================================================
+' Routine       	 : msGetCurrentTime
+' Description 	 	 : Gets current time, formatted as HHMMSS
+' Inputs          	 : None
+' Outputs       	 : Current Time in HHMMSS Format
+' Alterations   	 : 
+'========================================================================================*/
+function msGetCurrentTime()
+{
+	var dtDate = new Date();
+	var sHours = dtDate.getHours();
+	var sMins = dtDate.getMinutes();
+	var sSecs = dtDate.getSeconds();
+	
+	return sHours +""+ sMins +""+ sSecs;
+}
+
+/*=========================================================================================
+' Routine       	 : msEscapeQuotes
+' Description 	 	 : Escapes Quotes within a String
+'========================================================================================*/
+function msEscapeQuotes(input) {
+	return input.replace("\"\"", "\"\"\"\"");
 }
 	]]></msxsl:script>
 </xsl:stylesheet>
