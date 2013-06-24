@@ -16,7 +16,9 @@ A Barber		|	2012-08-29		| 5709 Added no UOM append product code handling for PBR
 *********************************************************************
 H Robson		|	2013-03-26		| 6285 Added Creative Events	
 *********************************************************************
-H Robson		|	2013-05-07		| 6496 PBR append UoM to product code	
+H Robson		|	2013-05-07		| 6496 PBR append UoM to product code
+*********************************************************************
+S Hussain	 	| 	2013-05-15		|	Optimization
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:import href="HospitalityInclude.xsl"/>
