@@ -14,12 +14,14 @@
 '******************************************************************************************
 ' 07/05/2013	| Sahir Hussain	   | Created
 '******************************************************************************************
+' 24/06/2013	| Sahir Hussain	   | Moved out VB Script Functions to HospitalityInclude.xsl + Formatted Order Date to append the Current Time
+'******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
                               xmlns:fo="http://www.w3.org/1999/XSL/Format"
                               xmlns:msxsl="urn:schemas-microsoft-com:xslt" 
                               xmlns:user="http://mycompany.com/mynamespace">
-                              
+    <xsl:import href="HospitalityInclude.xsl"/>
 	<xsl:output method="text"/>
 	<xsl:template match="PurchaseOrder">
 		<!-- Row Type -->
@@ -32,7 +34,7 @@
 		
 		<!-- Test Flag -->
 		<xsl:choose>
-			<xsl:when test="user:msToUpperCase(string(TradeSimpleHeader/TestFlag)) = 'FALSE' or
+			<xsl:when test="user:toUpperCase(string(TradeSimpleHeader/TestFlag)) = 'FALSE' or
 									TradeSimpleHeader/TestFlag = '0'">N</xsl:when>
 			<xsl:otherwise>
 				<xsl:text>Y</xsl:text>
@@ -111,15 +113,22 @@
 									 PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate |
 									 PurchaseOrderHeader/OrderedDeliveryDetails/DeliverySlot/SlotStart |
 									 PurchaseOrderHeader/OrderedDeliveryDetails/DeliverySlot/SlotEnd">
-		<xsl:variable name="delimeter">
-			<xsl:choose>
-				<xsl:when test="contains(node(),'PurchaseOrderHeader/OrderedDeliveryDetails/DeliverySlot/SlotStart') or 
-										contains(node(),'PurchaseOrderHeader/OrderedDeliveryDetails/DeliverySlot/SlotStart')">:</xsl:when>
-				<xsl:otherwise>-</xsl:otherwise>
-			</xsl:choose>
-		</xsl:variable>
-
-		<xsl:value-of select="translate(.,$delimeter,'')"/>
+		<xsl:variable name="delimeter">-</xsl:variable>
+		<xsl:choose>
+			<xsl:when test="contains(name(), 'PurchaseOrderDate')">
+				<xsl:choose>
+					<xsl:when test="string(../PurchaseOrderTime) != ''">
+						<xsl:value-of select="concat(translate(.,$delimeter,''),translate(../PurchaseOrderTime,':',''))"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="concat(translate(.,$delimeter,''),user:msGetCurrentTime())"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="translate(.,$delimeter,'')"/>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 	<xsl:template match="PurchaseOrderDetail/PurchaseOrderLine">
 			<!-- Row Type -->
@@ -194,14 +203,4 @@
 			<xsl:text>"</xsl:text>
 		</xsl:if>
 	</xsl:template>
-	<msxsl:script language="VBScript" implements-prefix="user"><![CDATA[ 
-	
-		Function msEscapeQuotes(inputValue)
-			msEscapeQuotes = Replace(inputValue,"""","""" & """")
-		End Function 
-		
-		Function msToUpperCase(inputValue)
-			msToUpperCase = UCase(inputValue)
-		End Function
-	]]></msxsl:script>
 </xsl:stylesheet>
