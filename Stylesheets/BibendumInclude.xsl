@@ -4,7 +4,7 @@ Alterations
 **********************************************************************
 Name			| Date				| Change
 **********************************************************************
-S Hussain		|	2013-05-14	| Created a common stylesheets with generic functionalities by Bibendum
+S Hussain		|	2013-05-14	| 6496 Created a common stylesheets with generic functionalities by Bibendum
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:user="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl user">
 	<!--Generic Variables-->
