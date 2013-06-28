@@ -14,7 +14,7 @@
 '******************************************************************************************
 ' 07/05/2013	| Sahir Hussain	   | Created
 '******************************************************************************************
-' 24/06/2013	| Sahir Hussain	   | Moved out VB Script Functions to HospitalityInclude.xsl + Formatted Order Date to append the Current Time
+' 24/06/2013	| Sahir Hussain	   | FB 6690: Moved out VB Script Functions to HospitalityInclude.xsl + Formatted Order Date to append the Current Time
 '******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 

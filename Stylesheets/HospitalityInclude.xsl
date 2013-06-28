@@ -6,7 +6,7 @@ Name			| Date				| Change
 **********************************************************************
 S Hussain		|	2013-05-14	| Added more functionality common across customers.
 **********************************************************************
-S Hussain		|	2013-06-24	| Added msGetCurrentTime(), msEscapeQuotes() Functions.
+S Hussain		|	2013-06-24	| FB6690: Added msGetCurrentTime(), msEscapeQuotes() Functions.
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:user="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl user">
 	<!--Generic Data Formatting Templates-->
