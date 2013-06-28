@@ -26,7 +26,7 @@ H Robson		|	2013-03-26		| 6285 Added Creative Events
 *********************************************************************
 H Robson		|	2013-05-07		| 6496 PBR append UoM to product code	
 *********************************************************************
-S Hussain		|	2013-05-14		| Optimization
+S Hussain		|	2013-05-14		| 6496 Optimization
 *********************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:import href="HospitalityInclude.xsl"/>
