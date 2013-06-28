@@ -4,6 +4,8 @@ M Emanuel		|	09/11/2012	| 5840 Made changes to remap buyer and supplier codes to
 **********************************************************************************************************************************************
 M Emanuel	| 30/11/2012  	| 5876 Had to roll back changes made to 5840 as it caused invoices to all customers other than Elior to fail. 
 									 	Mapper updated to ensure that changes relevant to Elior does not affect any other customers. 
+**********************************************************************
+H Robson	| 27/06/2013  	| FB 6617 For Compass integration the PO ref and date must be mapped in (they've been sending it but it has not been mapped in before)
 **********************************************************************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
@@ -125,6 +127,13 @@ M Emanuel	| 30/11/2012  	| 5876 Had to roll back changes made to 5840 as it caus
 	</xsl:template>
 	<xsl:template match="TaxPointDate">
 		<xsl:element name="TaxPointDate">
+			<xsl:call-template name="sortDate">
+				<xsl:with-param name="sDate" select="."/>
+			</xsl:call-template>
+		</xsl:element>
+	</xsl:template>
+	<xsl:template match="PurchaseOrderDate">
+		<xsl:element name="PurchaseOrderDate">
 			<xsl:call-template name="sortDate">
 				<xsl:with-param name="sDate" select="."/>
 			</xsl:call-template>
