@@ -13,6 +13,8 @@ M Dimant      | 16/05/2012  | 5473 Bug fixed - SendersBranchReference was incorr
 M Emanuel	| 28/11/2012  	| Rolled back changes made to 5840 and cleaning up commented code
 **********************************************************************
 H Robson	| 27/06/2013  	| FB 6617 For Compass integration the PO ref must be mapped in (they've been sending it but it has not been mapped in before)
+**********************************************************************
+H Robson	| 28/06/2013  	| FB 6678 Add a BuyerName field just for use with Baxter Units
 *******************************************************************-->
 <ffsFlatFileSchema>
 	<ffsSettings>
@@ -54,6 +56,8 @@ H Robson	| 27/06/2013  	| FB 6617 For Compass integration the PO ref must be map
 									<SuppliersCode RecordPos="HEAD" LPos="24"/>
 								</ShipToLocationID>
 								<ShipToName RecordPos="HEAD" LPos="17"/>
+								<!-- custom BuyerName for Baxter only  -->
+								<ContactName RecordPos="HEAD" LPos="40"/>
 							</ShipTo>
 							<InvoiceReferences>
 								<InvoiceReference RecordPos="HEAD" LPos="28"/>
