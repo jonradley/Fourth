@@ -11,10 +11,13 @@ M Emanuel	|	09/11/2012	| 5840 Made changes to remap buyer and supplier
 *************************************************************************
 M Emanuel	| 30/11/2012  	| 5876 Had to roll back changes made to 5840 as it caused invoices to all customers other than Elior to fail. 
 									 	Mapper updated to ensure that changes relevant to Elior does not affect any other customers. 
+**********************************************************************
+H Robson	| 28/06/201 | FB 6678: Baxter requirement: use a different field for BuyerName
 *************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
+	
 	<!-- Start point - ensure required outer BatchRoot tag is applied -->
 	<xsl:template match="/">
 		<BatchRoot>
@@ -88,8 +91,16 @@ M Emanuel	| 30/11/2012  	| 5876 Had to roll back changes made to 5840 as it caus
 					</xsl:otherwise>
 				</xsl:choose>
 			</ShipToLocationID>
+			<!-- FB 6678 -->
 			<ShipToName>
-				<xsl:value-of select="ShipToName"/>
+				<xsl:choose>
+					<xsl:when test="../Buyer/BuyersLocationID/SuppliersCode= 'WILSON STOR(NAT'">
+						<xsl:value-of select="ContactName"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="ShipToName"/>
+					</xsl:otherwise>
+				</xsl:choose>
 			</ShipToName>
 		</ShipTo>
 	</xsl:template>
