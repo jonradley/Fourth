@@ -11,6 +11,8 @@ R Cambridge	| 29/09/2009	| 3142 read units codes into SCR and Supplier's code fo
 M Dimant      | 16/05/2012  | 5473 Bug fixed - SendersBranchReference was incorrectly being mapped as SendersCodeForRecipient. 
 **********************************************************************
 M Emanuel	| 28/11/2012  	| Rolled back changes made to 5840 and cleaning up commented code
+**********************************************************************
+H Robson	| 27/06/2013  	| FB 6617 For Compass integration the PO ref must be mapped in (they've been sending it but it has not been mapped in before)
 *******************************************************************-->
 <ffsFlatFileSchema>
 	<ffsSettings>
@@ -65,6 +67,10 @@ M Emanuel	| 28/11/2012  	| Rolled back changes made to 5840 and cleaning up comm
 						</CreditNoteHeader>
 						<CreditNoteDetail>
 							<CreditNoteLine>
+								<PurchaseOrderReferences>
+									<PurchaseOrderReference RecordPos="LINE" LPos="46"/>
+									<PurchaseOrderDate RecordPos="LINE" LPos="51"/>
+								</PurchaseOrderReferences>
 								<ProductID>
 									<SuppliersProductCode RecordPos="LINE" LPos="2"/>
 								</ProductID>

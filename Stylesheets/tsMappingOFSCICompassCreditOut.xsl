@@ -15,8 +15,8 @@
 '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ' 16/08/2005 | Lee Boyton   | 252. Changed to take the Compass Vendor Number from the
 '                           | RecipientsCodeForSender field to cater for suppliers having branches.
-'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-'            |              | 
+'******************************************************************************************
+' 26/06/2013 | H Robson     | FB 6617 Some hard coding is required to integrate with Campbells Prime Meats
 '******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" 
@@ -28,8 +28,20 @@
 				xmlns:cc="http://www.ean-ucc.org/2002/gsmp/schemas/CoreComponents" 
 				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 				exclude-result-prefixes="fo script msxsl">
-	<xsl:output method="xml"/>
+	<xsl:output method="xml" encoding="utf-8"/>
 	<xsl:template match="/">
+
+		<!--FB 6617 Generic Variables-->
+		<xsl:variable name="CPM" select="'CPM'"/>
+		<xsl:variable name="accountCode" select="string(/CreditNote/TradeSimpleHeader/RecipientsCodeForSender)"/>		
+		<xsl:variable name="Supplier">
+			<xsl:choose>
+				<xsl:when test="$accountCode = 'CAMPBELLS'"><xsl:value-of select="$CPM"/></xsl:when>
+				<xsl:otherwise></xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<!-- FB 6617 end ****************************** -->	
+	
 		<CreditNote>
 			<xsl:attribute name="xsi:schemaLocation">
 				<xsl:text>http://www.eanucc.org/2002/Pay/FoodService/FoodService/UK/EanUcc/Pay X:\HOME\COMMON\projects\TSFOOD~1\ebXML\Invoice\0.9\CreditNote0.9.xsd</xsl:text>
@@ -50,14 +62,27 @@
 					<InvoiceDocumentNumber scheme="OTHER"><xsl:value-of select="/CreditNote/CreditNoteHeader/InvoiceReferences/InvoiceReference"/></InvoiceDocumentNumber>
 				</InvoiceReference>
 			</xsl:if>
-			<xsl:if test="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/PurchaseOrderReferences/TradeAgreement/ContractReference">
-				<TradeAgreementReference>
-					<xsl:if test="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/PurchaseOrderReferences/TradeAgreement/ContractDate">
-						<ContractReferenceDate format="YYYY-MM-DDThh:mm:ss:TZD"><xsl:value-of select="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/PurchaseOrderReferences/TradeAgreement/ContractDate"/>T00:00:00</ContractReferenceDate>
+			
+			<!-- FB 6617 Hard code the contract reference Campbells invoices -->
+			<xsl:choose>
+				<xsl:when test="$Supplier = $CPM">
+					<TradeAgreementReference>
+						<ContractReferenceNumber scheme="GTIN">NET</ContractReferenceNumber>
+					</TradeAgreementReference>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:if test="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/PurchaseOrderReferences/TradeAgreement/ContractReference">
+						<TradeAgreementReference>
+							<xsl:if test="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/PurchaseOrderReferences/TradeAgreement/ContractDate">
+								<ContractReferenceDate format="YYYY-MM-DDThh:mm:ss:TZD"><xsl:value-of select="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/PurchaseOrderReferences/TradeAgreement/ContractDate"/>T00:00:00</ContractReferenceDate>
+							</xsl:if>
+							<ContractReferenceNumber scheme="OTHER"><xsl:value-of select="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/PurchaseOrderReferences/TradeAgreement/ContractReference"/></ContractReferenceNumber>
+						</TradeAgreementReference>
 					</xsl:if>
-					<ContractReferenceNumber scheme="OTHER"><xsl:value-of select="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/PurchaseOrderReferences/TradeAgreement/ContractReference"/></ContractReferenceNumber>
-				</TradeAgreementReference>
-			</xsl:if>
+				</xsl:otherwise>
+			</xsl:choose>
+			<!-- FB 6617 end ****************************** -->
+
 			<xsl:if test="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/PurchaseOrderReferences/PurchaseOrderReference">
 				<OrderReference>
 					<xsl:if test="/CreditNote/CreditNoteDetail/CreditNoteLine[1]/PurchaseOrderReferences/PurchaseOrderDate">
@@ -122,12 +147,23 @@
 			</Buyer>
 			<Seller>
 				<SellerGLN scheme="GLN"><xsl:value-of select="/CreditNote/CreditNoteHeader/Supplier/SuppliersLocationID/GLN"/></SellerGLN>
-				<xsl:if test="/CreditNote/CreditNoteHeader/Supplier/SuppliersLocationID/SuppliersCode">
-					<SellerAssigned scheme="OTHER"><xsl:value-of select="/CreditNote/CreditNoteHeader/Supplier/SuppliersLocationID/SuppliersCode"/></SellerAssigned>
-				</xsl:if>
-				<xsl:if test="/CreditNote/TradeSimpleHeader/RecipientsCodeForSender">
-					<BuyerAssigned scheme="OTHER"><xsl:value-of select="/CreditNote/TradeSimpleHeader/RecipientsCodeForSender"/></BuyerAssigned>
-				</xsl:if>
+				<!-- FB 6617 Sellers code for seller originates from a different field in Campbells invoices -->
+				<xsl:choose>
+					<xsl:when test="$Supplier = $CPM">
+						<SellerAssigned scheme="OTHER"><xsl:value-of select="/CreditNote/TradeSimpleHeader/RecipientsCodeForSender"/></SellerAssigned>
+						<BuyerAssigned scheme="OTHER"><xsl:text>52565</xsl:text></BuyerAssigned>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:if test="/CreditNote/CreditNoteHeader/Supplier/SuppliersLocationID/SuppliersCode">
+							<SellerAssigned scheme="OTHER"><xsl:value-of select="/CreditNote/CreditNoteHeader/Supplier/SuppliersLocationID/SuppliersCode"/></SellerAssigned>
+						</xsl:if>
+						<xsl:if test="/CreditNote/TradeSimpleHeader/RecipientsCodeForSender">
+							<BuyerAssigned scheme="OTHER"><xsl:value-of select="/CreditNote/TradeSimpleHeader/RecipientsCodeForSender"/></BuyerAssigned>
+						</xsl:if>
+					</xsl:otherwise>
+				</xsl:choose>
+				<!-- FB 6617 end ****************************** -->				
+
 				<Address>
 					<BuildingIdentifier scheme="OTHER"><xsl:value-of select="/CreditNote/CreditNoteHeader/Supplier/SuppliersAddress/AddressLine1"/></BuildingIdentifier>
 					<xsl:if test="/CreditNote/CreditNoteHeader/Supplier/SuppliersAddress/AddressLine2">
