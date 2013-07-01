@@ -4,7 +4,7 @@ Alterations
 **********************************************************************
 Name			| Date				| Change
 **********************************************************************
-S Hussain		|	2013-05-14	| Added more functionality common across customers.
+S Hussain		|	2013-05-14	| FB6588: Added more functionality common across customers.
 **********************************************************************
 S Hussain		|	2013-06-24	| FB6690: Added msGetCurrentTime(), msEscapeQuotes() Functions.
 *******************************************************************-->

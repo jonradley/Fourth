@@ -24,19 +24,7 @@
 '******************************************************************************************
 ' Date             | Name              | Description of modification
 '******************************************************************************************
-' 20/04/2005  | Steven Hewitt | Created
-'******************************************************************************************
-' 26/07/2005  | A Sheppard    | 2344. Bug fix.
-'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-'26/01/2007  | Nigel Emsen	| Case 710: Fairfax Adoption for Aramark. XPaths adjusted.
-'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-'31/01/2007	| Lee Boyton      | Case 767: Cater for an empty ContractReferenceNumber element.
-'******************************************************************************************
-'26/11/2008	| Rave Tech      |	 Case 2592 Handled vat rate changing from 17.5 to 15 
-'******************************************************************************************
-' 14/12/2009 |S Sehgal  	| Case 3286 Changed to handle VAT changing back to 17.5% from 1-Jan-2010
-'******************************************************************************************
-' 21/05/2013    | S Hussain       | Case 6589: Supplier Product Code Formatting + Optimization
+' 21/05/2013    | S Hussain       | Case 6588: Created -  Supplier Product Code Formatting + Optimization
 '******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt"  xmlns:user="http://mycompany.com/mynamespace" exclude-result-prefixes="#default xsl msxsl user">

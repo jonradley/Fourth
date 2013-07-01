@@ -15,7 +15,7 @@
 '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ' 03/06/2010  | M Dimant       | Matthew Clark require Seller/GLN to always be 5555555555555
 '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-' 21/05/2013  | S Hussain      | Case 6589: Supplier Product Code Formatting + Optimization
+' 21/05/2013  | S Hussain      | Case 6588: Supplier Product Code Formatting + Optimization
 '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 '			  |                         |
 '******************************************************************************************
