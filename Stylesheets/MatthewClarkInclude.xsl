@@ -24,6 +24,7 @@ S Hussain		| 2013-05-14	| FB6588 - Created a common stylesheets with generic fun
 			</xsl:choose>
 		</xsl:variable>
 		<xsl:choose>
+			<xsl:when test="$accountCode = '50514495' or $accountCode = '50171636'"><xsl:value-of select="$B_P"/></xsl:when>
 			<xsl:when test="$accountCode = '7414' or $accountCode = '50514623'"><xsl:value-of select="$B_P"/></xsl:when>
 			<xsl:when test="$accountCode = '7020' or $accountCode = '50171639'"><xsl:value-of select="$B_P"/></xsl:when>
 			<xsl:when test="$accountCode = '7021' or $accountCode = '50171641'"><xsl:value-of select="$B_P"/></xsl:when>
