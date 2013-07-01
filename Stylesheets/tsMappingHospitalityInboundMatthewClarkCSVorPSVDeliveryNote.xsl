@@ -4,7 +4,7 @@ Alterations
 **********************************************************************
 Name			| Date			| Change
 **********************************************************************
-21/05/2013  | S Hussain       | Case 6589: Supplier Product Code Formatting + Optimization
+21/05/2013  | S Hussain       | Case 6588: Created - Supplier Product Code Formatting + Optimization
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:import href="HospitalityInclude.xsl"/>

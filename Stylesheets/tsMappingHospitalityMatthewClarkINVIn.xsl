@@ -22,7 +22,7 @@
 '******************************************************************************************
 ' Date             | Name             | Description of modification
 '******************************************************************************************
-'21/05/2013    | S Hussain       | Case 6589: Supplier Product Code Formatting + Optimization
+'21/05/2013    | S Hussain       | Case 6588: Created -  Supplier Product Code Formatting + Optimization
 '******************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:user="http://mycompany.com/mynamespace" exclude-result-prefixes="#default xsl msxsl user">
 	<xsl:import href="HospitalityInclude.xsl"/>
