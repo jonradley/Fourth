@@ -12,7 +12,7 @@ Map in the BEK fixed-width Invoice format (V16)
 ******************************************************************************************
  01/03/2013	| Harold Robson		| FB6189 Created module 
 ******************************************************************************************
-				| 							|
+ 03/07/2013	| Harold Robson		| FB6735 BEK have added a fee description field to their invoice spec. We can now stop hard coding these descriptions. 
 ***************************************************************************************-->
 <ffsFlatFileSchema>
 	<ffsSettings>
@@ -78,13 +78,16 @@ Map in the BEK fixed-width Invoice format (V16)
 										<ContractReference RecordPos="IH" LPos="136" UPos="155"/>
 									</TradeAgreement>
 								</PurchaseOrderReferences>
-								<!-- fees/surcharges are sent on a seperate record, they will need to be mapped into InvoiceLines but the FFM will not do that
-								put them here and correct in the XSL -->
+								<!-- fees/surcharges are sent on a seperate record, they will need to be mapped into InvoiceLines but the FFM will not do that.
+								put them here and move to InvoiceLine in the XSL -->
 								<DeliveryNoteReferences>
 									<DeliveryNoteReference RecordPos="IE" LPos="23" UPos="32"/> <!--Line Item Number -->
 									<DeliveryNoteDate RecordPos="IE" LPos="33" UPos="36"/> <!-- Fee Code -->
 									<DespatchDate  RecordPos="IE" LPos="37" UPos="49"/> <!-- Fee Amount -->
 								</DeliveryNoteReferences>
+								<GoodsReceivedNoteReferences>
+									<GoodsReceivedNoteReference RecordPos="IE" LPos="50" UPos="69"/> <!-- Fee Description -->
+								</GoodsReceivedNoteReferences>
 								<!--////////////////////////////// -->
 								<ProductID>
 									<GTIN RecordPos="ID" LPos="211" UPos="224"/>
