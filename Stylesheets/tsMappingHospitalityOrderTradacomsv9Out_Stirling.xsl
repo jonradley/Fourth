@@ -24,7 +24,7 @@
  15/11/2010	| R Cambridge			|	3956 Product code manipulation (remove UoM indicator if present)
  													  If UoM indicator is present use UoM inplace of PackSize (Bibendum's system will lookup pack size)
 ==========================================================================================
- 15/05/2013	| S Hussain			|	Optimization
+ 15/05/2013	| S Hussain			|	6496 Optimization
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript" xmlns:vb="http://www.abs-ltd.com/dummynamespaces/vbscript" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	<xsl:output method="text" encoding="utf-8"/>
