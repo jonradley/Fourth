@@ -24,7 +24,7 @@ S Hussain		| 2013-05-14	| FB6588 - Created a common stylesheets with generic fun
 			</xsl:choose>
 		</xsl:variable>
 		<xsl:choose>
-			<xsl:when test="$accountCode = '50514495' or $accountCode = '50171636'"><xsl:value-of select="$B_P"/></xsl:when>
+			<xsl:when test="$accountCode = '50514495' or $accountCode = '50171636' or $accountCode = 'MCWS'"><xsl:value-of select="$B_P"/></xsl:when>
 			<xsl:when test="$accountCode = '7414' or $accountCode = '50514623'"><xsl:value-of select="$B_P"/></xsl:when>
 			<xsl:when test="$accountCode = '7020' or $accountCode = '50171639'"><xsl:value-of select="$B_P"/></xsl:when>
 			<xsl:when test="$accountCode = '7021' or $accountCode = '50171641'"><xsl:value-of select="$B_P"/></xsl:when>
@@ -90,13 +90,32 @@ S Hussain		| 2013-05-14	| FB6588 - Created a common stylesheets with generic fun
 	<xsl:variable name="creditLineIndicator" select="'2'"/>
 	<xsl:variable name="invoiceLineIndicator" select="'1'"/>
 	<xsl:variable name="defaultNewTaxRate" select="'15'"/>
+	<!--Supplier UOM Formatting Based on Product Code-->
+	<xsl:template name="FormatSupplierUOM">
+		<xsl:param name="sUOM"/>
+		<xsl:param name="sProductCode"/>
+		<xsl:choose>
+			<xsl:when test="contains($sProductCode,'-EA') and $CustomerFlag = $B_P">
+				<xsl:text>EA</xsl:text>
+			</xsl:when>
+			<xsl:when test="contains($sProductCode,'-CS') and $CustomerFlag = $B_P">
+				<xsl:text>CS</xsl:text>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$sUOM"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
 	<!--Supplier Product Code Formatting to Truncate UOM-->
 	<xsl:template name="FormatSupplierProductCode">
 		<xsl:param name="sUOM"/>
 		<xsl:param name="sProductCode"/>
 		<xsl:choose>
-			<xsl:when test="contains($sProductCode,concat('-',string($sUOM))) and $CustomerFlag = $B_P">
-				<xsl:value-of select="substring-before($sProductCode, concat('-',$sUOM))"/>
+			<xsl:when test="contains($sProductCode,'-EA') and $CustomerFlag = $B_P">
+				<xsl:value-of select="substring-before($sProductCode, '-EA')"/>
+			</xsl:when>
+			<xsl:when test="contains($sProductCode,'-CS') and $CustomerFlag = $B_P">
+				<xsl:value-of select="substring-before($sProductCode, '-CS')"/>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="$sProductCode"/>

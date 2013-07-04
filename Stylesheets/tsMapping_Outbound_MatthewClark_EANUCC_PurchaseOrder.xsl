@@ -192,7 +192,10 @@
 				
 					<RequestedQuantity>
 						<xsl:attribute name="unitCode">
-							<xsl:value-of select="OrderedQuantity/@UnitOfMeasure"/>
+							<xsl:call-template name="FormatSupplierUOM">
+								<xsl:with-param name="sProductCode" select="ProductID/SuppliersProductCode"/>
+								<xsl:with-param name="sUOM" select="OrderedQuantity/@UnitOfMeasure"/>
+							</xsl:call-template>
 						</xsl:attribute>
 						
 						<xsl:value-of select="format-number(OrderedQuantity,'0.000')"></xsl:value-of>
