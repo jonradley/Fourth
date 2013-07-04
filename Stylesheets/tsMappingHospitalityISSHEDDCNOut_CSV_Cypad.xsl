@@ -5,6 +5,8 @@ ISS Facility Services HED Cypad CSV DCN mapper
 Name				| Date			| Change
 *********************************************************************
 Andrew Barber	| 21/04/2013	| 6259: Created.
+*********************************************************************
+Andrew Barber	| 04/07/2013	| 6737: Added logic for supplier code output.
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:user="http://mycompany.com/mynamespace">
 	<xsl:output method="text" version="1.0" encoding="UTF-8" indent="yes"/>
@@ -25,7 +27,14 @@ Andrew Barber	| 21/04/2013	| 6259: Created.
 		<!-- Confirmation Header -->
 		<xsl:text>H</xsl:text>
 		<xsl:value-of select="$Sep"/>
-		<xsl:value-of select="substring-before(TradeSimpleHeader/RecipientsCodeForSender,'/')"/>
+		<xsl:choose>
+			<xsl:when test="contains(TradeSimpleHeader/RecipientsCodeForSender,'/')">
+					<xsl:value-of select="substring-before(TradeSimpleHeader/RecipientsCodeForSender,'/')"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="TradeSimpleHeader/RecipientsCodeForSender"/>
+			</xsl:otherwise>
+		</xsl:choose>
 		<xsl:value-of select="$Sep"/>
 		<xsl:choose>
 			<xsl:when test="TradeSimpleHeader/TestFlag='true'">
