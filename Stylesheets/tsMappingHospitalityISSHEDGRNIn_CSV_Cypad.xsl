@@ -5,6 +5,8 @@ ISS Facility Services HED Cypad CSV GRN mapper
 Name				| Date			| Change
 *********************************************************************
 Andrew Barber	| 21/04/2013	| 6259: Created.
+*********************************************************************
+Andrew Barber	| 04/07/2013	| 6737: Updated senders code for recipient map logic.
 *******************************************************************-->
 <xsl:stylesheet  version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt"  xmlns:vbscript="http://tradesimple.net">
 
@@ -35,7 +37,9 @@ Andrew Barber	| 21/04/2013	| 6259: Created.
 		<TradeSimpleHeader>
 			<SendersCodeForRecipient>
 				<xsl:value-of select="SendersCodeForRecipient"/>
-				<xsl:text>/PE</xsl:text>
+				<xsl:if test="SendersCodeForRecipient = '7190'">
+					<xsl:text>/PE</xsl:text>
+				</xsl:if>		
 			</SendersCodeForRecipient>
 			<SendersBranchReference>
 				<xsl:value-of select="SendersBranchReference"/>
