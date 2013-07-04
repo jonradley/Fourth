@@ -11,10 +11,12 @@
 ******************************************************************************************
  2013-02-21  | R Cambridge 	| FB6038 Created Module (from FnB inbound order mapper)
 ******************************************************************************************
- 2013-04-022 | R Cambridge	| 6433 vendor's code for any sub-division of the hotel will now be derived from 
+ 2013-04-22  | R Cambridge	| 6433 vendor's code for any sub-division of the hotel will now be derived from 
  													//PurchaseOrderHeader/Account/BuyersCode  (was //Outlet/BuyersCode)
 ******************************************************************************************
-             |            	| 
+ 2013-06-21  | R Cambridge	| 6686 Accept supplier's code for supplier if provided
+******************************************************************************************
+ 2013-07-04  | R Cambridge	| 6686 Ignore blank PackSize elements
 ******************************************************************************************
              |             	|           
 ***************************************************************************************-->
@@ -90,6 +92,7 @@
 		<SuppliersLocationID>
 			<!--xsl:element name="GLN">5555555555555</xsl:element-->
 			<xsl:copy-of select="BuyersCode"/>
+			<xsl:copy-of select="SuppliersCode"/>
 		</SuppliersLocationID>
 	</xsl:template>
 	
@@ -119,7 +122,7 @@
 			<xsl:copy-of select="ProductID"/>
 			<xsl:copy-of select="ProductDescription"/>
 			<xsl:copy-of select="OrderedQuantity"/>
-			<xsl:copy-of select="PackSize"/>
+			<xsl:copy-of select="PackSize[.!='']"/>
 			<xsl:copy-of select="UnitValueExclVAT"/>
 			<xsl:copy-of select="LineValueExclVAT"/>	
 			
