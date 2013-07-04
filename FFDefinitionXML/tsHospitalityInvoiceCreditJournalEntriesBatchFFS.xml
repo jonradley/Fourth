@@ -12,55 +12,64 @@
 	<ffsRoot>
 		<Batch>
 			<BatchHeader>
-				<OrganisationCode RecordLength="4" RecordPos="1" LPos="1"/>
-				<SourceSystemExportID RecordLength="4" RecordPos="1" LPos="2"/>
-				<SourceSystemOrgID RecordLength="4" RecordPos="1" LPos="4"/>
-				<FormatCode RecordLength="4" RecordPos="1" LPos="3"/>
+				<OrganisationCode RecordLength="6" RecordPos="1" LPos="1"/>
+				<SourceSystemExportID RecordLength="6" RecordPos="1" LPos="2"/>
+				<SourceSystemOrgID RecordLength="6" RecordPos="1" LPos="4"/>
+				<FormatCode RecordLength="6" RecordPos="1" LPos="3"/>
+				<AccountingSystemCode RecordLength="6" RecordPos="1" LPos="5"/>
+				<DocumentSource RecordLength="6" RecordPos="1" LPos="6"/>
 			</BatchHeader>
 			<BatchDocuments>
 				<BatchDocument>
 					<InvoiceCreditJournalEntries>
 						<InvoiceCreditJournalEntriesHeader>
-							<BuyersUnitCode RecordLength="38"  RecordPos="*" LPos="1"/>
-							<BuyersSiteCode RecordLength="38" RecordPos="*" LPos="2"/>
-							<BuyerName RecordLength="38" RecordPos="*" LPos="3"/>
-							<RegionName RecordLength="38" RecordPos="*" LPos="4"/>
-							<SiteBrand RecordLength="38" RecordPos="*" LPos="5"/>
-							<SiteClosingStockField RecordLength="38" RecordPos="*" LPos="6"/>
-							<VATAccountCode RecordLength="38" RecordPos="*" LPos="7"/>
-							<TransactionType RecordLength="38" RecordPos="*" LPos="8"/>
-							<InvoiceReference RecordLength="38" RecordPos="*" LPos="9"/>
-							<InvoiceDate RecordLength="38" RecordPos="*" LPos="17"/>
-							<DeliveryReference RecordLength="38" RecordPos="*" LPos="10"/>
-							<DeliveryDate RecordLength="38" RecordPos="*" LPos="16"/>
-							<VoucherNumber RecordLength="38" RecordPos="*" LPos="11"/>
-							<FnBInternalRef RecordLength="38" RecordPos="*" LPos="12"/>
-							<TransactionDescription RecordLength="38" RecordPos="*" LPos="13"/>
-							<BuyersCodeForSupplier RecordLength="38" RecordPos="*" LPos="14"/>
-							<SupplierName RecordLength="38" RecordPos="*" LPos="15"/>
-							<SupplierNominalCode RecordLength="38" RecordPos="*" LPos="37"/>
-							<CustomFinancialYear RecordLength="38" RecordPos="*" LPos="18"/>
-							<CustomFinancialPeriod RecordLength="38" RecordPos="*" LPos="19"/>
-							<StockFinancialYear RecordLength="38" RecordPos="*" LPos="20"/>
-							<StockFinancialPeriod RecordLength="38" RecordPos="*" LPos="21"/>
-							<CreatedBy RecordLength="38" RecordPos="*" LPos="36"/>
-							<ExportRunDate RecordLength="38" RecordPos="*" LPos="22"/>
+							<BuyersUnitCode RecordLength="44"  RecordPos="*" LPos="1"/>
+							<BuyersSiteCode RecordLength="44" RecordPos="*" LPos="2"/>
+							<BuyerName RecordLength="44" RecordPos="*" LPos="3"/>
+							<RegionName RecordLength="44" RecordPos="*" LPos="4"/>
+							<SiteBrand RecordLength="44" RecordPos="*" LPos="5"/>
+							<SiteClosingStockField RecordLength="44" RecordPos="*" LPos="6"/>
+							<VATAccountCode RecordLength="44" RecordPos="*" LPos="7"/>
+							<TransactionType RecordLength="44" RecordPos="*" LPos="8"/>
+							<InvoiceReference RecordLength="44" RecordPos="*" LPos="9"/>
+							<InvoiceDate RecordLength="44" RecordPos="*" LPos="17"/>
+							<DeliveryReference RecordLength="44" RecordPos="*" LPos="10"/>
+							<DeliveryDate RecordLength="44" RecordPos="*" LPos="16"/>
+							<VoucherNumber RecordLength="44" RecordPos="*" LPos="11"/>
+							<FnBInternalRef RecordLength="44" RecordPos="*" LPos="12"/>
+							<TransactionDescription RecordLength="44" RecordPos="*" LPos="13"/>
+							<BuyersCodeForSupplier RecordLength="44" RecordPos="*" LPos="14"/>
+							<SupplierName RecordLength="44" RecordPos="*" LPos="15"/>
+							<SupplierNominalCode RecordLength="44" RecordPos="*" LPos="37"/>
+							<CustomFinancialYear RecordLength="44" RecordPos="*" LPos="18"/>
+							<CustomFinancialPeriod RecordLength="44" RecordPos="*" LPos="19"/>
+							<StockFinancialYear RecordLength="44" RecordPos="*" LPos="20"/>
+							<StockFinancialPeriod RecordLength="44" RecordPos="*" LPos="21"/>
+							<CreatedBy RecordLength="44" RecordPos="*" LPos="36"/>
+							<ExportRunDate RecordLength="44" RecordPos="*" LPos="22"/>
+							<InvoiceNumberforCRN RecordLength="44" RecordPos="*" LPos="38"/>
+							<CurrencyCode RecordLength="44" RecordPos="*" LPos="41"/>
+							<CustomerVATCode RecordLength="44" RecordPos="*" LPos="42"/>
+							<UnitSiteName RecordLength="44" RecordPos="*" LPos="43"/>
+							<UnitSiteNominal RecordLength="44" RecordPos="*" LPos="44"/>
 						</InvoiceCreditJournalEntriesHeader>
 						<InvoiceCreditJournalEntriesDetail>
 							<InvoiceCreditJournalEntriesLine>
-								<Amount RecordLength="38" RecordPos="*" LPos="23"/>
-								<ConversionCode RecordLength="38" RecordPos="*" LPos="24"/>
-								<ConvertedAmount RecordLength="38" RecordPos="*" LPos="25"/>
-								<VATCode RecordLength="38" RecordPos="*" LPos="26"/>
-								<LineVATPercentage RecordLength="38" RecordPos="*" LPos="27"/>
-								<LineNet RecordLength="38" RecordPos="*" LPos="28"/>
-								<LineVAT RecordLength="38" RecordPos="*" LPos="29"/>
-								<LineGross RecordLength="38" RecordPos="*" LPos="30"/>
-								<CostCentreName RecordLength="38" RecordPos="*" LPos="31"/>
-								<CategoryCode1 RecordLength="38" RecordPos="*" LPos="32"/>
-								<CategoryCode2 RecordLength="38" RecordPos="*" LPos="33"/>
-								<CategoryCode3 RecordLength="38" RecordPos="*" LPos="34"/>
-								<CategoryCode4 RecordLength="38" RecordPos="*" LPos="35"/>
+								<Amount RecordLength="44" RecordPos="*" LPos="23"/>
+								<ConversionCode RecordLength="44" RecordPos="*" LPos="24"/>
+								<ConvertedAmount RecordLength="44" RecordPos="*" LPos="25"/>
+								<VATCode RecordLength="44" RecordPos="*" LPos="26"/>
+								<LineVATPercentage RecordLength="44" RecordPos="*" LPos="27"/>
+								<LineNet RecordLength="44" RecordPos="*" LPos="28"/>
+								<LineVAT RecordLength="44" RecordPos="*" LPos="29"/>
+								<LineGross RecordLength="44" RecordPos="*" LPos="30"/>
+								<CostCentreName RecordLength="44" RecordPos="*" LPos="31"/>
+								<CategoryCode1 RecordLength="44" RecordPos="*" LPos="32"/>
+								<CategoryCode2 RecordLength="44" RecordPos="*" LPos="33"/>
+								<CategoryCode3 RecordLength="44" RecordPos="*" LPos="34"/>
+								<CategoryCode4 RecordLength="44" RecordPos="*" LPos="35"/>
+								<CategoryName RecordLength="44" RecordPos="*" LPos="39"/>
+								<CategoryNominal RecordLength="44" RecordPos="*" LPos="40"/>
 							</InvoiceCreditJournalEntriesLine>
 						</InvoiceCreditJournalEntriesDetail>
 					</InvoiceCreditJournalEntries>
