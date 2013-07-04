@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--******************************************************************
+Flat file map for Rail Gourmet GRN's from JDE.
+**********************************************************************
+Revision History
+**********************************************************************
+Date		| Name				| Change
+**********************************************************************
+15/03/2012	| Andrew Barber	| Created
+******************************************************************-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>chr(10)</ffsRecordSeparator>
+		<ffsEscapeChars>
+			<ffsEscapeChar>
+				<ffsNative>chr(13)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+		</ffsEscapeChars>
+		<ffsPadding/>
+		<ffsBatchHeader>
+			<ffsHeaderRecord RecordPos="F"/>
+		</ffsBatchHeader>
+		<ffsSplitBatchRecord RecordPos="H"/>
+	</ffsSettings>
+	<!-- GRN Mapping -->
+	<ffsRoot>
+		<Batch>
+			<BatchDocuments>
+				<BatchDocument>
+					<GoodsReceivedNote>
+						<TradeSimpleHeader>
+							<SendersCodeForRecipient RecordPos="H" LPos="14" UPos="18"/>
+							<SendersBranchReference RecordPos="H" LPos="19" UPos="24"/>
+						</TradeSimpleHeader>
+						<GoodsReceivedNoteHeader>
+							<Supplier>
+								<SuppliersLocationID>
+									<BuyersCode RecordPos="H" LPos="14" UPos="18"/>
+								</SuppliersLocationID>
+							</Supplier>
+							<!--ShipTo>
+								<ShipToLocationID>
+									<BuyersCode RecordPos="H" LPos="19" UPos="24"/>
+								</ShipToLocationID>
+							</ShipTo-->
+							<PurchaseOrderReferences>
+								<PurchaseOrderReference RecordPos="H" LPos="2" UPos="11"/>
+								<PurchaseOrderNoteDate RecordPos="H" LPos="25" UPos="32"/>
+							</PurchaseOrderReferences>
+							<GoodsReceivedNoteReferences>
+								<GoodsReceivedNoteReference RecordPos="H" LPos="2" UPos="11"/>
+								<GoodsReceivedNoteDate RecordPos="H" LPos="25" UPos="32"/>
+							</GoodsReceivedNoteReferences>
+						</GoodsReceivedNoteHeader>
+						<GoodsReceivedNoteDetail>
+							<GoodsReceivedNoteLine>
+								<ProductID>
+									<SuppliersProductCode RecordPos="D" LPos="15" UPos="39"/>
+								</ProductID>
+								<AcceptedQuantity RecordPos="D" LPos="45" UPos="49"/>
+								<UnitValueExclVAT RecordPos="D" LPos="50" UPos="56"/>
+							</GoodsReceivedNoteLine>
+						</GoodsReceivedNoteDetail>
+					</GoodsReceivedNote>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>
