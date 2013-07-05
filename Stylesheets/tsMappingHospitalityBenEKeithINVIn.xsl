@@ -17,6 +17,7 @@ Transformations on the XML version of the flat file - create INVs and CRNs
  23/05/2013	| Harold Robson		| FB6590 fix output for VATRate in case of an invoice line with zero values. otherwise a whole batch of invoices will fail if any single invoice has 'NaN' in the VATRate field.
 ******************************************************************************************
  03/07/2013	| Harold Robson		| FB6735 BEK have added a fee description field to their invoice spec. We can now stop hard coding these descriptions. 
+										Fix a bug in VATRate fromat for zero valued fee lines
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="xsl msxsl">
 	
@@ -225,7 +226,7 @@ Transformations on the XML version of the flat file - create INVs and CRNs
 															<xsl:when test="format-number((100 div LineValueExclVAT) * VATRate,'0.00') &gt; 0">
 																<xsl:value-of select="format-number((100 div LineValueExclVAT) * VATRate,'0.00')"/>
 															</xsl:when>
-															<xsl:otherwise>0</xsl:otherwise>
+															<xsl:otherwise>0.00</xsl:otherwise>
 														</xsl:choose>
 													</VATRate>
 												</InvoiceLine>
