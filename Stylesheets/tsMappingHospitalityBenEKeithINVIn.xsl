@@ -18,6 +18,8 @@ Transformations on the XML version of the flat file - create INVs and CRNs
 ******************************************************************************************
  03/07/2013	| Harold Robson		| FB6735 BEK have added a fee description field to their invoice spec. We can now stop hard coding these descriptions. 
 										Fix a bug in VATRate fromat for zero valued fee lines
+******************************************************************************************
+ 10/07/2013	| Harold Robson		| FB6735 Make the same change as above, to the credit note portion of the mapper
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="xsl msxsl">
 	
@@ -374,10 +376,7 @@ Transformations on the XML version of the flat file - create INVs and CRNs
 														<SuppliersProductCode><xsl:value-of select="concat(DeliveryNoteReference,'-',DeliveryNoteDate)"/></SuppliersProductCode>
 													</ProductID>
 													<ProductDescription>
-														<xsl:choose>
-															<xsl:when test="DeliveryNoteDate = 'FSUR'">Fuel Surcharge</xsl:when>
-															<xsl:when test="DeliveryNoteDate = 'DLVF'">Delivery Fee</xsl:when>
-														</xsl:choose>
+														<xsl:value-of select="../GoodsReceivedNoteReferences/GoodsReceivedNoteReference"/>
 													</ProductDescription>
 													<InvoicedQuantity>1</InvoicedQuantity>
 													<UnitValueExclVAT><xsl:value-of select="DespatchDate"/></UnitValueExclVAT>
