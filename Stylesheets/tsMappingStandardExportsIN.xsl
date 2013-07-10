@@ -8,10 +8,13 @@ Stylesheet to map in the Standard Exports from R9/FnB
  Date        | Name         | Description of modification
 ******************************************************************************************
  05/07/2013  | S Sehgal  | 6715 /6625 Created
-*****************************************************************************************
+******************************************************************************************
+ 10/07/2013  | S Sehgal  | 6715 /6625 Format dates from yyyymmdd to yyyy-mm-dd format
+******************************************************************************************
 
 ***************************************************************************************-->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+	<xsl:import href="HospitalityInclude.xsl"/>	
 	<xsl:output method="xml" encoding="utf-8"/>
 	<!-- GENERIC HANDLER to copy unchanged nodes, will be overridden by any node-specific templates below -->
 	<xsl:template match="*">
@@ -47,4 +50,16 @@ Stylesheet to map in the Standard Exports from R9/FnB
 		</xsl:copy>
 	</xsl:template>
 	<xsl:template match="AccountingSystemCode"/>
+	<!-- Format Dates -->
+	
+	<xsl:template match="InvoiceDate | DeliveryDate | ExportRunDate">
+		<xsl:if test=". != ''">
+			<xsl:element name="{name()}" >
+				<xsl:call-template name="fixDate">
+					<xsl:with-param name="sDate" select="."/>
+				</xsl:call-template>
+			</xsl:element>
+		</xsl:if>
+	</xsl:template>
+	
 </xsl:stylesheet>
