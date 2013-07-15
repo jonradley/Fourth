@@ -7,29 +7,47 @@
 '******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
-	<xsl:output method="xml" indent="no" encoding="UTF-8"/>
+	<xsl:output method="xml" encoding="UTF-8"/>
 	<!-- Start point - ensure required outer BatchRoot tag is applied -->
 	<xsl:template match="/">
 		<BatchRoot>
-			<Document>
+			<Document TypePrefix="INV">
 				<Batch>
 					<BatchDocuments>
-						<xsl:apply-templates select="Batch/BatchDocuments/BatchDocument/Invoice"/>
+						<xsl:apply-templates select="Batch/BatchDocuments/BatchDocument/Invoice[starts-with(string(InvoiceHeader/InvoiceReferences/InvoiceReference),'OP/I')]"/>
 					</BatchDocuments>
 				</Batch>
 			</Document>
+			<xsl:if test="Batch/BatchDocuments/BatchDocument/Invoice[starts-with(string(InvoiceHeader/InvoiceReferences/InvoiceReference),'OP/C')] != ''">
+				<Document TypePrefix="CRN">
+					<Batch>
+						<BatchDocuments>
+							<xsl:apply-templates select="Batch/BatchDocuments/BatchDocument/Invoice[starts-with(string(InvoiceHeader/InvoiceReferences/InvoiceReference),'OP/C')]"/>
+						</BatchDocuments>
+					</Batch>
+				</Document>
+			</xsl:if>
 		</BatchRoot>
 	</xsl:template>
 	<xsl:template match="Batch/BatchDocuments/BatchDocument/Invoice">
 		<BatchDocument>
 			<xsl:choose>
 				<xsl:when test="starts-with(string(./InvoiceHeader/InvoiceReferences/InvoiceReference),'OP/I')">
+					<xsl:attribute name="DocumentTypeNo">4</xsl:attribute>
 					<Invoice>
 						<xsl:apply-templates/>
+						<InvoiceTrailer>
+							<NumberOfLines>
+								<xsl:value-of select="count(./InvoiceDetail/InvoiceLine)"/>
+							</NumberOfLines>
+							<NumberOfItems>
+								<xsl:value-of select="sum(./InvoiceDetail/InvoiceLine/InvoicedQuantity)"/>
+							</NumberOfItems>
+						</InvoiceTrailer>
 					</Invoice>
 				</xsl:when>
 				<xsl:otherwise>
-					<!--Credit Notes Document-->
+					<xsl:attribute name="DocumentTypeNo">6</xsl:attribute>
 					<xsl:call-template name="CreateCreditNotes"/>
 				</xsl:otherwise>
 			</xsl:choose>
@@ -50,13 +68,17 @@
 		<xsl:choose>
 			<xsl:when test="starts-with(string(../../InvoiceHeader/InvoiceReferences/InvoiceReference),'OP/I')">
 				<xsl:copy>
-					<LineNumber><xsl:value-of select="position()"/></LineNumber>
+					<LineNumber>
+						<xsl:value-of select="position()"/>
+					</LineNumber>
 					<xsl:apply-templates/>
 				</xsl:copy>
 			</xsl:when>
 			<xsl:otherwise>
 				<CreditNoteLine>
-					<LineNumber><xsl:value-of select="position()"/></LineNumber>
+					<LineNumber>
+						<xsl:value-of select="position()"/>
+					</LineNumber>
 					<PurchaseOrderReferences>
 						<xsl:copy-of select="./PurchaseOrderReferences/PurchaseOrderReference"/>
 						<xsl:apply-templates select="./PurchaseOrderReferences/PurchaseOrderDate"/>
@@ -139,6 +161,14 @@
 			<CreditNoteDetail>
 				<xsl:apply-templates select="InvoiceDetail/InvoiceLine"/>
 			</CreditNoteDetail>
+			<CreditNoteTrailer>
+				<NumberOfLines>
+					<xsl:value-of select="count(InvoiceDetail/InvoiceLine)"/>
+				</NumberOfLines>
+				<NumberOfItems>
+					<xsl:value-of select="sum(InvoiceDetail/InvoiceLine/InvoicedQuantity)"/>
+				</NumberOfItems>
+			</CreditNoteTrailer>
 		</CreditNote>
 	</xsl:template>
 </xsl:stylesheet>
