@@ -33,7 +33,6 @@
 		<BatchDocument>
 			<xsl:choose>
 				<xsl:when test="starts-with(string(./InvoiceHeader/InvoiceReferences/InvoiceReference),'OP/I')">
-					<xsl:attribute name="DocumentTypeNo">4</xsl:attribute>
 					<Invoice>
 						<xsl:apply-templates/>
 						<InvoiceTrailer>
@@ -47,7 +46,6 @@
 					</Invoice>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:attribute name="DocumentTypeNo">6</xsl:attribute>
 					<xsl:call-template name="CreateCreditNotes"/>
 				</xsl:otherwise>
 			</xsl:choose>
@@ -72,6 +70,8 @@
 						<xsl:value-of select="position()"/>
 					</LineNumber>
 					<xsl:apply-templates/>
+					<VATCode>Z</VATCode>
+					<VATRate>0.00</VATRate>
 				</xsl:copy>
 			</xsl:when>
 			<xsl:otherwise>
@@ -89,8 +89,11 @@
 						<xsl:attribute name="UnitOfMeasure"><xsl:apply-templates select="./InvoicedQuantity/@UnitOfMeasure"/></xsl:attribute>
 						<xsl:value-of select="format-number(./InvoicedQuantity, '0.00')"/>
 					</CreditedQuantity>
+					<xsl:copy-of select="./PackSize"/>
 					<xsl:apply-templates select="./UnitValueExclVAT"/>
 					<xsl:apply-templates select="./LineValueExclVAT"/>
+					<VATCode>Z</VATCode>
+					<VATRate>0.00</VATRate>
 				</CreditNoteLine>
 			</xsl:otherwise>
 		</xsl:choose>
@@ -117,7 +120,8 @@
 	</xsl:template>
 	<xsl:template match="InvoiceLine/InvoicedQuantity |
 									 InvoiceLine/UnitValueExclVAT |
-									 InvoiceLine/LineValueExclVAT">
+									 InvoiceLine/LineValueExclVAT |
+									 InvoiceLine/VATRate">
 		<xsl:element name="{name()}">
 			<xsl:if test="name() = 'InvoicedQuantity'">
 				<xsl:attribute name="UnitOfMeasure"><xsl:apply-templates select="./@UnitOfMeasure"/></xsl:attribute>
