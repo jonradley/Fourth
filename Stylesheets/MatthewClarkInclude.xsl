@@ -12,65 +12,16 @@ S Hussain		| 2013-05-14	| FB6588 - Created a common stylesheets with generic fun
 	<xsl:variable name="CustomerFlag">
 		<xsl:variable name="accountCode">
 			<xsl:choose>
-				<xsl:when test="//TradeSimpleHeader/SendersBranchReference">
-					<xsl:value-of select="string(//TradeSimpleHeader/SendersBranchReference)"/>
+				<xsl:when test="//TradeSimpleHeader/SendersCodeForRecipient">
+					<xsl:value-of select="string(//TradeSimpleHeader/SendersCodeForRecipient)"/>
 				</xsl:when>
 				<xsl:when test="//Buyer/SellerAssigned">
 					<xsl:value-of select="string(//Buyer/SellerAssigned)"/>
 				</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="string(//TradeSimpleHeader/SendersCodeForRecipient)"/>
-				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
 		<xsl:choose>
-			<xsl:when test="$accountCode = '50514495' or $accountCode = '50171636' or $accountCode = 'MCWS'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7414' or $accountCode = '50514623'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7020' or $accountCode = '50171639'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7021' or $accountCode = '50171641'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7022' or $accountCode = '50171645'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7023' or $accountCode = '50171638'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7024' or $accountCode = '50171640'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7025' or $accountCode = '50171644'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7026' or $accountCode = '50171642'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7028' or $accountCode = '50171646'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7029' or $accountCode = '50171647'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7030' or $accountCode = '50171648'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7031' or $accountCode = '50171649'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7033' or $accountCode = '50243577'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7034' or $accountCode = '50243578'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7036' or $accountCode = '50393740'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7037' or $accountCode = '50420006'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7038' or $accountCode = '50424863'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7039' or $accountCode = '50436461'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7040' or $accountCode = '50439391'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7041' or $accountCode = '50464958'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7042' or $accountCode = '50474183'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7403' or $accountCode = '50514593'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7404' or $accountCode = '50514595'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7405' or $accountCode = '50514599'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7406' or $accountCode = '50514606'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7407' or $accountCode = '50514608'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7408' or $accountCode = '50514609'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7409' or $accountCode = '50514613'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7410' or $accountCode = '50514615'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7411' or $accountCode = '50514619'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7412' or $accountCode = '50514621'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7415' or $accountCode = '50514625'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7416' or $accountCode = '50514626'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7417' or $accountCode = '50514629'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7418' or $accountCode = '50514701'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7420' or $accountCode = '50585130'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7421' or $accountCode = '50657783'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7422' or $accountCode = '50673742'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7423' or $accountCode = '50621702'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7424' or $accountCode = '50637125'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7425' or $accountCode = '50690837'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7426' or $accountCode = '50696949'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7427' or $accountCode = '50704724'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7428' or $accountCode = '50702621'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '7429' or $accountCode = '50713924'"><xsl:value-of select="$B_P"/></xsl:when>
-			<xsl:when test="$accountCode = '50617412'"><xsl:value-of select="$B_P"/></xsl:when>
+			<xsl:when test="$accountCode = '50514495' or $accountCode = '50171636' or $accountCode = 'V000047'"><xsl:value-of select="$B_P"/></xsl:when>
 			<xsl:otherwise/>
 		</xsl:choose>
 	</xsl:variable>
