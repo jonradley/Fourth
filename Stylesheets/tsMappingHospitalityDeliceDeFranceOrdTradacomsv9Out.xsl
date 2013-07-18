@@ -188,6 +188,7 @@
 		<xsl:text>OLD=</xsl:text>
 		<xsl:value-of select="count(preceding-sibling::* | self::*)"/>
 		<xsl:text>+</xsl:text>
+		<xsl:text>:</xsl:text>
 		<xsl:call-template name="msCheckField">
 			<xsl:with-param name="vobjNode" select="./ProductID/SuppliersProductCode"/>
 			<xsl:with-param name="vnLength" select="30"/>
