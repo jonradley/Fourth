@@ -1,0 +1,48 @@
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator FixedSize="false">chr(13)chr(10)</ffsRecordSeparator>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>,</ffsFieldSeparator>
+		</ffsFieldSeparators>
+	</ffsSettings>
+	<ffsRoot>
+		<SiteTransfersExport>
+			<SiteTransfersExportHeader>
+				<OrganisationCode RecordPos="E" LPos="2"/>
+				<SourceSystemExportID RecordPos="E" LPos="3"/>
+				<SourceSystemOrgID RecordPos="E" LPos="5"/>
+				<AccountingSystemCode RecordPos="E" LPos="6"/>
+				<MapperID RecordPos="E" LPos="4"/>
+				<OrganisationName RecordPos="T" LPos="6"/>
+				<ExportRunDate RecordPos="T" LPos="15"/>
+			</SiteTransfersExportHeader>
+			<SiteTransfers>
+				<SiteTransfer>
+					<SiteTransferLocation>
+						<BuyersUnitCode RecordPos="T" LPos="2"/>
+						<BuyersSiteCode RecordPos="T" LPos="3"/>
+						<UnitSiteName RecordPos="T" LPos="4"/>
+						<UnitSiteNominal RecordPos="T" LPos="5"/>
+					</SiteTransferLocation>
+					<TransactionType RecordPos="T" LPos="7"/>
+					<TransactionDescription RecordPos="T" LPos="8"/>
+					<TransactionDate RecordPos="T" LPos="10"/>
+					<FinancialYear RecordPos="T" LPos="11"/>
+					<FinancialPeriod RecordPos="T" LPos="12"/>
+					<StockFinancialYear RecordPos="T" LPos="13"/>
+					<StockFinancialPeriod RecordPos="T" LPos="14"/>
+					<CurrencyCode RecordPos="T" LPos="22"/>
+					<CreatedBy RecordPos="T" LPos="23"/>
+					<TransactionID RecordPos="T" LPos="8"/>
+					<SuppliersProductCode RecordPos="T" LPos="16"/>
+					<ProductDescription RecordPos="T" LPos="17"/>
+					<LineValueExclVAT RecordPos="T" LPos="18"/>
+					<CostCentreName RecordPos="T" LPos="19"/>
+					<CategoryName RecordPos="T" LPos="20"/>
+					<CategoryNominal RecordPos="T" LPos="21"/>
+				</SiteTransfer>
+			</SiteTransfers>
+		</SiteTransfersExport>
+	</ffsRoot>
+</ffsFlatFileSchema>
