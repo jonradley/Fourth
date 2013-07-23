@@ -255,9 +255,8 @@ H Robson	| 2013-07-09	| FB 5841 Map in the Ordered UoM for Harrods only
 		<xsl:variable name="sUoM">
 			<xsl:choose>
 				<xsl:when test="OrderedQuantity/@UnitOfMeasure = 'EA'">EA</xsl:when>
-				<xsl:when test="OrderedQuantity/@UnitOfMeasure = 'CS'">CS</xsl:when>
+				<xsl:when test="OrderedQuantity/@UnitOfMeasure = 'CS'">PK</xsl:when>
 				<xsl:when test="OrderedQuantity/@UnitOfMeasure = 'KGM'">KG</xsl:when>
-				<xsl:when test="OrderedQuantity/@UnitOfMeasure = 'PK'">PK</xsl:when>
 			</xsl:choose>
 		</xsl:variable>
 
