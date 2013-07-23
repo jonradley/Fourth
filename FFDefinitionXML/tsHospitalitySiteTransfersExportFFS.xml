@@ -26,7 +26,7 @@
 						<UnitSiteNominal RecordPos="T" LPos="5"/>
 					</SiteTransferLocation>
 					<TransactionType RecordPos="T" LPos="7"/>
-					<TransactionDescription RecordPos="T" LPos="8"/>
+					<TransactionDescription RecordPos="T" LPos="9"/>
 					<TransactionDate RecordPos="T" LPos="10"/>
 					<FinancialYear RecordPos="T" LPos="11"/>
 					<FinancialPeriod RecordPos="T" LPos="12"/>
