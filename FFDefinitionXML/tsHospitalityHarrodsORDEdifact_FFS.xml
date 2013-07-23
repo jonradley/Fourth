@@ -2,9 +2,9 @@
 **********************************************************************
 Date		| Name		| Change
 **********************************************************************
-27/07/2011| KOshaughnessy| FB4970 created
+27/07/2011| KOshaughnessy	| FB4970 created
 **********************************************************************
-			|			|
+17/97/2013| H Robson		| FB5841	|	Map in the UoM as it needs to be mapped out to HBF so they can return it on their documents
 *********************************************************************-->
 <ffsFlatFileSchema>
 	<ffsSettings>
@@ -96,7 +96,9 @@ Date		| Name		| Change
 									<BuyersProductCode RecordPos="PIA" LPos="3"/>
 								</ProductID>
 								<ProductDescription RecordPos="IMD+F" LPos="4" SFPos="4"/>
-								<OrderedQuantity RecordPos="QTY+21" LPos="2" SFPos="2"/>
+								<OrderedQuantity RecordPos="QTY+21" LPos="2" SFPos="2">
+									<ffsAttribute1 name="UnitOfMeasure" RecordPos="QTY+21" LPos="2" SFPos="3"/>
+								</OrderedQuantity>
 								<LineValueExclVAT RecordPos="MOA+203" LPos="2" SFPos="2"/>
 							</PurchaseOrderLine>
 						</PurchaseOrderDetail>

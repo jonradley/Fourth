@@ -5,6 +5,8 @@ Date		|	Name				|	Comment
 27/10/2011|	KOshaughnessy	| Created
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 19/06/2013|	H Robson	| FB 5841 Strip ':EN' out of GTINS
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+19/06/2013|	H Robson	| FB 5841 Harrods' codes PK,KG is to be mapped to our codes CS,KGM
 ***************************************************************************-->			
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 <xsl:output method="xml" encoding="UTF-8"/>
@@ -16,6 +18,19 @@ Date		|	Name				|	Comment
 				<xsl:apply-templates/>
 			</Document>
 		</BatchRoot>	
+	</xsl:template>
+	
+	<xsl:template match="OrderedQuantity">
+		<OrderedQuantity>
+			<xsl:attribute name="UnitOfMeasure">
+				<xsl:choose>
+					<xsl:when test="@UnitOfMeasure='KG'">KGM</xsl:when>
+					<xsl:when test="@UnitOfMeasure='PK'">CS</xsl:when>
+					<xsl:otherwise><xsl:value-of select="@UnitOfMeasure"/></xsl:otherwise>
+				</xsl:choose>
+			</xsl:attribute>
+			<xsl:value-of select="."/>
+		</OrderedQuantity>
 	</xsl:template>
 	
 	<xsl:template match="*">
