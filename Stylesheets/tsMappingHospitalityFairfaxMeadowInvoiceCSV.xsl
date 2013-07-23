@@ -15,8 +15,6 @@
  2012-03-30	| H Robson     	| 5541 Adjustments to accomdate the fact that " text delimiters are now removed in the flat file mapper
 ==========================================================================================
  02/02/2013	| M Emanuel      	| 5969 Mapping changes to include GTIN
-==========================================================================================
- 17/07/2013	| H Robson      	| 6791 Hard coding for new Acquire customer: Pride Catering
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 	<xsl:output method="xml" encoding="UTF-8"/>
@@ -93,7 +91,7 @@
 	<xsl:template match="SendersCodeForRecipient">
 		<SendersCodeForRecipient>
 			<xsl:choose>
-				<xsl:when test="contains('&quot;TH&quot;~~&quot;MC&quot;~~&quot;AQ&quot;~~&quot;RE&quot;~~&quot;YE&quot;~~&quot;AD&quot;~~&quot;IT&quot;~~&quot;PC&quot;',../../InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode)">
+				<xsl:when test="contains('&quot;TH&quot;~~&quot;MC&quot;~~&quot;AQ&quot;~~&quot;RE&quot;~~&quot;YE&quot;~~&quot;AD&quot;~~&quot;IT&quot;',../../InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode)">
 					<xsl:call-template name="stripQuotes">
 						<xsl:with-param name="sInput">
 							<xsl:value-of select="../../InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode"/>
@@ -112,7 +110,7 @@
 	</xsl:template>
 	<!-- juggle branch references -->
 	<xsl:template match="SendersBranchReference">
-		<xsl:if test="not(contains('&quot;TH&quot;~~&quot;MC&quot;~~&quot;AQ&quot;~~&quot;RE&quot;~~&quot;YE&quot;~~&quot;AD&quot;~~&quot;AD&quot;~~&quot;PC&quot;',../../InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode))">
+		<xsl:if test="not(contains('&quot;TH&quot;~~&quot;MC&quot;~~&quot;AQ&quot;~~&quot;RE&quot;~~&quot;YE&quot;~~&quot;AD&quot;~~&quot;AD&quot;',../../InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode))">
 			<SendersBranchReference>
 				<xsl:call-template name="stripQuotes">
 					<xsl:with-param name="sInput">
