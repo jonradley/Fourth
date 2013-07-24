@@ -10,9 +10,11 @@
 ******************************************************************************************
  Date        	| Name				| Description of modification
 ******************************************************************************************
- 11/12/2007  	| R Cambridge   	| 1657 temporary logic for Aramark SBR requirements
+ 11/12/2007  	| R Cambridge   | 1657 temporary logic for Aramark SBR requirements
 ******************************************************************************************
- 21/05/2013  | S Hussain       | Case 6588: Supplier Product Code Formatting + Optimization
+ 21/05/2013  | S Hussain        | Case 6588: Supplier Product Code Formatting + Optimization
+******************************************************************************************
+ 24/07/2013  | S Hussain        | Case 6588: Renamed the Stylesheet as per standard naming conventions
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" 
 				xmlns:xsl="http://www.w3.org/1999/XSL/Transform"  
