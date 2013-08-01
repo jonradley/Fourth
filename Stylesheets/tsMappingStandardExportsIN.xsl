@@ -11,6 +11,8 @@ Stylesheet to map in the Standard Exports from R9/FnB
 ******************************************************************************************
  10/07/2013  | S Sehgal  | 6715 /6625 Format dates from yyyymmdd to yyyy-mm-dd format
 ******************************************************************************************
+ 31/07/2013  | R Cambridge	| 6715 /6625 Added transaction date to list for date format conversions
+******************************************************************************************
 
 ***************************************************************************************-->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
@@ -52,7 +54,7 @@ Stylesheet to map in the Standard Exports from R9/FnB
 	<xsl:template match="AccountingSystemCode"/>
 	<!-- Format Dates -->
 	
-	<xsl:template match="InvoiceDate | DeliveryDate | ExportRunDate">
+	<xsl:template match="InvoiceDate | DeliveryDate | ExportRunDate | TransactionDate">
 		<xsl:if test=". != ''">
 			<xsl:element name="{name()}" >
 				<xsl:call-template name="fixDate">
