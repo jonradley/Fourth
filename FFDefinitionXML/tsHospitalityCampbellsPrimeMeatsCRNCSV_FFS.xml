@@ -8,9 +8,15 @@ Name			| Date			| Change
 **********************************************************************
 R Cambridge	| 29/09/2009	| 3142 read units codes into SCR and Supplier's code for ship to
 **********************************************************************
-M Emanuel	| 28/11/2012  	| Rolled back changes made to 5840 and cleaning up commented code          	|           	| 
+M Dimant      | 16/05/2012  | 5473 Bug fixed - SendersBranchReference was incorrectly being mapped as SendersCodeForRecipient. 
+**********************************************************************
+M Emanuel	| 28/11/2012  	| Rolled back changes made to 5840 and cleaning up commented code
+**********************************************************************
+H Robson	| 27/06/2013  	| FB 6617 For Compass integration the PO ref must be mapped in (they've been sending it but it has not been mapped in before)
 **********************************************************************
 H Robson	| 28/06/2013  	| FB 6678 Add a BuyerName field just for use with Baxter Units
+**********************************************************************
+S Hussain	| 06/08/2013  	| FB 6855 Convert UoM KG to KGM + Rename Mapper
 *******************************************************************-->
 <ffsFlatFileSchema>
 	<ffsSettings>
@@ -34,12 +40,12 @@ H Robson	| 28/06/2013  	| FB 6678 Add a BuyerName field just for use with Baxter
 			<BatchHeader/>
 			<BatchDocuments>
 				<BatchDocument>
-					<Invoice>
+					<CreditNote>
 						<TradeSimpleHeader>
 							<SendersCodeForRecipient RecordPos="HEAD" LPos="24"/>
 							<SendersBranchReference RecordPos="HEAD" LPos="23"/>
 						</TradeSimpleHeader>
-						<InvoiceHeader>
+						<CreditNoteHeader>
 							<Buyer>
 								<BuyersLocationID>
 									<BuyersCode RecordPos="HEAD" LPos="23"/>
@@ -56,39 +62,38 @@ H Robson	| 28/06/2013  	| FB 6678 Add a BuyerName field just for use with Baxter
 								<ContactName RecordPos="HEAD" LPos="40"/>
 							</ShipTo>
 							<InvoiceReferences>
-								<InvoiceReference RecordPos="HEAD" LPos="5"/>
-								<InvoiceDate RecordPos="HEAD" LPos="6"/>
-								<TaxPointDate RecordPos="HEAD" LPos="6"/>
+								<InvoiceReference RecordPos="HEAD" LPos="28"/>
+								<InvoiceDate RecordPos="HEAD" LPos="29"/>
 							</InvoiceReferences>
-						</InvoiceHeader>
-						<InvoiceDetail>
-							<InvoiceLine>
+							<CreditNoteReferences>
+								<CreditNoteReference RecordPos="HEAD" LPos="5"/>
+								<CreditNoteDate RecordPos="HEAD" LPos="6"/>
+								<TaxPointDate RecordPos="HEAD" LPos="6"/>
+							</CreditNoteReferences>
+						</CreditNoteHeader>
+						<CreditNoteDetail>
+							<CreditNoteLine>
 								<PurchaseOrderReferences>
 									<PurchaseOrderReference RecordPos="LINE" LPos="46"/>
 									<PurchaseOrderDate RecordPos="LINE" LPos="51"/>
 								</PurchaseOrderReferences>
-								<DeliveryNoteReferences>
-									<DeliveryNoteReference RecordPos="LINE" LPos="50"/>
-									<DeliveryNoteDate RecordPos="LINE" LPos="47"/>
-								</DeliveryNoteReferences>
 								<ProductID>
 									<SuppliersProductCode RecordPos="LINE" LPos="2"/>
 								</ProductID>
 								<ProductDescription RecordPos="LINE" LPos="25"/>
-								<!-- Hijacked as invoiced qty can come in two places -->
-								<OrderedQuantity RecordPos="LINE" LPos="7"/>
-								<InvoicedQuantity RecordPos="LINE" LPos="8"/>
-								<PackSize RecordPos="LINE" LPos="4"/>
+								<CreditedQuantity RecordPos="LINE" LPos="7">
+									<ffsAttribute1 name="UnitOfMeasure" RecordPos="LINE" LPos="9"/>
+								</CreditedQuantity>
 								<UnitValueExclVAT RecordPos="LINE" LPos="13"/>
 								<LineValueExclVAT RecordPos="LINE" LPos="16"/>
 								<VATCode RecordPos="LINE" LPos="14"/>
-							</InvoiceLine>
-						</InvoiceDetail>
-						<InvoiceTrailer>
+							</CreditNoteLine>
+						</CreditNoteDetail>
+						<CreditNoteTrailer>
 							<DocumentTotalExclVAT RecordPos="TRAIL" LPos="2"/>
 							<VATAmount RecordPos="TRAIL" LPos="7"/>
-						</InvoiceTrailer>
-					</Invoice>
+						</CreditNoteTrailer>
+					</CreditNote>
 				</BatchDocument>
 			</BatchDocuments>
 		</Batch>
