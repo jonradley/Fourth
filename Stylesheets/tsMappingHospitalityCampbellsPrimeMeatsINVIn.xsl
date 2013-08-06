@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--******************************************************************************************************************************************
-M Emanuel		|	09/11/2012	| 5840 Made changes to remap buyer and supplier codes to accomodate Elior Vendor Codes
-**********************************************************************************************************************************************
+<!--******************************************************************
+Alterations
+**********************************************************************
+Name	| Date		 | Change
+**********************************************************************
+Maha	| 04/10/2011 | 4913: Map vatcode S8 to vatrate 20 and 17.5
+*************************************************************************
+M Emanuel	|	09/11/2012	| 5840 Made changes to remap buyer and supplier 
+											codes to accomodate Elior Vendor Codes
+*************************************************************************
 M Emanuel	| 30/11/2012  	| 5876 Had to roll back changes made to 5840 as it caused invoices to all customers other than Elior to fail. 
 									 	Mapper updated to ensure that changes relevant to Elior does not affect any other customers. 
 **********************************************************************
-H Robson	| 27/06/2013  	| FB 6617 For Compass integration the PO ref and date must be mapped in (they've been sending it but it has not been mapped in before)
-**********************************************************************************************************************************************
+H Robson	| 28/06/201 | FB 6678: Baxter requirement: use a different field for BuyerName
+**********************************************************************
+S Hussain	| 06/08/2013  	| FB 6855 Convert UoM KG to KGM + Rename Mapper
+*************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
+	
 	<!-- Start point - ensure required outer BatchRoot tag is applied -->
 	<xsl:template match="/">
 		<BatchRoot>
@@ -32,6 +42,8 @@ H Robson	| 27/06/2013  	| FB 6617 For Compass integration the PO ref and date mu
 		<xsl:copy/>
 	</xsl:template>
 	<!-- END of GENERIC HANDLERS -->
+	<!-- Remove any 0 value invoices -->
+	<xsl:template match=" BatchDocument[Invoice/InvoiceTrailer/DocumentTotalExclVAT=0]"/>
 	<xsl:template match="Buyer">
 		<Buyer>
 			<BuyersLocationID>
@@ -81,23 +93,64 @@ H Robson	| 27/06/2013  	| FB 6617 For Compass integration the PO ref and date mu
 					</xsl:otherwise>
 				</xsl:choose>
 			</ShipToLocationID>
+			<!-- FB 6678 -->
 			<ShipToName>
-				<xsl:value-of select="ShipToName"/>
+				<xsl:choose>
+					<xsl:when test="../Buyer/BuyersLocationID/SuppliersCode= 'WILSON STOR(NAT'">
+						<xsl:value-of select="ContactName"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="ShipToName"/>
+					</xsl:otherwise>
+				</xsl:choose>
 			</ShipToName>
 		</ShipTo>
 	</xsl:template>
-	<!-- insert VAT Rates -->
 	<xsl:template match="InvoiceLine">
-		<!--xsl:element name="InvoiceLine"-->
-		<xsl:copy>
-			<xsl:apply-templates/>
+		<InvoiceLine>
+			<PurchaseOrderReferences>
+				<xsl:copy-of select="PurchaseOrderReferences/PurchaseOrderReference"/>
+				<xsl:element name="PurchaseOrderDate">
+					<xsl:call-template name="sortDate">
+						<xsl:with-param name="sDate" select="PurchaseOrderReferences/PurchaseOrderDate"/>
+					</xsl:call-template>
+				</xsl:element>
+			</PurchaseOrderReferences>
+			<DeliveryNoteReferences>
+				<xsl:copy-of select="DeliveryNoteReferences/DeliveryNoteReference"/>
+				<xsl:element name="DeliveryNoteDate">
+					<xsl:call-template name="sortDate">
+						<xsl:with-param name="sDate" select="DeliveryNoteReferences/DeliveryNoteDate"/>
+					</xsl:call-template>
+				</xsl:element>
+			</DeliveryNoteReferences>
+			<xsl:copy-of select="ProductID"/>
+			<xsl:copy-of select="ProductDescription"/>
+			<xsl:copy-of select="OrderedQuantity"/>
+			<InvoicedQuantity>
+				<xsl:choose>
+					<xsl:when test="InvoicedQuantity != ''">
+						<xsl:value-of select="InvoicedQuantity"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="OrderedQuantity"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</InvoicedQuantity>
+			<xsl:copy-of select="PackSize"/>
+			<xsl:copy-of select="UnitValueExclVAT"/>
+			<xsl:copy-of select="LineValueExclVAT"/>
+			<xsl:element name="VATCode">
+				<xsl:call-template name="decodeVATCodes">
+					<xsl:with-param name="sVATCode" select="VATCode"/>
+				</xsl:call-template>
+			</xsl:element>
 			<xsl:element name="VATRate">
 				<xsl:call-template name="lookupVATRate">
 					<xsl:with-param name="sVATCode" select="VATCode"/>
 				</xsl:call-template>
 			</xsl:element>
-		</xsl:copy>
-		<!--/xsl:element-->
+		</InvoiceLine>
 	</xsl:template>
 	<!-- tradesimple VAT codes -->
 	<xsl:template match="VATCode">
@@ -111,13 +164,6 @@ H Robson	| 27/06/2013  	| FB 6617 For Compass integration the PO ref and date mu
 		<xsl:attribute name="VATCode"><xsl:call-template name="decodeVATCodes"><xsl:with-param name="sVATCode" select="."/></xsl:call-template></xsl:attribute>
 	</xsl:template>
 	<!-- Sort the dates -->
-	<xsl:template match="CreditNoteDate">
-		<xsl:element name="CreditNoteDate">
-			<xsl:call-template name="sortDate">
-				<xsl:with-param name="sDate" select="."/>
-			</xsl:call-template>
-		</xsl:element>
-	</xsl:template>
 	<xsl:template match="InvoiceDate">
 		<xsl:element name="InvoiceDate">
 			<xsl:call-template name="sortDate">
@@ -127,13 +173,6 @@ H Robson	| 27/06/2013  	| FB 6617 For Compass integration the PO ref and date mu
 	</xsl:template>
 	<xsl:template match="TaxPointDate">
 		<xsl:element name="TaxPointDate">
-			<xsl:call-template name="sortDate">
-				<xsl:with-param name="sDate" select="."/>
-			</xsl:call-template>
-		</xsl:element>
-	</xsl:template>
-	<xsl:template match="PurchaseOrderDate">
-		<xsl:element name="PurchaseOrderDate">
 			<xsl:call-template name="sortDate">
 				<xsl:with-param name="sDate" select="."/>
 			</xsl:call-template>
@@ -156,10 +195,23 @@ H Robson	| 27/06/2013  	| FB 6617 For Compass integration the PO ref and date mu
 	</xsl:template>
 	<xsl:template name="lookupVATRate">
 		<xsl:param name="sVATCode"/>
+		<xsl:variable name="sInvDate" select="ancestor::Invoice/InvoiceHeader/InvoiceReferences/InvoiceDate"/>
+		<xsl:variable name="sVATDate" select="number(concat(substring($sInvDate,7,4),substring($sInvDate,4,2),substring($sInvDate,1,2)))"/>
 		<xsl:choose>
 			<xsl:when test="$sVATCode = 'S0'">0.00</xsl:when>
-			<xsl:when test="$sVATCode = 'S1'">20.00</xsl:when>
-			<xsl:otherwise/>
+			<xsl:when test="$sVATCode = 'S1' and $sVATDate &gt; 20110104">20.00</xsl:when>
+			<xsl:when test="$sVATCode = 'S1' and $sVATDate &lt; 20110104">17.50</xsl:when>
+			<xsl:when test="$sVATCode = 'S8' and $sVATDate &gt; 20110104">20.00</xsl:when>
+			<xsl:when test="$sVATCode = 'S8' and $sVATDate &lt; 20110104">17.50</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$sVATDate"/>
+			</xsl:otherwise>
 		</xsl:choose>
+	</xsl:template>
+	<!-- Unit of Measure-->
+	<xsl:template match="InvoicedQuantity/@UnitOfMeasure | OrderedQuantity/@UnitOfMeasure">
+		<xsl:attribute name="UnitOfMeasure">
+		<xsl:choose><xsl:when test=". = 'KG'">KGM</xsl:when><xsl:otherwise><xsl:value-of select="."/></xsl:otherwise></xsl:choose>
+		</xsl:attribute>
 	</xsl:template>
 </xsl:stylesheet>
