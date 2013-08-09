@@ -3,7 +3,7 @@
 /******************************************************************************************
 ' Date          | Name        	 | Description of modification
 '******************************************************************************************
-10/02/2013  | Sahir Hussain  | FB 6744: Created for IMS of Smithfield (EDI) Member
+10/07/2013  | Sahir Hussain  | FB 6744: Created for IMS of Smithfield (EDI) Member
 '******************************************************************************************
 -->
 <ffsFlatFileSchema>
@@ -52,6 +52,8 @@
 								<InvoiceDate RecordPos="H" LPos="5"/>
 								<TaxPointDate RecordPos="H" LPos="5"/>
 							</InvoiceReferences>
+							<SequenceNumber RecordPos="H" LPos="9"/>
+							<DocumentStatus RecordPos="H" LPos="10"/>/>
 						</InvoiceHeader>
 						<InvoiceDetail>
 							<InvoiceLine>

@@ -3,7 +3,7 @@
 /******************************************************************************************
 ' Date          | Name        	 | Description of modification
 '******************************************************************************************
-10/02/2013  | Sahir Hussain  | FB 6744: Created for IMS of Smithfield (EDI) Member
+10/07/2013  | Sahir Hussain  | FB 6744: Created for IMS of Smithfield (EDI) Member
 '******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
@@ -69,6 +69,7 @@
 					<LineNumber>
 						<xsl:value-of select="position()"/>
 					</LineNumber>
+					<xsl:call-template name="CreateReferences"/>
 					<xsl:apply-templates/>
 					<VATCode>Z</VATCode>
 					<VATRate>0.00</VATRate>
@@ -79,10 +80,7 @@
 					<LineNumber>
 						<xsl:value-of select="position()"/>
 					</LineNumber>
-					<PurchaseOrderReferences>
-						<xsl:copy-of select="./PurchaseOrderReferences/PurchaseOrderReference"/>
-						<xsl:apply-templates select="./PurchaseOrderReferences/PurchaseOrderDate"/>
-					</PurchaseOrderReferences>
+					<xsl:call-template name="CreateReferences"/>
 					<xsl:copy-of select="./ProductID"/>
 					<xsl:copy-of select="./ProductDescription"/>
 					<CreditedQuantity>
@@ -98,6 +96,22 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+	<xsl:template name="CreateReferences">
+		<PurchaseOrderReferences>
+			<xsl:copy-of select="../InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderReference"/>
+			<xsl:apply-templates select="../InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderDate"/>
+		</PurchaseOrderReferences>
+		<DeliveryNoteReferences>
+			<DeliveryNoteReference>
+				<xsl:value-of select="../../InvoiceHeader/InvoiceReferences/InvoiceReference"/>
+			</DeliveryNoteReference>
+			<DeliveryNoteDate>
+				<xsl:call-template name="FormatDate">
+					<xsl:with-param name="sDate" select="../../InvoiceHeader/InvoiceReferences/InvoiceDate"/>
+				</xsl:call-template>
+			</DeliveryNoteDate>
+		</DeliveryNoteReferences>
+	</xsl:template>
 	<xsl:template match="InvoiceReferences/InvoiceDate |
 									 InvoiceReferences/TaxPointDate |
 									 PurchaseOrderReferences/PurchaseOrderDate">
@@ -106,17 +120,6 @@
 				<xsl:with-param name="sDate" select="string(.)"/>
 			</xsl:call-template>
 		</xsl:copy>
-	</xsl:template>
-	<xsl:template name="FormatDate">
-		<xsl:param name="sDate"/>
-		<xsl:choose>
-			<xsl:when test="string-length($sDate) = 5">
-				<xsl:value-of select="concat(20, substring($sDate, 4, 2), '-', substring($sDate, 2, 2), '-', 0, substring($sDate, 1, 1))"/>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:value-of select="concat(20, substring($sDate, 5, 2), '-', substring($sDate, 3, 2), '-', substring($sDate, 1, 2))"/>
-			</xsl:otherwise>
-		</xsl:choose>
 	</xsl:template>
 	<xsl:template match="InvoiceLine/InvoicedQuantity |
 									 InvoiceLine/UnitValueExclVAT |
@@ -129,6 +132,9 @@
 			<xsl:value-of select="format-number(.,'0.00')"/>
 		</xsl:element>
 	</xsl:template>
+	<xsl:template match="DocumentStatus"/>
+	<xsl:template match="SequenceNumber"/>
+	<xsl:template match="PurchaseOrderReferences"/>
 	<xsl:template match="InvoiceLine/InvoicedQuantity/@UnitOfMeasure">
 		<xsl:choose>
 			<xsl:when test="string(.) = 'EACH'">EA</xsl:when>
@@ -146,9 +152,14 @@
 				<xsl:copy-of select="InvoiceHeader/Supplier"/>
 				<xsl:copy-of select="InvoiceHeader/ShipTo"/>
 				<InvoiceReferences>
-					<xsl:copy-of select="InvoiceHeader/InvoiceReferences/InvoiceReference"/>
-					<xsl:apply-templates select="InvoiceHeader/InvoiceReferences/InvoiceDate"/>
-					<xsl:apply-templates select="InvoiceHeader/InvoiceReferences/TaxPointDate"/>
+					<InvoiceReference>
+						<xsl:value-of select="InvoiceHeader/SequenceNumber"/>
+					</InvoiceReference>
+					<InvoiceDate>
+						<xsl:call-template name="FormatDate">
+							<xsl:with-param name="sDate" select="InvoiceHeader/DocumentStatus"/>
+						</xsl:call-template>
+					</InvoiceDate>
 				</InvoiceReferences>
 				<CreditNoteReferences>
 					<CreditNoteReference>
@@ -174,5 +185,16 @@
 				</NumberOfItems>
 			</CreditNoteTrailer>
 		</CreditNote>
+	</xsl:template>
+	<xsl:template name="FormatDate">
+		<xsl:param name="sDate"/>
+		<xsl:choose>
+			<xsl:when test="string-length($sDate) = 5">
+				<xsl:value-of select="concat(20, substring($sDate, 4, 2), '-', substring($sDate, 2, 2), '-', 0, substring($sDate, 1, 1))"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="concat(20, substring($sDate, 5, 2), '-', substring($sDate, 3, 2), '-', substring($sDate, 1, 2))"/>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 </xsl:stylesheet>
