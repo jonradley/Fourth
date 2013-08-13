@@ -1,0 +1,93 @@
+<!--******************************************************************
+Alterations
+**********************************************************************
+Name			| Date				| Change
+**********************************************************************
+S Sehgal		| 						| Created module
+**********************************************************************
+R Cambridge	| 2013-07-31		| 6801 use record types rather than file positions (change prompted by end to end testing with R9)
+**********************************************************************
+				|						|				
+**********************************************************************
+				|						|
+**********************************************************************
+				|						|
+*******************************************************************--><ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator FixedSize="false">chr(13)chr(10)</ffsRecordSeparator>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>,</ffsFieldSeparator>
+		</ffsFieldSeparators>
+		<ffsSplitBatchRecord LPos="11"/>
+		<ffsSplitBatchRecord LPos="12"/>
+		<ffsSplitBatchRecord LPos="16"/>
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<BatchHeader>
+				<OrganisationCode RecordPos="B" LPos="2"/>
+				<SourceSystemExportID RecordPos="B" LPos="3"/>
+				<SourceSystemOrgID RecordPos="B" LPos="5"/>
+				<FormatCode RecordPos="B" LPos="4"/>
+				<AccountingSystemCode RecordPos="B" LPos="6"/>
+			</BatchHeader>
+			<BatchDocuments>
+				<BatchDocument>
+					<AccrualJournalEntries>
+						<AccrualJournalEntriesHeader>
+							<BuyersUnitCode RecordPos="E" LPos="3"/>
+							<BuyersSiteCode RecordPos="E" LPos="4"/>
+							<BuyerName RecordPos="E" LPos="5"/>
+							<RegionName RecordPos="E" LPos="6"/>
+							<SiteBrand RecordPos="E" LPos="7"/>
+							<SiteClosingStockField RecordPos="E" LPos="8"/>
+							<VATAccountCode RecordPos="E" LPos="9"/>
+							<TransactionType RecordPos="E" LPos="10"/>
+							<AccrualType RecordPos="E" LPos="2"/>
+							<InvoiceReference RecordPos="E" LPos="11"/>
+							<InvoiceDate RecordPos="E" LPos="19"/>
+							<DeliveryReference RecordPos="E" LPos="12"/>
+							<DeliveryDate RecordPos="E" LPos="18"/>
+							<VoucherNumber RecordPos="E" LPos="13"/>
+							<FnBInternalRef RecordPos="E" LPos="14"/>
+							<TransactionDescription RecordPos="E" LPos="15"/>
+							<BuyersCodeForSupplier RecordPos="E" LPos="16"/>
+							<SupplierName RecordPos="E" LPos="17"/>
+							<SupplierNominalCode RecordPos="E" LPos="39"/>
+							<CustomFinancialYear RecordPos="E" LPos="20"/>
+							<CustomFinancialPeriod RecordPos="E" LPos="21"/>
+							<StockFinancialYear RecordPos="E" LPos="22"/>
+							<StockFinancialPeriod RecordPos="E" LPos="23"/>
+							<CreatedBy RecordPos="E" LPos="38"/>
+							<ExportRunDate RecordPos="E" LPos="24"/>
+							<CurrencyCode RecordPos="E" LPos="42"/>
+							<UnitSiteName RecordPos="E" LPos="43"/>
+							<UnitSiteNominal RecordPos="E" LPos="44"/>
+						</AccrualJournalEntriesHeader>
+						<AccrualJournalEntriesDetail>
+							<AccrualJournalEntriesLine>
+								<Amount RecordPos="E" LPos="25"/>
+								<ConversionCode RecordPos="E" LPos="26"/>
+								<ConvertedAmount RecordPos="E" LPos="27"/>
+								<VATCode RecordPos="E" LPos="28"/>
+								<LineVATPercentage RecordPos="E" LPos="29"/>
+								<LineNet RecordPos="E" LPos="30"/>
+								<LineVAT RecordPos="E" LPos="31"/>
+								<LineGross RecordPos="E" LPos="32"/>
+								<CostCentreName RecordPos="E" LPos="33"/>
+								<CategoryCode1 RecordPos="E" LPos="34"/>
+								<CategoryCode2 RecordPos="E" LPos="35"/>
+								<CategoryCode3 RecordPos="E" LPos="36"/>
+								<CategoryCode4 RecordPos="E" LPos="37"/>
+								<CategoryName RecordPos="E" LPos="40"/>
+								<CategoryNominal RecordPos="E" LPos="41"/>
+								<AccrualsEntryType RecordPos="E" LPos="45"/>
+							</AccrualJournalEntriesLine>
+						</AccrualJournalEntriesDetail>
+					</AccrualJournalEntries>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>
