@@ -87,7 +87,7 @@
 		<TradeSimpleHeader>
 			<SendersCodeForRecipient>
 				<xsl:choose >
-					<xsl:when test="string(SendersBranchReference)!='5060166761066' | string(SendersBranchReference)!='5060166761226'">
+					<xsl:when test="string(SendersBranchReference)!='5060166761066' and string(SendersBranchReference)!='5060166761226'">
 						<xsl:value-of select="SendersCodeForRecipient"/>		
 					</xsl:when>
 					<xsl:otherwise>

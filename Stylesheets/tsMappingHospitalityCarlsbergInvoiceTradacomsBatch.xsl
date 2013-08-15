@@ -33,7 +33,7 @@ A Barber		|	29/05/2013	|	FB 6600: Added Spirit Franchise to POD creation and app
 		<BatchRoot>
 			<xsl:apply-templates/>
 			<!-- Start Generation POD's for Spirit -->
-			<xsl:if test="/Batch/BatchDocuments/BatchDocument/Invoice/InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode='5060166761066' | /Batch/BatchDocuments/BatchDocument/Invoice/InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode='5060166761226'">
+			<xsl:if test="/Batch/BatchDocuments/BatchDocument/Invoice/InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode='5060166761066' or /Batch/BatchDocuments/BatchDocument/Invoice/InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode='5060166761226'">
 				<Document>
 	           			<xsl:attribute name="TypePrefix">POD</xsl:attribute>
 					<Batch>
@@ -130,7 +130,7 @@ A Barber		|	29/05/2013	|	FB 6600: Added Spirit Franchise to POD creation and app
 		<TradeSimpleHeader>
 			<SendersCodeForRecipient>
 				<xsl:choose >
-					<xsl:when test="string(SendersBranchReference)!='1066546' | string(SendersBranchReference)!='1083067'">
+					<xsl:when test="string(SendersBranchReference)!='1066546' and string(SendersBranchReference)!='1083067'">
 						<xsl:value-of select="SendersCodeForRecipient"/>		
 					</xsl:when>
 					<xsl:otherwise>
@@ -152,7 +152,7 @@ A Barber		|	29/05/2013	|	FB 6600: Added Spirit Franchise to POD creation and app
 			</BuyersCode>
 			<SuppliersCode>
 				<xsl:choose>
-					<xsl:when test="string(../../../TradeSimpleHeader/SendersBranchReference)!='1066546' | string(../../../TradeSimpleHeader/SendersBranchReference)!='1083067'">
+					<xsl:when test="string(../../../TradeSimpleHeader/SendersBranchReference)!='1066546' and string(../../../TradeSimpleHeader/SendersBranchReference)!='1083067'">
 						<xsl:value-of select="BuyersCode"/>
 					</xsl:when>
 					<xsl:otherwise>
