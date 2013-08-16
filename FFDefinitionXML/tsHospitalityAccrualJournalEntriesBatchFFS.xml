@@ -12,7 +12,8 @@ R Cambridge	| 2013-07-31		| 6801 use record types rather than file positions (ch
 				|						|
 **********************************************************************
 				|						|
-*******************************************************************--><ffsFlatFileSchema>
+*******************************************************************-->
+<ffsFlatFileSchema>
 	<ffsSettings>
 		<ffsRecordPositionType>named</ffsRecordPositionType>
 		<ffsRecordSeparator FixedSize="false">chr(13)chr(10)</ffsRecordSeparator>
