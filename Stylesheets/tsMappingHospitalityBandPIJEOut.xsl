@@ -2,7 +2,7 @@
 <!--======================================================================================
  Overview
 ==========================================================================================
- 24/05/2013	| S Hussain 				|	B&P - Invoice Export Mapper | Created
+ 24/05/2013	| S Hussain 				|	FB6859 - B&P - Invoice Export Mapper | Created
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 	xmlns:msxsl="urn:schemas-microsoft-com:xslt">
