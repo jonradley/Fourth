@@ -2,7 +2,7 @@
 <!--======================================================================================
  Overview
 ==========================================================================================
- 24/07/2013	| S Hussain 				|	B&P - Accural Export Mapper | Created
+ 24/07/2013	| S Hussain 				|	FB6859 - B&P - Accural Export Mapper | Created
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:user="http://abs-ltd.com">
 	<xsl:output method="text"/>
