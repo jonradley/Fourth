@@ -15,11 +15,12 @@ M Emanuel	| 30/11/2012  	| 5876 Had to roll back changes made to 5840 as it caus
 H Robson	| 28/06/201 | FB 6678: Baxter requirement: use a different field for BuyerName
 **********************************************************************
 S Hussain	| 06/08/2013  	| FB 6855 Convert UoM KG to KGM + Rename Mapper
+**********************************************************************
+S Hussain	| 06/08/2013  	| FB 6906 Convert UoM KG to KGM
 *************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
-	
 	<!-- Start point - ensure required outer BatchRoot tag is applied -->
 	<xsl:template match="/">
 		<BatchRoot>
@@ -126,13 +127,18 @@ S Hussain	| 06/08/2013  	| FB 6855 Convert UoM KG to KGM + Rename Mapper
 			</DeliveryNoteReferences>
 			<xsl:copy-of select="ProductID"/>
 			<xsl:copy-of select="ProductDescription"/>
-			<xsl:copy-of select="OrderedQuantity"/>
+			<OrderedQuantity>
+				<xsl:apply-templates select="OrderedQuantity/@UnitOfMeasure"/>
+				<xsl:value-of select="OrderedQuantity"/>
+			</OrderedQuantity>
 			<InvoicedQuantity>
 				<xsl:choose>
 					<xsl:when test="InvoicedQuantity != ''">
+						<xsl:apply-templates select="InvoicedQuantity/@UnitOfMeasure"/>
 						<xsl:value-of select="InvoicedQuantity"/>
 					</xsl:when>
 					<xsl:otherwise>
+						<xsl:apply-templates select="OrderedQuantity/@UnitOfMeasure"/>
 						<xsl:value-of select="OrderedQuantity"/>
 					</xsl:otherwise>
 				</xsl:choose>
@@ -209,9 +215,9 @@ S Hussain	| 06/08/2013  	| FB 6855 Convert UoM KG to KGM + Rename Mapper
 		</xsl:choose>
 	</xsl:template>
 	<!-- Unit of Measure-->
-	<xsl:template match="InvoicedQuantity/@UnitOfMeasure | OrderedQuantity/@UnitOfMeasure">
+	<xsl:template match="@UnitOfMeasure">
 		<xsl:attribute name="UnitOfMeasure">
-		<xsl:choose><xsl:when test=". = 'KG'">KGM</xsl:when><xsl:otherwise><xsl:value-of select="."/></xsl:otherwise></xsl:choose>
-		</xsl:attribute>
+				<xsl:choose><xsl:when test=". = 'KG'">KGM</xsl:when><xsl:otherwise><xsl:value-of select="."/></xsl:otherwise></xsl:choose>
+			</xsl:attribute>
 	</xsl:template>
 </xsl:stylesheet>
