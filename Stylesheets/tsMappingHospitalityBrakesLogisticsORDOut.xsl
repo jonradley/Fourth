@@ -38,7 +38,7 @@ S Hussain 	| 2013-08-16		| 6904 - Created from (tsMappingHospitalityBrakesOrderO
 						<!-- 3310 moved senderID logic into template -->
 						<xsl:call-template name="determineSenderID">
 							<xsl:with-param name="senderGLN" select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/>
-							<xsl:with-param name="senderName" select="/PurchaseOrder/TradeSimpleHeader/SendersName"/>
+							<xsl:with-param name="senderName" select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToName"/>
 						</xsl:call-template>					
 						
 					</sh:Identifier>
