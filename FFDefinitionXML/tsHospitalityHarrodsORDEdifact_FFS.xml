@@ -1,0 +1,110 @@
+<!--
+**********************************************************************
+Date		| Name		| Change
+**********************************************************************
+27/07/2011| KOshaughnessy	| FB4970 created
+**********************************************************************
+17/97/2013| H Robson		| FB5841	|	Map in the UoM as it needs to be mapped out to HBF so they can return it on their documents
+*********************************************************************-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>'</ffsRecordSeparator>
+		<ffsEscapeChars>
+			<ffsEscapeChar>
+				<ffsNative>chr(13)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>chr(10)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?=</ffsNative>
+				<ffsTradesimple>¬E</ffsTradesimple>
+				<ffsLiteral>=</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?+</ffsNative>
+				<ffsTradesimple>¬P</ffsTradesimple>
+				<ffsLiteral>+</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?:</ffsNative>
+				<ffsTradesimple>¬C</ffsTradesimple>
+				<ffsLiteral>:</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?'</ffsNative>
+				<ffsTradesimple>¬A</ffsTradesimple>
+				<ffsLiteral>'</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>??</ffsNative>
+				<ffsTradesimple>¬Q</ffsTradesimple>
+				<ffsLiteral>?</ffsLiteral>
+			</ffsEscapeChar>
+		</ffsEscapeChars>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>+</ffsFieldSeparator>
+			<ffsSubFieldSeparator>:</ffsSubFieldSeparator>
+		</ffsFieldSeparators>
+		<ffsPadding/>
+		<ffsSplitBatchRecord RecordPos="BGM" LPos="3"/>
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<BatchDocuments>
+				<BatchDocument>
+					<PurchaseOrder>
+						<TradeSimpleHeader>
+							<SendersCodeForRecipient RecordPos="RFF" LPos="2" SFPos="2"/>
+						</TradeSimpleHeader>
+						<PurchaseOrderHeader>
+							<Buyer>
+								<BuyersLocationID>
+									<GLN RecordPos="NAD+BY" LPos="3" SFPos="1"/>
+								</BuyersLocationID>
+							</Buyer>	
+							<Supplier>
+								<SuppliersLocationID>
+									<BuyersCode RecordPos="RFF+IA" LPos="2" SFPos="2"/>
+								</SuppliersLocationID>
+							</Supplier>
+							<ShipTo>
+								<ShipToLocationID>
+									<GLN RecordPos="NAD+DP" LPos="3" SFPos="1"/>
+								</ShipToLocationID>
+							</ShipTo>
+							<PurchaseOrderReferences>
+								<PurchaseOrderReference RecordPos="BGM" LPos="3"/>
+								<PurchaseOrderDate RecordPos="DTM+137" LPos="2" SFPos="2"/>
+								<CustomerPurchaseOrderReference RecordPos="NAD+DP" LPos="3" SFPos="1"/>
+							</PurchaseOrderReferences>
+							<OrderedDeliveryDetails>
+								<DeliveryDate RecordPos="DTM+199" LPos="2" SFPos="2"/>
+							</OrderedDeliveryDetails>
+						</PurchaseOrderHeader>
+						<PurchaseOrderDetail>
+							<PurchaseOrderLine>
+								<LineNumber RecordPos="LIN" LPos="2"/>
+								<ProductID>
+									<GTIN RecordPos="LIN" LPos="4"/>
+									<SuppliersProductCode RecordPos="PIA" LPos="3"/>
+									<BuyersProductCode RecordPos="PIA" LPos="3"/>
+								</ProductID>
+								<ProductDescription RecordPos="IMD+F" LPos="4" SFPos="4"/>
+								<OrderedQuantity RecordPos="QTY+21" LPos="2" SFPos="2">
+									<ffsAttribute1 name="UnitOfMeasure" RecordPos="QTY+21" LPos="2" SFPos="3"/>
+								</OrderedQuantity>
+								<LineValueExclVAT RecordPos="MOA+203" LPos="2" SFPos="2"/>
+							</PurchaseOrderLine>
+						</PurchaseOrderDetail>
+					</PurchaseOrder>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>
