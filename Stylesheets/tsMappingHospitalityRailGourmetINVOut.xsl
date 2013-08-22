@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--======================================================================================
  Overview
- Rail Gourmet map for invoices and credits batches to JDE.
+ Rail Gourmet map for invoice batches to JDE.
 
  © Fourth, 2013
 ==========================================================================================
@@ -74,56 +74,6 @@
 				<xsl:value-of select="script:msPad(../../../InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderReference,10)"/>
 				<xsl:text>OP</xsl:text>
 				<xsl:value-of select="script:msPad(../../../InvoiceHeader/InvoiceReferences/InvoiceReference,25)"/>
-				<xsl:value-of select="script:msPad(@VATCode,1)"/>
-				<xsl:value-of select="script:msPadNumber(@VATRate,5,2)"/>
-				<xsl:value-of select="script:msPad(NumberOfLinesAtRate,5)"/>
-				<xsl:value-of select="script:msPadNumber(SettlementTotalExclVATAtRate,8,2)"/>
-				<xsl:value-of select="script:msPadNumber(VATAmountAtRate,8,2)"/>
-				<xsl:value-of select="script:msPadNumber(SettlementTotalInclVATAtRate,8,2)"/>
-				<xsl:value-of select="script:msPad('',3)"/>
-				<xsl:text>&#13;&#10;</xsl:text>
-			</xsl:for-each>
-			
-		</xsl:for-each>
-		
-		<xsl:for-each select="CreditNote">
-		
-			<!-- Invoice Header -->
-			<xsl:text>H</xsl:text>
-			<xsl:value-of select="script:msPad(CreditNoteDetail/CreditNoteLine[1]/PurchaseOrderReferences/PurchaseOrderReference,10)"/>
-			<xsl:text>OP</xsl:text>
-			<xsl:value-of select="script:msPad(CreditNoteHeader/CreditNoteReferences/CreditNoteReference,25)"/>
-			<xsl:call-template name="formatDate">
-				<xsl:with-param name="yyyymmddFormat" select="CreditNoteHeader/CreditNoteReferences/CreditNoteDate"/>
-			</xsl:call-template>
-			<xsl:value-of select="script:msPadNumber(CreditNoteTrailer/NumberOfItems,6,0)"/>
-			<xsl:value-of select="script:msPadNumber(CreditNoteTrailer/SettlementTotalExclVAT,8,2)"/>
-			<xsl:value-of select="script:msPadNumber(CreditNoteTrailer/VATAmount,8,2)"/>
-			<xsl:value-of select="script:msPadNumber(CreditNoteTrailer/SettlementTotalInclVAT,8,2)"/>
-			<xsl:text>&#13;&#10;</xsl:text>
-			
-			<!-- Invoice Detail -->
-			<xsl:for-each select="CreditNoteDetail/CreditNoteLine">
-				<xsl:text>D</xsl:text>
-				<xsl:value-of select="script:msPad(PurchaseOrderReferences/PurchaseOrderReference,10)"/>
-				<xsl:value-of select="script:msPad(LineNumber,3)"/>
-				<xsl:value-of select="script:msPad(ProductID/SuppliersProductCode,20)"/>
-				<xsl:value-of select="script:msPad(format-number(InvoicedQuantity,0),5)"/>
-				<xsl:value-of select="script:msPadNumber(LineValueExclVAT,8,2)"/>
-				<xsl:value-of select="script:msPad(VATCode,1)"/>
-				<xsl:value-of select="script:msPadNumber(VATRate,5,2)"/>
-				<xsl:value-of select="script:msPadNumber(LineValueExclVAT * (VATRate div 100),8,2)"/>
-				<xsl:value-of select="script:msPadNumber(LineValueExclVAT+ (LineValueExclVAT * (VATRate div 100)),8,2)"/>
-				<xsl:value-of select="script:msPad('',22)"/>
-				<xsl:text>&#13;&#10;</xsl:text>
-			</xsl:for-each>
-			
-			<!-- VAT Summaries -->
-			<xsl:for-each select="CreditNoteTrailer/VATSubTotals/VATSubTotal">
-				<xsl:text>V</xsl:text>
-				<xsl:value-of select="script:msPad(../../../CreditNoteDetail/CreditNoteLine[1]/PurchaseOrderReferences/PurchaseOrderReference,10)"/>
-				<xsl:text>OP</xsl:text>
-				<xsl:value-of select="script:msPad(../../../CreditNoteHeader/CreditNoteReferences/CreditNoteReference,25)"/>
 				<xsl:value-of select="script:msPad(@VATCode,1)"/>
 				<xsl:value-of select="script:msPadNumber(@VATRate,5,2)"/>
 				<xsl:value-of select="script:msPad(NumberOfLinesAtRate,5)"/>
