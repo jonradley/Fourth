@@ -5,6 +5,8 @@ Alterations
 Name			| Date				| Change
 **********************************************************************
 S Hussain		|	2013-05-14	| 6496 Created a common stylesheets with generic functionalities by Bibendum
+**********************************************************************
+A Barber		|	2013-08-28	| 6952 Added new customer: Stonegate.
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:user="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl user">
 	<!--Generic Variables-->
@@ -21,6 +23,7 @@ S Hussain		|	2013-05-14	| 6496 Created a common stylesheets with generic functio
 	<xsl:variable name="MITIE" select="'MITIE'"/>
 	<xsl:variable name="PBR" select="'PBR'"/>
 	<xsl:variable name="CREATIVE_EVENTS" select="'CREATIVE_EVENTS'"/>
+	<xsl:variable name="STONEGATE" select="'STONEGATE'"/>
 	<xsl:variable name="BIBENDUM" select="'Bibendum'"/>
 	
 	<xsl:variable name="CustomerFlag">
@@ -44,7 +47,8 @@ S Hussain		|	2013-05-14	| 6496 Created a common stylesheets with generic functio
 			<xsl:when test="$accountCode = 'GAR06T'"><xsl:value-of select="$SODEXO_PRESTIGE"/></xsl:when>
 			<xsl:when test="$accountCode = 'SOD99T'"><xsl:value-of select="$SODEXO_PRESTIGE"/></xsl:when>	
 			<xsl:when test="$accountCode = 'MIT16T'"><xsl:value-of select="$MITIE"/></xsl:when>
-			<xsl:when test="$accountCode = 'PBR01T'"><xsl:value-of select="$PBR"/></xsl:when>		
+			<xsl:when test="$accountCode = 'PBR01T'"><xsl:value-of select="$PBR"/></xsl:when>
+			<xsl:when test="$accountCode = 'STO13T'"><xsl:value-of select="$STONEGATE"/></xsl:when>			
 			<xsl:when test="$accountCode = 'CRE11T'"><xsl:value-of select="$CREATIVE_EVENTS"/></xsl:when>	
 			<xsl:when test="$accountCode = 'TES01T'"><xsl:value-of select="$TESCO"/></xsl:when>
 			<xsl:when test="$accountCode = 'TES08T'"><xsl:value-of select="$TESCO"/></xsl:when>
@@ -154,13 +158,13 @@ S Hussain		|	2013-05-14	| 6496 Created a common stylesheets with generic functio
 						<xsl:choose>
 							<xsl:when test="$UOMRaw = '1'">
 								<xsl:choose>
-									<xsl:when test="$CustomerFlag = $PBR">E</xsl:when>
+									<xsl:when test="$CustomerFlag = $PBR or $CustomerFlag = $STONEGATE">E</xsl:when>
 									<xsl:otherwise>EA</xsl:otherwise>
 								</xsl:choose>
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:choose>
-									<xsl:when test="$CustomerFlag = $PBR">C</xsl:when>
+									<xsl:when test="$CustomerFlag = $PBR or $CustomerFlag = $STONEGATE">C</xsl:when>
 									<xsl:otherwise>CS</xsl:otherwise>
 								</xsl:choose>
 							</xsl:otherwise>
