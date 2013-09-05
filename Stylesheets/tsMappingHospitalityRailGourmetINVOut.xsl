@@ -62,8 +62,8 @@
 				<xsl:value-of select="script:msPadNumber(LineValueExclVAT,8,2)"/>
 				<xsl:value-of select="script:msPad(VATCode,1)"/>
 				<xsl:value-of select="script:msPadNumber(VATRate,5,2)"/>
-				<xsl:value-of select="script:msPadNumber(LineValueExclVAT * (VATRate div 100),8,2)"/>
-				<xsl:value-of select="script:msPadNumber(LineValueExclVAT+ (LineValueExclVAT * (VATRate div 100)),8,2)"/>
+				<xsl:value-of select="script:msPadNumber(format-number(LineValueExclVAT * (VATRate div 100),'0.00'),8,2)"/>
+				<xsl:value-of select="script:msPadNumber(format-number(LineValueExclVAT+ (LineValueExclVAT * (VATRate div 100)),'0.00'),8,2)"/>
 				<xsl:value-of select="script:msPad('',22)"/>
 				<xsl:text>&#13;&#10;</xsl:text>
 			</xsl:for-each>
