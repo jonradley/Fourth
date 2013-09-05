@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-/******************************************************************************************
+/*************************************************************************************************************************************
 ' Date          | Name        	 | Description of modification
-'******************************************************************************************
+'*************************************************************************************************************************************
 10/07/2013  | Sahir Hussain  | FB 6744: Created for IMS of Smithfield (EDI) Member
-'******************************************************************************************
+'*************************************************************************************************************************************
+05/09/2013  | Moty Dimant	  | FB 6999: Test if invoice ref is present in Credits before inserting it.
+'*************************************************************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	<xsl:output method="xml" encoding="UTF-8"/>
@@ -151,16 +153,18 @@
 				<xsl:copy-of select="InvoiceHeader/Buyer"/>
 				<xsl:copy-of select="InvoiceHeader/Supplier"/>
 				<xsl:copy-of select="InvoiceHeader/ShipTo"/>
-				<InvoiceReferences>
-					<InvoiceReference>
-						<xsl:value-of select="InvoiceHeader/SequenceNumber"/>
-					</InvoiceReference>
-					<InvoiceDate>
-						<xsl:call-template name="FormatDate">
-							<xsl:with-param name="sDate" select="InvoiceHeader/DocumentStatus"/>
-						</xsl:call-template>
-					</InvoiceDate>
-				</InvoiceReferences>
+				<xsl:if test="InvoiceHeader/SequenceNumber">
+					<InvoiceReferences>
+						<InvoiceReference>
+							<xsl:value-of select="InvoiceHeader/SequenceNumber"/>
+						</InvoiceReference>
+						<InvoiceDate>
+							<xsl:call-template name="FormatDate">
+								<xsl:with-param name="sDate" select="InvoiceHeader/DocumentStatus"/>
+							</xsl:call-template>
+						</InvoiceDate>
+					</InvoiceReferences>
+				</xsl:if>
 				<CreditNoteReferences>
 					<CreditNoteReference>
 						<xsl:value-of select="InvoiceHeader/InvoiceReferences/InvoiceReference"/>
