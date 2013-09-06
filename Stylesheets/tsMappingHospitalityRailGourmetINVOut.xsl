@@ -10,6 +10,8 @@
  Date			| Name					| Description of modification
 ==========================================================================================
  20/08/2013	| Andrew Barber		| FB6908 Created module 
+==========================================================================================
+ 05/09/2013	| Andrew Barber		| FB7001 Formatted calculated line VAT value to round value before number pad
 =======================================================================================-->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
