@@ -3,6 +3,8 @@
  Overview
 ==========================================================================================
  23/08/2013	| S Hussain 				|	FB 6958: Generic - Site Transfers Mapper | Created
+==========================================================================================
+ 04/09/2013	| RC Cambridge				|	FB 6958: Date formating new expects YYYY-MM-DD input (previously expected YYYMMDD)
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:user="http://abs-ltd.com">
 	<xsl:output method="text"/>
@@ -52,6 +54,6 @@
 		<xsl:value-of select="format-number(., '0.00')"/>
 	</xsl:template>
 	<xsl:template match="TransactionDate">
-		<xsl:value-of select="concat(substring(.,7,2),'/',substring(.,5,2),'/',substring(.,1,4))"/>
+		<xsl:value-of select="concat(substring(.,9,2),'/',substring(.,6,2),'/',substring(.,1,4))"/>
 	</xsl:template>
 </xsl:stylesheet>
