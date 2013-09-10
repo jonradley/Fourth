@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--******************************************************************
+<!--***************************************************************************************************************************************************************
 Alterations
-**********************************************************************
+*******************************************************************************************************************************************************************
 Name			| Date				| Change
-**********************************************************************
+*******************************************************************************************************************************************************************
 S Hussain 	| 2013-08-16		| 6904 - Created from (tsMappingHospitalityBrakesOrderOut.xsl)
-*******************************************************************-->
+*******************************************************************************************************************************************************************
+M Dimant	 	| 2013-09-10		| 7037 - Pass on GLN based on the Accounting Center of the Ordering Unit for Brunning & Price orders
+****************************************************************************************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:sh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" xmlns:eanucc="urn:ean.ucc:2" xmlns:order="urn:ean.ucc:order:2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:vbscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
 	<xsl:variable name="BPMSR">-MSR</xsl:variable>
@@ -80,9 +82,17 @@ S Hussain 	| 2013-08-16		| 6904 - Created from (tsMappingHospitalityBrakesOrderO
 					</uniqueCreatorIdentification>
 					<contentOwner>
 						<!--GLN for DG Trading -->
-						<gln>
-							<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/>
-						</gln>
+						<!--Special Case for Brunning and Price Setup, We need to pass GLN based on the Accounting Center of the Ordering Unit-->						
+						<gln>	
+							<xsl:variable name="GLN"><xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/></xsl:variable>	
+							<xsl:variable name="Sender"><xsl:value-of select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToName"/></xsl:variable>						
+							<xsl:choose>																										
+								<xsl:when test="$GLN = '5060166761233' and $Sender != '' and contains($Sender, $BPMSR)">5060166761257</xsl:when>
+								<xsl:when test="$GLN = '5060166761233' and $Sender != '' and not(contains($Sender, $BPMSR))">5060166761233</xsl:when>
+								<xsl:otherwise><xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/></xsl:otherwise>
+							</xsl:choose>
+						</gln>				
+						
 						<additionalPartyIdentification>
 							<!-- Text Description for DG Trading Eproc-->
 							<additionalPartyIdentificationValue>
