@@ -5,12 +5,44 @@
  23/08/2013	| S Hussain 				|	FB 6958: Generic - Site Transfers Mapper | Created
 ==========================================================================================
  04/09/2013	| RC Cambridge				|	FB 6958: Date formating new expects YYYY-MM-DD input (previously expected YYYMMDD)
+ ==========================================================================================
+ 24/09/2013	| S Sehgal						|	FB 7107 / 7108 Added column names as the first row
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:user="http://abs-ltd.com">
 	<xsl:output method="text"/>
 	<xsl:variable name="RecordSeperator" select="'&#13;&#10;'"/>
 	<xsl:variable name="FieldSeperator" select="','"/>
 	<xsl:template match="/">
+	<xsl:text>Site Name</xsl:text>
+	<xsl:value-of select="$FieldSeperator"/>
+	<xsl:text>Site Number</xsl:text>
+	<xsl:value-of select="$FieldSeperator"/>
+	<xsl:text>P</xsl:text><xsl:value-of select="'&amp;'" /><xsl:text>L Nominal</xsl:text>
+	<xsl:value-of select="$FieldSeperator"/>
+	<xsl:text>Element 4</xsl:text>
+	<xsl:value-of select="$FieldSeperator"/>
+	<xsl:text>Desciption</xsl:text>
+	<xsl:value-of select="$FieldSeperator"/>
+	<xsl:text>Debit</xsl:text>
+	<xsl:value-of select="$FieldSeperator"/>
+	<xsl:text>Credit</xsl:text>
+	<xsl:value-of select="$FieldSeperator"/>
+	<xsl:text>Line Type</xsl:text>
+	<xsl:value-of select="$FieldSeperator"/>
+	<xsl:text>Tax Code</xsl:text>
+	<xsl:value-of select="$FieldSeperator"/>
+	<xsl:text>Tax Line Code</xsl:text>
+	<xsl:value-of select="$FieldSeperator"/>
+	<xsl:text>Inclusive/Exclusive</xsl:text>
+	<xsl:value-of select="$FieldSeperator"/>
+	<xsl:text>Tax Value</xsl:text>
+	<xsl:value-of select="$FieldSeperator"/>
+	<xsl:text>Tax Doc Sum</xsl:text>
+	<xsl:value-of select="$FieldSeperator"/>
+	<xsl:text>Tax Turnover</xsl:text>
+	<xsl:value-of select="$FieldSeperator"/>
+	<xsl:text>Ext Ref 1</xsl:text>
+	<xsl:value-of select="$RecordSeperator"/>
 		<xsl:apply-templates select="SiteTransfersExport/SiteTransfers"/>
 	</xsl:template>
 	<xsl:template match="SiteTransfer">
