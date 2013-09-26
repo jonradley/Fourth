@@ -10,8 +10,6 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from CLD/SPRO(1).
 **********************************************************************
 	KO		|28/01/2010	| a change so we wont duplicate block on FGN by putting the GLN in the FGN tag
 **********************************************************************
- 06/02/2012 | H Robson 	| 5236 Generate PODs for Spirit
-**********************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
@@ -21,101 +19,11 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from CLD/SPRO(1).
 	<xsl:variable name="FileTrailerSegment" select="'CRETLR'"/>
 	<xsl:variable name="VATTrailerSegment" select="'VATTLR'"/>
 	
-	
 	<!-- Start point - ensure required outer BatchRoot tag is applied -->
 	<xsl:template match="/">
-		<BatchRoot>
-			<xsl:apply-templates/>
-			<!-- Start Generation POD's for Spirit -->
-			<!-- 2012 02 06 - POD template copied in/modified from Invoice mapper -->
-			<xsl:if test="/Batch/BatchDocuments/BatchDocument/CreditNote[CreditNoteDetail/CreditNoteLine/CreditedQuantity &lt; 0]/CreditNoteHeader/Buyer/BuyersLocationID/SuppliersCode='5060166761066'"> <!-- recipient = Spirit -->
-				<Document>
-	           			<xsl:attribute name="TypePrefix">POD</xsl:attribute>
-					<Batch>
-						<BatchDocuments>
-							<xsl:for-each select="Batch/BatchDocuments/BatchDocument/CreditNote[CreditNoteDetail/CreditNoteLine/CreditedQuantity &lt; 0]">
-								<BatchDocument>
-									<xsl:attribute name="DocumentTypeNo">313</xsl:attribute>
-									<ProofOfDelivery>
-										<xsl:apply-templates select="TradeSimpleHeader"/>
-										<ProofOfDeliveryHeader>
-											<xsl:apply-templates select="CreditNoteHeader/Buyer"/>
-											<xsl:apply-templates select="CreditNoteHeader/Supplier"/>
-											<xsl:apply-templates select="CreditNoteHeader/ShipTo"/>
-											
-											<xsl:variable name="dDPODDate">
-												<!-- 2012-02-29 use the DeliveryNoteDate if possible, if not use CreditNoteDate as next best thing -->
-												<xsl:choose>
-													<xsl:when test="CreditNoteDetail/CreditNoteLine[1]/DeliveryNoteReferences/DeliveryNoteDate != ''">
-														<xsl:value-of select="CreditNoteDetail/CreditNoteLine[1]/DeliveryNoteReferences/DeliveryNoteDate"/>
-													</xsl:when>
-													<xsl:otherwise>
-														<xsl:value-of select="CreditNoteHeader/CreditNoteReferences/CreditNoteDate"/>
-													</xsl:otherwise>
-												</xsl:choose>
-											</xsl:variable>
-											
-											<PurchaseOrderReferences>									
-												<PurchaseOrderReference>
-													<xsl:value-of select="(CreditNoteDetail/CreditNoteLine[1]/PurchaseOrderReferences/PurchaseOrderReference | CreditNoteDetail/CreditNoteLine[1]/DeliveryNoteReferences/DeliveryNoteReference)[1]"/>
-												</PurchaseOrderReference>
-												<xsl:variable name="sDPODate">
-													<xsl:value-of select="(CreditNoteDetail/CreditNoteLine[1]/PurchaseOrderReferences/PurchaseOrderDate | CreditNoteDetail/CreditNoteLine[1]/DeliveryNoteReferences/DeliveryNoteDate)[1]"/>
-												</xsl:variable>
-												<PurchaseOrderDate>
-													<xsl:value-of select="concat('20',substring($sDPODate,1,2),'-',substring($sDPODate,3,2),'-',substring($sDPODate,5,2))"/>
-												</PurchaseOrderDate>
-											</PurchaseOrderReferences>
-											<ProofOfDeliveryReferences>
-												<ProofOfDeliveryReference>
-													<xsl:value-of select="CreditNoteHeader/InvoiceReferences/InvoiceReference"/>
-												</ProofOfDeliveryReference>
-												<ProofOfDeliveryDate>
-													<xsl:value-of select="concat('20',substring($dDPODDate,1,2),'-',substring($dDPODDate,3,2),'-',substring($dDPODDate,5,2))"/>
-												</ProofOfDeliveryDate>
-											</ProofOfDeliveryReferences>										
-											<DeliveryNoteReferences>
-												<DeliveryNoteReference>
-													<!-- 2012-03-05 use the DeliveryNoteReference if possible, if not use InvoiceReference as next best thing -->
-													<xsl:choose>
-														<xsl:when test="CreditNoteDetail/CreditNoteLine[1]/DeliveryNoteReferences/DeliveryNoteReference != ''">
-															<xsl:value-of select="CreditNoteDetail/CreditNoteLine[1]/DeliveryNoteReferences/DeliveryNoteReference"/>
-														</xsl:when>
-														<xsl:otherwise>
-															<xsl:value-of select="CreditNoteHeader/InvoiceReferences/InvoiceReference"/>
-														</xsl:otherwise>
-													</xsl:choose>
-												</DeliveryNoteReference>
-												<!--<xsl:variable name="dDDelNoteDate">
-													<xsl:value-of select="CreditNoteDetail/CreditNoteLine[1]/DeliveryNoteReferences/DeliveryNoteDate"/>
-												</xsl:variable>-->
-												<DeliveryNoteDate>
-													<xsl:value-of select="concat('20',substring($dDPODDate,1,2),'-',substring($dDPODDate,3,2),'-',substring($dDPODDate,5,2))"/>
-												</DeliveryNoteDate>
-											</DeliveryNoteReferences>								
-										</ProofOfDeliveryHeader>
-										<ProofOfDeliveryDetail>
-											<!-- for creditnote lines with a negative quantity i.e. invoice lines on a credit, generate a POD line  -->
-											<xsl:for-each select="CreditNoteDetail/CreditNoteLine[CreditedQuantity &lt; 0]">
-												<ProofOfDeliveryLine>
-													<xsl:apply-templates select="ProductID"/>
-													<xsl:apply-templates select="ProductDescription"/>
-													<DespatchedQuantity>
-														<!-- value needs to become positive -->
-														<xsl:value-of select="CreditedQuantity * -1"/>
-													</DespatchedQuantity>
-													<xsl:apply-templates select="PackSize"/>
-												</ProofOfDeliveryLine>									
-											</xsl:for-each>
-										</ProofOfDeliveryDetail>
-									</ProofOfDelivery>
-								</BatchDocument>
-							</xsl:for-each>
-						</BatchDocuments>
-					</Batch>
-				</Document>
-			</xsl:if>		
-		</BatchRoot>
+<BatchRoot>
+		<xsl:apply-templates/>
+</BatchRoot>
 	</xsl:template>
 	
 	<!-- GENERIC HANDLER to copy unchanged nodes, will be overridden by any node-specific templates below -->
