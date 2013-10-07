@@ -23,6 +23,8 @@
 															Added buyer's GLN into CDT segment
 															Added buyer's code into CLO segment
 															As part of Greencore adoption with Rail Gourmet
+==========================================================================================
+ 07/10/2013	| A Barber            	| FB7171: Corrected 'END' segment calculation, removed fixed value of '3'.
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -249,7 +251,7 @@
 		<xsl:value-of select="$sRecordSep"/>
 	
 		<xsl:text>END=</xsl:text>
-			<xsl:text>3</xsl:text>	
+			<xsl:value-of select="format-number(count(/BatchRoot/PurchaseOrder) + 2,'0')"/>	
 		<xsl:value-of select="$sRecordSep"/>
 		
 	</xsl:template>
