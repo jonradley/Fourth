@@ -21,7 +21,7 @@
 	<xsl:value-of select="$FieldSeperator"/>
 	<xsl:text>Element 4</xsl:text>
 	<xsl:value-of select="$FieldSeperator"/>
-	<xsl:text>Desciption</xsl:text>
+	<xsl:text>Description</xsl:text>
 	<xsl:value-of select="$FieldSeperator"/>
 	<xsl:text>Debit</xsl:text>
 	<xsl:value-of select="$FieldSeperator"/>
