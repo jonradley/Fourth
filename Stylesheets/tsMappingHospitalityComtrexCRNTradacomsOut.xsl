@@ -18,7 +18,9 @@
 =========================================================================================================
  12/02/2013	| M Dimant      	| 5983: Added missing totals in CST and CTR segments and Populated OIR segment with invoice references and dates
 =========================================================================================================
- 04/03/2013 	| M Dimant    | 6192: Limit FGN to 4 digits.
+ 04/03/2013 	| M Dimant   	 	| 6192: Limit FGN to 4 digits.
+=========================================================================================================
+ 08/10/2013 	| M Dimant  		| 7206: Corrected 'CTR' segment calculation (no of VAT rates), removed fixed value of '1'.
 =========================================================================================================-->
 
 
@@ -347,7 +349,8 @@
 			</xsl:for-each>
 			
 			<xsl:text>CTR=</xsl:text>	
-			<xsl:text>1+</xsl:text>
+			<xsl:value-of select="format-number(count(CreditNoteTrailer/VATSubTotals/VATSubTotal),'0')"/>
+			<xsl:text>+</xsl:text>
 			<xsl:value-of select="translate(format-number(CreditNoteTrailer/DiscountedLinesTotalExclVAT,'#.00'),'.','')"/>
 			<xsl:text>+++</xsl:text>
 			<xsl:value-of select="translate(format-number(CreditNoteTrailer/SettlementTotalExclVAT,'#.00'),'.','')"/>
