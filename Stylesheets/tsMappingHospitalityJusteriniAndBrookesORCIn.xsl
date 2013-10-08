@@ -7,6 +7,8 @@ M Dimant		| 14/04/2011	| Created
 ******************************************************************************************************************************************
 M Dimant		| 28/05/2013	| 6599: Added mapping of SBR and suppliers code for buyer
 ******************************************************************************************************************************************
+M Dimant		| 08/10/2013	| 7205: Populated missing ShipTo/ShipToLocationID/SuppliersCode tag 
+******************************************************************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
@@ -28,7 +30,10 @@ M Dimant		| 28/05/2013	| 6599: Added mapping of SBR and suppliers code for buyer
 										<SuppliersCode><xsl:value-of select="substring(/SalesAcknowledgementOrQuote/SalesOrderOrQuote/CustomerDetails/InvoiceTo/Customer/@Name,1,20)"/></SuppliersCode>
 									</BuyersLocationID>
 								</Buyer>
-								<ShipTo>									
+								<ShipTo>		
+									<ShipToLocationID>
+										<SuppliersCode><xsl:value-of select="/SalesAcknowledgementOrQuote/SalesOrderOrQuote/CustomerDetails/Customer/@Account"/></SuppliersCode>
+									</ShipToLocationID>							
 									<ShipToName><xsl:value-of select="SalesOrderOrQuote/CustomerDetails/DeliverTo/@Name"/></ShipToName>									
 								</ShipTo>
 								<PurchaseOrderReferences>
