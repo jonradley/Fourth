@@ -11,13 +11,15 @@
 ==========================================================================================
  Version		| 
 ==========================================================================================
- Date      	| Name 					| Description of modification
+ Date      		| Name 				| Description of modification
 ==========================================================================================
- 05/01/2012	| M Dimant    | Based on tsMappingHospitalityInvoiceTradacomsv9Out.xsl
+ 05/01/2012	| M Dimant  		| Based on tsMappingHospitalityInvoiceTradacomsv9Out.xsl
 ==========================================================================================
  09/05/2012   | M Dimant    	| 5448: Changes to accomodate inclusion of UOM by Comtrex
 ==========================================================================================
- 04/03/2013 	| M Dimant    | 6192: Limit FGN to 4 digits.
+ 04/03/2013 	| M Dimant   	 	| 6192: Limit FGN to 4 digits.
+==========================================================================================
+ 08/10/2013 	| M Dimant  		| 7206: Corrected 'TLR' segment calculation (no of VAT rates), removed fixed value of '1'.
 ==========================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -388,8 +390,8 @@
 			</xsl:for-each>
 			
 			<xsl:text>TLR=</xsl:text>	
-			<!--xsl:value-of select="InvoiceTrailer/NumberOfLines"/-->
-			<xsl:text>1+</xsl:text>
+			<xsl:value-of select="format-number(count(InvoiceTrailer/VATSubTotals/VATSubTotal),'0')"/>
+			<xsl:text>+</xsl:text>
 			<xsl:value-of select="translate(format-number(InvoiceTrailer/DiscountedLinesTotalExclVAT,'#.00'),'.','')"/>
 			<xsl:text>+++++</xsl:text>
 			<xsl:value-of select="translate(format-number(InvoiceTrailer/DocumentTotalExclVAT,'#.00'),'.','')"/>
