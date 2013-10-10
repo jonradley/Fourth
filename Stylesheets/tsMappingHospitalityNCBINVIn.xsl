@@ -8,7 +8,7 @@ M Dimant		| 06/09/2011  |  Created. Derived from tsMappingHospitalityInvoiceTrad
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 M Dimant		| 07/09/2011  | Added creation of a Delivery Notes for Aramark. Hides the invoice.	
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-				|             	|
+A Barber		| 08/10/2013	| 7214 Added logic to complete senders branch reference for ISS HED.
 **********************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
@@ -69,6 +69,14 @@ M Dimant		| 07/09/2011  | Added creation of a Delivery Notes for Aramark. Hides 
 			<xsl:when test="./Invoice/InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode='5027615900013'">
 				<SendersCodeForRecipient><xsl:value-of select="substring-before(././././SendersCodeForRecipient,'-')"/></SendersCodeForRecipient>
 				<SendersBranchReference><xsl:value-of select="substring-after(././././SendersCodeForRecipient,'-')"/></SendersBranchReference>
+			</xsl:when>
+			<xsl:when test="../InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode='5060166761103'">
+				<SendersCodeForRecipient>
+					<xsl:value-of select="../InvoiceHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
+				</SendersCodeForRecipient>
+				<SendersBranchReference>
+					<xsl:value-of select="substring(../InvoiceHeader/ShipTo/ShipToLocationID/SuppliersCode,8,1)"/>
+				</SendersBranchReference>
 			</xsl:when>
 			<xsl:otherwise>
 				<SendersCodeForRecipient><xsl:value-of select="SendersCodeForRecipient"/></SendersCodeForRecipient>
