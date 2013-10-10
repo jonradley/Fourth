@@ -18,6 +18,8 @@
 ******************************************************************************************
  01/04/2011 | Andrew Barber	| 4365 Drop '/n' component of supplier account code.
 ******************************************************************************************
+ 10/10/2013 | Andrew Barber | 7215 Drop '/n' component of site code.
+******************************************************************************************
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -122,8 +124,15 @@
 		<xsl:text>,</xsl:text>		
 		
 		<!-- Unit Code -->
-		<xsl:value-of select="substring(TradeSimpleHeader/RecipientsBranchReference,1,10)"/>			
-
+		<xsl:choose>
+			<xsl:when test="contains(TradeSimpleHeader/RecipientsBranchReference,'/')">
+				<xsl:value-of select="substring(substring-before(TradeSimpleHeader/RecipientsBranchReference,'/'),1,10)"/>	
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="substring(TradeSimpleHeader/RecipientsBranchReference,1,10)"/>	
+			</xsl:otherwise>
+		</xsl:choose>
+		
 		<!--### ITEM LINES ###-->
 		<xsl:for-each select="(GoodsReceivedNoteDetail/GoodsReceivedNoteLine)">
 
