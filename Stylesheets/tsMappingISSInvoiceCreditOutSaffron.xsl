@@ -150,6 +150,7 @@
 				<xsl:value-of select="substring(TradeSimpleHeader/RecipientsBranchReference,1,10)"/>	
 			</xsl:otherwise>
 		</xsl:choose>
+		<xsl:text>,</xsl:text>
 
 		<!-- Number of Deliveries -->
 		<xsl:value-of select="InvoiceTrailer/NumberOfDeliveries | CreditNoteTrailer/NumberOfDeliveries"/>
