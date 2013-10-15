@@ -1,0 +1,92 @@
+<!--******************************************************************
+Alterations
+**********************************************************************
+Name			| Date				| Change
+**********************************************************************
+S Sehgal		| 06-11-2012		| 5729 Created module
+**********************************************************************
+				|						|				
+**********************************************************************
+				|						|
+**********************************************************************
+				|						|
+*******************************************************************-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>sequenced</ffsRecordPositionType>
+		<ffsRecordSeparator FixedSize="false">chr(13)chr(10)</ffsRecordSeparator>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>,</ffsFieldSeparator>
+		</ffsFieldSeparators>
+		<ffsSplitBatchRecord LPos="10"/>
+		<ffsSplitBatchRecord LPos="11"/>
+		<ffsSplitBatchRecord LPos="15"/>
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<BatchHeader>
+				<OrganisationCode RecordLength="6" RecordPos="1" LPos="2"/>
+				<SourceSystemExportID RecordLength="6" RecordPos="1" LPos="3"/>
+				<SourceSystemOrgID RecordLength="6" RecordPos="1" LPos="5"/>
+				<FormatCode RecordLength="6" RecordPos="1" LPos="4"/>
+				<AccountingSystemCode RecordLength="6" RecordPos="1" LPos="6"/>
+			</BatchHeader>
+			<BatchDocuments>
+				<BatchDocument>
+					<InvoiceCreditJournalEntries>
+						<InvoiceCreditJournalEntriesHeader>
+							<BuyersUnitCode RecordLength="45"  RecordPos="*" LPos="2"/>
+							<BuyersSiteCode RecordLength="45" RecordPos="*" LPos="3"/>
+							<BuyerName RecordLength="45" RecordPos="*" LPos="4"/>
+							<RegionName RecordLength="45" RecordPos="*" LPos="5"/>
+							<SiteBrand RecordLength="45" RecordPos="*" LPos="6"/>
+							<SiteClosingStockField RecordLength="45" RecordPos="*" LPos="7"/>
+							<VATAccountCode RecordLength="45" RecordPos="*" LPos="8"/>
+							<TransactionType RecordLength="45" RecordPos="*" LPos="9"/>
+							<InvoiceReference RecordLength="45" RecordPos="*" LPos="10"/>
+							<InvoiceDate RecordLength="45" RecordPos="*" LPos="18"/>
+							<DeliveryReference RecordLength="45" RecordPos="*" LPos="11"/>
+							<DeliveryDate RecordLength="45" RecordPos="*" LPos="17"/>
+							<VoucherNumber RecordLength="45" RecordPos="*" LPos="12"/>
+							<FnBInternalRef RecordLength="45" RecordPos="*" LPos="13"/>
+							<TransactionDescription RecordLength="45" RecordPos="*" LPos="14"/>
+							<BuyersCodeForSupplier RecordLength="45" RecordPos="*" LPos="15"/>
+							<SupplierName RecordLength="45" RecordPos="*" LPos="16"/>
+							<SupplierNominalCode RecordLength="45" RecordPos="*" LPos="38"/>
+							<CustomFinancialYear RecordLength="45" RecordPos="*" LPos="19"/>
+							<CustomFinancialPeriod RecordLength="45" RecordPos="*" LPos="20"/>
+							<StockFinancialYear RecordLength="45" RecordPos="*" LPos="21"/>
+							<StockFinancialPeriod RecordLength="45" RecordPos="*" LPos="22"/>
+							<CreatedBy RecordLength="45" RecordPos="*" LPos="37"/>
+							<ExportRunDate RecordLength="45" RecordPos="*" LPos="23"/>
+							<InvoiceNumberforCRN RecordLength="45" RecordPos="*" LPos="39"/>
+							<CurrencyCode RecordLength="45" RecordPos="*" LPos="42"/>
+							<CustomerVATCode RecordLength="45" RecordPos="*" LPos="43"/>
+							<UnitSiteName RecordLength="45" RecordPos="*" LPos="44"/>
+							<UnitSiteNominal RecordLength="45" RecordPos="*" LPos="45"/>
+						</InvoiceCreditJournalEntriesHeader>
+						<InvoiceCreditJournalEntriesDetail>
+							<InvoiceCreditJournalEntriesLine>
+								<Amount RecordLength="45" RecordPos="*" LPos="24"/>
+								<ConversionCode RecordLength="45" RecordPos="*" LPos="25"/>
+								<ConvertedAmount RecordLength="45" RecordPos="*" LPos="26"/>
+								<VATCode RecordLength="45" RecordPos="*" LPos="27"/>
+								<LineVATPercentage RecordLength="45" RecordPos="*" LPos="28"/>
+								<LineNet RecordLength="45" RecordPos="*" LPos="29"/>
+								<LineVAT RecordLength="45" RecordPos="*" LPos="30"/>
+								<LineGross RecordLength="45" RecordPos="*" LPos="31"/>
+								<CostCentreName RecordLength="45" RecordPos="*" LPos="32"/>
+								<CategoryCode1 RecordLength="45" RecordPos="*" LPos="33"/>
+								<CategoryCode2 RecordLength="45" RecordPos="*" LPos="34"/>
+								<CategoryCode3 RecordLength="45" RecordPos="*" LPos="35"/>
+								<CategoryCode4 RecordLength="45" RecordPos="*" LPos="36"/>
+								<CategoryName RecordLength="45" RecordPos="*" LPos="40"/>
+								<CategoryNominal RecordLength="45" RecordPos="*" LPos="41"/>
+							</InvoiceCreditJournalEntriesLine>
+						</InvoiceCreditJournalEntriesDetail>
+					</InvoiceCreditJournalEntries>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>
