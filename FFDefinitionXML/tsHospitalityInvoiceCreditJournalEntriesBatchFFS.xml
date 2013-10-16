@@ -5,7 +5,7 @@ Name			| Date				| Change
 **********************************************************************
 S Sehgal		| 06-11-2012		| 5729 Created module
 **********************************************************************
-				|						|				
+S Sehgal		| 16-10-2013		| 7156 Group files on the FnBInternalRef only				
 **********************************************************************
 				|						|
 **********************************************************************
@@ -18,9 +18,7 @@ S Sehgal		| 06-11-2012		| 5729 Created module
 		<ffsFieldSeparators>
 			<ffsFieldSeparator>,</ffsFieldSeparator>
 		</ffsFieldSeparators>
-		<ffsSplitBatchRecord LPos="10"/>
-		<ffsSplitBatchRecord LPos="11"/>
-		<ffsSplitBatchRecord LPos="15"/>
+		<ffsSplitBatchRecord LPos="13"/>
 	</ffsSettings>
 	<ffsRoot>
 		<Batch>
