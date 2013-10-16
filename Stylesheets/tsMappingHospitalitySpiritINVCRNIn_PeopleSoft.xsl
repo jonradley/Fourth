@@ -35,8 +35,6 @@
 		<xsl:variable name="xmlNoPlusSigns">
 			<xsl:apply-templates/>
 		</xsl:variable>
-		<!-- DEBUGGING
-		<xsl:copy-of select="msxsl:node-set($xmlNoPlusSigns)"/> -->
 		<!--perform the rest of the transformation as normal -->
 		<xsl:call-template name="mainTransformation">
 			<xsl:with-param name="vobNode" select="msxsl:node-set($xmlNoPlusSigns)"/>
@@ -83,11 +81,6 @@
 											</SendersCodeForRecipient>
 										</TradeSimpleHeader>
 										<InvoiceHeader>
-											<!--Buyer>
-													<BuyersLocationID>
-														<SuppliersCode/>
-													</BuyersLocationID>
-												</Buyer-->
 											<Supplier>
 												<SuppliersLocationID>
 													<BuyersCode>
@@ -96,11 +89,6 @@
 												</SuppliersLocationID>
 											</Supplier>
 											<ShipTo>
-												<!--ShipToLocationID>
-														<SuppliersCode>
-															<xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/>
-														</SuppliersCode>
-													</ShipToLocationID-->
 											</ShipTo>
 											<InvoiceReferences>
 												<InvoiceReference>
@@ -211,11 +199,6 @@
 											</SendersCodeForRecipient>
 										</TradeSimpleHeader>
 										<CreditNoteHeader>
-											<!--Buyer>
-													<BuyersLocationID>
-														<SuppliersCode/>
-													</BuyersLocationID>
-												</Buyer-->
 											<Supplier>
 												<SuppliersLocationID>
 													<BuyersCode>
