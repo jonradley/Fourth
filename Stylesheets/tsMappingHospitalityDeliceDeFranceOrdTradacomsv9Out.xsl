@@ -2,10 +2,12 @@
 
 <!--======================================================================================
  Overview
-==========================================================================================
+============================lo==============================================================
  24/05/2013	| S Hussain 				|	Created
 ==========================================================================================
  17/07/2013	| S Hussain 				|	FB 6793 - Incorporate changes to inclue a : before the product code
+=======================================================================================--
+>15/10/2013	| B Oliver & J MIguel	|	FB 7153 - Changes in CLO segment as requested by supplier.
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -96,16 +98,8 @@
 		<xsl:value-of select="$sRecordSep"/>
 
 		<xsl:text>CLO=</xsl:text>
-		<xsl:choose>
-			<xsl:when test="TradeSimpleHeader/TestFlag = 'false' or TradeSimpleHeader/TestFlag = '0'">
-				<xsl:text>5013546145710</xsl:text>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:text>5013546164209</xsl:text>
-			</xsl:otherwise>
-		</xsl:choose>
 		<xsl:text>:</xsl:text>
-		<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToName"/>
+		<xsl:value-of select="TradeSimpleHeader/RecipientsCodeForSender"/>
 		<xsl:text>+</xsl:text>
 		<xsl:text>+</xsl:text>
 		<xsl:apply-templates select="PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine1"/><xsl:text>:</xsl:text>
@@ -197,11 +191,7 @@
 		</xsl:call-template>
 		<xsl:text>+</xsl:text>
 		<xsl:text>+</xsl:text>
-		<xsl:text>:</xsl:text>
-		<xsl:call-template name="msCheckField">
-			<xsl:with-param name="vobjNode" select="./ProductID/BuyersProductCode"/>
-			<xsl:with-param name="vnLength" select="30"/>
-		</xsl:call-template>
+		<xsl:text>+</xsl:text>
 		<xsl:text>+</xsl:text>
 		<xsl:value-of select="format-number(./OrderedQuantity,'0')"/>
 		<xsl:text>+</xsl:text>
