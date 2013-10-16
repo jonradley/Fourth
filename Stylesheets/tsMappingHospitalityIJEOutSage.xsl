@@ -21,9 +21,7 @@
 	<xsl:template match="/">
 		<xsl:text>Type</xsl:text>
 		<xsl:value-of select="$FieldSeperator"/>
-		<xsl:text>Account</xsl:text>
-		<xsl:value-of select="$FieldSeperator"/>
-		<xsl:text>Reference</xsl:text>
+		<xsl:text>Account Reference</xsl:text>
 		<xsl:value-of select="$FieldSeperator"/>
 		<xsl:text>Nominal A/C Ref</xsl:text>
 		<xsl:value-of select="$FieldSeperator"/>
