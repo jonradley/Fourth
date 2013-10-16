@@ -70,7 +70,7 @@
 				<xsl:call-template name="WrapCommaInQuotes">
 					<xsl:with-param name="text" select="../../InvoiceCreditJournalEntriesHeader/SupplierName"/>
 				</xsl:call-template>
-				<xsl:text> DELIVERY</xsl:text>
+				<xsl:text> delivery</xsl:text>
 				<xsl:value-of select="$FieldSeperator"/>
 				<xsl:value-of select="LineNet"/>
 				<xsl:value-of select="$FieldSeperator"/>
