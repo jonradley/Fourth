@@ -10,6 +10,8 @@ K Oshaughnessy | 11/11/2011	| 5008: Created.
 A Barber	| 03/12/2012 | 5886: Renamed to identify destination recipient and system, also mappingsenders code for recipient.
 *******************************************************************
 A Barber	| 14/03/2012	 | 6260: Added GL code to IT1 line output.
+*******************************************************************
+A Barber	| 17/10/2013	 | 7227: Appended decription with GL code to IT1 line output.
 **********************************************************************************************************
 -->
 <xsl:stylesheet  version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -184,7 +186,7 @@ A Barber	| 14/03/2012	 | 6260: Added GL code to IT1 line output.
 		<xsl:text>VC*</xsl:text>
 		<xsl:value-of select="ProductID/SuppliersProductCode"/>
 		<xsl:text>*</xsl:text>
-		<xsl:value-of select="LineExtraData/PurchaseCategoryCode"/>
+		<xsl:value-of select="concat(LineExtraData/PurchaseCategoryCode,'-',LineExtraData/GLCategoryDescription)"/>
 		<xsl:text>*</xsl:text>
 		<xsl:text>&#13;&#10;</xsl:text>
 		
