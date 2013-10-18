@@ -25,8 +25,6 @@
 															As part of Greencore adoption with Rail Gourmet
 ==========================================================================================
  07/10/2013	| A Barber            	| FB7171: Corrected 'END' segment calculation, removed fixed value of '3'.
-==========================================================================================
- 10/10/2013	| M Dimant           	| 7213: Change dates to be 8 digits long instead of 6.
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -272,7 +270,7 @@
 	<xsl:template name="msFormateDate">
 		<xsl:param name="vsUTCDate"/>
 	
-		<xsl:value-of select="translate($vsUTCDate,'-','')"/>
+		<xsl:value-of select="substring(translate($vsUTCDate,'-',''), 3)"/>
 	
 	</xsl:template>
 	
