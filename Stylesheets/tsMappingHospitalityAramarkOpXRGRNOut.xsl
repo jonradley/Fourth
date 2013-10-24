@@ -5,13 +5,13 @@ Alternative GRN out for Aramark OpX.
 *******************************************************************
 Name         	| Date       	| Change
 *******************************************************************
-K Oshaughnessy | 11/11/2011	| 5008: Created. 
-*******************************************************************
-A Barber	| 03/12/2012 | 5886: Renamed to identify destination recipient and system, also mappingsenders code for recipient.
+K Oshaughnessy| 11/11/2011	| 5008: Created. 
 *******************************************************************
 A Barber	| 14/03/2012	 | 6260: Added GL code to IT1 line output.
 *******************************************************************
 A Barber	| 17/10/2013	 | 7227: Appended decription with GL code to IT1 line output.
+*******************************************************************
+A Barber	| 24/10/2013	 | 7227: Altered reference to use DN ref.
 **********************************************************************************************************
 -->
 <xsl:stylesheet  version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -85,7 +85,7 @@ A Barber	| 17/10/2013	 | 7227: Appended decription with GL code to IT1 line outp
 		<xsl:with-param name="sDateFormat" select="GoodsReceivedNoteHeader/GoodsReceivedNoteReferences/GoodsReceivedNoteDate"/>
 	</xsl:call-template>
 	<xsl:text>*</xsl:text>
-	<xsl:value-of select="GoodsReceivedNoteHeader/GoodsReceivedNoteReferences/GoodsReceivedNoteReference"/>
+	<xsl:value-of select="GoodsReceivedNoteHeader/DeliveryNoteReferences/DeliveryNoteReference"/>
 	<xsl:text>*</xsl:text>
 	<xsl:value-of select="$sFileGenerationDate"/>
 	<xsl:text>*</xsl:text>
@@ -100,7 +100,7 @@ A Barber	| 17/10/2013	 | 7227: Appended decription with GL code to IT1 line outp
 	<!--Reference Identification-->
 	<xsl:text>REF*</xsl:text>
 	<xsl:text>OI*</xsl:text>
-	<xsl:value-of select="GoodsReceivedNoteHeader/GoodsReceivedNoteReferences/GoodsReceivedNoteReference"/>
+	<xsl:value-of select="GoodsReceivedNoteHeader/DeliveryNoteReferences/DeliveryNoteReference"/>
 	<xsl:text>*</xsl:text>
 	<xsl:text>*</xsl:text>
 	<xsl:text>*</xsl:text>
