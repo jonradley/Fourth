@@ -9,6 +9,8 @@ M Dimant		| 06/09/2011  |  Created. Derived from tsMappingHospitalityInvoiceTrad
 M Dimant		| 07/09/2011  | Added creation of a Delivery Notes for Aramark. Hides the invoice.	
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 A Barber		| 08/10/2013	| 7214 Added logic to complete senders branch reference for ISS HED.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+A Barber		| 04/11/2013	| 7290 Do not map PO reference where value = 'NA'
 **********************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
@@ -357,7 +359,7 @@ A Barber		| 08/10/2013	| 7214 Added logic to complete senders branch reference f
 	<xsl:template match="//PurchaseOrderReferences">
 		<xsl:variable name="sPORefDate" select="translate(PurchaseOrderDate,' ','')"/>
 		<xsl:variable name="sPORefReference" select="translate(PurchaseOrderReference,' ','')"/>
-		<xsl:if test="string($sPORefDate) !='' and string($sPORefReference) != '' ">
+		<xsl:if test="string($sPORefDate) !='' and string($sPORefReference) != 'NA' and string($sPORefReference) != ''">
 			<PurchaseOrderReferences>
 				<PurchaseOrderReference>
 					<xsl:value-of select="$sPORefReference"/>
