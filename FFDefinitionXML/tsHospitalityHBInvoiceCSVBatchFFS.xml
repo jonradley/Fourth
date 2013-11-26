@@ -126,8 +126,8 @@ Date		|	Name				|	Comments
 								<LineDiscountRate RecordPos="LINE" LPos="11"/>
 								<LineDiscountValue RecordPos="LINE" LPos="12"/>
 								<LineExtraData>
-									<!--ProductGroup (LINE-5) contains extra appendable value to PackSize.-->
-									<ProductGroup RecordPos="LINE" LPos="5"/>
+									<!--PackSizeModifier (LINE-5) contains extra appendable value to PackSize.-->
+									<PackSizeModifier RecordPos="LINE" LPos="5"/>
 									<!--OriginalProductCode (LINE-6) contains extra appendable value to PackSize.-->
 									<OriginalProductCode RecordPos="LINE" LPos="6"/>
 									<!--ProductDescription2 (LINE-26) contains extra appendable value to ProductDescription.-->

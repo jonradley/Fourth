@@ -111,9 +111,9 @@ M Emanuel	 	|  29/01/2013 | FB 5841 Made changes to map in Shipto GLN and Line N
 	<xsl:template match="//PackSize">
 		<xsl:copy>
 			<xsl:value-of select="../PackSize"/>
-			<xsl:if test="..//LineExtraData/ProductGroup != ''">
+			<xsl:if test="..//LineExtraData/PackSizeModifier != ''">
 				<xsl:text> x </xsl:text>
-				<xsl:value-of select="..//LineExtraData/ProductGroup"/>
+				<xsl:value-of select="..//LineExtraData/PackSizeModifier"/>
 				<xsl:value-of select="..//LineExtraData/OriginalProductCode"/>
 			</xsl:if>
 		</xsl:copy>
