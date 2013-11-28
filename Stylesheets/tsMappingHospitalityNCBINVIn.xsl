@@ -12,7 +12,7 @@ A Barber		| 08/10/2013	| 7214 Added logic to complete senders branch reference f
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 A Barber		| 04/11/2013	| 7290 Do not map PO reference where value = 'NA'
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-A Barber		| 04/11/2013	| 7465 Strip '/00' from delivery note reference.
+A Barber		| 28/11/2013	| 7465 Strip '/00' from delivery note reference.
 **********************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
