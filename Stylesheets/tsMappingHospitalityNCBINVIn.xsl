@@ -11,6 +11,8 @@ M Dimant		| 07/09/2011  | Added creation of a Delivery Notes for Aramark. Hides 
 A Barber		| 08/10/2013	| 7214 Added logic to complete senders branch reference for ISS HED.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 A Barber		| 04/11/2013	| 7290 Do not map PO reference where value = 'NA'
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+A Barber		| 04/11/2013	| 7465 Strip '/00' from delivery note reference.
 **********************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
@@ -369,6 +371,24 @@ A Barber		| 04/11/2013	| 7290 Do not map PO reference where value = 'NA'
 				</PurchaseOrderDate>
 			</PurchaseOrderReferences>
 		</xsl:if>
+	</xsl:template>
+	
+	<!-- Strip '/nn' component from delivery note reference -->
+	<xsl:template match="//DeliveryNoteReferences">
+		<DeliveryNoteReferences>
+			<DeliveryNoteReference>
+				<xsl:choose>
+					<xsl:when test="contains(DeliveryNoteReference,'/')">
+						<xsl:value-of select="substring-before(DeliveryNoteReference,'/')"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="DeliveryNoteReference"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</DeliveryNoteReference>
+			<xsl:apply-templates select="DeliveryNoteDate"/>
+			<xsl:apply-templates select="DespatchDate"/>
+		</DeliveryNoteReferences>
 	</xsl:template>	
 	
 	<xsl:template name="createDeliveryNotes">
