@@ -4,7 +4,7 @@ Date		|	Name				|	Comments
 *************************************************************************************
 30/05/2012| KOShaughnessy	| Bugfix
 *************************************************************************************
-29/01/2013| M Emanuel	| FB 5841 Mapping Buyer GLN
+29/11/2013| J Miguel	| FB 7458 Change H&B Mapper - change the Product Group mapping
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~			
 -->
 <ffsFlatFileSchema>
@@ -45,13 +45,12 @@ Date		|	Name				|	Comments
 							<!--Set dummy value (HEAD-3) to DocumentStatus and correct it in stylesheet.-->
 							<DocumentStatus RecordPos="HEAD" LPos="3"/>
 							<BatchInformation>
-								<!--FileGenerationNo RecordPos="HEAD" LPos="25"/-->
+								<FileGenerationNo RecordPos="HEAD" LPos="25"/>
 								<FileVersionNo RecordPos="HEAD" LPos="26"/>
 								<FileCreationDate RecordPos="HEAD" LPos="27"/>
 							</BatchInformation>
 							<Buyer>
 								<BuyersLocationID>
-									<GLN RecordPos="HEAD" LPos="25"/>
 									<SuppliersCode RecordPos="HEAD" LPos="3"/>
 									<BuyersCode RecordPos="HEAD" LPos="2"/>
 								</BuyersLocationID>
@@ -94,7 +93,7 @@ Date		|	Name				|	Comments
 						<InvoiceDetail>
 							<InvoiceLine>
 								<!--Set dummy value (Line-7) to LineNo and correct it in stylesheet.-->
-								<LineNumber RecordPos="LINE" LPos="24"/>
+								<LineNumber RecordPos="LINE" LPos="7"/>
 								<PurchaseOrderReferences>
 									<PurchaseOrderReference RecordPos="LINE" LPos="63"/>
 									<PurchaseOrderDate RecordPos="LINE" LPos="64"/>
@@ -111,7 +110,6 @@ Date		|	Name				|	Comments
 								<ProductID>
 									<GTIN RecordPos="LINE" LPos="18"/>
 									<SuppliersProductCode RecordPos="LINE" LPos="2"/>
-									<BuyersProductCode RecordPos="LINE" LPos="19"/>
 								</ProductID>
 								<ProductDescription RecordPos="LINE" LPos="25"/>
 								<InvoicedQuantity RecordPos="LINE" LPos="8">
