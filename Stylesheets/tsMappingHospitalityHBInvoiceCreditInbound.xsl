@@ -5,17 +5,20 @@ Name			|  Date		  | Change
 **********************************************************************
 Koshaughnessy 	|  30/05/2012 | Created Module		
 *********************************************************************
-M Emanuel	 	|  29/01/2013 | FB 5841 Made changes to map in Shipto GLN and Line Number	
+29/11/2013| J Miguel	| FB 7458 Change H&B Mapper - change the Product Group mapping
 *********************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com/jscript" xmlns:vbscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
+	
 	<xsl:variable name="DefaultVATRate" select="'20'"/>
+	
 	<!-- Start point - ensure required outer BatchRoot tag is applied -->
 	<xsl:template match="/">
 		<BatchRoot>
 			<xsl:apply-templates/>
 		</BatchRoot>
 	</xsl:template>
+	
 	<!-- GENERIC HANDLER to copy unchanged nodes, will be overridden by any node-specific templates below -->
 	<xsl:template match="*">
 		<!-- Copy the node unchanged -->
@@ -26,12 +29,14 @@ M Emanuel	 	|  29/01/2013 | FB 5841 Made changes to map in Shipto GLN and Line N
 			<xsl:apply-templates/>
 		</xsl:copy>
 	</xsl:template>
+	
 	<!-- GENERIC ATTRIBUTE HANDLER to copy unchanged attributes, will be overridden by any attribute-specific templates below-->
 	<xsl:template match="@*">
 		<!--Copy the attribute unchanged-->
 		<xsl:copy/>
 	</xsl:template>
 	<!-- END of GENERIC HANDLERS -->
+
 	<!-- DATE CONVERSION dd/mm/yyyy to xsd:date -->
 	<xsl:template match="BatchInformation/FileCreationDate |
 						InvoiceReferences/InvoiceDate |
@@ -46,67 +51,55 @@ M Emanuel	 	|  29/01/2013 | FB 5841 Made changes to map in Shipto GLN and Line N
 			<xsl:value-of select="concat(substring(., 7, 4), '-', substring(., 4, 2), '-', substring(., 1, 2))"/>
 		</xsl:copy>
 	</xsl:template>
+
 	<!--************** HEADERS ***********-->
 	<!--***************************************-->
+
 	<!--Set DocumentStatus as 'Original'-->
 	<xsl:template match="//DocumentStatus">
-		<xsl:element name="DocumentStatus">
-			<xsl:text>Original</xsl:text>
-		</xsl:element>
+		<xsl:element name="DocumentStatus"><xsl:text>Original</xsl:text></xsl:element>
 	</xsl:template>
+
 	<!--H&B Send the buyers code for supplier just for extranet customers. We dont want them to populate this for TS customer, Infiller will do the job-->
 	<xsl:template match="ShipTo">
 		<ShipTo>
 			<ShipToLocationID>
-				<xsl:choose>
-					<xsl:when test="../../TradeSimpleHeader/RecipientsName = 'EXTRANET'">
-						<xsl:element name="BuyersCode">
-							<xsl:value-of select="ShipToLocationID/SuppliersCode"/>
-						</xsl:element>
-					</xsl:when>
-					<xsl:when test="ShipToLocationID/GLN !=''">
-						<xsl:element name="GLN">
-							<xsl:value-of select="ShipToLocationID/GLN"/>
-						</xsl:element>
-					</xsl:when>
-				</xsl:choose>
+				<xsl:if test="//Invoice/TradeSimpleHeader/RecipientsName = 'EXTRANET'">
+					<xsl:element name="BuyersCode">		
+						<xsl:value-of select="//ShipTo/ShipToLocationID/SuppliersCode"/>
+					</xsl:element>
+				</xsl:if>	
 				<xsl:apply-templates select="SuppliersCode"/>
 			</ShipToLocationID>
 			<xsl:apply-templates select="ShipToName"/>
 			<xsl:apply-templates select="ShipToAddress"/>
 		</ShipTo>
 	</xsl:template>
+	
 	<!--Set Currency as 'GBP'-->
 	<xsl:template match="//Currency">
-		<xsl:element name="Currency">
-			<xsl:text>GBP</xsl:text>
-		</xsl:element>
+		<xsl:element name="Currency"><xsl:text>GBP</xsl:text></xsl:element>
 	</xsl:template>
+
 	<!--*********** LINE DETAILS **********-->
 	<!--***************************************-->
+
 	<!--Add line number-->
 	<xsl:template match="//LineNumber">
-		<LineNumber>
-			<xsl:choose>
-				<xsl:when test="//LineNumber!=''">
-					<xsl:value-of select="../LineNumber"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="vbscript:getLineNumber()"/>
-				</xsl:otherwise>
-			</xsl:choose>
-		</LineNumber>
+		<LineNumber><xsl:value-of select="vbscript:getLineNumber()"/></LineNumber>
 	</xsl:template>
+	
 	<!--Append extra values to Product description field-->
 	<xsl:template match="//ProductDescription">
 		<xsl:copy>
-			<xsl:value-of select="../ProductDescription"/>
+			<xsl:value-of select="../ProductDescription"></xsl:value-of>
 			<xsl:if test="..//LineExtraData/ProductDescription2 != ''">
-				<xsl:text/>
-				<xsl:value-of select="..//LineExtraData/ProductDescription2"/>
-			</xsl:if>
-		</xsl:copy>
+				<xsl:text> </xsl:text> 
+				<xsl:value-of select="..//LineExtraData/ProductDescription2"></xsl:value-of>
+			</xsl:if> 
+		</xsl:copy> 
 	</xsl:template>
+
 	<!--Append extra values to Pack size field-->
 	<xsl:template match="//PackSize">
 		<xsl:copy>
@@ -118,24 +111,42 @@ M Emanuel	 	|  29/01/2013 | FB 5841 Made changes to map in Shipto GLN and Line N
 			</xsl:if>
 		</xsl:copy>
 	</xsl:template>
+
 	<!--Decode UOM of InvoicedQuantity-->
 	<xsl:template match="//InvoicedQuantity">
 		<xsl:element name="InvoicedQuantity">
-			<xsl:attribute name="UnitOfMeasure"><xsl:choose><xsl:when test="@UnitOfMeasure = 'KG'">KGM</xsl:when><xsl:otherwise><xsl:value-of select="@UnitOfMeasure"/></xsl:otherwise></xsl:choose></xsl:attribute>
+			<xsl:attribute name="UnitOfMeasure">
+				<xsl:choose>
+					<xsl:when test="@UnitOfMeasure = 'KG'">KGM</xsl:when>
+					<xsl:otherwise><xsl:value-of select="@UnitOfMeasure"/></xsl:otherwise>
+				</xsl:choose>
+			</xsl:attribute>
 			<!--Append minus (-) sign when Credit Line indicator is 'Y'-->
 			<xsl:if test="..//LineExtraData/CodaVATCode = 'Y'">
 				<xsl:text>-</xsl:text>
-			</xsl:if>
-			<xsl:value-of select="format-number(../InvoicedQuantity, '0.000')"/>
+			</xsl:if> 
+			<xsl:value-of select="format-number(../InvoicedQuantity, '0.000')"></xsl:value-of>
 		</xsl:element>
 	</xsl:template>
+
 	<!--Decode UOM of CreditedQuantity-->
 	<xsl:template match="//CreditedQuantity">
 		<xsl:element name="CreditedQuantity">
-			<xsl:attribute name="UnitOfMeasure"><xsl:variable name="UoM"><xsl:call-template name="DecodePacks"><xsl:with-param name="sMotoPack" select="following-sibling::Measure/UnitsInPack"/></xsl:call-template></xsl:variable><xsl:choose><xsl:when test="$UoM = 1">EA</xsl:when><xsl:otherwise>CS</xsl:otherwise></xsl:choose></xsl:attribute>
-			<xsl:value-of select="format-number(../CreditedQuantity, '0.000')"/>
+			<xsl:attribute name="UnitOfMeasure">
+				<xsl:variable name="UoM">
+					<xsl:call-template name="DecodePacks">
+						<xsl:with-param name="sMotoPack" select="following-sibling::Measure/UnitsInPack"/>
+					</xsl:call-template>
+				</xsl:variable>
+				<xsl:choose>
+					<xsl:when test="$UoM = 1">EA</xsl:when>
+					<xsl:otherwise>CS</xsl:otherwise>
+				</xsl:choose>
+			</xsl:attribute>
+			<xsl:value-of select="format-number(../CreditedQuantity, '0.000')"></xsl:value-of>
 		</xsl:element>
 	</xsl:template>
+
 	<!--Calculate LineValueExclVAT-->
 	<xsl:template match="//LineValueExclVAT">
 		<xsl:element name="LineValueExclVAT">
@@ -147,20 +158,20 @@ M Emanuel	 	|  29/01/2013 | FB 5841 Made changes to map in Shipto GLN and Line N
 				<xsl:otherwise>
 					<xsl:value-of select="../LineValueExclVAT"/>
 				</xsl:otherwise>
-			</xsl:choose>
+			</xsl:choose>	
 		</xsl:element>
 	</xsl:template>
+
 	<!--Derive VATRate-->
 	<xsl:template match="//VATRate">
 		<xsl:element name="VATRate">
 			<xsl:choose>
 				<xsl:when test="../VATCode='Z'">0</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="format-number($DefaultVATRate, '0.00')"/>
-				</xsl:otherwise>
+				<xsl:otherwise><xsl:value-of select="format-number($DefaultVATRate, '0.00')"/></xsl:otherwise>
 			</xsl:choose>
 		</xsl:element>
 	</xsl:template>
+
 	<!-- Decode UOM -->
 	<xsl:template match="Measure">
 		<xsl:element name="Measure">
@@ -171,6 +182,7 @@ M Emanuel	 	|  29/01/2013 | FB 5841 Made changes to map in Shipto GLN and Line N
 			</xsl:element>
 		</xsl:element>
 	</xsl:template>
+
 	<xsl:template name="DecodePacks">
 		<xsl:param name="sMotoPack"/>
 		<xsl:choose>
@@ -180,45 +192,46 @@ M Emanuel	 	|  29/01/2013 | FB 5841 Made changes to map in Shipto GLN and Line N
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+
+
 	<!--************** TRAILERS ***********-->
 	<!--***************************************-->
 	<xsl:template match="NumberOfLines">
 		<xsl:choose>
 			<xsl:when test="../../CreditNoteDetail/CreditNoteLine/CreditedQuantity != 0">
-				<NumberOfLines>
-					<xsl:value-of select="count(../../CreditNoteDetail/CreditNoteLine)"/>
-				</NumberOfLines>
+				<NumberOfLines><xsl:value-of select="count(../../CreditNoteDetail/CreditNoteLine)"/></NumberOfLines>
 			</xsl:when>
 			<xsl:otherwise>
-				<NumberOfLines>
-					<xsl:value-of select="count(../../InvoiceDetail/InvoiceLine)"/>
-				</NumberOfLines>
+				<NumberOfLines><xsl:value-of select="count(../../InvoiceDetail/InvoiceLine)"/></NumberOfLines>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template>
+	</xsl:template>	
+	
 	<xsl:template match="//NumberOfItems">
 		<xsl:choose>
 			<xsl:when test="../../CreditNoteDetail/CreditNoteLine/CreditedQuantity != 0">
-				<NumberOfItems>
-					<xsl:value-of select="sum(../../CreditNoteDetail/CreditNoteLine/CreditedQuantity)"/>
-				</NumberOfItems>
+				<NumberOfItems><xsl:value-of select="sum(../../CreditNoteDetail/CreditNoteLine/CreditedQuantity)"/></NumberOfItems>
 			</xsl:when>
 			<xsl:otherwise>
-				<NumberOfItems>
-					<xsl:value-of select="sum(../../InvoiceDetail/InvoiceLine/InvoicedQuantity)"/>
-				</NumberOfItems>
+				<NumberOfItems><xsl:value-of select="sum(../../InvoiceDetail/InvoiceLine/InvoicedQuantity)"/></NumberOfItems>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+
 	<xsl:template match="//NumberOfDeliveries">
-		<NumberOfDeliveries>
-			<xsl:value-of select="jscript:mlNoDistinctValues(../../InvoiceDetail/InvoiceLine/DeliveryNoteReferences/DeliveryNoteReference)"/>
-		</NumberOfDeliveries>
+		<NumberOfDeliveries><xsl:value-of select="jscript:mlNoDistinctValues(../../InvoiceDetail/InvoiceLine/DeliveryNoteReferences/DeliveryNoteReference)" /></NumberOfDeliveries>
 	</xsl:template>
+
 	<!--Calculate @VATRate-->
 	<xsl:template match="//VATSubTotal/@VATRate">
-		<xsl:attribute name="{name()}"><xsl:choose><xsl:when test="../@VATCode='Z'">0</xsl:when><xsl:otherwise><xsl:value-of select="format-number($DefaultVATRate, '0.00')"/></xsl:otherwise></xsl:choose></xsl:attribute>
+		<xsl:attribute name="{name()}">
+			<xsl:choose>
+				<xsl:when test="../@VATCode='Z'">0</xsl:when>
+				<xsl:otherwise><xsl:value-of select="format-number($DefaultVATRate, '0.00')"/></xsl:otherwise>
+			</xsl:choose>
+		</xsl:attribute>
 	</xsl:template>
+	
 	<msxsl:script language="VBScript" implements-prefix="vbscript"><![CDATA[ 
 	Dim lLineNumber
 	
@@ -228,6 +241,7 @@ M Emanuel	 	|  29/01/2013 | FB 5841 Made changes to map in Shipto GLN and Line N
 		lLineNumber = lLineNumber + 1
 	End Function
 	]]></msxsl:script>
+	
 	<msxsl:script language="JScript" implements-prefix="jscript"><![CDATA[  
 		/*=========================================================================================
 		' Routine       	 : mlNoDistinctValues
@@ -256,5 +270,5 @@ M Emanuel	 	|  29/01/2013 | FB 5841 Made changes to map in Shipto GLN and Line N
 			}
 			return lCounter;
 		}
-	]]></msxsl:script>
+	]]></msxsl:script>	
 </xsl:stylesheet>
