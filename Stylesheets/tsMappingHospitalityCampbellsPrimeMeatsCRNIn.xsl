@@ -8,7 +8,9 @@ M Emanuel	| 30/11/2012  	| 5876 Had to roll back changes made to 5840 as it caus
 H Robson	| 27/06/2013  	| HB 6617 For Compass integration the PO ref and date must be mapped in (they've been sending it but it has not been mapped in before)
 **********************************************************************************************************************************************
 S Hussain	| 06/08/2013  	| FB 6855 Convert UoM KG to KGM + Rename Mapper
-*************************************************************************
+**********************************************************************************************************************************************
+M Dimant	| 20/11/2013		| 7519: Use ContactName as ShipTo, if it is present.
+**********************************************************************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
@@ -84,7 +86,11 @@ S Hussain	| 06/08/2013  	| FB 6855 Convert UoM KG to KGM + Rename Mapper
 				</xsl:choose>
 			</ShipToLocationID>
 			<ShipToName>
-				<xsl:value-of select="ShipToName"/>
+				<!-- If this ContactName is present use the value in here (for BaxterStorey use)  -->
+				<xsl:choose>
+					<xsl:when test="ContactName"><xsl:value-of select="ContactName"/></xsl:when>
+					<xsl:otherwise><xsl:value-of select="ShipToName"/></xsl:otherwise>
+				</xsl:choose>								
 			</ShipToName>
 		</ShipTo>
 	</xsl:template>
