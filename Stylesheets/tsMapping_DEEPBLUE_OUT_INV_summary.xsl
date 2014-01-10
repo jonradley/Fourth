@@ -12,10 +12,6 @@
 	<xsl:variable name="FieldSeperator" select="','"/>
 	<!--Get rid of this template if the header is not required finally-->
 	<xsl:template match="/">
-		<!-- The header has been removed last minute
-		<xsl:text>"Account","Reference","Date","Stock Ref","Description","Quantity","Goods","VAT Code","VAT Amount","Supply Code","Project","Department"</xsl:text>
-		<xsl:value-of select="$RecordSeperator"/>
-		-->
 		<xsl:apply-templates select="//InvoiceCreditJournalEntriesLine"/>
 	</xsl:template>
 	<xsl:template match="InvoiceCreditJournalEntriesLine">
