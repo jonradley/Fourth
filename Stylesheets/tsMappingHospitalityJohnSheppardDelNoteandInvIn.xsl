@@ -2,6 +2,7 @@
 <!--
 *******************************************************************************************************************
 21/06/2012	| Mark Emanuel	| FB 5529 New Invoice and Delivery Note Mapper for John Sheppard
+14/01/2014	| Jose Miguel	| FB 7615 Optimise John Sheppard invoice/credits/delivery notes mapper changes
 *******************************************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
@@ -39,18 +40,9 @@
 										</SendersCodeForRecipient>
 										
 			
-										<xsl:choose>
-											<xsl:when test="contains(Buyer/BuyerAssigned,'MTE')">											
 												<SendersBranchReference>
 													<xsl:value-of select="Buyer/BuyerAssigned"/>
 												</SendersBranchReference>
-											</xsl:when>
-											<xsl:when test="contains(Buyer/BuyerAssigned,'STG')">
-												<SendersBranchReference>
-													<xsl:value-of select="Buyer/BuyerAssigned"/>
-												</SendersBranchReference>	
-											</xsl:when>
-										</xsl:choose>	
 										
 									</TradeSimpleHeader>
 									
@@ -284,18 +276,9 @@
 											<xsl:value-of select="ShipTo/BuyerAssigned"/>
 										</SendersCodeForRecipient>
 										
-										<xsl:choose>
-											<xsl:when test="contains(Buyer/BuyerAssigned,'MTE')">											
 												<SendersBranchReference>
 													<xsl:value-of select="Buyer/BuyerAssigned"/>
 												</SendersBranchReference>
-											</xsl:when>
-											<xsl:when test="contains(Buyer/BuyerAssigned,'STG')">
-												<SendersBranchReference>
-													<xsl:value-of select="Buyer/BuyerAssigned"/>
-												</SendersBranchReference>	
-											</xsl:when>
-										</xsl:choose>		
 										
 									</TradeSimpleHeader>
 									
