@@ -5,6 +5,7 @@
 '******************************************************************************************
 07/03/2013  | H Robson  | FB:5985 Created as a copy of tsHospitalityCreditCSVBatchFFS.xml
 Removed escaping of double-quotes to create a mapper suitable for flatfilemap-propercsv queue
+14/01/2014  | J Miguel  | FB:7614 'D' line fields total to 35
 '******************************************************************************************
 -->
 <ffsFlatFileSchema>
@@ -29,7 +30,7 @@ Removed escaping of double-quotes to create a mapper suitable for flatfilemap-pr
 		<ffsGroups>
 			<ffsGroup>
 				<ffsGroupRecord RecordPos="H" FieldTotal="35"/>
-				<ffsSubGroupRecord RecordPos="D" FieldTotal="16"/>
+				<ffsSubGroupRecord RecordPos="D" FieldTotal="35"/>
 			</ffsGroup>
 		</ffsGroups>
 		<ffsSplitBatchRecord RecordPos="H"/>
