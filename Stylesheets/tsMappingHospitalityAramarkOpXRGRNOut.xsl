@@ -12,6 +12,8 @@ A Barber	| 14/03/2012	 | 6260: Added GL code to IT1 line output.
 A Barber	| 17/10/2013	 | 7227: Appended decription with GL code to IT1 line output.
 *******************************************************************
 A Barber	| 24/10/2013	 | 7227: Altered reference to use DN ref.
+*******************************************************************
+A Barber	| 10/01/2014	 | 7620: Updated ship to location code to use senders branch reference.
 **********************************************************************************************************
 -->
 <xsl:stylesheet  version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -113,7 +115,7 @@ A Barber	| 24/10/2013	 | 7227: Altered reference to use DN ref.
 	<xsl:text>*</xsl:text>
 	<xsl:text>91</xsl:text>
 	<xsl:text>*</xsl:text>
-	<xsl:value-of select="GoodsReceivedNoteHeader/ShipTo/ShipToLocationID/BuyersCode"/>
+	<xsl:value-of select="TradeSimpleHeader/RecipientsBranchReference"/>
 	<xsl:text>&#13;&#10;</xsl:text>
 	
 	<!--Address Information - Buyer-->
