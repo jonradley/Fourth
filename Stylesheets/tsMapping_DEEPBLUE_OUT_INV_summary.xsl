@@ -4,6 +4,7 @@
  Overview
 ======================================================================================================================
  09/01/2014	| J Miguel	|	FB7610 - Deep Blue / FnB (R9) - Invoice and Credit Journal Entries Batch Report | Created
+ 15/01/2014	| J Miguel	|	FB7628 - Fixing the padding space.
 ======================================================================================================================
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:user="http://mycompany.com/mynamespace">
@@ -42,7 +43,7 @@
 		<xsl:value-of select="format-number(LineVAT, '0.00')"/>
 		<xsl:value-of select="$FieldSeperator"/>
 		<!-- Supply Code	C	8 -->
-		<xsl:value-of select="concat(translate(CategoryNominal, ',', ' '), concat('     ', ../../InvoiceCreditJournalEntriesHeader/BuyersUnitCode))"/>
+		<xsl:value-of select="concat(translate(CategoryNominal, ',', ' '), concat('    ', ../../InvoiceCreditJournalEntriesHeader/BuyersUnitCode))"/>
 		<xsl:value-of select="$FieldSeperator"/>
 		<!-- Project	C	8 - not used -->
 		<!--<xsl:value-of select="InvoiceCreditJournalEntries/InvoiceCreditJournalEntriesHeader/UnitSiteNominal"/>-->
