@@ -34,6 +34,8 @@
 ******************************************************************************************
 10/10/2013 | Andrew Barber | 7215 Drop '/n' component of site code.
 ******************************************************************************************
+21/11/2014 | Andrew Barber | 7661 Application of msCSV template to PO reference.
+******************************************************************************************
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -294,8 +296,11 @@
 
 			<xsl:value-of select="substring(../../InvoiceHeader/InvoiceReferences/InvoiceReference | ../../CreditNoteHeader/CreditNoteReferences/CreditNoteReference,1,20)"/>
 			<xsl:text>,</xsl:text>
-
-			<xsl:value-of select="substring(PurchaseOrderReferences/PurchaseOrderReference,1,13)"/>
+			
+			<xsl:call-template name="msCSV">
+				<xsl:with-param name="vs" select="substring(PurchaseOrderReferences/PurchaseOrderReference,1,13)"/>
+			</xsl:call-template>
+			<!--xsl:value-of select="substring(PurchaseOrderReferences/PurchaseOrderReference,1,13)"/-->
 			<xsl:text>,</xsl:text>
 
 			<!-- The delivery note reference is mandatory in Saffron. It is optional in our internal schema. If it is missing then send the document reference -->
