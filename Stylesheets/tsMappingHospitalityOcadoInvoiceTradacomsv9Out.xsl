@@ -10,7 +10,7 @@
 ==========================================================================================================
  08/02/2012	| K Oshaughnessy	| Created module FB 5957
 ==========================================================================================================
-					| M Dimant			| Made changes to remove escape characters in strings, but not colons as Ocado use them in their codes
+16/01/2014	| M Dimant			| Made changes to remove escape characters in strings, but not colons as Ocado use them in their codes
 ==========================================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
