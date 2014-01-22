@@ -99,50 +99,13 @@ A Barber		| 28/11/2013	| 7465 Strip '/00' from delivery note reference.
 		</xsl:copy>
 	</xsl:template>
 	
-	<!-- INVOIC-ILD-QTYI (InvoiceLine/InvoicedQuantity) needs to be multiplied by -1 if (InvoiceLine/ProductID/BuyersProductCode) is NOT blank -->
-	<!-- 941 read catchweight values if present -->
-	<!--xsl:template match="InvoiceLine/InvoicedQuantity">
-	
-		<xsl:variable name="sQuantity">
-			<xsl:choose>
-				<xsl:when test="string(..[Measure/TotalMeasureIndicator]/Measure/TotalMeasure) != ''">
-					<xsl:for-each select="../Measure/TotalMeasure[1]">
-						<xsl:call-template name="copyCurrentNodeExplicit3DP"/>
-					</xsl:for-each>
-				</xsl:when>
-				<xsl:otherwise><xsl:value-of select="."/></xsl:otherwise>
-			</xsl:choose>		
-		</xsl:variable>
 		
-		<xsl:variable name="sUoM">
-			<xsl:choose>
-				<xsl:when test="string(Measure/TotalMeasureIndicator) = 'KG'">KGM</xsl:when>
-				<xsl:otherwise><xsl:value-of select="@UoM"/></xsl:otherwise>
-			</xsl:choose>		
-		</xsl:variable>
-	
-	
-		<InvoicedQuantity>
-			<xsl:if test="string-length(../ProductID/BuyersProductCode) &gt; 0">-</xsl:if>
-			<xsl:value-of select="$sQuantity"/>
-			<xsl:if test="string(sUoM) != 0">
-				<xsl:attribute name="UnitOfMeasure">
-					<xsl:value-of select="$sUoM"/>
-				</xsl:attribute>
-			</xsl:if>
-		</InvoicedQuantity>
-	
-	</xsl:template-->
-	
-	
 	<xsl:template match="InvoiceLine">
 	
 		<InvoiceLine>
 	
 			<xsl:apply-templates select="LineNumber"/>
-			<xsl:apply-templates select="PurchaseOrderReferences"/>
 			<xsl:apply-templates select="PurchaseOrderConfirmationReferences"/>
-			<xsl:apply-templates select="DeliveryNoteReferences"/>
 			<xsl:apply-templates select="GoodsReceivedNoteReferences"/>
 			<xsl:apply-templates select="ProductID"/>
 			<xsl:apply-templates select="ProductDescription"/>
@@ -159,24 +122,54 @@ A Barber		| 28/11/2013	| 7465 Strip '/00' from delivery note reference.
 					</xsl:when>
 					<xsl:otherwise><xsl:value-of select="InvoicedQuantity"/></xsl:otherwise>
 				</xsl:choose>		
-			</xsl:variable>
+			</xsl:variable>			
 			
 			<xsl:variable name="sUoM">
-				<xsl:choose>
-					<xsl:when test="string(./Measure/TotalMeasureIndicator) = 'KG' or string(./Measure/TotalMeasureIndicator) = 'KGM' ">KGM</xsl:when>
-					<xsl:otherwise><xsl:value-of select="@UoM"/></xsl:otherwise>
-				</xsl:choose>		
-			</xsl:variable>
+				<xsl:call-template name="translateUoM">
+					<xsl:with-param name="givenUoM" select="./InvoicedQuantity/@UnitOfMeasure"/>
+				</xsl:call-template>		
+			</xsl:variable>			
+		
 	
+			<xsl:variable name="POref"><xsl:value-of select="../InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderReference"/></xsl:variable>
+			<xsl:variable name="POdate"><xsl:value-of select="../InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderDate"/></xsl:variable>
+			<xsl:if test="string($POdate) !='' and string($POref) != 'NA' and string($POref) != ''">
+				<PurchaseOrderReferences>
+					<PurchaseOrderReference><xsl:value-of select="$POref"/></PurchaseOrderReference>
+					<PurchaseOrderDate>
+						<xsl:value-of select="concat('20', substring($POdate, 5, 2), '-', substring($POdate, 3, 2), '-', substring($POdate, 1, 2))"/>
+					</PurchaseOrderDate>						
+				</PurchaseOrderReferences>
+			</xsl:if>	
+		
+			<!-- Strip '/nn' component from delivery note reference -->	
+			<DeliveryNoteReferences>
+				<DeliveryNoteReference>
+					<xsl:choose>
+						<xsl:when test="contains(../InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteReference,'/')">
+							<xsl:value-of select="substring-before(../InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteReference,'/')"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="../InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteReference"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</DeliveryNoteReference>				
+				<DeliveryNoteDate>
+				<xsl:variable name="DNdate"><xsl:value-of select="../InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteDate"/></xsl:variable>
+					<xsl:value-of select="concat('20', substring($DNdate, 5, 2), '-', substring($DNdate, 3, 2), '-', substring($DNdate, 1, 2))"/>
+				</DeliveryNoteDate>						
+			</DeliveryNoteReferences>			
 			
 			<InvoicedQuantity>
-				<xsl:if test="string-length($sUoM) &gt; 0">
-					<xsl:attribute name="UnitOfMeasure">
-						<xsl:value-of select="$sUoM"/>
-					</xsl:attribute>
-				</xsl:if>
-				<xsl:if test="string-length(./ProductID/BuyersProductCode) &gt; 0">-</xsl:if>
-				<xsl:value-of select="$sQuantity"/>			
+				<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="$sUoM"/></xsl:attribute>			
+				<xsl:choose>
+					<xsl:when test="substring-after(InvoicedQuantity,' ')=0">
+						<xsl:value-of select="format-number(substring-before(InvoicedQuantity,' '),0000)"/>
+					</xsl:when>
+					<xsl:otherwise>						
+						<xsl:value-of select="format-number((substring-after(InvoicedQuantity,' ')) div 1000.0, '0.00##')"/>
+					</xsl:otherwise>
+				</xsl:choose>							
 			</InvoicedQuantity>
 			
 			<xsl:apply-templates select="PackSize"/>
@@ -256,7 +249,7 @@ A Barber		| 28/11/2013	| 7465 Strip '/00' from delivery note reference.
 						InvoiceReferences/InvoiceDate |
 						InvoiceReferences/TaxPointDate">
 		<xsl:copy>
-			<xsl:value-of select="concat('20', substring(., 1, 2), '-', substring(., 3, 2), '-', substring(., 5, 2))"/>
+			<xsl:value-of select="concat('20', substring(., 5, 2), '-', substring(., 3, 2), '-', substring(., 1, 2))"/>
 		</xsl:copy>
 	</xsl:template>
 	<!-- DATE CONVERSION YYMMDD:[HHMMSS] to xsd:dateTime CCYY-MM-DDTHH:MM:SS+00:00 -->
@@ -265,7 +258,7 @@ A Barber		| 28/11/2013	| 7465 Strip '/00' from delivery note reference.
 			<xsl:choose>
 				<xsl:when test="string-length(.) &lt; 13">
 					<!-- Convert YYMMDD: to CCYY-MM-DDTHH:MM:SS form (xsd:dateTime) -->
-					<xsl:value-of select="concat('20', substring(., 1, 2), '-', substring(., 3, 2), '-', substring(., 5, 2), 'T00:00:00')"/>
+					<xsl:value-of select="concat('20', substring(., 5, 2), '-', substring(., 3, 2), '-', substring(., 1, 2), 'T00:00:00')"/>
 				</xsl:when>
 				<xsl:otherwise>
 					<!-- Convert YYMMDD:HHMMSS to CCYY-MM-DDTHH:MM:SS form (xsd:dateTime) -->
@@ -356,40 +349,8 @@ A Barber		| 28/11/2013	| 7465 Strip '/00' from delivery note reference.
 		</xsl:copy>
 	</xsl:template>
 	<!-- END of MHDSegment HANDLER -->
+
 	
-	<!-- Check for pairing of Purchase Order Date & Purchase Order Reference -->
-	<xsl:template match="//PurchaseOrderReferences">
-		<xsl:variable name="sPORefDate" select="translate(PurchaseOrderDate,' ','')"/>
-		<xsl:variable name="sPORefReference" select="translate(PurchaseOrderReference,' ','')"/>
-		<xsl:if test="string($sPORefDate) !='' and string($sPORefReference) != 'NA' and string($sPORefReference) != ''">
-			<PurchaseOrderReferences>
-				<PurchaseOrderReference>
-					<xsl:value-of select="$sPORefReference"/>
-				</PurchaseOrderReference>
-				<PurchaseOrderDate>
-					<xsl:value-of select="concat('20',substring($sPORefDate,1,2),'-',substring($sPORefDate,3,2),'-',substring($sPORefDate,5,2))"/>
-				</PurchaseOrderDate>
-			</PurchaseOrderReferences>
-		</xsl:if>
-	</xsl:template>
-	
-	<!-- Strip '/nn' component from delivery note reference -->
-	<xsl:template match="//DeliveryNoteReferences">
-		<DeliveryNoteReferences>
-			<DeliveryNoteReference>
-				<xsl:choose>
-					<xsl:when test="contains(DeliveryNoteReference,'/')">
-						<xsl:value-of select="substring-before(DeliveryNoteReference,'/')"/>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:value-of select="DeliveryNoteReference"/>
-					</xsl:otherwise>
-				</xsl:choose>
-			</DeliveryNoteReference>
-			<xsl:apply-templates select="DeliveryNoteDate"/>
-			<xsl:apply-templates select="DespatchDate"/>
-		</DeliveryNoteReferences>
-	</xsl:template>	
 	
 	<xsl:template name="createDeliveryNotes">
 	
@@ -507,6 +468,8 @@ A Barber		| 28/11/2013	| 7465 Strip '/00' from delivery note reference.
 		<xsl:choose>
 			<xsl:when test="$givenUoM = 'KG'">KGM</xsl:when>
 			<xsl:when test="$givenUoM = 'EACH'">EA</xsl:when>
+			<xsl:when test="$givenUoM = 'CASE'">CS</xsl:when>
+			<xsl:when test="$givenUoM = 'DOZEN'">DZ</xsl:when>
 			<xsl:otherwise><xsl:value-of select="$givenUoM"/></xsl:otherwise>
 		</xsl:choose>
 	
