@@ -9,8 +9,7 @@ Andrew Barber	| 22/01/2014	| Created.
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 	<xsl:output method="text" encoding="UTF-8"/>
 
-	<!--xsl:template match="/BatchRoot"-->
-	<xsl:template match="/">
+	<xsl:template match="/BatchRoot">
 	
 		<xsl:variable name="NewLine">
 			<xsl:text>&#13;&#10;</xsl:text>
