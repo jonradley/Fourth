@@ -152,6 +152,7 @@
 				<xsl:value-of select="substring(TradeSimpleHeader/RecipientsBranchReference,1,10)"/>	
 			</xsl:otherwise>
 		</xsl:choose>
+		<xsl:text>,</xsl:text>
 
 		<!-- Number of Deliveries -->
 		<xsl:value-of select="InvoiceTrailer/NumberOfDeliveries | CreditNoteTrailer/NumberOfDeliveries"/>
@@ -300,7 +301,6 @@
 			<xsl:call-template name="msCSV">
 				<xsl:with-param name="vs" select="substring(PurchaseOrderReferences/PurchaseOrderReference,1,13)"/>
 			</xsl:call-template>
-			<!--xsl:value-of select="substring(PurchaseOrderReferences/PurchaseOrderReference,1,13)"/-->
 			<xsl:text>,</xsl:text>
 
 			<!-- The delivery note reference is mandatory in Saffron. It is optional in our internal schema. If it is missing then send the document reference -->
