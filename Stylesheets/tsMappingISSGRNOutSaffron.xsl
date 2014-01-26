@@ -20,6 +20,8 @@
 ******************************************************************************************
  10/10/2013 | Andrew Barber | 7215 Drop '/n' component of site code.
 ******************************************************************************************
+21/11/2014 | Andrew Barber | 7661 Application of msCSV template to PO reference.
+******************************************************************************************
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -105,7 +107,9 @@
 		<xsl:text>,</xsl:text>
 		
 		<!-- Order Reference -->
-		<xsl:value-of select="substring(GoodsReceivedNoteHeader/PurchaseOrderReferences/PurchaseOrderReference,1,13)"/>
+		<xsl:call-template name="msCSV">
+			<xsl:with-param name="vs" select="substring(GoodsReceivedNoteHeader/PurchaseOrderReferences/PurchaseOrderReference,1,13)"/>
+		</xsl:call-template>
 		<xsl:text>,</xsl:text>
 		
 		<!-- Supplier Code -->
