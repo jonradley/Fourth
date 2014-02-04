@@ -13,6 +13,9 @@ A Barber		| 08/10/2013	| 7214 Added logic to complete senders branch reference f
 A Barber		| 04/11/2013	| 7290 Do not map PO reference where value = 'NA'
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 A Barber		| 28/11/2013	| 7465 Strip '/00' from delivery note reference.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+M Dimant		| 22/01/2014  | 7664 Major changes to NCB stylesheet to accomodate new fixed length format.
+
 **********************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
@@ -469,7 +472,7 @@ A Barber		| 28/11/2013	| 7465 Strip '/00' from delivery note reference.
 			<xsl:when test="$givenUoM = 'KG'">KGM</xsl:when>
 			<xsl:when test="$givenUoM = 'EACH'">EA</xsl:when>
 			<xsl:when test="$givenUoM = 'CASE'">CS</xsl:when>
-			<xsl:when test="$givenUoM = 'DOZEN'">DZ</xsl:when>
+			<xsl:when test="$givenUoM = 'DOZEN'">DZN</xsl:when>
 			<xsl:otherwise><xsl:value-of select="$givenUoM"/></xsl:otherwise>
 		</xsl:choose>
 	
