@@ -7,6 +7,8 @@ Name				| Date			| Change
 Andrew Barber	| 21/04/2013	| 6259: Created.
 *********************************************************************
 Andrew Barber	| 27/06/2013	| 6700: Added test to append additional value to supplier code where 3663.
+*********************************************************************
+Andrew Barber	| 05/02/2014	| 7694: Handling of line extra data narrative from buyers code position.
 *******************************************************************-->
 <xsl:stylesheet  version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt"  xmlns:vbscript="http://tradesimple.net">
 
@@ -64,6 +66,30 @@ Andrew Barber	| 27/06/2013	| 6700: Added test to append additional value to supp
 			<xsl:copy-of select="ShipToAddress"/>	
 			<xsl:copy-of select="ContactName"/>	
 		</ShipTo>	
+	</xsl:template>
+
+	<xsl:template match="PurchaseOrderLine">
+		<PurchaseOrderLine>
+			<ProductID>
+				<SuppliersProductCode>
+					<xsl:value-of select="ProductID/SuppliersProductCode"/>
+				</SuppliersProductCode>
+			</ProductID>
+			<xsl:copy-of select="ProductDescription"/>
+			<xsl:copy-of select="OrderedQuantity"/>
+			<xsl:copy-of select="PackSize"/>
+			<xsl:copy-of select="UnitValueExclVAT"/>
+			<xsl:copy-of select="LineValueExclVAT"/>
+			<xsl:choose>
+				<xsl:when test="ProductID/BuyersProductCode!=''">
+					<LineExtraData>
+						<Narrative>
+							<xsl:value-of select="ProductID/BuyersProductCode"/>
+						</Narrative>
+					</LineExtraData>
+				</xsl:when>
+			</xsl:choose>
+		</PurchaseOrderLine>	
 	</xsl:template>
 
 	<xsl:template match="PurchaseOrderDate | DeliveryDate">
