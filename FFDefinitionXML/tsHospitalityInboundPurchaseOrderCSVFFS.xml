@@ -6,10 +6,8 @@ CSV Purchase Order mapper
 Name         | Date       | Change
 *********************************************************************
 M Dimant  | 12/10/2010 | Created.
-**********************************************************************
-             |            |                                    
-**********************************************************************
-             |            |
+*********************************************************************
+Andrew Barber	| 05/02/2014	| 7694: Handling of line extra data narrative in buyers code position.
 *******************************************************************-->
 <ffsFlatFileSchema>
 	<ffsSettings>
@@ -67,6 +65,7 @@ M Dimant  | 12/10/2010 | Created.
 				<PurchaseOrderLine>
 					<ProductID>
 						<SuppliersProductCode RecordPos="D" LPos="2"/>
+						<BuyersProductCode RecordPos="D" LPos="8"/>
 					</ProductID>					
 					<ProductDescription RecordPos="D" LPos="3"/>
 					<OrderedQuantity RecordPos="D" LPos="5"/>								
