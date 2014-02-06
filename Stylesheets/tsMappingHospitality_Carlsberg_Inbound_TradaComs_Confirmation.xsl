@@ -18,6 +18,8 @@
 '******************************************************************************************
 ' 29/05/2013	| Andrew Barber	| FB6600: Added test for Spirit Franchise GLN to SendersCodeForRecipient.
 '******************************************************************************************
+' 06/04/2014	| Andrew Barber	| FB7695: Added new system order codes to sDNA variable test.
+'******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:vbscript="http://abs-Ltd.com">
 
@@ -36,7 +38,7 @@
 
 			<xsl:choose>
 			
-				<xsl:when test="$sDNA='ZOR' or $sDNA='EOR' ">
+				<xsl:when test="$sDNA='ZOR' or $sDNA='EOR' or $sDNA='Z01' or $sDNA='Z02' or $sDNA='Z08' ">
 					<BatchDocument>
 						<xsl:attribute name="DocumentTypeNo">
 							<xsl:text>3</xsl:text>
