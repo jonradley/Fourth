@@ -15,7 +15,8 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	30/06/2009 | Lee Boyton              | FB2974. Handle new Orchid - Black Pubs Ltd company.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	
+	13/02/2014 | Andrew Barber		| FB7709. Fix Stonegate GLN in SDT-SIDN(2) and CDT-CIDN(2) to 5060166760243.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript" xmlns:vb="http://www.abs-ltd.com/dummynamespaces/vbscript" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	<xsl:output method="text" encoding="utf-8"/>
@@ -52,6 +53,7 @@
 			<xsl:text>S67900581201</xsl:text>
 		</xsl:variable>		
 		<xsl:variable name="sFileGenerationDate" select="vb:msFileGenerationDate()"/>
+		
 		<xsl:text>STX=</xsl:text>
 		<xsl:text>ANA:1+</xsl:text>
 		<!--Our mailbox reference-->
@@ -88,18 +90,28 @@
 		</xsl:choose>
 		<xsl:text>+</xsl:text>
 		<xsl:text>B</xsl:text>
+		
 		<xsl:value-of select="$sRecordSep"/>
 		<xsl:text>MHD=</xsl:text>
 		<xsl:text>1+ORDHDR:9</xsl:text>
 		<xsl:value-of select="$sRecordSep"/>
+		
 		<xsl:text>TYP=0430+ORDERS</xsl:text>
 		<xsl:value-of select="$sRecordSep"/>
+		
 		<xsl:text>SDT=</xsl:text>
 		<!-- Carlsbergs ANA -->
 		<xsl:text>5013546040435</xsl:text>
 		<xsl:text>:</xsl:text>
 		<!-- Buyers ANA known to the Carlsberg -->
-		<xsl:value-of select="PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
+		<xsl:choose>
+			<xsl:when test="$sBAYCode = $sSCFR">
+				<xsl:text>5060166760243</xsl:text>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
+			</xsl:otherwise>
+		</xsl:choose>
 		<xsl:text>+</xsl:text>
 		<!-- truncate to 40 SNAM = 3060 = AN..40-->
 		<xsl:value-of select="js:msSafeText(string(PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersName),40)"/>
@@ -116,6 +128,7 @@
 		<!-- truncate to 8 (just in case) SADD 5 = 3063 = AN..8-->
 		<xsl:value-of select="js:msSafeText(string(PurchaseOrder/PurchaseOrderHeader/Supplier/SuppliersAddress/PostCode),8)"/>
 		<xsl:value-of select="$sRecordSep"/>
+		
 		<xsl:text>CDT=</xsl:text>
 		<!-- CIDN (1) Customer EAN -->
 		<!-- Issue with Orchid as they do not use GLN/ANA's and Carslberg require a value. The values below
@@ -147,7 +160,14 @@
 		</xsl:choose>
 		<xsl:text>:</xsl:text>
 		<!-- CIDN (2) -->
-		<xsl:value-of select="PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
+		<xsl:choose>
+			<xsl:when test="$sBAYCode = $sSCFR">
+				<xsl:text>5060166760243</xsl:text>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
+			</xsl:otherwise>
+		</xsl:choose>
 		<xsl:text>+</xsl:text>
 		<!-- truncate to 40 CNAM = 3060 = AN..40-->
 		<xsl:value-of select="js:msSafeText(string(PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersName),40)"/>
@@ -164,21 +184,26 @@
 		<!-- truncate to 8 (just in case) CADD 5 = 3033 = AN..8-->
 		<xsl:value-of select="js:msSafeText(string(PurchaseOrder/PurchaseOrderHeader/Buyer/SendersAddress/PostCode),8)"/>
 		<xsl:value-of select="$sRecordSep"/>
+		
 		<xsl:text>FIL=</xsl:text>
 		<xsl:value-of select="$nBatchID"/>
 		<xsl:text>+</xsl:text>
 		<xsl:text>1+</xsl:text>
 		<xsl:value-of select="$sFileGenerationDate"/>
 		<xsl:value-of select="$sRecordSep"/>
+		
 		<xsl:text>MTR=</xsl:text>
 		<xsl:text>6</xsl:text>
 		<xsl:value-of select="$sRecordSep"/>
+		
 		<xsl:for-each select="PurchaseOrder">
+		
 			<xsl:text>MHD=</xsl:text>
 			<xsl:value-of select="format-number(count(preceding-sibling::* | self::*) + 1,'0')"/>
 			<xsl:text>+</xsl:text>
 			<xsl:text>ORDERS:9</xsl:text>
 			<xsl:value-of select="$sRecordSep"/>
+			
 			<xsl:text>CLO=</xsl:text>
 			<xsl:text>:</xsl:text>
 			<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode"/>
@@ -199,7 +224,8 @@
 			<xsl:text>:</xsl:text>
 			<!-- truncate to 8 (just in case) CADD 5 = 3033 = AN..8-->
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/ShipTo/ShipToAddress/PostCode),8)"/>
-			<xsl:value-of select="$sRecordSep"/>
+			<xsl:value-of select="$sRecordSep"/>				
+
 			<xsl:text>ORD=</xsl:text>
 			<xsl:call-template name="msCheckField">
 				<xsl:with-param name="vobjNode" select="PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
@@ -214,6 +240,7 @@
 			<xsl:text>+</xsl:text>
 			<xsl:text>N+</xsl:text>
 			<xsl:value-of select="$sRecordSep"/>
+			
 			<xsl:text>DIN=</xsl:text>
 			<!--xsl:value-of select="HelperObj:FormatDate(string(PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate))"/-->
 			<xsl:call-template name="msFormateDate">
@@ -227,6 +254,7 @@
 			<xsl:text>+</xsl:text>
 			<xsl:value-of select="$sRecordSep"/>
 			<xsl:for-each select="PurchaseOrderDetail/PurchaseOrderLine">
+			
 				<xsl:text>OLD=</xsl:text>
 				<xsl:value-of select="count(preceding-sibling::* | self::*)"/>
 				<xsl:text>+</xsl:text>
@@ -267,26 +295,33 @@
 				<xsl:value-of select="$sProductDescription"/>
 				<xsl:value-of select="$sRecordSep"/>
 			</xsl:for-each>
+			
 			<xsl:text>OTR=</xsl:text>
 			<xsl:value-of select="PurchaseOrderTrailer/NumberOfLines"/>
 			<xsl:value-of select="$sRecordSep"/>
+			
 			<xsl:text>MTR=</xsl:text>
 			<xsl:value-of select="6 + count(PurchaseOrderDetail/PurchaseOrderLine)"/>
 			<xsl:value-of select="$sRecordSep"/>
 		</xsl:for-each>
+		
 		<xsl:text>MHD=</xsl:text>
 		<xsl:value-of select="format-number(count(/BatchRoot/PurchaseOrder) + 2,'0')"/>
 		<xsl:text>+ORDTLR:9</xsl:text>
 		<xsl:value-of select="$sRecordSep"/>
+		
 		<xsl:text>OFT=</xsl:text>
 		<xsl:value-of select="format-number(count(/BatchRoot/PurchaseOrder),'0')"/>
 		<xsl:value-of select="$sRecordSep"/>
 		<xsl:text>MTR=</xsl:text>
+		
 		<xsl:text>3</xsl:text>
 		<xsl:value-of select="$sRecordSep"/>
+		
 		<xsl:text>END=</xsl:text>
 		<xsl:value-of select="format-number(count(/BatchRoot/PurchaseOrder) + 2,'0')"/>
 		<xsl:value-of select="$sRecordSep"/>
+		
 	</xsl:template>
 	<!--=======================================================================================
   Routine        : msFormateDate()
