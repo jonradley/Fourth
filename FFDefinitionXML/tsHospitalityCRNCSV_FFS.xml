@@ -3,7 +3,7 @@
 /******************************************************************************************
 ' Date        	| Name         | Description of modification
 '******************************************************************************************
-19-02-2014		|J Miguel	   | Generic CSV Specs FFS Mapper - Invoice
+19-02-2014		|J Miguel	   | Generic CSV Specs FFS Mapper - Credit Notes
 '******************************************************************************************
 -->
 <ffsFlatFileSchema>
@@ -22,7 +22,8 @@
 		</ffsFieldSeparators>
 		<ffsPadding/>
 		<ffsBatchHeader>
-			<ffsHeaderRecord RecordPos="I"/>
+			<!--list of records that make up the header, this will be added to each document in the batch -->
+			<ffsHeaderRecord RecordPos="C"/>	
 		</ffsBatchHeader>
 		<ffsSplitBatchRecord RecordPos="H"/>
 	</ffsSettings>
@@ -30,19 +31,19 @@
 		<Batch>
 			<BatchDocuments>
 				<BatchDocument>
-					<Invoice>
+					<CreditNote>
 						<TradeSimpleHeader>
 							<SendersCodeForRecipient RecordPos="H" LPos="2"/>
-							<SendersBranchReference RecordPos="I" LPos="2"/>
-							<TestFlag RecordPos="I" LPos="3"/>
+							<SendersBranchReference RecordPos="C" LPos="2"/>
+							<TestFlag RecordPos="C" LPos="3"/>
 						</TradeSimpleHeader>
-						<InvoiceHeader>
+						<CreditNoteHeader>
 							<BatchInformation>
-								<FileGenerationNo RecordPos="I" LPos="5"/>
-								<FileVersionNo RecordPos="I" LPos="6"/>
-								<FileCreationDate RecordPos="I" LPos="4"/>
-								<SendersTransmissionReference RecordPos="I" LPos="7"/>
-								<SendersTransmissionDate RecordPos="I" LPos="8"/>
+								<FileGenerationNo RecordPos="C" LPos="5"/>
+								<FileVersionNo RecordPos="C" LPos="6"/>
+								<FileCreationDate RecordPos="C" LPos="4"/>
+								<SendersTransmissionReference RecordPos="C" LPos="7"/>
+								<SendersTransmissionDate RecordPos="C" LPos="8"/>
 							</BatchInformation>
 							<Buyer>
 								<BuyersLocationID>
@@ -68,54 +69,59 @@
 								</SuppliersAddress>
 							</Supplier>
 							<ShipTo>
-								<ShipToLocationID>
-									<SuppliersCode RecordPos="H" LPos="2"/>
-								</ShipToLocationID>
-								<ShipToName RecordPos="H" LPos="20"/>
+								<ShipToName RecordPos="H" LPos="22"/>
 								<ShipToAddress>
-									<AddressLine1 RecordPos="H" LPos="21"/>
-									<AddressLine2 RecordPos="H" LPos="22"/>
-									<AddressLine3 RecordPos="H" LPos="23"/>
-									<AddressLine4 RecordPos="H" LPos="24"/>
-									<PostCode RecordPos="H" LPos="25"/>
+									<AddressLine1 RecordPos="H" LPos="23"/>
+									<AddressLine2 RecordPos="H" LPos="24"/>
+									<AddressLine3 RecordPos="H" LPos="25"/>
+									<AddressLine4 RecordPos="H" LPos="26"/>
+									<PostCode RecordPos="H" LPos="27"/>
 								</ShipToAddress>
 							</ShipTo>
 							<InvoiceReferences>
-								<InvoiceReference RecordPos="H" LPos="16"/>
-								<InvoiceDate RecordPos="H" LPos="17"/>
+								<InvoiceReference RecordPos="H" LPos="19"/>
+								<InvoiceDate RecordPos="H" LPos="20"/>
+							</InvoiceReferences>
+							<CreditNoteReferences>
+								<CreditNoteReference RecordPos="H" LPos="16"/>
+								<CreditNoteDate RecordPos="H" LPos="17"/>
 								<TaxPointDate RecordPos="H" LPos="18"/>
 								<VATRegNo RecordPos="H" LPos="9"/>
-							</InvoiceReferences>
-							<Currency RecordPos="H" LPos="19"/>
-						</InvoiceHeader>
-						<InvoiceDetail>
-							<InvoiceLine>
+							</CreditNoteReferences>
+							<Currency RecordPos="H" LPos="21"/>
+						</CreditNoteHeader>
+						<CreditNoteDetail>
+							<CreditNoteLine>
+								<CreditRequestReferences>
+									<CreditRequestReference RecordPos="D" LPos="2"/>
+									<CreditRequestDate RecordPos="D" LPos="3"/>
+								</CreditRequestReferences>
 								<PurchaseOrderReferences>
-									<PurchaseOrderReference RecordPos="D" LPos="2"/>
-									<PurchaseOrderDate RecordPos="D" LPos="3"/>
+									<PurchaseOrderReference RecordPos="D" LPos="4"/>
+									<PurchaseOrderDate RecordPos="D" LPos="5"/>
 								</PurchaseOrderReferences>
 								<DeliveryNoteReferences>
-									<DeliveryNoteReference RecordPos="D" LPos="4"/>
-									<DeliveryNoteDate RecordPos="D" LPos="5"/>
+									<DeliveryNoteReference RecordPos="D" LPos="6"/>
+									<DeliveryNoteDate RecordPos="D" LPos="7"/>
 								</DeliveryNoteReferences>
 								<ProductID>
-									<SuppliersProductCode RecordPos="D" LPos="6"/>
+									<SuppliersProductCode RecordPos="D" LPos="8"/>
 								</ProductID>
-								<ProductDescription RecordPos="D" LPos="7"/>
-								<InvoicedQuantity RecordPos="D" LPos="9">
-									<ffsAttribute1 name="UnitOfMeasure" RecordPos="D" LPos="14"/>
-								</InvoicedQuantity>
-								<PackSize RecordPos="D" LPos="8"/>
-								<UnitValueExclVAT RecordPos="D" LPos="10"/>
-								<LineValueExclVAT RecordPos="D" LPos="11"/>
-								<VATCode RecordPos="D" LPos="12"/>
-								<VATRate RecordPos="D" LPos="13"/>
-							</InvoiceLine>
-						</InvoiceDetail>
-						<InvoiceTrailer>
-							<NumberOfLines RecordPos="H" LPos="27"/>
-							<NumberOfItems RecordPos="H" LPos="28"/>
-							<NumberOfDeliveries RecordPos="H" LPos="26"/>
+								<ProductDescription RecordPos="D" LPos="9"/>
+								<CreditedQuantity RecordPos="D" LPos="11">
+									<ffsAttribute1 name="UnitOfMeasure" RecordPos="D" LPos="17"/>
+								</CreditedQuantity>
+								<PackSize RecordPos="D" LPos="10"/>
+								<UnitValueExclVAT RecordPos="D" LPos="12"/>
+								<LineValueExclVAT RecordPos="D" LPos="13"/>
+								<VATCode RecordPos="D" LPos="14"/>
+								<VATRate RecordPos="D" LPos="15"/>
+								<Narrative RecordPos="D" LPos="16"/>
+							</CreditNoteLine>
+						</CreditNoteDetail>
+						<CreditNoteTrailer>
+							<NumberOfLines RecordPos="H" LPos="28"/>
+							<NumberOfItems RecordPos="H" LPos="29"/>
 							<VATSubTotals>
 								<VATSubTotal>
 									<NumberOfLinesAtRate RecordPos="V" LPos="4"/>
@@ -137,19 +143,19 @@
 								</VATSubTotal>
 							</VATSubTotals>
 							<!-- MANDATORY Lines Total Ex VAT -->
-							<DocumentTotalExclVAT RecordPos="H" LPos="29"/>
+							<DocumentTotalExclVAT RecordPos="H" LPos="30"/>
 							<!-- MANDATORY Settlement Discount Total -->
-							<SettlementDiscount RecordPos="H" LPos="30"/>
+							<SettlementDiscount RecordPos="H" LPos="31"/>
 							<!-- MANDATORY Taxable Amount -->
-							<SettlementTotalExclVAT RecordPos="H" LPos="31"/>
+							<SettlementTotalExclVAT RecordPos="H" LPos="32"/>
 							<!-- MANDATORY VAT Amount Total -->
-							<VATAmount RecordPos="H" LPos="32"/>
+							<VATAmount RecordPos="H" LPos="33"/>
 							<!-- MANDATORY Total Payable Ex Settlement Discount -->
-							<DocumentTotalInclVAT RecordPos="H" LPos="33"/>
+							<DocumentTotalInclVAT RecordPos="H" LPos="34"/>
 							<!-- MANDATORY Total Payable Inc Settlement Discount -->
-							<SettlementTotalInclVAT RecordPos="H" LPos="34"/>
-						</InvoiceTrailer>
-					</Invoice>
+							<SettlementTotalInclVAT RecordPos="H" LPos="35"/>
+						</CreditNoteTrailer>
+					</CreditNote>
 				</BatchDocument>
 			</BatchDocuments>
 		</Batch>
