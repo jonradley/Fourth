@@ -15,6 +15,8 @@ A Barber	| 24/10/2013	 | 7227: Altered reference to use DN ref.
 *******************************************************************
 A Barber	| 10/01/2014	 | 7620: Updated ship to location code to use senders branch reference.
 **********************************************************************************************************
+J Miguel	| 26/02/2014	 | xxxx: Amend the DTM segment date: using Delivered Delivery Date
+**********************************************************************************************************
 -->
 <xsl:stylesheet  version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 	xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript"
@@ -162,7 +164,7 @@ A Barber	| 10/01/2014	 | 7620: Updated ship to location code to use senders bran
 	<xsl:text>DTM*</xsl:text>
 	<xsl:text>011*</xsl:text>
 	<xsl:call-template name="DateFormat">
-		<xsl:with-param name="sDateFormat" select="GoodsReceivedNoteHeader/DeliveryNoteReferences/DeliveryNoteDate"/>
+		<xsl:with-param name="sDateFormat" select="GoodsReceivedNoteHeader/DeliveredDeliveryDetails/DeliveryDate"/>
 	</xsl:call-template>
 	<xsl:text>*</xsl:text>
 	<xsl:text>*</xsl:text>
