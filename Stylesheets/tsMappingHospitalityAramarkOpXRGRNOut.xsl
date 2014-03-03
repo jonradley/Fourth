@@ -15,7 +15,7 @@ A Barber	| 24/10/2013	 | 7227: Altered reference to use DN ref.
 *******************************************************************
 A Barber	| 10/01/2014	 | 7620: Updated ship to location code to use senders branch reference.
 **********************************************************************************************************
-J Miguel	| 26/02/2014	 | xxxx: Amend the DTM segment date: using Delivered Delivery Date
+J Miguel	| 26/02/2014	 | 7724: Amend the DTM segment date: using Delivered Delivery Date
 **********************************************************************************************************
 -->
 <xsl:stylesheet  version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
