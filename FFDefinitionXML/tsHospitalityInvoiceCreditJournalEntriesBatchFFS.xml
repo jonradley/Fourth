@@ -7,13 +7,13 @@ S Sehgal		| 06-11-2012		| 5729 Created module
 **********************************************************************
 S Sehgal		| 16-10-2013		| 7156 Group files on the FnBInternalRef only				
 **********************************************************************
-				|						|
+S Sehgal		| 04-03-2014		| 7731 Identify records by record name (ie the 1st field in each record) rather than by record length. 		
 **********************************************************************
 				|						|
 *******************************************************************-->
 <ffsFlatFileSchema>
 	<ffsSettings>
-		<ffsRecordPositionType>sequenced</ffsRecordPositionType>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
 		<ffsRecordSeparator FixedSize="false">chr(13)chr(10)</ffsRecordSeparator>
 		<ffsFieldSeparators>
 			<ffsFieldSeparator>,</ffsFieldSeparator>
@@ -23,63 +23,63 @@ S Sehgal		| 16-10-2013		| 7156 Group files on the FnBInternalRef only
 	<ffsRoot>
 		<Batch>
 			<BatchHeader>
-				<OrganisationCode RecordLength="6" RecordPos="1" LPos="2"/>
-				<SourceSystemExportID RecordLength="6" RecordPos="1" LPos="3"/>
-				<SourceSystemOrgID RecordLength="6" RecordPos="1" LPos="5"/>
-				<FormatCode RecordLength="6" RecordPos="1" LPos="4"/>
-				<AccountingSystemCode RecordLength="6" RecordPos="1" LPos="6"/>
+				<OrganisationCode RecordPos="B" LPos="2"/>
+				<SourceSystemExportID RecordPos="B" LPos="3"/>
+				<SourceSystemOrgID RecordPos="B" LPos="5"/>
+				<FormatCode RecordPos="B" LPos="4"/>
+				<AccountingSystemCode RecordPos="B" LPos="6"/>
 			</BatchHeader>
 			<BatchDocuments>
 				<BatchDocument>
 					<InvoiceCreditJournalEntries>
 						<InvoiceCreditJournalEntriesHeader>
-							<BuyersUnitCode RecordLength="45"  RecordPos="*" LPos="2"/>
-							<BuyersSiteCode RecordLength="45" RecordPos="*" LPos="3"/>
-							<BuyerName RecordLength="45" RecordPos="*" LPos="4"/>
-							<RegionName RecordLength="45" RecordPos="*" LPos="5"/>
-							<SiteBrand RecordLength="45" RecordPos="*" LPos="6"/>
-							<SiteClosingStockField RecordLength="45" RecordPos="*" LPos="7"/>
-							<VATAccountCode RecordLength="45" RecordPos="*" LPos="8"/>
-							<TransactionType RecordLength="45" RecordPos="*" LPos="9"/>
-							<InvoiceReference RecordLength="45" RecordPos="*" LPos="10"/>
-							<InvoiceDate RecordLength="45" RecordPos="*" LPos="18"/>
-							<DeliveryReference RecordLength="45" RecordPos="*" LPos="11"/>
-							<DeliveryDate RecordLength="45" RecordPos="*" LPos="17"/>
-							<VoucherNumber RecordLength="45" RecordPos="*" LPos="12"/>
-							<FnBInternalRef RecordLength="45" RecordPos="*" LPos="13"/>
-							<TransactionDescription RecordLength="45" RecordPos="*" LPos="14"/>
-							<BuyersCodeForSupplier RecordLength="45" RecordPos="*" LPos="15"/>
-							<SupplierName RecordLength="45" RecordPos="*" LPos="16"/>
-							<SupplierNominalCode RecordLength="45" RecordPos="*" LPos="38"/>
-							<CustomFinancialYear RecordLength="45" RecordPos="*" LPos="19"/>
-							<CustomFinancialPeriod RecordLength="45" RecordPos="*" LPos="20"/>
-							<StockFinancialYear RecordLength="45" RecordPos="*" LPos="21"/>
-							<StockFinancialPeriod RecordLength="45" RecordPos="*" LPos="22"/>
-							<CreatedBy RecordLength="45" RecordPos="*" LPos="37"/>
-							<ExportRunDate RecordLength="45" RecordPos="*" LPos="23"/>
-							<InvoiceNumberforCRN RecordLength="45" RecordPos="*" LPos="39"/>
-							<CurrencyCode RecordLength="45" RecordPos="*" LPos="42"/>
-							<CustomerVATCode RecordLength="45" RecordPos="*" LPos="43"/>
-							<UnitSiteName RecordLength="45" RecordPos="*" LPos="44"/>
-							<UnitSiteNominal RecordLength="45" RecordPos="*" LPos="45"/>
+							<BuyersUnitCode RecordPos="E" LPos="2"/>
+							<BuyersSiteCode RecordPos="E" LPos="3"/>
+							<BuyerName RecordPos="E" LPos="4"/>
+							<RegionName RecordPos="E" LPos="5"/>
+							<SiteBrand RecordPos="E" LPos="6"/>
+							<SiteClosingStockField RecordPos="E" LPos="7"/>
+							<VATAccountCode RecordPos="E" LPos="8"/>
+							<TransactionType RecordPos="E" LPos="9"/>
+							<InvoiceReference RecordPos="E" LPos="10"/>
+							<InvoiceDate RecordPos="E" LPos="18"/>
+							<DeliveryReference RecordPos="E" LPos="11"/>
+							<DeliveryDate RecordPos="E" LPos="17"/>
+							<VoucherNumber RecordPos="E" LPos="12"/>
+							<FnBInternalRef RecordPos="E" LPos="13"/>
+							<TransactionDescription RecordPos="E" LPos="14"/>
+							<BuyersCodeForSupplier RecordPos="E" LPos="15"/>
+							<SupplierName RecordPos="E" LPos="16"/>
+							<SupplierNominalCode RecordPos="E" LPos="38"/>
+							<CustomFinancialYear RecordPos="E" LPos="19"/>
+							<CustomFinancialPeriod RecordPos="E" LPos="20"/>
+							<StockFinancialYear RecordPos="E" LPos="21"/>
+							<StockFinancialPeriod RecordPos="E" LPos="22"/>
+							<CreatedBy RecordPos="E" LPos="37"/>
+							<ExportRunDate RecordPos="E" LPos="23"/>
+							<InvoiceNumberforCRN RecordPos="E" LPos="39"/>
+							<CurrencyCode RecordPos="E" LPos="42"/>
+							<CustomerVATCode RecordPos="E" LPos="43"/>
+							<UnitSiteName RecordPos="E" LPos="44"/>
+							<UnitSiteNominal RecordPos="E" LPos="45"/>
 						</InvoiceCreditJournalEntriesHeader>
 						<InvoiceCreditJournalEntriesDetail>
 							<InvoiceCreditJournalEntriesLine>
-								<Amount RecordLength="45" RecordPos="*" LPos="24"/>
-								<ConversionCode RecordLength="45" RecordPos="*" LPos="25"/>
-								<ConvertedAmount RecordLength="45" RecordPos="*" LPos="26"/>
-								<VATCode RecordLength="45" RecordPos="*" LPos="27"/>
-								<LineVATPercentage RecordLength="45" RecordPos="*" LPos="28"/>
-								<LineNet RecordLength="45" RecordPos="*" LPos="29"/>
-								<LineVAT RecordLength="45" RecordPos="*" LPos="30"/>
-								<LineGross RecordLength="45" RecordPos="*" LPos="31"/>
-								<CostCentreName RecordLength="45" RecordPos="*" LPos="32"/>
-								<CategoryCode1 RecordLength="45" RecordPos="*" LPos="33"/>
-								<CategoryCode2 RecordLength="45" RecordPos="*" LPos="34"/>
-								<CategoryCode3 RecordLength="45" RecordPos="*" LPos="35"/>
-								<CategoryCode4 RecordLength="45" RecordPos="*" LPos="36"/>
-								<CategoryName RecordLength="45" RecordPos="*" LPos="40"/>
-								<CategoryNominal RecordLength="45" RecordPos="*" LPos="41"/>
+								<Amount RecordPos="E" LPos="24"/>
+								<ConversionCode RecordPos="E" LPos="25"/>
+								<ConvertedAmount RecordPos="E" LPos="26"/>
+								<VATCode RecordPos="E" LPos="27"/>
+								<LineVATPercentage RecordPos="E" LPos="28"/>
+								<LineNet RecordPos="E" LPos="29"/>
+								<LineVAT RecordPos="E" LPos="30"/>
+								<LineGross RecordPos="E" LPos="31"/>
+								<CostCentreName RecordPos="E" LPos="32"/>
+								<CategoryCode1 RecordPos="E" LPos="33"/>
+								<CategoryCode2 RecordPos="E" LPos="34"/>
+								<CategoryCode3 RecordPos="E" LPos="35"/>
+								<CategoryCode4 RecordPos="E" LPos="36"/>
+								<CategoryName RecordPos="E" LPos="40"/>
+								<CategoryNominal RecordPos="E" LPos="41"/>
 							</InvoiceCreditJournalEntriesLine>
 						</InvoiceCreditJournalEntriesDetail>
 					</InvoiceCreditJournalEntries>
