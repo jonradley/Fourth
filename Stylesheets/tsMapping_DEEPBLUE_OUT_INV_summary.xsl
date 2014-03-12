@@ -5,6 +5,7 @@
 ======================================================================================================================
  09/01/2014	| J Miguel	|	FB7610 - Deep Blue / FnB (R9) - Invoice and Credit Journal Entries Batch Report | Created
  15/01/2014	| J Miguel	|	FB7628 - Fixing the padding space.
+ 12/03/2014	| J Miguel	|	FB7743 - Filter out Credit Notes.
 ======================================================================================================================
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:user="http://mycompany.com/mynamespace">
@@ -13,7 +14,7 @@
 	<xsl:variable name="FieldSeperator" select="','"/>
 	<!--Get rid of this template if the header is not required finally-->
 	<xsl:template match="/">
-		<xsl:apply-templates select="//InvoiceCreditJournalEntriesLine"/>
+		<xsl:apply-templates select="//InvoiceCreditJournalEntriesHeader[TransactionType='INV']/../InvoiceCreditJournalEntriesDetail/InvoiceCreditJournalEntriesLine"/>
 	</xsl:template>
 	<xsl:template match="InvoiceCreditJournalEntriesLine">
 		<!-- Account	C	8		Purchase Supplier Account Code/Identifier -->
