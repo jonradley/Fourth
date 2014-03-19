@@ -5,6 +5,8 @@ Caring Homes Invoice and Credit Batch Map
 Name				| Date			| Change
 *********************************************************************
 Andrew Barber	| 22/01/2014	| 7665 Created.
+*********************************************************************
+Andrew Barber	| 17/03/2014	| 7752 Additional test on supplier code output around '/' delimiter.
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 	<xsl:output method="text" encoding="UTF-8"/>
@@ -24,7 +26,14 @@ Andrew Barber	| 22/01/2014	| 7665 Created.
 			<xsl:text>,</xsl:text>
 			
 			<!-- Supplier Code -->
-			<xsl:value-of select="substring-before(TradeSimpleHeader/RecipientsCodeForSender,'/')"/>
+			<xsl:choose>
+				<xsl:when test="contains(TradeSimpleHeader/RecipientsCodeForSender,'/')">
+					<xsl:value-of select="substring-before(TradeSimpleHeader/RecipientsCodeForSender,'/')"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="TradeSimpleHeader/RecipientsCodeForSender"/>
+				</xsl:otherwise>
+			</xsl:choose>
 			<xsl:text>,</xsl:text>
 			
 			<!-- Invoice Number -->
@@ -91,7 +100,14 @@ Andrew Barber	| 22/01/2014	| 7665 Created.
 			<xsl:text>,</xsl:text>
 			
 			<!-- Supplier Code -->
-			<xsl:value-of select="substring-before(TradeSimpleHeader/RecipientsCodeForSender,'/')"/>
+			<xsl:choose>
+				<xsl:when test="contains(TradeSimpleHeader/RecipientsCodeForSender,'/')">
+					<xsl:value-of select="substring-before(TradeSimpleHeader/RecipientsCodeForSender,'/')"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="TradeSimpleHeader/RecipientsCodeForSender"/>
+				</xsl:otherwise>
+			</xsl:choose>
 			<xsl:text>,</xsl:text>
 			
 			<!-- Invoice Number -->
