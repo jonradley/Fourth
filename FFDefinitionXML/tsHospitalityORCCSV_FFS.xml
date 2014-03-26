@@ -3,7 +3,7 @@
 /******************************************************************************************
 ' Date        	| Name         | Description of modification
 '******************************************************************************************
- 20-03-2013		| Jose Miguel  | Generic CSV Specs FFS Mapper - Order Confirmation
+ 20-03-2013		| Jose Miguel  | FB7761 Generic CSV Specs FFS Mapper - Order Confirmation
 '******************************************************************************************
 -->
 <ffsFlatFileSchema>
