@@ -17,6 +17,8 @@ A Barber	| 10/01/2014	 | 7620: Updated ship to location code to use senders bran
 **********************************************************************************************************
 J Miguel	| 26/02/2014	 | 7724: Amend the DTM segment date: using Delivered Delivery Date
 **********************************************************************************************************
+A Barber	| 16/04/2014	 | 7798: Logic to replace '*' with '_' in the PO reference.
+**********************************************************************************************************
 -->
 <xsl:stylesheet  version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 	xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript"
@@ -93,7 +95,7 @@ J Miguel	| 26/02/2014	 | 7724: Amend the DTM segment date: using Delivered Deliv
 	<xsl:text>*</xsl:text>
 	<xsl:value-of select="$sFileGenerationDate"/>
 	<xsl:text>*</xsl:text>
-	<xsl:value-of select="GoodsReceivedNoteHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
+	<xsl:value-of select="translate(GoodsReceivedNoteHeader/PurchaseOrderReferences/PurchaseOrderReference,'*','_')"/>
 	<xsl:text>*</xsl:text>
 	<xsl:text>*</xsl:text>
 	<xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/>
