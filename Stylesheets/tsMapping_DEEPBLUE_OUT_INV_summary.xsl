@@ -6,6 +6,7 @@
  09/01/2014	| J Miguel	|	FB7610 - Deep Blue / FnB (R9) - Invoice and Credit Journal Entries Batch Report | Created
  15/01/2014	| J Miguel	|	FB7628 - Fixing the padding space.
  12/03/2014	| J Miguel	|	FB7743 - Filter out Credit Notes.
+ 06/05/2014	| J Miguel	|	FB7821 - Use CustomerVATCode instead of VATCode
 ======================================================================================================================
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:user="http://mycompany.com/mynamespace">
@@ -38,7 +39,7 @@
 		<xsl:value-of select="format-number(LineNet, '0.00')"/>
 		<xsl:value-of select="$FieldSeperator"/>
 		<!-- VAT Code	C	1 -->
-		<xsl:value-of select="VATCode"/>
+		<xsl:value-of select="CustomerVATCode"/>
 		<xsl:value-of select="$FieldSeperator"/>
 		<!-- VAT Amount	N	12	2	Vat amount -->
 		<xsl:value-of select="format-number(LineVAT, '0.00')"/>
