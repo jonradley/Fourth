@@ -9,6 +9,8 @@ S Sehgal		| 16-10-2013		| 7156 Group files on the FnBInternalRef only
 **********************************************************************
 S Sehgal		| 04-03-2014		| 7731 Identify records by record name (ie the 1st field in each record) rather than by record length. 		
 **********************************************************************
+J Miguel		| 06-05-2014		| 7819 Moving the CustomerVATCode (#43) from the invoice header to the invoice line detail.
+**********************************************************************
 				|						|
 *******************************************************************-->
 <ffsFlatFileSchema>
@@ -59,7 +61,6 @@ S Sehgal		| 04-03-2014		| 7731 Identify records by record name (ie the 1st field
 							<ExportRunDate RecordPos="E" LPos="23"/>
 							<InvoiceNumberforCRN RecordPos="E" LPos="39"/>
 							<CurrencyCode RecordPos="E" LPos="42"/>
-							<CustomerVATCode RecordPos="E" LPos="43"/>
 							<UnitSiteName RecordPos="E" LPos="44"/>
 							<UnitSiteNominal RecordPos="E" LPos="45"/>
 						</InvoiceCreditJournalEntriesHeader>
@@ -80,6 +81,7 @@ S Sehgal		| 04-03-2014		| 7731 Identify records by record name (ie the 1st field
 								<CategoryCode4 RecordPos="E" LPos="36"/>
 								<CategoryName RecordPos="E" LPos="40"/>
 								<CategoryNominal RecordPos="E" LPos="41"/>
+								<CustomerVATCode RecordPos="E" LPos="43"/>
 							</InvoiceCreditJournalEntriesLine>
 						</InvoiceCreditJournalEntriesDetail>
 					</InvoiceCreditJournalEntries>
