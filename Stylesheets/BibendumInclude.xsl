@@ -7,6 +7,8 @@ Name			| Date				| Change
 S Hussain		|	2013-05-14	| 6496 Created a common stylesheets with generic functionalities by Bibendum
 **********************************************************************
 A Barber		|	2013-08-28	| 6952 Added new customer: Stonegate.
+**********************************************************************
+J Miguel		|	2014-05-07	| Bidendum - SODEXO Unit of measure to behave as default
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:user="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl user">
 	<!--Generic Variables-->
@@ -133,14 +135,14 @@ A Barber		|	2013-08-28	| 6952 Added new customer: Stonegate.
 			<xsl:choose>
 				<!-- 2012-02-01 - removed ARAMARK from this list, UoM SHOULD be added to product codes for them -->
 				<!-- 2013-05-07 - removed PBR from this list, UoM SHOULD be added to product codes for them -->
+				<!-- 2014-05-07 - removed SODEXO from this list, UoM -->
 				<xsl:when test="not(
 					$CustomerFlag = $COMPASS or
 					$CustomerFlag = $COOP  or
 					$CustomerFlag = $FISHWORKS or
 					$CustomerFlag = $MCC  or
 					$CustomerFlag = $ORCHID or
-					$CustomerFlag = $SEARCYS or
-					$CustomerFlag = $SODEXO_PRESTIGE)">
+					$CustomerFlag = $SEARCYS)">
 					<!-- translate the Units In Pack value and then append this to the product code -->
 					<xsl:variable name="UOMRaw">
 						<xsl:choose>
