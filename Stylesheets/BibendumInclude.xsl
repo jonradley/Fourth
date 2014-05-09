@@ -8,7 +8,7 @@ S Hussain		|	2013-05-14	| 6496 Created a common stylesheets with generic functio
 **********************************************************************
 A Barber		|	2013-08-28	| 6952 Added new customer: Stonegate.
 **********************************************************************
-J Miguel		|	2014-05-07	| Bidendum - SODEXO Unit of measure to behave as default
+J Miguel		|	2014-05-07	| 7823 Bidendum - SODEXO Unit of measure to behave as default
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:user="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl user">
 	<!--Generic Variables-->
