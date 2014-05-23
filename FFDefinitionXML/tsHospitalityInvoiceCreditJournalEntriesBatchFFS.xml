@@ -11,6 +11,8 @@ S Sehgal		| 04-03-2014		| 7731 Identify records by record name (ie the 1st field
 **********************************************************************
 J Miguel		| 06-05-2014		| 7819 Moving the CustomerVATCode (#43) from the invoice header to the invoice line detail.
 **********************************************************************
+S Sehgal		| 23-05-2014		| 7837 Added new field SupplierReturnsReference 
+**********************************************************************
 				|						|
 *******************************************************************-->
 <ffsFlatFileSchema>
@@ -60,9 +62,9 @@ J Miguel		| 06-05-2014		| 7819 Moving the CustomerVATCode (#43) from the invoice
 							<CreatedBy RecordPos="E" LPos="37"/>
 							<ExportRunDate RecordPos="E" LPos="23"/>
 							<InvoiceNumberforCRN RecordPos="E" LPos="39"/>
-							<CurrencyCode RecordPos="E" LPos="42"/>
-							<UnitSiteName RecordPos="E" LPos="44"/>
-							<UnitSiteNominal RecordPos="E" LPos="45"/>
+							<CurrencyCode RecordPos="E" LPos="43"/>
+							<UnitSiteName RecordPos="E" LPos="45"/>
+							<UnitSiteNominal RecordPos="E" LPos="46"/>
 						</InvoiceCreditJournalEntriesHeader>
 						<InvoiceCreditJournalEntriesDetail>
 							<InvoiceCreditJournalEntriesLine>
@@ -79,9 +81,10 @@ J Miguel		| 06-05-2014		| 7819 Moving the CustomerVATCode (#43) from the invoice
 								<CategoryCode2 RecordPos="E" LPos="34"/>
 								<CategoryCode3 RecordPos="E" LPos="35"/>
 								<CategoryCode4 RecordPos="E" LPos="36"/>
-								<CategoryName RecordPos="E" LPos="40"/>
-								<CategoryNominal RecordPos="E" LPos="41"/>
-								<CustomerVATCode RecordPos="E" LPos="43"/>
+								<CategoryName RecordPos="E" LPos="41"/>
+								<CategoryNominal RecordPos="E" LPos="42"/>
+								<CustomerVATCode RecordPos="E" LPos="44"/>
+								<SupplierReturnsReference RecordPos="E" LPos="40"/>
 							</InvoiceCreditJournalEntriesLine>
 						</InvoiceCreditJournalEntriesDetail>
 					</InvoiceCreditJournalEntries>
