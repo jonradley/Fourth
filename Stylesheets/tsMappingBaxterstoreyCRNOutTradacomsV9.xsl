@@ -5,6 +5,8 @@
  30/05/2012	| KOshaughnessy		| Created module
 =======================================================================================
  04/12/2013	| M Dimant				| 7519: Small changes to correct how values are formatted - CLD: 2dp, CST and CTR: 4 dp
+=======================================================================================
+ 03/06/2014	| M Dimant				| 7843: Bug Fix - Added loop to catch all credit lines.
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 					xmlns:fo="http://www.w3.org/1999/XSL/Format"
@@ -153,21 +155,23 @@
 		</xsl:call-template>
 	<xsl:value-of select="$sRecordSep"/>	
 	
+	<xsl:for-each select="CreditNoteDetail/CreditNoteLine">	
 		<xsl:text>CLD=1+</xsl:text>
-			<xsl:value-of select="CreditNoteDetail/CreditNoteLine/ProductID/SuppliersProductCode"/>
+			<xsl:value-of select="ProductID/SuppliersProductCode"/>
 			<xsl:text>+++1+</xsl:text>
-			<xsl:value-of select="translate(format-number(CreditNoteDetail/CreditNoteLine/CreditedQuantity,'#.0000'),'.','')"/>
+			<xsl:value-of select="translate(format-number(CreditedQuantity,'#.0000'),'.','')"/>
 			<xsl:text>+</xsl:text>
-			<xsl:value-of select="translate(format-number(CreditNoteDetail/CreditNoteLine/UnitValueExclVAT,'#.0000'),'.','')"/>
+			<xsl:value-of select="translate(format-number(UnitValueExclVAT,'#.0000'),'.','')"/>
 			<xsl:text>+</xsl:text>
-			<xsl:value-of select="translate(format-number(CreditNoteDetail/CreditNoteLine/LineValueExclVAT,'#.0000'),'.','')"/>
+			<xsl:value-of select="translate(format-number(LineValueExclVAT,'#.0000'),'.','')"/>
 			<xsl:text>+</xsl:text>
-			<xsl:value-of select="CreditNoteDetail/CreditNoteLine/VATCode"/>
+			<xsl:value-of select="VATCode"/>
 			<xsl:text>+</xsl:text>
-			<xsl:value-of select="translate(format-number(CreditNoteDetail/CreditNoteLine/VATRate,'#.0000'),'.','')"/>
+			<xsl:value-of select="translate(format-number(VATRate,'#.0000'),'.','')"/>
 			<xsl:text>+::+++</xsl:text>
-			<xsl:value-of select="CreditNoteDetail/CreditNoteLine/ProductDescription"/>
+			<xsl:value-of select="ProductDescription"/>
 		<xsl:value-of select="$sRecordSep"/>	
+	</xsl:for-each>
 		
 		<xsl:for-each select="CreditNoteTrailer/VATSubTotals">
 			<xsl:text>CST=1+</xsl:text>
