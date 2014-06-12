@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--*************************************************************
+<!--*****************************************************************************************************************************
 Date 			|	Name				|	Description
-****************************************************************
-05/10/2012	|	K Oshaughnessy| Created
-***************************************************************
-				|						|
-************************************************************-->				
+********************************************************************************************************************************
+05/10/2012	| K Oshaughnessy	| Created
+********************************************************************************************************************************
+10/06/2014	| M Dimant			| 7851: Set UOM to CS if inbound value is numerical and EA if it is 1
+********************************************************************************************************************************-->				
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 	<xsl:output method="xml" encoding="UTF-8"/>
 
@@ -38,14 +38,23 @@ Date 			|	Name				|	Description
 		<xsl:call-template name="UOM">
 			<xsl:with-param name="UOMdecode" select="."/>
 		</xsl:call-template>
-	</xsl:template>
+	</xsl:template>	
 	
 	<xsl:template name="UOM">
 		<xsl:param name="UOMdecode"/>
 			<xsl:attribute name="UnitOfMeasure">
 				<xsl:choose>
+					<!-- If value is '1' insert EA as the UOM -->
+					<xsl:when test="$UOMdecode = '1' ">
+						<xsl:text>EA</xsl:text>
+					</xsl:when>
+					<!-- If value is 'Case' insert CS as the UOM -->
 					<xsl:when test="$UOMdecode = 'Case' ">
 						<xsl:text>CS</xsl:text>
+					</xsl:when>
+					<!-- If value is numerical insert CS as the UOM -->
+					<xsl:when test="number($UOMdecode) = $UOMdecode">
+							<xsl:text>CS</xsl:text>
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:value-of select="."/>
@@ -53,7 +62,7 @@ Date 			|	Name				|	Description
 				</xsl:choose>
 			</xsl:attribute>
 	</xsl:template>
-	
+		
 	<!--To Manipulate the date string into trade|simple format-->
 	<xsl:template match="InvoiceDate | PurchaseOrderDate | DeliveryNoteDate | TaxPointDate">
 		<xsl:call-template name="DateHandler">
