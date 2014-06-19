@@ -69,7 +69,7 @@ M Dimant		| 20/05/2014	| FB 7771: Created based on generic tradacoms mapper. Han
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:for-each select="InvoicedQuantity">
-							<xsl:call-template name="copyCurrentNodeExplicit3DP"/>
+							<xsl:value-of select="."/>	
 						</xsl:for-each>
 					</xsl:otherwise>
 				</xsl:choose>		
