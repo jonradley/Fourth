@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--======================================================================================
+ Overview
+==========================================================================================
+ 01/07/2014	| J Miguel		|	Created
+========================================================================================-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>sequenced</ffsRecordPositionType>
+		<ffsRecordSeparator>chr(13)chr(10)</ffsRecordSeparator>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>,</ffsFieldSeparator>
+		</ffsFieldSeparators>
+	</ffsSettings>
+	<ffsRoot>
+		<TimeAndAttendance>
+			<TimeAndAttendanceHeader>
+				<GroupGUID RecordLength="1" RecordPos="*" LPos="1"/>
+			</TimeAndAttendanceHeader>
+			<TimeAndAttendanceDetails>
+				<TimeAndAttendanceDetail>
+					<EmpNo RecordLength="8" RecordPos="*" LPos="2"/>
+					<Location RecordLength="8" RecordPos="*" LPos="1"/>
+					<CheckIn>
+						<ffsAttribute1 name="Date" RecordLength="8" RecordPos="*" LPos="3"/>
+						<ffsAttribute1 name="Time" RecordLength="8" RecordPos="*" LPos="4"/>
+						<ffsAttribute1 name="AdjustmentType" RecordLength="8" RecordPos="*" LPos="5"/>
+					</CheckIn>
+					<CheckOut>
+						<ffsAttribute1 name="Date" RecordLength="8" RecordPos="*" LPos="6"/>
+						<ffsAttribute1 name="Time" RecordLength="8" RecordPos="*" LPos="7"/>
+						<ffsAttribute1 name="AdjustmentType" RecordLength="8" RecordPos="*" LPos="8"/>
+					</CheckOut>
+				</TimeAndAttendanceDetail>
+			</TimeAndAttendanceDetails>
+		</TimeAndAttendance>
+	</ffsRoot>
+</ffsFlatFileSchema>
