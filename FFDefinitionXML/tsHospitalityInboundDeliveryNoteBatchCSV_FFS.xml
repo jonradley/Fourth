@@ -8,7 +8,7 @@ R Cambridge	| 04/12/2006	| 585 Created, based on tsHospitalityInboundDeliveryNot
 **********************************************************************
 R Cambridge	| 01/02/2007	| 770 added quantity UoMs
 **********************************************************************
-J Miguel	| 04/07/2014	| FB7876 Adding missing changes found in single mapper.
+				|					|
 *******************************************************************-->
 <ffsFlatFileSchema>
 	<ffsSettings>
