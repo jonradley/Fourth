@@ -58,16 +58,7 @@
 					<xsl:value-of select="CS"/>
 				</xsl:otherwise>
 			</xsl:choose>
-			<!--			<xsl:choose> -->
 			<!-- check the CatchWeightFlag (BackOrderQuantity) if it is 1 then the AverageWeight (PackSize) will be used instead -->
-			<!--
-				<xsl:when test="../BackOrderQuantity = '1'">
-					<xsl:value-of select="../PackSize"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="."/>
-				</xsl:otherwise>
-			</xsl:choose>-->
 	</xsl:template>
 	<xsl:template match="UnitValueExclVAT">
 		<UnitValueExclVAT>
