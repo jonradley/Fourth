@@ -69,42 +69,6 @@
 			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:text>|</xsl:text>
-		<!--BreakLevel Indicator	A	1	Indicates how the item is being ordered.
-			‘0’ – Main/Case (default)
-			‘1’ – Split/BrokenCase/Each
-			
-			Unit of Measure	A	2 	UOM Code
-			‘CA’ – Main/Case
-			‘EA’ – BrokenCase/Each
-			
-			Only for distributor items that are Case-breakable.	O**	 
-		-->
-		<!--	<xsl:choose>	
-			<xsl:when test="OrderedQuantity/@UnitOfMeasure = 'CS'">
-				-->
-		<!--Breaklevel Indicator-->
-		<!--
-				<xsl:text>0</xsl:text>
-				<xsl:text>|</xsl:text>
-				-->
-		<!--Unit of measure -->
-		<!--
-				<xsl:text>CA</xsl:text>
-				<xsl:text>|</xsl:text>
-			</xsl:when>
-			<xsl:otherwise>
-				-->
-		<!--Breaklevel Indicator-->
-		<!--
-				<xsl:text>1</xsl:text>
-				<xsl:text>|</xsl:text>
-				-->
-		<!--Unit of measure -->
-		<!--
-				<xsl:text>EA</xsl:text>
-				<xsl:text>|</xsl:text>
-			</xsl:otherwise>
-		</xsl:choose>-->
 		<!--Price	A	10	Unit price of the Item based on the BreakLevel or UOM. Must include the decimal point character ‘.’  Maximum of 4 decimals. ‘nnnnn.nnnn'-->
 		<xsl:value-of select="format-number(UnitValueExclVAT, '#.####')"/>
 		<xsl:text>&#13;&#10;</xsl:text>

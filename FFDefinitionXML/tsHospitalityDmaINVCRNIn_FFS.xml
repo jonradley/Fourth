@@ -116,13 +116,6 @@
 							</InvoiceLine>
 						</InvoiceDetail>
 						<InvoiceTrailer>
-<!--							<VATSubTotals>
-								<VATSubTotal>
-									<DocumentTotalExclVATAtRate RecordPos="H" LPos="10"/>
-									<VATAmountAtRate RecordPos="H" LPos="11"/>
-									<DocumentTotalInclVATAtRate RecordPos="H" LPos="13"/>
-								</VATSubTotal>
-							</VATSubTotals>-->
 							<DocumentTotalExclVAT RecordPos="H" LPos="10"/>
 							<!-- H:11 - Total Tax - Total Tax amount of invoice format nnnnnnn.nnnn-->
 							<VATAmount RecordPos="H" LPos="11"/>

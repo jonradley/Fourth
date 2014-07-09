@@ -33,9 +33,6 @@
 							<SendersBranchReference RecordPos="H" LPos="3"/>
 						</TradeSimpleHeader>
 						<PurchaseOrderConfirmationHeader>
-<!-- Ignore the document status as the values do not match ours and this can be derived.						
-							<DocumentStatus RecordPos="H" LPos="10"/>
--->
 							<Buyer>
 								<BuyersLocationID>
 									<SuppliersCode RecordPos="H" LPos="4"/>
@@ -78,8 +75,6 @@
 								<LineNumber RecordPos="I" LPos="6"/>
 								<!-- this is the CatchWeightFlag -->
 								<BackOrderQuantity RecordPos="I" LPos="10"/>
-								<!-- Stylesheet will remap the values into the internal version of them -->
-								<!--<ffsAttribute1 name="LineStatus" RecordPos="I" LPos="12"/>-->
 							</PurchaseOrderConfirmationLine>
 						</PurchaseOrderConfirmationDetail>
 					</PurchaseOrderConfirmation>
