@@ -13,6 +13,8 @@ Maps Joii Sushi Outbound Orders into tradacoms.
  Date      		| Name 			|	Description of modification
 ==========================================================================================
  22/04/2014	| M Dimant	|	FB 7771: Created 
+==========================================================================================
+ 10/07/2014	| M Dimant	|	FB 7886: Insert depot code in with the PO reference 
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -145,11 +147,13 @@ Maps Joii Sushi Outbound Orders into tradacoms.
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/ShipTo/ShipToAddress/PostCode),8)"/>
 		<xsl:value-of select="$sRecordSep"/>
 	
-		<xsl:text>ORD=</xsl:text>
-			<xsl:call-template name="msCheckField">
-				<xsl:with-param name="vobjNode" select="PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
-				<xsl:with-param name="vnLength" select="17"/>
-			</xsl:call-template>
+		<xsl:text>ORD=</xsl:text>	
+			<!-- If depot code exists, insert it in with the PO reference so that Joii can pick it up --> 
+			<xsl:value-of select="PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
+			<xsl:if test="TradeSimpleHeader/RecipientsBranchReference">
+				<xsl:text>/</xsl:text>	
+				<xsl:value-of select="TradeSimpleHeader/RecipientsBranchReference"/>
+			</xsl:if>			
 			<xsl:text>:</xsl:text>
 			<xsl:text>:</xsl:text>
 			<xsl:call-template name="msFormateDate">
