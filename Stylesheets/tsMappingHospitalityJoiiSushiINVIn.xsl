@@ -6,6 +6,8 @@ Maps tradacoms invoices from Joii Sushi into internal TS XML
 Name			| Date			| Change
 *****************************************************************************************************************************************************************
 M Dimant		| 20/05/2014	| FB 7771: Created based on generic tradacoms mapper. Handles catchweight quantities. All quantities in 3dp.
+==========================================================================================
+ 10/07/2014	| M Dimant	|	FB 7886: Populate SBR with depot code in  the PO reference 
 *****************************************************************************************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
@@ -38,6 +40,23 @@ M Dimant		| 20/05/2014	| FB 7771: Created based on generic tradacoms mapper. Han
 	</xsl:template>
 	<!-- END of GENERIC HANDLERS -->
 
+
+	<xsl:template match="TradeSimpleHeader">
+		<TradeSimpleHeader>
+			<xsl:apply-templates select="SendersCodeForRecipient"/>
+			<!-- Populate SBR with depot code taken from the PO reference -->
+			<xsl:variable name="DepotCode">
+					<xsl:value-of select="substring-after(../InvoiceDetail/InvoiceLine/PurchaseOrderReferences/PurchaseOrderReference,'/')"/>
+			</xsl:variable>
+			<xsl:if test="$DepotCode and $DepotCode !=''">
+			<SendersBranchReference>
+				<xsl:value-of select="$DepotCode"/>
+			</SendersBranchReference>
+			</xsl:if>
+		</TradeSimpleHeader>
+	</xsl:template>
+	
+
 	<!-- InvoiceLine/ProductID/BuyersProductCode is used as a placeholder for INVOIC-ILD-CRLI and should not be copied over -->
 	<xsl:template match="BuyersProductCode"/>
 	
@@ -51,7 +70,22 @@ M Dimant		| 20/05/2014	| FB 7771: Created based on generic tradacoms mapper. Han
 	<xsl:template match="InvoiceLine">	
 		<InvoiceLine>	
 			<xsl:apply-templates select="LineNumber"/>
-			<xsl:apply-templates select="PurchaseOrderReferences"/>
+			
+			<!-- Remove the depot code from the PO reference -->			
+			<PurchaseOrderReferences>
+				<PurchaseOrderReference>
+					<xsl:choose>
+						<xsl:when test="contains(PurchaseOrderReferences/PurchaseOrderReference,'/')">
+							<xsl:value-of select="substring-before(PurchaseOrderReferences/PurchaseOrderReference,'/')"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderReference"/>
+						</xsl:otherwise>
+					</xsl:choose>					
+				</PurchaseOrderReference>			
+				<xsl:apply-templates select="PurchaseOrderReferences/PurchaseOrderDate"/>					
+			</PurchaseOrderReferences>
+			
 			<xsl:apply-templates select="PurchaseOrderConfirmationReferences"/>
 			<xsl:apply-templates select="DeliveryNoteReferences"/>
 			<xsl:apply-templates select="GoodsReceivedNoteReferences"/>
