@@ -96,14 +96,14 @@ M Dimant		| 20/05/2014	| FB 7771: Created based on generic tradacoms mapper. Han
 			<xsl:apply-templates select="DeliveredQuantity"/>			
 			<xsl:variable name="sQuantity">
 				<xsl:choose>
-					<xsl:when test="string(./*[TotalMeasureIndicator]/TotalMeasure) != ''">
-						<xsl:for-each select="./Measure/TotalMeasure[1]">
-							<xsl:call-template name="copyCurrentNodeExplicit3DP"/>
-						</xsl:for-each>
-					</xsl:when>
-					<xsl:otherwise>
+					<xsl:when test="InvoicedQuantity">
 						<xsl:for-each select="InvoicedQuantity">
 							<xsl:value-of select="."/>	
+						</xsl:for-each>
+					</xsl:when>
+					<xsl:otherwise>					
+						<xsl:for-each select="./Measure/TotalMeasure[1]">
+							<xsl:call-template name="copyCurrentNodeExplicit3DP"/>						
 						</xsl:for-each>
 					</xsl:otherwise>
 				</xsl:choose>		
