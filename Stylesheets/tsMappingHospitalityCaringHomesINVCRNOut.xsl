@@ -7,6 +7,8 @@ Name				| Date			| Change
 Andrew Barber	| 22/01/2014	| 7665 Created.
 *********************************************************************
 Andrew Barber	| 17/03/2014	| 7752 Additional test on supplier code output around '/' delimiter.
+*********************************************************************
+Andrew Barber	| 16/07/2014	| 7894 Corrected lookup for cost centre and company number.
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 	<xsl:output method="text" encoding="UTF-8"/>
@@ -56,11 +58,11 @@ Andrew Barber	| 17/03/2014	| 7752 Additional test on supplier code output around
 				<xsl:text>,</xsl:text>
 			
 				<!-- Company Number -->
-				<xsl:value-of select="substring-before(//TradeSimpleHeader/RecipientsBranchReference,'-')"/>	
+				<xsl:value-of select="substring-before(../../TradeSimpleHeader/RecipientsBranchReference,'-')"/>	
 				<xsl:text>,</xsl:text>
 				
 				<!-- Cost Centre Number -->
-				<xsl:value-of select="substring-after(//TradeSimpleHeader/RecipientsBranchReference,'-')"/>	
+				<xsl:value-of select="substring-after(../../TradeSimpleHeader/RecipientsBranchReference,'-')"/>	
 				<xsl:text>,</xsl:text>
 				
 				<!-- Expense Code Number -->
@@ -130,11 +132,11 @@ Andrew Barber	| 17/03/2014	| 7752 Additional test on supplier code output around
 				<xsl:text>,</xsl:text>
 			
 				<!-- Company Number -->
-				<xsl:value-of select="substring-before(//TradeSimpleHeader/RecipientsBranchReference,'-')"/>	
+				<xsl:value-of select="substring-before(../../TradeSimpleHeader/RecipientsBranchReference,'-')"/>	
 				<xsl:text>,</xsl:text>
 				
 				<!-- Cost Centre Number -->
-				<xsl:value-of select="substring-after(//TradeSimpleHeader/RecipientsBranchReference,'-')"/>	
+				<xsl:value-of select="substring-after(../../TradeSimpleHeader/RecipientsBranchReference,'-')"/>	
 				<xsl:text>,</xsl:text>
 				
 				<!-- Expense Code Number -->
