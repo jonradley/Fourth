@@ -3,10 +3,10 @@
  Overview  
 ==========================================================================================
  01/07/2014	| J Miguel		|	FB: 7872 Created
+==========================================================================================
+ 21/07/2014	| J Miguel		|	FB: 7899 - Remove empty clock entries from the output format
 ========================================================================================-->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-				xmlns:user="http://www.abs-ltd.com/dummynamespaces/javascript" 
-				xmlns:msxml="urn:schemas-microsoft-com:xslt">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:user="http://www.abs-ltd.com/dummynamespaces/javascript" xmlns:msxml="urn:schemas-microsoft-com:xslt">
 	<xsl:output method="xml" indent="yes" encoding="UTF-8"/>
 	<xsl:template match="/TimeAndAttendance">
 		<BatchRoot>
@@ -21,15 +21,22 @@
 			</Batch>
 		</BatchRoot>
 	</xsl:template>
+	<!-- Only process entries not modified by the user as this would cause the system to show repeated entries -->
+	<xsl:template match="TimeAndAttendanceDetail">
+		<xsl:if test="*/@AdjustmentType = '0' or */@AdjustmentType = '2'">
+			<TimeAndAttendanceDetail>
+			<xsl:apply-templates/>
+			</TimeAndAttendanceDetail>
+		</xsl:if>
+	</xsl:template>
+				
 	<!-- tiny trick to get rid of extra 00:00 pading in the dates -->
 	<xsl:template match="CheckIn | CheckOut">
-		<!-- Only process entries not modified by the user as this would cause the system to show repeated entries -->
-		<xsl:if test="@AdjustmentType = '0' or @AdjustmentType = '2'">
 			<xsl:element name="{local-name(.)}">
 				<xsl:value-of select="concat(user:convertToYYYYMMDD(translate(substring(string(@Date), 0, 11), '-', '/')), ' ', string(@Time))"/>
 			</xsl:element>
-		</xsl:if>
 	</xsl:template>
+
 	<!-- Use the time stamp of the transalation (as the input does not have a proper value here -->
 	<xsl:template match="TimeAndAttendanceHeader">
 		<TimeAndAttendanceHeader>
@@ -39,6 +46,7 @@
 			</DateTime>
 		</TimeAndAttendanceHeader>
 	</xsl:template>
+	
 	<!-- copy template -->
 	<xsl:template match="*">
 		<xsl:copy>
@@ -46,8 +54,7 @@
 			<xsl:apply-templates/>
 		</xsl:copy>
 	</xsl:template>
-	<msxml:script language="Javascript" implements-prefix="user">
-<![CDATA[
+	<msxml:script language="Javascript" implements-prefix="user"><![CDATA[
 function right (str, count)
 {
 	return str.substring(str.length - count, str.length);
@@ -81,15 +88,15 @@ function convertToYYYYMMDD (str)
 		
 		if (dateParts[0].length == 4)
 		{
-			year = parseInt(dateParts[0]);
-			month = parseInt(dateParts[1]);
-			day = parseInt(dateParts[2]);
+			year = parseInt(dateParts[0], 10);
+			month = parseInt(dateParts[1], 10);
+			day = parseInt(dateParts[2], 10);
 		}
 		else
 		{
-			year = parseInt(dateParts[2]);
-			month = parseInt(dateParts[1]);
-			day = parseInt(dateParts[0]);	
+			year = parseInt(dateParts[2], 10);
+			month = parseInt(dateParts[1], 10);
+			day = parseInt(dateParts[0], 10);	
 		}
 		
 		return year + '/' + pad2(month) + '/' + pad2(day);
