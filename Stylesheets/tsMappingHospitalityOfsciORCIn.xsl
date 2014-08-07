@@ -53,12 +53,12 @@
 												<xsl:value-of select="/OrderConfirmation/Buyer/BuyerGLN"/>
 											</GLN>
 										</xsl:if>										
-										<xsl:if test="/OrderConfirmation/Buyer/BuyerAssigned">
+										<xsl:if test="/OrderConfirmation/Buyer/BuyerAssigned != ''">
 											<BuyersCode>
 												<xsl:value-of select="/OrderConfirmation/Buyer/BuyerAssigned"/>
 											</BuyersCode>
 										</xsl:if>										
-										<xsl:if test="/OrderConfirmation/Buyer/SellerAssigned">	
+										<xsl:if test="/OrderConfirmation/Buyer/SellerAssigned != ''">	
 											<SuppliersCode>
 												<xsl:value-of select="/OrderConfirmation/Buyer/SellerAssigned"/>
 											</SuppliersCode>
@@ -71,12 +71,12 @@
 										<GLN>
 											<xsl:value-of select="/OrderConfirmation/Seller/SellerGLN"/>
 										</GLN>				
-										<xsl:if test="/OrderConfirmation/Seller/BuyerAssigned">
+										<xsl:if test="/OrderConfirmation/Seller/BuyerAssigned != ''">
 											<BuyersCode>
 												<xsl:value-of select="/OrderConfirmation/Seller/BuyerAssigned"/>
 											</BuyersCode>
 										</xsl:if>										
-										<xsl:if test="/OrderConfirmation/Seller/SellerAssigned">
+										<xsl:if test="/OrderConfirmation/Seller/SellerAssigned != ''">
 											<SuppliersCode>
 												<xsl:value-of select="/OrderConfirmation/Seller/SellerAssigned"/>
 											</SuppliersCode>
@@ -89,12 +89,12 @@
 										<GLN>
 											<xsl:value-of select="/OrderConfirmation/ShipTo/ShipToGLN"/>
 										</GLN>										
-										<xsl:if test="/OrderConfirmation/ShipTo/BuyerAssigned">
+										<xsl:if test="/OrderConfirmation/ShipTo/BuyerAssigned != ''">
 											<BuyersCode>
 												<xsl:value-of select="/OrderConfirmation/ShipTo/BuyerAssigned"/>
 											</BuyersCode>
 										</xsl:if>										
-										<xsl:if test="/OrderConfirmation/ShipTo/SellerAssigned">
+										<xsl:if test="/OrderConfirmation/ShipTo/SellerAssigned != ''">
 											<SuppliersCode>
 												<xsl:value-of select="/OrderConfirmation/ShipTo/SellerAssigned"/>
 											</SuppliersCode>
