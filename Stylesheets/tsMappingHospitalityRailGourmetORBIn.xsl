@@ -10,6 +10,8 @@ A Barber	| 08/10/2012		| 5761 Created
 A Barber	| 22/11/2012		| 5871 Addition of UOM mapping
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 M Emanuel	| 14/12/2012		| 5909 Changed how test flag is mapped in from FF
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+M Dimant		| 07/08/2014		| 7915 Change to handle EA when mapping the UOM.
 **************************************************************************************************-->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 	<xsl:output method="xml"/>
@@ -77,10 +79,11 @@ M Emanuel	| 14/12/2012		| 5909 Changed how test flag is mapped in from FF
 		</xsl:copy>	
 	</xsl:template>
 	
-	<xsl:template match="@UnitOfMeasure">
+	<xsl:template match="OrderedQuantity">
+		<OrderedQuantity>
 		<xsl:attribute name="UnitOfMeasure">
 			<xsl:choose>
-				<xsl:when test="'CA'">
+				<xsl:when test="@UnitOfMeasure = 'CA'">
 					<xsl:text>CS</xsl:text>
 				</xsl:when>
 				<xsl:otherwise>
@@ -88,6 +91,8 @@ M Emanuel	| 14/12/2012		| 5909 Changed how test flag is mapped in from FF
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:attribute>
+		<xsl:value-of select="."/>
+		</OrderedQuantity>
 	</xsl:template>
 	
 </xsl:stylesheet>
