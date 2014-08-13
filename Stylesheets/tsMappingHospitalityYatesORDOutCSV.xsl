@@ -4,10 +4,13 @@ Date			|	Name					|	Description of modification
 ****************************************************************************
 02/10/2012	|	K OShaughnessy	| Created Module
 ***************************************************************************
-07/12/2012	|	K Oshaughnessy	| FB 5906 changes requested by yates		
+07/12/2012	|	K Oshaughnessy	| FB 5906 changes requested by yates
+***************************************************************************
+13/08/2014	|	A Barber				| FB 7924 Import HospitalityInclude.xsl, apply templates to encapsulate address data correctly
 ****************************************************************************				
 -->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript" xmlns:vb="http://www.abs-ltd.com/dummynamespaces/vbscript" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript" xmlns:vb="http://www.abs-ltd.com/dummynamespaces/vbscript" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:user="http://mycompany.com/mynamespace">
+	<xsl:import href="HospitalityInclude.xsl"/>
 
 	<xsl:output method="text" encoding="utf-8"/>
 	
@@ -45,27 +48,27 @@ Date			|	Name					|	Description of modification
 		<!--Supplier Code For Delivery Location-->
 		<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
 		<xsl:text>,</xsl:text>
-		<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToName"/>
+		<xsl:apply-templates select="PurchaseOrderHeader/ShipTo/ShipToName"/>
 		<xsl:text>,</xsl:text>
 		<!--Delivery Address-->
 		<xsl:if test="PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine1 != '' ">
-			<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine1"/>
+			<xsl:apply-templates select="PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine1"/>
 		</xsl:if>
 		<xsl:text>,</xsl:text>
 		<xsl:if test="PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine1 != '' ">
-			<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine2"/>
+			<xsl:apply-templates select="PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine2"/>
 		</xsl:if>
 		<xsl:text>,</xsl:text>
 		<xsl:if test="PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine1 != '' ">
-			<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine3"/>
+			<xsl:apply-templates select="PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine3"/>
 		</xsl:if>
 		<xsl:text>,</xsl:text>
 		<xsl:if test="PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine1 != '' ">
-			<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine4"/>
+			<xsl:apply-templates select="PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine4"/>
 		</xsl:if>
 		<xsl:text>,</xsl:text>
 		<xsl:if test="PurchaseOrderHeader/ShipTo/ShipToAddress/PostCode != '' ">
-			<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToAddress/PostCode"/>
+			<xsl:apply-templates select="PurchaseOrderHeader/ShipTo/ShipToAddress/PostCode"/>
 		</xsl:if>
 		<xsl:text>,</xsl:text>
 		<!--Customer Order Number-->
@@ -131,6 +134,31 @@ Date			|	Name					|	Description of modification
 			<xsl:text>&#13;&#10;</xsl:text>
 		</xsl:for-each>
 		
+	</xsl:template>
+
+	<xsl:template match="PurchaseOrderHeader/ShipTo/ShipToName |
+									 PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine1 |
+									 PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine2 |
+									 PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine3 |
+									 PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine4 |
+									 PurchaseOrderHeader/ShipTo/ShipToAddress/PostCode">
+									 
+		<xsl:variable name="formatindex">
+			<xsl:choose>
+				<xsl:when test="contains(name(),'PostCode')">9</xsl:when>
+				<xsl:otherwise>40</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		
+		<xsl:variable name="formattedstring" select="user:msEscapeQuotes(substring(.,1,$formatindex))" />
+		
+		<xsl:if test="contains($formattedstring,',')">
+			<xsl:text>"</xsl:text>
+		</xsl:if>
+		<xsl:value-of select="$formattedstring"/>
+		<xsl:if test="contains($formattedstring,',')">
+			<xsl:text>"</xsl:text>
+		</xsl:if>
 	</xsl:template>
 
 	<msxsl:script language="VBScript" implements-prefix="vb"><![CDATA[	
