@@ -7,6 +7,8 @@ Date			|	Name					|	Description of modification
 07/12/2012	|	K Oshaughnessy	| FB 5906 changes requested by yates
 ***************************************************************************
 13/08/2014	|	A Barber				| FB 7924 Import HospitalityInclude.xsl, apply templates to encapsulate address data correctly
+***************************************************************************
+13/08/2014	|	A Barber				| FB 7925 Format ship to name
 ****************************************************************************				
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript" xmlns:vb="http://www.abs-ltd.com/dummynamespaces/vbscript" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:user="http://mycompany.com/mynamespace">
@@ -48,7 +50,14 @@ Date			|	Name					|	Description of modification
 		<!--Supplier Code For Delivery Location-->
 		<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
 		<xsl:text>,</xsl:text>
-		<xsl:apply-templates select="PurchaseOrderHeader/ShipTo/ShipToName"/>
+		<xsl:choose>
+			<xsl:when test="contains(PurchaseOrderHeader/ShipTo/ShipToName,'>')">
+				<xsl:value-of select="substring(PurchaseOrderHeader/ShipTo/ShipToName,1,string-length(substring-before(PurchaseOrderHeader/ShipTo/ShipToName,'>'))-1)"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToName"/>
+			</xsl:otherwise>
+		</xsl:choose>
 		<xsl:text>,</xsl:text>
 		<!--Delivery Address-->
 		<xsl:if test="PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine1 != '' ">
@@ -136,8 +145,7 @@ Date			|	Name					|	Description of modification
 		
 	</xsl:template>
 
-	<xsl:template match="PurchaseOrderHeader/ShipTo/ShipToName |
-									 PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine1 |
+	<xsl:template match="PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine1 |
 									 PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine2 |
 									 PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine3 |
 									 PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine4 |
