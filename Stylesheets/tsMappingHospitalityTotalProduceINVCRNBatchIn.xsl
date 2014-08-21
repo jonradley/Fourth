@@ -44,6 +44,14 @@
 					</xsl:call-template>
 				</PurchaseOrderDate>
 			</PurchaseOrderReferences>
+			<DeliveryNoteReferences>
+				<DeliveryNoteReference><xsl:value-of select="../../InvoiceHeader/InvoiceReferences/InvoiceReference"/></DeliveryNoteReference>
+				<DeliveryNoteDate>
+					<xsl:call-template name="FormatDate">
+						<xsl:with-param name="date" select="../../InvoiceHeader/InvoiceReferences/InvoiceDate"/>
+					</xsl:call-template>
+				</DeliveryNoteDate>				
+			</DeliveryNoteReferences>			
 			<xsl:apply-templates/>
 		</InvoiceLine>
 	</xsl:template>
