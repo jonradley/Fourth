@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+**********************************************************************
+Alterations
+**********************************************************************
+Name			| Date			| Change
+**********************************************************************
+H Robson	| 2012-06-27		| 5551 Created FFS
+**********************************************************************
+-->
+<!-- 13 fields in a record -->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>sequenced</ffsRecordPositionType>
+		<ffsRecordSeparator>chr(13)chr(10)</ffsRecordSeparator>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>,</ffsFieldSeparator>
+		</ffsFieldSeparators>
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<BatchDocuments>
+				<BatchDocument>
+					<Invoice>
+						<TradeSimpleHeader>
+							<SendersCodeForRecipient RecordLength="13" RecordPos="5" LPos="11"/>
+						</TradeSimpleHeader>
+						<InvoiceHeader>
+							<InvoiceReferences>
+								<InvoiceReference RecordLength="13" RecordPos="2" LPos="11"/>
+								<InvoiceDate RecordLength="13" RecordPos="3" LPos="11"/>
+								<TaxPointDate RecordLength="13" RecordPos="3" LPos="11"/>
+							</InvoiceReferences>
+						</InvoiceHeader>
+						<InvoiceDetail>
+							<InvoiceLine>
+								<ProductID>
+									<SuppliersProductCode RecordLength="13" RecordPos="*" LPos="3"/>
+								</ProductID>
+								<ProductDescription RecordLength="13" RecordPos="*" LPos="4"/>
+								<InvoicedQuantity RecordLength="13" RecordPos="*" LPos="1"/>
+								<UnitValueExclVAT RecordLength="13" RecordPos="*" LPos="6"/>
+							</InvoiceLine>
+						</InvoiceDetail>
+						<InvoiceTrailer>
+							<DocumentTotalExclVAT RecordLength="13" RecordPos="n-3" LPos="10"/>
+							<VATAmount RecordLength="13" RecordPos="n-2" LPos="10"/>
+							<DocumentTotalInclVAT RecordLength="13" RecordPos="n-1" LPos="10"/>
+						</InvoiceTrailer>
+					</Invoice>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>
