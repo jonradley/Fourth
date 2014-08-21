@@ -25,6 +25,12 @@
 						<SendersBranchReference RecordLength="5" RecordPos="*" LPos="5"/>
 					</TradeSimpleHeader>
 					<CreditNoteHeader>
+						<InvoiceReferences>
+							<!-- DocNo: This represents our invoice number for the order -->
+							<InvoiceReference RecordLength="5" RecordPos="*" LPos="3"/>
+							<!-- Date: Your invoice date should be in the following format: yyyymmdd -->
+							<InvoiceDate RecordLength="5" RecordPos="*" LPos="2"/>
+						</InvoiceReferences>
 						<CreditNoteReferences>
 							<!-- DocNo: This represents our invoice number for the order -->
 							<CreditNoteReference RecordLength="5" RecordPos="*" LPos="1"/>
