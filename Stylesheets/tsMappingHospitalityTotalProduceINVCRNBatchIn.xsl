@@ -31,7 +31,7 @@
 			<xsl:apply-templates/>
 		</BatchRoot>
 	</xsl:template>
-	<!-- translate currency intro the Purchase Reference Orde -->
+	<!-- translate currency intro the Purchase Reference Order -->
 	<xsl:template match="InvoiceLine">
 		<InvoiceLine>
 			<PurchaseOrderReferences>
@@ -47,15 +47,31 @@
 			<xsl:apply-templates/>
 		</InvoiceLine>
 	</xsl:template>
+	<!-- translate currency intro the Purchase Reference Order -->
+	<xsl:template match="CreditNoteLine">
+		<CreditNoteLine>
+			<PurchaseOrderReferences>
+				<PurchaseOrderReference>
+					<xsl:value-of select="../../CreditNoteHeader/Currency"/>
+				</PurchaseOrderReference>
+				<PurchaseOrderDate>
+					<xsl:call-template name="FormatDate">
+						<xsl:with-param name="date" select="../../CreditNoteHeader/CreditNoteReferences/CreditNoteDate"/>
+					</xsl:call-template>
+				</PurchaseOrderDate>
+			</PurchaseOrderReferences>
+			<xsl:apply-templates/>
+		</CreditNoteLine>
+	</xsl:template>
 	<!-- Remove proxy tags used for other purposes -->
 	<xsl:template match="Currency"/>
 	<!-- re format dates -->
-	<xsl:template match="InvoiceDate">
-		<InvoiceDate>
+	<xsl:template match="InvoiceDate | CreditNoteDate">
+		<xsl:element name="{local-name(.)}">
 			<xsl:call-template name="FormatDate">
 				<xsl:with-param name="date" select="."/>
 			</xsl:call-template>
-		</InvoiceDate>
+		</xsl:element>
 	</xsl:template>
 	<!-- VARRate -->
 	<xsl:template match="VATRate[. != 0]">
