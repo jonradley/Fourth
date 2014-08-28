@@ -10,6 +10,8 @@
  Date      		| Name         	| Description of modification
 ******************************************************************************************
 20-03-2014	| M Dimant 	| FB7760: Created Module
+******************************************************************************************
+28-08-2014	| M Dimant 	| FB8021: Added delivery date.
 ***************************************************************************************-->			
 
 
@@ -136,6 +138,10 @@
 					</SuppliersCodeForLocation>
 				</DeliverFromReferences>
 			</DeliverFrom>
+			
+			<EarliestAcceptableDate><xsl:value-of select="PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate"/></EarliestAcceptableDate>
+			<LatestAcceptableDate><xsl:value-of select="PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate"/></LatestAcceptableDate>
+			<PreferredDate><xsl:value-of select="PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate"/></PreferredDate>
 			
 		</Delivery>
 		
