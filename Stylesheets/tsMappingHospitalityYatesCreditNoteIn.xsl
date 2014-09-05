@@ -48,6 +48,14 @@ Date 			|	Name				|	Description
 					<xsl:when test="$UOMdecode = '1' ">
 						<xsl:text>EA</xsl:text>
 					</xsl:when>
+					<!-- If value is 'EACH' insert EA as the UOM -->
+					<xsl:when test="$UOMdecode = 'EACH' ">
+						<xsl:text>EA</xsl:text>
+					</xsl:when>
+					<!-- If value is 'Each' insert EA as the UOM -->
+					<xsl:when test="$UOMdecode = 'Each' ">
+						<xsl:text>EA</xsl:text>
+					</xsl:when>
 					<!-- If value is 'Case' insert CS as the UOM -->
 					<xsl:when test="$UOMdecode = 'Case' ">
 						<xsl:text>CS</xsl:text>
