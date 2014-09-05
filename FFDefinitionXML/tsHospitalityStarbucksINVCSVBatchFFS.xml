@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/******************************************************************************************
+' Date        	| Name     	    | Description of modification
+'******************************************************************************************
+13/12/2013	| M Dimant	| 7522: Created.
+'******************************************************************************************
+-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>chr(10)</ffsRecordSeparator>
+		<ffsEscapeChars>
+			<ffsEscapeChar>
+				<ffsNative>chr(13)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>""</ffsNative>
+				<ffsTradesimple>¬Q</ffsTradesimple>
+				<ffsLiteral>"</ffsLiteral>
+			</ffsEscapeChar>
+		</ffsEscapeChars>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>,</ffsFieldSeparator>
+		</ffsFieldSeparators>
+		<ffsPadding/>
+		<ffsBatchHeader>			
+			<ffsHerRecord RecordPos="H"/>
+		</ffsBatchHeader>
+		<ffsSplitBatchRecord RecordPos="H"/>
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<BatchDocuments>
+				<BatchDocument>
+					<Invoice>
+						<TradeSimpleHeader>
+							<SendersCodeForRecipient RecordPos="H" LPos="5"/>
+						</TradeSimpleHeader>
+						<InvoiceHeader>						
+							<ShipTo>
+								<ShipToLocationID>
+									<SuppliersCode RecordPos="H" LPos="5"/>
+								</ShipToLocationID>						
+							</ShipTo>
+							<InvoiceReferences>
+								<InvoiceReference RecordPos="H" LPos="3"/>
+								<InvoiceDate RecordPos="H" LPos="7"/>
+								<TaxPointDate RecordPos="H" LPos="7"/>						
+							</InvoiceReferences>
+						</InvoiceHeader>
+						<InvoiceD>
+							<InvoiceLine>
+								<PurchaseOrderReferences>
+									<PurchaseOrderReference RecordPos="D" LPos="2"/>
+								</PurchaseOrderReferences>
+								<DeliveryNoteReferences>
+									<DeliveryNoteReference RecordPos="H" LPos="4"/>
+									<DeliveryNoteDate RecordPos="H" LPos="7"/>
+									<DespatchDate RecordPos="H" LPos="7"/>
+								</DeliveryNoteReferences>
+								<ProductID>
+									<SuppliersProductCode RecordPos="D" LPos="3"/>
+								</ProductID>
+								<ProductDescription RecordPos="D" LPos="4"/>
+								<InvoicedQuantity RecordPos="D" LPos="6"/>
+								<UnitValueExclVAT RecordPos="D" LPos="5"/>
+								<LineValueExclVAT RecordPos="D" LPos="7"/>
+								<VATCode RecordPos="D" LPos="11"/>
+								<VATRate RecordPos="D" LPos="12"/>
+							</InvoiceLine>
+						</InvoiceD>					
+					</Invoice>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>
