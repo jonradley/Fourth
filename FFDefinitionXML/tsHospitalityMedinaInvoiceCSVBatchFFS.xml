@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--========================================================================================
+ Module History
+==========================================================================================
+ Version		| 
+==========================================================================================
+ Date      		| Name 						| Description of modification
+==========================================================================================
+ 2011-01-13	| K O'Shaughnessy	| Created.
+==========================================================================================
+ 2014-09-02	| M Dimant				| 7998: Removed supplier's code for supplier so it can be populated by infiller
+==========================================================================================
+ |          	   	| 
+==========================================================================================-->
 <ffsFlatFileSchema>
 	<ffsSettings>
 		<ffsRecordPositionType>named</ffsRecordPositionType>
@@ -63,10 +76,7 @@
 									<PostCode RecordPos="H" LPos="15"/>
 								</BuyersAddress>
 							</Buyer>
-							<Supplier>
-								<SuppliersLocationID>
-									<SuppliersCode RecordPos="I" LPos="2"/>
-								</SuppliersLocationID>
+							<Supplier>								
 								<SuppliersName RecordPos="H" LPos="3"/>
 								<SuppliersAddress>
 									<AddressLine1 RecordPos="H" LPos="4"/>
