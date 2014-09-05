@@ -5,6 +5,8 @@ Date 			|	Name				|	Description
 05/10/2012	| K Oshaughnessy	| Created
 ********************************************************************************************************************************
 10/06/2014	| M Dimant			| 7851: Set UOM to CS if inbound value is numerical and EA if it is 1
+********************************************************************************************************************************
+04/09/2014	| B Oliver				| 7851: Set UOM to CS if inbound value is numerical and EA if it is 1
 ********************************************************************************************************************************-->				
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 	<xsl:output method="xml" encoding="UTF-8"/>
@@ -52,6 +54,14 @@ Date 			|	Name				|	Description
 					<xsl:when test="$UOMdecode = 'Case' ">
 						<xsl:text>CS</xsl:text>
 					</xsl:when>
+					<!-- If value is 'EACH' insert EA as the UOM -->
+					<xsl:when test="$UOMdecode = 'EACH' ">
+						<xsl:text>EA</xsl:text>
+					</xsl:when>
+					<!-- If value is 'Each' insert EA as the UOM -->
+					<xsl:when test="$UOMdecode = 'Each' ">
+						<xsl:text>EA</xsl:text>
+					</xsl:when>					
 					<!-- If value is numerical insert CS as the UOM -->
 					<xsl:when test="number($UOMdecode) = $UOMdecode">
 							<xsl:text>CS</xsl:text>
