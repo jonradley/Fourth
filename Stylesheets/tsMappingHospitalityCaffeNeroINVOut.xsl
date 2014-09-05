@@ -11,11 +11,11 @@
 ==========================================================================================
  Version		| 
 ==========================================================================================
- Date      	| Name 					| Description of modification
+ Date      		| Name 					| Description of modification
 ==========================================================================================
- 2012-03-05	| H Robson			| 5242 Created module as copy of tsMappingHospitalityInvoiceTradacomsv9Out.xsl with alterations
+ 2014-08-28	| M Dimant			| 7998: Created module.
 ==========================================================================================
- |             	| 
+ |          	   	| 
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -105,7 +105,7 @@
 		</xsl:choose>
 		<xsl:text>:</xsl:text>
 		<!-- truncate to 17 SIDN 2 = 3051 = AN..17 -->
-		<xsl:value-of select="js:msSafeText(string(InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode),17)"/>
+		<xsl:value-of select="js:msSafeText(string(InvoiceHeader/Supplier/SuppliersLocationID/SuppliersCode),17)"/>
 		<xsl:text>+</xsl:text>
 		<!-- truncate to 40 SNAM = 3060 = AN..40-->
 		<xsl:value-of select="js:msSafeText(string(InvoiceHeader/Supplier/SuppliersName),40)"/>
@@ -162,13 +162,6 @@
 		<xsl:value-of select="js:msSafeText(string(InvoiceHeader/Buyer/BuyersAddress/PostCode),8)"/>
 		<xsl:value-of select="$sRecordSep"/>
 		
-		<!--
-		<xsl:text>DNA=</xsl:text>
-		<xsl:text>1++073:</xsl:text>
-		<xsl:value-of select="js:msSafeText(string(InvoiceHeader/Currency),3)"/>
-		<xsl:value-of select="$sRecordSep"/>
-		-->
-		
 		<xsl:text>FIL=</xsl:text>
 		<xsl:value-of select="$FGN"/>
 		<xsl:text>+1+</xsl:text>
@@ -183,15 +176,13 @@
 		<xsl:value-of select="$sRecordSep"/>
 
 		<xsl:text>CLO=</xsl:text>
-		<xsl:if test="InvoiceHeader/Buyer/BuyersLocationID/GLN != '5555555555555'">
-			<xsl:value-of select="InvoiceHeader/Buyer/BuyersLocationID/GLN"/>
-		</xsl:if>
+		<xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/GLN"/>		
 		<xsl:text>:</xsl:text>
 		<!-- truncate to 17 CLOC 2 = 3001 = AN..17 -->
-		<xsl:value-of select="js:msSafeText(string(InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode),17)"/>
+		<xsl:value-of select="js:msSafeText(string(TradeSimpleHeader/RecipientsBranchReference),17)"/>
 		<xsl:text>:</xsl:text>
 		<!-- truncate to 17 CLOC 3 = 300A = AN..17 -->
-		<xsl:value-of select="js:msSafeText(string(InvoiceHeader/ShipTo/ShipToLocationID/SuppliersCode),17)"/>
+		<xsl:value-of select="js:msSafeText(string(InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode),17)"/>
 		<xsl:text>+</xsl:text>
 		<!-- truncate to 40 CNAM = 3060 = AN..40-->
 		<xsl:value-of select="js:msSafeText(string(InvoiceHeader/ShipTo/ShipToName),40)"/>
@@ -262,9 +253,7 @@
 					
 					<!-- now output all the lines for the current PO reference and DN reference combination -->
 					<xsl:for-each select="key('keyLinesByPOAndDN',concat($POReference,'::',$DNReference))">
-					<!-- ILD=SEQA+SEQB+SPRO::+SACU+CPRO:+UNOR::+QTYI::+AUCT:+LEXC+VATC+VATP+MIXI+CRLI+TDES:+MSPR::SRSP+BUCT+DSCV+DSCP+SUBA+PIND+IGPI+CSDI+TSUP+SCRF: -->
-					<!-- ILD=++::++:+::+::+:++++++:+::+++++++++: -->
-					
+
 						<xsl:text>ILD=</xsl:text>
 						<!-- SEQA -->
 						<xsl:value-of select="$DeliveryNumber"/>
@@ -303,16 +292,17 @@
 						<!-- UNOR -->
 						<xsl:text>+</xsl:text>
 						<!-- number of consumer units making up the supplier's traded unit -->
-						<xsl:choose>
-							<xsl:when test="InvoicedQuantity/@UnitOfMeasure = 'EA'">1</xsl:when>
-							<xsl:otherwise>
-								<xsl:text>:</xsl:text>
-								<!-- does PackSize get mapped in from Medina invoices? -->
-								<xsl:value-of select="translate(format-number(PackSize,'#.000'),'.','')"/>
-								<xsl:text>:</xsl:text>
-								<xsl:value-of select="InvoicedQuantity/@UnitOfMeasure"/>
-							</xsl:otherwise>
-						</xsl:choose>
+						<xsl:if test="InvoicedQuantity/@UnitOfMeasure = 'EA'">	
+							<xsl:text>1</xsl:text>		
+						</xsl:if>	
+						<xsl:text>:</xsl:text>
+						<!-- does PackSize get mapped in from Medina invoices? -->
+						<xsl:if test="PackSize">
+							<xsl:value-of select="translate(format-number(PackSize,'#.000'),'.','')"/>
+						</xsl:if>
+						<xsl:text>:</xsl:text>
+						<xsl:value-of select="InvoicedQuantity/@UnitOfMeasure"/>
+
 						
 						<!-- QTYI -->
 						<xsl:text>+</xsl:text>
@@ -338,11 +328,8 @@
 						
 						<!-- MIXI, CRLI, TDES -->
 						<xsl:text>+++</xsl:text>
-						<!-- truncate to 40 TDES = 9030 = AN..40
-						<xsl:call-template name="msCheckField">
-							<xsl:with-param name="vobjNode" select="ProductDescription"/>
-							<xsl:with-param name="vnLength" select="40"/>
-						</xsl:call-template>-->
+						<!-- truncate to 40 TDES = 9030 = AN..40 -->
+					
 						<!--Just truncate, don't raise an error for values greater than 40 chars-->
 						<xsl:value-of select="js:msSafeText(string(ProductDescription),40)"/>					
 						<xsl:value-of select="$sRecordSep"/>
@@ -352,8 +339,7 @@
 		</xsl:for-each>
 		
 		<xsl:for-each select="InvoiceTrailer/VATSubTotals/VATSubTotal">
-		<!-- STL=SEQA+VATC+VATP+NRIL+LVLA+QYDA+VLDA+SURA+SSUB+EVLA+SEDA+ASDA+VATA+APSE+APSI -->
-		<!-- STL=++++++++++++++ -->
+
 		
 			<xsl:text>STL=</xsl:text>
 			
@@ -396,9 +382,7 @@
 		</xsl:for-each>
 		
 		<xsl:text>TLR=</xsl:text>
-		<!--TLR=NSTL+LVLT+QYDT+VLDT+SURT+TSUB+EVLT+SEDT+ASDT+TVAT+TPSE+TPSI -->
-		<!--TLR=+++++++++++ -->
-		
+
 		<!-- NSTL -->
 		<!-- Number of preceding STL segments -->
 		<xsl:value-of select="count(InvoiceTrailer/VATSubTotals/VATSubTotal)"/>
