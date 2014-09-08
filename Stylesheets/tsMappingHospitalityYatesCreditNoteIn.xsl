@@ -5,6 +5,8 @@ Date 			|	Name				|	Description
 05/10/2012	| K Oshaughnessy	| Created
 *********************************************************************************************************************
 10/06/2014	| M Dimant			| 7851: Set UOM to CS if inbound value is numerical and EA if it is 1
+*********************************************************************************************************************
+04/09/2014	| B Oliver				| 8962 Added EACH and Each as alternative inbounds for EA
 *********************************************************************************************************************-->				
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 	<xsl:output method="xml" encoding="UTF-8"/>
