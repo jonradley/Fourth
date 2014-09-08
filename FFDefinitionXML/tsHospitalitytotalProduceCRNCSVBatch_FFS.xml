@@ -3,15 +3,16 @@
  Overview
 ==========================================================================================
  15/08/2014	| J Miguel		|	Created - FB7927 - Total Produce - Integration for Invoice / Credit Notes Batches
+ 02/09/2014	| J Miguel		|	Created - FB8354 - Total Produce - Change in the mappers adding H and D column
 ========================================================================================-->
 <ffsFlatFileSchema>
 	<ffsSettings>
-		<ffsRecordPositionType>sequenced</ffsRecordPositionType>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
 		<ffsRecordSeparator>chr(13)chr(10)</ffsRecordSeparator>
 		<ffsFieldSeparators>
 			<ffsFieldSeparator>,</ffsFieldSeparator>
 		</ffsFieldSeparators>
-		<ffsSplitBatchRecord RecordLength="5" RecordPos="*"/>
+		<ffsSplitBatchRecord RecordPos="H"/>
 	</ffsSettings>
 	<ffsRoot>
 		<Batch>
@@ -20,52 +21,52 @@
 					<CreditNote>
 					<TradeSimpleHeader>
 						<!-- Acc Code: Our account code for the purchaser. -->
-						<SendersCodeForRecipient RecordLength="5" RecordPos="*" LPos="4"/>
+						<SendersCodeForRecipient RecordPos="H" LPos="5"/>
 						<!-- Purchaser Ledger Account -->
-						<SendersBranchReference RecordLength="5" RecordPos="*" LPos="5"/>
+						<SendersBranchReference RecordPos="H" LPos="6"/>
 					</TradeSimpleHeader>
 					<CreditNoteHeader>
 						<InvoiceReferences>
 							<!-- DocNo: This represents our invoice number for the order -->
-							<InvoiceReference RecordLength="5" RecordPos="*" LPos="3"/>
+							<InvoiceReference RecordPos="H" LPos="4"/>
 							<!-- Date: Your invoice date should be in the following format: yyyymmdd -->
-							<InvoiceDate RecordLength="5" RecordPos="*" LPos="2"/>
+							<InvoiceDate RecordPos="H" LPos="3"/>
 						</InvoiceReferences>
 						<CreditNoteReferences>
 							<!-- DocNo: This represents our invoice number for the order -->
-							<CreditNoteReference RecordLength="5" RecordPos="*" LPos="1"/>
+							<CreditNoteReference RecordPos="H" LPos="2"/>
 							<!-- Date: Your invoice date should be in the following format: yyyymmdd -->
-							<CreditNoteDate RecordLength="5" RecordPos="*" LPos="2"/>
+							<CreditNoteDate RecordPos="H" LPos="3"/>
 						</CreditNoteReferences>
 						<!-- Purchase order reference is the header so needs relocation -->
-						<Currency RecordLength="5" RecordPos="*" LPos="3"/>						
+						<Currency RecordPos="H" LPos="4"/>						
 					</CreditNoteHeader>
 						<CreditNoteDetail>
 							<CreditNoteLine>
 								<ProductID>
 									<!-- Prod Code: This represents your SKU code for the product. -->
-									<SuppliersProductCode RecordLength="9" RecordPos="*" LPos="1"/>
+									<SuppliersProductCode RecordPos="D" LPos="2"/>
 								</ProductID>
 								<!-- Qty: [Decimal Number] The quantity ordered for the product. -->
-								<OrderedQuantity RecordLength="9" RecordPos="*" LPos="2"/>
-								<ConfirmedQuantity RecordLength="9" RecordPos="*" LPos="2"/>
-								<DeliveredQuantity RecordLength="9" RecordPos="*" LPos="2"/>
-								<InvoicedQuantity RecordLength="9" RecordPos="*" LPos="2"/>
+								<OrderedQuantity RecordPos="D" LPos="3"/>
+								<ConfirmedQuantity RecordPos="D" LPos="3"/>
+								<DeliveredQuantity RecordPos="D" LPos="3"/>
+								<InvoicedQuantity RecordPos="D" LPos="3"/>
 								<!-- Price: [Decimal Number] The products unit price. -->
-								<UnitValueExclVAT RecordLength="9" RecordPos="*" LPos="3"/>
+								<UnitValueExclVAT RecordPos="D" LPos="4"/>
 								<!-- Value: [Decimal Number] The net price for the quantity ordered. -->
-								<LineValueExclVAT RecordLength="9" RecordPos="*" LPos="4"/>
+								<LineValueExclVAT RecordPos="D" LPos="5"/>
 								<!-- VAT: [Decimal Number] The total tax for the quantity ordered. -->
-								<VATRate RecordLength="9" RecordPos="*" LPos="5"/>
+								<VATRate RecordPos="D" LPos="6"/>
 							</CreditNoteLine>
 						</CreditNoteDetail>
 						<CreditNoteTrailer>
 							<!-- Invoice Value: [Decimal Number] The invoices total net value.-->
-							<DocumentTotalExclVAT RecordLength="9" RecordPos="*" LPos="7"/>
+							<DocumentTotalExclVAT RecordPos="D" LPos="8"/>
 							<!-- Inv VAT: [Decimal Number] The invoices total tax value.-->
-							<VATAmount RecordLength="9" RecordPos="*" LPos="8"/>
+							<VATAmount RecordPos="D" LPos="9"/>
 							<!-- Gross Inv Value: [Decimal Number] The invoices total gross value.-->
-							<DocumentTotalInclVAT RecordLength="9" RecordPos="*" LPos="9"/>
+							<DocumentTotalInclVAT RecordPos="D" LPos="10"/>
 						</CreditNoteTrailer>
 					</CreditNote>
 				</BatchDocument>
