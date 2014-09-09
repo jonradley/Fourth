@@ -179,7 +179,6 @@
 		<xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/GLN"/>		
 		<xsl:text>:</xsl:text>
 		<!-- truncate to 17 CLOC 2 = 3001 = AN..17 -->
-		<xsl:value-of select="js:msSafeText(string(TradeSimpleHeader/RecipientsBranchReference),17)"/>
 		<xsl:text>:</xsl:text>
 		<!-- truncate to 17 CLOC 3 = 300A = AN..17 -->
 		<xsl:value-of select="js:msSafeText(string(InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode),17)"/>
@@ -294,14 +293,14 @@
 						<!-- number of consumer units making up the supplier's traded unit -->
 						<xsl:if test="InvoicedQuantity/@UnitOfMeasure = 'EA'">	
 							<xsl:text>1</xsl:text>		
-						</xsl:if>	
-						<xsl:text>:</xsl:text>
+						</xsl:if>							
 						<!-- does PackSize get mapped in from Medina invoices? -->
 						<xsl:if test="PackSize">
+							<xsl:text>:</xsl:text>
 							<xsl:value-of select="translate(format-number(PackSize,'#.000'),'.','')"/>
-						</xsl:if>
-						<xsl:text>:</xsl:text>
-						<xsl:value-of select="InvoicedQuantity/@UnitOfMeasure"/>
+							<xsl:text>:</xsl:text>
+						</xsl:if>						
+						<!-- UOM goes here. Leaving it blank as it is not required. -->
 
 						
 						<!-- QTYI -->
