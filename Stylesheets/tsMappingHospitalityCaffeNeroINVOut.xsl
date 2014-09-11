@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!--======================================================================================
  Overview
 
  Maps internal XML into an EDI Tradacoms v9 format.
  
+ © Alternative Business Solutions Ltd, 2006.
 ==========================================================================================
  Module History
 ==========================================================================================
@@ -11,9 +13,9 @@
 ==========================================================================================
  Date      		| Name 					| Description of modification
 ==========================================================================================
- 2014-08-28	| M Dimant			| 7998: Created module.
+ 28-08-2014	| M Dimant			| 7998: Created module.
 ==========================================================================================
- |          	   	| 
+ 10-09-2014  	| M Dimant			| 9505: Only populate quantity in QTYI2  for weighted items.
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -304,8 +306,11 @@
 						<!-- QTYI -->
 						<xsl:text>+</xsl:text>
 						<xsl:value-of select="format-number(InvoicedQuantity,'0')"/>
-						<xsl:text>:</xsl:text>						
-						<xsl:value-of select="translate(format-number(InvoicedQuantity,'#.000'),'.','')"/>
+						<!-- QTYI2 only required for weighted products -->
+						<xsl:if test="InvoicedQuantity/@UnitOfMeasure = KGM">
+							<xsl:text>:</xsl:text>						
+							<xsl:value-of select="translate(format-number(InvoicedQuantity,'#.000'),'.','')"/>
+						</xsl:if>
 						
 						<!-- AUCT -->
 						<xsl:text>+</xsl:text>
