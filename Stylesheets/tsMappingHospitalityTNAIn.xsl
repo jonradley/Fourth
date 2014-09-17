@@ -5,7 +5,9 @@
  01/07/2014	| J Miguel		|	FB: 7872 Created
 ==========================================================================================
  21/07/2014	| J Miguel		|	FB: 7899 - Remove empty clock entries from the output format
-========================================================================================-->
+==========================================================================================
+ 17/09/2014	| J Miguel		|	FB: 9858 - Change in the format of the dates to allow the file to be loaded by FTP
+==========================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:user="http://www.abs-ltd.com/dummynamespaces/javascript" xmlns:msxml="urn:schemas-microsoft-com:xslt">
 	<xsl:output method="xml" indent="yes" encoding="UTF-8"/>
 	<xsl:template match="/TimeAndAttendance">
@@ -33,7 +35,7 @@
 	<!-- tiny trick to get rid of extra 00:00 pading in the dates -->
 	<xsl:template match="CheckIn | CheckOut">
 			<xsl:element name="{local-name(.)}">
-				<xsl:value-of select="concat(user:convertToYYYYMMDD(translate(substring(string(@Date), 0, 11), '-', '/')), ' ', string(@Time))"/>
+				<xsl:value-of select="concat(user:convertToYYYYMMDD(translate(substring(string(@Date), 0, 11), '-', '/')), 'T', string(@Time))"/>
 			</xsl:element>
 	</xsl:template>
 
@@ -68,8 +70,8 @@ function pad2 (str)
 function getTimeStamp()
 {
 	var now = new Date();
-	return pad2(now.getDate()) + '/' + pad2(1 + now.getMonth()) + '/' + now.getFullYear() 
-			+ ' ' + pad2(now.getHours()) + ':' + pad2(now.getMinutes()) + ':' + pad2(now.getSeconds());
+	return pad2(now.getDate()) + '-' + pad2(1 + now.getMonth()) + '-' + now.getFullYear() 
+			+ 'T' + pad2(now.getHours()) + ':' + pad2(now.getMinutes()) + ':' + pad2(now.getSeconds());
 }
 
 function convertToYYYYMMDD (str)
@@ -99,7 +101,7 @@ function convertToYYYYMMDD (str)
 			day = parseInt(dateParts[0], 10);	
 		}
 		
-		return year + '/' + pad2(month) + '/' + pad2(day);
+		return year + '-' + pad2(month) + '-' + pad2(day);
 	}
 	catch (e)
 	{
