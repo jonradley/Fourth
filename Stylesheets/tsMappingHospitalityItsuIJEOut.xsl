@@ -6,9 +6,9 @@
 ==========================================================================================
  Module History
 ==========================================================================================
- Version	| 
+ Version
 ==========================================================================================
- Date      	| Name 				| Description of modification
+ Date      		| Name 					| Description of modification
 ==========================================================================================
  03/09/2014	| Jose Miguel			| FB8557 ITSU (r9) - Invoice and Credit Journal Entries Batch
 =======================================================================================-->
@@ -25,8 +25,7 @@
 	
 	<xsl:template match="BatchDocument">
 		<xsl:for-each select="InvoiceCreditJournalEntries/InvoiceCreditJournalEntriesDetail/InvoiceCreditJournalEntriesLine[generate-id() = generate-id(key('keyLines',concat(../../InvoiceCreditJournalEntriesHeader/InvoiceReference, '|', CategoryNominal, '|', VATCode))[1])]">
-			<!-- Store the Account Code-->	
-			<!-- JM? Depending on the transaction type we may need to flip the sign of the credits  -->	
+			<!-- Store the Account Code-->
 			<xsl:variable name="key" select="concat(../../InvoiceCreditJournalEntriesHeader/InvoiceReference, '|', CategoryNominal, '|', VATCode)"/>
 			
 			<!-- Blank Field -->
@@ -39,7 +38,7 @@
 				<xsl:with-param name="date" select="../../InvoiceCreditJournalEntriesHeader/InvoiceDate"/>
 			</xsl:call-template>
 			<xsl:value-of select="$FieldSeperator"/>
-			<!-- Order No.- (mapped to Delivery Reference instead) -->
+			<!-- Order No.- mapped to Delivery Reference instead -->
 			<xsl:value-of select="../../InvoiceCreditJournalEntriesHeader/DeliveryReference"/>
 			<xsl:value-of select="$FieldSeperator"/>
 			<!-- Vendor Invoice No. -->
@@ -48,13 +47,13 @@
 			<!-- Branch Code -->
 			<xsl:value-of select="../../InvoiceCreditJournalEntriesHeader/BuyersUnitCode"/>
 			<xsl:value-of select="$FieldSeperator"/>
-			<!-- Description (Financial Period / Supplier Name / Delivery Date [DDMM] JM? - there are different options here financial period. -->
+			<!-- Description -->
 			<xsl:value-of select="concat(../../InvoiceCreditJournalEntriesHeader/CustomFinancialPeriod,'/', ../../InvoiceCreditJournalEntriesHeader/SupplierName ,'/',concat(substring(../../InvoiceCreditJournalEntriesHeader/DeliveryDate,9,2),substring(../../InvoiceCreditJournalEntriesHeader/DeliveryDate,6,2)))"/>
 			<xsl:value-of select="$FieldSeperator"/>
 			<!--G/L Account-->
 			<xsl:value-of select="CategoryNominal"/>
 			<xsl:value-of select="$FieldSeperator"/>
-			<!-- VAT Code - JM? - CustomerVATCode -->
+			<!-- VAT Code -->
 			<xsl:choose>
 				<xsl:when test="VATCode='Z'">ZERO</xsl:when>
 				<xsl:when test="VATCode='S'">VAT20</xsl:when>
@@ -62,14 +61,34 @@
 			</xsl:choose>
 			<xsl:value-of select="$FieldSeperator"/>
 			<!-- Net Amount -->
-			<xsl:value-of select="format-number(sum(../InvoiceCreditJournalEntriesLine[concat(../../InvoiceCreditJournalEntriesHeader/InvoiceReference, '|', CategoryNominal, '|', VATCode) = $key]/LineNet),'0.00')"/>
+			<xsl:choose>
+				<xsl:when test="../../InvoiceCreditJournalEntriesHeader/TransactionType = 'CRN'">
+					<xsl:value-of select="format-number(-1 * (sum(../InvoiceCreditJournalEntriesLine[concat(../../InvoiceCreditJournalEntriesHeader/InvoiceReference, '|', CategoryNominal, '|', VATCode) = $key]/LineNet)),'0.00')"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="format-number(sum(../InvoiceCreditJournalEntriesLine[concat(../../InvoiceCreditJournalEntriesHeader/InvoiceReference, '|', CategoryNominal, '|', VATCode) = $key]/LineNet),'0.00')"/>
+				</xsl:otherwise>
+			</xsl:choose>
 			<xsl:value-of select="$FieldSeperator"/>
 			<!-- VAT Amount -->
-			<xsl:value-of select="format-number(sum(../InvoiceCreditJournalEntriesLine[concat(../../InvoiceCreditJournalEntriesHeader/InvoiceReference, '|', CategoryNominal, '|', VATCode) = $key]/LineVAT),'0.00')"/>
-			<!--<xsl:value-of select=""/>-->
+			<xsl:choose>
+				<xsl:when test="../../InvoiceCreditJournalEntriesHeader/TransactionType = 'CRN'">
+					<xsl:value-of select="format-number(-1 * (sum(../InvoiceCreditJournalEntriesLine[concat(../../InvoiceCreditJournalEntriesHeader/InvoiceReference, '|', CategoryNominal, '|', VATCode) = $key]/LineVAT)),'0.00')"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="format-number(sum(../InvoiceCreditJournalEntriesLine[concat(../../InvoiceCreditJournalEntriesHeader/InvoiceReference, '|', CategoryNominal, '|', VATCode) = $key]/LineVAT),'0.00')"/>
+				</xsl:otherwise>
+			</xsl:choose>
 			<xsl:value-of select="$FieldSeperator"/>
 			<!-- Gross Amount -->
-			<xsl:value-of select="format-number(sum(../InvoiceCreditJournalEntriesLine[concat(../../InvoiceCreditJournalEntriesHeader/InvoiceReference, '|', CategoryNominal, '|', VATCode) = $key]/LineGross),'0.00')"/>
+			<xsl:choose>
+				<xsl:when test="../../InvoiceCreditJournalEntriesHeader/TransactionType = 'CRN'">
+					<xsl:value-of select="format-number(-1 *(sum(../InvoiceCreditJournalEntriesLine[concat(../../InvoiceCreditJournalEntriesHeader/InvoiceReference, '|', CategoryNominal, '|', VATCode) = $key]/LineGross)),'0.00')"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="format-number(sum(../InvoiceCreditJournalEntriesLine[concat(../../InvoiceCreditJournalEntriesHeader/InvoiceReference, '|', CategoryNominal, '|', VATCode) = $key]/LineGross),'0.00')"/>
+				</xsl:otherwise>
+			</xsl:choose>
 			<xsl:value-of select="$RecordSeperator"/>
 		</xsl:for-each>
 	</xsl:template>
