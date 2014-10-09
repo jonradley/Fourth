@@ -25,8 +25,6 @@
 ******************************************************************************************
   16/07/2010 | Sandeep Sehgal  | FB3758 Decimal separator for Subtotals now formated as per locale
 ******************************************************************************************
-19/09/2011 | Sandeep Sehgal  | FB4272 Removed whitepspace from varaible declarations and fixed NaN bug in grouping SubTotals
-******************************************************************************************
 -->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 	
@@ -36,8 +34,12 @@
 	<xsl:output method="text" encoding="utf-8"/>	 
 	<xsl:include href="Internationalisation.xsl"/>
 	<xsl:param name="RootFolderPath" select="'./Translations'"/>	
-	<xsl:variable name="TranslationFile">Report<xsl:value-of select = "/Report/@ReportID"></xsl:value-of>.xml</xsl:variable>	
-	<xsl:param name="LocaleID"><xsl:value-of select = "/Report/@LocaleID"></xsl:value-of></xsl:param>
+	<xsl:variable name="TranslationFile">
+		Report<xsl:value-of select = "/Report/@ReportID"></xsl:value-of>.xml
+	</xsl:variable>	
+	<xsl:param name="LocaleID">
+		<xsl:value-of select = "/Report/@LocaleID"></xsl:value-of>
+	</xsl:param>
 	<xsl:variable name="CommaCharacter"><xsl:if test="$LocaleID=1034">;</xsl:if><xsl:if test="$LocaleID=2057">,</xsl:if></xsl:variable >
 	
 	<xsl:template match="/">
@@ -112,16 +114,15 @@
 												<xsl:text> Total</xsl:text>
 											</Column>
 											<Column ID="7"></Column>
-											<Column ID="8"></Column>
-											<Column ID="9"></Column>										
+											<Column ID="8"></Column>									
+											<Column ID="9">
+												<xsl:value-of select="script:gsFormatNumberByLocale(sum(/Report/LineDetails/LineDetail[Columns/Column[@ID = 6] = $GRNRef]/Columns/Column[@ID = 9]),2,number($LocaleID),0)"/>
+											</Column>
 											<Column ID="10">
 												<xsl:value-of select="script:gsFormatNumberByLocale(sum(/Report/LineDetails/LineDetail[Columns/Column[@ID = 6] = $GRNRef]/Columns/Column[@ID = 10]),2,number($LocaleID),0)"/>
 											</Column>
 											<Column ID="11">
 												<xsl:value-of select="script:gsFormatNumberByLocale(sum(/Report/LineDetails/LineDetail[Columns/Column[@ID = 6] = $GRNRef]/Columns/Column[@ID = 11]),2,number($LocaleID),0)"/>
-											</Column>
-											<Column ID="12">
-												<xsl:value-of select="script:gsFormatNumberByLocale(sum(/Report/LineDetails/LineDetail[Columns/Column[@ID = 6] = $GRNRef]/Columns/Column[@ID = 12]),2,number($LocaleID),0)"/>
 											</Column>
 										</Columns>
 									</LineDetail>				
@@ -207,16 +208,15 @@
 												<xsl:text> Total</xsl:text>
 											</Column>
 											<Column ID="7"></Column>
-											<Column ID="8"></Column>
-											<Column ID="9"></Column>										
+											<Column ID="8"></Column>									
+											<Column ID="9">
+												<xsl:value-of select="sum(/Report/LineDetails/LineDetail[Columns/Column[@ID = 6] = $GRNRef]/Columns/Column[@ID = 9])"/>
+											</Column>
 											<Column ID="10">
 												<xsl:value-of select="sum(/Report/LineDetails/LineDetail[Columns/Column[@ID = 6] = $GRNRef]/Columns/Column[@ID = 10])"/>
 											</Column>
 											<Column ID="11">
 												<xsl:value-of select="sum(/Report/LineDetails/LineDetail[Columns/Column[@ID = 6] = $GRNRef]/Columns/Column[@ID = 11])"/>
-											</Column>
-											<Column ID="12">
-												<xsl:value-of select="sum(/Report/LineDetails/LineDetail[Columns/Column[@ID = 6] = $GRNRef]/Columns/Column[@ID = 12])"/>
 											</Column>
 										</Columns>
 									</LineDetail>				

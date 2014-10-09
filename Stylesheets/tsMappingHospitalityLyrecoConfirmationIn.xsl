@@ -87,20 +87,6 @@ R Cambridge		| 14/08/2007		| 1746 Created module (copied from tsMappingHospitali
 	<!-- Lyreco's line status is hard coded as Accepted -->
 	<xsl:template match="@LineStatus"/>
 	
-	<xsl:template match="LineNumber">
-	
-		<xsl:choose>
-			<!-- Strip leading zeros from given value -->
-			<xsl:when test="string(number(.)) != 'NaN'">
-				<xsl:copy>
-					<xsl:value-of select="number(.)"/>
-				</xsl:copy>
-			</xsl:when>
-			<xsl:otherwise/><!-- let the infiller assign replacement line numbers -->
-		</xsl:choose>
-	
-	</xsl:template>
-	
 	<!-- Lyreco's ordered quantity is always the same as confirmed quantity -->
 	<xsl:template match="OrderedQuantity"/>	
 

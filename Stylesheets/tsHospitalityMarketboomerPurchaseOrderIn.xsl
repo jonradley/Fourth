@@ -159,13 +159,6 @@ Andrew Barber			| 2009-11-05		| Created
 						<xsl:value-of select="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/ConfirmInstructions"/>
 						<xsl:text> : </xsl:text>
 						<xsl:value-of select="/Supplier_Orders/SupplierOrder/Order/Header/Buyer/Comment"/>
-						<!--Add line comments to special delivery instructions at header level-->
-						<xsl:for-each select="/Supplier_Orders/SupplierOrder/Order/Body/Line/Comment">
-							<xsl:if test="/Supplier_Orders/SupplierOrder/Order/Body/Line/Comment != ''">
-								<xsl:text> : </xsl:text>
-								<xsl:value-of select="translate(/Supplier_Orders/SupplierOrder/Order/Body/Line/Comment,'&#x000D;&#x000A;', '')" />
-							</xsl:if>
-						</xsl:for-each>
 					</SpecialDeliveryInstructions>
 				</OrderedDeliveryDetails>
 			</PurchaseOrderHeader>

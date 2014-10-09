@@ -28,8 +28,6 @@
  22/06/2005 | Lee Boyton | H369. Display new contact name field.
 ****************************************************************************************** 
  18/01/2006 | A Sheppard | H548. Change Buyer to Buyer/Invoice To
- ****************************************************************************************** 
- 15/12/2009 | Sandeep Sehgal   | 3270 Changed to pick up URL from document based on DocTypeTo attribute.
 ******************************************************************************************
             |            | 
 ******************************************************************************************
@@ -121,11 +119,11 @@
 			</style>
 			<body>			
 				<form name="frmMain" method="post" onsubmit="return mbValidateDocument();">
-					<!-- read POST url added by pre-map out processor -->
 					<xsl:attribute name="action">
-						<xsl:value-of select="/PurchaseOrder/DocBuilder/Url[@DocTypeTo=3]"/>
+						<!-- read POST url added by pre-map out processor -->
+						<xsl:value-of select="/PurchaseOrder/DocBuilder/Url"/>
 					</xsl:attribute>
-	  				<!-- put the message id of this document in a hidden field, added by pre-map out processor -->
+					<!-- put the message id of this document in a hidden field, added by pre-map out processor -->
 					<input type="hidden" name="txtMessageID">
 						<xsl:attribute name="value">
 							<xsl:value-of select="/PurchaseOrder/DocBuilder/MessageID"/>

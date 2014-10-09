@@ -10,9 +10,7 @@ R Cambridge	| 2011-02-23		| 4260 added delivery instructions support
 **********************************************************************
 K Oshaughnessy|2011-08-18	|
 **********************************************************************
-M Emanuel	| 2012-10-17	| Mapped in Line number and Harrod Internal Site no
-**********************************************************************
-H Robson	| 2013-07-09	| FB 5841 Map in the Ordered UoM for Harrods only
+				|						|				
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	<xsl:output method="text" encoding="ascii"/>
@@ -56,190 +54,193 @@ H Robson	| 2013-07-09	| FB 5841 Map in the Ordered UoM for Harrods only
 	 =======================================================================================-->
 	
 	<xsl:template name="writePOHeader">
-		<!-- HDR:1 -->
+	
 		<xsl:text xml:space="preserve">HDR</xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:2 -->
+		
 		<xsl:text xml:space="preserve">29</xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:3 -->
+		
 		<xsl:call-template name="padRight">
 			<xsl:with-param name="inputText" select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
 			<xsl:with-param name="fieldSize" select="20"/>
 		</xsl:call-template>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:4 -->
+		
 		<xsl:text xml:space="preserve">                    </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:5 -->
+		
 		<xsl:text xml:space="preserve">        </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:6 -->
+		
+		
+		<!--xsl:text xml:space="preserve">895952         </xsl:text-->
 		<xsl:call-template name="padRight">
 			<xsl:with-param name="inputText" select="/PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
 			<xsl:with-param name="fieldSize" select="15"/>
 		</xsl:call-template>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:7 -->
+		
+		<!--xsl:text xml:space="preserve">040220</xsl:text-->
 		<xsl:call-template name="dateYYMMDD">
 			<xsl:with-param name="dateUTC" select="/PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderDate"/>
 		</xsl:call-template>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:8 -->
+		
 		<!-- Order type = new order -->
 		<xsl:text xml:space="preserve">O</xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:9 -->
+		
 		<xsl:text xml:space="preserve"> </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:10 -->
+		
 		<xsl:call-template name="dateYYMMDD">
 			<xsl:with-param name="dateUTC" select="/PurchaseOrder/PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate"/>
 		</xsl:call-template>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:11 -->
+		
 		<!-- Stock location code (ie depot) would go here -->
 		<xsl:text xml:space="preserve">               </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:12 -->
+		
 		<xsl:text xml:space="preserve">                                        </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:13 -->
+		
 		<xsl:text xml:space="preserve">                              </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:14 -->
+		
 		<xsl:text xml:space="preserve">                              </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:15 -->
+		
 		<xsl:text xml:space="preserve">                              </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:16 -->
+		
 		<xsl:text xml:space="preserve">                              </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:17 -->
+		
 		<xsl:text xml:space="preserve">                              </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:18 -->
+		
 		<xsl:text xml:space="preserve">          </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:19 -->
+		
 		<xsl:text xml:space="preserve">               </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:20 -->
+		
 		<xsl:text xml:space="preserve">                                        </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:21 -->
+		
 		<xsl:text xml:space="preserve">                                        </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:22 -->
+		
 		<xsl:text xml:space="preserve">                                        </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:23 -->
+		
 		<xsl:text xml:space="preserve">                                        </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:24 -->
+		
 		<xsl:text xml:space="preserve">                    </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:25 -->
+		
 		<xsl:text xml:space="preserve">               </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:26 -->
+		
 		<xsl:text xml:space="preserve">             </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:27 -->
+		
 		<xsl:text xml:space="preserve">              </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:28 -->
+		
 		<xsl:text xml:space="preserve">TRADESIMPLE    </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:29 -->
+		
 		<xsl:call-template name="padRight">
 			<xsl:with-param name="inputText" select="/PurchaseOrder/PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
 			<xsl:with-param name="fieldSize" select="15"/>
 		</xsl:call-template>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:30 -->
+		
 		<xsl:text xml:space="preserve">    </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:31 -->
+		
 		<xsl:text xml:space="preserve">        </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:32 -->
+		
 		<xsl:text xml:space="preserve">        </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:33 -->
+		
 		<xsl:text xml:space="preserve">    </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:34 -->
+		
 		<xsl:text xml:space="preserve">          </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:35 -->
+		
 		<xsl:text xml:space="preserve"> </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:36 -->
+		
 		<xsl:text xml:space="preserve">    </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:37 -->
+		
 		<xsl:text xml:space="preserve"> </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:38 -->
+		
 		<xsl:call-template name="padRight">
 			<xsl:with-param name="inputText" select="concat('ORD0',PurchaseOrderHeader/FileGenerationNumber)"/>
 			<xsl:with-param name="fieldSize" select="20"/>
 		</xsl:call-template>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:39 -->
-		<!-- Mapping Harrods internal site code -->	
-		<xsl:call-template name="padRight">
-			<xsl:with-param name="inputText" select="PurchaseOrderHeader/PurchaseOrderReferences/CustomerPurchaseOrderReference"/>
-			<xsl:with-param name="fieldSize" select="20"/>
-		</xsl:call-template>
+		
+		<xsl:text xml:space="preserve">                    </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:40 -->
+		
 		<xsl:text xml:space="preserve">          </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:41 -->		
+		
 		<xsl:text xml:space="preserve">                              </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:42 -->
+		
 		<xsl:text xml:space="preserve">                    </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:43 -->
+		
 		<xsl:text xml:space="preserve">                    </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:44 -->
+		
 		<xsl:text xml:space="preserve">    </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:45 -->
+		
 		<xsl:text xml:space="preserve">    </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:46 -->
+		
 		<xsl:text xml:space="preserve">    </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:47 -->
+		
 		<xsl:text xml:space="preserve"> </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:48 -->
+		
 		<xsl:text xml:space="preserve"> </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:49 -->
+		
 		<xsl:text xml:space="preserve"> </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:50 -->
+		
 		<xsl:text xml:space="preserve">                              </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:51 -->
+		
 		<xsl:text xml:space="preserve">                         </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:52 -->
+		
 		<xsl:text xml:space="preserve"> </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:53 -->
+		
 		<xsl:text xml:space="preserve">                              </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- HDR:54 -->
+		
 		<xsl:text xml:space="preserve"> </xsl:text>
+		
+		
 		<xsl:value-of select="$RECORD_SEPERATOR"/>
+
+	
 	</xsl:template>
 	
 	
@@ -254,185 +255,162 @@ H Robson	| 2013-07-09	| FB 5841 Map in the Ordered UoM for Harrods only
 	
 		<xsl:variable name="sUoM">
 			<xsl:choose>
-				<xsl:when test="OrderedQuantity/@UnitOfMeasure = 'EA'">EA</xsl:when>
-				<xsl:when test="OrderedQuantity/@UnitOfMeasure = 'CS'">PK</xsl:when>
-				<xsl:when test="OrderedQuantity/@UnitOfMeasure = 'KGM'">KG</xsl:when>
+				<xsl:when test="OrderedQuantity/@UnitOfMeasure = 'EA'">E</xsl:when>
+				<xsl:when test="OrderedQuantity/@UnitOfMeasure = 'CS'">E</xsl:when>
+				<xsl:when test="OrderedQuantity/@UnitOfMeasure = 'KGM'">K</xsl:when>
 			</xsl:choose>
 		</xsl:variable>
-
-		<xsl:variable name="customerIsHarrods">
-			<xsl:choose>
-				<xsl:when test="../../TradeSimpleHeader/SendersCodeForRecipient='0011489181'">1</xsl:when>
-				<xsl:otherwise>0</xsl:otherwise>
-			</xsl:choose>
-		</xsl:variable>		
-		
-		<!-- OLD:1 -->
+	
 		<xsl:text xml:space="preserve">OLD</xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- OLD:2 -->
-		<!-- used for Harrods' line number, not required for other integrations -->
-		<xsl:choose>
-			<xsl:when test="$customerIsHarrods = 1">
-				<!-- prefix with magic number 5 as per HBF requirements -->
-				<xsl:text xml:space="preserve">5</xsl:text>
-				<!-- pad the line number to 3 digits so the field is always entirely filled -->
-				<xsl:value-of select="format-number(LineNumber,'000')"/>
-			</xsl:when>	
-			<xsl:otherwise><xsl:text xml:space="preserve">    </xsl:text></xsl:otherwise>	
-		</xsl:choose>
+		
+		<xsl:text xml:space="preserve">    </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- OLD:3 -->
+		
+		<!--xsl:text xml:space="preserve">DSCO044               </xsl:text-->
 		<xsl:call-template name="padRight">
 			<xsl:with-param name="inputText" select="ProductID/SuppliersProductCode"/>
 			<xsl:with-param name="fieldSize" select="22"/>
 		</xsl:call-template>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- OLD:4 -->
+		
+		<!--xsl:text xml:space="preserve">              3.00</xsl:text-->
 		<xsl:call-template name="padLeft">
 			<xsl:with-param name="inputText" select="format-number(OrderedQuantity,'0.00')"/>
 			<xsl:with-param name="fieldSize" select="18"/>
 		</xsl:call-template>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- OLD:5 HARRODS Ordered UoM -->
-		<xsl:choose>
-			<xsl:when test="$customerIsHarrods = 1">
-				<xsl:call-template name="padRight">
-					<xsl:with-param name="inputText" select="$sUoM"/>
-					<xsl:with-param name="fieldSize" select="15"/>
-				</xsl:call-template>
-			</xsl:when>	
-			<xsl:otherwise><xsl:text xml:space="preserve">               </xsl:text></xsl:otherwise>	
-		</xsl:choose>
+		
+		<xsl:text xml:space="preserve">               </xsl:text>
+		<!--xsl:call-template name="padRight">
+			<xsl:with-param name="inputText" select="$sUoM"/>
+			<xsl:with-param name="fieldSize" select="15"/>
+		</xsl:call-template-->
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- OLD:6 -->
+		
 		<xsl:text xml:space="preserve">                  </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- OLD:7 -->
+		
+		<!--xsl:call-template name="padLeft">
+			<xsl:with-param name="inputText" select="format-number(UnitValueExclVAT,'0.00')"/>
+			<xsl:with-param name="fieldSize" select="18"/>
+		</xsl:call-template-->
 		<xsl:text xml:space="preserve">                  </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- OLD:8 -->
+		
 		<xsl:text xml:space="preserve">                  </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- OLD:9 -->
+		
 		<xsl:text xml:space="preserve"> </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- OLD:10 -->
+		
 		<xsl:call-template name="dateYYMMDD">
 			<xsl:with-param name="dateUTC" select="/PurchaseOrder/PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate"/>
 		</xsl:call-template>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- OLD:11 -->
+		
 		<xsl:text xml:space="preserve">      </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- OLD:12 -->
+		
 		<xsl:text xml:space="preserve">      </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- OLD:13 -->
+		
 		<xsl:text xml:space="preserve">      </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- OLD:14 -->
+		
 		<xsl:text xml:space="preserve">      </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- OLD:15 -->
+		
 		<xsl:text xml:space="preserve">                  </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- OLD:16 -->
+		
 		<xsl:text xml:space="preserve">                    </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- OLD:17 -->
+		
 		<xsl:text xml:space="preserve">        </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- OLD:18 -->
+		
 		<xsl:text xml:space="preserve">          </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- OLD:19 -->
+		
 		<xsl:text xml:space="preserve">      </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- OLD:20 -->
+		
 		<xsl:text xml:space="preserve">                                        </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- OLD:21 -->
+		
 		<xsl:text xml:space="preserve">               </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- OLD:22 -->
+		
 		<xsl:text xml:space="preserve">        </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- OLD:23 -->
+		
 		<xsl:text xml:space="preserve">        </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- OLD:24 -->
+		
 		<xsl:text xml:space="preserve">        </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- OLD:25 -->
+		
 		<xsl:text xml:space="preserve">        </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- OLD:26 -->
+		
 		<xsl:text xml:space="preserve">        </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- OLD:27 -->
+		
 		<xsl:text xml:space="preserve"> </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- OLD:28 -->
+		
 		<xsl:text xml:space="preserve">TRADESIMPLE         </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- OLD:29 -->
+		
 		<xsl:text xml:space="preserve">                    </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- OLD:30 -->
-		<!--Map Line Number-->
-		<xsl:call-template name="padRight">
-			<xsl:with-param name="inputText" select="LineNumber"/>
-			<xsl:with-param name="fieldSize" select="20"/>
-		</xsl:call-template>                   
+		
+		<xsl:text xml:space="preserve">                    </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- OLD:31 -->
-		<!-- Mapping Harrod's Ship To GLN -->
-		<xsl:call-template name="padRight">
-			<xsl:with-param name="inputText" select="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/>
-			<xsl:with-param name="fieldSize" select="20"/>
-		</xsl:call-template> 
+		
+		<xsl:text xml:space="preserve">                    </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- OLD:32 -->
-		<!-- Mapping Harrod's Purchasing Dept GLN -->
-		<xsl:call-template name="padRight">
-			<xsl:with-param name="inputText" select="/PurchaseOrder/PurchaseOrderHeader/ShipTo/ShipToLocationID/GLN"/>
-			<xsl:with-param name="fieldSize" select="20"/>
-		</xsl:call-template> 
+		
+		<xsl:text xml:space="preserve">                    </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- OLD:33 -->
+		
 		<xsl:text xml:space="preserve">        </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- OLD:34 -->
+		
 		<!-- Stock location code (ie depot) would go here -->
 		<xsl:text xml:space="preserve">     </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- OLD:35 -->
+		
 		<xsl:text xml:space="preserve">                                                  </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- OLD:36 -->
+		
 		<xsl:text xml:space="preserve">                              </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- OLD:37 -->
+		
 		<xsl:text xml:space="preserve">       </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- OLD:38 -->
+		
 		<xsl:text xml:space="preserve">                  </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- OLD:39 -->
+		
 		<xsl:text xml:space="preserve">                  </xsl:text>
 		<xsl:value-of select="$FIELD_SEPERATOR"/>
-		<!-- OLD:40 -->
+		
 		<xsl:call-template name="padLeft">
 			<xsl:with-param name="inputText">
 				<xsl:choose>
-					<xsl:when test="$sUoM = 'KG'"><xsl:value-of select="format-number(OrderedQuantity,'0.00')"/></xsl:when>
+					<xsl:when test="$sUoM = 'K'"><xsl:value-of select="format-number(OrderedQuantity,'0.00')"/></xsl:when>
 					<xsl:otherwise> </xsl:otherwise>
 				</xsl:choose>
 			</xsl:with-param>
 			<xsl:with-param name="fieldSize" select="18"/>
 		</xsl:call-template>
+		
+		
 		<xsl:value-of select="$RECORD_SEPERATOR"/>
+
+
 	</xsl:template>
 	
 	

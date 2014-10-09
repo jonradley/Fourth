@@ -18,15 +18,10 @@ N Emsen		|	20/11/2006	|	Case 559: changes to UOM mapping raised
 N Emsen		|	04/01/2007	|	Case 661 - CLO3
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 N Emsen		|	11/05/2007	|	Case 1092  - Date Conversion.
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-N Emsen		|	02/07/2007	|	FB: 1238 - Detect SSP invoices.
 
 **********************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
-	<!-- Buyers Code detection function and lookup table -->
-	<xsl:include href="tsMapping_LookupBuyersANA_Table.xsl"/>
-
 	<xsl:output method="xml" encoding="UTF-8"/>
 	<!-- NOTE that these string literals are not only enclosed with double quotes, but have single quotes within also-->
 	<xsl:variable name="FileHeaderSegment" select="'INVFIL'"/>
@@ -36,12 +31,10 @@ N Emsen		|	02/07/2007	|	FB: 1238 - Detect SSP invoices.
 	
 	<!-- Start point - ensure required outer BatchRoot tag is applied -->
 	<xsl:template match="/">
-		<BatchRoot>
-			<xsl:apply-templates/>
-		</BatchRoot>
+<BatchRoot>
+		<xsl:apply-templates/>
+</BatchRoot>
 	</xsl:template>
-	
-	
 	
 	<!-- GENERIC HANDLER to copy unchanged nodes, will be overridden by any node-specific templates below -->
 	<xsl:template match="*">
@@ -60,67 +53,6 @@ N Emsen		|	02/07/2007	|	FB: 1238 - Detect SSP invoices.
 	</xsl:template>
 	<!-- END of GENERIC HANDLERS -->
 
-	<!-- SSP amendment - to remap SCFR using CLO(3) IF SSP. -->
-	<xsl:template match="//TradeSimpleHeader/SendersCodeForRecipient">
-	
-		<SendersCodeForRecipient>
-		
-			<xsl:variable name="sCurValue" select="."/>
-			<xsl:variable name="sCLO2Value" select="//InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode"/>
-			<xsl:variable name="sBuyersGLN" select="//Invoice/InvoiceHeader/Buyer/BuyersLocationID/BuyersCode"/>
-			<xsl:variable name="sCheckFlag">
-				<xsl:call-template name="msDetectBuyersANA">
-					<xsl:with-param  name="sANA" select="$sBuyersGLN"/>
-				</xsl:call-template>
-			</xsl:variable>
-			
-			<xsl:choose>
-				<!-- Check is an invoice for SSP -->
-				<xsl:when test="$sCheckFlag ='1' ">
-					<xsl:value-of select="$sCLO2Value"/>
-				</xsl:when>
-				<!-- IS NOT an invoice for SSP -->
-				<xsl:otherwise>
-					<xsl:value-of select="$sCurValue"/>
-				</xsl:otherwise>
-			</xsl:choose>
-			
-		</SendersCodeForRecipient>
-		
-	</xsl:template>
-	
-	<!-- SSP amendment - to remap SBR using SDT(2) IF SSP. -->
-	<xsl:template match="//TradeSimpleHeader/SendersBranchReference">
-	
-		<SendersBranchReference>
-		
-			<xsl:variable name="sCurValue" select="."/>
-			<xsl:variable name="sScanRefValue" select="substring(//Invoice/InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode,2,5)"/>
-			<xsl:variable name="sBuyersGLN" select="/Batch/BatchDocuments/BatchDocument/Invoice/InvoiceHeader/Buyer/BuyersLocationID/BuyersCode"/>
-				
-			<xsl:variable name="sCheckFlag">
-				<xsl:call-template name="msDetectBuyersANA">
-					<xsl:with-param name="sANA" select="$sBuyersGLN"/>
-				</xsl:call-template>
-			</xsl:variable>
-			
-			<xsl:choose>
-				<!-- Check is an invoice for SSP -->
-				<xsl:when test="$sCheckFlag ='1' ">
-					<xsl:value-of select="$sScanRefValue"/>
-				</xsl:when>
-				<!-- IS NOT an invoice for SSP -->
-				<xsl:otherwise>
-					<xsl:value-of select="$sCurValue"/>
-				</xsl:otherwise>
-			</xsl:choose>
-			
-		</SendersBranchReference>
-		
-	</xsl:template>
-
-	
-	
 	<!-- InvoiceLine/ProductID/BuyersProductCode is used as a placeholder for INVOIC-ILD-CRLI and should not be copied over -->
 	<xsl:template match="BuyersProductCode"/>
 	

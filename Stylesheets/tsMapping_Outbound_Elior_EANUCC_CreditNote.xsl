@@ -246,7 +246,7 @@
 						<!--Elior require each supplier to insert their company name in SellerAssigned -->
 						<xsl:if test="//TradeSimpleHeader/SendersName">
 							<SellerAssigned scheme="OTHER">
-								<xsl:value-of select="TradeSimpleHeader/SendersName"/>
+								<xsl:value-of select="//TradeSimpleHeader/SendersName"/>
 							</SellerAssigned>
 						</xsl:if>
 						

@@ -20,13 +20,6 @@
 '******************************************************************************************
 '             |              | 
 '******************************************************************************************
-
-*** IMPORTANT NOTE ***
-This stylesheet has been branched for Fullers. Any changes made to this
-may have to be merged over to tsMappingZonalGoodsReceivedNote_Fullers.xsl
-
-Also branched for AMF: tsMappingZonalGoodsReceivedNote_AMF.xsl
-**********************
 -->
 <xsl:stylesheet 	version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output method="xml" encoding="ISO-8859-1"/>

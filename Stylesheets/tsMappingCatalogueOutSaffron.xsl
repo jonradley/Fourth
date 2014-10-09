@@ -67,9 +67,8 @@
 
       <xsl:when test="substring($vs,1,1)='&quot;'">
         <!-- " found -->
-        <!--xsl:value-of select="substring($vs,1,1)"/-->
-        <!--xsl:value-of select="'&quot;'"/-->
-        <xsl:text>'</xsl:text>
+        <xsl:value-of select="substring($vs,1,1)"/>
+        <xsl:value-of select="'&quot;'"/>
         <xsl:call-template name="msQuotes">
           <xsl:with-param name="vs" select="substring($vs,2)"/>
         </xsl:call-template>

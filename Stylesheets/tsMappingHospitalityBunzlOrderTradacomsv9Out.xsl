@@ -38,7 +38,7 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  	23/09/2009	| R Cambridge		|	2839 - removed supplier's ANA/GLN overide added in April 09 (and removed branch for Lockharts too)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- 	17/02/2011	| R Cambridge		|	4238 - CDT/CIDN/2 to read Aramark for Lockhart orders from Aramark (as per BCS orders)
+ 	17/02/2011	| R Cambridge		|	4238 - CDT/CIDN/2 to read Aramark for Lockhart orders from Aramark
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	          	|            		|	
 =======================================================================================-->
