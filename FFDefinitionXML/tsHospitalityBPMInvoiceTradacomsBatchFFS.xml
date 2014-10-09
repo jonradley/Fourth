@@ -3,14 +3,12 @@
 **********************************************************************
 Alterations
 **********************************************************************
-Name			| Date			| Change
+Name		| Date			| Change
 **********************************************************************
 S Jefford	| 22/08/2005	| GTIN field now sourced from ILD/SPRO(1).
-				|					| ILD/CRLI now stored in BuyersProductCode
+			|				| ILD/CRLI now stored in BuyersProductCode
 **********************************************************************
-R Cambridge	| 2011-06-08	| 4520 Capture suppleir's sales order number in OriginalPurchaseOrderReference for use with back order related docs
-**********************************************************************
-				|					|
+			|				|
 **********************************************************************
 -->
 <ffsFlatFileSchema>
@@ -199,8 +197,6 @@ R Cambridge	| 2011-06-08	| 4520 Capture suppleir's sales order number in Origina
 									<PurchaseOrderReference RecordPos="ILD=" LPos="27" SFPos="1"/>
 									<!-- LPos 2 OPTIONAL Purchase Order Date, OPTIONAL, INVOIC – ODD – ORNO(3), YYMMDD, Must be valid date, and should be set to the order date associated with the reference above -->
 									<PurchaseOrderDate RecordPos="ILD=" LPos="27" SFPos="3"/>
-									<!-- FB4520 optional original PO ref, If ORNO 1 & 3 both present they will be swapped over to give the correct meaning -->
-									<OriginalPurchaseOrderReference RecordPos="ILD=" LPos="27" SFPos="2"/>
 								</PurchaseOrderReferences>
 								<DeliveryNoteReferences>
 									<!-- LPos 3 OPTIONAL Delivery Note Reference, CONDITIONAL, INVOIC – ODD – DELN(1), The delivery note reference for the goods being invoiced -->

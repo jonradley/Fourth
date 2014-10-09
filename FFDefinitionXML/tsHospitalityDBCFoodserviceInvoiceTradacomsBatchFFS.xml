@@ -165,7 +165,6 @@ S Jefford	| 22/08/2005	| GTIN field now sourced from ILD/SPRO(1).
 							<ShipTo>
 								<ShipToLocationID>
 									<!--INVFIL-CLO-(1)2)-->
-									<BuyersCode RecordPos="CLO=" LPos="1" SFPos="2"/>
 									<SuppliersCode RecordPos="CLO=" LPos="1" SFPos="3"/>
 								</ShipToLocationID>
 								<!-- OPTIONAL Delivery Location Name, DERIVE, INVOIC – CLO – CNAM, The “ship-to” name -->

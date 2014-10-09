@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Date		|	Name				|	Comments
-*************************************************************************************
-29/01/2013| M Emanuel	| FB 5841 Mapping Buyer GLN
-*************************************************************************************
-			|						|
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	-->
+<!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by Dev (ABS Ltd) -->
 <ffsFlatFileSchema>
 	<ffsSettings>
 		<ffsRecordPositionType>named</ffsRecordPositionType>
@@ -43,13 +37,12 @@ Date		|	Name				|	Comments
 							<!--Set dummy value (HEAD-3) to DocumentStatus and correct it in stylesheet.-->
 							<DocumentStatus RecordPos="HEAD" LPos="3"/>
 							<BatchInformation>
-								<!--FileGenerationNo RecordPos="HEAD" LPos="25"/-->
+								<FileGenerationNo RecordPos="HEAD" LPos="25"/>
 								<FileVersionNo RecordPos="HEAD" LPos="26"/>
 								<FileCreationDate RecordPos="HEAD" LPos="27"/>
 							</BatchInformation>
 							<Buyer>
 								<BuyersLocationID>
-									<GLN RecordPos="HEAD" LPos="25"/>
 									<SuppliersCode RecordPos="HEAD" LPos="4"/>
 									<BuyersCode RecordPos="HEAD" LPos="2"/>
 								</BuyersLocationID>
@@ -88,7 +81,7 @@ Date		|	Name				|	Comments
 								<CreditNoteDate RecordPos="HEAD" LPos="6"/>
 								<!--Set TaxPoint Date same as CreditNote Date.-->
 								<TaxPointDate RecordPos="HEAD" LPos="6"/>
-								<VATRegNo RecordPos="HEAD" LPos="50"/>
+								<VATRegNo RecordPos="HEAD" LPos="51"/>
 							</CreditNoteReferences>
 							<!--Set dummy value (HEAD-3) to Currency and correct it in stylesheet.-->
 							<Currency RecordPos="HEAD" LPos="3"/>
@@ -98,17 +91,17 @@ Date		|	Name				|	Comments
 								<!--Set dummy value (Line-7) to LineNo and correct it in stylesheet.-->
 								<LineNumber RecordPos="LINE" LPos="7"/>
 								<PurchaseOrderReferences>
-									<PurchaseOrderReference RecordPos="HEAD" LPos="63"/>
-									<PurchaseOrderDate RecordPos="HEAD" LPos="64"/>
+									<PurchaseOrderReference RecordPos="LINE" LPos="94"/>
+									<PurchaseOrderDate RecordPos="LINE" LPos="95"/>
 									<TradeAgreement>
-										<ContractReference RecordPos="HEAD" LPos="58"/>
+										<ContractReference RecordPos="LINE" LPos="58"/>
 									</TradeAgreement>
 								</PurchaseOrderReferences>
 								<DeliveryNoteReferences>
-									<DeliveryNoteReference RecordPos="HEAD" LPos="67"/>
-									<DeliveryNoteDate RecordPos="HEAD" LPos="68"/>
+									<DeliveryNoteReference RecordPos="LINE" LPos="84"/>
+									<DeliveryNoteDate RecordPos="LINE" LPos="85"/>
 									<!--Set Despatch Date same as Delivery Note Date.-->
-									<DespatchDate RecordPos="HEAD" LPos="68"/>
+									<DespatchDate RecordPos="LINE" LPos="85"/>
 								</DeliveryNoteReferences>
 								<ProductID>
 									<GTIN RecordPos="LINE" LPos="18"/>

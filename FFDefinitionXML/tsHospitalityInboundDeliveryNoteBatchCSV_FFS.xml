@@ -37,15 +37,11 @@ R Cambridge	| 01/02/2007	| 770 added quantity UoMs
 				<DeliveryNote>
 					<TradeSimpleHeader>
 						<SendersCodeForRecipient RecordPos="H" LPos="2"/>
-						<SendersBranchReference RecordPos="H" LPos="19"/>
 						<TestFlag RecordPos="H" LPos="3"/>
 					</TradeSimpleHeader>
 					<DeliveryNoteHeader>
-						<Buyer>
-							<BuyersLocationID>
-								<SuppliersCode RecordPos="H" LPos="20"/>
-							</BuyersLocationID>
-						</Buyer>						
+						<!-- Buyers GLN -->
+						<!-- Suppliers GLN and SuppliersCodeFor -->
 						<ShipTo>
 							<ShipToLocationID>
 								<SuppliersCode RecordPos="H" LPos="2"/>
