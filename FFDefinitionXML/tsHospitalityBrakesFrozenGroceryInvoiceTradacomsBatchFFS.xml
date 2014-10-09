@@ -3,12 +3,14 @@
 **********************************************************************
 Alterations
 **********************************************************************
-Name		| Date			| Change
+Name			| Date				| Change
 **********************************************************************
 S Jefford	| 22/08/2005		| GTIN field now sourced from ILD/SPRO(1).
 				|						| ILD/CRLI now stored in BuyersProductCode
 **********************************************************************
 N Emsen		|	04/01/2007	|	Case 661 - CLO3
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+N Emsen		|	24/01/2007	|	Case 750:   Brakes frozen CLO mapping change
 **********************************************************************
 -->
 <ffsFlatFileSchema>
@@ -132,9 +134,8 @@ N Emsen		|	04/01/2007	|	Case 661 - CLO3
 							</BatchInformation>
 							<Buyer>
 								<BuyersLocationID>
-									<BuyersCode RecordPos="CDT=" LPos="1" SFPos="1"/>
 									<!--INVFIL-CDT-CIDN(1)-->
-									<SuppliersCode RecordPos="CDT=" LPos="1" SFPos="2"/>
+									<SuppliersCode RecordPos="CDT=" LPos="1" SFPos="1"/>
 								</BuyersLocationID>
 								<!-- OPTIONAL Buyer Name, MANDATORY, INVFIL – CDT – CNAM, NB: To make this a legal invoice, you must provide this field. The “invoice to” name -->
 								<BuyersName RecordPos="CDT=" LPos="2"/>
@@ -149,8 +150,6 @@ N Emsen		|	04/01/2007	|	Case 661 - CLO3
 							</Buyer>
 							<Supplier>
 								<SuppliersLocationID>
-									<!--INVFIL-SDT-SIDN(2)-->
-									<BuyersCode RecordPos="SDT=" LPos="1" SFPos="2"/>
 									<!--INVFIL-SDT-SIDN(1)-->
 									<SuppliersCode RecordPos="SDT=" LPos="1" SFPos="1"/>
 								</SuppliersLocationID>
@@ -167,10 +166,9 @@ N Emsen		|	04/01/2007	|	Case 661 - CLO3
 							</Supplier>
 							<ShipTo>
 								<ShipToLocationID>
-									<!-- added to assist with SSP, Stylesheet cross mapping of CLO(2) -->
-									<BuyersCode RecordPos="CLO=" LPos="1" SFPos="2"/>
 									<!--INVFIL-CLO-(1)2)-->
-									<SuppliersCode RecordPos="CLO=" LPos="1" SFPos="2"/>
+									<!-- N Emsen		|	24/01/2007	|	Case 750:   Brakes frozen CLO mapping change -->
+									<SuppliersCode RecordPos="CLO=" LPos="1" SFPos="3"/>
 								</ShipToLocationID>
 								<!-- OPTIONAL Delivery Location Name, DERIVE, INVOIC – CLO – CNAM, The “ship-to” name -->
 								<ShipToName RecordPos="CLO=" LPos="2"/>

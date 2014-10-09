@@ -11,8 +11,6 @@ S Jefford	| 22/08/2005		| GTIN field now sourced from CLD/SPRO(1).
 N Emsen		|	04/01/2007	|	Case 661 - CLO3
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 N Emsen		|	24/01/2007	|	Case 750:   Brakes frozen CLO mapping change
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Lee Boyton	|	22/06/2008	|	FB2231. Use Brakes code for unit in CLOC(3)
 **********************************************************************
 -->
 <ffsFlatFileSchema>
@@ -116,8 +114,8 @@ Lee Boyton	|	22/06/2008	|	FB2231. Use Brakes code for unit in CLOC(3)
 				<BatchDocument>
 					<CreditNote>
 						<TradeSimpleHeader>
-							<!-- MANDATORY Sender’s code for recipient, MANDATORY, CREDIT – CLO – CLOC(3), You must provide this code.  It is your internal identifier for the company that is to receive the document. It must match the code that you have entered on the trading relationship you have with the other company -->
-							<SendersCodeForRecipient RecordPos="CLO=" LPos="1" SFPos="3"/>
+							<!-- MANDATORY Sender’s code for recipient, MANDATORY, CREDIT – CLO – CLOC(2), You must provide this code.  It is your internal identifier for the company that is to receive the document. It must match the code that you have entered on the trading relationship you have with the other company -->
+							<SendersCodeForRecipient RecordPos="CLO=" LPos="1" SFPos="2"/>
 							<!-- OPTIONAL Sender’s Branch Reference, MANDATORY, CREHDR – CDT – CIDN(2), Depending on your particular relationship with the company, you must provide this code.  It is your internal identifier for the “contract” that the receiving company belongs to. It must match the code that you have provided to ABS on set-up -->
 							<SendersBranchReference RecordPos="CDT=" LPos="1" SFPos="2"/>
 						</TradeSimpleHeader>
@@ -168,8 +166,9 @@ Lee Boyton	|	22/06/2008	|	FB2231. Use Brakes code for unit in CLOC(3)
 							</Supplier>
 							<ShipTo>
 								<ShipToLocationID>
-									<!--CREHDR-CLO-(1)3)-->
-									<SuppliersCode RecordPos="CLO=" LPos="1" SFPos="3"/>
+									<!--CREHDR-CLO-(1)2)-->
+									<!-- N Emsen		|	24/01/2007	|	Case 750:   Brakes frozen CLO mapping change -->
+									<SuppliersCode RecordPos="CLO=" LPos="1" SFPos="2"/>
 								</ShipToLocationID>
 								<!-- OPTIONAL Delivery Location Name, OPTIONAL, CREDIT – CLO – CNAM -->
 								<ShipToName RecordPos="CLO=" LPos="2"/>
