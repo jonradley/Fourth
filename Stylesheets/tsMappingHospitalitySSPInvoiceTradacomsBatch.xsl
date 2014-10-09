@@ -11,13 +11,7 @@ R Cambridge		| 14/08/2007		| 1348 Added catchweight handling
 Lee Boyton		| 05/10/2007		| 1497. Strip leading digit from 8-digit codes in Suppliers Code for ShipTo.
 **********************************************************************
 Lee Boyton		| 10/10/2007		| 1500. Add branch reference to start of FGN to ensure they are unique.
-**********************************************************************
-R Cambridge		| 06/12/2007		| 1647 ensure batch header vat rates are formated to 2dp
-**********************************************************************
-           		|	            	|                              
 *******************************************************************-->
-
-
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
 	
@@ -215,7 +209,7 @@ R Cambridge		| 06/12/2007		| 1647 ensure batch header vat rates are formated to 
 						BatchHeader/VATAmount |
 						BatchHeader/DocumentTotalInclVAT |
 						BatchHeader/SettlementTotalInclVAT |
-						VATSubTotal/* | VATSubTotal/@VATRate |
+						VATSubTotal/* |
 						InvoiceTrailer/DocumentTotalExclVAT |
 						InvoiceTrailer/SettlementDiscount |
 						InvoiceTrailer/SettlementTotalExclVAT |

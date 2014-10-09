@@ -8,10 +8,6 @@ Name				| Date				| Change
 **********************************************************************
  R Cambridge	| 10/02/2009		| 2722 Added creation of delivery notes
 **********************************************************************
-R Cambridge		| 2011-06-08		| 4520 Set PO references correctly when dealing with back order documents
-														(PurchaseOrderReference = supplier generated ref for back order
-														 OriginalPurchaseOrderReference = the ref of the original order, normally the ts-generated reference)
-**********************************************************************
          		| 						| 
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
@@ -496,40 +492,18 @@ R Cambridge		| 2011-06-08		| 4520 Set PO references correctly when dealing with 
 	<!-- END of MHDSegment HANDLER -->
 	
 	<!-- Check for pairing of Purchase Order Date & Purchase Order Reference -->
-	<xsl:template name="assignPORefs" match="//PurchaseOrderReferences">
-	
+	<xsl:template match="//PurchaseOrderReferences">
 		<xsl:variable name="sPORefDate" select="translate(PurchaseOrderDate,' ','')"/>
-		
-		<xsl:variable name="sSupplierPORefReference" select="translate(OriginalPurchaseOrderReference,' ','')"/>	
-		
-		<xsl:variable name="sCustomerPORefReference" select="translate(PurchaseOrderReference,' ','')"/>
-			
-		
-		<xsl:if test="string($sPORefDate) !='' and string($sCustomerPORefReference) != '' ">
-		
+		<xsl:variable name="sPORefReference" select="translate(PurchaseOrderReference,' ','')"/>
+		<xsl:if test="string($sPORefDate) !='' and string($sPORefReference) != '' ">
 			<PurchaseOrderReferences>
 				<PurchaseOrderReference>
-					<xsl:choose>
-						<!-- This is back order delivery/invoice, store the supplier-generated PO ref here-->
-						<xsl:when test="string($sSupplierPORefReference) != ''"><xsl:value-of select="$sSupplierPORefReference"/></xsl:when>
-						<!-- This is a delivery/invoice for changes -->
-						<xsl:otherwise><xsl:value-of select="$sCustomerPORefReference"/></xsl:otherwise>
-					</xsl:choose>
+					<xsl:value-of select="$sPORefReference"/>
 				</PurchaseOrderReference>
-				
 				<PurchaseOrderDate>
 					<xsl:value-of select="concat('20',substring($sPORefDate,1,2),'-',substring($sPORefDate,3,2),'-',substring($sPORefDate,5,2))"/>
 				</PurchaseOrderDate>
-				
-				<xsl:if test="string($sSupplierPORefReference) != ''">					
-					<!-- This is back order delivery/invoice, store original PO ref here-->
-					<OriginalPurchaseOrderReference>
-						<xsl:value-of select="$sCustomerPORefReference"/>
-					</OriginalPurchaseOrderReference>
-				</xsl:if>
-				
 			</PurchaseOrderReferences>
-			
 		</xsl:if>
 	</xsl:template>	
 	
@@ -565,11 +539,23 @@ R Cambridge		| 2011-06-08		| 4520 Set PO references correctly when dealing with 
 								<xsl:copy-of select="InvoiceHeader/Buyer"/>
 								<xsl:copy-of select="InvoiceHeader/Supplier"/>
 								<xsl:copy-of select="InvoiceHeader/ShipTo"/>
-								
-								<xsl:for-each select="InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences">
-									<xsl:call-template name="assignPORefs"/>
-								</xsl:for-each>
-								
+								<xsl:if test="InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderReference != '' and InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderDate != ''">
+									<PurchaseOrderReferences>
+										<xsl:if test="InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderReference != ''">
+											<PurchaseOrderReference>
+												<xsl:value-of select="InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderReference"/>
+											</PurchaseOrderReference>
+										</xsl:if>
+										<xsl:if test="InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderDate != ''">
+											<xsl:variable name="sDPODate">
+												<xsl:value-of select="InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderDate"/>
+											</xsl:variable>
+											<PurchaseOrderDate>
+												<xsl:value-of select="concat('20',substring($sDPODate,1,2),'-',substring($sDPODate,3,2),'-',substring($sDPODate,5,2))"/>
+											</PurchaseOrderDate>
+										</xsl:if>
+									</PurchaseOrderReferences>
+								</xsl:if>
 								<DeliveryNoteReferences>
 									<DeliveryNoteReference>
 										<xsl:value-of select="InvoiceDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteReference"/>

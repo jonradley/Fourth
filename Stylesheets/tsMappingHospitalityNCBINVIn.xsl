@@ -15,8 +15,6 @@ A Barber		| 04/11/2013	| 7290 Do not map PO reference where value = 'NA'
 A Barber		| 28/11/2013	| 7465 Strip '/00' from delivery note reference.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 M Dimant		| 22/01/2014  | 7664 Major changes to NCB stylesheet to accomodate new fixed length format.
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-M Dimant		| 03/06/2014  | 8025 Populate SBR for ISS F&H invoices.
 
 **********************************************************************
 -->
@@ -79,7 +77,7 @@ M Dimant		| 03/06/2014  | 8025 Populate SBR for ISS F&H invoices.
 				<SendersCodeForRecipient><xsl:value-of select="substring-before(././././SendersCodeForRecipient,'-')"/></SendersCodeForRecipient>
 				<SendersBranchReference><xsl:value-of select="substring-after(././././SendersCodeForRecipient,'-')"/></SendersBranchReference>
 			</xsl:when>
-			<xsl:when test="../InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode='5060166761103' or '5060166761011'">
+			<xsl:when test="../InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode='5060166761103'">
 				<SendersCodeForRecipient>
 					<xsl:value-of select="../InvoiceHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
 				</SendersCodeForRecipient>

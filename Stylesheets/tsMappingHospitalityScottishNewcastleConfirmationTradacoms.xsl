@@ -7,8 +7,6 @@ Date       | Name        | Change
 **********************************************************************
 17/03/2006 | Lee Boyton  | H574. Created.
 **********************************************************************
-05/10/2010 | R Cambridge | FB3924  Line status code / narrative is picked up from DNB - GNAR(2), so line status will get set.
-**********************************************************************
            |				  |
 **********************************************************************
 -->
@@ -282,8 +280,7 @@ Date       | Name        | Change
 		
 		<xsl:if test="$Narrative != ''">
 		
-			<!-- 3920 //Narrative now contains contents of DNB-GNAR(2) so shouldn't contain anything more than 3 digit line status -->
-			<xsl:variable name="LineCode" select="substring($Narrative,1,3)"/>
+			<xsl:variable name="LineCode" select="number(substring($Narrative,19,3))"/>
 		
 			<xsl:choose>
 				<!-- 101 - Invalid Order Line Type -->

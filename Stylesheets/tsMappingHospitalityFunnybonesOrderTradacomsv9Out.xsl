@@ -112,8 +112,9 @@
 		
 		<xsl:text>CDT=</xsl:text>
 			<!-- CIDN (1) -->
+			
 			<xsl:choose>
-				<xsl:when test="contains('M6897~P0950~C3205~P0795~M3981~M6824~M9188~M6686~P0579~M6560~S9736~M6767~M6437~S1783~M2414~M2418',PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode)">O511/S</xsl:when>
+				<xsl:when test="contains('M6897~P0950~C3205~P0795~M3981~M6824~M9188~M6686~P0579~M6560~S9736~M6767~M6437~S1783~M2414~M2418',PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode) and PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode != ''">O511/S</xsl:when>
 				<xsl:otherwise>
 					<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
 				</xsl:otherwise>
@@ -121,7 +122,7 @@
 			<xsl:text>:</xsl:text>
 			<!-- CIDN (2) -->
 			<xsl:choose>
-				<xsl:when test="contains('M6897~P0950~C3205~P0795~M3981~M6824~M9188~M6686~P0579~M6560~S9736~M6767~M6437~S1783~M2414~M2418',PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode)">O511/S</xsl:when>
+				<xsl:when test="contains('M6897~P0950~C3205~P0795~M3981~M6824~M9188~M6686~P0579~M6560~S9736~M6767~M6437~S1783~M2414~M2418',PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode) and PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode != ''">O511/S</xsl:when>
 				<xsl:otherwise>
 					<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
 				</xsl:otherwise>
@@ -169,7 +170,14 @@
 		<xsl:text>CLO=</xsl:text>
 			<!--xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/GLN"/-->
 			<xsl:text>:</xsl:text>
-			<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode"/>
+			<xsl:choose>
+				<xsl:when test="PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode != ''">
+					<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="TradeSimpleHeader/SendersBranchReference"/>
+				</xsl:otherwise>
+			</xsl:choose>		
 			<xsl:text>:</xsl:text>
 			<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
 			<xsl:text>+</xsl:text>

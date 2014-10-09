@@ -23,8 +23,7 @@ H Robson		| 2012-04-10		| 5394 FnB orders don't supply the order time so lets ad
 **********************************************************************
 R Cambridge	| 2012-08-02		| 5611 MandJ buyers-code-for-vendor masking issue for JW Lees
 **********************************************************************
-J Miguel	| 2014-01-06		| 7577 Harrison Catering now trading with Brakes Confectionery and Disposables
-**********************************************************************  
+        		|           		|  
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:sh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" xmlns:eanucc="urn:ean.ucc:2" xmlns:order="urn:ean.ucc:order:2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:vbscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
@@ -519,8 +518,6 @@ J Miguel	| 2014-01-06		| 7577 Harrison Catering now trading with Brakes Confecti
 			<xsl:when test="$vendorGLN = '5036036000009'">BRAKESFROZEN</xsl:when>
 			<!-- Unfortunately Brakes Grocery, Non-Food, and Bar, all share a GLN so the best we can do is assume the Grocery code by default -->
 			<xsl:when test="$vendorGLN = '5013546062482'">BRAKESGROCERY</xsl:when>
-			<xsl:when test="$vendorGLN = '5036036000122'">BRAKESDISP</xsl:when>
-			<xsl:when test="$vendorGLN = '5036036000139'">BRAKESCONF</xsl:when>
 			<!--<xsl:when test="$vendorGLN = '5013546062482'">BRAKESNONFOOD</xsl:when>-->
 			<!--<xsl:when test="$vendorGLN = '5013546062482'">BRAKESBAR</xsl:when>-->
 			<xsl:when test="$vendorGLN = '5013546120137'">WOODWARD</xsl:when>

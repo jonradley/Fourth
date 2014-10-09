@@ -11,7 +11,13 @@
 		<xsl:text>H</xsl:text>
 		<xsl:text>|</xsl:text>
 		<!-- Purchase Order Ref -->
-		<xsl:value-of select="PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
+		<xsl:variable name="sPORef">
+			<xsl:value-of select="PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
+		</xsl:variable>
+		<xsl:variable name="sPORefLen">
+			<xsl:value-of select="string-length($sPORef)"/>
+		</xsl:variable>
+		<xsl:value-of select="substring($sPORef,$sPORefLen - 19,20)"/>
 		<xsl:text>|</xsl:text>
 		<!-- Purchase Order Date -->
 		<xsl:variable name="sPODate">
@@ -26,7 +32,7 @@
 		<xsl:value-of select="concat(substring($sDelDate,1,4),substring($sDelDate,6,2),substring($sDelDate,9,2))"/>
 		<xsl:text>|</xsl:text>
 		<!-- OrderedBy -->
-		<xsl:value-of select="PurchaseOrderHeader/ShipTo/ContactName"/>
+		<xsl:value-of select="substring(PurchaseOrderHeader/ShipTo/ContactName,1,30)"/>
 		<xsl:text>|</xsl:text>
 		<!-- Email -->
 		<xsl:text>|</xsl:text>
@@ -36,7 +42,8 @@
 		<xsl:text>O</xsl:text>
 		<xsl:text>|</xsl:text>
 		<!-- Account -->
-		<xsl:value-of select="TradeSimpleHeader/RecipientsCodeForSender"/>
+		<!--xsl:value-of select="TradeSimpleHeader/RecipientsCodeForSender"/-->
+		<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
 		<xsl:text>&#13;&#10;</xsl:text>
 
 
@@ -51,7 +58,9 @@
 			<xsl:text>|</xsl:text>
 
 			<!-- Product Title -->
-			<xsl:value-of select="ProductDescription"/>
+			<xsl:if test="ProductDescription != 'Not Provided'">
+				<xsl:value-of select="substring(ProductDescription,1,40)"/>
+			</xsl:if>
 			<xsl:text>|</xsl:text>
 
 			<!-- Price -->

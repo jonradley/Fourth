@@ -58,14 +58,16 @@
 	<!-- translate currency intro the Purchase Reference Order -->
 	<xsl:template match="CreditNoteLine">
 		<CreditNoteLine>
-			<DeliveryNoteReferences>
-				<DeliveryNoteReference><xsl:value-of select="../../CreditNoteHeader/InvoiceReferences/InvoiceReference"/></DeliveryNoteReference>
-				<DeliveryNoteDate>
+			<PurchaseOrderReferences>
+				<PurchaseOrderReference>
+					<xsl:value-of select="../../CreditNoteHeader/Currency"/>
+				</PurchaseOrderReference>
+				<PurchaseOrderDate>
 					<xsl:call-template name="FormatDate">
-						<xsl:with-param name="date" select="../../CreditNoteHeader/InvoiceReferences/InvoiceDate"/>
+						<xsl:with-param name="date" select="../../CreditNoteHeader/CreditNoteReferences/CreditNoteDate"/>
 					</xsl:call-template>
-				</DeliveryNoteDate>				
-			</DeliveryNoteReferences>			
+				</PurchaseOrderDate>
+			</PurchaseOrderReferences>
 			<xsl:apply-templates/>
 		</CreditNoteLine>
 	</xsl:template>
