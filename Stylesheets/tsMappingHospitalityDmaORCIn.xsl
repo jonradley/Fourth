@@ -14,7 +14,8 @@
 '******************************************************************************************
 ' 04/07/2014  | Jose Miguel  | FB 7566: Created
 '******************************************************************************************
-
+' 09/10/2014  | Jose Miguel  | FB 10045 Fix Senders Branch Reference (do not limit to 2 chars any longer)
+'******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:vbscript="http://abs-Ltd.com">
 	<xsl:output method="xml" indent="yes" encoding="UTF-8"/>
@@ -86,10 +87,4 @@
 	</xsl:template>
 	<!-- These fields where used for other purposes so they get removed to avoid undesired effects -->
 	<xsl:template match="BackOrderQuantity | LineNumber | PackSize"/>
-	<!-- Getting the senders branch reference -->
-	<xsl:template match="SendersBranchReference">
-		<SendersBranchReference>
-			<xsl:value-of select="substring(., 0, 3)"/>
-		</SendersBranchReference>
-	</xsl:template>
 </xsl:stylesheet>
