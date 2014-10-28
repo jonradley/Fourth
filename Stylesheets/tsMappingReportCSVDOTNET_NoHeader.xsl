@@ -12,7 +12,7 @@
 ******************************************************************************************
  30/07/2014 | Sandeep Sehgal | 7926 Created. Ported from tsmappingReportCSVDotNet.xsl
 ******************************************************************************************
-
+ 24/10/2014 | Graham Neicho | FB10061. Force qualifiers by passing to new version of msFormatForCSV
 ******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl script">
@@ -49,13 +49,11 @@
 					<xsl:text>&#xD;</xsl:text>
 					<xsl:for-each select="Columns/Column[(@GroupBy != '1' and @GroupBy != 'true') or not(@GroupBy)]">
 						<xsl:choose>
-							<xsl:when test="(@DataType = 200) and . != ''">
-								<xsl:text>"</xsl:text>
-								<xsl:value-of select="script:msFormatForCSV(.)"/>
-								<xsl:text>"</xsl:text>
+							<xsl:when test="(@DataType = 200 or @DataType = 202) and . != ''">
+								<xsl:value-of select="script:msFormatForCSVWithQualifiers(., true())"/>
 							</xsl:when>
 							<xsl:otherwise>
-								<xsl:value-of select="script:msFormatForCSV(.)"/>
+								<xsl:value-of select="script:msFormatForCSVWithQualifiers(., false())"/>
 							</xsl:otherwise>
 						</xsl:choose>
 						<xsl:text>,</xsl:text>

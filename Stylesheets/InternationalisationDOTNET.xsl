@@ -10,9 +10,11 @@
 ******************************************************************************************
  Module History
 ******************************************************************************************
- Date            | Name           | Description of modification
+ Date       | Name          | Description of modification
+ ******************************************************************************************
+ 13/08/2012 | S Sehgal      | FB 5618Escape double quotes within a column
 ******************************************************************************************
- 13/08/2012 | S Sehgal | FB 5618Escape double quotes within a column
+ 24/10/2014 | Graham Neicho | FB10061. Added version of msFormatForCSV to optionally force qualifiers
 ******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:user="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl user">
@@ -123,6 +125,31 @@
 
       return vsString;
 
+    }
+
+    /*'=========================================================================================
+    ' Routine     : msFormatForCSVWithQualifiers
+    ' Description : Formats the string for a csv file allowing an insurance that it is qualified by double quotes
+    '						Would be so much easier (but not possible) to pass an optional parameter into the original method
+    ' Inputs      : String
+    ' Outputs     : None
+    ' Returns     : String
+    ' Author      : Graham Neicho, 24/10/2014. FB10061. Copy of the (fixed) method above, plus optional force of qualifiers
+    '========================================================================================*/
+    public string msFormatForCSVWithQualifiers(string vsString, bool vbForceQualifiers)
+    {
+      if (vsString.Contains("\""))
+      {
+        vsString = vsString.Replace("\"", "\"\"");
+        vbForceQualifiers = true;
+      }
+
+      if (vbForceQualifiers || vsString.Contains(","))
+      {
+        vsString = "\"" + vsString + "\"";
+      }
+
+      return vsString;
     }
  
     /*'=========================================================================================
