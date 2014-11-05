@@ -7,7 +7,7 @@ Name         	| Date       	| Change
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 K Oshaughnessy| 01/01/2012	| 5008: Created. 
 A Barber	| 28/02/2013		| 6188 Set RecipientsCodeForSender to identify supplier in header, fixed effective date against each detail record.
-J Miguel	| 24/10/2014		| 10065 - Aramark UK - Catalogue Description length constraint from 40 to 255
+J Miguel	| 24/10/2014		| 10062 - Aramark UK - Catalogue Description length constraint from 40 to 255
 **********************************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
