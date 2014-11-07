@@ -12,7 +12,7 @@ H Robson		| 2012-03-20		| 5335 Changes to structure of Bavel GRN mapper
 **********************************************************************
 Andrew Barber	| 2013-03-22		| 6275 Un-commented attributes and set value selection in TotalSummary
 **********************************************************************
-				|						|
+J Miguel		| 2014-10-29		| 10067 Voxel Mappers for Order and GRNs out - Fix CustomerSKU
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="xml" encoding="ISO-8859-1"/>
@@ -170,7 +170,7 @@ Andrew Barber	| 2013-03-22		| 6275 Un-commented attributes and set value selecti
 							<xsl:value-of select="ProductID/SuppliersProductCode"/>
 						</xsl:attribute> 
 						<xsl:attribute name="CustomerSKU">
-							<xsl:value-of select="ProductID/SuppliersProductCode"/>
+							<xsl:value-of select="ProductID/BuyersProductCode"/>
 						</xsl:attribute> 
 						<xsl:attribute name="Item">
 							<xsl:value-of select="ProductDescription"/>
