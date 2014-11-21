@@ -14,7 +14,7 @@
 ==========================================================================================
  30/10/2012	| M Dimant     	| Created.
 ==========================================================================================
- 20/11/2014	| M Dimant     	| Corrected GLN (mailbox reference) being used in STX segment.
+ 20/11/2014	| M Dimant     	| 10087: Corrected GLN (mailbox reference) being used in STX segment.
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
