@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--************************************************************
+<!--*************************************************************************************************************************
 Overview: itsu Site Transfers Export map
-****************************************************************
+*****************************************************************************************************************************
 Module History
-****************************************************************
+*****************************************************************************************************************************
 Date				| Name			| Modification
-****************************************************************
+*****************************************************************************************************************************
 29/07/2014	|	A Barber	| 7912: Created
-*************************************************************-->
+*****************************************************************************************************************************
+28/11/2014	|	M Dimant	| 10099: Removed the header column and changed the date format.
+**************************************************************************************************************************-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 	<xsl:output method="text" encoding="UTF-8"/>
@@ -16,17 +18,13 @@ Date				| Name			| Modification
 	<xsl:key name="keyLinesByAccount" match="SiteTransfer" use="concat(SiteTransferLocation/BuyersSiteCode,'+',CategoryNominal,'+',StockFinancialPeriod,'+',TransactionDate)"/>
 	
 	<xsl:template match="/SiteTransfersExport">
-	<xsl:text>Journal</xsl:text>
-	<xsl:text>&#13;&#10;</xsl:text>
-	<xsl:text>Posting Date,Doc. No.,Account,Ext Doc. No.,Description,VAT Bus Post Grp,VAT Prod Post Grp,GD1,GD2,Debit Amount,Credit Amount</xsl:text>
-	<xsl:text>&#13;&#10;</xsl:text>
 		<xsl:for-each select="(/SiteTransfersExport/SiteTransfers/SiteTransfer)[generate-id() = generate-id(key('keyLinesByAccount',concat(SiteTransferLocation/BuyersSiteCode,'+',CategoryNominal,'+',StockFinancialPeriod,'+',TransactionDate))[1])]">
 			<xsl:sort select="CategoryNominal" data-type="text"/> 
 			<xsl:sort select="SiteTransferLocation/BuyersSiteCode" data-type="text"/> 
 			<xsl:sort select="TransactionDate" data-type="text"/> 
 			<xsl:variable name="AccountCode" select="concat(SiteTransferLocation/BuyersSiteCode,'+',CategoryNominal,'+',StockFinancialPeriod,'+',TransactionDate)"/>
-			<!-- Posting Date -->
-			<xsl:value-of select="TransactionDate"/>
+			<!-- Posting Date -->		
+			<xsl:value-of select="concat(substring(TransactionDate,9,2),'/',substring(TransactionDate,6,2),'/',substring(TransactionDate,1,4))"/>
 			<xsl:text>,</xsl:text>
 			<!-- Doc. No. -->
 			<xsl:call-template name="formatDate">
