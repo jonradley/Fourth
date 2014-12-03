@@ -14,9 +14,7 @@
 ==========================================================================================
  30/10/2012	| M Dimant     	| Created.
 ==========================================================================================
-           	|                 	|
-==========================================================================================
-           	|                 	|
+ 20/11/2014	| M Dimant     	| 10087: Corrected GLN (mailbox reference) being used in STX segment.
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -50,7 +48,7 @@
 			<xsl:text>ANA:1+</xsl:text>
 			<!--Our mailbox reference-->
 			<xsl:choose>
-				<xsl:when test="Invoice/TradeSimpleHeader/TestFlag = 'false' or Invoice/TradeSimpleHeader/TestFlag = '0'">
+				<xsl:when test="CreditNote/TradeSimpleHeader/TestFlag = 'false' or CreditNote/TradeSimpleHeader/TestFlag = '0'">
 					<xsl:text>5013546145710</xsl:text>
 				</xsl:when>
 				<xsl:otherwise>
