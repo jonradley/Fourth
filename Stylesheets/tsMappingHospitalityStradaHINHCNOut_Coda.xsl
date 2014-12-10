@@ -21,6 +21,8 @@
  17/01/2013	| A Barber				| FB5749	Update credit record line identifier.
 ==========================================================================================
  31/10/2014	| J Miguel				| FB10072   Strada: New mapper for Invoices and credits 
+==========================================================================================
+ 21/11/2014	| J Miguel				| FB10091   Extra changes to the VAT Code accounts
 =======================================================================================
 -->
 
@@ -187,7 +189,7 @@
 			<xsl:value-of select="script:msPad($varTransactionReference6, 32)"/>
 			
 			<!-- Account Code String -->
-			<xsl:value-of select="script:msPad(concat('159','+.000RR53.124200','.',$VATCode), 82)"/>
+			<xsl:value-of select="script:msPad(concat('159','+.000RR53.140000','.',$VATCode), 82)"/>
 			<!-- Value -->
 			<xsl:value-of select="script:msPadNumber(VATAmountAtRate, 15, 2)"/>
 			<!-- Vat Code -->
