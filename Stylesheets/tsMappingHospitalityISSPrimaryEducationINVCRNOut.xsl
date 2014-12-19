@@ -9,6 +9,8 @@
  03/09/2014	| Jose Miguel		| FB9009 - ISS HED - Primary education mapper for weekly invoices/credit notes batches in new format
 ====================================================================================================================================
  27/11/2014	| Jose Miguel		| FB10097- ISS HED - Limit cost code column to only 4 chars
+====================================================================================================================================
+ 17/12/2014	| Jose Miguel		| FB10105- ISS HED - Fix the Expense Code
 ====================================================================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	<xsl:output method="text"/>
@@ -54,7 +56,7 @@
 		<xsl:value-of select="substring((InvoiceHeader | CreditNoteHeader)/ShipTo/ShipToLocationID/BuyersCode, 1, 4)"/>
 		<xsl:text>,</xsl:text>
 		<!-- expensecode -->
-		<xsl:text>12-02-01</xsl:text>
+		<xsl:text>12-2-01</xsl:text>
 		<xsl:text>,</xsl:text>
 		<!-- JM unit name -->
 		<xsl:value-of select="(InvoiceHeader | CreditNoteHeader)/ShipTo/ShipToName"/>
