@@ -10,25 +10,39 @@
 ====================================================================================================================================
  27/11/2014	| Jose Miguel		| FB10097- ISS HED - Limit cost code column to only 4 chars
 ====================================================================================================================================
- 17/12/2014	| Jose Miguel		| FB10105- ISS HED - Fix the Expense Code
+ 17/12/2014	| Jose Miguel		| FB10105- ISS HED - Fix the Expense Code and the sign for credits
 ====================================================================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	<xsl:output method="text"/>
 	<xsl:template match="Batch">
-	<xsl:apply-templates select="BatchDocuments/BatchDocument/Invoice | BatchDocuments/BatchDocument/CreditNote"/>
+		<xsl:apply-templates select="BatchDocuments/BatchDocument/Invoice | BatchDocuments/BatchDocument/CreditNote"/>
 	</xsl:template>
 	<xsl:template match="Invoice | CreditNote">
+		<xsl:variable name="type" select="name(.)"/>
+		<xsl:variable name="sign">
+			<xsl:choose>
+				<xsl:when test="$type = 'Invoice'">1</xsl:when>
+				<xsl:when test="$type = 'CreditNote'">-1</xsl:when>
+			</xsl:choose>
+		</xsl:variable>
 		<!-- Header line -->
 		<xsl:text>H</xsl:text>
 		<xsl:text>,</xsl:text>
-		<xsl:text>PLJJI</xsl:text>
+		<xsl:choose>
+			<xsl:when test="$type = 'Invoice'">
+				<xsl:text>PLJJI</xsl:text>
+			</xsl:when>
+			<xsl:when test="$type = 'CreditNote'">
+				<xsl:text>PLJJC</xsl:text>
+			</xsl:when>
+		</xsl:choose>
 		<xsl:text>,</xsl:text>
 		<xsl:value-of select="InvoiceHeader/InvoiceReferences/InvoiceReference | CreditNoteHeader/CreditNoteReferences/CreditNoteReference"/>
 		<xsl:text>,</xsl:text>
 		<!-- JM unit name -->
 		<xsl:value-of select="(InvoiceHeader | CreditNoteHeader)/ShipTo/ShipToName"/>
 		<xsl:text>,</xsl:text>
-		<xsl:value-of select="(InvoiceTrailer | CreditNoteTrailer)/SettlementTotalInclVAT"/>
+		<xsl:value-of select="$sign * number((InvoiceTrailer | CreditNoteTrailer)/SettlementTotalInclVAT)"/>
 		<xsl:text>,</xsl:text>
 		<!-- docdate -->
 		<xsl:call-template name="formatDateToDDMMYYYY">
@@ -36,10 +50,10 @@
 		</xsl:call-template>
 		<xsl:text>,</xsl:text>
 		<!-- vatvat1 -->
-		<xsl:value-of select="(InvoiceTrailer | CreditNoteTrailer)/VATAmount"/>
+		<xsl:value-of select="$sign * number((InvoiceTrailer | CreditNoteTrailer)/VATAmount)"/>
 		<xsl:text>,</xsl:text>
 		<!-- vatgoods1 -->
-		<xsl:value-of select="(InvoiceTrailer | CreditNoteTrailer)/SettlementTotalExclVAT"/>
+		<xsl:value-of select="$sign * number((InvoiceTrailer | CreditNoteTrailer)/SettlementTotalExclVAT)"/>
 		<xsl:text>,</xsl:text>
 		<!-- vatcode1 -->
 		<xsl:choose>
@@ -61,7 +75,7 @@
 		<!-- JM unit name -->
 		<xsl:value-of select="(InvoiceHeader | CreditNoteHeader)/ShipTo/ShipToName"/>
 		<xsl:text>,</xsl:text>
-		<xsl:value-of select="(InvoiceTrailer | CreditNoteTrailer)/SettlementTotalExclVAT"/>
+		<xsl:value-of select="$sign * number((InvoiceTrailer | CreditNoteTrailer)/SettlementTotalExclVAT)"/>
 		<xsl:text>,</xsl:text>
 		<xsl:choose>
 			<xsl:when test="number((InvoiceTrailer | CreditNoteTrailer)/VATAmount)!=0">S</xsl:when>
@@ -69,7 +83,6 @@
 		</xsl:choose>
 		<xsl:text>&#13;&#10;</xsl:text>
 	</xsl:template>
-	
 	<!-- Format the date as dd/mm/yyyy -->
 	<xsl:template name="formatDateToDDMMYYYY">
 		<xsl:param name="date"/>
