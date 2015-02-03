@@ -8,9 +8,7 @@ R Cambridge	| 2010-10-14		| 3951 Created Module
 **********************************************************************
 R Cambridge	| 2011-03-16		| 4306 Added litres into UoM translation lists
 **********************************************************************
-				|						|
-**********************************************************************
-				|						|
+J Miguel	| 2015-02-02		| 10128 Voxel - Added Pack (PF) into UoM translationn lists
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="xml" encoding="ISO-8859-1"/>
@@ -122,6 +120,7 @@ R Cambridge	| 2011-03-16		| 4306 Added litres into UoM translation lists
 			<xsl:when test="$tsUoM = 'CS'">Cajas</xsl:when>
 			<xsl:when test="$tsUoM = 'KGM'">Kgs</xsl:when>
 			<xsl:when test="$tsUoM = 'LTR'">Lts</xsl:when>
+			<xsl:when test="$tsUoM = 'PF'">Pack</xsl:when>
 		</xsl:choose>
 	</xsl:template>
 	
@@ -134,6 +133,7 @@ R Cambridge	| 2011-03-16		| 4306 Added litres into UoM translation lists
 			<xsl:when test="translate($voxelUoM, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = 'cajas'">CS</xsl:when>
 			<xsl:when test="translate($voxelUoM, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = 'kgs'">KGM</xsl:when>
 			<xsl:when test="translate($voxelUoM, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = 'lts'">LTR</xsl:when>
+			<xsl:when test="translate($voxelUoM, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = 'pack'">PF</xsl:when>
 		</xsl:choose>	
 	</xsl:template>
 	
