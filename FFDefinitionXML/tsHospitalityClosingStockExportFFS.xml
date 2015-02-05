@@ -1,0 +1,78 @@
+<!--******************************************************************
+Alterations
+**********************************************************************
+Name			| Date				| Change
+**********************************************************************
+A Barber		| 03-02-2015		| 10129 Created module
+*******************************************************************-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator FixedSize="false">chr(13)chr(10)</ffsRecordSeparator>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>,</ffsFieldSeparator>
+		</ffsFieldSeparators>
+		<ffsSplitBatchRecord LPos="13"/>
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<BatchHeader>
+				<OrganisationCode RecordPos="H" LPos="2"/>
+				<SourceSystemExportID RecordPos="H" LPos="3"/>
+				<SourceSystemOrgID RecordPos="H" LPos="5"/>
+				<FormatCode RecordPos="H" LPos="4"/>
+				<OrganisationName RecordPos="H" LPos="6"/>
+				<ExportRunDate RecordPos="H" LPos="7"/>
+			</BatchHeader>
+			<BatchDocuments>
+				<BatchDocument>
+					<InvoiceCreditJournalEntries>
+						<InvoiceCreditJournalEntriesHeader>
+							<BuyersUnitCode RecordPos="P" LPos="2"/>
+							<BuyersSiteCode RecordPos="P" LPos="3"/>
+							<BuyersSiteName RecordPos="P" LPos="4"/>
+							<BuyersUnitName RecordPos="P" LPos="5"/>
+							<StockFinancialYear RecordPos="P" LPos="6"/>
+							<StockFinancialPeriod RecordPos="P" LPos="7"/>
+							<StockPeriodStartDate RecordPos="P" LPos="8"/>
+							<StockPeriodEndDate RecordPos="P" LPos="9"/>
+							<ApprovedDate RecordPos="P" LPos="10"/>
+							<ApprovedBy RecordPos="P" LPos="11"/>
+							<CurrencyCode RecordPos="P" LPos="12"/>
+							<OpeningStockValue RecordPos="P" LPos="13"/>
+							<TotalPurchases RecordPos="P" LPos="14"/>
+							<TotalSupplierReturns RecordPos="P" LPos="15"/>
+							<TotalSitTransfersReceived RecordPos="P" LPos="16"/>
+							<TotalSiteTransfersSent RecordPos="P" LPos="17"/>
+							<TotalAccountTransfersIn RecordPos="P" LPos="18"/>
+							<TotalAccountTransfersOut RecordPos="P" LPos="19"/>
+							<ClosingStockValue RecordPos="P" LPos="20"/>
+							<ActualCOS RecordPos="P" LPos="21"/>
+							<ActualPOS RecordPos="P" LPos="22"/>
+							<ActualProfit RecordPos="P" LPos="23"/>
+							<ActualCOSPercentage RecordPos="P" LPos="24"/>
+							<TheoreticalCOS RecordPos="P" LPos="25"/>
+							<ActualProfit RecordPos="P" LPos="26"/>
+							<TheoreticalCOSPercentage RecordPos="P" LPos="27"/>
+							<CostVariance RecordPos="P" LPos="28"/>
+							<COSVariancePercentage RecordPos="P" LPos="29"/>
+						</InvoiceCreditJournalEntriesHeader>
+						<InvoiceCreditJournalEntriesDetail>
+							<InvoiceCreditJournalEntriesLine>
+								<NomincalCode RecordPos="D" LPos="2"/>
+								<NomincalCategoryDescription RecordPos="D" LPos="3"/>
+								<OpeningTotalValue RecordPos="D" LPos="4"/>
+								<DeliveredValue RecordPos="D" LPos="5"/>
+								<SupplierReturnValue RecordPos="D" LPos="6"/>
+								<TrxValue RecordPos="D" LPos="7"/>
+								<ClosingValue RecordPos="D" LPos="8"/>
+								<UsageValue RecordPos="D" LPos="9"/>
+								<POSValue RecordPos="D" LPos="10"/>
+							</InvoiceCreditJournalEntriesLine>
+						</InvoiceCreditJournalEntriesDetail>
+					</InvoiceCreditJournalEntries>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>
