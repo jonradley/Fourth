@@ -47,7 +47,7 @@
 		<xsl:value-of select="$sFieldSep"/>
 		<xsl:text>ZZ</xsl:text>
 		<xsl:value-of select="$sFieldSep"/>
-		<xsl:value-of select="js:msPad(PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode,15)"/>
+		<xsl:text>501354614571   </xsl:text>
 		<xsl:value-of select="$sFieldSep"/>
 		<xsl:text>ZZ</xsl:text>
 		<xsl:value-of select="$sFieldSep"/>
@@ -129,7 +129,7 @@
 		<xsl:value-of select="$sFieldSep"/>
 		<xsl:text>91</xsl:text>
 		<xsl:value-of select="$sFieldSep"/>					
-		<xsl:value-of select="js:msSafeText(string(TradeSimpleHeader/RecipientsCodeForSender),6)"/>					
+		<xsl:value-of select="js:msSafeText(string(TradeSimpleHeader/RecipientsCodeForSender),40)"/>					
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:for-each select="PurchaseOrderDetail/PurchaseOrderLine">
