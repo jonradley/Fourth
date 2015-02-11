@@ -9,15 +9,16 @@
 ==========================================================================================
  Version	| 
 ==========================================================================================
- Date      	| Name 						|	Description of modification
+ Date      	| Name 		|	Description of modification
 ==========================================================================================
- 10/12/2012	| Jose Miguel				|	FB10134 Created
+ 01/01/2015	| Jose Miguel	|	FB10134 - Created
+==========================================================================================
+ 11/02/2015	| Jose Miguel	|	FB10136 - Adding resilience to different regional settings for date/time
 ==========================================================================================
 -->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 	xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript"
-	xmlns:vb="http://www.abs-ltd.com/dummynamespaces/vbscript"
 	xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	
 	<xsl:output method="text" encoding="utf-8"/>
@@ -52,9 +53,9 @@
 		<xsl:value-of select="$sFieldSep"/>
 		<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersLocationID/SuppliersCode),15)"/>
 		<xsl:value-of select="$sFieldSep"/>
-		<xsl:value-of select="vb:msFileGenerationDate()"/>
+		<xsl:value-of select="js:msFileGenerationDate()"/>
 		<xsl:value-of select="$sFieldSep"/>
-		<xsl:value-of select="vb:msFileGenerationTime()"/>
+		<xsl:value-of select="js:msFileGenerationTime()"/>
 		<xsl:value-of select="$sFieldSep"/>
 		<xsl:text>U</xsl:text>
 		<xsl:value-of select="$sFieldSep"/>
@@ -196,56 +197,54 @@
 		<xsl:value-of select="$sRecordSep"/>
 		
 	</xsl:template>
-	
-
-<msxsl:script language="VBScript" implements-prefix="vb"><![CDATA[
-
-'==========================================================================================
-' Routine        : msFileGenerationDate()
-' Description    : 
-' Inputs         :  
-' Outputs        : 
-' Returns        : A string
-' Author         : Robert Cambridge
-' Version        : 1.0
-' Alterations    : (none)
-'==========================================================================================
-
-Function msFileGenerationDate()
-
-Dim sNow
-
-	sNow = CStr(Date)
-
-	msFileGenerationDate = Right(sNow,2) & Mid(sNow,4,2) & Left(sNow,2)
-		
-End Function
-
-'==========================================================================================
-' Routine        : msFileGenerationTime()
-' Description    : 
-' Inputs         :  
-' Outputs        : 
-' Returns        : A string
-' Author         : Robert Cambridge
-' Version        : 1.0
-' Alterations    : (none)
-'==========================================================================================
-
-Function msFileGenerationTime()
-
-Dim sNow
-
-	sNow = CStr(Time)
-
-	msFileGenerationTime = Replace(Left(sNow,5),":","")
-			
-End Function
-
-]]></msxsl:script>
-
 
 <msxsl:script language="JScript" implements-prefix="js"><![CDATA[ 
+function right (str, count)
+{
+	return str.substring(str.length - count, str.length);
+}
+
+function pad2 (str)
+{
+	return right('0' + str, 2);
+}
+
+/*=========================================================================================
+' Routine        : msFileGenerationDate()
+' Description    : Gets the date in 'YYMMDD' format and works in all regions and date configurations (UK, US).
+' Returns        : A string
+' Author         : Jose Miguel
+' Version        : 1.0
+' Alterations    : (none)
+'========================================================================================*/
+function msFileGenerationDate ()
+{
+	var today = new Date();
+	var year = today.getYear();
+	var month = today.getMonth()+1;
+	var day = today.getDate();
+	
+	
+	return '' + year + pad2(month) + pad2(day);
+}
+
+/*=========================================================================================
+' Routine        : msFileGenerationTime()
+' Description    : Gets the date in 'hhmm' format and works in all regions and time configurations (UK, US).
+' Returns        : A string
+' Author         : Jose Miguel
+' Version        : 1.0
+' Alterations    : (none)
+'========================================================================================*/
+function msFileGenerationTime()
+{
+
+	var now = new Date();
+	var hours = now.getHours();
+	var minutes = now.getMinutes();
+
+	return '' + hours + minutes;	
+}
 
 /*=========================================================================================
 ' Routine        : msTestOrLive()
