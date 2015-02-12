@@ -17,6 +17,8 @@
 ==========================================================================================
  11/02/2015	| Jose Miguel	|	FB10136 - Adding resilience to different regional settings for date/time
 ==========================================================================================
+ 12/02/2015	| Jose Miguel	|	FB10139 - further amend format for date and time fields
+==========================================================================================
 -->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -82,7 +84,7 @@
 		<xsl:value-of select="$sFieldSep"/>		
 		<xsl:value-of select="translate(PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderDate,'-','')"/>
 		<xsl:value-of select="$sFieldSep"/>
-		<xsl:value-of select="js:msSafeText(translate(PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderTime,':',''),6)"/>
+		<xsl:value-of select="js:msSafeText(translate(PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderTime,':',''),4)"/>
 		<xsl:value-of select="$sFieldSep"/>
 		<xsl:text>1</xsl:text>
 		<xsl:value-of select="$sFieldSep"/>
@@ -207,7 +209,6 @@
 		<xsl:value-of select="$sRecordSep"/>
 		
 	</xsl:template>
-
 <msxsl:script language="JScript" implements-prefix="js"><![CDATA[ 
 function right (str, count)
 {
@@ -235,7 +236,7 @@ function msFileGenerationDate ()
 	var day = today.getDate();
 	
 	
-	return '' + year + pad2(month) + pad2(day);
+	return '' + pad2(year) + pad2(month) + pad2(day);
 }
 
 /*=========================================================================================
