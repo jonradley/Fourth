@@ -17,6 +17,8 @@
 ==========================================================================================
  12/02/2015	| Jose Miguel	|	FB10139 - further amend format for date and time fields
 ==========================================================================================
+ 13/02/2015	| Jose Miguel	|	FB10144 - even more further fix to the padding of the time
+==========================================================================================
 -->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -244,7 +246,7 @@ function msFileGenerationTime()
 	var hours = now.getHours();
 	var minutes = now.getMinutes();
 
-	return '' + hours + minutes;	
+	return '' + pad2(hours) + pad2(minutes);
 }
 
 /*=========================================================================================
