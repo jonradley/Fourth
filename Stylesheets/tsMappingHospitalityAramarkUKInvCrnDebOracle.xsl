@@ -104,7 +104,7 @@
 		<!-- Currency Rate BLANK -->
 		<xsl:value-of select="$separator"/>
 		<!-- Rate Type -->
-		<xsl:text>ARA UK Corp</xsl:text>
+		<xsl:text>ARA GB Corp</xsl:text>
 		<xsl:value-of select="$separator"/>
 		<!-- Terms BLANK -->
 		<xsl:value-of select="$separator"/>
@@ -240,7 +240,7 @@
 		<!-- Add Tax to Inv Amt BLANK -->
 		<xsl:value-of select="$separator"/>
 		<!-- Legal Entity Name -->
-		<xsl:text>Armark UK Ltd</xsl:text>
+		<xsl:text>Aramark UK Ltd</xsl:text>
 		<xsl:value-of select="$separator"/>		
 		<!-- Withholding Tax Group BLANK -->
 		<xsl:value-of select="$separator"/>	
