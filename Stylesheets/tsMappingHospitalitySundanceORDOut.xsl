@@ -8,9 +8,9 @@
 ==========================================================================================
  Version	| 
 ==========================================================================================
- Date      	| Name 		|	Description of modification
+ Date      	| Name 			|	Description of modification
 ==========================================================================================
- 10/12/2012	| Jose Migueln	|	FB10127 - Sundance Orders Out integration by SOAP
+ 20/02/2015	| Jose Miguel	|	FB10127 - Sundance Orders Out integration by SOAP
 ==========================================================================================
 -->
 <xsl:stylesheet version="1.0" 
