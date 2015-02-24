@@ -8,9 +8,11 @@
 ==========================================================================================
  Version	| 
 ==========================================================================================
- Date      	| Name 						|	Description of modification
+ Date      	| Name 		|	Description of modification
 ==========================================================================================
- 10/12/2012	| Jose Miguel				|	FB10134 Created
+ 12/02/2015	| Jose Miguel	|	FB10134 Created
+==========================================================================================
+ 24/02/2015	| Jose Miguel	|	FB10149 Remove mapping to the UoM to use catalogue's
 ==========================================================================================
 -->
 <ffsFlatFileSchema>
@@ -119,7 +121,6 @@
 						<ffsAttribute1 name="UnitOfMeasure" RecordPos="PO1" LPos="4"/>
 					</OrderedQuantity>
 					<ConfirmedQuantity RecordPos="ACK" LPos="3">
-						<ffsAttribute1 name="UnitOfMeasure" RecordPos="ACK" LPos="4"/>
 					</ConfirmedQuantity>
 					<UnitValueExclVAT RecordPos="PO1" LPos="5"/>
 					<ConfirmedDeliveryDetailsLineLevel>

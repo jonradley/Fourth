@@ -8,9 +8,11 @@
 ==========================================================================================
  Version	| 
 ==========================================================================================
- Date      	| Name 						|	Description of modification
+ Date      	| Name 		|	Description of modification
 ==========================================================================================
- 10/12/2012	| Jose Miguel				|	FB10134 Created
+ 12/02/2015	| Jose Miguel	|	FB10134 Created
+==========================================================================================
+ 24/02/2015	| Jose Miguel	|	FB10149 Remove mapping to the UoM to use catalogue's
 ==========================================================================================
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com" xmlns:vbscript="http://abs-Ltd.com">
@@ -130,23 +132,7 @@
 					<!--Populate ProductID node-->
 					<xsl:element name="ProductID">
 						<xsl:element name="SuppliersProductCode">
-							<xsl:choose>
-								<xsl:when test="OrderedQuantity/@UnitOfMeasure = 'EA'">
-									<!-- Only add the 's' if it is not already present, and translate lower case 'S' to upper case -->
-									<xsl:choose>
-										<xsl:when test="translate(substring(ProductID/SuppliersProductCode,string-length(ProductID/SuppliersProductCode),1),'s','S') != 'S'">
-											<xsl:value-of select="ProductID/SuppliersProductCode"/><xsl:text>S</xsl:text>
-										</xsl:when>
-										<xsl:otherwise>
-											<xsl:value-of select="substring(ProductID/SuppliersProductCode,1,string-length(ProductID/SuppliersProductCode)-1)"/>
-											<xsl:value-of select="translate(substring(ProductID/SuppliersProductCode,string-length(ProductID/SuppliersProductCode),1),'s','S')"/>
-										</xsl:otherwise>
-									</xsl:choose>
-								</xsl:when>
-								<xsl:otherwise>
-									<xsl:value-of select="ProductID/SuppliersProductCode"/>
-								</xsl:otherwise>
-							</xsl:choose>
+							<xsl:value-of select="ProductID/SuppliersProductCode"/>
 						</xsl:element>
 					</xsl:element>
 
@@ -154,11 +140,7 @@
 					<xsl:if test="@LineStatus = 'IS'">
 						<xsl:element name="SubstitutedProductID">
 							<xsl:element name="SuppliersProductCode">
-								<xsl:choose>
-									<xsl:when test="@LineStatus = 'IS'">
-										<xsl:value-of select="SubstitutedProductID/SuppliersProductCode"/>
-									</xsl:when>
-								</xsl:choose>
+								<xsl:value-of select="SubstitutedProductID/SuppliersProductCode"/>
 							</xsl:element>
 						</xsl:element>
 					</xsl:if>
@@ -167,6 +149,8 @@
 					<xsl:apply-templates select="ProductDescription"/>
 
 					<!--Populate OrderedQuantity-->
+					<xsl:apply-templates select="OrderedQuantity | ConfirmedQuantity"/>
+<!--
 					<xsl:element name="OrderedQuantity">
 						<xsl:choose>
 							<xsl:when test="@LineStatus = 'IS'">
@@ -183,30 +167,7 @@
 							</xsl:otherwise> 
 						</xsl:choose>
 					</xsl:element>
-
-					<!--Populate ConfirmedQuantity-->
-					<xsl:element name="ConfirmedQuantity">
-						<xsl:choose>
-							<xsl:when test="ConfirmedQuantity">
-								<xsl:attribute name="UnitOfMeasure">
-									<xsl:value-of select="jscript:sFormatUOM(ConfirmedQuantity/@UnitOfMeasure)"/>
-								</xsl:attribute>
-								<xsl:value-of select="format-number(ConfirmedQuantity, '0.00')"/>
-							</xsl:when>
-							<xsl:when test="@LineStatus = 'IH' or @LineStatus = 'IR'">
-								<xsl:attribute name="UnitOfMeasure">
-									<xsl:value-of select="jscript:sFormatUOM(OrderedQuantity/@UnitOfMeasure)"/>
-								</xsl:attribute>
-								<xsl:text>0.00</xsl:text> 
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:attribute name="UnitOfMeasure">
-									<xsl:value-of select="jscript:sFormatUOM(OrderedQuantity/@UnitOfMeasure)"/>
-								</xsl:attribute>
-								<xsl:value-of select="format-number(OrderedQuantity, '0.00')"/>
-							</xsl:otherwise> 
-						</xsl:choose>
-					</xsl:element>
+-->
 
 					<!--Copy UnitValueExclVAT node-->
 					<xsl:apply-templates select="UnitValueExclVAT"/>
@@ -241,7 +202,7 @@
 				</xsl:element> <!--End tag of PurchaseOrderConfirmationLine-->
 				
 				<!--Add an extra rejected line when substituted product found and folliowing line status is not IQ or IR -->
-                           <xsl:if test="(SubstitutedProductID/SuppliersProductCode != ProductID/SuppliersProductCode) and (@LineStatus = 'IS')">                           
+<!--                           <xsl:if test="(SubstitutedProductID/SuppliersProductCode != ProductID/SuppliersProductCode) and (@LineStatus = 'IS')">                           
 					<xsl:if test="(position() = last()) or (following-sibling::PurchaseOrderConfirmationLine[1]/@LineStatus != 'IQ' and following-sibling::PurchaseOrderConfirmationLine[1]/@LineStatus != 'IS')">
 	
 						<xsl:element name="PurchaseOrderConfirmationLine">
@@ -265,14 +226,19 @@
 							</xsl:element>	
 							<xsl:apply-templates select="UnitValueExclVAT"/>					
 						</xsl:element>
-						
+
 					</xsl:if>
-				</xsl:if>
+				</xsl:if>	-->
 		       </xsl:for-each>
 	       </xsl:element> <!--End tag of PurchaseOrderConfirmationDetail-->
 	</xsl:template>
 	
+	<xsl:template match="@UnitOfMeasure">
+		<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="jscript:sFormatUOM(string(.))"/></xsl:attribute>
+	</xsl:template>
+	
 	<msxsl:script language="JScript" implements-prefix="jscript"><![CDATA[
+		var mapUoMs = {"PK":"CS", "CA":"CS", "CS":"CS", "DZ":"DZN"};
 		var nLineNumber;
 		nLineNumber = 0;
 		
@@ -281,20 +247,15 @@
 			return vsString.substr(0,4) + '-' + vsString.substr(4,2) + '-' + vsString.substr(6,2);
 		}
 
-		function sFormatUOM(vsString)
+		function sFormatUOM(strSourceUoM)
 		{
-			try
+			var strTargetUoM = 'EA';
+			if (strSourceUoM.toUpperCase() != 'EA') 
 			{
-				vsString = vsString(0).text;
+				strTargetUoM = mapUoMs[strSourceUoM.toUpperCase()];
+				if (strTargetUoM == null) strTargetUoM = 'EA';
 			}
-			catch(exception)
-			{}
-			
-			if (vsString =='CA')
-			{
-				vsString = 'CS';
-			}
-			return vsString;
+			return strTargetUoM;
 		}
 		
 		function nGetLineNumber()
