@@ -41,7 +41,7 @@ A Barber		| 03-02-2015		| 10129 Created module
 							<OpeningStockValue RecordPos="P" LPos="13"/>
 							<TotalPurchases RecordPos="P" LPos="14"/>
 							<TotalSupplierReturns RecordPos="P" LPos="15"/>
-							<TotalSitTransfersReceived RecordPos="P" LPos="16"/>
+							<TotalSiteTransfersReceived RecordPos="P" LPos="16"/>
 							<TotalSiteTransfersSent RecordPos="P" LPos="17"/>
 							<TotalAccountTransfersIn RecordPos="P" LPos="18"/>
 							<TotalAccountTransfersOut RecordPos="P" LPos="19"/>
