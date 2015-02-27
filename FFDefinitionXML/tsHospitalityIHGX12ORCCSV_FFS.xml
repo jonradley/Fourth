@@ -14,6 +14,8 @@
 ==========================================================================================
  24/02/2015	| Jose Miguel	|	FB10149 Remove mapping to the UoM to use catalogue's
 ==========================================================================================
+ 27/02/2015	| Jose Miguel	|	FB10161 IHG-Generalise X12 confirmation mapper to be use with more suppliers
+==========================================================================================
 -->
 <ffsFlatFileSchema>
 	<ffsSettings>
@@ -102,7 +104,7 @@
 					<PurchaseOrderConfirmationDate RecordPos="BAK" LPos="10"/>
 				</PurchaseOrderConfirmationReferences>
 				<ConfirmedDeliveryDetails>
-					<!--Dummy element <DeliveryType> to be removed in stylesheet.-->
+					<!--DTM 2 is the type of date segment -->				
 					<DeliveryType RecordPos="DTM" LPos="2"/>
 					<DeliveryDate RecordPos="DTM" LPos="3"/>
 				</ConfirmedDeliveryDetails>
@@ -111,10 +113,12 @@
 				<PurchaseOrderConfirmationLine>
 					<LineNumber RecordPos="PO1" LPos="2" SFPos="2"/>
 					<ProductID>
-						<SuppliersProductCode RecordPos="ACK" LPos="9"/>
+						<!-- Original product id -->
+						<SuppliersProductCode RecordPos="PO1" LPos="8"/>
 					</ProductID>
 					<SubstitutedProductID>
-						<SuppliersProductCode RecordPos="PO1" LPos="8"/>
+						<!-- Confirm product id -->
+						<SuppliersProductCode RecordPos="ACK" LPos="9"/>
 					</SubstitutedProductID>
 					<ProductDescription RecordPos="PID" LPos="6"/>
 					<OrderedQuantity RecordPos="PO1" LPos="3">

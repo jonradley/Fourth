@@ -14,26 +14,11 @@
 ==========================================================================================
  24/02/2015	| Jose Miguel	|	FB10149 Remove mapping to the UoM to use catalogue's
 ==========================================================================================
+ 27/02/2015	| Jose Miguel	|	FB10161 IHG-Generalise X12 confirmation mapper to be use with more suppliers
+==========================================================================================
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com" xmlns:vbscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
-	
-	<xsl:variable name="DefaultVATRate" select="'15'"/>
-	<xsl:variable name="AccountCode">
-		 <xsl:value-of select="string(//TradeSimpleHeader/SendersBranchReference)"/>
-	</xsl:variable>
-	
-	<xsl:variable name="CustomerFlag">
-		<xsl:choose>
-			<xsl:when test="$AccountCode = '765198'">BWI Commissary</xsl:when>
-			<xsl:when test="$AccountCode = '716911'">BWI Commissary</xsl:when>
-			<xsl:when test="$AccountCode = '858142'">BWI Bateman’s</xsl:when>
-			<xsl:when test="$AccountCode = '716911'">BWI Bateman’s</xsl:when>
-			<xsl:when test="$AccountCode = '050582'">JFK Upper Crust/></xsl:when>
-			<xsl:otherwise></xsl:otherwise>
-		</xsl:choose>
-	</xsl:variable>
-	
 	<!-- GENERIC HANDLER to copy unchanged nodes, will be overridden by any node-specific templates below -->
 	<xsl:template match="*">
 		<!-- Copy the node unchanged -->
@@ -44,7 +29,6 @@
 			<xsl:apply-templates/>
 		</xsl:copy>
 	</xsl:template>
-
 	<xsl:template match="PurchaseOrderConfirmation">
 		<!-- Copy the node and add BatchRoot elements -->
 		<BatchRoot>
@@ -54,14 +38,12 @@
 			</xsl:copy>
 		</BatchRoot>
 	</xsl:template>
-
 	<!-- GENERIC ATTRIBUTE HANDLER to copy unchanged attributes, will be overridden by any attribute-specific templates below-->
 	<xsl:template match="@*">
 		<!--Copy the attribute unchanged-->
 		<xsl:copy/>
 	</xsl:template>
 	<!-- END of GENERIC HANDLERS -->
-
 	<!-- DATE CONVERSION dd/mm/yyyy to xsd:date -->
 	<xsl:template match="PurchaseOrderReferences/PurchaseOrderDate |
 						PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationDate |
@@ -71,107 +53,79 @@
 			<xsl:value-of select="concat(substring(., 1, 4), '-', substring(., 5, 2), '-', substring(.,7, 2))"/>
 		</xsl:copy>
 	</xsl:template>
-
 	<!--************** HEADERS ***********-->
 	<!--***************************************-->
-	
-	<!-- TestFlag is false is it currently equals 'P' -->
+	<!-- TestFlag is true if the value is 'T' -->
 	<xsl:template match="//TestFlag">
-		<xsl:element name="TestFlag">
+		<TestFlag>
 			<xsl:choose>
-				<xsl:when test=".='P'">false</xsl:when>
-				<xsl:otherwise>true</xsl:otherwise>
+				<xsl:when test=".='T'">true</xsl:when>
+				<xsl:otherwise>false</xsl:otherwise>
 			</xsl:choose>
-		</xsl:element>	
+		</TestFlag>
 	</xsl:template>
-
 	<!--Set DocumentStatus as 'Original'-->
 	<xsl:template match="//DocumentStatus">
-		<xsl:element name="DocumentStatus"><xsl:text>Original</xsl:text></xsl:element>
+		<DocumentStatus>
+			<xsl:text>Original</xsl:text>
+		</DocumentStatus>
 	</xsl:template>
-
 	<!--Set ConfirmedDeliveryDetails/DeliveryDate-->
+	<!-- the mapper could be linked 067 and 102. we only the 067-->
 	<xsl:template match="//ConfirmedDeliveryDetails">
 		<xsl:if test="DeliveryType = '067' and DeliveryDate">
-			<xsl:element name="ConfirmedDeliveryDetails">
-				<xsl:element name="DeliveryDate">
+			<ConfirmedDeliveryDetails>
+				<DeliveryDate>
 					<xsl:value-of select="jscript:sFormatDate(string(DeliveryDate))"/>
-				</xsl:element>
-			</xsl:element>
-		</xsl:if>
+				</DeliveryDate>
+			</ConfirmedDeliveryDetails>
+		</xsl:if>	
 	</xsl:template>
-
 	<!--*********** LINE DETAILS **********-->
 	<!--***************************************-->
-
 	<xsl:template match="//PurchaseOrderConfirmationDetail">
 		<xsl:element name="PurchaseOrderConfirmationDetail">
-		
-		       <xsl:for-each select="PurchaseOrderConfirmationLine">
+			<xsl:for-each select="PurchaseOrderConfirmationLine">
 				<xsl:element name="PurchaseOrderConfirmationLine">
-
 					<!--Amend line status-->
-					<xsl:attribute name="LineStatus">
-						<xsl:choose>
-							<xsl:when test="@LineStatus = 'AC'">Accepted</xsl:when>
-							<xsl:when test="@LineStatus = 'AR'">Accepted</xsl:when>
-							<xsl:when test="@LineStatus = 'IA'">Accepted</xsl:when>
-							<xsl:when test="@LineStatus = 'SP'">Accepted</xsl:when>
-							<xsl:when test="@LineStatus = 'IH'">Rejected</xsl:when>
-							<xsl:when test="@LineStatus = 'IR'">Rejected</xsl:when>
-							<xsl:when test="@LineStatus = 'IQ'">Changed</xsl:when>
-							<xsl:when test="@LineStatus = 'IS'">Added</xsl:when>
-						</xsl:choose>
-					</xsl:attribute>
-
+					<xsl:attribute name="LineStatus"><xsl:choose><xsl:when test="@LineStatus = 'AC'">Accepted</xsl:when><xsl:when test="@LineStatus = 'AR'">Accepted</xsl:when><xsl:when test="@LineStatus = 'IA'">Accepted</xsl:when><xsl:when test="@LineStatus = 'IE'">Accepted</xsl:when><xsl:when test="@LineStatus = 'SP'">Accepted</xsl:when><xsl:when test="@LineStatus = 'BP'">Changed</xsl:when><xsl:when test="@LineStatus = 'DR'">Changed</xsl:when><xsl:when test="@LineStatus = 'IB'">Changed</xsl:when><xsl:when test="@LineStatus = 'IC'">Changed</xsl:when><xsl:when test="@LineStatus = 'IP'">Changed</xsl:when><xsl:when test="@LineStatus = 'IQ'">Changed</xsl:when><xsl:when test="@LineStatus = 'ID'">Rejected</xsl:when><xsl:when test="@LineStatus = 'IF'">Rejected</xsl:when><xsl:when test="@LineStatus = 'IH'">Rejected</xsl:when><xsl:when test="@LineStatus = 'IR'">Rejected</xsl:when><xsl:when test="@LineStatus = 'IW'">Rejected</xsl:when><xsl:when test="@LineStatus = 'IS'">Added</xsl:when></xsl:choose></xsl:attribute>
 					<!--Set new line number-->
-					<xsl:element name="LineNumber">
+					<LineNumber>
 						<xsl:value-of select="jscript:nGetLineNumber()"/>
-					</xsl:element>
-			
+					</LineNumber>
 					<!--Populate ProductID node-->
-					<xsl:element name="ProductID">
-						<xsl:element name="SuppliersProductCode">
-							<xsl:value-of select="ProductID/SuppliersProductCode"/>
-						</xsl:element>
-					</xsl:element>
-
-					<!--Populate SubstitutedProductID-->
-					<xsl:if test="@LineStatus = 'IS'">
-						<xsl:element name="SubstitutedProductID">
-							<xsl:element name="SuppliersProductCode">
-								<xsl:value-of select="SubstitutedProductID/SuppliersProductCode"/>
-							</xsl:element>
-						</xsl:element>
-					</xsl:if>
-			
+					<!--Choose the confirmed/substituted product id, if present... otherwise default to original product id-->
+					<ProductID>
+						<SuppliersProductCode>
+							<xsl:choose>
+								<xsl:when test="ProductID/SuppliersProductCode">
+									<xsl:value-of select="ProductID/SuppliersProductCode"/>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="SubstitutedProductID/SuppliersProductCode"/>
+								</xsl:otherwise>
+							</xsl:choose>
+						</SuppliersProductCode>
+					</ProductID>
 					<!--Copy ProductDescription node-->
 					<xsl:apply-templates select="ProductDescription"/>
-
 					<!--Populate OrderedQuantity-->
-					<xsl:apply-templates select="OrderedQuantity | ConfirmedQuantity"/>
-<!--
-					<xsl:element name="OrderedQuantity">
+					<xsl:apply-templates select="OrderedQuantity"/>
+					<ConfirmedQuantity>
 						<xsl:choose>
-							<xsl:when test="@LineStatus = 'IS'">
-								<xsl:attribute name="UnitOfMeasure">
-									<xsl:value-of select="jscript:sFormatUOM(OrderedQuantity/@UnitOfMeasure)"/>
-								</xsl:attribute>
-								<xsl:text>0.00</xsl:text> 
+							<xsl:when test="@LineStatus = 'IH' or @LineStatus = 'IR' or @LineStatus = 'ID' or @LineStatus = 'IF' or @LineStatus = 'IW'">
+								<xsl:text>0</xsl:text>
+							</xsl:when>
+							<xsl:when test="ConfirmedQuantity">
+								<xsl:value-of select="ConfirmedQuantity"/>
 							</xsl:when>
 							<xsl:otherwise>
-								<xsl:attribute name="UnitOfMeasure">
-									<xsl:value-of select="jscript:sFormatUOM(OrderedQuantity/@UnitOfMeasure)"/>
-								</xsl:attribute>
-								<xsl:value-of select="format-number(OrderedQuantity, '0.00')"/>
-							</xsl:otherwise> 
+								<xsl:value-of select="OrderedQuantity"/>
+							</xsl:otherwise>
 						</xsl:choose>
-					</xsl:element>
--->
-
+					</ConfirmedQuantity>
 					<!--Copy UnitValueExclVAT node-->
 					<xsl:apply-templates select="UnitValueExclVAT"/>
-
 					<!--Populate ConfirmedDeliveryDetailsLineLevel-->
 					<xsl:if test="ConfirmedDeliveryDetailsLineLevel/DeliveryDate != ''">
 						<xsl:element name="ConfirmedDeliveryDetailsLineLevel">
@@ -182,10 +136,9 @@
 							</xsl:element>
 						</xsl:element>
 					</xsl:if>
-	
 					<!--Populate Narrative when status is Rejected-->
 					<xsl:element name="Narrative">
-						<xsl:if test="@LineStatus = 'IH' or @LineStatus = 'IR'">
+						<xsl:if test="@LineStatus = 'IH' or @LineStatus = 'IR' or @LineStatus = 'ID' or @LineStatus = 'IF' or @LineStatus = 'IW'">
 							<xsl:choose>
 								<xsl:when test="Narrative = 'II'">An invalid SUPC</xsl:when>
 								<xsl:when test="Narrative = 'IA'">An inactive or proprietary item</xsl:when>
@@ -198,47 +151,16 @@
 							</xsl:choose>
 						</xsl:if>
 					</xsl:element>
-						
-				</xsl:element> <!--End tag of PurchaseOrderConfirmationLine-->
-				
-				<!--Add an extra rejected line when substituted product found and folliowing line status is not IQ or IR -->
-<!--                           <xsl:if test="(SubstitutedProductID/SuppliersProductCode != ProductID/SuppliersProductCode) and (@LineStatus = 'IS')">                           
-					<xsl:if test="(position() = last()) or (following-sibling::PurchaseOrderConfirmationLine[1]/@LineStatus != 'IQ' and following-sibling::PurchaseOrderConfirmationLine[1]/@LineStatus != 'IS')">
-	
-						<xsl:element name="PurchaseOrderConfirmationLine">
-							<xsl:attribute name="LineStatus">Rejected</xsl:attribute>
-							<xsl:element name="LineNumber"><xsl:value-of select="jscript:nGetLineNumber()"/></xsl:element>
-							<xsl:element name="ProductID">
-								<xsl:element name="SuppliersProductCode"><xsl:value-of select="SubstitutedProductID/SuppliersProductCode"/></xsl:element>
-							</xsl:element>
-							<xsl:element name="ProductDescription"><xsl:value-of select="ProductDescription"/></xsl:element>
-							<xsl:element name="OrderedQuantity">
-								<xsl:attribute name="UnitOfMeasure">
-									<xsl:value-of select="jscript:sFormatUOM(OrderedQuantity/@UnitOfMeasure)"/>
-								</xsl:attribute>
-								<xsl:value-of select="format-number(OrderedQuantity, '0.00')"/>
-							</xsl:element>
-							<xsl:element name="ConfirmedQuantity">
-								<xsl:attribute name="UnitOfMeasure">
-									<xsl:value-of select="jscript:sFormatUOM(ConfirmedQuantity/@UnitOfMeasure)"/>
-								</xsl:attribute>
-								<xsl:text>0.00</xsl:text> 
-							</xsl:element>	
-							<xsl:apply-templates select="UnitValueExclVAT"/>					
-						</xsl:element>
-
-					</xsl:if>
-				</xsl:if>	-->
-		       </xsl:for-each>
-	       </xsl:element> <!--End tag of PurchaseOrderConfirmationDetail-->
+				</xsl:element>
+			</xsl:for-each>
+		</xsl:element>
+		<!--End tag of PurchaseOrderConfirmationDetail-->
 	</xsl:template>
-	
 	<xsl:template match="@UnitOfMeasure">
 		<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="jscript:sFormatUOM(string(.))"/></xsl:attribute>
 	</xsl:template>
-	
 	<msxsl:script language="JScript" implements-prefix="jscript"><![CDATA[
-		var mapUoMs = {"PK":"CS", "CA":"CS", "CS":"CS", "DZ":"DZN"};
+		var mapUoMs = {"PK":"CS", "CA":"CS", "CS":"CS", "DZ":"DZN", "PN":"PND", "LB":"PND", "BX":"CS"};
 		var nLineNumber;
 		nLineNumber = 0;
 		
@@ -265,5 +187,4 @@
 		}
 		
 	]]></msxsl:script>
-
 </xsl:stylesheet>
