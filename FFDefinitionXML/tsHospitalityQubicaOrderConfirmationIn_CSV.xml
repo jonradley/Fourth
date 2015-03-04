@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>chr(13)chr(10)</ffsRecordSeparator>
+		<!--ffsEscapeChars>
+			<ffsEscapeChar>
+				<ffsNative>chr(13)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>""</ffsNative>
+				<ffsTradesimple>¬Q</ffsTradesimple>
+				<ffsLiteral>"</ffsLiteral>
+			</ffsEscapeChar>
+		</ffsEscapeChars-->
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>,</ffsFieldSeparator>
+		</ffsFieldSeparators>
+		<!--ffsPadding/-->
+		<!--		
+		<ffsBatchHeader>
+			List of records that make up the header, this will be added to each document in the batch
+			<ffsHeaderRecord RecordPos="SYKCOO"/>
+		</ffsBatchHeader>
+-->
+		<!--ffsGroups>
+			<ffsGroup>
+				<ffsGroupRecord RecordPos="SYKCOO" FieldTotal="34"/>
+				<ffsSubGroupRecord RecordPos="SZKCOO" FieldTotal="2"/>
+			</ffsGroup>
+		</ffsGroups-->
+		<ffsSplitBatchRecord RecordPos="SYKCOO"/>
+	</ffsSettings>
+	<ffsRoot>
+		<PurchaseOrderConfirmation>
+			<TradeSimpleHeader>
+				<SendersCodeForRecipient RecordPos="SYKCOO" LPos="10"/>
+			</TradeSimpleHeader>
+			<PurchaseOrderConfirmationHeader>
+				<Buyer>
+					<BuyersLocationID>
+						<SuppliersCode RecordPos="SYKCOO" LPos="8"/>
+					</BuyersLocationID>
+				</Buyer>
+				<ShipTo>
+					<ShipToLocationID>
+						<SuppliersCode RecordPos="SYKCOO" LPos="8"/>
+					</ShipToLocationID>
+				</ShipTo>
+				<PurchaseOrderReferences>
+					<PurchaseOrderReference RecordPos="SYKCOO" LPos="14"/>
+					<PurchaseOrderDate RecordPos="SYKCOO" LPos="12"/>
+				</PurchaseOrderReferences>
+				<PurchaseOrderConfirmationReferences>
+					<PurchaseOrderConfirmationReference RecordPos="SYKCOO" LPos="4"/>
+					<PurchaseOrderConfirmationDate RecordPos="SYKCOO" LPos="12"/>
+				</PurchaseOrderConfirmationReferences>
+				<ConfirmedDeliveryDetails>
+					<DeliveryDate RecordPos="SYKCOO" LPos="12"/>
+				</ConfirmedDeliveryDetails>
+			</PurchaseOrderConfirmationHeader>
+			<PurchaseOrderConfirmationDetail>
+				<PurchaseOrderConfirmationLine>
+					<ProductID>
+						<SuppliersProductCode RecordPos="SZKCOO" LPos="18"/>
+					</ProductID>
+					<ProductDescription RecordPos="SZKCOO" LPos="20"/>
+					<!--<OrderedQuantity name="UnitOfMeasure" RecordPos="SZKCOO" LPos="24"/>-->
+					<ConfirmedQuantity name="UnitOfMeasure" RecordPos="SZKCOO" LPos="24"/>
+					<PackSize RecordPos="SZKCOO" LPos="22"/>
+					<UnitValueExclVAT RecordPos="SZKCOO" LPos="28"/>
+					<LineValueExclVAT RecordPos="SZKCOO" LPos="30"/>
+					<ConfirmedDeliveryDetailsLineLevel>
+						<DeliveryDate RecordPos="SZKCOO" LPos="16"/>
+					</ConfirmedDeliveryDetailsLineLevel>
+				</PurchaseOrderConfirmationLine>
+			</PurchaseOrderConfirmationDetail>
+			<PurchaseOrderConfirmationTrailer>
+				<!--NumberOfLines RecordPos="SZKCOO" LPos="16"/-->
+			</PurchaseOrderConfirmationTrailer>
+		</PurchaseOrderConfirmation>
+	</ffsRoot>
+</ffsFlatFileSchema>
