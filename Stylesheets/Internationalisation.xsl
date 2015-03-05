@@ -14,6 +14,8 @@
 ******************************************************************************************
  13/08/2012 | S Sehgal | FB 5618Escape double quotes within a column
 ******************************************************************************************
+ 03/03/2015 | S Sehgal | FB 10173 Added a new format string routine that always adds double quotes
+******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:user="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl user">
 
@@ -385,6 +387,40 @@
 			End if
 			
 			
+		End Function
+		
+		'=========================================================================================
+		' Routine       	 : msFormatForCSVWithQualifiers
+		' Description 	     : Wrap the string in double quotes
+		' Inputs          	 : String
+		' Outputs       	 : None
+		' Returns       	 : String
+		' Author             : S Sehgal, 03/03/2015.
+		' Alterations   	 : 
+		' Alterations   	 :  
+		'========================================================================================
+		Function msFormatForCSVWithQualifiers(vsString)
+				
+		Dim sString
+			If IsObject(vsString) Then
+				If vsString.length > 0 Then
+					sString= vsString.item(0).nodeTypedValue
+				Else
+					sString= ""
+				End If
+			Else
+				sString= vsString
+			End If	
+
+						
+			sString= replace(sString,"""","¬")
+			
+			sString= replace(sString,"¬","""""")
+					
+			sString= """" & sString & """"
+
+			msFormatForCSVWithQualifiers = sString
+				
 		End Function
 
 ]]></msxsl:script>
