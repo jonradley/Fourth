@@ -15,6 +15,8 @@
 ==========================================================================================
  24/02/2015	| Jose Miguel	|	FB10149 Remove mapping to the UoM to use catalogue's
 ==========================================================================================
+ 05/03/2015	| Ben Oliver	|	FB10178 Restrict UoM to 2 characters & Populate address line 4.
+==========================================================================================
 -->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -146,7 +148,7 @@
 		<!-- N4 Ship To City*State Code*Postal Code -->
 		<xsl:text>N4</xsl:text>
 		<xsl:value-of select="$sFieldSep"/>
-		<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine2),30)"/>
+		<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine3),30)"/>
 		<xsl:value-of select="$sFieldSep"/>
 		<xsl:value-of select="substring(PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine4, 1, 2)"/>
 		<xsl:value-of select="$sFieldSep"/>
@@ -173,7 +175,7 @@
 			<xsl:value-of select="$sFieldSep"/>
 			<xsl:value-of select="number(OrderedQuantity)"/>
 			<xsl:value-of select="$sFieldSep"/>
-			<xsl:value-of select="OrderedQuantity/@UnitOfMeasure"/>
+			<xsl:value-of select="js:msSafeText(string(OrderedQuantity/@UnitOfMeasure),2)"/>
 			<xsl:value-of select="$sFieldSep"/>
 			<xsl:value-of select="js:msSafeText(string(UnitValueExclVAT),20)"/>	
 			<xsl:value-of select="$sFieldSep"/>
