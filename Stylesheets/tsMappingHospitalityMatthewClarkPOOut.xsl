@@ -9,15 +9,17 @@
 '******************************************************************************************
 ' Module History
 '******************************************************************************************
-' Date             | Name              | Description of modification
+' Date        | Name           | Description of modification
 '******************************************************************************************
-' 12/04/2005  | Steven Hewitt | Created
-'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+' 12/04/2005  | Steven Hewitt  | Created
+'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ' 03/06/2010  | M Dimant       | Matthew Clark require Seller/GLN to always be 5555555555555
-'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ' 21/05/2013  | S Hussain      | Case 6588: Supplier Product Code Formatting + Optimization
-'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ' 24/07/2013  | S Hussain      | Case 6588: Renamed the Stylesheet as per standard naming conventions
+'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+' 04/03/2015  | J Miguel       | Case 10174: Matthew Clark - SSP - Orders Out - remove UoM
 '******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" 
@@ -192,10 +194,12 @@
 				
 					<RequestedQuantity>
 						<xsl:attribute name="unitCode">
-							<xsl:call-template name="FormatSupplierUOM">
-								<xsl:with-param name="sProductCode" select="ProductID/SuppliersProductCode"/>
-								<xsl:with-param name="sUOM" select="OrderedQuantity/@UnitOfMeasure"/>
-							</xsl:call-template>
+							<xsl:if test="not(../../PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode = 'SSP')">
+								<xsl:call-template name="FormatSupplierUOM">
+									<xsl:with-param name="sProductCode" select="ProductID/SuppliersProductCode"/>
+									<xsl:with-param name="sUOM" select="OrderedQuantity/@UnitOfMeasure"/>
+								</xsl:call-template>
+							</xsl:if>
 						</xsl:attribute>
 						
 						<xsl:value-of select="format-number(OrderedQuantity,'0.000')"></xsl:value-of>
