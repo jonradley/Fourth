@@ -31,6 +31,8 @@
 ******************************************************************************************
 03/05/2013 | Sandeep Sehgal | FB6330/FB6444. Translating status column for Report 145
 ******************************************************************************************
+ 03/03/2015 | Sandeep Sehgal | FB 10173. Adding quotes to Column 6 for Report 129
+******************************************************************************************
 -->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -84,6 +86,9 @@
                     </xsl:when>
                     <xsl:when test="$ReportID = 129 and position() = 9">
                       <xsl:call-template name="SelectString"><xsl:with-param name="InputString" select="script:msFormatForCSV(.)"/><xsl:with-param name="ReportID" select="$ReportID"/></xsl:call-template><xsl:value-of select="$CommaCharacter"></xsl:value-of>
+                    </xsl:when>
+                    <xsl:when test="$ReportID = 129 and position() = 6">
+                      <xsl:call-template name="SelectString"><xsl:with-param name="InputString" select="script:msFormatForCSVWithQualifiers(.)"/><xsl:with-param name="ReportID" select="$ReportID"/></xsl:call-template><xsl:value-of select="$CommaCharacter"></xsl:value-of>
                     </xsl:when>
                       <xsl:when test="$ReportID = 145 and position() = 9">
                       <xsl:call-template name="SelectString"><xsl:with-param name="InputString" select="script:msFormatForCSV(.)"/><xsl:with-param name="ReportID" select="$ReportID"/></xsl:call-template><xsl:value-of select="$CommaCharacter"></xsl:value-of>
