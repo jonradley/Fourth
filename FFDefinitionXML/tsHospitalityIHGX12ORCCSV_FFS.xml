@@ -16,6 +16,8 @@
 ==========================================================================================
  27/02/2015	| Jose Miguel	|	FB10161 IHG-Generalise X12 confirmation mapper to be use with more suppliers
 ==========================================================================================
+ 31/03/2015	| Jose Miguel	|	FB10127 US - Tradesimple generic mapper Changes
+==========================================================================================
 -->
 <ffsFlatFileSchema>
 	<ffsSettings>
@@ -66,6 +68,12 @@
 			<ffsSubFieldSeparator>-</ffsSubFieldSeparator>
 		</ffsFieldSeparators>
 		<ffsPadding/>
+		<ffsBatchHeader>
+			<!--list of records that make up the header, this will be added to each document in the batch -->
+			<ffsHeaderRecord RecordPos="ISA"/>
+			<ffsHeaderRecord RecordPos="GS"/>
+		</ffsBatchHeader>
+		<ffsSplitBatchRecord RecordPos="ST"/>
 	</ffsSettings>
 	<ffsRoot>
 		<PurchaseOrderConfirmation>
@@ -104,7 +112,7 @@
 					<PurchaseOrderConfirmationDate RecordPos="BAK" LPos="10"/>
 				</PurchaseOrderConfirmationReferences>
 				<ConfirmedDeliveryDetails>
-					<!--DTM 2 is the type of date segment -->				
+					<!--DTM 2 is the type of date segment -->
 					<DeliveryType RecordPos="DTM" LPos="2"/>
 					<DeliveryDate RecordPos="DTM" LPos="3"/>
 				</ConfirmedDeliveryDetails>
@@ -124,9 +132,7 @@
 					<OrderedQuantity RecordPos="PO1" LPos="3">
 						<ffsAttribute1 name="UnitOfMeasure" RecordPos="PO1" LPos="4"/>
 					</OrderedQuantity>
-					<ConfirmedQuantity RecordPos="ACK" LPos="3">
-					</ConfirmedQuantity>
-					<UnitValueExclVAT RecordPos="PO1" LPos="5"/>
+					<ConfirmedQuantity RecordPos="ACK" LPos="3"/>
 					<ConfirmedDeliveryDetailsLineLevel>
 						<DeliveryDate RecordPos="ACK" LPos="6"/>
 					</ConfirmedDeliveryDetailsLineLevel>
