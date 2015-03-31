@@ -17,6 +17,8 @@
 ==========================================================================================
  05/03/2015	| Ben Oliver	|	FB10178 Restrict UoM to 2 characters & Populate address line 4.
 ==========================================================================================
+ 31/03/2015	| Jose Miguel	|	FB10127 US - Tradesimple generic mapper Changes
+==========================================================================================
 -->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -142,7 +144,9 @@
 		<!-- N3 Ship to Address -->
 		<xsl:text>N3</xsl:text>
 		<xsl:value-of select="$sFieldSep"/>
-		<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine1),35)"/>
+		<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine1), 35)"/>
+		<xsl:value-of select="$sFieldSep"/>
+		<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine2), 30)"/>
 		<xsl:value-of select="$sRecordSep"/>
 
 		<!-- N4 Ship To City*State Code*Postal Code -->
