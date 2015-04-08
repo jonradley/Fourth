@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--****************************************************************************************************************************************
+Alterations
+********************************************************************************************************************************************
+Name			| Date			| Change
+********************************************************************************************************************************************
+M Dimant		| 26/03/2015	| FB 10201: Created.
+********************************************************************************************************************************************
+					|					|
+*****************************************************************************************************************************************-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>sequenced</ffsRecordPositionType>
+		<ffsRecordSeparator>chr(10)</ffsRecordSeparator>
+		<ffsEscapeChars>
+			<ffsEscapeChar>
+				<ffsNative>chr(13)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>""</ffsNative>
+				<ffsTradesimple>¬Q</ffsTradesimple>
+				<ffsLiteral>"</ffsLiteral>
+			</ffsEscapeChar>
+		</ffsEscapeChars>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>,</ffsFieldSeparator>
+		</ffsFieldSeparators>
+		<ffsPadding/>
+		<ffsSplitBatchRecord LPos="1"/>
+	</ffsSettings>
+	<ffsRoot>
+		<BatchDocuments>
+			<BatchDocument>
+				<DeliveryNote>
+					<TradeSimpleHeader>
+						<SendersCodeForRecipient RecordLength="22" RecordPos="*" LPos="1"/>
+					</TradeSimpleHeader>
+					<DeliveryNoteHeader>
+						<ShipTo>
+							<ShipToLocationID>
+								<SuppliersCode RecordLength="22" RecordPos="*" LPos="1"/>
+							</ShipToLocationID>							
+						</ShipTo>						
+						<DeliveryNoteReferences>
+							<DeliveryNoteReference RecordLength="22" RecordPos="*" LPos="4"/>
+							<DeliveryNoteDate RecordLength="22" RecordPos="*" LPos="3"/>
+						</DeliveryNoteReferences>
+						<DeliveredDeliveryDetails>
+							<DeliveryDate RecordLength="22" RecordPos="*" LPos="5"/>						
+						</DeliveredDeliveryDetails>
+					</DeliveryNoteHeader>
+					<DeliveryNoteDetail>
+						<DeliveryNoteLine>
+							<ProductID>
+								<SuppliersProductCode RecordLength="22" RecordPos="*" LPos="16"/>
+							</ProductID>
+							<ProductDescription RecordLength="22" RecordPos="*" LPos="17"/>
+							<OrderedQuantity RecordLength="22" RecordPos="*" LPos="19"/>
+							<DespatchedQuantity RecordLength="22" RecordPos="*" LPos="20"/>
+						</DeliveryNoteLine>
+					</DeliveryNoteDetail>
+				</DeliveryNote>
+			</BatchDocument>
+		</BatchDocuments>
+	</ffsRoot>
+</ffsFlatFileSchema>
