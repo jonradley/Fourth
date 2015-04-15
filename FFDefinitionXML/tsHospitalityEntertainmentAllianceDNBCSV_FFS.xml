@@ -6,7 +6,7 @@ Name			| Date			| Change
 ********************************************************************************************************************************************
 M Dimant		| 26/03/2015	| FB 10201: Created.
 ********************************************************************************************************************************************
-					|					|
+M Dimant		| 09/04/2015	| FB 10222: Updated so batch is split by the Delivery Note Reference
 *****************************************************************************************************************************************-->
 <ffsFlatFileSchema>
 	<ffsSettings>
@@ -28,7 +28,7 @@ M Dimant		| 26/03/2015	| FB 10201: Created.
 			<ffsFieldSeparator>,</ffsFieldSeparator>
 		</ffsFieldSeparators>
 		<ffsPadding/>
-		<ffsSplitBatchRecord LPos="1"/>
+		<ffsSplitBatchRecord LPos="4"/>
 	</ffsSettings>
 	<ffsRoot>
 		<BatchDocuments>
