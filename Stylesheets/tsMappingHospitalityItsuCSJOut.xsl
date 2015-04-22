@@ -11,8 +11,9 @@
  Date      	| Name 		| Description of modification
 ==========================================================================================
  04/03/2015	| Jose Miguel	| FB10169 Create module
-=======================================================================================
--->
+==========================================================================================
+ 22/04/2015	| Jose Miguel	| 10235: Remove zero-lines
+=======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript">
 	<xsl:output method="text" encoding="UTF-8"/>
 	<xsl:variable name="RecordSeperator" select="'&#13;&#10;'"/>
@@ -54,48 +55,50 @@
 		<xsl:variable name="siteCode" select="../../ClosingStockJournalEntriesHeader/BuyersSiteCode"/>
 		<xsl:variable name="financialWeek" select="js:pad(string(../../ClosingStockJournalEntriesHeader/StockFinancialPeriod), 2)"/>
 		
-		<!--Posting Date : Last day of stock period: stock period end date-->
-		<xsl:call-template name="formatDate">
-			<xsl:with-param name="date" select="../../ClosingStockJournalEntriesHeader/StockPeriodEndDate"/>
-		</xsl:call-template>
-		<xsl:value-of select="$FieldSeperator"/>
-		<!-- Doc. No. : Custom document number: use mask above set to date of export -->
-		<xsl:value-of select="concat('STOCKWK', $financialWeek, ../../ClosingStockJournalEntriesHeader/StockFinancialYear)"/>
-		<xsl:value-of select="$FieldSeperator"/>
-		<!-- Account : Specific codes for stock -->
-		<xsl:value-of select="$account"/>
-		<xsl:value-of select="$FieldSeperator"/>
-		<!-- Ext Doc. No. : Blank -->
-		<xsl:value-of select="$FieldSeperator"/>
-		<!-- Description : Site Code, stock financial week and nominal category description. -->
-		<xsl:value-of select="concat($siteCode, ' Stock WK ', $financialWeek, ' ', NominalCode)"/>
-		<xsl:value-of select="$FieldSeperator"/>
-		<!-- VAT Code : Blank -->
-		<xsl:value-of select="$FieldSeperator"/>
-		<!-- VAT Prod Post Grp : Blank -->
-		<xsl:value-of select="$FieldSeperator"/>
-		<!-- GD1 : Location code: MUST INCLUDE LEADING ZEROS -->
-		<xsl:value-of select="format-number(($siteCode), '000')"/>
-		<xsl:value-of select="$FieldSeperator"/>
-		<!-- GD2 : Blank -->
-		<xsl:value-of select="$FieldSeperator"/>
-		<!-- Debit Amount : Hard code '0.00' -->
-		<xsl:value-of select="format-number($debitAmount, '###0.00')"/>
-		<xsl:value-of select="$FieldSeperator"/>
-		<!-- Credit Amount : Stock value, grouped by first level category -->
-		<xsl:value-of select="format-number($creditAmount, '###0.00')"/>
-		<xsl:value-of select="$FieldSeperator"/>
-		<!-- Bal. Account Type : Hardcode 'G/L Account' -->
-		<xsl:text>G/L Account</xsl:text>
-		<xsl:value-of select="$FieldSeperator"/>
-		<!-- Bal. Account No. : BLANK or NULL -->
-		<xsl:value-of select="$FieldSeperator"/>
-		<!-- Recurring Method : Hardcode 'RV Reversing Variable' -->
-		<xsl:text>RV Reversing Variable</xsl:text>
-		<xsl:value-of select="$FieldSeperator"/>
-		<!-- Recurring Frequency : Hardcode '7D' -->
-		<xsl:text>7D</xsl:text>
-		<xsl:value-of select="$RecordSeperator"/>
+		<xsl:if test="$debitAmount !=0 or $creditAmount != 0">
+			<!--Posting Date : Last day of stock period: stock period end date-->
+			<xsl:call-template name="formatDate">
+				<xsl:with-param name="date" select="../../ClosingStockJournalEntriesHeader/StockPeriodEndDate"/>
+			</xsl:call-template>
+			<xsl:value-of select="$FieldSeperator"/>
+			<!-- Doc. No. : Custom document number: use mask above set to date of export -->
+			<xsl:value-of select="concat('STOCKWK', $financialWeek, ../../ClosingStockJournalEntriesHeader/StockFinancialYear)"/>
+			<xsl:value-of select="$FieldSeperator"/>
+			<!-- Account : Specific codes for stock -->
+			<xsl:value-of select="$account"/>
+			<xsl:value-of select="$FieldSeperator"/>
+			<!-- Ext Doc. No. : Blank -->
+			<xsl:value-of select="$FieldSeperator"/>
+			<!-- Description : Site Code, stock financial week and nominal category description. -->
+			<xsl:value-of select="concat($siteCode, ' Stock WK ', $financialWeek, ' ', NominalCode)"/>
+			<xsl:value-of select="$FieldSeperator"/>
+			<!-- VAT Code : Blank -->
+			<xsl:value-of select="$FieldSeperator"/>
+			<!-- VAT Prod Post Grp : Blank -->
+			<xsl:value-of select="$FieldSeperator"/>
+			<!-- GD1 : Location code: MUST INCLUDE LEADING ZEROS -->
+			<xsl:value-of select="format-number(($siteCode), '000')"/>
+			<xsl:value-of select="$FieldSeperator"/>
+			<!-- GD2 : Blank -->
+			<xsl:value-of select="$FieldSeperator"/>
+			<!-- Debit Amount : Hard code '0.00' -->
+			<xsl:value-of select="format-number($debitAmount, '###0.00')"/>
+			<xsl:value-of select="$FieldSeperator"/>
+			<!-- Credit Amount : Stock value, grouped by first level category -->
+			<xsl:value-of select="format-number($creditAmount, '###0.00')"/>
+			<xsl:value-of select="$FieldSeperator"/>
+			<!-- Bal. Account Type : Hardcode 'G/L Account' -->
+			<xsl:text>G/L Account</xsl:text>
+			<xsl:value-of select="$FieldSeperator"/>
+			<!-- Bal. Account No. : BLANK or NULL -->
+			<xsl:value-of select="$FieldSeperator"/>
+			<!-- Recurring Method : Hardcode 'RV Reversing Variable' -->
+			<xsl:text>RV Reversing Variable</xsl:text>
+			<xsl:value-of select="$FieldSeperator"/>
+			<!-- Recurring Frequency : Hardcode '7D' -->
+			<xsl:text>7D</xsl:text>
+			<xsl:value-of select="$RecordSeperator"/>
+		</xsl:if>
 	</xsl:template>
 	
 	<!-- Format the date from YYYYMMDD to DD/MM/YYYY-->
