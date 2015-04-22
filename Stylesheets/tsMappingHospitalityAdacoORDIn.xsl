@@ -18,6 +18,8 @@
 ******************************************************************************************
  2013-07-04  | R Cambridge	| 6686 Ignore blank PackSize elements
 ******************************************************************************************
+ 2015-04-16  | R Cambridge	| 10227 Ignore blank DeliveryInstructions elements          
+******************************************************************************************
              |             	|           
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -99,6 +101,8 @@
 	
 	
 	<xsl:template match="Property | Outlet | Account"/>
+	
+	<xsl:template match="SpecialDeliveryInstructions[.='']"/>
 	
 	<xsl:template match="ShipTo">
 		<ShipTo>
