@@ -24,8 +24,10 @@ Date				| Name			| Modification
 			<xsl:sort select="CategoryNominal" data-type="text"/> 
 			<xsl:sort select="SiteTransferLocation/BuyersSiteCode" data-type="text"/> 
 			<xsl:sort select="TransactionDate" data-type="text"/> 
-			<xsl:variable name="amount" select="sum(//SiteTransfer[concat(SiteTransferLocation/BuyersSiteCode,'+',CategoryNominal,'+',StockFinancialPeriod,'+',TransactionDate) = $AccountCode and TransactionType = 'Debit']/LineValueExclVAT))-(sum(//SiteTransfer[concat(SiteTransferLocation/BuyersSiteCode,'+',CategoryNominal,'+',StockFinancialPeriod,'+',TransactionDate) = $AccountCode and TransactionType = 'Credit']/LineValueExclVAT)"/>
 			<xsl:variable name="AccountCode" select="concat(SiteTransferLocation/BuyersSiteCode,'+',CategoryNominal,'+',StockFinancialPeriod,'+',TransactionDate)"/>
+			<xsl:variable name="amount" select="
+				sum(//SiteTransfer[concat(SiteTransferLocation/BuyersSiteCode,'+',CategoryNominal,'+',StockFinancialPeriod,'+',TransactionDate) = $AccountCode and TransactionType = 'Debit']/LineValueExclVAT)
+			   -sum(//SiteTransfer[concat(SiteTransferLocation/BuyersSiteCode,'+',CategoryNominal,'+',StockFinancialPeriod,'+',TransactionDate) = $AccountCode and TransactionType = 'Credit']/LineValueExclVAT)"/>
 			<xsl:if test="$amount != 0">
 				<!-- Posting Date -->		
 				<xsl:value-of select="concat(substring(TransactionDate,9,2),'/',substring(TransactionDate,6,2),'/',substring(TransactionDate,1,4))"/>
@@ -55,7 +57,7 @@ Date				| Name			| Modification
 				<!-- Debit Amount -->
 				<xsl:choose>
 					<xsl:when test="$amount &gt; 0">
-						<xsl:value-of select="format-number($amount, '0.0')"/>
+						<xsl:value-of select="format-number($amount, '0.00')"/>
 					</xsl:when>
 					<xsl:otherwise>0.00</xsl:otherwise>
 				</xsl:choose>
@@ -63,7 +65,7 @@ Date				| Name			| Modification
 				<!-- Credit Amount -->
 				<xsl:choose>
 					<xsl:when test="$amount &lt; 0">
-						<xsl:value-of select="format-number(-$amount, '0.0')"/>
+						<xsl:value-of select="format-number(-$amount, '0.00')"/>
 					</xsl:when>
 					<xsl:otherwise>0.00</xsl:otherwise>
 				</xsl:choose>
