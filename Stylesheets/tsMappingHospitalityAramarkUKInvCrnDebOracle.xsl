@@ -17,6 +17,8 @@
 ******************************************************************************************
  09/04/2015      | J Miguel		  | 10224 - Update codes in mapper (2nd round)
 ******************************************************************************************
+ 22/04/2015      | J Miguel		  | 10233 - Add new changes to the feed
+******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl script">
 	<xsl:output method="text" encoding="UTF-8"/>
@@ -51,27 +53,8 @@
 		<!-- Source Name -->
 		<xsl:text>19_ARATRADE</xsl:text>
 		<xsl:value-of select="$separator"/>
-		<!-- Invoice ( Date ) -->
-		<xsl:choose>
-			<xsl:when test="name()='Invoice'">
-				<xsl:value-of select="InvoiceHeader/InvoiceReferences/InvoiceReference"/>
-				<xsl:text>(</xsl:text>
-				<xsl:value-of select="substring(InvoiceHeader/InvoiceReferences/InvoiceDate,1,4)"/>
-				<xsl:text>)</xsl:text>
-			</xsl:when>
-			<xsl:when test="name()='CreditNote'">
-				<xsl:value-of select="CreditNoteHeader/CreditNoteReferences/CreditNoteReference"/>
-				<xsl:text>(</xsl:text>
-				<xsl:value-of select="substring(CreditNoteHeader/CreditNoteReferences/CreditNoteDate,1,4)"/>
-				<xsl:text>)</xsl:text>
-			</xsl:when>
-			<xsl:when test="name()='DebitNote'">
-				<xsl:value-of select="DebitNoteHeader/DebitNoteReferences/DebitNoteReference"/>
-				<xsl:text>(</xsl:text>
-				<xsl:value-of select="substring(DebitNoteHeader/DebitNoteReferences/DebitNoteDate,1,4)"/>
-				<xsl:text>)</xsl:text>
-			</xsl:when>
-		</xsl:choose>
+		<!-- Invoice Ref -->
+		<xsl:value-of select="InvoiceHeader/InvoiceReferences/InvoiceReference | CreditNoteHeader/CreditNoteReferences/CreditNoteReference | DebitNoteHeader/DebitNoteReferences/DebitNoteReference"/>
 		<xsl:value-of select="$separator"/>
 		<!-- Invoice Date -->
 		<xsl:value-of select="translate(InvoiceHeader/InvoiceReferences/InvoiceDate | CreditNoteHeader/InvoiceReferences/InvoiceDate | DebitNoteHeader/InvoiceReferences/InvoiceDate,'-','')"/>
@@ -113,11 +96,9 @@
 		<xsl:value-of select="$separator"/>
 		<!-- Description BLANK -->
 		<xsl:value-of select="$separator"/>
-		<!-- Attribute Category -->
-		<xsl:text>XARAUK_INV_HEADER</xsl:text>
+		<!-- Attribute Category - BLANK -->
 		<xsl:value-of select="$separator"/>
-		<!-- Old Supplier Ref . JM? is this really this field?-->
-		<xsl:value-of select="$primaryCodeForSite"/>
+		<!-- Old Supplier Ref - BLANK-->
 		<xsl:value-of select="$separator"/>
 		<!-- Attribute2 BLANK -->
 		<xsl:value-of select="$separator"/>
