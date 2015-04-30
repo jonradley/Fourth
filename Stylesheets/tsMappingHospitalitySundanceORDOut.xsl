@@ -16,6 +16,8 @@
 ==========================================================================================
  15/04/2015	| Jose Miguel	|	FB10226 - Sundance integration - fix the mapper to allow customer unit names to have the '&'
 ==========================================================================================
+ 30/04/2015	| Jose Miguel	|	FB10246 - Sundance integration - fix the mapper to allow PORef to have the '&' (and other fields)
+==========================================================================================
 -->
 <xsl:stylesheet version="1.0" 
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript" 
@@ -43,11 +45,11 @@
 	&lt;soap:Body&gt;
 	&lt;platformMsgs:add>
 		&lt;platformMsgs:record xsi:type="tranSales:SalesOrder">
-			&lt;tranSales:entity type="customer" internalId="</xsl:text><xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/>"&gt;<xsl:text>
+			&lt;tranSales:entity type="customer" internalId="</xsl:text><xsl:value-of select="js:replace_str(string(PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode))"/>"&gt;<xsl:text>
 				&lt;platformCore:name&gt;</xsl:text><xsl:value-of select="js:replace_str(string(PurchaseOrderHeader/ShipTo/ShipToName))"/><xsl:text>&lt;/platformCore:name&gt;
 			&lt;/tranSales:entity&gt;
 			&lt;tranSales:tranDate&gt;</xsl:text><xsl:value-of select="PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate"/><xsl:text>T00:00:00&lt;/tranSales:tranDate&gt;
-			&lt;tranSales:otherRefNum&gt;</xsl:text><xsl:value-of select="PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/><xsl:text>&lt;/tranSales:otherRefNum&gt;
+			&lt;tranSales:otherRefNum&gt;</xsl:text><xsl:value-of select="js:replace_str(string(PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference))"/><xsl:text>&lt;/tranSales:otherRefNum&gt;
 			&lt;tranSales:itemList&gt;</xsl:text>
 			<xsl:apply-templates select="PurchaseOrderDetail/PurchaseOrderLine"/>
 			<xsl:text>&lt;/tranSales:itemList&gt;
@@ -60,7 +62,7 @@
 	<xsl:template match="PurchaseOrderLine">
 		<xsl:text>
 			&lt;tranSales:item&gt;
-				&lt;tranSales:item internalId="</xsl:text><xsl:value-of select="ProductID/SuppliersProductCode"/><xsl:text>"&gt;
+				&lt;tranSales:item internalId="</xsl:text><xsl:value-of select="js:replace_str(string(ProductID/SuppliersProductCode))"/><xsl:text>"&gt;
 					&lt;platformCore:name&gt;</xsl:text><xsl:value-of select="js:replace_str(string(ProductDescription))"/><xsl:text>&lt;/platformCore:name&gt;
 				&lt;/tranSales:item&gt;
 				&lt;tranSales:line&gt;</xsl:text><xsl:value-of select="LineNumber"/><xsl:text>&lt;/tranSales:line&gt;
