@@ -42,13 +42,19 @@
 	</xsl:template>
 		
 	<!-- format values for T|S -->
-	<xsl:template match="OrderedQuantity | DeliveredQuantity |  UnitValueExclVAT | DocumentTotalExclVAT | VATAmount | DocumentTotalInclVAT">
+	<xsl:template match="OrderedQuantity | DeliveredQuantity |  UnitValueExclVAT | DocumentTotalExclVAT | VATAmount">
 		<xsl:element name="{name()}">
 			<xsl:apply-templates select="@*"/>
 			<xsl:value-of select="format-number(.,'0.00')"/>
 		</xsl:element>
 	</xsl:template>	
 	
+	<xsl:template match="DocumentTotalInclVAT">
+		<xsl:element name="{name()}">
+			<xsl:apply-templates select="@*"/>
+			<xsl:value-of select="translate(format-number(.,'0.00'), '-', '')"/>
+		</xsl:element>
+	</xsl:template>
 	<!-- format numbers for T|S -->
 	<xsl:template match="NumberOfLines | NumberOfItems | SuppliersProductCode">
 		<xsl:element name="{name()}">
@@ -121,8 +127,8 @@
 
 	<xsl:template match="NumberOfItems">
 		<NumberOfItems>
-			<xsl:value-of select="sum(../../InvoiceDetail/InvoiceLine/InvoicedQuantity[../Measure/MeasureIndicator != 'Y']) +
-			                      sum(../../InvoiceDetail/InvoiceLine/Measure/TotalMeasure[../MeasureIndicator = 'Y'])
+			<xsl:value-of select="translate(sum(../../InvoiceDetail/InvoiceLine/InvoicedQuantity[../Measure/MeasureIndicator != 'Y']), '-', '') +
+			                      translate(sum(../../InvoiceDetail/InvoiceLine/Measure/TotalMeasure[../MeasureIndicator = 'Y']), '-', '')
 		                      + count(../../InvoiceDetail/InvoiceLine/DeliveryNoteReferences[DeliveryNoteReference != '' and DeliveryNoteDate != '' and DespatchDate !=''])"/>
 		</NumberOfItems>
 	</xsl:template>
@@ -188,7 +194,15 @@
 							<xsl:for-each select="BatchDocuments/BatchDocument/Invoice[InvoiceHeader/ShipTo/ContactName = 'CRED']">
 								<BatchDocument>
 									<CreditNote>
-										<xsl:apply-templates select="TradeSimpleHeader | CreditNoteHeader"/>										
+										<xsl:apply-templates select="TradeSimpleHeader"/>
+										<CreditNoteHeader>
+											<xsl:apply-templates select="InvoiceHeader/*"/>
+											<CreditNoteReferences>
+												<CreditNoteReference><xsl:value-of select="InvoiceHeader/InvoiceReferences/InvoiceReference"/></CreditNoteReference>
+												<CreditNoteDate><xsl:value-of select="concat(substring(InvoiceHeader/InvoiceReferences/InvoiceDate,1,4),'-',substring(InvoiceHeader/InvoiceReferences/InvoiceDate,5,2),'-',substring(InvoiceHeader/InvoiceReferences/InvoiceDate,7,2))"/></CreditNoteDate>
+												<xsl:apply-templates select="InvoiceHeader/InvoiceReferences/TaxPointDate"/>
+											</CreditNoteReferences>
+										</CreditNoteHeader>								
 										<CreditNoteDetail>
 											<!-- CREDIT LINE DETAIL -->
 											<xsl:for-each select="InvoiceDetail/InvoiceLine">
@@ -196,7 +210,7 @@
 													<xsl:apply-templates select="../InvoiceLine[1]/PurchaseOrderReferences"/>
 													<xsl:apply-templates select="ProductID | ProductDescription | OrderedQuantity | DeliveredQuantity "/>
 													<CreditedQuantity>
-														<xsl:apply-templates select="@UnitOfMeasure"/>
+														<xsl:apply-templates select="InvoicedQuantity/@UnitOfMeasure"/>
 														<!-- handle catchweight products -->
 														<xsl:choose>
 															<xsl:when test="Measure/MeasureIndicator = 'Y'"><xsl:value-of select="translate(format-number(Measure/TotalMeasure, '0.00'),'-','')"/></xsl:when>
