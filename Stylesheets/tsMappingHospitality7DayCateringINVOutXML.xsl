@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-***************************************************************************************
+******************************************************************************************************************************************************************************
 Name			| Date 			|	Description
-***************************************************************************************
+******************************************************************************************************************************************************************************
 M Emanuel	| 29/01/2013	| FB Case 5946 Created New Invoice out mapper
-***************************************************************************************
+============================================================================================================
+M Dimant		| 30/04/2015	| FB Case: 10248 - Map UnitCode and CustomerLocationCode when one is present
+******************************************************************************************************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:user="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl user">
 	<xsl:output method="xml" encoding="utf-8"/>
@@ -19,10 +21,24 @@ M Emanuel	| 29/01/2013	| FB Case 5946 Created New Invoice out mapper
 					<xsl:value-of select="InvoiceHeader/Buyer/BuyersLocationID/GLN"/>
 				</xsl:element>
 				<xsl:element name="UnitCode">
-					<xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode"/>
+					<xsl:choose>
+						<xsl:when test="InvoiceHeader/Buyer/BuyersLocationID/BuyersCode != 'Not provided'">
+							<xsl:value-of select="InvoiceHeader/Buyer/BuyersLocationID/BuyersCode"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode"/>
+						</xsl:otherwise>
+					</xsl:choose>					
 				</xsl:element>
 				<xsl:element name="CustomersLocationCode">
-					<xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode"/>
+					<xsl:choose>
+						<xsl:when test="InvoiceHeader/Buyer/BuyersLocationID/BuyersCode != 'Not provided'">
+							<xsl:value-of select="InvoiceHeader/Buyer/BuyersLocationID/BuyersCode"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode"/>
+						</xsl:otherwise>
+					</xsl:choose>		
 				</xsl:element>
 				<xsl:element name="SuppliersLocationCode">
 					<xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/SuppliersCode"/>

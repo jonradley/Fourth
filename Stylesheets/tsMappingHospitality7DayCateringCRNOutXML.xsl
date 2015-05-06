@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-***************************************************************************************
+******************************************************************************************************************************************************************************
 Name			| Date 			|	Description
-***************************************************************************************
+******************************************************************************************************************************************************************************
 M Emanuel	| 29/01/2013	| FB Case 5946 Created New Credit note out mapper
-***************************************************************************************
+============================================================================================================
+M Dimant		| 30/04/2015	| FB Case: 10248 - Map UnitCode and CustomerLocationCode when one is present
+******************************************************************************************************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
                               xmlns:fo="http://www.w3.org/1999/XSL/Format" 
@@ -25,10 +27,24 @@ M Emanuel	| 29/01/2013	| FB Case 5946 Created New Credit note out mapper
 					<xsl:value-of select="CreditNoteHeader/Buyer/BuyersLocationID/GLN"/>
 				</xsl:element>
 				<xsl:element name="UnitCode">
-					<xsl:value-of select="CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode"/>
+					<xsl:choose>
+						<xsl:when test="CreditNoteHeader/Buyer/BuyersLocationID/BuyersCode != 'Not provided'">
+							<xsl:value-of select="CreditNoteHeader/Buyer/BuyersLocationID/BuyersCode"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode"/>
+						</xsl:otherwise>
+					</xsl:choose>		
 				</xsl:element>
 				<xsl:element name="CustomersLocationCode">
-					<xsl:value-of select="CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode"/>
+					<xsl:choose>
+						<xsl:when test="CreditNoteHeader/Buyer/BuyersLocationID/BuyersCode != 'Not provided'">
+							<xsl:value-of select="CreditNoteHeader/Buyer/BuyersLocationID/BuyersCode"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode"/>
+						</xsl:otherwise>
+					</xsl:choose>		
 				</xsl:element>
 				<xsl:element name="SuppliersLocationCode">
 					<xsl:value-of select="CreditNoteHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
