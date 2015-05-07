@@ -20,9 +20,11 @@
 '******************************************************************************************
 ' 06/04/2014	| Andrew Barber	| FB7695: Added new system order codes to sDNA variable test.
 '******************************************************************************************
+' 07/05/2015	| Jose Miguel   | FB10257: Change Reason Codes from numeric to alphanumeric
+'******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:vbscript="http://abs-Ltd.com">
-
+    <xsl:output method="xml" indent="yes"/>
 
 	<!-- Start point - ensure required outer BatchRoot tag is applied -->
 	<xsl:template match="/">
@@ -130,28 +132,13 @@
 	
 		<!-- PurchaseOrderConfirmationLine -->
 		<PurchaseOrderConfirmationLine>
-		
-			<!-- LineStatus -->
-			
-			<!-- As Carlsberg only provide rejected line numbers we need to test for the presence of element
-					first otherwise we will get a NOT A NUMBER error in the stylesheet processing.
-			-->		
-			<xsl:if test="LineStatus">
-				<xsl:if test="number(LineStatus) &gt; 5 and number(LineStatus) &lt; 100">
-					<LineStatus>
-						<xsl:text>Rejected</xsl:text>
-					</LineStatus>
-				</xsl:if>
-			</xsl:if>
-			
 			<!-- reject code if provided from PackSize -->
-			<xsl:variable name="nRejectCode" select="number(../PurchaseOrderConfirmationLine[UnitValueExclVAT=current()/LineNumber]/PackSize)"/>
+			<xsl:variable name="bIsRejection" select="../PurchaseOrderConfirmationLine[UnitValueExclVAT=current()/LineNumber]/PackSize != ''"/>
 			
 			<!-- Get Narative from Narrative. This is bunched up by the Flat File Mapper and we need to sort out to the right line -->
 			<xsl:variable name="sRejectText" select="../PurchaseOrderConfirmationLine[UnitValueExclVAT=current()/LineNumber]/Narrative"/>
 			
-			<!-- test if it is in the range of 6-99. -->
-			<xsl:if test="$nRejectCode &gt; 5 and $nRejectCode &lt; 100">
+			<xsl:if test="$bIsRejection">
 				<xsl:attribute name="LineStatus">
 					<xsl:text>Rejected</xsl:text>
 				</xsl:attribute>
@@ -172,7 +159,7 @@
 			<!-- Set ConfirmedQuantity = 0 where line status = 'Rejected' -->
 			<ConfirmedQuantity>
 				<xsl:choose>
-					<xsl:when test="$nRejectCode &gt; 5 and $nRejectCode &lt; 100">
+					<xsl:when test="$bIsRejection">
 						<xsl:text>0</xsl:text>
 					</xsl:when>
 					<xsl:otherwise>
@@ -182,8 +169,7 @@
 			</ConfirmedQuantity>
 			
 			<!-- Narrative -->
-			<!-- test if it is in the range of 6-99. -->
-			<xsl:if test="$nRejectCode &gt; 5 and $nRejectCode &lt; 100">
+			<xsl:if test="$bIsRejection">
 				<Narrative>
 					<xsl:value-of select="$sRejectText"/>
 				</Narrative>
