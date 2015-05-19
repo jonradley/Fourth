@@ -92,7 +92,15 @@
 			<VendorCode>
 				<xsl:value-of select="TradeSimpleHeader/RecipientsCodeForSender"/>
 			</VendorCode>
-			
+
+      <CatalogueCode>
+        <xsl:value-of select="CatalogueHeader/CatalogueCode"/>
+      </CatalogueCode>
+
+      <CatalogueName>
+        <xsl:value-of select="CatalogueHeader/CatalogueName"/>
+      </CatalogueName>
+      
 			<Products>
 			
 				<xsl:for-each select="Products/Product">			
