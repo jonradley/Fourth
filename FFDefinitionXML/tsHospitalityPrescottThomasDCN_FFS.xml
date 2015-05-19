@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--******************************************************************
+Alterations
+**********************************************************************
+Name			| Date			| Change
+**********************************************************************
+R Cambridge	| 26/06/2006	| Created
+**********************************************************************
+R Cambridge	| 01/02/2007	| 770 added quantity UoMs
+**********************************************************************
+Graham Neicho	| 30/03/2010	| FB3436 Added OriginalPurchaseOrderReference
+**********************************************************************
+				|					|
+*******************************************************************-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>chr(10)</ffsRecordSeparator>
+		<ffsEscapeChars>
+			<ffsEscapeChar>
+				<ffsNative>chr(13)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral></ffsLiteral>
+			</ffsEscapeChar>
+		</ffsEscapeChars>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>,</ffsFieldSeparator>
+		</ffsFieldSeparators>
+	</ffsSettings>
+	<ffsRoot>
+		<DeliveryNote>
+			<TradeSimpleHeader>
+				<SendersCodeForRecipient RecordPos="H" LPos="2"/>
+				<SendersBranchReference RecordPos="H" LPos="19"/>
+				<TestFlag RecordPos="H" LPos="3"/>
+			</TradeSimpleHeader>
+			<DeliveryNoteHeader>
+				<Buyer>
+					<BuyersLocationID>
+						<SuppliersCode RecordPos="H" LPos="20"/>
+					</BuyersLocationID>
+				</Buyer>
+				<ShipTo>
+					<ShipToLocationID>
+						<SuppliersCode RecordPos="H" LPos="2"/>
+					</ShipToLocationID>
+					<ShipToName RecordPos="H" LPos="12"/>
+					<ShipToAddress>
+						<AddressLine1 RecordPos="H" LPos="13"/>
+						<AddressLine2 RecordPos="H" LPos="14"/>
+						<AddressLine3 RecordPos="H" LPos="15"/>
+						<AddressLine4 RecordPos="H" LPos="16"/>
+						<PostCode RecordPos="H" LPos="17"/>
+					</ShipToAddress>
+					<ContactName RecordPos="H" LPos="11"/>
+				</ShipTo>
+				<PurchaseOrderReferences>
+					<PurchaseOrderReference RecordPos="H" LPos="4"/>
+					<PurchaseOrderDate RecordPos="H" LPos="5"/>
+					<OriginalPurchaseOrderReference RecordPos="H" LPos="21"/>
+				</PurchaseOrderReferences>
+				<DeliveryNoteReferences>
+					<DeliveryNoteReference RecordPos="H" LPos="6"/>
+					<DeliveryNoteDate RecordPos="H" LPos="7"/>
+					<!-- Despatch Date -->
+				</DeliveryNoteReferences>
+				<DeliveredDeliveryDetails>
+					<DeliveryDate RecordPos="H" LPos="8"/>
+					<DeliverySlot>
+						<SlotStart RecordPos="H" LPos="9"/>
+						<SlotEnd RecordPos="H" LPos="10"/>
+					</DeliverySlot>
+				</DeliveredDeliveryDetails>
+			</DeliveryNoteHeader>
+			<DeliveryNoteDetail>
+				<DeliveryNoteLine>
+					<ProductID>
+						<SuppliersProductCode RecordPos="D" LPos="2"/>
+					</ProductID>
+					<ProductDescription RecordPos="D" LPos="3"/>
+					<OrderedQuantity RecordPos="D" LPos="5">
+						<ffsAttribute1 name="UnitOfMeasure" RecordPos="D" LPos="10"/>
+					</OrderedQuantity>
+					<ConfirmedQuantity RecordPos="D" LPos="6">
+						<ffsAttribute1 name="UnitOfMeasure" RecordPos="D" LPos="11"/>
+					</ConfirmedQuantity>
+					<DespatchedQuantity RecordPos="D" LPos="7">
+						<ffsAttribute1 name="UnitOfMeasure" RecordPos="D" LPos="12"/>
+					</DespatchedQuantity>
+					<PackSize RecordPos="D" LPos="4"/>
+					<ExpiryDate RecordPos="D" LPos="8"/>
+					<SellByDate RecordPos="D" LPos="9"/>
+				</DeliveryNoteLine>
+			</DeliveryNoteDetail>
+			<DeliveryNoteTrailer>
+				<NumberOfLines RecordPos="H" LPos="18"/>
+			</DeliveryNoteTrailer>
+		</DeliveryNote>
+	</ffsRoot>
+</ffsFlatFileSchema>
