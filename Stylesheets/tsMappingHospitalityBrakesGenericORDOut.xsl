@@ -170,7 +170,17 @@ J Miguel	| 20/05/2015	| 10269 Brakes Logistics Generic Mapper Clean up
 								<shipToLogistics>
 									<shipTo>
 										<gln>
-											<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/GLN"/>
+											
+											<!-- specific default GLN requirement for Logistics (5036036000030) -->
+											<xsl:choose>
+												<xsl:when test="PurchaseOrderHeader/ShipTo/ShipToLocationID/GLN='5555555555555' and PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN='5036036000030'">
+													<xsl:text>0000000000000</xsl:text>
+												</xsl:when>												
+												<xsl:otherwise>
+													<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/GLN"/>
+												</xsl:otherwise>												
+											</xsl:choose>			
+																			
 										</gln>
 										<!--DG Trading Outlet code -->
 										<additionalPartyIdentification>
