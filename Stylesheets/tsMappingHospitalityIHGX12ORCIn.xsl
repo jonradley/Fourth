@@ -16,7 +16,8 @@
 ==========================================================================================
  27/02/2015	| Jose Miguel	|	FB10161 IHG-Generalise X12 confirmation mapper to be use with more suppliers
 ==========================================================================================
--->
+ 08/06/2015	| Jose Miguel	|	FB10300 - IHG - Further Integration of more suppliers
+==========================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com" xmlns:vbscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
 	<!-- GENERIC HANDLER to copy unchanged nodes, will be overridden by any node-specific templates below -->
@@ -160,7 +161,7 @@
 		<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="jscript:sFormatUOM(string(.))"/></xsl:attribute>
 	</xsl:template>
 	<msxsl:script language="JScript" implements-prefix="jscript"><![CDATA[
-		var mapUoMs = {"PK":"CS", "CA":"CS", "CS":"CS", "DZ":"DZN", "PN":"PND", "LB":"PND", "BX":"CS"};
+		var mapUoMs = {"PK":"CS", "CA":"CS", "CS":"CS", "DZ":"DZN", "PN":"PND", "LB":"PND", "BX":"CS", "PT":"PTN", "RL":"EA", "PR":"CS"};
 		var nLineNumber;
 		nLineNumber = 0;
 		
