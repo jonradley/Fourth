@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!--======================================================================================
  Overview
 
@@ -18,8 +19,8 @@
 ==========================================================================================
  13/02/2015	| Jose Miguel	|	FB10144 - even more further fix to the padding of the time
 ==========================================================================================
- 08/06/2015	| Jose Miguel	|	FB10300 - IHG - Further Integration of more suppliers
-==========================================================================================-->
+ 20/05/2015	| Ben Oliver	| - removal of product descriptions. ==========================================================================================
+-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 	xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript"
@@ -143,7 +144,6 @@
 			<xsl:value-of select="$sFieldSep"/>
 			<xsl:value-of select="number(OrderedQuantity)"/>
 			<xsl:value-of select="$sFieldSep"/>
-			<xsl:value-of select="js:msSafeText(string(OrderedQuantity/@UnitOfMeasure),2)"/>
 			<xsl:value-of select="$sFieldSep"/>
 			<xsl:value-of select="js:msSafeText(string(UnitValueExclVAT),20)"/>	
 			<xsl:value-of select="$sFieldSep"/>
@@ -164,8 +164,7 @@
 			<xsl:value-of select="$sFieldSep"/>			
 			<xsl:value-of select="$sFieldSep"/>
 			<xsl:value-of select="$sFieldSep"/>
-			<xsl:value-of select="$sFieldSep"/>							
-			<xsl:value-of select="js:msSafeText(string(concat(ProductDescription,' ',PackSize)),80)"/>										
+			<xsl:value-of select="$sFieldSep"/>														
 			<xsl:value-of select="$sRecordSep"/>
 					
 		</xsl:for-each>
