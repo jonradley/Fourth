@@ -19,9 +19,10 @@
 ==========================================================================================
  13/02/2015	| Jose Miguel	|	FB10144 - even more further fix to the padding of the time
 ==========================================================================================
- 20/05/2015	| Ben Oliver	| - removal of product descriptions. ==========================================================================================
--->
-
+ 20/05/2015	| Ben Oliver	| 		- removal of product descriptions. 
+==========================================================================================
+ 08/06/2015	| Jose Miguel	|	FB10300 - IHG - Further Integration of more suppliers
+==========================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 	xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript"
 	xmlns:msxsl="urn:schemas-microsoft-com:xslt">
