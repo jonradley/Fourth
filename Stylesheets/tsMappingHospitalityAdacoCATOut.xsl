@@ -11,7 +11,7 @@
 ******************************************************************************************
  2013-02-21  | R Cambridge 	| FB6038 Created Module
 ******************************************************************************************
-             |            	| 
+ 2015-05-18  | Y Kovalenko 	| FB10274 Added catalogue code and name
 ******************************************************************************************
              |            	| 
 ******************************************************************************************
@@ -92,7 +92,15 @@
 			<VendorCode>
 				<xsl:value-of select="TradeSimpleHeader/RecipientsCodeForSender"/>
 			</VendorCode>
-			
+
+      <CatalogueCode>
+        <xsl:value-of select="CatalogueHeader/CatalogueCode"/>
+      </CatalogueCode>
+
+      <CatalogueName>
+        <xsl:value-of select="CatalogueHeader/CatalogueName"/>
+      </CatalogueName>
+      
 			<Products>
 			
 				<xsl:for-each select="Products/Product">			
