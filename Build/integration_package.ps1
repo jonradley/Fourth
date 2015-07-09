@@ -10,9 +10,8 @@ $stylesheets = Join-Path $repository 'Stylesheets'
 $output = Join-Path $currentPath 'Output'
 $zipfilename = Join-Path $currentPath "Output\$componentname-$buildnumber.zip"
 
-if (test-path $zipfilename) {
-	rm $zipfilename 
-	rm $output -recurse
+if (test-path $output) {
+	rm $output -recurse -force
 }
 
 $temp = Join-Path $output 'Temp'
