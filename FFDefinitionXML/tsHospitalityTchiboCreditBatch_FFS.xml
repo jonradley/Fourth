@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+**********************************************************************
+Alterations
+**********************************************************************
+Name			| Date			| Change
+**********************************************************************
+Moty Dimant	| 06/03/2009	| Created FSS
+**********************************************************************
+Andrew Barber	| 17/11/2009 | Added ProductDescription (Len=40)
+*************************************************************************************************************
+Mark Emanuel	| 03/10/2012 | FB Case No 5735: Made changes to include branch reference and Invoice Reference
+*************************************************************************************************************
+-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>chr(10)</ffsRecordSeparator>
+		<ffsEscapeChars>
+			<ffsEscapeChar>
+				<ffsNative>chr(13)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+		</ffsEscapeChars>
+		<ffsPadding/>
+		<ffsSplitBatchRecord RecordPos="HEAD"/>
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<BatchDocuments>
+				<BatchDocument>
+					<CreditNote>
+						<TradeSimpleHeader>
+							<SendersCodeForRecipient RecordPos="HEAD" LPos="46" UPos="65"/>
+							<SendersBranchReference RecordPos="HEAD" LPos="26" UPos="45"/>
+						</TradeSimpleHeader>
+						<CreditNoteHeader>
+							<BatchInformation>
+								<FileCreationDate RecordPos="HEAD" LPos="91" UPos="101"/>
+								<SendersTransmissionReference RecordPos="HEAD" LPos="26" UPos="35"/>
+								<SendersTransmissionDate RecordPos="HEAD" LPos="91" UPos="101"/>
+							</BatchInformation>
+							<Buyer>
+								<BuyersLocationID>
+									<SuppliersCode RecordPos="HEAD" LPos="26" UPos="35"/>
+								</BuyersLocationID>
+							</Buyer>
+							<ShipTo>
+								<ShipToLocationID>
+									<SuppliersCode RecordPos="HEAD" LPos="46" UPos="65"/>
+								</ShipToLocationID>
+							</ShipTo>
+							<InvoiceReferences>
+								<InvoiceReference RecordPos="HEAD" LPos="102" UPos="126"/>
+							</InvoiceReferences>
+							<CreditNoteReferences>
+								<CreditNoteReference RecordPos="HEAD" LPos="66" UPos="90"/>
+								<CreditNoteDate RecordPos="HEAD" LPos="91" UPos="101"/>
+								<TaxPointDate RecordPos="HEAD" LPos="91" UPos="101"/>
+							</CreditNoteReferences>
+						</CreditNoteHeader>
+						<CreditNoteDetail>
+							<CreditNoteLine>
+								<ProductID>
+									<SuppliersProductCode RecordPos="DTL" LPos="6" UPos="35"/>
+								</ProductID>
+								<!--Added Product Description-->
+								<ProductDescription RecordPos="DTL" LPos="273" UPos="313"/>
+								<CreditedQuantity RecordPos="DTL" LPos="76" UPos="85"/>
+								<UnitValueExclVAT RecordPos="DTL" LPos="101" UPos="110"/>
+								<LineValueExclVAT RecordPos="DTL" LPos="127" UPos="136"/>
+								<VATCode RecordPos="DTL" LPos="137" UPos="141"/>
+							</CreditNoteLine>
+						</CreditNoteDetail>
+						<CreditNoteTrailer>
+							<SettlementDiscountRate RecordPos="TRL" LPos="46" UPos="55"/>
+							<VATSubTotals>
+								<VATSubTotal>
+									<NumberOfLinesAtRate RecordPos="VAT" LPos="11" UPos="14"/>
+									<DocumentTotalExclVATAtRate RecordPos="VAT" LPos="15" UPos="24"/>
+									<SettlementDiscountAtRate RecordPos="VAT" LPos="35" UPos="44"/>
+									<VATAmountAtRate RecordPos="VAT" LPos="45" UPos="54"/>
+									<ffsAttribute1 name="VATCode" RecordPos="VAT" LPos="6" UPos="10"/>
+								</VATSubTotal>
+							</VATSubTotals>
+							<DocumentTotalExclVAT RecordPos="TRL" LPos="6" UPos="15"/>
+							<VATAmount RecordPos="TRL" LPos="56" UPos="65"/>
+						</CreditNoteTrailer>
+					</CreditNote>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>
