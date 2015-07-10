@@ -94,7 +94,7 @@
 		<!-- Currency Rate BLANK -->
 		<xsl:value-of select="$separator"/>
 		<!-- Rate Type -->
-		<xsl:text>ARA GB Period End</xsl:text>
+		<xsl:text>ARA GB Corp</xsl:text>
 		<xsl:value-of select="$separator"/>
 		<!-- Terms BLANK -->
 		<xsl:value-of select="$separator"/>
