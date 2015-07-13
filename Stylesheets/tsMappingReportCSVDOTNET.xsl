@@ -471,7 +471,7 @@
           <xsl:otherwise><xsl:value-of select="$InputString" /></xsl:otherwise>
         </xsl:choose>
       </xsl:when>
-      <xsl:when test="$ReportID=132">
+      <xsl:when test="$ReportID=136">
         <xsl:choose>
 		  <xsl:when test="$InputString='To Date'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="1"/></xsl:call-template></xsl:when>
 		  <xsl:when test="$InputString='Selected PL Accounts'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="2"/></xsl:call-template></xsl:when>
