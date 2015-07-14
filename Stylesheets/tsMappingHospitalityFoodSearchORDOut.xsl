@@ -12,7 +12,7 @@
 ******************************************************************************************
  08/01/2015  	| M Dimant	| 7861: Created
 ******************************************************************************************
-
+14/07/2015	| M Dimant	| 10384: Remove commas from address fields.
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
                               xmlns:fo="http://www.w3.org/1999/XSL/Format"
@@ -95,55 +95,25 @@
 		<xsl:value-of select="TradeSimpleHeader/RecipientsBranchReference"/>
 		<xsl:text>,</xsl:text>
 		
-		<!-- Delivery Location Address Line 1 -->
-		<xsl:if test="contains(user:msEscapeQuotes(substring(PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine1,1,40)),',')">
-			<xsl:text>"</xsl:text>
-		</xsl:if>
-		<xsl:value-of select="user:msEscapeQuotes(substring(PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine1,1,40))"/>
-		<xsl:if test="contains(user:msEscapeQuotes(substring(PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine1,1,40)),',')">
-			<xsl:text>"</xsl:text>
-		</xsl:if>
+		<!-- Remove commas from address field -->
+		<!-- Delivery Location Address Line 1 -->		
+		<xsl:value-of select="translate(user:msEscapeQuotes(substring(PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine1,1,40)),',','')"/>	
 		<xsl:text>,</xsl:text>
 		
 		<!-- Delivery Location Address Line 2 -->
-		<xsl:if test="contains(user:msEscapeQuotes(substring(PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine2,1,40)),',')">
-			<xsl:text>"</xsl:text>
-		</xsl:if>
-		<xsl:value-of select="user:msEscapeQuotes(substring(PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine2,1,40))"/>
-		<!-- Fogbuzz: 933 ammend from PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine1 to PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine2-->
-		<xsl:if test="contains(user:msEscapeQuotes(substring(PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine2,2,40)),',')">
-			<xsl:text>"</xsl:text>
-		</xsl:if>
+		<xsl:value-of select="translate(user:msEscapeQuotes(substring(PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine2,1,40)),',','')"/>	
 		<xsl:text>,</xsl:text>
 		
 		<!-- Delivery Location Address Line 3 -->
-		<xsl:if test="contains(user:msEscapeQuotes(substring(PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine3,1,40)),',')">
-			<xsl:text>"</xsl:text>
-		</xsl:if>
-		<xsl:value-of select="user:msEscapeQuotes(substring(PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine3,1,40))"/>
-		<xsl:if test="contains(user:msEscapeQuotes(substring(PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine3,1,40)),',')">
-			<xsl:text>"</xsl:text>
-		</xsl:if>
+		<xsl:value-of select="translate(user:msEscapeQuotes(substring(PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine3,1,40)),',','')"/>	
 		<xsl:text>,</xsl:text>
 		
 		<!-- Delivery Location Address Line 4 -->
-		<xsl:if test="contains(user:msEscapeQuotes(substring(PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine4,1,40)),',')">
-			<xsl:text>"</xsl:text>
-		</xsl:if>
-		<xsl:value-of select="user:msEscapeQuotes(substring(PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine4,1,40))"/>
-		<xsl:if test="contains(user:msEscapeQuotes(substring(PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine4,1,40)),',')">
-			<xsl:text>"</xsl:text>
-		</xsl:if>
+		<xsl:value-of select="translate(user:msEscapeQuotes(substring(PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine4,1,40)),',','')"/>	
 		<xsl:text>,</xsl:text>
 		
 		<!-- Delivery Location Address PostCode -->
-		<xsl:if test="contains(user:msEscapeQuotes(substring(PurchaseOrderHeader/ShipTo/ShipToAddress/PostCode,1,9)),',')">
-			<xsl:text>"</xsl:text>
-		</xsl:if>
-		<xsl:value-of select="user:msEscapeQuotes(substring(PurchaseOrderHeader/ShipTo/ShipToAddress/PostCode,1,9))"/>
-		<xsl:if test="contains(user:msEscapeQuotes(substring(PurchaseOrderHeader/ShipTo/ShipToAddress/PostCode,1,9)),',')">
-			<xsl:text>"</xsl:text>
-		</xsl:if>
+		<xsl:value-of select="translate(user:msEscapeQuotes(substring(PurchaseOrderHeader/ShipTo/ShipToAddress/PostCode,1,40)),',','')"/>	
 		<xsl:text>,</xsl:text>
 		
 		<!-- Number Of Lines -->
