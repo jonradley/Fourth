@@ -16,6 +16,8 @@
 ******************************************************************************************
  24/10/2014 | Graham Neicho | FB10061. Added version of msFormatForCSV to optionally force qualifiers
 ******************************************************************************************
+ 10/07/2015 | Jose Miguel | FB10304 - HOTUSA - add translations for reports
+******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:user="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl user">
 
@@ -108,7 +110,8 @@
     ' Author            : 
     ' Alterations   	  : S Sehgal, 13/04/2011. 4272 Converted to c#
     ' Alterations   	  : S Sehgal, 13/04/2011. 5618 Escape Double Quotes(")
-    '========================================================================================*/
+    ' Alterations   	  : J Miguel, 10/07/2015. 10304 When there are commas, only add double-quotes if not already there
+   '========================================================================================*/
     public string msFormatForCSV(string vsString)
     {
          
@@ -116,8 +119,8 @@
       {
         vsString= "\""  +  vsString.Replace("\"", "\"\"") +  "\"";
       }
-
-         if(vsString.IndexOf(",")>0)
+	  else
+      if(vsString.IndexOf(",")>0)
       {
         vsString= "\""  +  vsString +  "\"";
       }
