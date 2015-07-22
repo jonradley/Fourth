@@ -8,6 +8,7 @@ Name         	| Date       	| Change
 K Oshaughnessy| 01/01/2012	| 5008: Created. 
 A Barber	| 28/02/2013		| 6188 Set RecipientsCodeForSender to identify supplier in header, fixed effective date against each detail record.
 J Miguel	| 24/10/2014		| 10062 - Aramark UK - Catalogue Description length constraint from 40 to 255
+J Miguel	| 11/06/2015		| 10307 - Aramark UK - Add Not For Order Flag
 **********************************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
@@ -153,6 +154,11 @@ J Miguel	| 24/10/2014		| 10062 - Aramark UK - Catalogue Description length const
 		<xsl:text xml:space="preserve">                    </xsl:text>
 	  	<!--Replaced Item Discontinued Date-->
 		<xsl:text xml:space="preserve">        </xsl:text>
+	  	<!--Not for Order Flag-->
+	  	<xsl:choose>
+			<xsl:when test="ListOfKeyVal/KeyVal[@Keyword='NotForOrder']='1'">Y</xsl:when>
+			<xsl:otherwise>N</xsl:otherwise>
+		</xsl:choose>
 		
 	<xsl:text>&#13;&#10;</xsl:text>	
 	</xsl:for-each>

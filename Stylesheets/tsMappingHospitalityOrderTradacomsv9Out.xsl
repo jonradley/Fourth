@@ -18,6 +18,8 @@
  23/05/2007	|	Nigel Emsen			|	FB 972: Amendments to handle Marstons promotions.
 ==========================================================================================
  07/01/2008	| R Cambridge			|	1556 don't truncate product description
+==========================================================================================
+ 04/06/2015	| R Cambridge			|	10294 Include customer GLN in CDT.
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -107,7 +109,7 @@
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:text>CDT=</xsl:text>
-			<!--xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/-->
+			<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/>
 			<xsl:text>:</xsl:text>
 			<xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
 			<xsl:text>+</xsl:text>

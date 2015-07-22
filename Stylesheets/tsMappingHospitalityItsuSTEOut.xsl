@@ -9,6 +9,8 @@ Date				| Name			| Modification
 29/07/2014	|	A Barber	| 7912: Created
 *****************************************************************************************************************************
 28/11/2014	|	M Dimant	| 10099: Removed the header column and changed the date format.
+*****************************************************************************************************************************
+22/04/2015	|	J Miguel	| 10235: Remove zero-lines
 **************************************************************************************************************************-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
@@ -23,47 +25,52 @@ Date				| Name			| Modification
 			<xsl:sort select="SiteTransferLocation/BuyersSiteCode" data-type="text"/> 
 			<xsl:sort select="TransactionDate" data-type="text"/> 
 			<xsl:variable name="AccountCode" select="concat(SiteTransferLocation/BuyersSiteCode,'+',CategoryNominal,'+',StockFinancialPeriod,'+',TransactionDate)"/>
-			<!-- Posting Date -->		
-			<xsl:value-of select="concat(substring(TransactionDate,9,2),'/',substring(TransactionDate,6,2),'/',substring(TransactionDate,1,4))"/>
-			<xsl:text>,</xsl:text>
-			<!-- Doc. No. -->
-			<xsl:call-template name="formatDate">
-				<xsl:with-param name="utcFormat" select="//SiteTransfersExportHeader/ExportRunDate"/>
-			</xsl:call-template>
-			<xsl:text>,</xsl:text>
-			<!-- Account -->
-			<xsl:value-of select="CategoryNominal"/>
-			<xsl:text>,</xsl:text>
-			<!-- Ext. Doc. No. -->
-			<xsl:text>,</xsl:text>
-			<!-- Description -->
-			<xsl:value-of select="concat('Stock Transfers wk',StockFinancialPeriod)"/>
-			<xsl:text>,</xsl:text>
-			<!-- VAT Bus Post Grp -->
-			<xsl:text>,</xsl:text>
-			<!-- VAT Prod Post Grp -->
-			<xsl:text>,</xsl:text>
-			<!-- GD1 -->
-			<xsl:value-of select="SiteTransferLocation/BuyersSiteCode"/>
-			<xsl:text>,</xsl:text>
-			<!-- GD2 -->
-			<xsl:text>,</xsl:text>
-			<!-- Debit Amount -->
-			<xsl:choose>
-				<xsl:when test="format-number((sum(//SiteTransfer[concat(SiteTransferLocation/BuyersSiteCode,'+',CategoryNominal,'+',StockFinancialPeriod,'+',TransactionDate) = $AccountCode and TransactionType = 'Debit']/LineValueExclVAT))-(sum(//SiteTransfer[concat(SiteTransferLocation/BuyersSiteCode,'+',CategoryNominal,'+',StockFinancialPeriod,'+',TransactionDate) = $AccountCode and TransactionType = 'Credit']/LineValueExclVAT)),'0.00') &gt; 0">
-					<xsl:value-of select="format-number((sum(//SiteTransfer[concat(SiteTransferLocation/BuyersSiteCode,'+',CategoryNominal,'+',StockFinancialPeriod,'+',TransactionDate) = $AccountCode and TransactionType = 'Debit']/LineValueExclVAT))-(sum(//SiteTransfer[concat(SiteTransferLocation/BuyersSiteCode,'+',CategoryNominal,'+',StockFinancialPeriod,'+',TransactionDate) = $AccountCode and TransactionType = 'Credit']/LineValueExclVAT)),'0.00')"/>
-				</xsl:when>
-				<xsl:otherwise>0.00</xsl:otherwise>
-			</xsl:choose>
-			<xsl:text>,</xsl:text>
-			<!-- Credit Amount -->
-			<xsl:choose>
-				<xsl:when test="format-number((sum(//SiteTransfer[concat(SiteTransferLocation/BuyersSiteCode,'+',CategoryNominal,'+',StockFinancialPeriod,'+',TransactionDate) = $AccountCode and TransactionType = 'Debit']/LineValueExclVAT))-(sum(//SiteTransfer[concat(SiteTransferLocation/BuyersSiteCode,'+',CategoryNominal,'+',StockFinancialPeriod,'+',TransactionDate) = $AccountCode and TransactionType = 'Credit']/LineValueExclVAT)),'0.00') &lt; 0">
-					<xsl:value-of select="format-number(-1 * ((sum(//SiteTransfer[concat(SiteTransferLocation/BuyersSiteCode,'+',CategoryNominal,'+',StockFinancialPeriod,'+',TransactionDate) = $AccountCode and TransactionType = 'Debit']/LineValueExclVAT))-(sum(//SiteTransfer[concat(SiteTransferLocation/BuyersSiteCode,'+',CategoryNominal,'+',StockFinancialPeriod,'+',TransactionDate) = $AccountCode and TransactionType = 'Credit']/LineValueExclVAT))),'0.00')"/>
-				</xsl:when>
-				<xsl:otherwise>0.00</xsl:otherwise>
-			</xsl:choose>
-			<xsl:text>&#13;&#10;</xsl:text>
+			<xsl:variable name="amount" select="
+				sum(//SiteTransfer[concat(SiteTransferLocation/BuyersSiteCode,'+',CategoryNominal,'+',StockFinancialPeriod,'+',TransactionDate) = $AccountCode and TransactionType = 'Debit']/LineValueExclVAT)
+			   -sum(//SiteTransfer[concat(SiteTransferLocation/BuyersSiteCode,'+',CategoryNominal,'+',StockFinancialPeriod,'+',TransactionDate) = $AccountCode and TransactionType = 'Credit']/LineValueExclVAT)"/>
+			<xsl:if test="$amount != 0">
+				<!-- Posting Date -->		
+				<xsl:value-of select="concat(substring(TransactionDate,9,2),'/',substring(TransactionDate,6,2),'/',substring(TransactionDate,1,4))"/>
+				<xsl:text>,</xsl:text>
+				<!-- Doc. No. -->
+				<xsl:call-template name="formatDate">
+					<xsl:with-param name="utcFormat" select="//SiteTransfersExportHeader/ExportRunDate"/>
+				</xsl:call-template>
+				<xsl:text>,</xsl:text>
+				<!-- Account -->
+				<xsl:value-of select="CategoryNominal"/>
+				<xsl:text>,</xsl:text>
+				<!-- Ext. Doc. No. -->
+				<xsl:text>,</xsl:text>
+				<!-- Description -->
+				<xsl:value-of select="concat('Stock Transfers wk',StockFinancialPeriod)"/>
+				<xsl:text>,</xsl:text>
+				<!-- VAT Bus Post Grp -->
+				<xsl:text>,</xsl:text>
+				<!-- VAT Prod Post Grp -->
+				<xsl:text>,</xsl:text>
+				<!-- GD1 -->
+				<xsl:value-of select="SiteTransferLocation/BuyersSiteCode"/>
+				<xsl:text>,</xsl:text>
+				<!-- GD2 -->
+				<xsl:text>,</xsl:text>
+				<!-- Debit Amount -->
+				<xsl:choose>
+					<xsl:when test="$amount &gt; 0">
+						<xsl:value-of select="format-number($amount, '0.00')"/>
+					</xsl:when>
+					<xsl:otherwise>0.00</xsl:otherwise>
+				</xsl:choose>
+				<xsl:text>,</xsl:text>
+				<!-- Credit Amount -->
+				<xsl:choose>
+					<xsl:when test="$amount &lt; 0">
+						<xsl:value-of select="format-number(-$amount, '0.00')"/>
+					</xsl:when>
+					<xsl:otherwise>0.00</xsl:otherwise>
+				</xsl:choose>
+				<xsl:text>&#13;&#10;</xsl:text>
+			</xsl:if>
 		</xsl:for-each>
 	
 	</xsl:template>

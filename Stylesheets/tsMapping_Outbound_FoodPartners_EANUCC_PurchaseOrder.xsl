@@ -10,9 +10,9 @@
 ******************************************************************************************
  Date        | Name              | Description of modification
 ******************************************************************************************
- 14/10/2008  | R Cambridge   | 1801 created from tsMapping_Outbound_EANUCC_PurchaseOrder.xsl
+14/10/2008  | R Cambridge   | 1801 created from tsMapping_Outbound_EANUCC_PurchaseOrder.xsl
 ******************************************************************************************
-             |               |  
+01/07/2015  | M Dimant       |  10337: Changed where we populate UOM from.
 ******************************************************************************************
              |               |  
 ***************************************************************************************-->
@@ -189,11 +189,8 @@
 				
 					<RequestedQuantity>
 						<xsl:attribute name="unitCode">
-							<!--xsl:value-of select="OrderedQuantity/@UnitOfMeasure"/-->
-							<xsl:choose>
-								<xsl:when test="translate(PackSize,'EACH','each') = 'each'">EA</xsl:when>
-								<xsl:otherwise>CS</xsl:otherwise>
-							</xsl:choose>
+							<xsl:value-of select="OrderedQuantity/@UnitOfMeasure"/>
+							
 						</xsl:attribute>
 						
 						<xsl:value-of select="format-number(OrderedQuantity,'0.000')"></xsl:value-of>
