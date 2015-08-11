@@ -91,7 +91,7 @@
 						</ProductID>
 						<xsl:copy-of select="ProductDescription"/>
 						<CreditedQuantity>
-							<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="PackSize"/></xsl:attribute>
+							<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="CreditedQuantity/@UnitOfMeasure"/></xsl:attribute>
 							<xsl:value-of select="CreditedQuantity"/>
 						</CreditedQuantity>
 						<xsl:copy-of select="PackSize"/>
