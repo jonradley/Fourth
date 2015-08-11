@@ -85,7 +85,7 @@
 						</ProductID>
 						<xsl:copy-of select="ProductDescription"/>
 						<InvoicedQuantity>
-							<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="PackSize"/></xsl:attribute>
+							<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="InvoicedQuantity/@UnitOfMeasure"/></xsl:attribute>
 							<xsl:value-of select="InvoicedQuantity"/>
 						</InvoicedQuantity>
 						<xsl:copy-of select="PackSize"/>
