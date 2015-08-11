@@ -26,6 +26,8 @@
 ******************************************************************************************
 04/04/2012 | Sandeep Sehgal | 5379 Encode the comments before posting the form
 ******************************************************************************************
+21/07/2015 | Graham Neicho | FB10392 Ensure inputs have id attribute as well as name, so they can be found in ie11
+******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:user="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl user">
 	<xsl:output method="html"/>
@@ -571,12 +573,12 @@
 							<td colspan="2" align="center">
 								Username <input type="text" name="txtUsername"/>
 								Password <input type="password" name="txtPassword"/>
-								Rejection Comment <input type="text" name="txtRejectionComment"/>
+								Rejection Comment <input type="text" id="txtRejectionComment" name="txtRejectionComment"/>
 							</td>
 						</tr>
 						<tr>
 							<td colspan="2" align="center">
-								<input type="hidden" name="txtExtraQueryString" value=""/>
+								<input type="hidden" id="txtExtraQueryString" name="txtExtraQueryString" value=""/>
 								<input type="submit" name="btnAction" value="Approve" onclick="document.getElementById('txtExtraQueryString').value = '&amp;Action=Approve&amp;Comment=' + encodeURIComponent(document.getElementById('txtRejectionComment').value)"/>
 								<input type="submit" name="btnAction" value="Reject" onclick="document.getElementById('txtExtraQueryString').value = '&amp;Action=Reject&amp;Comment=' + encodeURIComponent(document.getElementById('txtRejectionComment').value)"/>
 								<input type="submit" name="btnAction" value="Amend" onclick="document.getElementById('txtExtraQueryString').value = '&amp;Action=Amend&amp;Comment=' + encodeURIComponent(document.getElementById('txtRejectionComment').value)"/>
