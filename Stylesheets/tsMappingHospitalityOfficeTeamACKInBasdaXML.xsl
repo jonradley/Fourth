@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--********************************************************************
-Date		|	owner				|	details
+Date	  |	owner		|	details
 ************************************************************************
 16/08/2012| KOshaughnessy	| Created FB5609
 ************************************************************************
-06/09/2012|KOshaughnessy	| 	Bugfix FB 5678 to change where we collect senders code for recipient
+06/09/2012|KOshaughnessy	| Bugfix FB 5678 to change where we collect senders code for recipient
+************************************************************************
+23/03/2015|J Miguel		| FB 10200 - Support for Back ordering
 **********************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:egs="urn:eGS:marketplace:eBIS:Extension:1.0">
 
-	<xsl:output method="xml" encoding="UTF-8"/>
+	<xsl:output method="xml" encoding="UTF-8" indent="yes"/>
 	
 	<xsl:template match="/OrderResponse">
 	<BatchRoot>
@@ -53,6 +55,11 @@ Date		|	owner				|	details
 									<PurchaseOrderDate>
 										<xsl:value-of select="OriginalOrderDate"/>
 									</PurchaseOrderDate>
+									<xsl:if test="OrderResponseReferences/CrossReference">
+										<OriginalPurchaseOrderReference>
+											<xsl:value-of select="OrderResponseReferences/CrossReference"/>
+										</OriginalPurchaseOrderReference>
+									</xsl:if>
 								</PurchaseOrderReferences>
 								
 								<PurchaseOrderAcknowledgementReferences>

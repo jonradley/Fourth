@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--********************************************************************
-Date		|	owner				|	details
+Date      |	owner		|	details
 ************************************************************************
-06/09/2012|KOshaughnessy	| 	Created FB 5678
+06/09/2012|KOshaughnessy	| Created FB 5678
 ************************************************************************
-			|						| 	
+23/03/2015|J Miguel		| FB 10200 - Support for Back ordering
 **********************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
@@ -86,6 +86,11 @@ Date		|	owner				|	details
 										<PurchaseOrderDate>
 											<xsl:value-of select="substring-before(../InvoiceDate,'T')"/>
 										</PurchaseOrderDate>
+										<xsl:if test="OrderResponseReferences/CrossReference">
+											<OriginalPurchaseOrderReference>
+												<xsl:value-of select="OrderResponseReferences/CrossReference"/>
+											</OriginalPurchaseOrderReference>
+										</xsl:if>
 									</PurchaseOrderReferences>
 									
 									<DeliveryNoteReferences>
