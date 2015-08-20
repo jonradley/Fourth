@@ -11,13 +11,15 @@ Pizza Express Hong Kong mapper for invoices and credits journal format.
  Date      	| Name 			| Description of modification
 ==========================================================================================
  24/07/2015	| Jose Miguel	| FB10408 - Pizza Express Hong Kong - R9 - Invoice Export
+==========================================================================================
+ 10/08/2015	| Jose Miguel	| FB10437 - Pizza Express Hong Kong - R9 - Additional changes
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"  xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript" exclude-result-prefixes="#default xsl msxsl js">
 	<xsl:output method="text" encoding="UTF-8"/>
 	<xsl:key name="keyLinesByRefAndNominalCode" match="InvoiceCreditJournalEntriesLine" use="concat(../../InvoiceCreditJournalEntriesHeader/InvoiceReference,'|', CategoryNominal)"/>
 	
 	<xsl:template match="/">
-		<xsl:text>Vendor ID,Invoice/CM #,Apply to Invoice Number,Credit Memo,Date,Drop Ship,Customer SO#,Waiting on Bill,Customer ID,Customer invoice #,Date Due,Accounts Payable Account,Ship Via,P.O. Note,Note Prints After Line Items,Beginning Balance Transaction,Applied To Purchase Order,Number of Distributions,Invoice/ CM Distribution,Apply to invoice Distribution,PO Number,PO Distribution,Quantity,Item ID,Serial Number,Description,G/L Account,Unit Price,UPC/ SKU,Weight,Amount,Job ID,Used for Reimbursable Expense,Displayed Terms,Return Authorization,Recur Number,Recur Frequency</xsl:text>	
+		<xsl:text>Vendor ID,Invoice/CM #,Apply to Invoice Number,Credit Memo,Date,Drop Ship,Customer SO#,Waiting on Bill,Customer ID,Customer invoice #,Date Due,Accounts Payable Account,Ship Via,P.O. Note,Note Prints After Line Items,Beginning Balance Transaction,Applied To Purchase Order,Number of Distributions,Invoice/ CM Distribution,Apply to invoice Distribution,PO Number,PO Distribution,Quantity,Item ID,Serial Number,Description,G/L Account,Unit Price,UPC/ SKU,Weight,Amount,Job ID,Used for Reimbursable Expense,Displayed Terms,Return Authorization</xsl:text>
 		<xsl:text>&#13;&#10;</xsl:text>
 		<xsl:apply-templates select="Batch/BatchDocuments/BatchDocument"/>
 	</xsl:template>
@@ -35,7 +37,6 @@ Pizza Express Hong Kong mapper for invoices and credits journal format.
 	<xsl:template match="InvoiceCreditJournalEntriesDetail">
 		<xsl:variable name="currentDocReference" select="../InvoiceCreditJournalEntriesHeader/InvoiceReference"/>
 		<xsl:variable name="currentDocTotalLines" select="count(InvoiceCreditJournalEntriesLine)"/>
-		
 		<xsl:for-each select="InvoiceCreditJournalEntriesLine[generate-id() = generate-id(key('keyLinesByRefAndNominalCode', concat($currentDocReference, '|', CategoryNominal))[1])]">
 			<!-- variables -->
 			<xsl:variable name="currentCategoryNominal" select="CategoryNominal"/>
@@ -44,7 +45,7 @@ Pizza Express Hong Kong mapper for invoices and credits journal format.
 
 			<!-- Output Starts here -->
 			<!-- Vendor ID -->
-			<xsl:value-of select="../../InvoiceCreditJournalEntriesHeader/SupplierName"/>
+			<xsl:value-of select="../../InvoiceCreditJournalEntriesHeader/SupplierNominalCode"/>
 			<xsl:text>,</xsl:text>
 			<!-- Invoice/CM # -->
 			<xsl:value-of select="$currentDocReference"/>
@@ -79,7 +80,7 @@ Pizza Express Hong Kong mapper for invoices and credits journal format.
 			<xsl:text></xsl:text>
 			<xsl:text>,</xsl:text>
 			<!-- Date Due - one month later than the invoice date -->
-			<xsl:value-of select="js:addDays(string(../../InvoiceCreditJournalEntriesHeader/InvoiceDate), 30)"></xsl:value-of>
+			<xsl:value-of select="js:addYearsMonthsDays(string(../../InvoiceCreditJournalEntriesHeader/InvoiceDate), 0, 1, 0)"></xsl:value-of>
 			<xsl:text>,</xsl:text>
 			<!-- Accounts Payable 20000 -->
 			<xsl:text>20000</xsl:text>
@@ -152,14 +153,6 @@ Pizza Express Hong Kong mapper for invoices and credits journal format.
 			<xsl:text>,</xsl:text>
 			<!-- Return Authorization - BLANK -->
 			<xsl:text></xsl:text>
-			<xsl:text>,</xsl:text>
-			<!-- Recur Number - 0 -->
-			<xsl:text>0</xsl:text>
-			<xsl:text>,</xsl:text>
-			<!-- Recur Frequency 0 -->
-			<xsl:text>0</xsl:text>
-			<xsl:text>,</xsl:text>
-		
 			<xsl:text>&#13;&#10;</xsl:text>
     </xsl:for-each>
     </xsl:template>
@@ -187,19 +180,18 @@ Pizza Express Hong Kong mapper for invoices and credits journal format.
 		return right('0' + str, 2);
 	}
 	
-	function addDays (string_date, days)
+	function addYearsMonthsDays (string_date, years, months, days)
 	{
-		// break 2015-06-11
 		var parts = string_date.split("-")
 		if (parts.length != 3) return 'Error in date :' + string_date;
 
-		var year = parseInt(parts[0]);
-		var month = parseInt(parts[1]);
-		var day = parseInt(parts[2]);
+		var year = parseInt(parts[0], 10);
+		var month = parseInt(parts[1], 10);
+		var day = parseInt(parts[2], 10);
 		
-		var date = new Date(year, month, day + days)
+		var date = new Date(year + years, month + months, day + days)
 		
-		return pad2(date.getDate()) + '/' + pad2(date.getMonth() + 1) + '/' + date.getFullYear()
+		return pad2(date.getDate()) + '/' + pad2(date.getMonth()) + '/' + date.getFullYear()
 	}
 	
 ]]></msxsl:script>
