@@ -36,8 +36,8 @@ Pizza Express Hong Kong mapper for invoices and credits journal format.
 	<!-- Process the detail group the lines by Nominal Code and then by VATCode -->
 	<xsl:template match="InvoiceCreditJournalEntriesDetail">
 		<xsl:variable name="currentDocReference" select="../InvoiceCreditJournalEntriesHeader/InvoiceReference"/>
-		<xsl:variable name="currentDocTotalLines" select="count(InvoiceCreditJournalEntriesLine)"/>
-		<xsl:for-each select="InvoiceCreditJournalEntriesLine[generate-id() = generate-id(key('keyLinesByRefAndNominalCode', concat($currentDocReference, '|', CategoryNominal))[1])]">
+		<xsl:variable name="currentDocTotalGroups" select="count(InvoiceCreditJournalEntriesLine[generate-id() = generate-id(key('keyLinesByRefAndNominalCode', concat($currentDocReference, '|', CategoryNominal))[1]) and CategoryNominal != 'DISCREPANCY'])"/>
+		<xsl:for-each select="InvoiceCreditJournalEntriesLine[generate-id() = generate-id(key('keyLinesByRefAndNominalCode', concat($currentDocReference, '|', CategoryNominal))[1]) and CategoryNominal != 'DISCREPANCY']">
 			<!-- variables -->
 			<xsl:variable name="currentCategoryNominal" select="CategoryNominal"/>
 			<xsl:variable name="currentGroupNet" select="sum(key('keyLinesByRefAndNominalCode',concat($currentDocReference, '|', $currentCategoryNominal))/LineNet)"/>
@@ -101,7 +101,7 @@ Pizza Express Hong Kong mapper for invoices and credits journal format.
 			<xsl:text>FALSE</xsl:text>
 			<xsl:text>,</xsl:text>
 			<!-- Number of Distributions - total lines in the invoice/credit -->
-			<xsl:value-of select="$currentDocTotalLines"/>
+			<xsl:value-of select="$currentDocTotalGroups"/>
 			<xsl:text>,</xsl:text>
 			<!-- Invoice/ CM Distribution - number of group (by apearance for the reference) -->
 			<xsl:value-of select="js:groupNumber(string($currentDocReference), string($currentCategoryNominal))"/>
@@ -128,7 +128,7 @@ Pizza Express Hong Kong mapper for invoices and credits journal format.
 			<xsl:text></xsl:text>
 			<xsl:text>,</xsl:text>
 			<!-- G/L Account - CategoryNominal -->
-			<xsl:value-of select="$currentCategoryNominal"/>
+			<xsl:value-of select="concat($currentCategoryNominal, ../../InvoiceCreditJournalEntriesHeader/UnitSiteNominal)"/>
 			<xsl:text>,</xsl:text>
 			<!-- Unit Price - 0 -->
 			<xsl:text>0</xsl:text>
