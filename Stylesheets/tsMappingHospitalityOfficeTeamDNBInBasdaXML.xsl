@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--********************************************************************
-Date		|	owner				|	details
+Date		|	owner			|	details
 ************************************************************************
-16/08/2012| KOshaughnessy	| Created FB5609
+16/08/2012	| KOshaughnessy		| Created FB5609
 ************************************************************************
-06/09/2012|KOshaughnessy	| Bugfix FB 5678 to remove the need for supplier address. this will be picked up in the infiller
-23/03/2015|J Miguel		| FB 10200 - Support for Back ordering
+06/09/2012	|KOshaughnessy		| Bugfix FB 5678 to remove the need for supplier address. this will be picked up in the infiller
+************************************************************************
+21/08/2015	|J Miguel			| FB 102462 - Support for Back ordering
 **********************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output  method="xml" indent="yes"/>

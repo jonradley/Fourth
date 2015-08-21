@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--********************************************************************
-Date      |	owner		|	details
+Date      	|	owner			|	details
 ************************************************************************
-06/09/2012|KOshaughnessy	| Created FB 5678
+06/09/2012	|KOshaughnessy		| Created FB 5678
 ************************************************************************
-23/03/2015|J Miguel		| FB 10200 - Support for Back ordering
-**********************************************************************-->
+21/08/2015	|J Miguel			| FB 10462 - Support for Back ordering
+************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:output method="xml" encoding="UTF-8"/>

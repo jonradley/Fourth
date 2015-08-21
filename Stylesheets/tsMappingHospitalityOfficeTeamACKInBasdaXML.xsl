@@ -6,8 +6,8 @@ Date	  |	owner		|	details
 ************************************************************************
 06/09/2012|KOshaughnessy	| Bugfix FB 5678 to change where we collect senders code for recipient
 ************************************************************************
-23/03/2015|J Miguel		| FB 10200 - Support for Back ordering
-**********************************************************************-->
+21/08/2015|J Miguel			| FB 10462 - Support for Back ordering
+************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:egs="urn:eGS:marketplace:eBIS:Extension:1.0">
 
 	<xsl:output method="xml" encoding="UTF-8" indent="yes"/>
