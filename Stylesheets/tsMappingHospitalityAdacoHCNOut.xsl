@@ -11,7 +11,7 @@
 ******************************************************************************************
  2013-02-21  | R Cambridge 	| FB6038 Created Module (based on FnB outbound mapper) 
 ******************************************************************************************
-             |            	| 
+ 2015-08-11  | Y Kovalenko 	| 10447 Fix UnitOfMeasure attribute value
 ******************************************************************************************
              |            	| 
 ******************************************************************************************
@@ -91,7 +91,7 @@
 						</ProductID>
 						<xsl:copy-of select="ProductDescription"/>
 						<CreditedQuantity>
-							<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="PackSize"/></xsl:attribute>
+							<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="CreditedQuantity/@UnitOfMeasure"/></xsl:attribute>
 							<xsl:value-of select="CreditedQuantity"/>
 						</CreditedQuantity>
 						<xsl:copy-of select="PackSize"/>
