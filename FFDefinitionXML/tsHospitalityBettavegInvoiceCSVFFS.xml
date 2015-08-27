@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+**********************************************************************
+Alterations
+**********************************************************************
+Name			| Date			| Change
+**********************************************************************
+Koshaughnessy	| 2012-06-27		| 5551 Created FFS
+**********************************************************************
+-->
+<!-- 16 fields in a record -->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>sequenced</ffsRecordPositionType>
+		<ffsRecordSeparator>chr(13)chr(10)</ffsRecordSeparator>
+		<ffsEscapeChars>
+			<ffsEscapeChar>
+				<ffsNative>""</ffsNative>
+				<ffsTradesimple>¬Q</ffsTradesimple>
+				<ffsLiteral>"</ffsLiteral>
+			</ffsEscapeChar>
+		</ffsEscapeChars>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>,</ffsFieldSeparator>
+		</ffsFieldSeparators>
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<BatchDocuments>
+				<BatchDocument>
+					<Invoice>
+						<TradeSimpleHeader>
+							<SendersCodeForRecipient RecordLength="17" RecordPos="*" LPos="1"/>
+						</TradeSimpleHeader>
+						<InvoiceHeader>
+							<ShipTo>
+								<ShipToLocationID>
+									<SuppliersCode RecordLength="17" RecordPos="*" LPos="1"/>
+								</ShipToLocationID>
+								<ShipToName RecordLength="17" RecordPos="*" LPos="2"/>
+							</ShipTo>
+							<InvoiceReferences>
+								<InvoiceReference RecordLength="17" RecordPos="*" LPos="4"/>
+								<InvoiceDate RecordLength="17" RecordPos="*" LPos="3"/>
+								<TaxPointDate RecordLength="17" RecordPos="*" LPos="3"/>
+							</InvoiceReferences>
+						</InvoiceHeader>
+						<InvoiceDetail>
+							<InvoiceLine>
+								<DeliveryNoteReferences>
+									<DeliveryNoteReference RecordLength="17" RecordPos="*" LPos="4"/>
+									<DeliveryNoteDate RecordLength="17" RecordPos="*" LPos="3"/>
+								</DeliveryNoteReferences>
+								<ProductID>
+									<SuppliersProductCode RecordLength="17" RecordPos="*" LPos="6"/>
+								</ProductID>
+								<ProductDescription RecordLength="17" RecordPos="*" LPos="7"/>
+								<InvoicedQuantity RecordLength="17" RecordPos="*" LPos="8"/>
+								<UnitValueExclVAT RecordLength="17" RecordPos="*" LPos="9"/>
+								<LineValueExclVAT RecordLength="17" RecordPos="*" LPos="10"/>
+								<VATCode RecordLength="17" RecordPos="*" LPos="15"/>
+								<VATRate RecordLength="17" RecordPos="*" LPos="16"/>
+							</InvoiceLine>
+						</InvoiceDetail>
+						<InvoiceTrailer>
+							<DiscountedLinesTotalExclVAT RecordLength="17" RecordPos="*" LPos="13"/>
+							<DocumentTotalExclVAT RecordLength="17" RecordPos="*" LPos="13"/>
+							<SettlementTotalExclVAT RecordLength="17" RecordPos="*" LPos="13"/>
+							<VATAmount RecordLength="17" RecordPos="*" LPos="12"/>
+							<DocumentTotalInclVAT RecordLength="17" RecordPos="*" LPos="14"/>
+							<SettlementTotalInclVAT RecordLength="17" RecordPos="*" LPos="14"/>
+						</InvoiceTrailer>
+					</Invoice>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>
