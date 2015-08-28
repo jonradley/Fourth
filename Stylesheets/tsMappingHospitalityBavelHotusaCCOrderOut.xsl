@@ -146,7 +146,7 @@ J Miguel | 27/08/2015	| 10474 (UK) / 10475 (US) - Fork from default voxel mapper
 						</xsl:attribute>
 					</Comment>
 					<Comment Subject="Cadena">
-						<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/GLN"/>
+						<xsl:attribute name="Msg"><xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/GLN"/></xsl:attribute>
 					</Comment>
 				</Comments>
 			</xsl:if>
