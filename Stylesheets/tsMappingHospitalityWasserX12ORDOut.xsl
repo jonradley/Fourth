@@ -3,17 +3,15 @@
 <!--======================================================================================
  Overview
 
- © Fourth Hospitality Ltd, 2009.
+ © Fourth Hospitality Ltd, 2014.
 ==========================================================================================
  Module History
 ==========================================================================================
- Version		| 
+ Version	| 
 ==========================================================================================
- Date      	| Name 						|	Description of modification
+ Date      	| Name 			|	Description of modification
 ==========================================================================================
- 19/05/2009	| Rave Tech					|	Created module.FB 2890
-==========================================================================================
- 08/07/2009	| Lee Boyton				|	FB2890. Corrected UOM translation.
+ 10/12/2012	| Jose Miguel	|	FB10134 Created
 ==========================================================================================
  11/02/2015	| Jose Miguel	|	FB10136 - Adding resilience to different regional settings for date/time
 ==========================================================================================
@@ -21,8 +19,10 @@
 ==========================================================================================
  13/02/2015	| Jose Miguel	|	FB10144 - even more further fix to the padding of the time
 ==========================================================================================
--->
-
+ 20/05/2015	| Ben Oliver	| 		- removal of product descriptions. 
+==========================================================================================
+ 08/06/2015	| Jose Miguel	|	FB10300 - IHG - Further Integration of more suppliers
+==========================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 	xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript"
 	xmlns:msxsl="urn:schemas-microsoft-com:xslt">
@@ -36,7 +36,7 @@
 		</xsl:variable>
 
 		<xsl:variable name="sRecordSep">			
-			<xsl:text>~</xsl:text>			
+			<xsl:text>~</xsl:text>
 		</xsl:variable>		
 
 		<!-- ISA Interchange Control Header -->
@@ -52,11 +52,11 @@
 		<xsl:value-of select="$sFieldSep"/>
 		<xsl:text>ZZ</xsl:text>
 		<xsl:value-of select="$sFieldSep"/>
-		<xsl:value-of select="js:msPad(PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode,15)"/>
+		<xsl:text>501354614571   </xsl:text>
 		<xsl:value-of select="$sFieldSep"/>
 		<xsl:text>ZZ</xsl:text>
 		<xsl:value-of select="$sFieldSep"/>
-		<xsl:value-of select="js:msPad(TradeSimpleHeader/RecipientsBranchReference,15)"/>
+		<xsl:value-of select="js:msPad(string(PurchaseOrderHeader/Supplier/SuppliersLocationID/SuppliersCode),15)"/>
 		<xsl:value-of select="$sFieldSep"/>
 		<xsl:value-of select="js:msFileGenerationDate()"/>
 		<xsl:value-of select="$sFieldSep"/>
@@ -82,7 +82,7 @@
 		<xsl:value-of select="$sFieldSep"/>
 		<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode),15)"/>		
 		<xsl:value-of select="$sFieldSep"/>
-		<xsl:value-of select="js:msSafeText(string(TradeSimpleHeader/RecipientsBranchReference),15)"/>		
+		<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersLocationID/SuppliersCode),15)"/>		
 		<xsl:value-of select="$sFieldSep"/>		
 		<xsl:value-of select="translate(PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderDate,'-','')"/>
 		<xsl:value-of select="$sFieldSep"/>
@@ -92,7 +92,7 @@
 		<xsl:value-of select="$sFieldSep"/>
 		<xsl:text>X</xsl:text>
 		<xsl:value-of select="$sFieldSep"/>		
-		<xsl:text>00401</xsl:text>		
+		<xsl:text>004010</xsl:text>		
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<!-- ST Transaction Set Header -->
@@ -134,7 +134,7 @@
 		<xsl:value-of select="$sFieldSep"/>
 		<xsl:text>91</xsl:text>
 		<xsl:value-of select="$sFieldSep"/>					
-		<xsl:value-of select="js:msSafeText(string(TradeSimpleHeader/RecipientsCodeForSender),40)"/>					
+		<xsl:value-of select="js:msSafeText(string(TradeSimpleHeader/RecipientsCodeForSender),48)"/>					
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:for-each select="PurchaseOrderDetail/PurchaseOrderLine">
@@ -145,22 +145,13 @@
 			<xsl:value-of select="$sFieldSep"/>
 			<xsl:value-of select="number(OrderedQuantity)"/>
 			<xsl:value-of select="$sFieldSep"/>
-
-			<!-- UOM is set to EA when the last character of the product code is s or S. It will be CA in all other cases -->
-			<xsl:choose>
-				<xsl:when test="translate(substring(ProductID/SuppliersProductCode,string-length(ProductID/SuppliersProductCode),1),'S','s') = 's'">
-					<xsl:text>EA</xsl:text>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:text>CA</xsl:text>
-				</xsl:otherwise>
-			</xsl:choose>
 			<xsl:value-of select="$sFieldSep"/>
+			<xsl:value-of select="js:msSafeText(string(UnitValueExclVAT),20)"/>	
 			<xsl:value-of select="$sFieldSep"/>
 			<xsl:value-of select="$sFieldSep"/>
 			<xsl:text>VC</xsl:text>
 			<xsl:value-of select="$sFieldSep"/>				
-			<xsl:value-of select="js:msSafeText(string(ProductID/SuppliersProductCode),7)"/>
+			<xsl:value-of select="js:msSafeText(string(ProductID/SuppliersProductCode),48)"/>
 			<xsl:value-of select="$sFieldSep"/>
 			<xsl:value-of select="$sFieldSep"/>
 			<xsl:value-of select="$sFieldSep"/>
@@ -174,8 +165,7 @@
 			<xsl:value-of select="$sFieldSep"/>			
 			<xsl:value-of select="$sFieldSep"/>
 			<xsl:value-of select="$sFieldSep"/>
-			<xsl:value-of select="$sFieldSep"/>							
-			<xsl:value-of select="js:msSafeText(string(concat(ProductDescription,' ',PackSize)),80)"/>										
+			<xsl:value-of select="$sFieldSep"/>														
 			<xsl:value-of select="$sRecordSep"/>
 					
 		</xsl:for-each>
