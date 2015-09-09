@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--********************************************************************************************************************************************
-Date				|	owner				|	details
+Date		|	owner	|	details
 ************************************************************************************************************************************************
-10/09/2013	| M Dimant			| 7152: Created. 
+10/09/2013	| M Dimant	| 7152: Created. 
 ************************************************************************************************************************************************
-07/11/2013	| M Dimant			| 7362: Removed Line Total so we derive it ourselves.	
+07/11/2013	| M Dimant	| 7362: Removed Line Total so we derive it ourselves.	
+************************************************************************************************************************************************
+21/08/2015	|J Miguel	| FB 10462 - Support for Back ordering
 **********************************************************************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:egs="urn:eGS:marketplace:eBIS:Extension:1.0">
 
@@ -47,7 +49,12 @@ Date				|	owner				|	details
 									<PurchaseOrderDate>
 										<xsl:value-of select="OriginalOrderDate"/>
 									</PurchaseOrderDate>
-								</PurchaseOrderReferences>								
+									<xsl:if test="OrderResponseReferences/CrossReference">
+										<OriginalPurchaseOrderReference>
+											<xsl:value-of select="OrderResponseReferences/CrossReference"/>
+										</OriginalPurchaseOrderReference>
+									</xsl:if>
+								</PurchaseOrderReferences>
 								<PurchaseOrderConfirmationReferences>
 									<PurchaseOrderConfirmationReference>
 										<xsl:value-of select="OrderResponseReferences/OrderResponseNumber"/>
@@ -76,7 +83,12 @@ Date				|	owner				|	details
 										</OrderedQuantity>
 										<ConfirmedQuantity>
 											<xsl:value-of select="Quantity/Amount"/>
-										</ConfirmedQuantity>									
+										</ConfirmedQuantity>
+										<xsl:if test="Delivery/Quantity/Amount">
+											<BackOrderQuantity>
+												<xsl:value-of select="Delivery/Quantity/Amount"/>
+											</BackOrderQuantity>
+										</xsl:if>
 										<xsl:if test="Quantity/Packsize != ''">
 											<PackSize>
 												<xsl:value-of select="Quantity/Packsize"/>
@@ -86,6 +98,11 @@ Date				|	owner				|	details
 											<UnitValueExclVAT>
 												<xsl:value-of select="Price/UnitPrice"/>
 											</UnitValueExclVAT>
+										</xsl:if>
+										<xsl:if test="LineTotal">
+											<LineValueExclVAT>
+												<xsl:value-of select="LineTotal"/>
+											</LineValueExclVAT>							
 										</xsl:if>
 									</PurchaseOrderConfirmationLine>
 								</xsl:for-each>
