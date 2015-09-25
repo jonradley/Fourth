@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--******************************************************************
+Fairfax Procurement Wizards Email attachment to xml mapper
+**********************************************************************
+Name		| Date       | Change
+**********************************************************************
+J Miguel	| 16/09/2015 | Created.
+*******************************************************************-->
+<ffsFlatFileSchema>
+    <ffsSettings>
+        <ffsRecordPositionType>noschema</ffsRecordPositionType>
+    </ffsSettings>
+    <ffsRoot>
+        <L1>
+            <Delim>chr(13)chr(10)</Delim>
+            <L2>
+                <Delim>,</Delim>
+            </L2>
+        </L1>
+    </ffsRoot>
+</ffsFlatFileSchema>
