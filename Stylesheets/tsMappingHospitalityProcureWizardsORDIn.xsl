@@ -29,7 +29,7 @@ J Miguel	| 30/09/2015 | FB10511 - Email orders in
 				<xsl:with-param name="date" select="L1[L2[1]='Requested Delivery Date']/L2[2]"/>
 			</xsl:call-template>		
 		</xsl:variable>
-		<xsl:variable name="TotalExclVAT" select="translate(L1[L2[1]='']/L2[7], '£', '')"/>
+		<xsl:variable name="TotalExclVAT" select="substring-after(L1[L2[1]='']/L2[7], '£')"/>
 		<xsl:variable name="SpecialDeliveryInstructions" select="L1[L2[1]='Purchase Order Comments']/following-sibling::L1[1]/L2[1]"/>
 		<BatchRoot>
 			<Batch>
@@ -102,8 +102,8 @@ J Miguel	| 30/09/2015 | FB10511 - Email orders in
 		<xsl:variable name="PackSize" select="L2[2]"/>
 		<xsl:variable name="SupplierProductCode" select="L2[3]"/>
 		<xsl:variable name="ProductDescription" select="concat(L2[4], ' ', L2[5])"/>
-		<xsl:variable name="UnitValueExclVAT" select="translate(L2[6], '£', '')"/>
-		<xsl:variable name="LineValueExclVAT" select="translate(L2[7], '£', '')"/>
+		<xsl:variable name="UnitValueExclVAT" select="substring-after(L2[6], '£')"/>
+		<xsl:variable name="LineValueExclVAT" select="substring-after(L2[7], '£')"/>
 		<PurchaseOrderLine>
 			<ProductID>
 				<GTIN>5555555555555</GTIN>
