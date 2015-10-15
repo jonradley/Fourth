@@ -16,6 +16,8 @@
 '************************************************************************************************************************************
 ' 14/05/2013  | M Dimant | 6540: Changed mapping of SCR so we can handle Comtrex and FnB customers.
 '*************************************************************************************************************************************
+' 15/10/2015  | M Dimant | 10535: Added Tasty SCR value for Comtrex link.
+'************************************************************************************************************************************
 
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
@@ -51,7 +53,7 @@
 								<SendersCodeForRecipient>
 									<xsl:choose>
 										<!-- We do not hold shipto details for Comtrex cutomers so we use a different SCR if the credit is for Cote, Prezzo or Bills -->
-										<xsl:when test="Buyer/BuyerAssigned = 'COTE' or Buyer/BuyerAssigned = 'PREZZO' or Buyer/BuyerAssigned = 'BILLS'">
+										<xsl:when test="Buyer/BuyerAssigned = 'COTE' or Buyer/BuyerAssigned = 'PREZZO' or Buyer/BuyerAssigned = 'BILLS' or Buyer/BuyerAssigned = 'TASTY'">
 											<xsl:value-of select="Seller/SellerAssigned"/>
 										</xsl:when>
 										<xsl:otherwise>
