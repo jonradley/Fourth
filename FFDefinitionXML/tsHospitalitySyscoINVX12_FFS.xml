@@ -12,6 +12,8 @@
  01/07/2015	| Jose Miguel	|	FB10341 - X12 batch Invoice mapper
 ==========================================================================================
  28/09/2015	| Jose Miguel	|	FB10512 - Additional Doctype INV for Sysco Corporate
+==========================================================================================
+ 20/10/2015	| Jose Miguel	|	FB10541 - Fix Invoice FFD Mapper - Purchase Order Reference
 ==========================================================================================-->
 <ffsFlatFileSchema>
 	<ffsSettings>
@@ -85,7 +87,7 @@
 									<!-- Placeholder for PurchaseOrderReference. Native tag cannot be used as it appears in the input in a different hierarchy level -->
 									<!-- So it needs to be bring towards the header -->
 									<!-- It will be relocated to the detail in the xsl -->
-									<GoodsReceivedNoteReference RecordPos="BIG" LPos="3"/>
+									<GoodsReceivedNoteReference RecordPos="BIG" LPos="5"/>
 									<!-- REF02 - 127 - Reference Identification-->
 									<!-- Placeholder for the InvoiceReference - only for Credit Notes -->
 									<CreditNoteReference RecordPos="REF" LPos="3"/>
