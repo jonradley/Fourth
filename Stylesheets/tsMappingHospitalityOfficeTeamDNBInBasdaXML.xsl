@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--********************************************************************
-Date		|	owner				|	details
+Date		|	owner			|	details
 ************************************************************************
-16/08/2012| KOshaughnessy	| Created FB5609
+16/08/2012	| KOshaughnessy		| Created FB5609
 ************************************************************************
-06/09/2012|KOshaughnessy	| 	Bugfix FB 5678 to remove the need for supplier address. this will be picked up in the infiller
+06/09/2012	|KOshaughnessy		| Bugfix FB 5678 to remove the need for supplier address. this will be picked up in the infiller
+************************************************************************
+21/08/2015	|J Miguel			| FB 10462 - Support for Back ordering
 **********************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-
+<xsl:output  method="xml" indent="yes"/>
 <xsl:template match="/">
 <BatchRoot>
 	<xsl:attribute name="TypePrefix">DNB</xsl:attribute>
@@ -50,8 +52,22 @@ Date		|	owner				|	details
 									<PurchaseOrderDate>
 										<xsl:value-of select="OriginalOrderDate"/>
 									</PurchaseOrderDate>
+									<xsl:if test="OrderResponseReferences/CrossReference">
+										<OriginalPurchaseOrderReference>
+											<xsl:value-of select="OrderResponseReferences/CrossReference"/>
+										</OriginalPurchaseOrderReference>
+									</xsl:if>									
 								</PurchaseOrderReferences>
 								
+								<PurchaseOrderConfirmationReferences>
+									<PurchaseOrderConfirmationReference>
+										<xsl:value-of select="OrderResponseReferences/OrderResponseNumber"/>
+									</PurchaseOrderConfirmationReference>
+									<PurchaseOrderConfirmationDate>
+										<xsl:value-of select="substring-before(OrderResponseDate, 'T')"/>
+									</PurchaseOrderConfirmationDate>
+								</PurchaseOrderConfirmationReferences>
+													
 								<DeliveryNoteReferences>
 									<DeliveryNoteReference>
 										<xsl:value-of select="Delivery/DeliveryInformation"/>

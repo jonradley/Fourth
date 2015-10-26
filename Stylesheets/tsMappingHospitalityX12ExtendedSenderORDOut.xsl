@@ -3,23 +3,21 @@
 <!--======================================================================================
  Overview
 
- © Fourth Hospitality Ltd, 2009.
+ © Fourth Hospitality Ltd, 2014.
 ==========================================================================================
  Module History
 ==========================================================================================
- Version		| 
+ Version	| 
 ==========================================================================================
- Date      	| Name 						|	Description of modification
+ Date      	| Name 		|	Description of modification
 ==========================================================================================
- 19/05/2009	| Rave Tech					|	Created module.FB 2890
+ 12/02/2015	| Jose Miguel	|	FB10134 Created
 ==========================================================================================
- 08/07/2009	| Lee Boyton				|	FB2890. Corrected UOM translation.
+ 24/02/2015	| Jose Miguel	|	FB10149 Remove mapping to the UoM to use catalogue's
 ==========================================================================================
- 11/02/2015	| Jose Miguel	|	FB10136 - Adding resilience to different regional settings for date/time
+ 05/03/2015	| Ben Oliver	|	FB10178 Restrict UoM to 2 characters & Populate address line 4.
 ==========================================================================================
- 12/02/2015	| Jose Miguel	|	FB10139 - further amend format for date and time fields
-==========================================================================================
- 13/02/2015	| Jose Miguel	|	FB10144 - even more further fix to the padding of the time
+ 31/03/2015	| Jose Miguel	|	FB10127 US - Tradesimple generic mapper Changes
 ==========================================================================================
 -->
 
@@ -36,7 +34,7 @@
 		</xsl:variable>
 
 		<xsl:variable name="sRecordSep">			
-			<xsl:text>~</xsl:text>			
+			<xsl:text>~</xsl:text>
 		</xsl:variable>		
 
 		<!-- ISA Interchange Control Header -->
@@ -52,11 +50,11 @@
 		<xsl:value-of select="$sFieldSep"/>
 		<xsl:text>ZZ</xsl:text>
 		<xsl:value-of select="$sFieldSep"/>
-		<xsl:value-of select="js:msPad(PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode,15)"/>
+		<xsl:text>501354614571   </xsl:text>
 		<xsl:value-of select="$sFieldSep"/>
 		<xsl:text>ZZ</xsl:text>
 		<xsl:value-of select="$sFieldSep"/>
-		<xsl:value-of select="js:msPad(TradeSimpleHeader/RecipientsBranchReference,15)"/>
+		<xsl:value-of select="js:msPad(string(PurchaseOrderHeader/Supplier/SuppliersLocationID/SuppliersCode),15)"/>
 		<xsl:value-of select="$sFieldSep"/>
 		<xsl:value-of select="js:msFileGenerationDate()"/>
 		<xsl:value-of select="$sFieldSep"/>
@@ -82,17 +80,17 @@
 		<xsl:value-of select="$sFieldSep"/>
 		<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode),15)"/>		
 		<xsl:value-of select="$sFieldSep"/>
-		<xsl:value-of select="js:msSafeText(string(TradeSimpleHeader/RecipientsBranchReference),15)"/>		
+		<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersLocationID/SuppliersCode),15)"/>		
 		<xsl:value-of select="$sFieldSep"/>		
 		<xsl:value-of select="translate(PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderDate,'-','')"/>
 		<xsl:value-of select="$sFieldSep"/>
 		<xsl:value-of select="js:msSafeText(translate(PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderTime,':',''),4)"/>
 		<xsl:value-of select="$sFieldSep"/>
-		<xsl:text>1</xsl:text>
+		<xsl:value-of select="format-number(PurchaseOrderHeader/FileGenerationNumber,'000000000')"/>
 		<xsl:value-of select="$sFieldSep"/>
 		<xsl:text>X</xsl:text>
 		<xsl:value-of select="$sFieldSep"/>		
-		<xsl:text>00401</xsl:text>		
+		<xsl:text>004010</xsl:text>		
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<!-- ST Transaction Set Header -->
@@ -134,7 +132,43 @@
 		<xsl:value-of select="$sFieldSep"/>
 		<xsl:text>91</xsl:text>
 		<xsl:value-of select="$sFieldSep"/>					
-		<xsl:value-of select="js:msSafeText(string(TradeSimpleHeader/RecipientsCodeForSender),40)"/>					
+		<xsl:value-of select="js:msSafeText(string(TradeSimpleHeader/RecipientsCodeForSender),48)"/>					
+		<xsl:value-of select="$sRecordSep"/>
+		
+		<!-- N2 Ship to Name -->
+		<xsl:text>N2</xsl:text>
+		<xsl:value-of select="$sFieldSep"/>
+		<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/ShipTo/ShipToName),35)"/>				
+		<xsl:value-of select="$sRecordSep"/>		
+		
+		<!-- N3 Ship to Address -->
+		<xsl:text>N3</xsl:text>
+		<xsl:value-of select="$sFieldSep"/>
+		<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine1), 35)"/>
+		<xsl:value-of select="$sFieldSep"/>
+		<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine2), 30)"/>
+		<xsl:value-of select="$sRecordSep"/>
+
+		<!-- N4 Ship To City*State Code*Postal Code -->
+		<xsl:text>N4</xsl:text>
+		<xsl:value-of select="$sFieldSep"/>
+		<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine3),30)"/>
+		<xsl:value-of select="$sFieldSep"/>
+		<xsl:value-of select="substring(PurchaseOrderHeader/ShipTo/ShipToAddress/AddressLine4, 1, 2)"/>
+		<xsl:value-of select="$sFieldSep"/>
+		<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToAddress/PostCode"/>
+		<xsl:value-of select="$sRecordSep"/>
+		
+		<!-- PER*AA*Contact Name*TE*Contact Phone~ -->
+		<xsl:text>PER</xsl:text>
+		<xsl:value-of select="$sFieldSep"/>
+		<xsl:text>AA</xsl:text>
+		<xsl:value-of select="$sFieldSep"/>
+		<xsl:value-of select="PurchaseOrderHeader/ShipTo/ContactName"/>
+		<xsl:value-of select="$sFieldSep"/>
+		<xsl:text>TE</xsl:text>
+		<xsl:value-of select="$sFieldSep"/>
+		<xsl:text>555-555-5555</xsl:text>
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:for-each select="PurchaseOrderDetail/PurchaseOrderLine">
@@ -145,22 +179,14 @@
 			<xsl:value-of select="$sFieldSep"/>
 			<xsl:value-of select="number(OrderedQuantity)"/>
 			<xsl:value-of select="$sFieldSep"/>
-
-			<!-- UOM is set to EA when the last character of the product code is s or S. It will be CA in all other cases -->
-			<xsl:choose>
-				<xsl:when test="translate(substring(ProductID/SuppliersProductCode,string-length(ProductID/SuppliersProductCode),1),'S','s') = 's'">
-					<xsl:text>EA</xsl:text>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:text>CA</xsl:text>
-				</xsl:otherwise>
-			</xsl:choose>
+			<xsl:value-of select="js:msSafeText(string(OrderedQuantity/@UnitOfMeasure),2)"/>
 			<xsl:value-of select="$sFieldSep"/>
+			<xsl:value-of select="js:msSafeText(string(UnitValueExclVAT),20)"/>	
 			<xsl:value-of select="$sFieldSep"/>
 			<xsl:value-of select="$sFieldSep"/>
 			<xsl:text>VC</xsl:text>
 			<xsl:value-of select="$sFieldSep"/>				
-			<xsl:value-of select="js:msSafeText(string(ProductID/SuppliersProductCode),7)"/>
+			<xsl:value-of select="js:msSafeText(string(ProductID/SuppliersProductCode),48)"/>
 			<xsl:value-of select="$sFieldSep"/>
 			<xsl:value-of select="$sFieldSep"/>
 			<xsl:value-of select="$sFieldSep"/>
@@ -189,7 +215,7 @@
 		<!-- SE Transaction Set Trailer -->
 		<xsl:text>SE</xsl:text>
 		<xsl:value-of select="$sFieldSep"/>
-		<xsl:value-of select="6 + 2 * PurchaseOrderTrailer/NumberOfLines"/>
+		<xsl:value-of select="10 + 2 * PurchaseOrderTrailer/NumberOfLines"/>
 		<xsl:value-of select="$sFieldSep"/>
 		<xsl:text>0001</xsl:text>		
 		<xsl:value-of select="$sRecordSep"/>
@@ -199,7 +225,7 @@
 		<xsl:value-of select="$sFieldSep"/>
 		<xsl:text>1</xsl:text>
 		<xsl:value-of select="$sFieldSep"/>
-		<xsl:text>1</xsl:text>		
+		<xsl:value-of select="format-number(PurchaseOrderHeader/FileGenerationNumber,'000000000')"/>		
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<!-- IEA Interchange Control Trailer -->
