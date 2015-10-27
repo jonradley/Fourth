@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+******************************************************************************************
+ Overview
+		
+
+ 
+ © Alternative Business Solutions Ltd., 2000,2001,2002,2003.
+******************************************************************************************
+ Module History
+******************************************************************************************
+ Date       | Name            | Description of modification
+******************************************************************************************
+03/08/2007	| R Cambridge		| FB1310 created module
+******************************************************************************************
+15/11/2007	| R Cambridge		| FB1424 Move VAT sub-total fields to allow for totals more 
+													than 999.99
+******************************************************************************************
+17/11/2008	| Lee Boyton		| FB2577 The unit codes can be 8 characters in length
+******************************************************************************************
+            |                 | 
+******************************************************************************************
+-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>chr(13)chr(10)</ffsRecordSeparator>
+		<!--ffsFieldSeparators>
+			<ffsFieldSeparator>,</ffsFieldSeparator>
+		</ffsFieldSeparators-->
+		<ffsPadding>chr(32)</ffsPadding>
+		<!--ffsGroups>
+			<ffsGroup-->
+		<!--References below which MEAN RecordPos 'H' with LPos 1 would be CODED as 'D' and LPos 14 (13+1)-->
+		<!--ffsGroupRecord RecordPos="H" FieldTotal="34"/>
+				<ffsSubGroupRecord RecordPos="D" FieldTotal="13"/-->
+		<!--/ffsGroup>
+		</ffsGroups-->
+		<ffsSplitBatchRecord RecordPos="H"/>
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<BatchDocuments>
+				<BatchDocument>
+					<Invoice>
+						<TradeSimpleHeader>
+							<SendersCodeForRecipient RecordPos="H" LPos="3" UPos="10"/>
+						</TradeSimpleHeader>
+						<InvoiceHeader>
+							<Buyer>
+								<!--BuyersLocationID>
+									<SuppliersCode RecordPos="H" LPos="12" UPos="8"/>
+								</BuyersLocationID>
+								<BuyersName RecordPos="H" LPos="" UPos=""/>
+								<BuyersAddress>
+									<AddressLine1 RecordPos="H" LPos="" UPos=""/>
+									<AddressLine2 RecordPos="H" LPos="" UPos=""/>
+									<AddressLine3 RecordPos="H" LPos="" UPos=""/>
+									<AddressLine4 RecordPos="H" LPos="" UPos=""/>
+									<PostCode RecordPos="H" LPos="" UPos=""/>
+								</BuyersAddress-->
+							</Buyer>
+							<Supplier>
+								<!--<SuppliersLocationID>
+									<SuppliersCode RecordPos="" LPos=""/>
+								</SuppliersLocationID>>
+								<SuppliersName RecordPos="H" LPos="" UPos=""/>
+								<SuppliersAddress>
+									<AddressLine1 RecordPos="H" LPos="" UPos=""/>
+									<AddressLine2 RecordPos="H" LPos="" UPos=""/>
+									<AddressLine3 RecordPos="H" LPos="" UPos=""/>
+									<AddressLine4 RecordPos="H" LPos="" UPos=""/>
+									<PostCode RecordPos="H" LPos="" UPos=""/>
+								</SuppliersAddress-->
+							</Supplier>
+							<ShipTo>
+								<ShipToLocationID>
+									<SuppliersCode RecordPos="H" LPos="3" UPos="10"/>
+								</ShipToLocationID>>
+								<!--ShipToName RecordPos="H" LPos="12" UPos="8"/>
+								<ShipToAddress>
+									<AddressLine1 RecordPos="H" LPos="" UPos=""/>
+									<AddressLine2 RecordPos="H" LPos="" UPos=""/>
+									<AddressLine3 RecordPos="H" LPos="" UPos=""/>
+									<AddressLine4 RecordPos="H" LPos="" UPos=""/>
+									<PostCode RecordPos="H" LPos="" UPos=""/>
+								</ShipToAddress-->
+							</ShipTo>
+							<InvoiceReferences>
+								<InvoiceReference RecordPos="H" LPos="14" UPos="23"/>
+								<InvoiceDate RecordPos="H" LPos="24" UPos="33"/>
+								<TaxPointDate RecordPos="H" LPos="34" UPos="43"/>
+								<!--VATRegNo RecordPos="H" LPos="" UPos=""/-->
+							</InvoiceReferences>
+							<!--Currency RecordPos="H" LPos="" UPos=""/-->
+						</InvoiceHeader>
+						<InvoiceDetail>
+							<InvoiceLine>
+								<!--<LineNumber RecordPos="" LPos=""/>-->
+								<PurchaseOrderReferences>
+									<PurchaseOrderReference RecordPos="H" LPos="44" UPos="56"/>
+									<PurchaseOrderDate RecordPos="H" LPos="34" UPos="43"/>
+								</PurchaseOrderReferences>
+								<DeliveryNoteReferences>
+									<DeliveryNoteReference RecordPos="H" LPos="44" UPos="56"/>
+									<DeliveryNoteDate RecordPos="H" LPos="34" UPos="43"/>
+									<DespatchDate RecordPos="H" LPos="34" UPos="43"/>
+								</DeliveryNoteReferences>
+								<ProductID>
+									<SuppliersProductCode RecordPos="D" LPos="2" UPos="6"/>
+								</ProductID>
+								<!--ProductDescription RecordPos="D" LPos="" UPos=""/-->
+								<InvoicedQuantity RecordPos="D" LPos="8" UPos="16"/>
+								<!--PackSize RecordPos="D" LPos="" UPos=""/-->
+								<UnitValueExclVAT RecordPos="D" LPos="18" UPos="26"/>
+								<LineValueExclVAT RecordPos="D" LPos="28" UPos="36"/>
+								<VATCode RecordPos="D" LPos="37" UPos="39"/>
+								<!--VATRate RecordPos="D" LPos="" UPos=""/-->
+							</InvoiceLine>
+						</InvoiceDetail>
+						<InvoiceTrailer>
+							<VATSubTotals>
+								<VATSubTotal>
+									<!-- These fields are just used to carry data to the translator, true semantics described below  -->
+									<!--VAT CODE IN FIRST COLUMN-->
+									<DocumentDiscountAtRate RecordPos="H" LPos="57" UPos="60"/>
+									<!-- GOODS AMOUNT IN FIRST COLUMN -->
+									<NumberOfLinesAtRate RecordPos="H" LPos="61" UPos="70"/>
+									<!-- VAT AMOUNT IN FIRST COLUMN -->
+									<NumberOfItemsAtRate RecordPos="H" LPos="71" UPos="80"/>
+									<!--VAT CODE IN SECOND COLUMN-->
+									<VATAmountAtRate RecordPos="H" LPos="76" UPos="82"/>
+									<!-- GOODS AMOUNT IN SECOND COLUMN -->
+									<DocumentTotalExclVATAtRate RecordPos="H" LPos="83" UPos="92"/>
+									<!-- VAT AMOUNT IN SECOND COLUMN -->
+									<SettlementDiscountAtRate RecordPos="H" LPos="93" UPos="101"/>
+								</VATSubTotal>
+							</VATSubTotals>
+						</InvoiceTrailer>
+					</Invoice>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>
