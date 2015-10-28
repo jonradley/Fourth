@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--******************************************************************
+Alterations
+**********************************************************************
+Name			| Date			| Change
+**********************************************************************
+R Cambridge	| 2009-09-18	| 3119 Created module
+**********************************************************************
+				|					|
+**********************************************************************
+				|					|
+*******************************************************************-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>chr(13)chr(10)</ffsRecordSeparator>
+		<ffsPadding/>
+		<ffsSplitBatchRecord RecordPos="H"/>
+	</ffsSettings>
+	<ffsRoot>
+		<PurchaseOrderAcknowledgement>
+			<TradeSimpleHeader>
+				<SendersCodeForRecipient RecordPos="H" LPos="69" UPos="78"/>
+				<SendersBranchReference RecordPos="H" LPos="2" UPos="6"/>
+			</TradeSimpleHeader>
+			<PurchaseOrderAcknowledgementHeader>
+				<PurchaseOrderReferences>
+					<PurchaseOrderReference RecordPos="H" LPos="35" UPos="49"/>
+					<PurchaseOrderDate RecordPos="H" LPos="50" UPos="57"/>
+				</PurchaseOrderReferences>
+				<PurchaseOrderAcknowledgementReferences>
+					<PurchaseOrderAcknowledgementReference RecordPos="H" LPos="7" UPos="26"/>
+					<PurchaseOrderAcknowledgementDate RecordPos="H" LPos="27" UPos="34"/>
+				</PurchaseOrderAcknowledgementReferences>
+			</PurchaseOrderAcknowledgementHeader>
+			<PurchaseOrderAcknowledgementTrailer>
+				<NumberOfLines RecordPos="S" LPos="2" UPos="8"/>
+				<TotalExclVAT RecordPos="S" LPos="9" UPos="19"/>
+			</PurchaseOrderAcknowledgementTrailer>
+		</PurchaseOrderAcknowledgement>
+	</ffsRoot>
+</ffsFlatFileSchema>
