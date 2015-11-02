@@ -5,6 +5,8 @@ Fairfax Procurement Wizards Email attachment to xml mapper
 Name		| Date       | Change
 **********************************************************************
 J Miguel	| 30/09/2015 | FB10511 - Email orders in
+**********************************************************************
+J Miguel	| 28/10/2015 | FB10560 - Amend mapper to deal with catch weight extra information in the file
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="xml" encoding="UTF-8" indent="yes" omit-xml-declaration="yes"/>
@@ -72,19 +74,14 @@ J Miguel	| 30/09/2015 | FB10511 - Email orders in
 								<OrderedDeliveryDetails>
 									<DeliveryType><xsl:text>Ordinary</xsl:text></DeliveryType>
 									<DeliveryDate><xsl:value-of select="$DeliveryDate"/></DeliveryDate>
-<!--									<xsl:if test="$SpecialDeliveryInstructions">
-										<SpecialDeliveryInstructions>
-											<xsl:value-of select="$SpecialDeliveryInstructions"/>
-										</SpecialDeliveryInstructions>
-									</xsl:if>-->
 								</OrderedDeliveryDetails>
 							</PurchaseOrderHeader>
 							<PurchaseOrderDetail>
-								<xsl:apply-templates select="L1[count(L2)=9 and number(L2[1]) = number(L2[1])]"/>
+								<xsl:apply-templates select="L1[(count(L2)=9 or count(L2)=10) and number(L2[1]) = number(L2[1])]"/>
 							</PurchaseOrderDetail>
 							<PurchaseOrderTrailer>
 								<NumberOfLines>
-									<xsl:value-of select="count(L1[count(L2)=9 and number(L2[1]) = number(L2[1])])"/>
+									<xsl:value-of select="count(L1[(count(L2)=9 or count(L2)=10) and number(L2[1]) = number(L2[1])])"/>
 								</NumberOfLines>
 								<TotalExclVAT>
 									<xsl:value-of select="$TotalExclVAT"/>
