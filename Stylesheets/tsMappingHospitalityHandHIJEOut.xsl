@@ -48,13 +48,13 @@ Harris and Hoole mapper for invoices and credits journal format.
 			<xsl:value-of select="../../InvoiceCreditJournalEntriesHeader/InvoiceReference"/>
 			<xsl:text>,</xsl:text>
 			<!-- InvoiceDate -->
-			<xsl:value-of select="../../InvoiceCreditJournalEntriesHeader/InvoiceDate"/>
+			<xsl:value-of select="translate(../../InvoiceCreditJournalEntriesHeader/InvoiceDate, '-', '')"/>
 			<xsl:text>,</xsl:text>
 			<!-- BuyersSiteCode -->
 			<xsl:value-of select="../../InvoiceCreditJournalEntriesHeader/BuyersSiteCode"/>
 			<xsl:text>,</xsl:text>
 			<!-- DeliveryDate -->
-			<xsl:value-of select="../../InvoiceCreditJournalEntriesHeader/DeliveryDate"/>
+			<xsl:value-of select="translate(../../InvoiceCreditJournalEntriesHeader/DeliveryDate, '-', '')"/>
 			<xsl:text>,</xsl:text>
 			<!-- Category Nominal -->
 			<xsl:value-of select="$currentCategoryNominal"/>
@@ -72,7 +72,7 @@ Harris and Hoole mapper for invoices and credits journal format.
 			<xsl:value-of select="../../InvoiceCreditJournalEntriesHeader/SupplierName"/>
 			<xsl:text>,</xsl:text>
 			<!-- ExportRunDate -->
-			<xsl:value-of select="../../InvoiceCreditJournalEntriesHeader/ExportRunDate"/>
+			<xsl:value-of select="translate(../../InvoiceCreditJournalEntriesHeader/ExportRunDate, '-', '')"/>
 			<xsl:text>,</xsl:text>
 			<!-- DeliveryReference -->
 			<xsl:value-of select="../../InvoiceCreditJournalEntriesHeader/DeliveryReference"/>
