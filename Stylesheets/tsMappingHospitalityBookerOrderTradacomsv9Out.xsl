@@ -13,7 +13,9 @@
 ==========================================================================================
  13/04/2010	| M Dimant			|	Created module based on standard tradacoms mapper. Added line comments in DNA segment.
 ==========================================================================================
-11/01/2012	| M Emanuel			| Created Order out mapper for Booker
+11/01/2012	| M Emanuel			| 	Created Order out mapper for Booker
+==========================================================================================
+1911/2015		| M Dimant			|	FB 10618: Removed hard coded GLN and mapped from internal version.
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -46,9 +48,8 @@
 				</xsl:otherwise>
 			</xsl:choose>
 			<xsl:text>:FOURTH HOSPITALITY</xsl:text>
-			<xsl:text>+</xsl:text>
-			<!-- Your mailbox reference, Text inserted by me -->
-			<xsl:text>5011295000016</xsl:text>
+			<xsl:text>+</xsl:text>			
+			<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN"/>		
 			<xsl:text>:</xsl:text>
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersName), 35)"/>
 			<xsl:text>+</xsl:text>
