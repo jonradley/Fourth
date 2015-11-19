@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>chr(10)</ffsRecordSeparator>
+		<ffsEscapeChars>
+			<ffsEscapeChar>
+				<ffsNative>?=</ffsNative>
+				<ffsTradesimple>¬E</ffsTradesimple>
+				<ffsLiteral>=</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?+</ffsNative>
+				<ffsTradesimple>¬P</ffsTradesimple>
+				<ffsLiteral>+</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?:</ffsNative>
+				<ffsTradesimple>¬C</ffsTradesimple>
+				<ffsLiteral>:</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?'</ffsNative>
+				<ffsTradesimple>¬A</ffsTradesimple>
+				<ffsLiteral>'</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>??</ffsNative>
+				<ffsTradesimple>¬Q</ffsTradesimple>
+				<ffsLiteral>?</ffsLiteral>
+			</ffsEscapeChar>
+		</ffsEscapeChars>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>|</ffsFieldSeparator>
+		</ffsFieldSeparators>
+		<ffsPadding/>
+		<ffsBatchHeader>
+			<!--list of records that make up the header, this will be added to each document in the batch -->
+			<ffsHeaderRecord RecordPos="MAGINUSINV"/>
+			<ffsHeaderRecord RecordPos="SUPPLIER"/>
+			<ffsHeaderRecord RecordPos="CUSTOMER"/>
+			<ffsHeaderRecord RecordPos="FILEDETS"/>
+		</ffsBatchHeader>
+		<ffsGroups>
+			<ffsGroup>
+				<!--References below which MEAN RecordPos 'H' with LPos 1 would be CODED as 'D' and LPos 14 (13+1)-->
+				<ffsGroupRecord RecordPos="ORDDELREFS" FieldTotal="4"/>
+				<ffsSubGroupRecord RecordPos="INVDETS" FieldTotal="15"/>
+			</ffsGroup>
+		</ffsGroups>
+		<ffsSplitBatchRecord RecordPos="INVHDR"/>
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<BatchHeader>
+				<!--MHDSegment>
+					<MHDHeader RecordPos="TRANTYPE" LPos="3"/>
+					<MHDVersion  RecordPos="TRANTYPE" LPos="2"/>
+				</MHDSegment-->
+				<VATSubTotals>
+					<VATSubTotal>
+						<!-- MANDATORY VATTLR - VRS - VSDE (File sub-total amount excluding discount) -->
+						<DocumentTotalExclVATAtRate RecordPos="VATSUMMARY" LPos="4"/>
+						<!-- MANDATORY VATTLR - VRS - VSDI (File sub total amount including discount) -->
+						<SettlementTotalExclVATAtRate RecordPos="VATSUMMARY" LPos="5"/>
+						<!-- MANDATORY VATTLR - VRS - VVAT (File VAT sub-total)-->
+						<VATAmountAtRate RecordPos="VATSUMMARY" LPos="6"/>
+						<!-- MANDATORY VATTLR - VRS - VPSE (File sub-total payable excluding discount) [ unless blank, then use VPSI ]-->
+						<DocumentTotalInclVATAtRate RecordPos="VATSUMMARY" LPos="8"/>
+						<!-- MANDATORY VATTLR - VRS - VPSI (File sub-total payable including discount) -->
+						<SettlementTotalInclVATAtRate RecordPos="VATSUMMARY" LPos="8"/>
+						<ffsAttribute1 name="VATCode" RecordPos="VATSUMMARY" LPos="2"/>
+						<ffsAttribute1 name="VATRate" RecordPos="VATSUMMARY" LPos="3"/>
+					</VATSubTotal>
+				</VATSubTotals>
+				<!-- MANDATORY INVTLR - TOT - FASE (File total amount ex VAT ex discount) -->
+				<DocumentTotalExclVAT RecordPos="INVTOTALS" LPos="3"/>
+				<!-- MANDATORY INVTLR - TOT - FASI (File total amount ex VAT inc discount) -->
+				<SettlementTotalExclVAT RecordPos="INVTOTALS" LPos="3"/>
+				<!-- MANDATORY INVTLR - TOT - FVAT (File total VAT) -->
+				<VATAmount RecordPos="INVTOTALS" LPos="4"/>
+				<!-- MANDATORY INVTLR - TOT - FPSE (File total payable ex discount) -->
+				<DocumentTotalInclVAT RecordPos="INVTOTALS" LPos="5"/>
+				<!-- MANDATORY INVTLR - TOT - FPSI (File total payable inc discount) -->
+				<SettlementTotalInclVAT RecordPos="INVTOTALS" LPos="6"/>
+			</BatchHeader>
+			<BatchDocuments>
+				<BatchDocument>
+					<Invoice>
+						<TradeSimpleHeader>
+							<SendersCodeForRecipient RecordPos="CUSTOMER" LPos="2"/>
+							<SendersBranchReference RecordPos="MAGINUSINV" LPos="2"/>
+						</TradeSimpleHeader>
+						<InvoiceHeader>
+							<!--BatchInformation>
+								<FileGenerationNo RecordPos="FILEDETS" LPos="2"/>
+								<FileVersionNo RecordPos="FILEDETS" LPos="3"/>
+								<FileCreationDate RecordPos="FILEDETS" LPos="4"/-->
+							<!-- TBC -->
+							<!--SendersTransmissionReference RecordPos="I" LPos="7"/>
+								<SendersTransmissionDate RecordPos="I" LPos="8"/-->
+							<!--/BatchInformation-->
+							<Buyer>
+								<BuyersLocationID>
+									<SuppliersCode RecordPos="CUSTOMER" LPos="2"/>
+								</BuyersLocationID>
+								<BuyersName RecordPos="CUSTOMER" LPos="3"/>
+								<BuyersAddress>
+									<AddressLine1 RecordPos="CUSTOMER" LPos="4"/>
+									<AddressLine2 RecordPos="CUSTOMER" LPos="5"/>
+									<AddressLine3 RecordPos="CUSTOMER" LPos="6"/>
+									<AddressLine4 RecordPos="CUSTOMER" LPos="7"/>
+									<PostCode RecordPos="CUSTOMER" LPos="10"/>
+								</BuyersAddress>
+							</Buyer>
+							<Supplier>
+								<!--SuppliersLocationID>
+									<SuppliersCode RecordPos="" LPos=""/>
+								</SuppliersLocationID-->
+								<SuppliersName RecordPos="SUPPLIER" LPos="3"/>
+								<SuppliersAddress>
+									<AddressLine1 RecordPos="SUPPLIER" LPos="4"/>
+									<AddressLine2 RecordPos="SUPPLIER" LPos="5"/>
+									<AddressLine3 RecordPos="SUPPLIER" LPos="6"/>
+									<AddressLine4 RecordPos="SUPPLIER" LPos="7"/>
+									<PostCode RecordPos="SUPPLIER" LPos="9"/>
+								</SuppliersAddress>
+							</Supplier>
+							<ShipTo>
+								<ShipToLocationID>
+									<SuppliersCode RecordPos="CUSTOMER" LPos="2"/>
+								</ShipToLocationID>
+								<ShipToName RecordPos="INVHDR" LPos="3"/>
+								<ShipToAddress>
+									<AddressLine1 RecordPos="INVHDR" LPos="4"/>
+									<AddressLine2 RecordPos="INVHDR" LPos="5"/>
+									<AddressLine3 RecordPos="INVHDR" LPos="6"/>
+									<AddressLine4 RecordPos="INVHDR" LPos="7"/>
+									<PostCode RecordPos="INVHDR" LPos="10"/>
+								</ShipToAddress>
+							</ShipTo>
+							<InvoiceReferences>
+								<InvoiceReference RecordPos="INVHDR" LPos="11"/>
+								<InvoiceDate RecordPos="INVHDR" LPos="12"/>
+								<TaxPointDate RecordPos="INVHDR" LPos="13"/>
+								<VATRegNo RecordPos="SUPPLIER" LPos="12"/>
+							</InvoiceReferences>
+							<Currency RecordPos="SUPPLIER" LPos="11"/>
+						</InvoiceHeader>
+						<InvoiceDetail>
+							<InvoiceLine>
+								<!-- Hijacked to get more line information -->
+								<LineNumber RecordPos="INVDETS" LPos="14"/>
+								<PurchaseOrderReferences>
+									<PurchaseOrderReference RecordPos="INVDETS" LPos="18"/>
+									<!-- TBC -->
+									<!--PurchaseOrderDate RecordPos="D" LPos="3"/-->
+									<TradeAgreement>
+										<ContractReference RecordPos="INVDETS" LPos="15"/>
+									</TradeAgreement>
+								</PurchaseOrderReferences>
+								<DeliveryNoteReferences>
+									<DeliveryNoteReference RecordPos="INVDETS" LPos="19"/>
+									<DeliveryNoteDate RecordPos="INVDETS" LPos="20"/>
+									<!-- TBC -->
+									<!--<DespatchDate RecordPos="" LPos=""/>-->
+								</DeliveryNoteReferences>
+								<ProductID>
+									<SuppliersProductCode RecordPos="INVDETS" LPos="2"/>
+									<BuyersProductCode RecordPos="INVDETS" LPos="3"/>
+								</ProductID>
+								<ProductDescription RecordPos="INVDETS" LPos="9"/>
+								<InvoicedQuantity RecordPos="INVDETS" LPos="4"/>
+								<PackSize RecordPos="INVDETS" LPos="13"/>
+								<UnitValueExclVAT RecordPos="INVDETS" LPos="5"/>
+								<LineValueExclVAT RecordPos="INVDETS" LPos="6"/>
+								<VATCode RecordPos="INVDETS" LPos="7"/>
+								<VATRate RecordPos="INVDETS" LPos="8"/>
+								<!-- TBC -->
+								<Measure>
+									<UnitsInPack RecordPos="INVDETS" LPos="16"/>
+								</Measure>
+							</InvoiceLine>
+						</InvoiceDetail>
+						<InvoiceTrailer>
+							<!-- TBC -->
+							<!--NumberOfLines RecordPos="H" LPos="27"/-->
+							<!--NumberOfItems RecordPos="H" LPos="28"/-->
+							<!--NumberOfDeliveries RecordPos="H" LPos="26"/-->
+							<VATSubTotals>
+								<VATSubTotal>
+									<NumberOfLinesAtRate RecordPos="VATSUBTLR" LPos="4"/>
+									<!--NumberOfItemsAtRate RecordPos="V" LPos="5"/-->
+									<DocumentTotalExclVATAtRate RecordPos="VATSUBTLR" LPos="12"/>
+									<!--SettlementDiscountAtRate RecordPos="VATSUBTLR" LPos="11"/-->
+									<!--SettlementTotalExclVATAtRate RecordPos="VATSUBTLR" LPos="12"/-->
+									<VATAmountAtRate RecordPos="VATSUBTLR" LPos="13"/>
+									<DocumentTotalInclVATAtRate RecordPos="VATSUBTLR" LPos="15"/>
+									<SettlementTotalInclVATAtRate RecordPos="VATSUBTLR" LPos="15"/>
+									<ffsAttribute1 name="VATCode" RecordPos="VATSUBTLR" LPos="2"/>
+									<ffsAttribute1 name="VATRate" RecordPos="VATSUBTLR" LPos="3"/>
+								</VATSubTotal>
+							</VATSubTotals>
+							<DocumentTotalExclVAT RecordPos="INVTLR" LPos="10"/>
+							<!--SettlementDiscount RecordPos="INVTLR" LPos="9"/-->
+							<SettlementTotalExclVAT RecordPos="INVTLR" LPos="10"/>
+							<VATAmount RecordPos="INVTLR" LPos="11"/>
+							<DocumentTotalInclVAT RecordPos="INVTLR" LPos="13"/>
+							<SettlementTotalInclVAT RecordPos="INVTLR" LPos="13"/>
+						</InvoiceTrailer>
+					</Invoice>
+					<ffsAttribute1 name="DocumentTypeNo" RecordPos="MAGINUSINV" LPos="1"/>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>
