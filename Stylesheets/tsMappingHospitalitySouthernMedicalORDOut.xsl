@@ -128,7 +128,10 @@
 		<xsl:text>,</xsl:text>
 		
 		<!-- Reserved -->
-		<xsl:text>,</xsl:text>
+		<xsl:text>,,</xsl:text>
+		
+		<!-- Reserved -->
+		<xsl:text>,,</xsl:text>
 		
 		<!-- Delivery Date -->		
 		<xsl:call-template name="formatDate">
@@ -136,10 +139,7 @@
 		</xsl:call-template>
 		<xsl:text>,</xsl:text>
 		
-		<!-- Reserved -->
-		<xsl:text>,,</xsl:text>
-		
-		<!-- Special delivery instructions/comments 1 -->		
+		<!-- Delivery instructions 1 -->
 		<xsl:text>,</xsl:text>
 			
 		<!-- Delivery instructions 2 -->
