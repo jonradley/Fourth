@@ -5,6 +5,8 @@
 '******************************************************************************************
 ' 21/09/2015	| M Dimant			| FB10508: Created.
 '******************************************************************************************
+' 19/11/2015	| M Dimant			| FB10617: Change to location of Ship To address
+'******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
                               xmlns:fo="http://www.w3.org/1999/XSL/Format"
@@ -92,27 +94,27 @@
 		<xsl:text>,</xsl:text>
 		
 		<!-- Delivery Name -->
-		<xsl:apply-templates select="PurchaseOrderHeader/ShipTo/ShipToName"/>
+		<xsl:apply-templates select="PurchaseOrderHeader/SendersAddress/ShipToName"/>
 		<xsl:text>,</xsl:text>
 		
 		<!-- Delivery Address 1 -->
-		<xsl:apply-templates select="PurchaseOrderHeader/ShipTo/AddressLine1"/>
+		<xsl:apply-templates select="TradeSimpleHeader/SendersAddress/AddressLine1"/>
 		<xsl:text>,</xsl:text>
 		
 		<!-- Delivery Address 2 -->
-		<xsl:apply-templates select="PurchaseOrderHeader/ShipTo/AddressLine2"/>
+		<xsl:apply-templates select="TradeSimpleHeader/SendersAddress/AddressLine2"/>
 		<xsl:text>,</xsl:text>
 		
 		<!-- Delivery Address 3 -->
-		<xsl:apply-templates select="PurchaseOrderHeader/ShipTo/AddressLine3"/>
+		<xsl:apply-templates select="TradeSimpleHeader/SendersAddress/AddressLine3"/>
 		<xsl:text>,</xsl:text>
 		
 		<!-- Delivery Address 4 -->
-		<xsl:apply-templates select="PurchaseOrderHeader/ShipTo/AddressLine4"/>
+		<xsl:apply-templates select="TradeSimpleHeader/SendersAddress/AddressLine4"/>
 		<xsl:text>,</xsl:text>
 		
 		<!-- Delivery Post Code -->
-		<xsl:apply-templates select="PurchaseOrderHeader/ShipTo/PostCode"/>
+		<xsl:apply-templates select="TradeSimpleHeader/SendersAddress/PostCode"/>
 		<xsl:text>,</xsl:text>
 		
 		<!-- Customer Order No -->
@@ -126,7 +128,7 @@
 		<xsl:text>,</xsl:text>
 		
 		<!-- Reserved -->
-		<xsl:text>,</xsl:text>
+		<xsl:text>,,,,</xsl:text>		
 		
 		<!-- Delivery Date -->		
 		<xsl:call-template name="formatDate">
@@ -134,19 +136,13 @@
 		</xsl:call-template>
 		<xsl:text>,</xsl:text>
 		
-		<!-- Reserved -->
-		<xsl:text>,,</xsl:text>
-		
-		<!-- Special delivery instructions/comments 1 -->		
+		<!-- Delivery instructions 1 -->
 		<xsl:text>,</xsl:text>
 			
 		<!-- Delivery instructions 2 -->
 		<xsl:text>,</xsl:text>
 		
 		<!-- Delivery instructions 3 -->
-		<xsl:text>,</xsl:text>
-		
-		<!-- Delivery instructions 4 -->
 		<xsl:text>,</xsl:text>
 		
 		<!-- Delivery instructions 5 -->
