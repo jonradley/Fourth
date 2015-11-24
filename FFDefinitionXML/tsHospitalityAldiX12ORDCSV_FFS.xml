@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--******************************************************************
+Fairfax Procurement Wizards Email attachment to xml mapper
+**********************************************************************
+Name		| Date       | Change
+**********************************************************************
+J Miguel	| 16/09/2015 | Created.
+*******************************************************************-->
+<ffsFlatFileSchema>
+    <ffsSettings>
+        <ffsRecordPositionType>noschema</ffsRecordPositionType>
+	<ffsEscapeChars>
+		<ffsEscapeChar>
+			<ffsNative>chr(13)</ffsNative>
+			<ffsTradesimple/>
+			<ffsLiteral/>
+		</ffsEscapeChar>
+		<ffsEscapeChar>
+			<ffsNative>chr(10)</ffsNative>
+			<ffsTradesimple/>
+			<ffsLiteral/>
+		</ffsEscapeChar>
+	</ffsEscapeChars>
+    </ffsSettings>
+    <ffsRoot>
+        <L1>
+            <Delim>!</Delim>
+            <L2>
+                <Delim>*</Delim>
+            </L2>
+        </L1>
+    </ffsRoot>
+</ffsFlatFileSchema>
