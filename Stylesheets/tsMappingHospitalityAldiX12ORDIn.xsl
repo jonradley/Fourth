@@ -1,18 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--======================================================================================
- Overview
-ANSI X12 850 V5 - inbound order mapper  
-© Fourth Hospitality Ltd, 2015.
-==========================================================================================
- Module History
-==========================================================================================
- Version			| 
-==========================================================================================
- Date				| Name 				|	Description of modification
-==========================================================================================
- 10/12/2012	| Jose Miguel	|	FB10134 Created
-==========================================================================================
--->
+<!--****************************************************************************************
+ANSI X12 850 V5 - inbound order mapper stylesheet
+*******************************************************************************************
+Name		| Date    		  | Change
+*******************************************************************************************
+J Miguel	| 24/11/2015 | FB10620 - ALDI - custom X12 mappers for Orders In
+*******************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="xml" encoding="UTF-8" indent="yes" omit-xml-declaration="yes"/>
 
@@ -161,10 +154,16 @@ ANSI X12 850 V5 - inbound order mapper
 			<LineNumber><xsl:value-of select="$LineNumber"/></LineNumber>
 			<ProductID>
 				<GTIN>5555555555555</GTIN>
-				<BuyersProductCode><xsl:value-of select="$ProductCode"/></BuyersProductCode>
+				<BuyersProductCode>
+					<xsl:value-of select="$ProductCode"/>
+				</BuyersProductCode>
 			</ProductID>
 			<ProductDescription><xsl:value-of select="$ProductDescription"/></ProductDescription>
-			<OrderedQuantity><xsl:attribute name="UnitOfMeasure"><xsl:value-of select="$UnitOfMeasure"/></xsl:attribute><xsl:value-of select="$OrderedQuantity"/></OrderedQuantity>
+			<OrderedQuantity>
+				<xsl:attribute name="UnitOfMeasure">
+					<xsl:value-of select="$UnitOfMeasure"/>
+				</xsl:attribute>
+				<xsl:value-of select="$OrderedQuantity"/></OrderedQuantity>
 			<PackSize><xsl:value-of select="$PackSize"/></PackSize>
 		</PurchaseOrderLine>
 	</xsl:template>
