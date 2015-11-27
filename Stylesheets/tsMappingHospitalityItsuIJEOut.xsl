@@ -8,10 +8,12 @@
 ==========================================================================================
  Version
 ==========================================================================================
- Date      		| Name 					| Description of modification
+ Date      	| Name 			| Description of modification
 ==========================================================================================
- 03/09/2014	| Jose Miguel			| FB8557 ITSU (r9) - Invoice and Credit Journal Entries Batch
-=======================================================================================-->
+ 03/09/2014	| Jose Miguel		| FB8557 ITSU (r9) - Invoice and Credit Journal Entries Batch
+==========================================================================================
+ 25/11/2015	| Jose Miguel		| FB10628 ITSU - Amend IJE report mapper to shorten column G
+==========================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	<xsl:output method="text" encoding="UTF-8"/>
 	<xsl:variable name="RecordSeperator" select="'&#13;&#10;'"/>
@@ -47,8 +49,8 @@
 			<!-- Branch Code -->
 			<xsl:value-of select="../../InvoiceCreditJournalEntriesHeader/BuyersUnitCode"/>
 			<xsl:value-of select="$FieldSeperator"/>
-			<!-- Description -->
-			<xsl:value-of select="concat(../../InvoiceCreditJournalEntriesHeader/CustomFinancialPeriod,'/', ../../InvoiceCreditJournalEntriesHeader/SupplierName ,'/',concat(substring(../../InvoiceCreditJournalEntriesHeader/DeliveryDate,9,2),substring(../../InvoiceCreditJournalEntriesHeader/DeliveryDate,6,2)))"/>
+			<!-- Description (Financial Period / Supplier Code / Delivery Date [DDMM]-->
+			<xsl:value-of select="concat(../../InvoiceCreditJournalEntriesHeader/CustomFinancialPeriod,'/', ../../InvoiceCreditJournalEntriesHeader/BuyersCodeForSupplier ,'/',concat(substring(../../InvoiceCreditJournalEntriesHeader/DeliveryDate,9,2),substring(../../InvoiceCreditJournalEntriesHeader/DeliveryDate,6,2)))"/>
 			<xsl:value-of select="$FieldSeperator"/>
 			<!--G/L Account-->
 			<xsl:value-of select="CategoryNominal"/>
