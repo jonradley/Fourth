@@ -5,6 +5,8 @@ ANSI X12 810 V5 - Outbound Invoice/Credit Note stylesheet
 Name		| Date    		  | Change
 *******************************************************************************************
 J Miguel	| 24/11/2015 | FB10620 - ALDI - custom X12 mappers for outbound Invoice/credit note
+*******************************************************************************************
+J Miguel	| 02/12/2015 | FB10632 - Add latest changes to the mappers for Orders and Invoices/Credits
 *******************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 	xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript"
