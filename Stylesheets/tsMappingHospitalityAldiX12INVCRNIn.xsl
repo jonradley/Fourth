@@ -149,7 +149,7 @@ J Miguel	| 24/11/2015 | FB10620 - ALDI - custom X12 mappers for outbound Invoice
 		<xsl:text>SE</xsl:text>
 		<xsl:value-of select="$sFieldSep"/>
 		<!-- 100 Currency Code -->
-		<xsl:text>USD</xsl:text>
+		<xsl:value-of select="InvoiceHeader/Currency"/>
 		<xsl:value-of select="js:addSegment($sRecordSep)"/>
 		
 		<!-- REF 2 segments - deleted as they are conditional -->
@@ -371,18 +371,6 @@ J Miguel	| 24/11/2015 | FB10620 - ALDI - custom X12 mappers for outbound Invoice
 			<xsl:value-of select="PurchaseOrderReferences/PurchaseOrderReference"/>
 			<xsl:value-of select="js:addSegment($sRecordSep)"/>
 
-			<xsl:if test="DeliveryNoteReferences/DeliveryNoteReference">
-				<!-- REF - Reference Information - Delivery Order Number -->
-				<xsl:text>REF</xsl:text>
-				<xsl:value-of select="$sFieldSep"/>
-				<!-- 128 Reference Identification Qualifier -->
-				<xsl:text>DO</xsl:text>
-				<xsl:value-of select="$sFieldSep"/>
-				<!-- 128 Reference Identification Qualifier -->
-				<xsl:value-of select="DeliveryNoteReferences/DeliveryNoteReference"/>
-				<xsl:value-of select="js:addSegment($sRecordSep)"/>
-			</xsl:if>
-			
 			<!-- DTM - Date/Time Reference - Purchase Order Date -->
 			<xsl:text>DTM</xsl:text>
 			<xsl:value-of select="$sFieldSep"/>
@@ -392,19 +380,6 @@ J Miguel	| 24/11/2015 | FB10620 - ALDI - custom X12 mappers for outbound Invoice
 			<!-- 373 Date -->
 			<xsl:value-of select="translate(PurchaseOrderReferences/PurchaseOrderDate, '-', '')"/>
 			<xsl:value-of select="js:addSegment($sRecordSep)"/>
-
-			<!-- DTM - Date/Time Reference - Date of Delivery Order -->
-			<xsl:if test="DeliveryNoteReferences/DeliveryNoteDate">
-				<xsl:text>DTM</xsl:text>
-				<xsl:value-of select="$sFieldSep"/>
-				<!-- 374 Date/Time Qualifier -->
-				<xsl:text>375</xsl:text>
-				<xsl:value-of select="$sFieldSep"/>
-				<!-- 373 Date -->
-				<xsl:value-of select="translate(DeliveryNoteReferences/DeliveryNoteDate, '-', '')"/>
-				<xsl:value-of select="js:addSegment($sRecordSep)"/>			
-			</xsl:if>
-			
 			<!-- SAC - Service, Promotion, Allowance, or Charge Information - NOT ADDED -->
 
 		</xsl:for-each>
@@ -415,53 +390,6 @@ J Miguel	| 24/11/2015 | FB10620 - ALDI - custom X12 mappers for outbound Invoice
 		<!-- 610 Amount  TDS01 -->
 		<xsl:value-of select="(InvoiceTrailer | CreditNoteTrailer)/DocumentTotalInclVAT"/>
 		<xsl:value-of select="js:addSegment($sRecordSep)"/>
-
-		<xsl:for-each select="(InvoiceTrailer | CreditNoteTrailer)/VATSubTotals/VATSubTotal">
-			<!-- TXI - Tax Information -->
-			<xsl:text>TXI</xsl:text>
-			<xsl:value-of select="$sFieldSep"/>
-			<!-- 963 Tax Type Code -->
-			<xsl:text>VA</xsl:text>
-			<xsl:value-of select="$sFieldSep"/>			
-			<!-- 610 Amount  TDS01 -->
-			<xsl:value-of select="@VATRate"/>
-			<xsl:value-of select="$sFieldSep"/>
-			<!-- 782 Monetary Amount -->			
-			<xsl:value-of select="format-number(number(VATAmountAtRate), '#.00')"/>
-			<xsl:value-of select="$sFieldSep"/>			
-			<!-- 955 Tax Jurisdiction Code Qualifier - NOT USED -->
-			<xsl:value-of select="$sFieldSep"/>
-			<!-- 956 Tax Jurisdiction Code - NOT USED -->
-			<xsl:value-of select="$sFieldSep"/>
-			<!-- 441 Tax Exempt Code-->	
-			<xsl:choose>
-				<xsl:when test="VATCode='Z'"><xsl:text>C</xsl:text></xsl:when>
-				<xsl:when test="VATCode='E'"><xsl:text>0</xsl:text></xsl:when>
-				<xsl:when test="VATCode='S'"><xsl:text>2</xsl:text></xsl:when>
-				<xsl:otherwise><xsl:text>2</xsl:text></xsl:otherwise>
-			</xsl:choose>
-			<xsl:value-of select="js:addSegment($sRecordSep)"/>
-			
-			<!-- AMT - Monetary Amount Information - Total amount at this rate -->
-			<xsl:text>AMT</xsl:text>
-			<xsl:value-of select="$sFieldSep"/>
-			<!-- 522 Amount Qualifier Code -->
-			<xsl:text>1</xsl:text>
-			<xsl:value-of select="$sFieldSep"/>
-			<!-- 782 Monetary Amount -->
-			<xsl:value-of select="format-number(number(DocumentTotalExclVATAtRate), '0.00')"/>
-			<xsl:value-of select="js:addSegment($sRecordSep)"/>
-			
-			<!-- AMT - Monetary Amount Information - Total tax amount at this rate -->
-			<xsl:text>AMT</xsl:text>
-			<xsl:value-of select="$sFieldSep"/>
-			<!-- 522 Amount Qualifier Code -->
-			<xsl:text>T</xsl:text>
-			<xsl:value-of select="$sFieldSep"/>
-			<!-- 782 Monetary Amount -->
-			<xsl:value-of select="format-number(number(DocumentDiscountAtRate), '0.00')"/>
-			<xsl:value-of select="js:addSegment($sRecordSep)"/>	
-		</xsl:for-each>
 		
 		<!-- CTT - Transaction Totals - Total number of lines in the invoice -->
 		<xsl:text>CTT</xsl:text>
