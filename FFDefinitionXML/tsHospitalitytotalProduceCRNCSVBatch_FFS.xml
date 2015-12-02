@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--======================================================================================
+ Overview
+==========================================================================================
+ 15/08/2014	| J Miguel		|	Created - FB7927 - Total Produce - Integration for Invoice / Credit Notes Batches
+ 02/09/2014	| J Miguel		|	Created - FB8354 - Total Produce - Change in the mappers adding H and D column
+========================================================================================-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>chr(13)chr(10)</ffsRecordSeparator>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>,</ffsFieldSeparator>
+		</ffsFieldSeparators>
+		<ffsSplitBatchRecord RecordPos="H"/>
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<BatchDocuments>
+				<BatchDocument>
+					<CreditNote>
+					<TradeSimpleHeader>
+						<!-- Acc Code: Our account code for the purchaser. -->
+						<SendersCodeForRecipient RecordPos="H" LPos="5"/>
+						<!-- Purchaser Ledger Account -->
+						<SendersBranchReference RecordPos="H" LPos="6"/>
+					</TradeSimpleHeader>
+					<CreditNoteHeader>
+						<InvoiceReferences>
+							<!-- DocNo: This represents our invoice number for the order -->
+							<InvoiceReference RecordPos="H" LPos="4"/>
+							<!-- Date: Your invoice date should be in the following format: yyyymmdd -->
+							<InvoiceDate RecordPos="H" LPos="3"/>
+						</InvoiceReferences>
+						<CreditNoteReferences>
+							<!-- DocNo: This represents our invoice number for the order -->
+							<CreditNoteReference RecordPos="H" LPos="2"/>
+							<!-- Date: Your invoice date should be in the following format: yyyymmdd -->
+							<CreditNoteDate RecordPos="H" LPos="3"/>
+						</CreditNoteReferences>
+						<!-- Purchase order reference is the header so needs relocation -->
+						<Currency RecordPos="H" LPos="4"/>						
+					</CreditNoteHeader>
+						<CreditNoteDetail>
+							<CreditNoteLine>
+								<ProductID>
+									<!-- Prod Code: This represents your SKU code for the product. -->
+									<SuppliersProductCode RecordPos="D" LPos="2"/>
+								</ProductID>
+								<!-- Qty: [Decimal Number] The quantity ordered for the product. -->
+								<OrderedQuantity RecordPos="D" LPos="3"/>
+								<ConfirmedQuantity RecordPos="D" LPos="3"/>
+								<DeliveredQuantity RecordPos="D" LPos="3"/>
+								<InvoicedQuantity RecordPos="D" LPos="3"/>
+								<!-- Price: [Decimal Number] The products unit price. -->
+								<UnitValueExclVAT RecordPos="D" LPos="4"/>
+								<!-- Value: [Decimal Number] The net price for the quantity ordered. -->
+								<LineValueExclVAT RecordPos="D" LPos="5"/>
+								<!-- VAT: [Decimal Number] The total tax for the quantity ordered. -->
+								<VATRate RecordPos="D" LPos="6"/>
+							</CreditNoteLine>
+						</CreditNoteDetail>
+						<CreditNoteTrailer>
+							<!-- Invoice Value: [Decimal Number] The invoices total net value.-->
+							<DocumentTotalExclVAT RecordPos="D" LPos="8"/>
+							<!-- Inv VAT: [Decimal Number] The invoices total tax value.-->
+							<VATAmount RecordPos="D" LPos="9"/>
+							<!-- Gross Inv Value: [Decimal Number] The invoices total gross value.-->
+							<DocumentTotalInclVAT RecordPos="D" LPos="10"/>
+						</CreditNoteTrailer>
+					</CreditNote>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>
