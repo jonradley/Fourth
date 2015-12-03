@@ -14,6 +14,8 @@ Pizza Express UK mapper for Restaurants Receipts Export format.
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"  xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript" exclude-result-prefixes="#default xsl msxsl js">
 	<xsl:output method="text" encoding="UTF-8"/>
+	<xsl:variable name="TotalLines" select="count(//ReceiptLine) + count(//ReturnLine)"/>
+	<xsl:variable name="TotalBatchValue" select="100 * sum(//LineValueExclVAT)"/>
 	
 	<xsl:template match="/">
 		<xsl:apply-templates select="Batch/BatchDocuments/BatchDocument"/>
@@ -40,23 +42,25 @@ Pizza Express UK mapper for Restaurants Receipts Export format.
 	</xsl:template>
 
 	<!-- Process receipt lines PENDING return lines -->
-	<xsl:template match="ReceiptLine">
+	<xsl:template match="ReceiptLine | ReturnLine">
+		<xsl:variable name="Header" select="../../ReceiptHeader | ../../ReturnHeader"/>
+
 		<!--Q455RICU - 55RP Batch No - (Numeric 10) ¦ Field added by a processor hopefully  -->
-		<xsl:value-of select="/Batch/BatchHeader/FileGenerationNo"/>
+		<xsl:value-of select="/Batch/BatchHeader/FileGenerationNumber"/>
 		<xsl:text>,</xsl:text>
 		<!--Q455RPBV - 55RPBatchValue - (Numeric 10) -->
-		<xsl:value-of select="100 * sum(//LineValueExclVAT)"/>
+		<xsl:value-of select="$TotalBatchValue"/>
 		<xsl:text>,</xsl:text>
 		<!--Q455RPBRC - 55RPBatchRowCount - (Numeric 10) -->
-		<xsl:value-of select="count(//ReceiptLine)"/>
+		<xsl:value-of select="$TotalLines"/>
 		<xsl:text>,</xsl:text>
 		<!--Q4KCOO - CompanyKeyOrderNo - (String 5)  - PENDING Mapping pending -->
-		<xsl:value-of select="../../ReceiptHeader/BuyersSiteCode"/>
+		<xsl:value-of select="$Header/BuyersSiteCode"/>
 		<xsl:text>,</xsl:text>
 		<!--Q455RPDOC - 55RP Document No - (String 25) -->
 		<xsl:choose>
-			<xsl:when test="../../ReceiptHeader/PurchaseOrderReference"><xsl:value-of select="../../ReceiptHeader/DeliveryNoteReference"/></xsl:when>
-			<xsl:otherwise></xsl:otherwise>
+			<xsl:when test="$Header/PurchaseOrderReference"><xsl:value-of select="$Header/PurchaseOrderReference"/></xsl:when>
+			<xsl:otherwise><xsl:value-of select="$Header/DeliveryNoteReference"/></xsl:otherwise>
 		</xsl:choose>
 		<xsl:text>,</xsl:text>
 		<!--Q4DCTO - Order Type - (String 2) -->
@@ -66,25 +70,25 @@ Pizza Express UK mapper for Restaurants Receipts Export format.
 		<xsl:value-of select="concat(LineNumber, '000')"/>
 		<xsl:text>,</xsl:text>
 		<!--Q4AN8 - Address Number - (String 8) -->
-		<xsl:value-of select="format-number(number(../../ReceiptHeader/BuyersSiteCode), '#')"/>
+		<xsl:value-of select="$Header/BuyersSiteCode"/>
 		<xsl:text>,</xsl:text>
 		<!--Q455RPRN - 55RP Restaurant Name - (String 50) -->
-		<xsl:value-of select="../../ReceiptHeader/BuyersSiteName"/>
+		<xsl:value-of select="$Header/BuyersSiteName"/>
 		<xsl:text>,</xsl:text>
 		<!--Q4DRQJ - Date - Requested - (Date 6) -->
-		<xsl:value-of select="js:convertToJulian(string(../../ReceiptHeader/PurchaseOrderDate))"/>
+		<xsl:value-of select="js:convertToJulian(string($Header/PurchaseOrderDate))"/>
 		<xsl:text>,</xsl:text>
 		<!--Q4TRDJ - Date - Order/Transaction - (Date 6) -->
-		<xsl:value-of select="js:convertToJulian(string(../../ReceiptHeader/PurchaseOrderDate))"/>
+		<xsl:value-of select="js:convertToJulian(string($Header/PurchaseOrderDate))"/>
 		<xsl:text>,</xsl:text>
 		<!--Q4DGL - Date - For G/L (and Voucher) - (Date 6) -->
-		<xsl:value-of select="js:convertToJulian(string(../../ReceiptHeader/DeliveryNoteDate))"/>
+		<xsl:value-of select="js:convertToJulian(string($Header/DeliveryNoteDate))"/>
 		<xsl:text>,</xsl:text>
 		<!--Q4AN8V - Address Number - Supplier - (Numeric 8) -->
-		<xsl:value-of select="../../ReceiptHeader/SupplierNominalCode"/>
+		<xsl:value-of select="$Header/BuyersCodeForSupplier"/>
 		<xsl:text>,</xsl:text>
 		<!--Q455RPSN - 55RP Supplier Name - (String 100) -->
-		<xsl:value-of select="../../ReceiptHeader/BuyersSiteName"/>
+		<xsl:value-of select="$Header/BuyersSiteName"/>
 		<xsl:text>,</xsl:text>
 		<!--Q4LITM - 2nd Item Number - (String 25) -->
 		<xsl:value-of select="SuppliersProductCode"/>
@@ -107,10 +111,10 @@ Pizza Express UK mapper for Restaurants Receipts Export format.
 		<!--Q4CRRD - Currency Conversion Rate - Divisor - (Numeric 15[7])  - BLANK -->
 		<xsl:text>,</xsl:text>
 		<!--Q4GLC - G/L Offset - (String 8) -->
-		<xsl:value-of select="../../ReceiptHeader/CategoryNominal"/>
+		<xsl:value-of select="$Header/CategoryNominal"/>
 		<xsl:text>,</xsl:text>
 		<!--Q455RPSC - 55RP Stock Category Name - (String 50) -->
-		<xsl:value-of select="../../ReceiptHeader/CategoryName"/>
+		<xsl:value-of select="$Header/CategoryName"/>
 		<xsl:text>,</xsl:text>
 		<!--Q4PRFL - Flag - Processed - (Character 1) - BLANK -->
 		<xsl:text>,</xsl:text>
@@ -142,22 +146,22 @@ Pizza Express UK mapper for Restaurants Receipts Export format.
 		<xsl:value-of select="translate(ExportRunTime, '-', '')"/>
 		<xsl:text>,</xsl:text>
 		<!--Q455RPDELN - 55RP Delivery Note No - (String 25) -->
-		<xsl:value-of select="../../ReceiptHeader/DeliveryNoteReference"/>
+		<xsl:value-of select="$Header/DeliveryNoteReference"/>
 		<xsl:text>,</xsl:text>
 		<!--Q455RPSP - 55RP Stock Period ID - (Numeric 10) -->
-		<xsl:value-of select="concat(../../ReceiptHeader/StockFinancialYear, format-number(../../ReceiptHeader/StockFinancialPeriod, '00'))"/>
+		<xsl:value-of select="concat($Header/StockFinancialYear, format-number($Header/StockFinancialPeriod, '00'))"/>
 		<xsl:text>,</xsl:text>
 		<!--Q455RPSM - 55RP Stock Movement ID - (Numeric 10) -->
-		<xsl:value-of select="../../ReceiptHeader/DocumentID"/>
+		<xsl:value-of select="$Header/DocumentID"/>
 		<xsl:text>,</xsl:text>
 		<!--CRCD - Currency Code - From - (String 3) -->
-		<xsl:value-of select="../../ReceiptHeader/CurrencyCode"/>
+		<xsl:value-of select="$Header/CurrencyCode"/>
 		<xsl:text>,</xsl:text>
 		<!--CommentsDetail - Comments - Detail - (String 25) -->
 		<xsl:value-of select="normalize-space(translate(Narrative, ',', ''))"/>
 		<xsl:text>,</xsl:text>
 		<!--CommentsHeader - Comments - Header - (String 26) -->
-		<xsl:value-of select="normalize-space(translate(../../ReceiptHeader/Narrative, ',', ''))"/>
+		<xsl:value-of select="normalize-space(translate($Header/Narrative, ',', ''))"/>
 		<xsl:text>,</xsl:text>
 		<!--SystemTimeStamp - System Time Stamp - () -->
 		<xsl:value-of select="concat(translate(/Batch/BatchHeader/ExportRunDate, '-',''), translate( /Batch/BatchHeader/ExportRunTime, ':', ''))"/>
