@@ -18,12 +18,12 @@ Pizza Express UK mapper for Restaurants Receipts Export format.
 	<xsl:variable name="TotalBatchValue" select="100 * sum(//LineValueExclVAT)"/>
 	
 	<xsl:template match="/">
+		<xsl:text>Q455RICU, Q455RPBV, Q455RPBRC, Q4KCOO, Q455RPDOC, Q4DCTO, Q4LNID, Q4AN8, Q455RPRN, Q4TRQJ, Q4TRDJ, Q4DGL, Q4AN8V, Q455RPSN, Q4LITM, DSC1, Q4QTY, Q4UOM, Q4PRRC, Q4UORG, Q4CRRD, Q4GLC, Q455RPSC, Q4PRFL, Q4TX, Q4DL01, Q4TORG, Q4USER, Q4PID, Q4JOBN, Q4UPMJ, Q4UPMT, Q455RPDELN, Q455RPSP, Q455RPSM, CRCD, CommentsDetail, CommentsHeader, SystemTimeStamp</xsl:text>
+		<xsl:text>&#13;&#10;</xsl:text>
 		<xsl:apply-templates select="Batch/BatchDocuments/BatchDocument"/>
 	</xsl:template>
 	
 	<xsl:template match="BatchDocument">
-		<xsl:text>Q455RICU, Q455RPBV, Q455RPBRC, Q4KCOO, Q455RPDOC, Q4DCTO, Q4LNID, Q4AN8, Q455RPRN, Q4TRQJ, Q4TRDJ, Q4DGL, Q4AN8V, Q455RPSN, Q4LITM, DSC1, Q4QTY, Q4UOM, Q4PRRC, Q4UORG, Q4CRRD, Q4GLC, Q455RPSC, Q4PRFL, Q4TX, Q4DL01, Q4TORG, Q4USER, Q4PID, Q4JOBN, Q4UPMJ, Q4UPMT, Q455RPDELN, Q455RPSP, Q455RPSM, CRCD, CommentsDetail, CommentsHeader, SystemTimeStamp</xsl:text>
-		<xsl:text>&#13;&#10;</xsl:text>
 		<xsl:apply-templates select="Receipt | Return"/>
 	</xsl:template>
 
