@@ -25,6 +25,8 @@
 ******************************************************************************************
  11/11/2015      | J Miguel		  | 10595 - New set of mapping ids
 ******************************************************************************************
+ 10/12/2015      | J Miguel		  | 10666 - Add PORef and change in translation method
+******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl script">
 	<xsl:output method="text" encoding="UTF-8"/>
@@ -67,14 +69,14 @@
 		<xsl:value-of select="$separator"/>
 		
 		<!-- Supplier # -->
-		<xsl:value-of select="script:getOracleVendorCodeFromJDEValue(string(InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode | CreditNoteHeader/Supplier/SuppliersLocationID/BuyersCode | DebitNoteHeader/Supplier/SuppliersLocationID/BuyersCode))"/>
+		<xsl:value-of select="script:getOracleVendorCodeFromJDEValue(string(TradeSimpleHeader/RecipientsCodeForSender))"/>
 		<xsl:value-of select="$separator"/>
 		
 		<!-- Supplier Tax # BLANK -->
 		<xsl:value-of select="$separator"/>
 		
 		<!-- Supplier Site -->
-		<xsl:value-of select="script:getOraclePLAccountCodeFromJDEValue(string(InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode | CreditNoteHeader/Supplier/SuppliersLocationID/BuyersCode | DebitNoteHeader/Supplier/SuppliersLocationID/BuyersCode))"/>
+		<xsl:value-of select="script:getOraclePLAccountCodeFromJDEValue(string(TradeSimpleHeader/RecipientsCodeForSender))"/>
 		<xsl:value-of select="$separator"/>
 		
 		<!-- Invoice Amt -->
@@ -102,9 +104,11 @@
 		<xsl:value-of select="$separator"/>
 		<!-- Description BLANK -->
 		<xsl:value-of select="$separator"/>
-		<!-- Attribute Category - BLANK -->
+		<!-- Attribute Category - XARAUK_INV_HEADER -->
+		<xsl:text>XARAUK_INV_HEADER</xsl:text>
 		<xsl:value-of select="$separator"/>
-		<!-- Old Supplier Ref - BLANK-->
+		<!-- Old Supplier Ref - Purchase Reference -->
+		<xsl:value-of select="InvoiceDetail/InvoiceLine/PurchaseOrderReferences/PurchaseOrderReference[1] | CreditNoteDetail/CreditNoteLine/PurchaseOrderReferences/PurchaseOrderReference[1] | DebitNoteDetail/DebitNoteLine/PurchaseOrderReferences/PurchaseOrderReference[1]"/>
 		<xsl:value-of select="$separator"/>
 		<!-- Attribute2 BLANK -->
 		<xsl:value-of select="$separator"/>
