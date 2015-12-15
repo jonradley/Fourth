@@ -37,6 +37,8 @@
 ******************************************************************************************
  10/07/2015 | Jose Miguel | FB10304 - HOTUSA - add translations for reports
 ******************************************************************************************
+ 14/12/2015 | Graham Neicho | FB10676 - Adding further translations for Report 161
+******************************************************************************************
 -->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -94,7 +96,10 @@
                     <xsl:when test="$ReportID = 129 and position() = 6">
                       <xsl:call-template name="SelectString"><xsl:with-param name="InputString" select="script:msFormatForCSVWithQualifiers(.)"/><xsl:with-param name="ReportID" select="$ReportID"/></xsl:call-template><xsl:value-of select="$CommaCharacter"></xsl:value-of>
                     </xsl:when>
-                      <xsl:when test="$ReportID = 145 and position() = 9">
+                    <xsl:when test="$ReportID = 145 and position() = 9">
+                      <xsl:call-template name="SelectString"><xsl:with-param name="InputString" select="script:msFormatForCSV(.)"/><xsl:with-param name="ReportID" select="$ReportID"/></xsl:call-template><xsl:value-of select="$CommaCharacter"></xsl:value-of>
+                    </xsl:when>
+                    <xsl:when test="$ReportID = 161 and position() = 12">
                       <xsl:call-template name="SelectString"><xsl:with-param name="InputString" select="script:msFormatForCSV(.)"/><xsl:with-param name="ReportID" select="$ReportID"/></xsl:call-template><xsl:value-of select="$CommaCharacter"></xsl:value-of>
                     </xsl:when>
                     <xsl:otherwise>
@@ -591,7 +596,13 @@
           <xsl:when test="$InputString='VAT'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="13"/></xsl:call-template></xsl:when>
           <xsl:when test="$InputString='Total incl VAT'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="14"/></xsl:call-template></xsl:when>
           <xsl:when test="$InputString='Reason'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="15"/></xsl:call-template></xsl:when>
-		  <xsl:when test="$InputString='Not Provided'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="16"/></xsl:call-template></xsl:when>
+          <xsl:when test="$InputString='Not Provided'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="16"/></xsl:call-template></xsl:when>
+          <xsl:when test="$InputString='All'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="17"/></xsl:call-template></xsl:when>
+          <xsl:when test="$InputString='Delivered item missing from invoice'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="18"/></xsl:call-template></xsl:when>
+          <xsl:when test="$InputString='Invoice price less than entered price at delivery'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="19"/></xsl:call-template></xsl:when>
+          <xsl:when test="$InputString='Invoice quantity less than accepted quantity at delivery'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="20"/></xsl:call-template></xsl:when>
+          <xsl:when test="$InputString='Invoice quantity more than accepted quantity at delivery'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="21"/></xsl:call-template></xsl:when>
+          <xsl:when test="$InputString='Rejected on delivery or not receipted'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="22"/></xsl:call-template></xsl:when>
           <xsl:otherwise><xsl:value-of select="$InputString" /></xsl:otherwise>
         </xsl:choose>
       </xsl:when>
