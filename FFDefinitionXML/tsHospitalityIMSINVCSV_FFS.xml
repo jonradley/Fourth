@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/******************************************************************************************
+' Date          | Name        	 | Description of modification
+'******************************************************************************************
+10/07/2013  | Sahir Hussain  | FB 6744: Created for IMS of Smithfield (EDI) Member
+'******************************************************************************************
+-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>chr(10)</ffsRecordSeparator>
+		<ffsEscapeChars>
+			<ffsEscapeChar>
+				<ffsNative>chr(13)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+		</ffsEscapeChars>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>,</ffsFieldSeparator>
+		</ffsFieldSeparators>
+		<ffsPadding/>
+		<ffsSplitBatchRecord RecordPos="H"/>
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<BatchDocuments>
+				<BatchDocument>
+					<Invoice>
+						<TradeSimpleHeader>
+							<SendersCodeForRecipient RecordPos="H" LPos="2"/>
+						</TradeSimpleHeader>
+						<InvoiceHeader>
+							<Buyer>
+								<BuyersLocationID>
+									<SuppliersCode RecordPos="H" LPos="3"/>
+								</BuyersLocationID>
+								<BuyersName RecordPos="H" LPos="15"/>
+							</Buyer>
+							<Supplier>
+								<SuppliersName RecordPos="H" LPos="3"/>
+							</Supplier>
+							<ShipTo>
+								<ShipToLocationID>
+									<SuppliersCode RecordPos="H" LPos="2"/>
+								</ShipToLocationID>
+								<ShipToName RecordPos="H" LPos="14"/>
+							</ShipTo>
+							<InvoiceReferences>
+								<InvoiceReference RecordPos="H" LPos="4"/>
+								<InvoiceDate RecordPos="H" LPos="5"/>
+								<TaxPointDate RecordPos="H" LPos="5"/>
+							</InvoiceReferences>
+							<SequenceNumber RecordPos="H" LPos="9"/>
+							<DocumentStatus RecordPos="H" LPos="10"/>/>
+						</InvoiceHeader>
+						<InvoiceDetail>
+							<InvoiceLine>
+								<PurchaseOrderReferences>
+									<PurchaseOrderReference RecordPos="H" LPos="7"/>
+									<PurchaseOrderDate RecordPos="H" LPos="8"/>
+								</PurchaseOrderReferences>
+								<ProductID>
+									<SuppliersProductCode RecordPos="D" LPos="2"/>
+								</ProductID>
+								<ProductDescription RecordPos="D" LPos="3"/>
+								<InvoicedQuantity RecordPos="D" LPos="5">
+									<ffsAttribute1 name="UnitOfMeasure" RecordPos="D" LPos="4"/>
+								</InvoicedQuantity>
+								<PackSize RecordPos="D" LPos="4"/>
+								<UnitValueExclVAT RecordPos="D" LPos="6"/>
+								<LineValueExclVAT RecordPos="D" LPos="11"/>
+							</InvoiceLine>
+						</InvoiceDetail>
+					</Invoice>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>
