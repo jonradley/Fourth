@@ -603,7 +603,7 @@
           <xsl:when test="$InputString='Invoice quantity less than accepted quantity at delivery'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="20"/></xsl:call-template></xsl:when>
           <xsl:when test="$InputString='Invoice quantity more than accepted quantity at delivery'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="21"/></xsl:call-template></xsl:when>
           <xsl:when test="$InputString='Rejected on delivery or not receipted'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="22"/></xsl:call-template></xsl:when>
-          <xsl:when test="$InputString='Invoice price more than entered price at delivery'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="23"/></xsl:call-template></xsl:when>
+          <xsl:when test="$InputString='Invoice price more than catalogue price at delivery'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="23"/></xsl:call-template></xsl:when>
           <xsl:otherwise><xsl:value-of select="$InputString" /></xsl:otherwise>
         </xsl:choose>
       </xsl:when>
