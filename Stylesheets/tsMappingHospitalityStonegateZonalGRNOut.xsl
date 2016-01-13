@@ -7,13 +7,14 @@
 '******************************************************************************************
 ' Module History
 '******************************************************************************************
-' Date			| Name				| Description of modification
+' Date					| Name					| Description of modification
 '******************************************************************************************
-' 13/08/2013	| Andrew Barber | 6863 Created [branched from 'tsMappingZonalGoodsReceivedNote.xsl']
-'***************************************************************************************-->
-
+' 13/08/2013	| Andrew Barber 	| 6863 Created [branched from 'tsMappingZonalGoodsReceivedNote.xsl']
+'******************************************************************************************
+' 27/11/2015	| Jose Miguel		| 10631 Amend Confirmation and GRN Mappers
+'******************************************************************************************-->
 <xsl:stylesheet 	version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-<xsl:output method="xml" encoding="ISO-8859-1"/>
+<xsl:output method="xml" encoding="ISO-8859-1" indent="yes"/>
 	<xsl:template match="/">	
 		<DeliveryNote>
 			<xsl:attribute name="SiteCode">
@@ -23,7 +24,14 @@
 				<xsl:value-of select="/GoodsReceivedNote/TradeSimpleHeader/RecipientsBranchReference"/>
 			</xsl:attribute>
 			<xsl:attribute name="Supplier">
-				<xsl:value-of select="/GoodsReceivedNote/TradeSimpleHeader/SendersCodeForRecipient"/>
+				<xsl:choose>
+					<xsl:when test="contains(/GoodsReceivedNote/TradeSimpleHeader/SendersCodeForRecipient, '/')">
+						<xsl:value-of select="substring-before(/GoodsReceivedNote/TradeSimpleHeader/SendersCodeForRecipient, '/')"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="/GoodsReceivedNote/TradeSimpleHeader/SendersCodeForRecipient"/>
+					</xsl:otherwise>
+				</xsl:choose>
 			</xsl:attribute>
 			<xsl:attribute name="OrderNo">
 				<xsl:value-of select="/GoodsReceivedNote/GoodsReceivedNoteHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
