@@ -18,6 +18,8 @@
  13/11/2015 | J Miguel   | FB 10602 - Amend code mapping
 ******************************************************************************************
  01/12/2015 | J Miguel   | FB 10636 - Amend Codes to 4 digits
+******************************************************************************************
+ 03/12/2015 | J Miguel   | FB 10644 Adding Brakes Bar to the supplier translation
 ******************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:user="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl user">
 	<xsl:output method="xml"/>
@@ -247,8 +249,9 @@
 				
 		var mapCustomersSupplierCodeTCGToST =
 		{
+			'BRA020':'S20293538800',
 			'BRA010':'S20293538800',
-			'BRA008':'S20293538800',  
+			'BRA008':'S20293538800',
 			'BRA015':'S20293538800',
 			'MJS001':'S34824145700',
 			'CLA012':'S52470764800',
