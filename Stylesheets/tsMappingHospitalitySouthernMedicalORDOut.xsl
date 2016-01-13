@@ -7,6 +7,8 @@
 '******************************************************************************************
 ' 19/11/2015	| M Dimant			| FB10617: Change to location of Ship To address
 '******************************************************************************************
+' 13/01/2016	| M Dimant			| FB10746 : Added ship to location name
+'******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
                               xmlns:fo="http://www.w3.org/1999/XSL/Format"
@@ -94,7 +96,7 @@
 		<xsl:text>,</xsl:text>
 		
 		<!-- Delivery Name -->
-		<xsl:apply-templates select="PurchaseOrderHeader/SendersAddress/ShipToName"/>
+		<xsl:apply-templates select="PurchaseOrderHeader/ShipTo/ShipToName"/>
 		<xsl:text>,</xsl:text>
 		
 		<!-- Delivery Address 1 -->
