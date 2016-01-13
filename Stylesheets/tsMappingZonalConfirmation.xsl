@@ -19,9 +19,8 @@
 '******************************************************************************************
 ' 20/08/2007  | Lee Boyton   | 1390. Cater for extended characters.
 '******************************************************************************************
-'             |              | 
-'******************************************************************************************
--->
+' 27/11/2015	| Jose Miguel		| 10631 Amend Confirmation and GRN Mappers
+'******************************************************************************************-->
 <xsl:stylesheet 	version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output method="xml" encoding="ISO-8859-1"/>
 	<!-- store the Aztec Compressed Output product code in a local variable
@@ -45,7 +44,16 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:attribute>
-			<xsl:attribute name="Supplier"><xsl:value-of select="/PurchaseOrderConfirmation/TradeSimpleHeader/RecipientsCodeForSender"/></xsl:attribute>
+			<xsl:attribute name="Supplier">
+							<xsl:choose>
+					<xsl:when test="contains(/PurchaseOrderConfirmation/TradeSimpleHeader/RecipientsCodeForSender, '/')">
+						<xsl:value-of select="substring-before(/PurchaseOrderConfirmation/TradeSimpleHeader/RecipientsCodeForSender, '/')"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="/PurchaseOrderConfirmation/TradeSimpleHeader/RecipientsCodeForSender"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:attribute>
 			<xsl:attribute name="OrderNo"><xsl:value-of select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/PurchaseOrderReferences/PurchaseOrderReference"/></xsl:attribute>
 			<xsl:attribute name="OrderDate"><xsl:value-of select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/PurchaseOrderReferences/PurchaseOrderDate"/></xsl:attribute>
 			<xsl:attribute name="DeliveryDate"><xsl:value-of select="/PurchaseOrderConfirmation/PurchaseOrderConfirmationHeader/ConfirmedDeliveryDetails/DeliveryDate"/></xsl:attribute>
