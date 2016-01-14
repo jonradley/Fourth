@@ -59,7 +59,7 @@
 						</xsl:choose>
 					</GLN>
 				<SuppliersCode>
-					<xsl:value-of select="eanucc:documentCommand/documentCommandOperand/order:order/orderPartyInformation/seller/additionalPartyIdentification/additionalPartyIdentificationValue"/>
+					<xsl:value-of select="eanucc:documentCommand/documentCommandOperand/order:order/orderPartyInformation/buyer/additionalPartyIdentification/additionalPartyIdentificationValue"/>
 				</SuppliersCode>
 				</BuyersLocationID>
 			</Buyer>
