@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<listoftext locale="ES">
+	<text id="msg0001">
+		<base>A0002: Debit Notes - (All) v2</base>
+		<translation>A0002: Notas de Débito - (Todos) v2</translation>
+	</text>
+	<text id="msg0002">
+		<base>Created Date Start</base>
+		<translation>Fecha Creación Inicial</translation>
+	</text>
+	<text id="msg0003">
+		<base>Created Date End</base>
+		<translation>Fecha Creación Final</translation>
+	</text>
+	<text id="msg0004">
+		<base>Created Date</base>
+		<translation>Fecha Creación</translation>
+	</text>
+	<text id="msg0005">
+		<base>Unit Number</base>
+		<translation>Número del centro</translation>
+	</text>
+	<text id="msg0006">
+		<base>Unit Name</base>
+		<translation>Nombre del centro</translation>
+	</text>
+	<text id="msg0007">
+		<base>Supplier Number</base>
+		<translation>Número del proveedor</translation>
+	</text>
+	<text id="msg0008">
+		<base>Supplier Name</base>
+		<translation>Nombre del proveedor</translation>
+	</text>
+	<text id="msg0009">
+		<base>Invoice Number</base>
+		<translation>Número de Factura</translation>
+	</text>
+	<text id="msg0010">
+		<base>Debit Note Number</base>
+		<translation>Número de Nota de Débito</translation>
+	</text>
+	<text id="msg0011">
+		<base>Debit Note Date</base>
+		<translation>Fecha de Nota de Débito</translation>
+	</text>
+	<text id="msg0012">
+		<base>Total excl VAT</base>
+		<translation>Total sin IVA</translation>
+	</text>
+	<text id="msg0013">
+		<base>VAT</base>
+		<translation>IVA</translation>
+	</text>
+	<text id="msg0014">
+		<base>Total incl VAT</base>
+		<translation>Total con IVA</translation>
+	</text>
+	<text id="msg0015">
+		<base>Reason</base>
+		<translation>Motivo</translation>
+	</text>
+	<text id="msg0016">
+		<base>Not Provided</base>
+		<translation>No Especificado</translation>
+	</text>
+	<text id="msg0017">
+		<base>All</base>
+		<translation>Todo</translation>
+	</text>
+	<text id="msg0018">
+		<base>Delivered item missing from invoice</base>
+		<translation>Producto entregado no aparece factura</translation>
+	</text>
+	<text id="msg0019">
+		<base>Invoice price less than entered price at delivery</base>
+		<translation>Precio en factura menor que precio en entrega</translation>
+	</text>
+	<text id="msg0020">
+		<base>Invoice quantity less than accepted quantity at delivery</base>
+		<translation>Cantidad en factura menor que cantidad aceptada en entrega</translation>
+	</text>
+	<text id="msg0021">
+		<base>Invoice quantity more than accepted quantity at delivery</base>
+		<translation>Cantidad en factura mayor que cantidad aceptada en entrega</translation>
+	</text>
+	<text id="msg0022">
+		<base>Rejected on delivery or not receipted</base>
+		<translation>Rechazado en entrega o no recibido</translation>
+	</text>
+	<text id="msg0023">
+		<base>Invoice price more than entered price at delivery</base>
+		<translation>Precio en factura mayor que precio en entrega</translation>
+	</text>
+</listoftext>
