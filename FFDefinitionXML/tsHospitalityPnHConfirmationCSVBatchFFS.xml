@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ALLISON RISEBRO
+29th March 05 Andy Trafford - copied from tsHospitalityCreditCSVBatchFFS.xml
+-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>chr(13)chr(10)</ffsRecordSeparator>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>,</ffsFieldSeparator>
+		</ffsFieldSeparators>
+		<ffsPadding/>
+		<ffsGroups>
+			<ffsGroup>
+				<ffsGroupRecord RecordPos="1" FieldTotal="10"/>
+				<ffsSubGroupRecord RecordPos="2" FieldTotal="7"/>
+			</ffsGroup>
+		</ffsGroups>
+		<ffsSplitBatchRecord RecordPos="1"/>
+	</ffsSettings>
+	<ffsRoot>
+		<PurchaseOrderConfirmation>
+			<TradeSimpleHeader>
+				<SendersCodeForRecipient RecordPos="1" LPos="2"/>
+				<SendersBranchReference RecordPos="1" LPos="10"/>
+				<!--SendersName RecordPos="" LPos="" UPos="" SFPos=""/>
+				<SendersAddress>
+					<AddressLine1 RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+					<AddressLine2 RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+					<AddressLine3 RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+					<AddressLine4 RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+					<PostCode RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+				</SendersAddress>
+				<RecipientsCodeForSender RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+				<RecipientsBranchReference RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+				<RecipientsName RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+				<RecipientsAddress>
+					<AddressLine1 RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+					<AddressLine2 RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+					<AddressLine3 RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+					<AddressLine4 RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+					<PostCode RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+				</RecipientsAddress>
+				<TestFlag RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/-->
+			</TradeSimpleHeader>
+			<PurchaseOrderConfirmationHeader>
+				<!-- This is a "shoehorn" job to get a header field required in the translator -->
+				<DocumentStatus RecordPos="1" LPos="7"/>
+				<!--Buyer>
+					<BuyersLocationID>
+						<GLN RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+						<BuyersCode RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+						<SuppliersCode RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+					</BuyersLocationID>
+					<BuyersName RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+					<BuyersAddress>
+						<AddressLine1 RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+						<AddressLine2 RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+						<AddressLine3 RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+						<AddressLine4 RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+						<PostCode RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+					</BuyersAddress>
+				</Buyer>
+				<Supplier>
+					<SuppliersLocationID>
+						<GLN RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+						<BuyersCode RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+						<SuppliersCode RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+					</SuppliersLocationID>
+					<SuppliersName RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+					<SuppliersAddress>
+						<AddressLine1 RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+						<AddressLine2 RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+						<AddressLine3 RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+						<AddressLine4 RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+						<PostCode RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+					</SuppliersAddress>
+				</Supplier>
+				<ShipTo>
+					<ShipToLocationID>
+						<GLN RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+						<BuyersCode RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+						<SuppliersCode RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+					</ShipToLocationID>
+					<ShipToName RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+					<ShipToAddress>
+						<AddressLine1 RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+						<AddressLine2 RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+						<AddressLine3 RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+						<AddressLine4 RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+						<PostCode RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+					</ShipToAddress>
+					<ContactName RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+				</ShipTo-->
+				<PurchaseOrderReferences>
+					<PurchaseOrderReference RecordPos="1" LPos="4"/>
+					<PurchaseOrderDate RecordPos="1" LPos="3"/>
+					<!--PurchaseOrderTime RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+					<TradeAgreement>
+						<ContractReference RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+						<ContractDate RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+					</TradeAgreement-->
+					<CustomerPurchaseOrderReference RecordPos="1" LPos="4"/>
+				</PurchaseOrderReferences>
+				<PurchaseOrderConfirmationReferences>
+					<PurchaseOrderConfirmationReference RecordPos="1" LPos="4"/>
+					<PurchaseOrderConfirmationDate RecordPos="1" LPos="8"/>
+				</PurchaseOrderConfirmationReferences>
+				<!--OrderedDeliveryDetails>
+					<DeliveryType RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+					<DeliveryDate RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+					<DeliverySlot>
+						<SlotStart RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+						<SlotEnd RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+					</DeliverySlot>
+					<SpecialDeliveryInstructions RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+				</OrderedDeliveryDetails-->
+				<ConfirmedDeliveryDetails>
+					<!--DeliveryType RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/-->
+					<DeliveryDate RecordPos="1" LPos="6"/>
+					<!--DeliverySlot>
+						<SlotStart RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+						<SlotEnd RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+					</DeliverySlot>
+					<SpecialDeliveryInstructions RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/-->
+				</ConfirmedDeliveryDetails>
+				<!--SequenceNumber RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/-->
+			</PurchaseOrderConfirmationHeader>
+			<PurchaseOrderConfirmationDetail>
+				<PurchaseOrderConfirmationLine>
+					<LineNumber RecordPos="2" LPos="2"/>
+					<ProductID>
+						<GTIN RecordPos="2" LPos="4"/>
+						<SuppliersProductCode RecordPos="2" LPos="3"/>
+						<!--BuyersProductCode RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/-->
+					</ProductID>
+					<!--ProductDescription RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+					<OrderedQuantity/-->
+					<ConfirmedQuantity RecordPos="2" LPos="6"/>
+					<!--PackSize RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+					<UnitValueExclVAT RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+					<LineValueExclVAT RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+					<Narrative/-->
+					<ffsAttribute1 name="LineStatus" RecordPos="2" LPos="7"/>
+				</PurchaseOrderConfirmationLine>
+			</PurchaseOrderConfirmationDetail>
+			<!--PurchaseOrderConfirmationTrailer>
+				<NumberOfLines RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+				<TotalExclVAT RecordLength="" RecordPos="" LPos="" UPos="" SFPos=""/>
+			</PurchaseOrderConfirmationTrailer-->
+		</PurchaseOrderConfirmation>
+	</ffsRoot>
+</ffsFlatFileSchema>
