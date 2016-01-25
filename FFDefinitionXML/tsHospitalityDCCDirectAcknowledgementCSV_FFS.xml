@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--******************************************************************
+Alterations
+**********************************************************************
+Name			| Date			| Change
+**********************************************************************
+R Cambridge	| 16/06/2008	| 2245
+**********************************************************************
+				|					|
+**********************************************************************
+				|					|
+*******************************************************************-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>sequenced</ffsRecordPositionType>
+		<ffsRecordSeparator>chr(10)</ffsRecordSeparator>
+		<ffsEscapeChars>
+			<ffsEscapeChar>
+				<ffsNative>chr(13)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>""</ffsNative>
+				<ffsTradesimple>¬Q</ffsTradesimple>
+				<ffsLiteral>"</ffsLiteral>
+			</ffsEscapeChar>
+		</ffsEscapeChars>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>,</ffsFieldSeparator>
+		</ffsFieldSeparators>
+		<ffsPadding/>
+		<ffsSplitBatchRecord LPos="3"/>
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<BatchDocuments>
+				<BatchDocument>
+					<PurchaseOrderAcknowledgement>
+						<TradeSimpleHeader>
+							<SendersCodeForRecipient RecordLength="7" RecordPos="*" LPos="2"/>
+							<!--SendersBranchReference RecordPos="1" LPos="4"/-->
+						</TradeSimpleHeader>
+						<PurchaseOrderAcknowledgementHeader>
+							<Buyer>
+								<BuyersLocationID>
+									<SuppliersCode RecordLength="7" RecordPos="*" LPos="1"/>
+								</BuyersLocationID>
+							</Buyer>
+							<ShipTo>
+								<ShipToLocationID>
+									<SuppliersCode RecordLength="7" RecordPos="*" LPos="2"/>
+								</ShipToLocationID>
+							</ShipTo>
+							<PurchaseOrderReferences>
+								<PurchaseOrderReference RecordLength="7" RecordPos="*" LPos="3"/>
+								<PurchaseOrderDate RecordLength="7" RecordPos="*" LPos="4"/>
+							</PurchaseOrderReferences>
+							<PurchaseOrderAcknowledgementReferences>
+								<PurchaseOrderAcknowledgementReference RecordLength="7" RecordPos="*" LPos="6"/>
+								<PurchaseOrderAcknowledgementDate RecordLength="7" RecordPos="*" LPos="4"/>
+							</PurchaseOrderAcknowledgementReferences>
+							<OrderedDeliveryDetails>
+								<DeliveryDate RecordLength="7" RecordPos="*" LPos="5"/>
+							</OrderedDeliveryDetails>
+						</PurchaseOrderAcknowledgementHeader>
+					</PurchaseOrderAcknowledgement>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>
