@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--======================================================================================
-Overview
-
-Inbound Invoice mapper for Cranswick based on Tradacoms with some changes.
-Fourt LTD Ltd, 2015.
-==========================================================================================
-Module History
-==========================================================================================
-Version			| v1.0
-==========================================================================================
-Date      			|	Name			|	Description of modification
-==========================================================================================
-13/02/2016	|	Ben Oliver	| FB 10742 Created Mapper from tsHospitalityInvoiceTradacomsBatch_FFS.xml
-=======================================================================================-->
+<!--
+**********************************************************************
+Alterations
+**********************************************************************
+Name		| Date				| Change
+**********************************************************************
+B Oliver	| 13/01/2016	| FB 10742 Created Mapper from tsHospitalityTradacomsBatchFFS
+B Oliver	| 25/01/2016	| FB 10775 Changing the location supplier fields 
+**********************************************************************
+-->
 <ffsFlatFileSchema>
 	<ffsSettings>
 		<ffsRecordPositionType>named</ffsRecordPositionType>
@@ -117,7 +113,7 @@ Date      			|	Name			|	Description of modification
 							<!-- MANDATORY Sender’s code for recipient, MANDATORY, INVOIC – CLO – CLOC(2), You must provide this code.  It is your internal identifier for the company that is to receive the document.  It must match the code that you have entered on the trading relationship you have with the other company-->
 							<SendersCodeForRecipient RecordPos="CLO=" LPos="1" SFPos="3"/>
 							<!-- OPTIONAL Sender’s Branch Reference, MANDATORY, INVFIL – CDT – CIDN(2), Depending on your particular relationship with the company, you must provide this code.  It is your internal identifier for the “contract” that the receiving company belongs to.  It must match the code that you have provided to ABS on set-up -->
-							<SendersBranchReference RecordPos="CDT=" LPos="1" SFPos="2"/>
+							<SendersBranchReference RecordPos="CDT=" LPos="1" SFPos="3"/>
 						</TradeSimpleHeader>
 						<InvoiceHeader>
 							<BatchInformation>
@@ -196,17 +192,17 @@ Date      			|	Name			|	Description of modification
 								<LineNumber RecordPos="ILD=" LPos="2"/>
 								<PurchaseOrderReferences>
 									<!-- LPos 2 OPTIONAL Purchase Order Reference, OPTIONAL, INVOIC – ODD – ORNO(1), Should be set to the customer’s order reference.  If the order has been generated without a customer reference then the seller’s order reference may be used -->
-									<PurchaseOrderReference RecordPos="ILD=" LPos="27" SFPos="1"/>
+									<PurchaseOrderReference RecordPos="ODD=" LPos="2" SFPos="1"/>
 									<!-- LPos 2 OPTIONAL Purchase Order Date, OPTIONAL, INVOIC – ODD – ORNO(3), YYMMDD, Must be valid date, and should be set to the order date associated with the reference above -->
-									<PurchaseOrderDate RecordPos="ILD=" LPos="27" SFPos="3"/>
+									<PurchaseOrderDate RecordPos="ODD=" LPos="2" SFPos="3"/>
 								</PurchaseOrderReferences>
 								<DeliveryNoteReferences>
 									<!-- LPos 3 OPTIONAL Delivery Note Reference, CONDITIONAL, INVOIC – ODD – DELN(1), The delivery note reference for the goods being invoiced -->
-									<DeliveryNoteReference RecordPos="ILD=" LPos="28" SFPos="1"/>
+									<DeliveryNoteReference RecordPos="ODD=" LPos="3" SFPos="1"/>
 									<!-- LPos 3 OPTIONAL Delivery Note Date, CONDITIONAL, INVOIC – ODD – DELN(2), YYMMDD, The date associated with the reference above -->
-									<DeliveryNoteDate RecordPos="ILD=" LPos="28" SFPos="2"/>
+									<DeliveryNoteDate RecordPos="ODD=" LPos="3" SFPos="2"/>
 									<!-- LPos 3 OPTIONAL Despatch Date, CONDITIONAL, INVOIC – ODD – DELN(2), YYMMDD, The same as the above date -->
-									<DespatchDate RecordPos="ILD=" LPos="28" SFPos="2"/>
+									<DespatchDate RecordPos="ODD=" LPos="3" SFPos="2"/>
 								</DeliveryNoteReferences>
 								<ProductID>
 									<!-- MANDATORY GTIN, INVOIC - ILD - SPRO(1) -->
