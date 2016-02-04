@@ -74,14 +74,14 @@
 		<xsl:value-of select="$separator"/>
 		
 		<!-- Supplier # -->
-		<xsl:value-of select="script:getOracleVendorCodeFromJDEValue(string(TradeSimpleHeader/RecipientsCodeForSender))"/>
+		<xsl:value-of select="script:getOracleVendorCodeFromChildValue($vendorChildCode, $vendorChildCodeAlt)"/>
 		<xsl:value-of select="$separator"/>
 		
 		<!-- Supplier Tax # BLANK -->
 		<xsl:value-of select="$separator"/>
 		
 		<!-- Supplier Site -->
-		<xsl:value-of select="script:getOraclePLAccountCodeFromJDEValue(string(TradeSimpleHeader/RecipientsCodeForSender))"/>
+		<xsl:value-of select="script:getOraclePLAccountCodeFromChildValue($vendorChildCode, $vendorChildCodeAlt)"/>
 		<xsl:value-of select="$separator"/>
 		
 		<!-- Invoice Amt -->
