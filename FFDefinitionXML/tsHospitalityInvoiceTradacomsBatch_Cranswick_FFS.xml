@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+**********************************************************************
+Alterations
+**********************************************************************
+Name		| Date				| Change
+**********************************************************************
+B Oliver	| 13/01/2016	| FB 10742 Created Mapper from tsHospitalityTradacomsBatchFFS
+B Oliver	| 25/01/2016	| FB 10775 Changing the location supplier fields 
+**********************************************************************
+-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>'</ffsRecordSeparator>
+		<ffsEscapeChars>
+			<ffsEscapeChar>
+				<ffsNative>chr(13)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>chr(10)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?=</ffsNative>
+				<ffsTradesimple>¬E</ffsTradesimple>
+				<ffsLiteral>=</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?+</ffsNative>
+				<ffsTradesimple>¬P</ffsTradesimple>
+				<ffsLiteral>+</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?:</ffsNative>
+				<ffsTradesimple>¬C</ffsTradesimple>
+				<ffsLiteral>:</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?'</ffsNative>
+				<ffsTradesimple>¬A</ffsTradesimple>
+				<ffsLiteral>'</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>??</ffsNative>
+				<ffsTradesimple>¬Q</ffsTradesimple>
+				<ffsLiteral>?</ffsLiteral>
+			</ffsEscapeChar>
+		</ffsEscapeChars>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>+</ffsFieldSeparator>
+			<ffsSubFieldSeparator>:</ffsSubFieldSeparator>
+		</ffsFieldSeparators>
+		<ffsPadding/>
+		<ffsBatchHeader>
+			<!--list of records that make up the header, this will be added to each document in the batch -->
+			<ffsHeaderRecord RecordPos="STX="/>
+			<ffsHeaderRecord RecordPos="TYP="/>
+			<ffsHeaderRecord RecordPos="SDT="/>
+			<ffsHeaderRecord RecordPos="CDT="/>
+			<ffsHeaderRecord RecordPos="FIL="/>
+		</ffsBatchHeader>
+		<ffsGroups>
+			<ffsGroup>
+				<!--References below which mean RecordPos ODD= with LPos 1 would be coded as ILD= and LPos 26 (25+1)-->
+				<ffsGroupRecord RecordPos="ODD=" FieldTotal="11"/>
+				<ffsSubGroupRecord RecordPos="ILD=" FieldTotal="25"/>
+			</ffsGroup>
+		</ffsGroups>
+		<ffsSplitBatchRecord RecordPos="CLO="/>
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<BatchHeader>
+				<MHDSegment>
+					<MHDHeader RecordPos="MHD=" LPos="2" SFPos="1"/>
+					<MHDVersion RecordPos="MHD=" LPos="2" SFPos="2"/>
+				</MHDSegment>
+				<VATSubTotals>
+					<VATSubTotal>
+						<!-- MANDATORY VATTLR - VRS - VSDE (File sub-total amount excluding discount) -->
+						<DocumentTotalExclVATAtRate RecordPos="VRS=" LPos="4"/>
+						<!-- MANDATORY VATTLR - VRS - VSDI (File sub total amount including discount) -->
+						<SettlementTotalExclVATAtRate RecordPos="VRS=" LPos="5"/>
+						<!-- MANDATORY VATTLR - VRS - VVAT (File VAT sub-total)-->
+						<VATAmountAtRate RecordPos="VRS=" LPos="6"/>
+						<!-- MANDATORY VATTLR - VRS - VPSE (File sub-total payable excluding discount) [ unless blank, then use VPSI ]-->
+						<DocumentTotalInclVATAtRate RecordPos="VRS=" LPos="7"/>
+						<!-- MANDATORY VATTLR - VRS - VPSI (File sub-total payable including discount) -->
+						<SettlementTotalInclVATAtRate RecordPos="VRS=" LPos="8"/>
+						<ffsAttribute1 name="VATCode" RecordPos="VRS=" LPos="2"/>
+						<ffsAttribute1 name="VATRate" RecordPos="VRS=" LPos="3"/>
+					</VATSubTotal>
+				</VATSubTotals>
+				<!-- MANDATORY INVTLR - TOT - FASE (File total amount ex VAT ex discount) -->
+				<DocumentTotalExclVAT RecordPos="TOT=" LPos="1"/>
+				<!-- MANDATORY INVTLR - TOT - FASI (File total amount ex VAT inc discount) -->
+				<SettlementTotalExclVAT RecordPos="TOT=" LPos="2"/>
+				<!-- MANDATORY INVTLR - TOT - FVAT (File total VAT) -->
+				<VATAmount RecordPos="TOT=" LPos="3"/>
+				<!-- MANDATORY INVTLR - TOT - FPSE (File total payable ex discount) -->
+				<DocumentTotalInclVAT RecordPos="TOT=" LPos="4"/>
+				<!-- MANDATORY INVTLR - TOT - FPSI (File total payable inc discount) -->
+				<SettlementTotalInclVAT RecordPos="TOT=" LPos="5"/>
+			</BatchHeader>
+			<BatchDocuments>
+				<BatchDocument>
+					<Invoice>
+						<TradeSimpleHeader>
+							<!-- MANDATORY Sender’s code for recipient, MANDATORY, INVOIC – CLO – CLOC(2), You must provide this code.  It is your internal identifier for the company that is to receive the document.  It must match the code that you have entered on the trading relationship you have with the other company-->
+							<SendersCodeForRecipient RecordPos="CLO=" LPos="1" SFPos="3"/>
+							<!-- OPTIONAL Sender’s Branch Reference, MANDATORY, INVFIL – CDT – CIDN(2), Depending on your particular relationship with the company, you must provide this code.  It is your internal identifier for the “contract” that the receiving company belongs to.  It must match the code that you have provided to ABS on set-up -->
+							<SendersBranchReference RecordPos="CDT=" LPos="1" SFPos="3"/>
+						</TradeSimpleHeader>
+						<InvoiceHeader>
+							<BatchInformation>
+								<!-- OPTIONAL Supplier’s File Generation Number, DERIVE, INVFIL – FIL – FLGN, This should be incremented by +1 for each transmission of invoices sent to the exchange.  This must return to 1 after 9999 -->
+								<FileGenerationNo RecordPos="FIL=" LPos="1"/>
+								<!-- OPTIONAL Supplier’s File Version Number, DERIVE, INVFIL – FIL – FLVN, This should be incremented by +1 for each retry of a transmission of invoices sent to the exchange.  This must return to 1 after 9999 -->
+								<FileVersionNo RecordPos="FIL=" LPos="2"/>
+								<!-- OPTIONAL Supplier’s File Creation Date, DERIVE, INVFIL – FIL - FLDT, This should be a valid date, and should be the date on which the invoice transmission file was created by your systems -->
+								<FileCreationDate RecordPos="FIL=" LPos="3"/>
+								<!-- OPTIONAL Sender’s Transmission Reference, OPTIONAL, STX – SNRF, If available – for use in transmission notifications -->
+								<SendersTransmissionReference RecordPos="STX=" LPos="5"/>
+								<!-- OPTIONAL Sender’s Transmission Date/Time, OPTIONAL, STX – TRDT, If available – for use in transmission notifications -->
+								<SendersTransmissionDate RecordPos="STX=" LPos="4"/>
+							</BatchInformation>
+							<Buyer>
+								<BuyersLocationID>
+									<!--INVFIL-CDT-CIDN(1)-->
+									<SuppliersCode RecordPos="CDT=" LPos="1" SFPos="1"/>
+								</BuyersLocationID>
+								<!-- OPTIONAL Buyer Name, MANDATORY, INVFIL – CDT – CNAM, NB: To make this a legal invoice, you must provide this field. The “invoice to” name -->
+								<BuyersName RecordPos="CDT=" LPos="2"/>
+								<BuyersAddress>
+									<!-- OPTIONAL Buyer Address, M, INVFIL – CDT – CADD(1…5), NB: To make this a legal invoice, you must provide these fields. The “invoice to” address -->
+									<AddressLine1 RecordPos="CDT=" LPos="3" SFPos="1"/>
+									<AddressLine2 RecordPos="CDT=" LPos="3" SFPos="2"/>
+									<AddressLine3 RecordPos="CDT=" LPos="3" SFPos="3"/>
+									<AddressLine4 RecordPos="CDT=" LPos="3" SFPos="4"/>
+									<PostCode RecordPos="CDT=" LPos="3" SFPos="5"/>
+								</BuyersAddress>
+							</Buyer>
+							<Supplier>
+								<SuppliersLocationID>
+									<!--INVFIL-SDT-SIDN(1)-->
+									<SuppliersCode RecordPos="SDT=" LPos="1" SFPos="1"/>
+								</SuppliersLocationID>
+								<!-- OPTIONAL Supplier Name, MANDATORY, INVFIL – SDT – SNAM, NB: To make this a legal invoice, you must provide this field. This field should be set to your company name as on your paper invoices for this account -->
+								<SuppliersName RecordPos="SDT=" LPos="2"/>
+								<SuppliersAddress>
+									<!-- OPTIONAL Supplier Address, MANDATORY, INVFIL – SDT – SADD(1…5), NB: To make this a legal invoice, you must provide these fields. Your address -->
+									<AddressLine1 RecordPos="SDT=" LPos="3" SFPos="1"/>
+									<AddressLine2 RecordPos="SDT=" LPos="3" SFPos="2"/>
+									<AddressLine3 RecordPos="SDT=" LPos="3" SFPos="3"/>
+									<AddressLine4 RecordPos="SDT=" LPos="3" SFPos="4"/>
+									<PostCode RecordPos="SDT=" LPos="3" SFPos="5"/>
+								</SuppliersAddress>
+							</Supplier>
+							<ShipTo>
+								<ShipToLocationID>
+									<!--INVFIL-CLO-(1)2)-->
+									<SuppliersCode RecordPos="CLO=" LPos="1" SFPos="2"/>
+								</ShipToLocationID>
+								<!-- OPTIONAL Delivery Location Name, DERIVE, INVOIC – CLO – CNAM, The “ship-to” name -->
+								<ShipToName RecordPos="CLO=" LPos="2"/>
+								<ShipToAddress>
+									<!-- OPTIONAL Delivery Location Address, DERIVE, INVOIC – CLO – CADD(1…5), The “ship-to” address -->
+									<AddressLine1 RecordPos="CLO=" LPos="3" SFPos="1"/>
+									<AddressLine2 RecordPos="CLO=" LPos="3" SFPos="2"/>
+									<AddressLine3 RecordPos="CLO=" LPos="3" SFPos="3"/>
+									<AddressLine4 RecordPos="CLO=" LPos="3" SFPos="4"/>
+									<PostCode RecordPos="CLO=" LPos="3" SFPos="5"/>
+								</ShipToAddress>
+							</ShipTo>
+							<InvoiceReferences>
+								<!-- MANDATORY Invoice Number, MANDATORY, INVOIC – IRF – INVN, NB: To make this a legal invoice, you must provide this field. A unique invoice number for the date -->
+								<InvoiceReference RecordPos="IRF=" LPos="1"/>
+								<!-- MANDATORY Invoice Date, MANDATORY, INVOIC – IRF – IVDT, YYMMDD, NB: To make this a legal invoice, you must provide this field. The date the invoice was issued -->
+								<InvoiceDate RecordPos="IRF=" LPos="2"/>
+								<!-- MANDATORY Taxpoint Date, MANDATORY, INVOIC – IRF – TXDT, YYMMDD, NB: To make this a legal invoice, you must provide this field. The tax point date of the invoice -->
+								<TaxPointDate RecordPos="IRF=" LPos="3"/>
+								<!-- MANDATORY Supplier VAT Number, MANDATORY, INVFIL – SDT – VATN, NB: To make this a legal invoice, you must provide this field. Your VAT number-->
+								<VATRegNo RecordPos="SDT=" LPos="4"/>
+							</InvoiceReferences>
+						</InvoiceHeader>
+						<InvoiceDetail>
+							<InvoiceLine>
+								<LineNumber RecordPos="ILD=" LPos="2"/>
+								<PurchaseOrderReferences>
+									<!-- LPos 2 OPTIONAL Purchase Order Reference, OPTIONAL, INVOIC – ODD – ORNO(1), Should be set to the customer’s order reference.  If the order has been generated without a customer reference then the seller’s order reference may be used -->
+									<PurchaseOrderReference RecordPos="ODD=" LPos="2" SFPos="1"/>
+									<!-- LPos 2 OPTIONAL Purchase Order Date, OPTIONAL, INVOIC – ODD – ORNO(3), YYMMDD, Must be valid date, and should be set to the order date associated with the reference above -->
+									<PurchaseOrderDate RecordPos="ODD=" LPos="2" SFPos="3"/>
+								</PurchaseOrderReferences>
+								<DeliveryNoteReferences>
+									<!-- LPos 3 OPTIONAL Delivery Note Reference, CONDITIONAL, INVOIC – ODD – DELN(1), The delivery note reference for the goods being invoiced -->
+									<DeliveryNoteReference RecordPos="ODD=" LPos="3" SFPos="1"/>
+									<!-- LPos 3 OPTIONAL Delivery Note Date, CONDITIONAL, INVOIC – ODD – DELN(2), YYMMDD, The date associated with the reference above -->
+									<DeliveryNoteDate RecordPos="ODD=" LPos="3" SFPos="2"/>
+									<!-- LPos 3 OPTIONAL Despatch Date, CONDITIONAL, INVOIC – ODD – DELN(2), YYMMDD, The same as the above date -->
+									<DespatchDate RecordPos="ODD=" LPos="3" SFPos="2"/>
+								</DeliveryNoteReferences>
+								<ProductID>
+									<!-- MANDATORY GTIN, INVOIC - ILD - SPRO(1) -->
+									<GTIN RecordPos="ILD=" LPos="3" SFPos="1"/>
+									<!-- OPTIONAL Supplier’s Product Code, MANDATORY, INVOIC – ILD – SPRO(2), Your unique code for this product -->
+									<SuppliersProductCode RecordPos="ILD=" LPos="3" SFPos="2"/>
+									<!-- Not BuyersProductCode - Used to store value of ILD-CRLI for stylesheet use-->
+									<BuyersProductCode RecordPos="ILD=" LPos="13"/>
+								</ProductID>
+								<!-- MANDATORY Product Description, OPTIONAL, INVOIC – ILD – TDES(1), While not strictly mandatory, this is a very useful textual piece of information. This will always contain something but may be set to ‘Not Provided’ -->
+								<ProductDescription RecordPos="ILD=" LPos="14" SFPos="1"/>
+								<!-- MANDATORY Quantity Invoiced, MANDATORY, INVOIC – ILD – QTYI(1), If INVOIC – ILD – CRLI <> {blank} then multiply by –1 Must be greater or equal to zero -->
+								<InvoicedQuantity RecordPos="ILD=" LPos="7" SFPos="1"/>
+								<!-- MANDATORY Unit Value Ex VAT, MANDATORY, INVOIC – ILD – AUCT(1), 4 d.p. implied, Must be numeric (it may be either positive or negative) and must have only two places of decimal -->
+								<UnitValueExclVAT RecordPos="ILD=" LPos="8" SFPos="1"/>
+								<!-- MANDATORY Line Value Ex VAT, DERIVE, INVOIC – ILD – LEXC, 4 d.p. implied - If INVOIC – ILD – CRLI <> {blank} then multiply by –1, The quantity invoiced x the unit value rounded to two decimal places -->
+								<LineValueExclVAT RecordPos="ILD=" LPos="9"/>
+								<!-- MANDATORY Supplier’s VAT Code, MANDATORY, INVOIC – ILD – VATC, Your VAT code for this line -->
+								<VATCode RecordPos="ILD=" LPos="10"/>
+								<!-- MANDATORY VAT Rate, MANDATORY, INVOIC – ILD – VATP, 3 d.p. implied, A percentage rate with up to two decimals.  Must be greater or equal to zero -->
+								<VATRate RecordPos="ILD=" LPos="11"/>
+								<Measure>
+									<!-- OPTIONAL Units in Pack, OPTIONAL, INVOIC – ILD –UNOR(1), Usually 1 -->
+									<UnitsInPack RecordPos="ILD=" LPos="6" SFPos="1"/>
+									<!-- OPTIONAL Ordering Measure, OPTIONAL, INVOIC – ILD –UNOR(2), 3 d.p. implied -->
+									<OrderingMeasure RecordPos="ILD=" LPos="6" SFPos="2"/>
+									<!-- OPTIONAL Measure Indicator, OPTIONAL, INVOIC – ILD –UNOR(3), Text -->
+									<MeasureIndicator RecordPos="ILD=" LPos="6" SFPos="3"/>
+									<!-- OPTIONAL Total Measure Invoiced, OPTIONAL, INVOIC – ILD –QTYI(2), 3 d.p. implied -->
+									<TotalMeasure RecordPos="ILD=" LPos="7" SFPos="2"/>
+									<!-- OPTIONAL Total Measure Indicator, OPTIONAL, INVOIC – ILD –QTYI(3), Text -->
+									<TotalMeasureIndicator RecordPos="ILD=" LPos="7" SFPos="3"/>
+								</Measure>
+								<LineExtraData>
+									<!-- INVOIC-ILD-IGPI -->
+									<ProductGroup RecordPos="ILD=" LPos="22"/>
+									<!-- INVOIC-ILD-SPRI(1) -->
+									<StandardPriceUnitCode RecordPos="ILD=" LPos="15" SFPos="1"/>
+									<!-- INVOIC-ILD-SPRI(2) -->
+									<StandardDeliveryUnitCost RecordPos="ILD=" LPos="15" SFPos="2"/>
+									<!-- INVOIC-ILD-TDES(2) -->
+									<ProductDescription2 RecordPos="ILD=" LPos="14" SFPos="2"/>
+									<!-- INVOIC-ILD-CPRO(2) -->
+									<CustomersConceptProductCode RecordPos="ILD=" LPos="5" SFPos="2"/>
+								</LineExtraData>
+							</InvoiceLine>
+						</InvoiceDetail>
+						<InvoiceTrailer>
+							<VATSubTotals>
+								<VATSubTotal>
+									<!-- MANDATORY Line Total Ex VAT at rate, DERIVE, INVOIC – STL – EVLA, 2 d.p. implied, The total value of the all lines at this VAT rate -->
+									<DocumentTotalExclVATAtRate RecordPos="STL=" LPos="10"/>
+									<!-- MANDATORY Settlement Discount at rate, OPTIONAL, INVOIC – STL – SEDA, 2 d.p. implied, The value of any settlement discount applicable to the lines at this VAT rate -->
+									<SettlementDiscountAtRate RecordPos="STL=" LPos="11"/>
+									<!-- MANDATORY Taxable Amount at rate, DERIVE, INVOIC – STL – ASDA, 2 d.p. implied, The total value of the all lines at this VAT rate plus settlement discount -->
+									<SettlementTotalExclVATAtRate RecordPos="STL=" LPos="12"/>
+									<!-- MANDATORY VAT Amount at rate, DERIVE, INVOIC – STL – VATA, 2 d.p. implied, The total amount of VAT payable at this VAT rate -->
+									<VATAmountAtRate RecordPos="STL=" LPos="13"/>
+									<!-- MANDATORY Total Payable Ex Settlement Discount at rate, DERIVE, INVOIC – STL – APSE, 2 d.p. implied - (use APSI if not provided), The total which is payable at this VAT rate, excluding settlement discount -->
+									<DocumentTotalInclVATAtRate RecordPos="STL=" LPos="14"/>
+									<!-- MANDATORY Total Payable Inc Settlement Discount at rate, DERIVE, INVOIC – STL – APSI, 2 d.p. implied, The total which is payable at this VAT rate, including settlement discount -->
+									<SettlementTotalInclVATAtRate RecordPos="STL=" LPos="15"/>
+									<ffsAttribute1 name="VATCode" RecordPos="STL=" LPos="2"/>
+									<ffsAttribute1 name="VATRate" RecordPos="STL=" LPos="3"/>
+								</VATSubTotal>
+							</VATSubTotals>
+							<!-- MANDATORY Lines Total Ex VAT, DERIVE, INVOIC – TLR – EVLT, 2 d.p. implied, The total value of the all lines, before VAT and settlement discount -->
+							<DocumentTotalExclVAT RecordPos="TLR=" LPos="7"/>
+							<!-- MANDATORY Settlement Discount Total, OPTIONAL, INVOIC – TLR – SEDT, 2 d.p. implied, The total value of any settlement discount -->
+							<SettlementDiscount RecordPos="TLR=" LPos="8"/>
+							<!-- MANDATORY Taxable Amount, DERIVE, INVOIC – TLR – ASDT, 2 d.p. implied, The total value of the all lines plus settlement discount -->
+							<SettlementTotalExclVAT RecordPos="TLR=" LPos="9"/>
+							<!-- MANDATORY VAT Amount Total, DERIVE, INVOIC – TLR – TVAT, 2 d.p. implied, The total amount of VAT payable -->
+							<VATAmount RecordPos="TLR=" LPos="10"/>
+							<!-- MANDATORY Total Payable Ex Settlement Discount, DERIVE, INVOIC – TLR – TPSE, 2 d.p. implied - (use TPSI if not provided), The document total which is payable, excluding settlement discount -->
+							<DocumentTotalInclVAT RecordPos="TLR=" LPos="11"/>
+							<!-- MANDATORY Total Payable Inc Settlement Discount, DERIVE, INVOIC – TLR – TPSI, 2 d.p. implied, The document total which is payable, including settlement discount -->
+							<SettlementTotalInclVAT RecordPos="TLR=" LPos="12"/>
+						</InvoiceTrailer>
+					</Invoice>
+					<ffsAttribute1 name="DocumentTypeNo" RecordPos="TYP=" LPos="1"/>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>
