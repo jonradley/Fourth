@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-********************************************************************************************************************************************
+**********************************************************************
 Alterations
-********************************************************************************************************************************************
-Name		| Date			| Change
-********************************************************************************************************************************************
-B Oliver		| 13/01/2016	| FB 10742: Created Mapper from tsHospitalityTradacomsBatchFFS
-********************************************************************************************************************************************
-M Dimant	| 17/02/2016  | FB 10825: Map PO reference from ODD segment.
-********************************************************************************************************************************************
+**********************************************************************
+Name		| Date				| Change
+**********************************************************************
+B Oliver	| 13/01/2016	| FB 10742 Created Mapper from tsHospitalityTradacomsBatchFFS
+B Oliver	| 25/01/2016	| FB 10775 Changing the location supplier fields 
+**********************************************************************
 -->
 <ffsFlatFileSchema>
 	<ffsSettings>
@@ -193,17 +192,17 @@ M Dimant	| 17/02/2016  | FB 10825: Map PO reference from ODD segment.
 								<LineNumber RecordPos="ILD=" LPos="2"/>
 								<PurchaseOrderReferences>
 									<!-- LPos 2 OPTIONAL Purchase Order Reference, OPTIONAL, INVOIC – ODD – ORNO(1), Should be set to the customer’s order reference.  If the order has been generated without a customer reference then the seller’s order reference may be used -->
-									<PurchaseOrderReference RecordPos="ILD=" LPos="26" SFPos="1"/>
+									<PurchaseOrderReference RecordPos="ODD=" LPos="2" SFPos="1"/>
 									<!-- LPos 2 OPTIONAL Purchase Order Date, OPTIONAL, INVOIC – ODD – ORNO(3), YYMMDD, Must be valid date, and should be set to the order date associated with the reference above -->
-									<PurchaseOrderDate RecordPos="ILD=" LPos="26" SFPos="3"/>
+									<PurchaseOrderDate RecordPos="ODD=" LPos="2" SFPos="3"/>
 								</PurchaseOrderReferences>
 								<DeliveryNoteReferences>
 									<!-- LPos 3 OPTIONAL Delivery Note Reference, CONDITIONAL, INVOIC – ODD – DELN(1), The delivery note reference for the goods being invoiced -->
-									<DeliveryNoteReference RecordPos="ILD=" LPos="27" SFPos="1"/>
+									<DeliveryNoteReference RecordPos="ODD=" LPos="3" SFPos="1"/>
 									<!-- LPos 3 OPTIONAL Delivery Note Date, CONDITIONAL, INVOIC – ODD – DELN(2), YYMMDD, The date associated with the reference above -->
-									<DeliveryNoteDate RecordPos="ILD=" LPos="27" SFPos="2"/>
+									<DeliveryNoteDate RecordPos="ODD=" LPos="3" SFPos="2"/>
 									<!-- LPos 3 OPTIONAL Despatch Date, CONDITIONAL, INVOIC – ODD – DELN(2), YYMMDD, The same as the above date -->
-									<DespatchDate RecordPos="ILD=" LPos="27" SFPos="2"/>
+									<DespatchDate RecordPos="ODD=" LPos="3" SFPos="2"/>
 								</DeliveryNoteReferences>
 								<ProductID>
 									<!-- MANDATORY GTIN, INVOIC - ILD - SPRO(1) -->
