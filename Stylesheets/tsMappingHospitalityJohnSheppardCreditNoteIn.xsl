@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-*******************************************************************************************************************
+**********************************************************************************************************************************
 21/06/2012	| Mark Emanuel	| FB 5529 New Credit Note Mapper for John Sheppard
-14/01/2014	| Jose Miguel	| FB 7615 Optimise John Sheppard invoice/credits/delivery notes mapper changes
-*******************************************************************************************************************
+================================================================================
+14/01/2014	| Jose Miguel		| FB 7615 Optimise John Sheppard invoice/credits/delivery notes mapper changes
+================================================================================
+22/01/2016	| Moty Dimant	| FB 10773 Added mapping of supplier's code for buyer. 
+**********************************************************************************************************************************
+
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 	<xsl:output method="xml" encoding="utf-8"/>
@@ -45,30 +49,31 @@
 									<CreditNoteHeader>
 										
 										<DocumentStatus><xsl:text>Original</xsl:text></DocumentStatus>
+										<Buyer>
+											<BuyersLocationID>						
+												<SuppliersCode>
+													<xsl:value-of select="Buyer/BuyerAssigned"/>
+												</SuppliersCode>
+											</BuyersLocationID>	
+										</Buyer>
 										
-										<ShipTo>
-										
-											<ShipToLocationID>
-											
+										<ShipTo>										
+											<ShipToLocationID>											
 												<xsl:if test="string(ShipTo/BuyerAssigned)">
 													<SuppliersCode>
 														<xsl:value-of select="ShipTo/BuyerAssigned"/>
 													</SuppliersCode>
-												</xsl:if>
-												
-											</ShipToLocationID>
-										
+												</xsl:if>												
+											</ShipToLocationID>										
 										</ShipTo>
 										
 										<InvoiceReferences>
-
 											<InvoiceReference>
 												<xsl:value-of select="OrderReference/PurchaseOrderNumber"/>
 											</InvoiceReference>
 											<InvoiceDate>
 												<xsl:value-of select="OrderReference/PurchaseOrderDate"/>
-											</InvoiceDate>
-										
+											</InvoiceDate>										
 										</InvoiceReferences>
 										
 										<CreditNoteReferences>
