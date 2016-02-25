@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+**********************************************************************
+Alterations
+**********************************************************************
+Name			| Date			| Change
+**********************************************************************
+R Cambridge	| 30/10/2007	| 1558 Created FSS
+**********************************************************************
+				|					|
+**********************************************************************
+-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>sequenced</ffsRecordPositionType>
+		<ffsRecordSeparator FixedSize="false">chr(13)chr(10)</ffsRecordSeparator>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>,</ffsFieldSeparator>
+		</ffsFieldSeparators>
+		<ffsSplitBatchRecord LPos="1"/>
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<BatchDocuments>
+				<BatchDocument>
+					<Invoice>
+						<TradeSimpleHeader>
+							<SendersCodeForRecipient RecordLength="16" RecordPos="*" LPos="2"/>
+						</TradeSimpleHeader>
+						<InvoiceHeader>
+							<ShipTo>
+								<ShipToLocationID>
+									<SuppliersCode RecordLength="16" RecordPos="*" LPos="2"/>
+								</ShipToLocationID>
+								<ShipToName RecordLength="16" RecordPos="*" LPos="3"/>
+							</ShipTo>
+							<InvoiceReferences>
+								<InvoiceReference RecordLength="16" RecordPos="*" LPos="15"/>
+								<InvoiceDate RecordLength="16" RecordPos="*" LPos="16"/>
+								<TaxPointDate RecordLength="16" RecordPos="*" LPos="16"/>
+							</InvoiceReferences>
+						</InvoiceHeader>
+						<InvoiceDetail>
+							<InvoiceLine>
+								<PurchaseOrderReferences>
+									<PurchaseOrderReference RecordLength="16" RecordPos="*" LPos="1"/>
+									<PurchaseOrderDate RecordLength="16" RecordPos="*" LPos="4"/>
+								</PurchaseOrderReferences>
+								<DeliveryNoteReferences>
+									<DeliveryNoteReference RecordLength="16" RecordPos="*" LPos="13"/>
+									<DeliveryNoteDate RecordLength="16" RecordPos="*" LPos="14"/>
+									<DespatchDate RecordLength="16" RecordPos="*" LPos="14"/>
+								</DeliveryNoteReferences>
+								<ProductID>
+									<SuppliersProductCode RecordLength="16" RecordPos="*" LPos="5"/>
+								</ProductID>
+								<ProductDescription RecordLength="16" RecordPos="*" LPos="6"/>
+								<DeliveredQuantity RecordLength="16" RecordPos="*" LPos="8"/>
+								<InvoicedQuantity RecordLength="16" RecordPos="*" LPos="7"/>
+								<UnitValueExclVAT RecordLength="16" RecordPos="*" LPos="9"/>
+								<LineValueExclVAT RecordLength="16" RecordPos="*" LPos="10"/>
+								<VATRate RecordLength="16" RecordPos="*" LPos="11"/>
+							</InvoiceLine>
+						</InvoiceDetail>
+					</Invoice>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>
