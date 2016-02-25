@@ -2,18 +2,16 @@
 <!--======================================================================================
  Overview
  
-Pizza Express UK mapper for invoices and credits journal format.
+Pizza Express UK outbound mapper for invoices and credits journal format.
 ==========================================================================================
  Module History
 ==========================================================================================
  Version
 ==========================================================================================
- Date      	| Name 			| Description of modification
+ Date				| Name				| Description of modification
 ==========================================================================================
- 24/07/2015	| Jose Miguel	| FB10408 - Pizza Express Hong Kong - R9 - Invoice Export
-==========================================================================================
- 10/08/2015	| Jose Miguel	| FB10437 - Pizza Express Hong Kong - R9 - Additional changes
-=======================================================================================-->
+ 25/02/2016	| Jose Miguel	| FB10850 - Pay File with IJE Integration
+==========================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"  xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript" exclude-result-prefixes="#default xsl msxsl js">
 	<xsl:output method="text" encoding="UTF-8"/>
 	<xsl:key name="keyLinesByRefAndNominalCode" match="InvoiceCreditJournalEntriesLine" use="concat(../../InvoiceCreditJournalEntriesHeader/InvoiceReference,'|', CategoryNominal)"/>
