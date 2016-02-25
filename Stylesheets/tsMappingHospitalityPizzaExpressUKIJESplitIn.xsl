@@ -10,8 +10,8 @@ Pizza Express UK inbound mapper for invoice journal to split the report by curre
 ==========================================================================================
  Date				| Name				| Description of modification
 ==========================================================================================
- 25/11/2015	| Jose Miguel	| FB
-=======================================================================================-->
+ 25/02/2016	| Jose Miguel	| FB10850 - Pay File with IJE Integration
+==========================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:user="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl user">
 	<xsl:output method="xml" indent="yes" encoding="UTF-8"/>
 	<xsl:key name="keyCurrency" match="Batch/BatchDocuments/BatchDocument" use="InvoiceCreditJournalEntries/InvoiceCreditJournalEntriesHeader/CurrencyCode"/>
