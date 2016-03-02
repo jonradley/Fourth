@@ -13,7 +13,7 @@
 ==========================================================================================
  14/12/2015	| M Dimant			| FB10556: Created module
 ==========================================================================================
- 
+ 16/02/2016	| M Dimant			| FB10825: Added mapping of ShipTo GLN. Assign line numbers within stylesheet.
 ==========================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
                               xmlns:fo="http://www.w3.org/1999/XSL/Format"
@@ -120,7 +120,7 @@
 										<countryISOCode>GB</countryISOCode>
 									</countryOfSupplyOfGoods>
 									<shipTo>
-										<gln>00000000000000</gln>
+										<gln><xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/GLN"/></gln>
 										<xsl:if test="InvoiceHeader/ShipTo/ShipToLocationID/SuppliersCode != ''">
 											<additionalPartyIdentification>
 												<additionalPartyIdentificationValue>
@@ -169,7 +169,7 @@
 									<xsl:for-each select="InvoiceDetail/InvoiceLine">
 										<invoiceLineItem number="1">
 											<xsl:attribute name="number">
-												<xsl:value-of select="LineNumber"/>
+												<xsl:value-of select="position()"/>
 											</xsl:attribute>
 											<tradeItemIdentification>
 												<gtin>
