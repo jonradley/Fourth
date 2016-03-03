@@ -7,6 +7,8 @@ Name		| Date       | Change
 J Miguel	| 30/09/2015 | FB10511 - Email orders in
 **********************************************************************
 J Miguel	| 28/10/2015 | FB10560 - Amend mapper to deal with catch weight extra information in the file
+**********************************************************************
+J Miguel	| 03/03/2016 | FB10861 - Add UoM Kg. 
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="xml" encoding="UTF-8" indent="yes" omit-xml-declaration="yes"/>
@@ -106,8 +108,19 @@ J Miguel	| 28/10/2015 | FB10560 - Amend mapper to deal with catch weight extra i
 				<GTIN>5555555555555</GTIN>
 				<SuppliersProductCode><xsl:value-of select="$SupplierProductCode"/></SuppliersProductCode>
 			</ProductID>
-			<ProductDescription><xsl:value-of select="$ProductDescription"/></ProductDescription>
-			<OrderedQuantity><xsl:value-of select="$OrderedQuantity"/></OrderedQuantity>
+			<ProductDescription><xsl:value-of select="translate($ProductDescription, '\&quot;', '')"/></ProductDescription>
+			<OrderedQuantity>
+				<xsl:attribute name="UnitOfMeasure">
+					<xsl:choose>
+					<xsl:when test="translate($PackSize, 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ') = 'KG'">
+						<xsl:text>KGM</xsl:text>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>EA</xsl:text>
+					</xsl:otherwise>
+				</xsl:choose></xsl:attribute>
+				<xsl:value-of select="$OrderedQuantity"/>
+			</OrderedQuantity>
 			<PackSize><xsl:value-of select="$PackSize"/></PackSize>
 			<UnitValueExclVAT><xsl:value-of select="$UnitValueExclVAT"/></UnitValueExclVAT>
 			<LineValueExclVAT><xsl:value-of select="$LineValueExclVAT"/></LineValueExclVAT>
