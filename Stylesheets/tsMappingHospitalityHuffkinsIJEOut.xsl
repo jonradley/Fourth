@@ -7,6 +7,8 @@ Huffkins mapper for invoices and credits journal format.
  Date      		| Name 				| Description of modification
 ==========================================================================================
  24/02/2016	| Jose Miguel	|  FB10848 - Created.
+==========================================================================================
+ 10/03/2016	| Jose Miguel	|  FB10869 - Fixes and changes.
 ==========================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"  xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript" exclude-result-prefixes="#default xsl msxsl js">
 	<xsl:output method="text" encoding="UTF-8"/>
@@ -14,6 +16,8 @@ Huffkins mapper for invoices and credits journal format.
 	
 	<!-- Drive the transformation of the whole file -->
 	<xsl:template match="/">
+		<xsl:text>*ContactName,EmailAddress,POAddressLine1,POAddressLine2,POAddressLine3,POAddressLine4,POCity,PORegion,POPostalCode,POCountry,*InvoiceNumber,*InvoiceDate,*DueDate,Total,InventoryItemCode,Description,*Quantity,*UnitAmount,*AccountCode,*TaxType,TaxAmount,TrackingName1,TrackingOption1,TrackingName2,TrackingOption2,Currency</xsl:text>
+		<xsl:text>&#13;&#10;</xsl:text>
 		<xsl:apply-templates select="Batch/BatchDocuments/BatchDocument"/>
 	</xsl:template>
 
@@ -73,7 +77,8 @@ Huffkins mapper for invoices and credits journal format.
 				<!-- P - Description - Invoice from Supplier Name - Yes, that's fine -->
 				<xsl:value-of select="concat('Invoice from ', $header/SupplierName)"/>
 				<xsl:text>,</xsl:text>
-				<!-- Q - *Quantity - leave blank (defaults to 1) - LEAVE THIS BLANK -->
+				<!-- Q - *Quantity - leave blank (defaults to 1)  -->
+				<xsl:text>1</xsl:text>
 				<xsl:text>,</xsl:text>
 				<!-- R - *UnitAmount - Net value per nominal split (not the total Net value) - This is the net value per nominal split. Not the total net value. Each nominal split should have it's own value here, which will be multiplied by 1 as per column S. Xero will then add these lines together to totalise net value.  -->
 				<xsl:value-of select="sum(key('keyLinesByRefAndNominalCode',concat($currentDocReference, '|', $currentCategoryNominal))/LineNet)"/>
@@ -82,9 +87,10 @@ Huffkins mapper for invoices and credits journal format.
 				<xsl:value-of select="$currentCategoryNominal"/>
 				<xsl:text>,</xsl:text>
 				<!-- T - *TaxType - Always 20% (VAT on Expenses) - Please can this be defaulted to the following code exactly "20% (VAT on Expenses)". The characters are important as this is exactly how the 20% rate appears within Xero.  -->
+				<xsl:text>20% (VAT on Expenses)</xsl:text>				
 				<xsl:text>,</xsl:text>
 				<!-- U - TaxAmount - Tax amount in numeric value per category nominal split from FnB - Correct. This field is the specific tax amount in numeric value per nominal category value as per column T. I.e in the example 42 would be the amount of tax payable on the net nominal total of 250 for code: BEV100. -->
-				<xsl:text>20% (VAT on Expenses)</xsl:text>
+				<xsl:value-of select="sum(LineVAT)"/>
 				<xsl:text>,</xsl:text>
 				<!-- V - TrackingName1 - default to "Site" - This column needs to read the following for every invoice: "Site" -->
 				<xsl:text>Site</xsl:text>
