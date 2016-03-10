@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--******************************************************************
+Rail Gourmet CSV Purchase Order Batch FFS
+
+**********************************************************************
+Name		| Date			| Change
+*********************************************************************
+A Barber	| 10/10/2012		| 5761 Rail Gourmet Order Batch
+*********************************************************************
+A Barber	| 22/11/2012		| 5871 Addition of UOM mapping
+
+M Emanuel| 13/12/2012 | Case 5909 Removed BuyerLocation Map in 
+to allow the processor to write the H/O code
+*******************************************************************-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>chr(10)</ffsRecordSeparator>
+		<ffsEscapeChars>
+			<ffsEscapeChar>
+				<ffsNative>chr(13)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>""</ffsNative>
+				<ffsTradesimple>¬Q</ffsTradesimple>
+				<ffsLiteral>"</ffsLiteral>
+			</ffsEscapeChar>
+		</ffsEscapeChars>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>,</ffsFieldSeparator>
+		</ffsFieldSeparators>
+		<ffsSplitBatchRecord RecordPos="H"/>
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<BatchDocuments>
+				<BatchDocument>
+					<PurchaseOrder>
+						<TradeSimpleHeader>
+							<SendersCodeForRecipient RecordPos="H" LPos="2"/>
+							<SendersBranchReference RecordPos="H" LPos="10"/>
+							<TestFlag RecordPos="H" LPos="3"/>
+						</TradeSimpleHeader>
+						<PurchaseOrderHeader>
+							<PurchaseOrderReferences>
+								<PurchaseOrderReference RecordPos="H" LPos="4"/>
+							</PurchaseOrderReferences>
+							<OrderedDeliveryDetails>
+								<DeliveryDate RecordPos="H" LPos="6"/>
+							</OrderedDeliveryDetails>
+						</PurchaseOrderHeader>
+						<PurchaseOrderDetail>
+							<PurchaseOrderLine>
+								<LineNumber RecordPos="D" LPos="2"/>
+								<ProductID>
+									<SuppliersProductCode RecordPos="D" LPos="3"/>
+								</ProductID>
+								<OrderedQuantity RecordPos="D" LPos="4">
+									<ffsAttribute1 name="UnitOfMeasure" RecordPos="D" LPos="7"/>
+								</OrderedQuantity>
+								<UnitValueExclVAT RecordPos="D" LPos="5"/>
+								<LineValueExclVAT RecordPos="D" LPos="6"/>
+							</PurchaseOrderLine>
+						</PurchaseOrderDetail>
+						<PurchaseOrderTrailer>
+							<NumberOfLines RecordPos="H" LPos="7"/>
+							<NumberOfItems RecordPos="H" LPos="8"/>
+							<TotalExclVAT RecordPos="H" LPos="9"/>
+						</PurchaseOrderTrailer>
+					</PurchaseOrder>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>
