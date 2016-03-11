@@ -90,7 +90,7 @@ Huffkins mapper for invoices and credits journal format.
 				<xsl:text>20% (VAT on Expenses)</xsl:text>				
 				<xsl:text>,</xsl:text>
 				<!-- U - TaxAmount - Tax amount in numeric value per category nominal split from FnB - Correct. This field is the specific tax amount in numeric value per nominal category value as per column T. I.e in the example 42 would be the amount of tax payable on the net nominal total of 250 for code: BEV100. -->
-				<xsl:value-of select="sum(LineVAT)"/>
+				<xsl:value-of select="sum(key('keyLinesByRefAndNominalCode',concat($currentDocReference, '|', $currentCategoryNominal))/LineVAT)"/>
 				<xsl:text>,</xsl:text>
 				<!-- V - TrackingName1 - default to "Site" - This column needs to read the following for every invoice: "Site" -->
 				<xsl:text>Site</xsl:text>
