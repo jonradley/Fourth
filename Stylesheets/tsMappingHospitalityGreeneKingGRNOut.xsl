@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-========================================================
+================================================================================================================
 Maps internal GRNs into outbound Greene King EANUCC format
 
-========================================================
-******************************************************************************************
+================================================================================================================
+***********************************************************************************************************************************************************************************
 Date       	 	| Name         | Description of modification
-******************************************************************************************
+***********************************************************************************************************************************************************************************
 10/02/2016	| M Dimant   | FB10792: Created.
-*****************************************************************************************
+***********************************************************************************************************************************************************************************
+15/03/2016	| M Dimant   | FB10875: Corrected logic around how we pass the suppliers code and strip out sequence number for Aurora.  
+**********************************************************************************************************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:sh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" xmlns:gdsn="urn:ean.ucc:2" xmlns:despatch_advice="urn:ean.ucc:despatch_advice:2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:vbscript="http://abs-Ltd.com" >
 	<xsl:output method="xml" encoding="UTF-8" indent="yes"/>
-	
-	
+  	
 <xsl:template match="/GoodsReceivedNote">
 <despatch_advice:despatchAdviceMessage>	 
 <sh:StandardBusinessDocumentHeader>
@@ -83,10 +84,31 @@ Date       	 	| Name         | Description of modification
       <gln><xsl:value-of select="GoodsReceivedNoteHeader/ShipTo/ShipToLocationID/GLN"/></gln>
       <additionalPartyIdentification additionalPartyIdentificationTypeCode="BUYER_ASSIGNED_IDENTIFIER_FOR_A_PARTY" codeListVersion="1">
 		  <!-- Remove sequence number (001) from supplier's code as this cannot be accepted in Aurora -->
-		  <xsl:value-of select="substring-before(translate(GoodsReceivedNoteHeader/ShipTo/ShipToLocationID/SuppliersCode,' ',''),'001')"/>
+		  <xsl:variable name="SuppCode" select="GoodsReceivedNoteHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
+		  <xsl:choose>
+					  <!-- Check if last 3 digits are 001 --> 
+					<xsl:when test="substring($SuppCode,string-length($SuppCode) - 6,string-length($SuppCode)) = '    001'">
+						<xsl:value-of select="substring-before(GoodsReceivedNoteHeader/ShipTo/ShipToLocationID/SuppliersCode,'    001')"/>
+					</xsl:when>
+					<!-- If not, then just pass whole code across -->
+					<xsl:otherwise>					
+						<xsl:value-of select="($SuppCode) "/>
+					</xsl:otherwise>
+			</xsl:choose>
       </additionalPartyIdentification>
       <additionalPartyIdentification additionalPartyIdentificationTypeCode="SELLER_ASSIGNED_IDENTIFIER_FOR_A_PARTY" codeListVersion="1">
-		   <xsl:value-of select="substring-before(translate(GoodsReceivedNoteHeader/ShipTo/ShipToLocationID/SuppliersCode,' ',''),'001')"/>
+		     <!-- Remove sequence number (001) from supplier's code as this cannot be accepted in Aurora -->
+		  <xsl:variable name="SuppCode" select="GoodsReceivedNoteHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
+		  <xsl:choose>
+					  <!-- Check if last 3 digits are 001 --> 
+					<xsl:when test="substring($SuppCode,string-length($SuppCode) - 6,string-length($SuppCode)) = '    001'">
+						<xsl:value-of select="substring-before(GoodsReceivedNoteHeader/ShipTo/ShipToLocationID/SuppliersCode,'    001')"/>
+					</xsl:when>
+					<!-- If not, then just pass whole code across -->
+					<xsl:otherwise>					
+						<xsl:value-of select="($SuppCode) "/>
+					</xsl:otherwise>
+			</xsl:choose>
       </additionalPartyIdentification>
     </shipTo>
     <despatchInformation>
@@ -137,4 +159,5 @@ Date       	 	| Name         | Description of modification
   </despatchAdvice>
 </despatch_advice:despatchAdviceMessage>	  
 </xsl:template>		  
+	
 </xsl:stylesheet>
