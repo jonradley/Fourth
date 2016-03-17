@@ -14,15 +14,10 @@
  14/12/2015	| M Dimant			| FB10556: Created module
 ==========================================================================================
  16/02/2016	| M Dimant			| FB10825: Added mapping of ShipTo GLN. Assign line numbers within stylesheet.
+==========================================================================================
+ 17/03/2016	| M Dimant			| FB10880: Map ship to GLN to buyers head office.
 ==========================================================================================-->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-                              xmlns:fo="http://www.w3.org/1999/XSL/Format"
-                              xmlns:sh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" 
-                              xmlns:eanucc="urn:ean.ucc:2" 
-                              xmlns:pay="urn:ean.ucc:pay:2"
-                              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                              exclude-result-prefixes="xsl fo">
-	
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:sh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" xmlns:eanucc="urn:ean.ucc:2" xmlns:pay="urn:ean.ucc:pay:2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" exclude-result-prefixes="xsl fo">
 	<xsl:template match="Invoice">
 		<sh:StandardBusinessDocument>
 			<xsl:attribute name="xsi:schemaLocation">http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader ../Schemas/sbdh/StandardBusinessDocumentHeader.xsd urn:ean.ucc:2 ../Schemas/InvoiceProxy.xsd</xsl:attribute>
@@ -91,9 +86,7 @@
 							</documentCommandHeader>
 							<documentCommandOperand>
 								<pay:invoice>
-									<xsl:attribute name="creationDateTime">
-										<xsl:value-of select="concat(InvoiceHeader/InvoiceReferences/InvoiceDate,'T00:00:00')"/>
-									</xsl:attribute>
+									<xsl:attribute name="creationDateTime"><xsl:value-of select="concat(InvoiceHeader/InvoiceReferences/InvoiceDate,'T00:00:00')"/></xsl:attribute>
 									<xsl:attribute name="documentStatus">ORIGINAL</xsl:attribute>
 									<xsl:attribute name="xsi:schemaLocation">urn:ean.ucc:2 ../Schemas/InvoiceProxy.xsd</xsl:attribute>
 									<contentVersion>
@@ -120,7 +113,9 @@
 										<countryISOCode>GB</countryISOCode>
 									</countryOfSupplyOfGoods>
 									<shipTo>
-										<gln><xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/GLN"/></gln>
+										<gln>
+											<xsl:value-of select="InvoiceHeader/Buyer/BuyersLocationID/GLN"/>
+										</gln>
 										<xsl:if test="InvoiceHeader/ShipTo/ShipToLocationID/SuppliersCode != ''">
 											<additionalPartyIdentification>
 												<additionalPartyIdentificationValue>
@@ -168,9 +163,7 @@
 									</seller>
 									<xsl:for-each select="InvoiceDetail/InvoiceLine">
 										<invoiceLineItem number="1">
-											<xsl:attribute name="number">
-												<xsl:value-of select="position()"/>
-											</xsl:attribute>
+											<xsl:attribute name="number"><xsl:value-of select="position()"/></xsl:attribute>
 											<tradeItemIdentification>
 												<gtin>
 													<xsl:choose>
@@ -277,7 +270,7 @@
 													<xsl:value-of select="VATAmountAtRate"/>
 												</taxAmount>
 												<extension>
-													<vat:vATTaxInformationExtension xmlns:vat="urn:ean.ucc:pay:vat:2">														
+													<vat:vATTaxInformationExtension xmlns:vat="urn:ean.ucc:pay:vat:2">
 														<xsl:attribute name="xsi:schemaLocation">urn:ean.ucc:pay:vat:2 ../Schemas/Invoice_VATExtensionProxy.xsd</xsl:attribute>
 														<rate>
 															<xsl:value-of select="format-number(@VATRate,'0.00')"/>
