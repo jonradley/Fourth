@@ -121,6 +121,9 @@ Date       	 	| Name         | Description of modification
 			<xsl:when test="GoodsReceivedNoteHeader/PurchaseOrderReferences/PurchaseOrderReference and not(GoodsReceivedNoteHeader/PurchaseOrderReferences/PurchaseOrderReference ='') ">
 				<xsl:value-of select="GoodsReceivedNoteHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
 			</xsl:when>
+			<xsl:when test="GoodsReceivedNoteHeader/PurchaseOrderReferences/PurchaseOrderReference ='Not Provided' ">
+				<xsl:value-of select="GoodsReceivedNoteHeader/GoodsReceivedNoteReferences/GoodsReceivedNoteReference"/>
+			</xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="GoodsReceivedNoteHeader/GoodsReceivedNoteReferences/GoodsReceivedNoteReference"/>
 			</xsl:otherwise>
