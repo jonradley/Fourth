@@ -71,7 +71,7 @@ Date       	 	| Name         | Description of modification
       <!-- Map Spirit's code for supplier to Aurora code. Aurora code is held in Members Own Code -->
       <xsl:variable name="AuroraCode"><xsl:value-of select="GoodsReceivedNoteHeader/Supplier/SuppliersLocationID/SuppliersCode"/></xsl:variable>
       <xsl:choose>
-		  	<xsl:when test="$AuroraCode">
+		  	<xsl:when test="$AuroraCode and not($AuroraCode='')">
 				<xsl:value-of select="$AuroraCode"/>
 			</xsl:when>			
 			<xsl:otherwise>				
