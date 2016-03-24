@@ -11,7 +11,7 @@ Date       	 	| Name         | Description of modification
 ***********************************************************************************************************************************************************************************
 15/03/2016	| M Dimant   | FB10875: Corrected logic around how we pass the suppliers code and strip out sequence number for Aurora.  
 ***********************************************************************************************************************************************************************************
-22/03/2016	| M Dimant   | FB10881: Map Aurora code for additional suppliers. Map GRN reference instead of PO reference if PO ref doesn't exist.
+22/03/2016	| M Dimant   | FB10881: Changed to map Aurora code from members own code. Map GRN reference instead of PO reference if PO ref doesn't exist.
 **********************************************************************************************************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:sh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" xmlns:gdsn="urn:ean.ucc:2" xmlns:despatch_advice="urn:ean.ucc:despatch_advice:2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:vbscript="http://abs-Ltd.com" >
@@ -68,47 +68,14 @@ Date       	 	| Name         | Description of modification
     <seller>
       <gln><xsl:value-of select="GoodsReceivedNoteHeader/Supplier/SuppliersLocationID/GLN"/></gln>
       <additionalPartyIdentification additionalPartyIdentificationTypeCode="BUYER_ASSIGNED_IDENTIFIER_FOR_A_PARTY" codeListVersion="1">
-      <!-- Map Spirit's code for supplier to Aurora code -->
-      <xsl:variable name="SupplierName"><xsl:value-of select="GoodsReceivedNoteHeader/Supplier/SuppliersName"/></xsl:variable>
+      <!-- Map Spirit's code for supplier to Aurora code. Aurora code is held in Members Own Code -->
+      <xsl:variable name="AuroraCode"><xsl:value-of select="GoodsReceivedNoteHeader/Supplier/SuppliersLocationID/SuppliersCode"/></xsl:variable>
       <xsl:choose>
-		  	<xsl:when test="contains($SupplierName, 'Greene King')">
-				<xsl:text>10645349</xsl:text>
-			</xsl:when>
-			<xsl:when test="contains($SupplierName, 'Kuehne')">
-				<xsl:text>10286266</xsl:text>
-			</xsl:when>
-			<xsl:when test="contains($SupplierName, 'Innis')">
-				<xsl:text>10915474</xsl:text>
-			</xsl:when>
-			<xsl:when test="contains($SupplierName, 'Little beer')">
-				<xsl:text>10439152</xsl:text>
-			</xsl:when>
-			<xsl:when test="contains($SupplierName, 'Pictish')">
-				<xsl:text>10439217</xsl:text>
-			</xsl:when>
-			<xsl:when test="contains($SupplierName, 'Purity')">
-				<xsl:text>10402747</xsl:text>
-			</xsl:when>
-			<xsl:when test="contains($SupplierName, 'Shipstone')">
-				<xsl:text>10405061</xsl:text>
-			</xsl:when>
-			<xsl:when test="contains($SupplierName, 'Siba')">
-				<xsl:text>10401813</xsl:text>
-			</xsl:when>
-			<xsl:when test="contains($SupplierName, 'Sinclair Collis')">
-				<xsl:text>10907404</xsl:text>
-			</xsl:when>
-			<xsl:when test="contains($SupplierName, 'Titanic')">
-				<xsl:text>10187394</xsl:text>
-			</xsl:when>
-			<xsl:when test="contains($SupplierName, 'Walkers')">
-				<xsl:text>10198469</xsl:text>
-			</xsl:when>
-			<xsl:when test="contains($SupplierName, 'Windsor')">
-				<xsl:text>10287963</xsl:text>
-			</xsl:when>
+		  	<xsl:when test="$AuroraCode">
+				<xsl:value-of select="$AuroraCode"/>
+			</xsl:when>			
 			<xsl:otherwise>				
-				<xsl:text>No Aurora code found in mapping</xsl:text>
+				<xsl:text>No Aurora code has been set for this supplier</xsl:text>
 			</xsl:otherwise>						
 		</xsl:choose>
       </additionalPartyIdentification>
