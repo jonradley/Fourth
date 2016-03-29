@@ -13,7 +13,9 @@
 ==========================================================================================
  14/12/2015	| M Dimant			| FB10556: Created module
 ==========================================================================================
-  16/02/2016	| M Dimant			| FB10825: Added mapping of ShipTo GLN. Assign line numbers within stylesheet.
+ 16/02/2016	| M Dimant			| FB10825: Added mapping of ShipTo GLN. Assign line numbers within stylesheet.
+==========================================================================================
+ 17/03/2016	| M Dimant			| FB10880: Map ship to GLN to buyers head office.
 ==========================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
                               xmlns:fo="http://www.w3.org/1999/XSL/Format" 
@@ -121,7 +123,7 @@
 										<countryISOCode>GB</countryISOCode>
 									</countryOfSupplyOfGoods>
 									<shipTo>
-										<gln><xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/GLN"/></gln>
+										<gln><xsl:value-of select="CreditNoteHeader/Buyer/BuyersLocationID/GLN"/></gln>
 										<xsl:if test="CreditNoteHeader/ShipTo/ShipToLocationID/SuppliersCode != ''">
 											<additionalPartyIdentification>
 												<additionalPartyIdentificationValue>
