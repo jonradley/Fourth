@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 '******************************************************************************************
-' Date		    | Name				   | Description of modification
+' Date		    		| Name				   | Description of modification
 '******************************************************************************************
-' 10/03/2014	    | Jose Miguel			   | FB7741. Created
+' 10/03/2014	| Jose Miguel		| FB7741. Created
 '******************************************************************************************
--->
+' 01/04/2016	| Jose Miguel		| FB10892 - Use Suppliers Code as hte Recipients code for Comtrex compatibility
+'******************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
                               xmlns:fo="http://www.w3.org/1999/XSL/Format"
                               xmlns:msxsl="urn:schemas-microsoft-com:xslt" 
