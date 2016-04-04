@@ -19,11 +19,7 @@
 		<xsl:text>,</xsl:text>
 		
 		<!-- Recipient's Code for Unit prioritising units supplier code if present -->
-		<xsl:choose>
-			<xsl:when test="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"><xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode" /></xsl:when>
-			<xsl:otherwise><xsl:value-of select="TradeSimpleHeader/RecipientsCodeForSender"/></xsl:otherwise>
-		</xsl:choose>
-		
+		<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode" />
 		<xsl:text>,</xsl:text>
 		
 		<!-- Test Flag -->
@@ -98,6 +94,11 @@
 		
 		<!-- Recipients Branch Reference -->
 		<xsl:apply-templates select="TradeSimpleHeader/RecipientsBranchReference" />
+
+		<!-- Recipients Code For Sender -->		
+		<xsl:text>,</xsl:text>
+		<xsl:apply-templates select="TradeSimpleHeader/RecipientsCodeForSender" />
+
 		<xsl:text>&#13;&#10;</xsl:text>
 		
 		<!-- Line Detail -->
