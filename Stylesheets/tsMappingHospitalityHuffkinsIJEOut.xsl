@@ -9,7 +9,9 @@ Huffkins mapper for invoices and credits journal format.
  24/02/2016	| Jose Miguel	|  FB10848 - Created.
 ==========================================================================================
  10/03/2016	| Jose Miguel	|  FB10869 - Fixes and changes.
-==========================================================================================-->
+==========================================================================================
+ 25/04/2016	| Jose Miguel	|  FB10934 - Adding support for CRN.
+=========================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"  xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript" exclude-result-prefixes="#default xsl msxsl js">
 	<xsl:output method="text" encoding="UTF-8"/>
 	<xsl:key name="keyLinesByRefAndNominalCode" match="InvoiceCreditJournalEntriesLine" use="concat(../../InvoiceCreditJournalEntriesHeader/InvoiceReference,'|', CategoryNominal)"/>
@@ -36,6 +38,12 @@ Huffkins mapper for invoices and credits journal format.
 	<xsl:template match="InvoiceCreditJournalEntriesDetail">
 		<xsl:variable name="header" select="../InvoiceCreditJournalEntriesHeader"/>
 		<xsl:variable name="currentDocReference" select="$header/InvoiceReference"/>
+		<xsl:variable name="typeSign">
+			<xsl:choose>
+				<xsl:when test="$header/TransactionType = 'INV'">1</xsl:when>
+				<xsl:otherwise>-1</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
 		<xsl:for-each select="InvoiceCreditJournalEntriesLine[generate-id() = generate-id(key('keyLinesByRefAndNominalCode', concat($currentDocReference, '|', CategoryNominal))[1])]">
 			<xsl:variable name="currentCategoryNominal" select="CategoryNominal"/>
 				<!-- A - *ContactName - FnB Supplier Name - Correct -->
@@ -81,7 +89,7 @@ Huffkins mapper for invoices and credits journal format.
 				<xsl:text>1</xsl:text>
 				<xsl:text>,</xsl:text>
 				<!-- R - *UnitAmount - Net value per nominal split (not the total Net value) - This is the net value per nominal split. Not the total net value. Each nominal split should have it's own value here, which will be multiplied by 1 as per column S. Xero will then add these lines together to totalise net value.  -->
-				<xsl:value-of select="sum(key('keyLinesByRefAndNominalCode',concat($currentDocReference, '|', $currentCategoryNominal))/LineNet)"/>
+				<xsl:value-of select="$typeSign * sum(key('keyLinesByRefAndNominalCode',concat($currentDocReference, '|', $currentCategoryNominal))/LineNet)"/>
 				<xsl:text>,</xsl:text>
 				<!-- S - *AccountCode - Category Nominal code from FnB - This needs to be the category nominal code for the category one level below FOOD, BEVERAGE, MISC. I.e. Bread & Pastry, dairy, dry goods, fish, frozen, fruit & veg etc. The screenshot (named invoice import) in folder shows the level of detail we would like.  -->
 				<xsl:value-of select="$currentCategoryNominal"/>
@@ -90,7 +98,7 @@ Huffkins mapper for invoices and credits journal format.
 				<xsl:text>20% (VAT on Expenses)</xsl:text>				
 				<xsl:text>,</xsl:text>
 				<!-- U - TaxAmount - Tax amount in numeric value per category nominal split from FnB - Correct. This field is the specific tax amount in numeric value per nominal category value as per column T. I.e in the example 42 would be the amount of tax payable on the net nominal total of 250 for code: BEV100. -->
-				<xsl:value-of select="sum(key('keyLinesByRefAndNominalCode',concat($currentDocReference, '|', $currentCategoryNominal))/LineVAT)"/>
+				<xsl:value-of select="$typeSign * sum(key('keyLinesByRefAndNominalCode',concat($currentDocReference, '|', $currentCategoryNominal))/LineVAT)"/>
 				<xsl:text>,</xsl:text>
 				<!-- V - TrackingName1 - default to "Site" - This column needs to read the following for every invoice: "Site" -->
 				<xsl:text>Site</xsl:text>
