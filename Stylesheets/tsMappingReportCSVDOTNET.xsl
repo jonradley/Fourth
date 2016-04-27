@@ -18,6 +18,8 @@
 ******************************************************************************************
  14/12/2015 | Graham Neicho | FB10676 - Adding further translations for Report 161
 ******************************************************************************************
+ 19/01/2016 | R Cambridge   | FB10761 - Additional debit reason translations for report 161
+******************************************************************************************
 -->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -524,6 +526,8 @@
           <xsl:when test="$InputString='Invoice quantity more than accepted quantity at delivery'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="21"/></xsl:call-template></xsl:when>
           <xsl:when test="$InputString='Rejected on delivery or not receipted'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="22"/></xsl:call-template></xsl:when>
           <xsl:when test="$InputString='Invoice price more than entered price at delivery'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="23"/></xsl:call-template></xsl:when>
+          <xsl:when test="$InputString='Invoice price less than catalogue price at delivery'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="24"/></xsl:call-template></xsl:when>
+          <xsl:when test="$InputString='Invoice price more than catalogue price at delivery'"><xsl:call-template name="TranslateString"><xsl:with-param name="ID" select="25"/></xsl:call-template></xsl:when>
           <xsl:otherwise><xsl:value-of select="$InputString" /></xsl:otherwise>
         </xsl:choose>
       </xsl:when>
