@@ -5,6 +5,8 @@ Alterations
 Name		| Date			| Change
 *******************************************************************************************************************************************************************
 J Miguel	| 20/05/2015	| 10269 Brakes Logistics Generic Mapper Clean up
+*******************************************************************************************************************************************************************
+J Miguel	| 07/10/2015	| 10526 Brakes non food to use this mapper with a tiny change.
 ****************************************************************************************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:sh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" xmlns:eanucc="urn:ean.ucc:2" xmlns:order="urn:ean.ucc:order:2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:vbscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8" indent="yes"/>
@@ -142,6 +144,10 @@ J Miguel	| 20/05/2015	| 10269 Brakes Logistics Generic Mapper Clean up
 												<xsl:when test="TradeSimpleHeader/RecipientsBranchReference">
 													<xsl:value-of select="TradeSimpleHeader/RecipientsBranchReference"/>
 												</xsl:when>
+												<!-- We need to identify the supplier this way as the GLN is shared with Brakes Grocery -->
+												<xsl:when test="TradeSimpleHeader/RecipientsName = 'Brakes Non-Food'">
+													<xsl:text>BRAKESNONFOOD</xsl:text>
+												</xsl:when>
 												<xsl:otherwise>
 													<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/BuyersCode"/>
 												</xsl:otherwise>
@@ -180,7 +186,7 @@ J Miguel	| 20/05/2015	| 10269 Brakes Logistics Generic Mapper Clean up
 													<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/GLN"/>
 												</xsl:otherwise>												
 											</xsl:choose>			
-																			
+											
 										</gln>
 										<!--DG Trading Outlet code -->
 										<additionalPartyIdentification>

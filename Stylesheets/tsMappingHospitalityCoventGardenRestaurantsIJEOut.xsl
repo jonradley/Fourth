@@ -11,6 +11,8 @@
  Date      	| Name 			| Description of modification
 ==========================================================================================
  04/03/2015	| Jose Miguel	| FB10292 - Convent Garden Restaurants IJE mapper
+==========================================================================================
+ 21/09/2015	| Jose Miguel	| FB10432 - CR - mapping nominal codes
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:user="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl user">
 	<xsl:output method="text" encoding="UTF-8"/>
@@ -119,10 +121,19 @@
 				</xsl:if>
 				
 				<!-- Category nominal (conditions pending -ask Ali if the condition has to be apply here or also to the grouping) -->
-				<xsl:choose >
-					<xsl:when test="contains(../../InvoiceCreditJournalEntriesHeader/BuyersSiteCode, 'BAR')"><xsl:text>2050</xsl:text></xsl:when>
-					<xsl:when test="contains(../../InvoiceCreditJournalEntriesHeader/BuyersSiteCode, 'KIT')"><xsl:text>2010</xsl:text></xsl:when>
-					<xsl:otherwise><xsl:value-of select="$currentCategoryNominal"/></xsl:otherwise>
+				<xsl:choose>
+					<xsl:when test="not(contains('4030|4060|4020|5350|5500', $currentCategoryNominal))">
+						<xsl:choose>
+							<xsl:when test="contains(../../InvoiceCreditJournalEntriesHeader/BuyersSiteCode, 'BAR')"><xsl:text>2050</xsl:text></xsl:when>
+							<xsl:when test="contains(../../InvoiceCreditJournalEntriesHeader/BuyersSiteCode, 'KIT')"><xsl:text>2010</xsl:text></xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="$currentCategoryNominal"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="$currentCategoryNominal"/>
+					</xsl:otherwise>
 				</xsl:choose>
 				<xsl:text>,</xsl:text>
 				<!-- Supplier Name -->

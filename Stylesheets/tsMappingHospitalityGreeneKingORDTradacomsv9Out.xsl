@@ -3,19 +3,17 @@
 <!--======================================================================================
  Overview
 
- © Alternative Business Solutions Ltd, 2006.
+Maps internal XML to tradacoms v9 for Greene King
 ==========================================================================================
  Module History
 ==========================================================================================
  Version		| 
 ==========================================================================================
- Date      	| Name 						|	Description of modification
+ Date      		| Name 				|	Description of modification
 ==========================================================================================
- 13/04/2010	| M Dimant			|	Created module based on standard tradacoms mapper. Added line comments in DNA segment.
+ 13/10/2015	| M Dimant		|	FB 10513: Created. Based on standard tradacoms v9 mapper.
 ==========================================================================================
-11/01/2012	| M Emanuel			| 	Created Order out mapper for Booker
-==========================================================================================
-1911/2015		| M Dimant			|	FB 10618: Removed hard coded GLN and mapped from internal version.
+
 =======================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -24,13 +22,12 @@
 	xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	<xsl:output method="text" encoding="utf-8"/>
 
-<!--xsl:param name="nBatchID">Not Provided</xsl:param-->
+
 	
 	<xsl:template match="/PurchaseOrder">
 	
 		<xsl:variable name="sRecordSep">
 			<xsl:text>'</xsl:text>
-			<!--<xsl:text>&#13;&#10;</xsl:text>-->
 			<xsl:text></xsl:text>
 		</xsl:variable>
 		
@@ -47,9 +44,11 @@
 					<xsl:text>5013546164209</xsl:text>
 				</xsl:otherwise>
 			</xsl:choose>
-			<xsl:text>:FOURTH HOSPITALITY</xsl:text>
-			<xsl:text>+</xsl:text>			
-			<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN"/>		
+			<xsl:text>:</xsl:text>
+			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Buyer/BuyersName), 35)"/>
+			<xsl:text>+</xsl:text>
+			<!--Your mailbox reference-->
+			<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN"/>
 			<xsl:text>:</xsl:text>
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersName), 35)"/>
 			<xsl:text>+</xsl:text>
@@ -69,26 +68,24 @@
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:text>MHD=</xsl:text>	
-			<!--<xsl:value-of select="HelperObj:GetNextCounterValue('MessageHeader')"/><xsl:text>+</xsl:text>-->
 			<xsl:text>1+ORDHDR:9</xsl:text>
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:text>TYP=</xsl:text>	
 			<xsl:text>0430</xsl:text>
+			<xsl:text>+</xsl:text>
 			<xsl:text></xsl:text>
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:text>SDT=</xsl:text>
-			<!--xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN"/-->
-			<xsl:text>5011295000016</xsl:text>
+			<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/GLN"/>
 			<xsl:text>:</xsl:text>
-			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersName),17)"/>
+			<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/BuyersCode"/>
 			<xsl:text>+</xsl:text>
 			<!-- truncate to 40 SNAM = 3060 = AN..40-->
-			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersName),17)"/>
+			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersName),40)"/>
 			<xsl:text>+</xsl:text>
-			<!-- truncate to 35 SADD 1-4 = 3062 = AN..35-->	
-
+			<!-- truncate to 35 SADD 1-4 = 3062 = AN..35-->		
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersAddress/AddressLine1),35)"/>
 			<xsl:text>:</xsl:text>
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersAddress/AddressLine2),35)"/>
@@ -97,11 +94,8 @@
 			<xsl:text>:</xsl:text>
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersAddress/AddressLine4),35)"/>
 			<xsl:text>:</xsl:text>
-
 			<!-- truncate to 8 (just in case) SADD 5 = 3063 = AN..8-->		
-
-			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersAddress/PostCode),8)"/>	
-
+			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersAddress/PostCode),8)"/>		
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:text>CDT=</xsl:text>
@@ -120,7 +114,6 @@
 			<!-- truncate to 8 (just in case) CADD 5 = 3033 = AN..8-->
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Buyer/SendersAddress/PostCode),8)"/>
 		<xsl:value-of select="$sRecordSep"/>
-	
 		
 		<xsl:text>FIL=</xsl:text>
 			<xsl:value-of select="PurchaseOrderHeader/FileGenerationNumber"/><xsl:text>+</xsl:text>
@@ -132,19 +125,25 @@
 			<xsl:text>6</xsl:text>
 		<xsl:value-of select="$sRecordSep"/>
 	
+
+	
+
+	
 		<xsl:text>MHD=</xsl:text>	
-			<!--xsl:value-of select="HelperObj:GetNextCounterValue('MessageHeader')"/-->
+	
 			<xsl:text>2+</xsl:text>
 			<xsl:text>ORDERS:9</xsl:text>
 		<xsl:value-of select="$sRecordSep"/>
 
 		
 		<xsl:text>CLO=</xsl:text>
+
 			<xsl:text>:</xsl:text>
+			<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
 			<xsl:text>:</xsl:text>
-			<!-- truncate to 40 CNAM = 3060 = AN..40-->
-			<xsl:value-of select="/PurchaseOrder/TradeSimpleHeader/RecipientsCodeForSender"/>
+			<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode"/>
 			<xsl:text>+</xsl:text>
+			<!-- truncate to 40 CNAM = 3060 = AN..40-->
 			<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/ShipTo/ShipToName),40)"/>
 			<xsl:text>+</xsl:text>
 			<!-- truncate to 35 CADD 1-4 = 3032 = AN..35-->
@@ -166,36 +165,50 @@
 			<xsl:call-template name="msFormateDate">
 				<xsl:with-param name="vsUTCDate" select="PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderDate"/>
 			</xsl:call-template>
+			<xsl:text>+</xsl:text>
+			<xsl:text>+</xsl:text>
+			<xsl:text>N+</xsl:text>
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:text>DIN=</xsl:text>
-			<!--xsl:value-of select="HelperObj:FormatDate(string(PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate))"/-->
 			<xsl:call-template name="msFormateDate">
 				<xsl:with-param name="vsUTCDate" select="PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate"/>
 			</xsl:call-template>
-			
+			<xsl:text>+</xsl:text>
+			<xsl:call-template name="msFormateDate">
+				<xsl:with-param name="vsUTCDate" select="PurchaseOrderHeader/OrderedDeliveryDetails/DeliveryDate"/>
+			</xsl:call-template>
+			<xsl:text>+</xsl:text>
 		<xsl:value-of select="$sRecordSep"/>
 		
 		
-		<!--xsl:value-of select="HelperObj:ResetCounter('OrderLineDetails')"/-->
+		
+
 		<xsl:for-each select="PurchaseOrderDetail/PurchaseOrderLine">
 		
 			<xsl:text>OLD=</xsl:text>
-				<!--xsl:value-of select="HelperObj:GetNextCounterValue('OrderLineDetails')"/-->
 				<xsl:value-of select="count(preceding-sibling::* | self::*)"/>
-				<xsl:text>+9999999999999:</xsl:text>
+				<xsl:text>+</xsl:text>
+				<xsl:text>:</xsl:text>
 				<xsl:call-template name="msCheckField">
 					<xsl:with-param name="vobjNode" select="ProductID/SuppliersProductCode"/>
 					<xsl:with-param name="vnLength" select="30"/>
 				</xsl:call-template>
 				<xsl:text>+</xsl:text>
 				<xsl:text>+</xsl:text>
-				<xsl:text>+</xsl:text>
-				<xsl:text>1::</xsl:text>
+				<xsl:text>:</xsl:text>
+				<xsl:call-template name="msCheckField">
+					<xsl:with-param name="vobjNode" select="ProductID/BuyersProductCode"/>
+					<xsl:with-param name="vnLength" select="30"/>
+				</xsl:call-template>
+				<xsl:text>+::</xsl:text>
 				<xsl:value-of select="OrderedQuantity/@UnitOfMeasure"/>
 				<xsl:text>+</xsl:text>
 				<xsl:value-of select="format-number(OrderedQuantity,'0')"/>
+				<xsl:text>:</xsl:text>
+				<xsl:value-of select="translate(format-number(OrderedQuantity,'#.000'),'.','')"/>
 				<xsl:text>+</xsl:text>
+				<xsl:value-of select="translate(format-number(UnitValueExclVAT,'#.00'),'.','')"/><xsl:text>00</xsl:text>
 				<xsl:text>+</xsl:text>
 				<xsl:text>+</xsl:text>
 				<xsl:text>+</xsl:text>
@@ -203,11 +216,65 @@
 				<!-- 1556 Just truncate, don't raise an error for values greater than 40 chars -->
 				<xsl:value-of select="js:msSafeText(string(ProductDescription),40)"/>
 
-			<xsl:value-of select="$sRecordSep"/>		
-	
+				
+				
+			<xsl:value-of select="$sRecordSep"/>
+			
+		
+			
 		</xsl:for-each>
+		
+
+		<xsl:for-each select="/PurchaseOrder/PromotionsDetail/PurchaseOrderLine">
+							
+			<xsl:text>OLD=</xsl:text>
+				<xsl:value-of select="count(preceding-sibling::* | self::*)"/>
+				<xsl:text>+</xsl:text>
+				<xsl:text>:</xsl:text>
+				<xsl:call-template name="msCheckField">
+					<xsl:with-param name="vobjNode" select="ProductID/SuppliersProductCode"/>
+					<xsl:with-param name="vnLength" select="30"/>
+				</xsl:call-template>
+				<xsl:text>+</xsl:text>
+				<xsl:text>+</xsl:text>
+				<xsl:text>:</xsl:text>
+				<xsl:call-template name="msCheckField">
+					<xsl:with-param name="vobjNode" select="ProductID/BuyersProductCode"/>
+					<xsl:with-param name="vnLength" select="30"/>
+				</xsl:call-template>
+				<xsl:text>+::</xsl:text>
+				<xsl:value-of select="OrderedQuantity/@UnitOfMeasure"/>
+				<xsl:text>+</xsl:text>
+				<xsl:value-of select="format-number(OrderedQuantity,'0')"/>
+				<xsl:text>:</xsl:text>
+				<xsl:value-of select="translate(format-number(OrderedQuantity,'#.000'),'.','')"/>
+				<xsl:text>+</xsl:text>
+				<xsl:value-of select="translate(format-number(UnitValueExclVAT,'#.00'),'.','')"/><xsl:text>00</xsl:text>
+				<xsl:text>+</xsl:text>
+
+					<!-- IS a Promotion line and price is zero -->
+					<xsl:if test="format-number(UnitValueExclVAT,'0') = 0 ">
+						<xsl:text>F</xsl:text>
+					</xsl:if>
+					
+					<!-- IS a Promotion line and price is not zero -->
+					<xsl:if test="format-number(UnitValueExclVAT,'0') &gt; 0">
+						<xsl:text>P</xsl:text>
+					</xsl:if>
+
+				<xsl:text>+</xsl:text>
+				<xsl:text>+</xsl:text>
+				<!-- truncate to 40 TDES = 9030 = AN..40-->
+				<xsl:call-template name="msCheckField">
+					<xsl:with-param name="vobjNode" select="ProductDescription"/>
+					<xsl:with-param name="vnLength" select="40"/>
+				</xsl:call-template>
+							
+			<xsl:value-of select="$sRecordSep"/>
+					
+		</xsl:for-each>		
+		
 		<xsl:text>OTR=</xsl:text>	
-			<!-- 24 May 2007, FB: 972 - NE - Order count to include promotional lines -->
 			<xsl:value-of select="count(//PurchaseOrderLine)"/>
 			
 		<xsl:value-of select="$sRecordSep"/>
@@ -218,7 +285,6 @@
 		
 				
 		<xsl:text>MHD=</xsl:text>	
-			<!--xsl:value-of select="HelperObj:GetNextCounterValue('MessageHeader')"/><xsl:text>+</xsl:text-->
 			<xsl:text>3+ORDTLR:9</xsl:text>		
 		<xsl:value-of select="$sRecordSep"/>
 		
@@ -324,169 +390,6 @@
 		<xsl:value-of select="name($vobjNode)"/>
 		
 	</xsl:template>
-	
-<!--=======================================================================================
-  Routine        : writeDelInstruct()
-  Description    : Takes xml fragment of the form
-    			
-								<Field Group="1">blah</Field>
-								<Field Group="1">rhubarb</Field>
-								<Field Group="1">yadder</Field>
-								<Field Group="1">yak</Field>
-								<Field Group="2">guff</Field>
-	
-							and writes all <Field/> elements in the same group into one record
-							recusring until noi more records are required
-				  
-  Inputs         : 
-  Outputs        : 
-  Returns        : A string
-  Author         : Robert Cambridge
-  Version        : 1.0
-  Alterations    : (none)
- =======================================================================================-->	
-	<xsl:template name="writeDelInstruct">
-		<xsl:param name="vnCount"/>
-		<xsl:param name="vobjSplitText"/>
-		<xsl:param name="sRecordSep"/>
-
-		<xsl:choose>
-			<!-- No work left ot do -->
-			<xsl:when test="count($vobjSplitText/Field[@Group = $vnCount]) = 0"/>
-			
-			<!-- Write this group into a sequence of subfields of field 4 -->
-			<xsl:otherwise>
-				<xsl:text>DNA=</xsl:text>
-					<xsl:value-of select="string($vnCount + 1)"/>
-					<xsl:text>+++</xsl:text>
-					
-					<xsl:for-each select="$vobjSplitText/Field[@Group = $vnCount]">
-						<xsl:value-of select="."/>
-						<xsl:if test="position() != last()">
-							<xsl:text>:</xsl:text>			
-						</xsl:if>
-					</xsl:for-each>
-						
-					<xsl:value-of select="$sRecordSep"/>
-				
-					<!-- Check for another group by recursing -->
-					<xsl:call-template name="writeDelInstruct">
-						<xsl:with-param name="vnCount" select="$vnCount + 1"/>
-						<xsl:with-param name="vobjSplitText" select="$vobjSplitText"/>
-						<xsl:with-param name="sRecordSep" select="$sRecordSep"/>
-
-					</xsl:call-template>
-					
-			</xsl:otherwise>
-		</xsl:choose>
-	
-	</xsl:template>
-	
-	
-<!--=======================================================================================
-  Routine        : mobjGroupText()
-  Description    : Escapes vsText and passes it to msSplitText_EscapeAware()
-				  
-  Inputs         : 
-  Outputs        : 
-  Returns        : A string that will be passed into msxsl:node-set()
-  Author         : Robert Cambridge
-  Version        : 1.0
-  Alterations    : (none)
- =======================================================================================-->	
-	<xsl:template name="mobjGroupText">
-		<xsl:param name="vsText"/>
-		<xsl:param name="vnFieldLength"/>
-		<xsl:param name="vnGroupSize"/>
-
-		<xsl:call-template name="msSplitText_EscapeAware">
-			<xsl:with-param name="vsText" select="js:msEscape($vsText)"/>
-			<xsl:with-param name="vnFieldLength" select="$vnFieldLength"/>
-			<xsl:with-param name="vnGroupSize" select="$vnGroupSize"/>
-		</xsl:call-template>	
-	
-	</xsl:template>
-	
-
-<!--=======================================================================================
-  Routine        : msSplitText_EscapeAware()
-  Description    : Creates and xml fragment of the form
-    			
-								<Field Group="1">blah</Field>
-								<Field Group="1">rhubarb</Field>
-								<Field Group="1">yadder</Field>
-								<Field Group="1">yak</Field>
-								<Field Group="2">guff</Field>
-	
-							The content of <Field/> is controlled by vnFieldLength
-							@Group relates <Field/> elements together, the number in each groups is controlled by vnGroupSize
-				  
-  Inputs         : 
-  Outputs        : 
-  Returns        : A string
-  Author         : Robert Cambridge
-  Version        : 1.0
-  Alterations    : (none)
- =======================================================================================-->	
-	<xsl:template name="msSplitText_EscapeAware">
-		<xsl:param name="vsText"/>
-		<xsl:param name="vnFieldLength"/>
-		<xsl:param name="vnGroupSize"/>
-		<xsl:param name="vnCurrentGroup" select="0"/>
-		<xsl:param name="vnCount" select="0"/>
-		
-		<!-- the next group of characters, shorted if necessary so as not to break an escape sequences -->
-		<xsl:variable name="sFirstField" select="js:msTruncate($vsText, $vnFieldLength)"/>
-		
-		<xsl:choose>
-		
-			<!-- Base case, no text left to process -->
-			<xsl:when test="$sFirstField = ''"/>
-			
-			<xsl:otherwise>
-			
-				<!-- Write out this group of characters -->			
-				<Field>
-					<xsl:attribute name="Group">
-						<xsl:value-of select="$vnCurrentGroup"/>
-					</xsl:attribute>
-					
-					<xsl:value-of select="$sFirstField"/>
-				
-				</Field>
-				
-				<!-- Process the rest of the input -->
-				<xsl:call-template name="msSplitText_EscapeAware">
-					<xsl:with-param name="vsText" select="substring-after($vsText, $sFirstField)"/>
-					<xsl:with-param name="vnFieldLength" select="$vnFieldLength"/>
-					<xsl:with-param name="vnGroupSize" select="$vnGroupSize"/>
-					<xsl:with-param name="vnCurrentGroup">
-						<xsl:choose>
-							<xsl:when test="$vnCount + 1 = $vnGroupSize">
-								<xsl:value-of select="$vnCurrentGroup + 1"/>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:value-of select="$vnCurrentGroup"/>
-							</xsl:otherwise>
-						</xsl:choose>					
-					</xsl:with-param>
-					<xsl:with-param name="vnCount">
-						<xsl:choose>
-							<xsl:when test="$vnCount + 1 = $vnGroupSize">0</xsl:when>							
-							<xsl:otherwise>
-								<xsl:value-of select="$vnCount + 1"/>
-							</xsl:otherwise>
-						</xsl:choose>
-					
-					</xsl:with-param>
-				</xsl:call-template>
-			
-			</xsl:otherwise>
-			
-		</xsl:choose>
-	
-	</xsl:template>
-	
 
 <msxsl:script language="VBScript" implements-prefix="vb"><![CDATA[
 
