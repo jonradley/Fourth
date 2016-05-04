@@ -13,6 +13,8 @@ Pizza Express UK mapper for Restaurants Receipts Export format.
  25/11/2015	| Jose Miguel	| FB10643 - Receipts and Returns Journal Export mappers
 ==========================================================================================
  06/04/2016	| Jose Miguel	| FB10899 - Adding GRNI support
+ ==========================================================================================
+ 14/04/2016	| Jose Miguel	| FB10911 - Refactor
 ==========================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript">
 	<xsl:include href="tsMappingHospitalityPizzaExpressCommon.xsl"/>
