@@ -13,6 +13,8 @@ Pizza Express UK inbound mapper to split the report by currency to prepare it fo
  25/11/2015	| Jose Miguel	| FB10643 - Receipts and Returns Journal Export mappers
 ==========================================================================================
  06/04/2016	| Jose Miguel	| FB10899 - Adding GRNI support
+==========================================================================================
+ 14/04/2016	| Jose Miguel	| FB10911 - Refactor
 ==========================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:user="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl user">
 	<xsl:output method="xml" indent="yes" encoding="UTF-8"/>
