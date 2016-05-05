@@ -9,7 +9,7 @@ J Miguel		| 15/03/2016	| FB10876 - Created
 ***************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" exclude-result-prefixes="fo">
-	<xsl:output method="xml" encoding="utf-8"  indent="yes"/>
+	<xsl:output method="xml" encoding="utf-8" indent="yes"/>
 	<xsl:template match="PurchaseOrderAcknowledgement | PurchaseOrderConfirmation">
 		<xsl:variable name="type">
 			<xsl:choose>
@@ -35,12 +35,20 @@ J Miguel		| 15/03/2016	| FB10876 - Created
 				</DeliveryDate>
 				<!-- pending -->
 				<ItnOrderStatus>
-				<xsl:choose>
-					<xsl:when test="$type=1"><xsl:text>ACKNOWLEDGED</xsl:text></xsl:when>
-					<xsl:when test="$type=2 and count(PurchaseOrderConfirmationDetail/PurchaseOrderConfirmationLine[@LineStatus='Rejected']) = count(PurchaseOrderConfirmationDetail/PurchaseOrderConfirmationLine)"><xsl:text>REJECTED</xsl:text></xsl:when>
-					<xsl:when test="$type=2 and count(PurchaseOrderConfirmationDetail/PurchaseOrderConfirmationLine[@LineStatus='Changed']) > 0"><xsl:text>MODIFIED</xsl:text></xsl:when>
-					<xsl:when test="$type=2"><xsl:text>ACCEPTED</xsl:text></xsl:when>
-				</xsl:choose>
+					<xsl:choose>
+						<xsl:when test="$type=1">
+							<xsl:text>ACKNOWLEDGED</xsl:text>
+						</xsl:when>
+						<xsl:when test="$type=2 and count(PurchaseOrderConfirmationDetail/PurchaseOrderConfirmationLine[@LineStatus='Rejected']) = count(PurchaseOrderConfirmationDetail/PurchaseOrderConfirmationLine)">
+							<xsl:text>REJECTED</xsl:text>
+						</xsl:when>
+						<xsl:when test="$type=2 and count(PurchaseOrderConfirmationDetail/PurchaseOrderConfirmationLine[@LineStatus='Changed']) > 0">
+							<xsl:text>MODIFIED</xsl:text>
+						</xsl:when>
+						<xsl:when test="$type=2">
+							<xsl:text>ACCEPTED</xsl:text>
+						</xsl:when>
+					</xsl:choose>
 				</ItnOrderStatus>
 				<OrderValue>
 					<xsl:value-of select="PurchaseOrderAcknowledgementTrailer/TotalExclVAT | PurchaseOrderConfirmationTrailer/TotalExclVAT"/>
@@ -49,17 +57,23 @@ J Miguel		| 15/03/2016	| FB10876 - Created
 					<xsl:value-of select="concat($header/PurchaseOrderAcknowledgementReferences/PurchaseOrderAcknowledgementDate | $header/ PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationDate, 'T00:00:00')"/>
 				</OrderResponseDate>
 				<SupplierReasonCode/>
-				<OriginalOrderCreationDate><xsl:value-of select="concat($header/PurchaseOrderReferences/PurchaseOrderDate, 'T00:00:00')"/></OriginalOrderCreationDate>
+				<OriginalOrderCreationDate>
+					<xsl:value-of select="concat($header/PurchaseOrderReferences/PurchaseOrderDate, 'T00:00:00')"/>
+				</OriginalOrderCreationDate>
 				<OriginalOrderLines>
 					<xsl:value-of select="PurchaseOrderAcknowledgementTrailer/NumberOfLines | PurchaseOrderConfirmationTrailer/NumberOfLines"/>
 				</OriginalOrderLines>
-				<CustomerAccountNumber><xsl:value-of select="$header/ShipTo/ShipToLocationID/BuyersCode"/></CustomerAccountNumber>
+				<CustomerAccountNumber>
+					<xsl:value-of select="$header/ShipTo/ShipToLocationID/BuyersCode"/>
+				</CustomerAccountNumber>
 			</OrderHeader>
 			<xsl:apply-templates select="$header/Supplier"/>
 			<xsl:apply-templates select="$header/Buyer"/>
 			<LineItems>
 				<xsl:choose>
-					<xsl:when test="$type=1"><LineItem/></xsl:when>
+					<xsl:when test="$type=1">
+						<LineItem/>
+					</xsl:when>
 					<xsl:otherwise>
 						<xsl:apply-templates select="PurchaseOrderConfirmationDetail/PurchaseOrderConfirmationLine"/>
 					</xsl:otherwise>
@@ -72,20 +86,30 @@ J Miguel		| 15/03/2016	| FB10876 - Created
 			<SupplierId>
 				<xsl:value-of select="SuppliersLocationID/BuyersCode"/>
 			</SupplierId>
-			<SupplierGLN><xsl:value-of select="SuppliersLocationID/GLN"/></SupplierGLN>
-			<SupplierOrderNumber><xsl:value-of select="../PurchaseOrderReferences/PurchaseOrderReference"/></SupplierOrderNumber>
+			<SupplierGLN>
+				<xsl:value-of select="SuppliersLocationID/GLN"/>
+			</SupplierGLN>
+			<SupplierOrderNumber>
+				<xsl:value-of select="../PurchaseOrderReferences/PurchaseOrderReference"/>
+			</SupplierOrderNumber>
 		</SupplierDetails>
 	</xsl:template>
 	<xsl:template match="Buyer">
-			<BuyerDetails>
-				<BuyerGLN><xsl:value-of select="BuyersLocationID/GLN"/></BuyerGLN>
-				<ShipToId/>
-				<ShipToGLN/>
-				<BuyerGroup>
-					<BuyerGroupGLN><xsl:value-of select="BuyersLocationID/BuyersCode"/></BuyerGroupGLN>
-					<BuyerGroupName><xsl:value-of select="BuyersName"/></BuyerGroupName>
-				</BuyerGroup>
-			</BuyerDetails>
+		<BuyerDetails>
+			<BuyerGLN>
+				<xsl:value-of select="BuyersLocationID/GLN"/>
+			</BuyerGLN>
+			<ShipToId/>
+			<ShipToGLN/>
+			<BuyerGroup>
+				<BuyerGroupGLN>
+					<xsl:value-of select="BuyersLocationID/BuyersCode"/>
+				</BuyerGroupGLN>
+				<BuyerGroupName>
+					<xsl:value-of select="BuyersName"/>
+				</BuyerGroupName>
+			</BuyerGroup>
+		</BuyerDetails>
 	</xsl:template>
 	<xsl:template match="PurchaseOrderConfirmationLine">
 		<LineItem>
@@ -105,9 +129,19 @@ J Miguel		| 15/03/2016	| FB10876 - Created
 				<xsl:value-of select="LineValueExclVAT"/>
 			</LinePrice>
 			<xsl:choose>
-				<xsl:when test="@LineStatus='Changed'"><LineStatus><xsl:value-of select="Narrative/@Code"/></LineStatus></xsl:when>
-				<xsl:when test="@LineStatus='Rejected'"><LineStatus><xsl:value-of select="Narrative/@Code"/></LineStatus></xsl:when>
-				<xsl:when test="@LineStatus='Accepted'"><LineStatus>1</LineStatus></xsl:when>
+				<xsl:when test="@LineStatus='Changed'">
+					<LineStatus>
+						<xsl:text>OOS</xsl:text>
+					</LineStatus>
+				</xsl:when>
+				<xsl:when test="@LineStatus='Rejected'">
+					<LineStatus>
+						<xsl:text>OOS</xsl:text>
+					</LineStatus>
+				</xsl:when>
+				<xsl:when test="@LineStatus='Accepted'">
+					<LineStatus>1</LineStatus>
+				</xsl:when>
 			</xsl:choose>
 			<UnitOfMeasure>
 				<xsl:value-of select="ConfirmedQuantity/@UnitOfMeasure"/>
