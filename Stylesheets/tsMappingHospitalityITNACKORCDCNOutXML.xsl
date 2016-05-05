@@ -38,6 +38,7 @@ J Miguel		| 15/03/2016	| FB10876 - Created
 				<xsl:choose>
 					<xsl:when test="$type=1"><xsl:text>ACKNOWLEDGED</xsl:text></xsl:when>
 					<xsl:when test="$type=2 and count(PurchaseOrderConfirmationDetail/PurchaseOrderConfirmationLine[@LineStatus='Rejected']) = count(PurchaseOrderConfirmationDetail/PurchaseOrderConfirmationLine)"><xsl:text>REJECTED</xsl:text></xsl:when>
+					<xsl:when test="$type=2 and count(PurchaseOrderConfirmationDetail/PurchaseOrderConfirmationLine[@LineStatus='Changed']) > 0"><xsl:text>MODIFIED</xsl:text></xsl:when>
 					<xsl:when test="$type=2"><xsl:text>ACCEPTED</xsl:text></xsl:when>
 				</xsl:choose>
 				</ItnOrderStatus>
