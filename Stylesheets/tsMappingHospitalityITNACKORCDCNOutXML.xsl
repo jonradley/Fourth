@@ -72,6 +72,7 @@ J Miguel		| 15/03/2016	| FB10876 - Created
 				<xsl:value-of select="SuppliersLocationID/BuyersCode"/>
 			</SupplierId>
 			<SupplierGLN><xsl:value-of select="SuppliersLocationID/GLN"/></SupplierGLN>
+			<SupplierOrderNumber><xsl:value-of select="../PurchaseOrderReferences/PurchaseOrderReference"/></SupplierOrderNumber>
 		</SupplierDetails>
 	</xsl:template>
 	<xsl:template match="Buyer">
