@@ -18,11 +18,13 @@ Pizza Express UK inbound mapper to split the report by currency to prepare it fo
 	// While we do not have the CompanyCode implemented in R9 any new sites will be translated from the SiteCode
 	var mapSiteCodeToCompanyCode =
 	{
+		'5010':'00020',
+		'5020':'00020',
+		'5210':'00012',
+		'5212':'00012',
+		'5215':'00012',
 		'6001':'00018',
-		'4104':'00010',
-		'511':'00010',
-		'3203':'00010',
-		'3436':'00010'
+		'6536':'00011'
 	};
 
 	// This translates the site code to the company code which will be used in column VNKCO.
@@ -33,7 +35,7 @@ Pizza Express UK inbound mapper to split the report by currency to prepare it fo
 		
 		if (strCompanyCode == null)
 		{
-			strCompanyCode = strSiteCode;
+			strCompanyCode = '00010';
 		}
 		return strCompanyCode;
 	}
