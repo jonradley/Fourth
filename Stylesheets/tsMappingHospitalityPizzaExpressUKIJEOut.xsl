@@ -14,7 +14,8 @@ Pizza Express UK outbound mapper for invoices and credits journal format.
 ==========================================================================================
  14/04/2016	| Jose Miguel	| FB10911 - Refactor
 ==========================================================================================-->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"  xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript" exclude-result-prefixes="#default xsl msxsl js">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"  xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript">
+	<xsl:include href="tsMappingHospitalityPizzaExpressCommon.xsl"/>
 	<xsl:output method="text" encoding="UTF-8"/>
 	<xsl:key name="keyLinesByRefAndNominalCode" match="InvoiceCreditJournalEntriesLine" use="concat(../../InvoiceCreditJournalEntriesHeader/InvoiceReference,'|', CategoryNominal)"/>
 	
@@ -69,7 +70,7 @@ Pizza Express UK outbound mapper for invoices and credits journal format.
 			<xsl:text>V</xsl:text>
 			<xsl:text>,</xsl:text>
 			<!-- VLCO - Company - Number 5 -->
-			<xsl:value-of select="js:getVLCO(string(../InvoiceCreditJournalEntriesHeader/BuyersSiteCode))"/>
+			<xsl:value-of select="js:getSiteCodeToCompanyCode(string(../InvoiceCreditJournalEntriesHeader/BuyersSiteCode))"/>
 			<xsl:text>,</xsl:text>
 			<!-- VLMCU - Business Unit - Char 12 -->
 			<xsl:value-of select="../InvoiceCreditJournalEntriesHeader/UnitSiteName"/>
@@ -121,29 +122,9 @@ Pizza Express UK outbound mapper for invoices and credits journal format.
     </xsl:for-each>
     </xsl:template>
     
-	<msxsl:script implements-prefix="js"><![CDATA[ 
+	<msxsl:script language="JScript" implements-prefix="js"><![CDATA[ 
 	// While we do not have the CompanyCode implemented in R9 any new sites will be translated from the SiteCode
-	var mapSiteCodeToCompanyCode =
-	{
-		'6001':'00018',
-		'4104':'00010',
-		'511':'00010',
-		'3203':'00010',
-		'3436':'00010'
-	};	
-	
-	// This translates the site code to the company code which will be used in column VLCO
-	// If the value is not translated the original value unmapped is returned so we know which one caused it.
-	function getVLCO (strSiteCode)
-	{
-		var strCompanyCode = mapSiteCodeToCompanyCode[strSiteCode];
-		
-		if (strCompanyCode == null)
-		{
-			strCompanyCode = strSiteCode;
-		}
-		return strCompanyCode;
-	}
+
 		
 	var docRefs = [];
 	
