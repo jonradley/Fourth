@@ -13,6 +13,8 @@
  26/10/2015	| M Dimant			| FB10556: Created module
 ==========================================================================================
  20/01/2016	| M Dimant			| FB10754: Addition of batch tags and correct supplier's code for buyer
+==========================================================================================
+11/05/2016	| M Dimant			| FB10976: Remove carriage returns in Delivery Instructions
 ==========================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:sh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" xmlns:deliver="urn:ean.ucc:deliver:2" xmlns:eanucc="urn:ean.ucc:2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" exclude-result-prefixes="sh deliver eanucc" xmlns:order="urn:ean.ucc:order:2">
 	<xsl:output method="xml"/>
@@ -100,7 +102,7 @@
 									</DeliveryDate>
 									<xsl:if test="eanucc:documentCommand/documentCommandOperand/order:order/specialDeliveryNote/text">
 										<SpecialDeliveryInstructions>
-											<xsl:value-of select="eanucc:documentCommand/documentCommandOperand/order:order/specialDeliveryNote/text"/>
+											<xsl:value-of select="normalize-space(eanucc:documentCommand/documentCommandOperand/order:order/specialDeliveryNote/text)"/>
 										</SpecialDeliveryInstructions>
 									</xsl:if>
 								</OrderedDeliveryDetails>
