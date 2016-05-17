@@ -13,33 +13,50 @@ Pizza Express UK mapper for Restaurants Receipts Export format.
  25/11/2015	| Jose Miguel	| FB10643 - Receipts and Returns Journal Export mappers
 ==========================================================================================
  06/04/2016	| Jose Miguel	| FB10899 - Adding GRNI support
+ ==========================================================================================
+ 14/04/2016	| Jose Miguel	| FB10911 - Refactor
 ==========================================================================================-->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"  xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript" exclude-result-prefixes="#default xsl msxsl js">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript">
+	<xsl:include href="tsMappingHospitalityPizzaExpressCommon.xsl"/>
 	<xsl:output method="text" encoding="UTF-8"/>
 	<xsl:variable name="TotalLines" select="count(//ReceiptLine) + count(//ReturnLine)"/>
-
+	<xsl:variable name="Total" select="sum(//TotalExclVAT)"/>
 	<xsl:template match="/">
 		<xsl:for-each select="//ReceiptLine | //ReturnLine">
 			<xsl:variable name="Q4QTY">
 				<xsl:choose>
 					<!-- Logic for Receipts -->
-					<xsl:when test="AcceptedQuantity"><xsl:value-of select="js:calculateQ4QTY(number(AcceptedQuantity))"/></xsl:when>
+					<xsl:when test="AcceptedQuantity">
+						<xsl:value-of select="number(js:calculateQ4QTY(number(AcceptedQuantity)))"/>
+					</xsl:when>
 					<!-- Logic for Returns -->
-					<xsl:otherwise><xsl:value-of select="js:calculateQ4QTY(number(ReturnedQuantity))"/></xsl:otherwise>
+					<xsl:otherwise>
+						<xsl:value-of select="-1 * number(js:calculateQ4QTY(number(ReturnedQuantity)))"/>
+					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:variable>
 			<xsl:variable name="Q4PRRC" select="number(UnitValueExclVAT) * 10000"/>
-			<xsl:variable name="Q4UORG" select="js:calculateQ4UORG(number($Q4QTY), number(AcceptedQuantity | ReturnedQuantity))"/>			
+			<xsl:variable name="Q4UORG">
+				<xsl:choose>
+					<!-- Logic for Receipts -->
+					<xsl:when test="AcceptedQuantity">
+						<xsl:value-of select="number(js:calculateQ4UORG(number($Q4QTY), number(AcceptedQuantity)))"/>
+					</xsl:when>
+					<!-- Logic for Returns -->
+					<xsl:otherwise>
+						<xsl:value-of select="number(js:calculateQ4UORG(number($Q4QTY), -number(ReturnedQuantity)))"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:variable>
 			<xsl:value-of select="js:calculateTotalByQ4QTY_Q4PRRC_Q4UORG(number($Q4QTY), number($Q4PRRC), number($Q4UORG))"/>
 		</xsl:for-each>
-	
 		<xsl:choose>
 			<xsl:when test="contains(//Receipt/ReceiptHeader/BuyersCodeForSupplier[1] | //Return/ReturnHeader/BuyersCodeForSupplier[1], 'EDI') or contains(//Receipt/ReceiptHeader/BuyersCodeForSupplier[1] | //Return/ReturnHeader/BuyersCodeForSupplier[1] , 'REYCAT')">
 				<xsl:text>55RP Batch No,55RP Batch Value,55RP Batch Row Count,Location,Q455RPRN,Company,CustomerCode,Supplier,Q455RPSN,JDESuppCode,PurNum,DelNote,DelNum,DelDate,ManuCode,SupplierProdRef,Descript,Quantity,DelSize,DelUnit,Price,Vat able,JDECatCode,catName,ExtAmount,CRCD,CommentsDetail,CommentsHeader,SystemTimeStamp</xsl:text>
 				<xsl:text>&#13;&#10;</xsl:text>
 				<xsl:value-of select="js:resetLineNumber()"/>
 				<xsl:apply-templates select="//ReceiptLine | //ReturnLine" mode="GRNI">
-					<xsl:sort  select="number(LineNumber)" order="ascending"/>
+					<xsl:sort select="number(LineNumber)" order="ascending"/>
 				</xsl:apply-templates>
 			</xsl:when>
 			<xsl:otherwise>
@@ -47,63 +64,79 @@ Pizza Express UK mapper for Restaurants Receipts Export format.
 				<xsl:text>&#13;&#10;</xsl:text>
 				<xsl:value-of select="js:resetLineNumber()"/>
 				<xsl:apply-templates select="//ReceiptLine | //ReturnLine" mode="ReceiptsAndReturns">
-					<xsl:sort  select="number(LineNumber)" order="ascending"/>
+					<xsl:sort select="number(LineNumber)" order="ascending"/>
 				</xsl:apply-templates>
 			</xsl:otherwise>
-		</xsl:choose>		
+		</xsl:choose>
 	</xsl:template>
-
 	<!-- Process receipt lines PENDING return lines -->
 	<xsl:template match="ReceiptLine | ReturnLine" mode="ReceiptsAndReturns">
-		
 		<xsl:variable name="Header" select="../../ReceiptHeader | ../../ReturnHeader"/>
 		<!--Q455RICU - 55RP Batch No - (Numeric 10) ¦ Field added by a processor hopefully  -->
 		<xsl:value-of select="/Batch/BatchHeader/FileGenerationNumber"/>
 		<xsl:text>,</xsl:text>
 		<!--Q455RPBV - 55RPBatchValue - (Numeric 10) -->
-		<xsl:value-of select="js:getTotalBatch()*100"/>
+		<xsl:value-of select="format-number(js:getTotalBatch()*100, '#')"/>
 		<xsl:text>,</xsl:text>
 		<!--Q455RPBRC - 55RPBatchRowCount - (Numeric 10) -->
 		<xsl:value-of select="$TotalLines"/>
 		<xsl:text>,</xsl:text>
-		<!--Q4KCOO - CompanyKeyOrderNo - (String 5)  - PENDING Mapping pending -->
-		<xsl:value-of select="js:getQ4KCOO(string($Header/BuyersSiteCode))"/>
+		<!--Q4KCOO - CompanyKeyOrderNo - (String 5)  -->
+		<xsl:value-of select="js:getSiteCodeToCompanyCode(string($Header/BuyersUnitCode))"/>
 		<xsl:text>,</xsl:text>
 		<!--Q455RPDOC - 55RP Document No - (String 25) -->
 		<xsl:choose>
-			<xsl:when test="$Header/PurchaseOrderReference"><xsl:value-of select="$Header/PurchaseOrderReference"/></xsl:when>
-			<xsl:when test="$Header/DeliveryNoteReference"><xsl:value-of select="$Header/DeliveryNoteReference"/></xsl:when>
-			<xsl:otherwise><xsl:value-of select="$Header/SupplierReturnsNoteReference"/></xsl:otherwise>
+			<xsl:when test="$Header/PurchaseOrderReference">
+				<xsl:value-of select="$Header/PurchaseOrderReference"/>
+			</xsl:when>
+			<xsl:when test="$Header/DeliveryNoteReference">
+				<xsl:value-of select="$Header/DeliveryNoteReference"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$Header/SupplierReturnsNoteReference"/>
+			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:text>,</xsl:text>
 		<!--Q4DCTO - Order Type - (String 2) -->
-		<xsl:text>OF</xsl:text>		
+		<xsl:text>OF</xsl:text>
 		<xsl:text>,</xsl:text>
 		<!--Q4LNID - Line Number - (Numeric 6) -->
 		<xsl:value-of select="concat(string(js:getNextLineNumber()), '000')"/>
 		<xsl:text>,</xsl:text>
 		<!--Q4AN8 - Address Number - (String 8) -->
-		<xsl:value-of select="$Header/BuyersSiteCode"/>
+		<xsl:value-of select="$Header/BuyersUnitCode"/>
 		<xsl:text>,</xsl:text>
 		<!--Q455RPRN - 55RP Restaurant Name - (String 50) -->
 		<xsl:value-of select="$Header/BuyersSiteName"/>
 		<xsl:text>,</xsl:text>
 		<!--Q4TRQJ - Date - Requested - (Date 6) -->
 		<xsl:choose>
-			<xsl:when test="$Header/PurchaseOrderDate"><xsl:value-of select="js:convertToJulianYYYY_MM_DD(string($Header/PurchaseOrderDate))"/></xsl:when>
-			<xsl:otherwise><xsl:value-of select="js:convertToJulianFromYYYYMMDD(string($Header/SupplierReturnsNoteDate))"/></xsl:otherwise>
+			<xsl:when test="$Header/PurchaseOrderDate">
+				<xsl:value-of select="js:convertToJulianYYYY_MM_DD(string($Header/PurchaseOrderDate))"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="js:convertToJulianFromYYYYMMDD(string($Header/SupplierReturnsNoteDate))"/>
+			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:text>,</xsl:text>
 		<!--Q4TRDJ - Date - Order/Transaction - (Date 6) -->
 		<xsl:choose>
-			<xsl:when test="$Header/PurchaseOrderDate"><xsl:value-of select="js:convertToJulianYYYY_MM_DD(string($Header/PurchaseOrderDate))"/></xsl:when>
-			<xsl:otherwise><xsl:value-of select="js:convertToJulianFromYYYYMMDD(string($Header/SupplierReturnsNoteDate))"/></xsl:otherwise>
+			<xsl:when test="$Header/PurchaseOrderDate">
+				<xsl:value-of select="js:convertToJulianYYYY_MM_DD(string($Header/PurchaseOrderDate))"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="js:convertToJulianFromYYYYMMDD(string($Header/SupplierReturnsNoteDate))"/>
+			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:text>,</xsl:text>
 		<!--Q4DGL - Date - For G/L (and Voucher) - (Date 6) -->
 		<xsl:choose>
-			<xsl:when test="$Header/DeliveryNoteDate"><xsl:value-of select="js:convertToJulianYYYY_MM_DD(string($Header/DeliveryNoteDate))"/></xsl:when>
-			<xsl:otherwise><xsl:value-of select="js:convertToJulianYYYY_MM_DD(string($Header/SupplierReturnsNoteDate))"/></xsl:otherwise>
+			<xsl:when test="$Header/DeliveryNoteDate">
+				<xsl:value-of select="js:convertToJulianYYYY_MM_DD(string($Header/DeliveryNoteDate))"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="js:convertToJulianFromYYYYMMDD(string($Header/SupplierReturnsNoteDate))"/>
+			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:text>,</xsl:text>
 		<!--Q4AN8V - Address Number - Supplier - (Numeric 8) -->
@@ -122,9 +155,13 @@ Pizza Express UK mapper for Restaurants Receipts Export format.
 		<xsl:variable name="Q4QTY">
 			<xsl:choose>
 				<!-- Logic for Receipts -->
-				<xsl:when test="AcceptedQuantity"><xsl:value-of select="js:calculateQ4QTY(number(AcceptedQuantity))"/></xsl:when>
+				<xsl:when test="AcceptedQuantity">
+					<xsl:value-of select="number(js:calculateQ4QTY(number(AcceptedQuantity)))"/>
+				</xsl:when>
 				<!-- Logic for Returns -->
-				<xsl:otherwise><xsl:value-of select="js:calculateQ4QTY(number(ReturnedQuantity))"/></xsl:otherwise>
+				<xsl:otherwise>
+					<xsl:value-of select="-1 * number(js:calculateQ4QTY(number(ReturnedQuantity)))"/>
+				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
 		<xsl:value-of select="$Q4QTY"/>
@@ -137,7 +174,18 @@ Pizza Express UK mapper for Restaurants Receipts Export format.
 		<xsl:value-of select="$Q4PRRC"/>
 		<xsl:text>,</xsl:text>
 		<!--Q4UORG - Units - Order/Transaction Quantity - (Numeric 15) -->
-		<xsl:variable name="Q4UORG" select="js:calculateQ4UORG(number($Q4QTY), number(AcceptedQuantity | ReturnedQuantity))"/>
+		<xsl:variable name="Q4UORG">
+			<xsl:choose>
+				<!-- Logic for Receipts -->
+				<xsl:when test="AcceptedQuantity">
+					<xsl:value-of select="number(js:calculateQ4UORG(number($Q4QTY), number(AcceptedQuantity)))"/>
+				</xsl:when>
+				<!-- Logic for Returns -->
+				<xsl:otherwise>
+					<xsl:value-of select="number(js:calculateQ4UORG(number($Q4QTY), -number(ReturnedQuantity)))"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
 		<xsl:value-of select="$Q4UORG"/>
 		<xsl:text>,</xsl:text>
 		<!--Q4CRRD - Currency Conversion Rate - Divisor - (Numeric 15[7])  - BLANK -->
@@ -152,8 +200,12 @@ Pizza Express UK mapper for Restaurants Receipts Export format.
 		<xsl:text>,</xsl:text>
 		<!--Q4TX - Purchasing Taxable (Y/N) - (Character 1) -->
 		<xsl:choose>
-			<xsl:when test="CustomerVATCode='S'"><xsl:text>Y</xsl:text></xsl:when>
-			<xsl:otherwise><xsl:text>N</xsl:text></xsl:otherwise>
+			<xsl:when test="CustomerVATCode='S'">
+				<xsl:text>Y</xsl:text>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text>N</xsl:text>
+			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:text>,</xsl:text>
 		<!--Q4DL01 - Description - (String 10) -->
@@ -198,30 +250,28 @@ Pizza Express UK mapper for Restaurants Receipts Export format.
 		<!--SystemTimeStamp - System Time Stamp - () -->
 		<xsl:value-of select="concat(translate(/Batch/BatchHeader/ExportRunDate, '-',''), translate(/Batch/BatchHeader/ExportRunTime, ':', ''))"/>
 		<xsl:text>&#13;&#10;</xsl:text>
-    </xsl:template>
-
+	</xsl:template>
 	<!-- GRNi entries are generated by this template -->
 	<xsl:template match="ReceiptLine | ReturnLine" mode="GRNI">
 		<xsl:variable name="Header" select="../../ReceiptHeader | ../../ReturnHeader"/>
-			
 		<!-- 55RP Batch No - A - Batch Number (String 10). Unique identifier that represents the entire batch (file) downloaded.  Start at 1F. -->
 		<xsl:value-of select="/Batch/BatchHeader/FileGenerationNumber"/>
 		<xsl:text>F</xsl:text>
 		<xsl:text>,</xsl:text>
 		<!-- 55RP Batch Value - B - Batch Value (Numeric 10). Total value of all receipts and stock returns in the batch in the relevant currency (e.g. £25,700.95 to be reported as 25700.95)-->
-		<xsl:value-of select="js:getTotalBatch()*100"/>
+		<xsl:value-of select="format-number($Total*100, '#.00')"/>
 		<xsl:text>,</xsl:text>
 		<!-- 55RP Batch Row Count - C - Batch Row Count (Numeric 10). Total number of records exported (i.e. the number of lines in the file excluding the header). As above there should be a separate file for each currency, receipts and stock returns to be reported in the same file.-->
 		<xsl:value-of select="$TotalLines"/>
 		<xsl:text>,</xsl:text>
 		<!-- Location - D - Address Number (String 8). PizzaExpress reference number for the restaurant.  Should not include leading zeros.  I.e. Wardour Street = 111.-->
-		<xsl:value-of select="number($Header/BuyersSiteCode)"/>
+		<xsl:value-of select="$Header/BuyersUnitCode"/>
 		<xsl:text>,</xsl:text>
 		<!-- Q455RPRN - E - 55RP Restaurant Name (String 50). Fourth name for restaurant.-->
 		<xsl:value-of select="$Header/BuyersSiteName"/>
 		<xsl:text>,</xsl:text>
 		<!-- Company - F - CompanyKeyOrderNo (String 5). The number of the company that the restaurant belongs to.  For example PizzaExpress Restaurants = 00010 and Jersey = 00020.-->
-		<xsl:value-of select="number(js:getQ4KCOO(string($Header/BuyersSiteCode)))"/>
+		<xsl:value-of select="js:getSiteCodeToCompanyCode(string($Header/BuyersUnitCode))"/>
 		<xsl:text>,</xsl:text>
 		<!-- CustomerCode - G - Customer Code (Numeric 1). Set to 0 (zero)-->
 		<xsl:text>0</xsl:text>
@@ -240,17 +290,41 @@ Pizza Express UK mapper for Restaurants Receipts Export format.
 		<xsl:text>,</xsl:text>
 		<!-- DelNote - L - Receipt/Stock Return Flag (Character 1). Y - if transaction is receipt,-->
 		<xsl:choose>
-			<xsl:when test="name(.)='ReceiptLine'"><xsl:text>Y</xsl:text></xsl:when>
-			<xsl:otherwise><xsl:text>N</xsl:text></xsl:otherwise>
+			<xsl:when test="name(.)='ReceiptLine'">
+				<xsl:text>Y</xsl:text>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text>N</xsl:text>
+			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:text>,</xsl:text>
 		<!-- DelNum - M - Receipt/Stock Return Number (String 25). Delivery note / stock return number -->
-		<xsl:value-of select="$Header/DeliveryNoteReference"/>
+		<xsl:choose>
+			<xsl:when test="$Header/DeliveryNoteReference">
+				<xsl:value-of select="translate($Header/DeliveryNoteReference, ',', '')"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="translate($Header/SupplierReturnsNoteReference, ',', '')"/>
+			</xsl:otherwise>
+		</xsl:choose>
 		<xsl:text>,</xsl:text>
 		<!-- DelDate - N - Delivery/Stock Return Date (). DD/MM/YYY hh:mm:ss-->
-		<xsl:call-template name="formatDate">
-			<xsl:with-param name="date" select="$Header/DeliveryNoteDate"/>
-		</xsl:call-template>
+		<xsl:choose>
+			<xsl:when test="$Header/DeliveryNoteDate">
+				<xsl:call-template name="formatDate">
+					<xsl:with-param name="date">
+						<xsl:value-of select="$Header/DeliveryNoteDate"/>
+					</xsl:with-param>
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:call-template name="formatDateWithNoSep">
+					<xsl:with-param name="date">
+						<xsl:value-of select="$Header/SupplierReturnsNoteDate"/>
+					</xsl:with-param>
+				</xsl:call-template>
+			</xsl:otherwise>
+		</xsl:choose>
 		<xsl:text> 00:00:00</xsl:text>
 		<xsl:text>,</xsl:text>
 		<!-- ManuCode - O - Fourth Product Code (String 25). Item number for the product being receipted (eg. Fourth product code).-->
@@ -260,10 +334,10 @@ Pizza Express UK mapper for Restaurants Receipts Export format.
 		<xsl:value-of select="SuppliersProductCode"/>
 		<xsl:text>,</xsl:text>
 		<!-- Descript - Q - Product Description (String 25). Item description. Do not trim to the JDE field size - this will be performed through the PizzaExpress mapping tables. No commas-->
-		<xsl:value-of select="ProductDescription"/>
+		<xsl:value-of select="translate(ProductDescription, ',', '')"/>
 		<xsl:text>,</xsl:text>
 		<!-- Quantity - R - Quantity (Numeric 7). Quantity Received including decimals (e.g. 5 cases). JDE will convert to decimals i.e. 1.5 should = 150 for JDE to convert to 1.50. Note - this field is to 2 decimal places only anymore places must be excluded.-->
-		<xsl:value-of select="AcceptedQuantity"/>
+		<xsl:value-of select="AcceptedQuantity | ReturnedQuantity"/>
 		<xsl:text>,</xsl:text>
 		<!-- DelSize - S - Units - Order/Transaction Quantity (Numeric 15). Package size (e.g. 24 bottles of Peroni per case).-->
 		<xsl:value-of select="PackSize"/>
@@ -278,7 +352,7 @@ Pizza Express UK mapper for Restaurants Receipts Export format.
 		<xsl:text>N</xsl:text>
 		<xsl:text>,</xsl:text>
 		<!-- JDECatCode - W - Stock Category Code (String 8). UPPER CASE. Left Justify the field. Fourth Stock Category Code for item that needs to be mapped to JDE codes. This will be subject to change - if new categories are introduced they should automatically appear in the extract.-->
-		<xsl:value-of select="js:toUpper(string(substring(CategoryName, 1, 8)))"/>		
+		<xsl:value-of select="js:toUpper(string(substring(CategoryName, 1, 8)))"/>
 		<xsl:text>,</xsl:text>
 		<!-- catName - X - Stock Category Name (String 50). Fourth Stock Category Name.  Exported to help users when resolving issues.-->
 		<xsl:value-of select="CategoryName"/>
@@ -299,14 +373,18 @@ Pizza Express UK mapper for Restaurants Receipts Export format.
 		<xsl:value-of select="concat(translate(/Batch/BatchHeader/ExportRunDate, '-',''), translate(/Batch/BatchHeader/ExportRunTime, ':', ''))"/>
 		<xsl:text>&#13;&#10;</xsl:text>
 	</xsl:template>
-	
-		<!-- format date from YYYY-MM-DD to DD/MM/YYYY -->
+	<!-- format date from YYYY-MM-DD to DD/MM/YYYY -->
 	<xsl:template name="formatDate">
 		<xsl:param name="date"/>
 		<xsl:value-of select="concat( substring($date, 9, 2), '/', substring($date, 6, 2), '/', substring($date, 1, 4))"/>
 	</xsl:template>
-	
-	<msxsl:script implements-prefix="js"><![CDATA[ 
+	<!-- format date from YYYYMMDD to DD/MM/YYYY -->
+	<xsl:template name="formatDateWithNoSep">
+		<xsl:param name="date"/>
+		<xsl:value-of select="concat( substring($date, 7, 2), '/', substring($date, 5, 2), '/', substring($date, 1, 4))"/>
+	</xsl:template>
+
+	<msxsl:script language="JScript" implements-prefix="js"><![CDATA[ 
 	var numTotalBatch = 0;
 	var intCurrentLineNumber = 0;
 	
@@ -328,12 +406,7 @@ Pizza Express UK mapper for Restaurants Receipts Export format.
     {
 		return ( numQ4QTY==0 )? numAcceptedQuantityOrReturned : 1;
     }
-    
-   	//=IF(Q2=0,S2*T2/100,S2*T2/100*(Q2/100))
-	// Q2 is Q4QTY
-	// S2 is Q4PRRC (numUnitValue)
-	// T2 is Q4UORG (numOrderedQuantity)
-	
+    	
 	function calculateLineByQ4QTY_Q4PRRC_Q4UORG (numQ4QTY, numQ4PRRC, numQ4UORG)
 	{
 		var result = (numQ4QTY == 0)? numQ4PRRC * numQ4UORG : numQ4QTY * numQ4PRRC / numQ4UORG / 100;
@@ -403,26 +476,6 @@ Pizza Express UK mapper for Restaurants Receipts Export format.
 		var year = theDate.getFullYear();
 		var lastDayOfPreviousYear = new Date(year, 0, 0);
 		return 1000 * (year - 2000) + Math.floor((theDate - lastDayOfPreviousYear)/24/3600/1000) + 100000;
-	}
-	
-	// While we do not have the CompanyCode implemented in R9 any new sites will be translated from the SiteCode
-	var mapSiteCodeToCompanyCode =
-	{
-		'6001':'00018',
-		'4104':'00010'
-	};
-	
-	// This translates the site code to the company code which will be used in column Q4KCOO.
-	// If the value is not translated the original value unmapped is returned so we know which one caused it.
-	function getQ4KCOO (strSiteCode)
-	{
-		var strCompanyCode = mapSiteCodeToCompanyCode[strSiteCode];
-		
-		if (strCompanyCode == null)
-		{
-			strCompanyCode = strSiteCode;
-		}
-		return strCompanyCode;
 	}
 
   function toUpper (str)
