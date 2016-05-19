@@ -122,7 +122,7 @@ Pizza Express UK inbound mapper to split the report by currency to prepare it fo
 			<FormatCode>
 				<xsl:value-of select="concat($Prefix, '_', $Day, '_',$Month, '_', $Year, '_', $Hours, '_' , $Minutes,  '_', $CurrencyCode,'.csv')"/>
 			</FormatCode>
-			<xsl:apply-templates select="/Batch/BatchHeader/OrganisationName | /Batch/BatchHeader/OrganisationName/ExportRunDate"/>
+			<xsl:apply-templates select="/Batch/BatchHeader/OrganisationName | /Batch/BatchHeader/ExportRunDate | /Batch/BatchHeader/ExportRunTime"/>
 		</BatchHeader>
 	</xsl:template>
 	
