@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 ***************************************************************************************
-Generic Ack, Confirmation, Delivery Notes mapper for iTN
+Generic Ack, Confirmation, Delivery Notes mapper for iTN for Compass
 ***************************************************************************************
 Name			| Date 				|	Description
 ***************************************************************************************
 J Miguel		| 15/03/2016	| FB10876 - Created
 ***************************************************************************************
--->
+J Miguel		| 19/05/2016	| FB11000 - Fixes
+***************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" exclude-result-prefixes="fo">
 	<xsl:output method="xml" encoding="utf-8" indent="yes"/>
 	<xsl:template match="PurchaseOrderAcknowledgement | PurchaseOrderConfirmation">
@@ -64,7 +65,15 @@ J Miguel		| 15/03/2016	| FB10876 - Created
 					<xsl:value-of select="PurchaseOrderAcknowledgementTrailer/NumberOfLines | PurchaseOrderConfirmationTrailer/NumberOfLines"/>
 				</OriginalOrderLines>
 				<CustomerAccountNumber>
-					<xsl:value-of select="$header/ShipTo/ShipToLocationID/BuyersCode"/>
+					<xsl:variable name="CustomerAccountNumber" select="$header/ShipTo/ShipToLocationID/BuyersCode"/>
+						<xsl:choose>
+							<xsl:when test="substring-before($CustomerAccountNumber, '|')">
+								<xsl:value-of select="substring-before($CustomerAccountNumber, '|')"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="$CustomerAccountNumber"/>
+							</xsl:otherwise>
+						</xsl:choose>
 				</CustomerAccountNumber>
 			</OrderHeader>
 			<xsl:apply-templates select="$header/Supplier"/>
@@ -84,7 +93,8 @@ J Miguel		| 15/03/2016	| FB10876 - Created
 	<xsl:template match="Supplier">
 		<SupplierDetails>
 			<SupplierId>
-				<xsl:value-of select="SuppliersLocationID/BuyersCode"/>
+				<!-- Hard coded for nigel Fredericks. PENDING: try to set this in the config for the relations -->
+				<xsl:text>NGLFRDUK</xsl:text>
 			</SupplierId>
 			<SupplierGLN>
 				<xsl:value-of select="SuppliersLocationID/GLN"/>
@@ -97,20 +107,22 @@ J Miguel		| 15/03/2016	| FB10876 - Created
 	<xsl:template match="Buyer">
 		<BuyerDetails>
 			<BuyerGLN>
-				<xsl:value-of select="BuyersLocationID/GLN"/>
+				<!-- Hard coded but safe as this value should always remain constanct for compass UK -->
+				<xsl:text>5060224840283</xsl:text>
 			</BuyerGLN>
 			<ShipToId/>
 			<ShipToGLN/>
 			<BuyerGroup>
 				<BuyerGroupGLN>
-					<xsl:value-of select="BuyersLocationID/BuyersCode"/>
+					<xsl:value-of select="BuyersLocationID/GLN"/>
 				</BuyerGroupGLN>
 				<BuyerGroupName>
-					<xsl:value-of select="BuyersName"/>
+					<xsl:value-of select="BuyersLocationID/SuppliersCode"/>
 				</BuyerGroupName>
 			</BuyerGroup>
 		</BuyerDetails>
 	</xsl:template>
+	
 	<xsl:template match="PurchaseOrderConfirmationLine">
 		<LineItem>
 			<ProductCode>
