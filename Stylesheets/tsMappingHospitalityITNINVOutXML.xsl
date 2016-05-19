@@ -144,7 +144,7 @@ J Miguel		| 19/05/2016	| FB11000 - Fixes
 			</ReceiptAdviceReference>
 			<Buyer>
 				<BuyerGLN scheme="GLN">
-					<xsl:value-of select="/Invoice/InvoiceHeader/Buyer/BuyersLocationID/BuyersCode"/>
+					<xsl:value-of select="/Invoice/InvoiceHeader/Buyer/BuyersLocationID/GLN"/>
 				</BuyerGLN>
 				<xsl:if test="/Invoice/InvoiceHeader/Buyer/BuyersLocationID/BuyersCode">
 					<BuyerAssigned scheme="OTHER">
