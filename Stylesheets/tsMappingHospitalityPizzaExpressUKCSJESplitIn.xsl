@@ -63,8 +63,8 @@ Pizza Express UK inbound mapper for stock journal journal to split the report by
 	<xsl:template name="createBatchHeader">
 		<xsl:param name="Prefix"/>
 		<xsl:param name="CurrencyCode"/>
-		<xsl:param name="Date" select="/Batch/BatchHeader/ExportRunDate"/>
-		<xsl:param name="Time" select="/Batch/BatchHeader/ExportRunTime"/>		
+		<xsl:variable name="Date" select="/Batch/BatchHeader/ExportRunDate"/>
+		<xsl:variable name="Time" select="'00:00:00'"/>
 		<xsl:variable name="Year" select="substring($Date, 3, 2)"/>
 		<xsl:variable name="Month" select="substring($Date, 6, 2)"/>
 		<xsl:variable name="Day" select="substring($Date, 9, 2)"/>
