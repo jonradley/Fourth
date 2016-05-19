@@ -16,7 +16,9 @@ Pizza Express UK inbound mapper for stock journal journal to split the report by
 ==========================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:user="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl user">
 	<xsl:output method="xml" indent="yes" encoding="UTF-8"/>
-	<xsl:key name="keyCurrency" match="Batch/BatchDocuments/BatchDocument" use="ClosingStockJournalEntries/ClosingStockJournalEntriesHeader/CurrencyCode"/>
+	<xsl:key name="keyCurrency" 
+		match="Batch/BatchDocuments/BatchDocument[not(starts-with(ClosingStockJournalEntries/ClosingStockJournalEntriesHeader/BuyersSiteName , 'TEST'))]" 
+		use="ClosingStockJournalEntries/ClosingStockJournalEntriesHeader/CurrencyCode"/>
 	<!-- GENERIC HANDLER to copy unchanged nodes, will be overridden by any node-specific templates below -->
 	<xsl:template match="*">
 		<!-- Copy the node unchanged -->
@@ -73,7 +75,7 @@ Pizza Express UK inbound mapper for stock journal journal to split the report by
 			<FormatCode>
 				<xsl:value-of select="concat($Prefix, '_', $CurrencyCode, '_', $Day, '_',$Month, '_', $Year, '_', $Hours, '_' , $Minutes ,'.csv')"/>
 			</FormatCode>
-			<xsl:apply-templates select="/Batch/BatchHeader/OrganisationName | /Batch/BatchHeader/OrganisationName/ExportRunDate"/>
+			<xsl:apply-templates select="/Batch/BatchHeader/OrganisationName | /Batch/BatchHeader/OrganisationName/ExportRunDate | /Batch/BatchHeader/ExportRunTime"/>
 		</BatchHeader>
 	</xsl:template>	
 </xsl:stylesheet>
