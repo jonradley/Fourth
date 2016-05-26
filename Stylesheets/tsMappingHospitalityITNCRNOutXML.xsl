@@ -7,7 +7,8 @@ Name			| Date 				|	Description
 **************************************************************************************
 J Miguel		| 19/05/2016	| FB11000 - Fixes
 **************************************************************************************
--->
+J Miguel		| 25/05/2016	| FB11028 - Adding support for more units of measure
+**************************************************************************************-->
 <xsl:stylesheet version="1.0" 
 				xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 				xmlns:fo="http://www.w3.org/1999/XSL/Format" 
@@ -224,7 +225,11 @@ J Miguel		| 19/05/2016	| FB11000 - Fixes
 					<InvoiceQuantity>
 						<xsl:choose>
 							<xsl:when test="InvoicedQuantity">
-								<xsl:attribute name="unitCode"><xsl:value-of select="InvoicedQuantity/@UnitOfMeasure"/></xsl:attribute>
+								<xsl:attribute name="unitCode">
+									<xsl:call-template name="translateUOM">
+										<xsl:with-param name="UOM" select="InvoicedQuantity/@UnitOfMeasure"/>
+									</xsl:call-template>
+								</xsl:attribute>
 								<xsl:value-of select="format-number(InvoicedQuantity, '0.000')"/>
 							</xsl:when>
 							<xsl:otherwise>
@@ -235,7 +240,11 @@ J Miguel		| 19/05/2016	| FB11000 - Fixes
 					</InvoiceQuantity>
 					<xsl:if test="CreditedQuantity">
 						<CreditQuantity>
-							<xsl:attribute name="unitCode"><xsl:value-of select="CreditedQuantity/@UnitOfMeasure"/></xsl:attribute>
+							<xsl:attribute name="unitCode">
+								<xsl:call-template name="translateUOM">
+									<xsl:with-param name="UOM" select="CreditedQuantity/@UnitOfMeasure"/>
+								</xsl:call-template>
+							</xsl:attribute>
 							<xsl:choose>
 								<xsl:when test="number(LineValueExclVAT) >= 0"><xsl:value-of select="format-number(CreditedQuantity, '0.000')"/></xsl:when>
 								<xsl:otherwise><xsl:value-of select="format-number(CreditedQuantity * -1, '0.000')"/></xsl:otherwise>
@@ -308,4 +317,13 @@ J Miguel		| 19/05/2016	| FB11000 - Fixes
 			</CreditTotals>
 		</CreditNote>
 	</xsl:template>
+	<xsl:template name="translateUoM">
+		<xsl:param name="UOM"/>
+			<xsl:choose>
+				<xsl:when test="$UOM='CS'"><xsl:text>BOX</xsl:text></xsl:when>
+				<xsl:when test="$UOM='HUR'"><xsl:text>HR</xsl:text></xsl:when>
+				<xsl:when test="$UOM='KGM'"><xsl:text>KG</xsl:text></xsl:when>
+				<xsl:otherwise><xsl:text>EA</xsl:text></xsl:otherwise>
+			</xsl:choose>
+	</xsl:template>	
 </xsl:stylesheet>

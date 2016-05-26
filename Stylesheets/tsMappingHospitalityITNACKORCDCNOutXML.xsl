@@ -8,6 +8,8 @@ Name			| Date 				|	Description
 J Miguel		| 15/03/2016	| FB10876 - Created
 ***************************************************************************************
 J Miguel		| 19/05/2016	| FB11000 - Fixes
+***************************************************************************************
+J Miguel		| 25/05/2016	| FB11028 - Adding support for more units of measure
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" exclude-result-prefixes="fo">
 	<xsl:output method="xml" encoding="utf-8" indent="yes"/>
@@ -156,7 +158,12 @@ J Miguel		| 19/05/2016	| FB11000 - Fixes
 				</xsl:when>
 			</xsl:choose>
 			<UnitOfMeasure>
-				<xsl:value-of select="ConfirmedQuantity/@UnitOfMeasure"/>
+				<xsl:choose>				
+					<xsl:when test="ConfirmedQuantity/@UnitOfMeasure='CS'"><xsl:text>BOX</xsl:text></xsl:when>
+					<xsl:when test="ConfirmedQuantity/@UnitOfMeasure='HUR'"><xsl:text>HR</xsl:text></xsl:when>
+					<xsl:when test="ConfirmedQuantity/@UnitOfMeasure='KGM'"><xsl:text>KG</xsl:text></xsl:when>
+					<xsl:otherwise><xsl:text>EA</xsl:text></xsl:otherwise>
+				</xsl:choose>
 			</UnitOfMeasure>
 		</LineItem>
 	</xsl:template>

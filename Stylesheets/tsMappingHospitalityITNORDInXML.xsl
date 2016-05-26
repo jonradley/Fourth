@@ -7,6 +7,8 @@ Name			| Date 				|	Description
 ***************************************************************************************
 J Miguel		| 15/03/2016	| FB10876 - Created
 ***************************************************************************************
+J Miguel		| 25/05/2016	| FB11028 - Adding support for more units of measure
+***************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:itn="http://itn.hub.biztalk.orderapp.ext.GenericITNSupplier.schemas.Order" exclude-result-prefixes="#default xsl itn">
 	<xsl:output method="xml" encoding="utf-8" indent="yes"/>
@@ -112,9 +114,12 @@ J Miguel		| 15/03/2016	| FB10876 - Created
 			<OrderedQuantity>
 				<xsl:attribute name="UnitOfMeasure">
 					<xsl:choose>
-						<xsl:when test="itn:UnitOfMeasure='Each'">EA</xsl:when>
-						<!-- PENDING Other units of measure -->
-						<xsl:otherwise><xsl:value-of select="itn:UnitOfMeasure"/></xsl:otherwise>
+						<xsl:when test="itn:UnitOfMeasure='BAG'"><xsl:text>CS</xsl:text></xsl:when>
+						<xsl:when test="itn:UnitOfMeasure='BOX'"><xsl:text>CS</xsl:text></xsl:when>
+						<xsl:when test="itn:UnitOfMeasure='CAR'"><xsl:text>CS</xsl:text></xsl:when>
+						<xsl:when test="itn:UnitOfMeasure='HR'"><xsl:text>HUR</xsl:text></xsl:when>
+						<xsl:when test="itn:UnitOfMeasure='KG'"><xsl:text>KGM</xsl:text></xsl:when>
+						<xsl:otherwise><xsl:text>EA</xsl:text></xsl:otherwise>
 					</xsl:choose>
 				</xsl:attribute>
 				<xsl:value-of select="itn:OrderedQuantity"/>
