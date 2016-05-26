@@ -19,8 +19,8 @@ This mapper is only prepared to process an invoice or a credit note.
 	<!-- Process a file with an Invoice -->
 	<xsl:template match="InvoiceTrailer">
 		<xsl:variable name="SupplierCode" select="../InvoiceHeader/HeaderExtraData/STXSupplierCode"/>
-		<xsl:variable name="CompanyCode" select="substring-before($SupplierCode, '|')"/>
-		<xsl:variable name="Site" select="substring-after($SupplierCode, '|')"/>
+		<xsl:variable name="CompanyCode" select="substring-before($SupplierCode, '~')"/>
+		<xsl:variable name="Site" select="substring-after($SupplierCode, '~')"/>
 		<xsl:call-template name="createLine">
 			<xsl:with-param name="Type" select="'STANDARD'"/>
 			<xsl:with-param name="LineNum" select="1"/>
