@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--******************************************************************
+Alterations
+**********************************************************************
+Name			| Date			| Change
+**********************************************************************
+R Cambridge	| 25/11/2005	| Created
+**********************************************************************
+Lee Boyton | 28/06/2006	| H604. Cater for Laurel houses being members.
+**********************************************************************
+				|					|
+*******************************************************************-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>'</ffsRecordSeparator>
+		<ffsEscapeChars>
+			<ffsEscapeChar>
+				<ffsNative>chr(13)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>chr(10)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?=</ffsNative>
+				<ffsTradesimple>¬E</ffsTradesimple>
+				<ffsLiteral>=</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?+</ffsNative>
+				<ffsTradesimple>¬P</ffsTradesimple>
+				<ffsLiteral>+</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?:</ffsNative>
+				<ffsTradesimple>¬C</ffsTradesimple>
+				<ffsLiteral>:</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?'</ffsNative>
+				<ffsTradesimple>¬A</ffsTradesimple>
+				<ffsLiteral>'</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>??</ffsNative>
+				<ffsTradesimple>¬Q</ffsTradesimple>
+				<ffsLiteral>?</ffsLiteral>
+			</ffsEscapeChar>
+		</ffsEscapeChars>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>+</ffsFieldSeparator>
+			<ffsSubFieldSeparator>:</ffsSubFieldSeparator>
+		</ffsFieldSeparators>
+		<ffsPadding/>
+		<ffsBatchHeader>
+			<!--list of records that make up the header, this will be added to each document in the batch -->
+			<ffsHeaderRecord RecordPos="STX="/>
+			<ffsHeaderRecord RecordPos="TYP="/>
+			<ffsHeaderRecord RecordPos="SDT="/>
+			<ffsHeaderRecord RecordPos="CDT="/>
+			<ffsHeaderRecord RecordPos="FIL="/>
+		</ffsBatchHeader>
+		<ffsSplitBatchRecord RecordPos="CLO="/>
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<BatchDocument>
+				<DeliveryNote>
+					<TradeSimpleHeader>
+						<SendersCodeForRecipient RecordPos="CLO=" LPos="1" SFPos="3"/>
+					</TradeSimpleHeader>
+					<DeliveryNoteHeader>
+						<Buyer>
+							<BuyersLocationID>
+								<GLN RecordPos="CDT=" LPos="1" SFPos="1"/>
+							</BuyersLocationID>
+						</Buyer>
+						<Supplier>
+							<SuppliersLocationID>
+								<GLN RecordPos="SDT=" LPos="1" SFPos="1"/>
+								<SuppliersCode RecordPos="SDT=" LPos="1" SFPos="1"/>
+							</SuppliersLocationID>
+						</Supplier>
+						<ShipTo>
+							<ShipToLocationID>
+								<SuppliersCode RecordPos="CLO=" LPos="1" SFPos="3"/>
+							</ShipToLocationID>
+							<ShipToName RecordPos="CLO=" LPos="2" SFPos="1"/>
+							<ShipToAddress>
+								<AddressLine1 RecordPos="CLO=" LPos="3" SFPos="1"/>
+								<AddressLine2 RecordPos="CLO=" LPos="3" SFPos="2"/>
+								<AddressLine3 RecordPos="CLO=" LPos="3" SFPos="3"/>
+								<AddressLine4 RecordPos="CLO=" LPos="3" SFPos="4"/>
+							</ShipToAddress>
+						</ShipTo>
+						<PurchaseOrderReferences>
+							<PurchaseOrderReference RecordPos="ORF=" LPos="2" SFPos="1"/>
+							<PurchaseOrderDate RecordPos="ORF=" LPos="2" SFPos="3"/>
+						</PurchaseOrderReferences>
+						<DeliveryNoteReferences>
+							<DeliveryNoteReference RecordPos="DEL=" LPos="1" SFPos="1"/>
+							<DeliveryNoteDate RecordPos="DEL=" LPos="1" SFPos="2"/>
+							<DespatchDate RecordPos="DEL=" LPos="1" SFPos="2"/>
+						</DeliveryNoteReferences>
+						<DeliveredDeliveryDetails>
+							<!--DeliveryType/-->
+							<DeliveryDate RecordPos="DEL=" LPos="1" SFPos="2"/>
+						</DeliveredDeliveryDetails>
+					</DeliveryNoteHeader>
+					<DeliveryNoteDetail>
+						<DeliveryNoteLine>
+							<ProductID>
+								<SuppliersProductCode RecordPos="DLD=" LPos="3" SFPos="2"/>
+							</ProductID>
+							<ProductDescription RecordPos="DLD=" LPos="8" SFPos="1"/>
+							<!-- OrderedQuantity holds credit or invoice flag, replaced by ILD (7:1) in translator -->
+							<!--OrderedQuantity RecordPos="ILD=" LPos="13" SFPos="1"/-->
+							<!--ConfirmedQuantity RecordPos="ILD=" LPos="7" SFPos="1"/-->
+							<DespatchedQuantity RecordPos="DLD=" LPos="7" SFPos="1"/>
+						</DeliveryNoteLine>
+					</DeliveryNoteDetail>
+				</DeliveryNote>
+				<ffsAttribute1 name="DocumentTypeNo" RecordPos="TYP=" LPos="1"/>
+			</BatchDocument>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>
