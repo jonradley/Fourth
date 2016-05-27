@@ -26,7 +26,12 @@ This mapper is only prepared to process an invoice or a credit note.
 			<xsl:with-param name="LineNum" select="1"/>
 			<xsl:with-param name="LineType" select="'Tax'"/>
 			<xsl:with-param name="Amount" select="number(VATAmount)"/>
-			<xsl:with-param name="TaxCode" select="0"/>
+			<xsl:with-param name="TaxCode">
+				<xsl:choose>
+					<xsl:when test="VATAmount>0">20</xsl:when>
+					<xsl:otherwise>0</xsl:otherwise>
+				</xsl:choose>
+			</xsl:with-param>
 			<xsl:with-param name="NominalCode" select="'20400'"/>
 			<xsl:with-param name="UnitCode" select="/Invoice/InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode"/>
 			<xsl:with-param name="CompanyCode" select="$CompanyCode"/>
@@ -49,14 +54,19 @@ This mapper is only prepared to process an invoice or a credit note.
 	<!-- Process a file with a credit note -->
 	<xsl:template match="CreditNoteTrailer">
 		<xsl:variable name="SupplierCode" select="../CreditNoteHeader/HeaderExtraData/STXSupplierCode"/>
-		<xsl:variable name="CompanyCode" select="substring-before($SupplierCode, '|')"/>
-		<xsl:variable name="Site" select="substring-after($SupplierCode, '|')"/>
+		<xsl:variable name="CompanyCode" select="substring-before($SupplierCode, '~')"/>
+		<xsl:variable name="Site" select="substring-after($SupplierCode, '~')"/>
 		<xsl:call-template name="createLine">
 			<xsl:with-param name="Type" select="'CREDIT'"/>
 			<xsl:with-param name="LineNum" select="1"/>
 			<xsl:with-param name="LineType" select="'Tax'"/>
 			<xsl:with-param name="Amount" select="-number(VATAmount)"/>
-			<xsl:with-param name="TaxCode" select="0"/>
+			<xsl:with-param name="TaxCode">
+				<xsl:choose>
+					<xsl:when test="VATAmount>0">20</xsl:when>
+					<xsl:otherwise>0</xsl:otherwise>
+				</xsl:choose>
+			</xsl:with-param>
 			<xsl:with-param name="NominalCode" select="'20400'"/>
 			<xsl:with-param name="UnitCode" select="/CreditNote/CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode"/>
 			<xsl:with-param name="CompanyCode" select="$CompanyCode"/>
@@ -94,7 +104,7 @@ This mapper is only prepared to process an invoice or a credit note.
 		<xsl:value-of select="//Supplier/SuppliersName"/>
 		<xsl:text>,</xsl:text>
 		<!-- C - Supplier Number - To start with we will only have ‘Bidvest’ as a supplier that will send in EDI invoices. -->
-		<xsl:value-of select="//Supplier/SuppliersLocationID/BuyersCode"/>
+		<xsl:value-of select="//RecipientsCodeForSender"/>
 		<xsl:text>,</xsl:text>
 		<!-- D - Site - This code is relating the Supplier address and is fixed for each supplier -->
 		<xsl:value-of select="$Site"/>
