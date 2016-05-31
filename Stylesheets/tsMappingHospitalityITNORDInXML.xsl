@@ -117,6 +117,7 @@ J Miguel		| 25/05/2016	| FB11028 - Adding support for more units of measure
 						<xsl:when test="itn:UnitOfMeasure='BAG'"><xsl:text>CS</xsl:text></xsl:when>
 						<xsl:when test="itn:UnitOfMeasure='BOX'"><xsl:text>CS</xsl:text></xsl:when>
 						<xsl:when test="itn:UnitOfMeasure='CAR'"><xsl:text>CS</xsl:text></xsl:when>
+						<xsl:when test="itn:UnitOfMeasure='PK'"><xsl:text>CS</xsl:text></xsl:when>
 						<xsl:when test="itn:UnitOfMeasure='HR'"><xsl:text>HUR</xsl:text></xsl:when>
 						<xsl:when test="itn:UnitOfMeasure='KG'"><xsl:text>KGM</xsl:text></xsl:when>
 						<xsl:otherwise><xsl:text>EA</xsl:text></xsl:otherwise>
