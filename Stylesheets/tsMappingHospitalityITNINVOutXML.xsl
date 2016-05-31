@@ -415,6 +415,7 @@ J Miguel		| 25/05/2016	| FB11028 - Adding support for more units of measure
 		<xsl:param name="UOM"/>
 			<xsl:choose>
 				<xsl:when test="$UOM='CS'"><xsl:text>BOX</xsl:text></xsl:when>
+				<xsl:when test="$UOM='PF'"><xsl:text>PK</xsl:text></xsl:when>
 				<xsl:when test="$UOM='HUR'"><xsl:text>HR</xsl:text></xsl:when>
 				<xsl:when test="$UOM='KGM'"><xsl:text>KG</xsl:text></xsl:when>
 				<xsl:otherwise><xsl:text>EA</xsl:text></xsl:otherwise>
