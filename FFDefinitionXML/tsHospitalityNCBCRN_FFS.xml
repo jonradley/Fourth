@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+**********************************************************************
+Alterations
+**********************************************************************
+Name			| Date			| Change
+**********************************************************************
+M Dimant 		| 15/01/2014	|  7664: Created FSS
+**********************************************************************
+					|					|
+**********************************************************************
+-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>chr(13)chr(10)</ffsRecordSeparator>
+		<ffsPadding>chr(32)</ffsPadding>		
+		<ffsSplitBatchRecord RecordPos="CH"/>		
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<BatchDocuments>
+				<BatchDocument>
+					<CreditNote>
+						<TradeSimpleHeader>
+							<SendersCodeForRecipient RecordPos="CH"  LPos="18" UPos="35"/>
+						</TradeSimpleHeader>
+						<CreditNoteHeader>
+						<Buyer>
+								<BuyersLocationID>
+									<SuppliersCode RecordPos="CH"  LPos="4" UPos="17"/>
+								</BuyersLocationID>	
+						</Buyer>					
+							<ShipTo>
+								<ShipToLocationID>									
+									<SuppliersCode RecordPos="CH"  LPos="18" UPos="35"/>
+								</ShipToLocationID>
+							</ShipTo>
+							<CreditNoteReferences>
+								<CreditNoteReference RecordPos="CH"  LPos="77" UPos="94"/>
+								<CreditNoteDate RecordPos="CH"  LPos="100" UPos="106"/>								
+							</CreditNoteReferences>
+							<InvoiceReferences>
+								<InvoiceReference RecordPos="IR"  LPos="54" UPos="71"/>
+								<InvoiceDate RecordPos="IR"  LPos="72" UPos="78"/>								
+							</InvoiceReferences>
+						</CreditNoteHeader>
+						<CreditNoteDetail>
+							<CreditNoteLine>									
+								<ProductID>
+									<SuppliersProductCode RecordPos="CL"  LPos="18" UPos="48"/>
+									<BuyersProductCode RecordPos="CL"  LPos="78" UPos="108"/>
+								</ProductID>
+								<ProductDescription RecordPos="CL"  LPos="261" UPos="301"/>
+								<CreditedQuantity RecordPos="CL" LPos="146" UPos="175">
+									<ffsAttribute1 name="UnitOfMeasure" RecordPos="CL" LPos="176" UPos="182"/>
+								</CreditedQuantity>								
+								<UnitValueExclVAT RecordPos="CL" LPos="183" UPos="197"/>								
+								<VATCode RecordPos="CL" LPos="205" UPos="207"/>								
+							</CreditNoteLine>
+						</CreditNoteDetail>					
+					</CreditNote>				
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>
