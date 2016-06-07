@@ -8,6 +8,8 @@ Name			| Date 				|	Description
 J Miguel		| 19/05/2016	| FB11000 - Fixes
 **************************************************************************************
 J Miguel		| 25/05/2016	| FB11028 - Adding support for more units of measure
+**************************************************************************************
+J Miguel		| 25/05/2016	| FB11037  - Fix the name of the template
 **************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns="http://www.eanucc.org/2002/Pay/FoodService/FoodService/UK/EanUcc/Pay" xmlns:cc="http://www.ean-ucc.org/2002/gsmp/schemas/CoreComponents" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" exclude-result-prefixes="fo script msxsl">
 	<xsl:output method="xml" encoding="utf-8"/>
@@ -283,7 +285,7 @@ J Miguel		| 25/05/2016	| FB11028 - Adding support for more units of measure
 					</ItemIdentifier>
 					<InvoiceQuantity>
 						<xsl:attribute name="unitCode">
-							<xsl:call-template name="translateUOM">
+							<xsl:call-template name="translateUoM">
 								<xsl:with-param name="UOM" select="InvoicedQuantity/@UnitOfMeasure"/>
 							</xsl:call-template>
 						</xsl:attribute>
@@ -299,7 +301,7 @@ J Miguel		| 25/05/2016	| FB11028 - Adding support for more units of measure
 					<xsl:if test="OrderedQuantity">
 						<OrderedQuantity>
 							<xsl:attribute name="unitCode">
-								<xsl:call-template name="translateUOM">
+								<xsl:call-template name="translateUoM">
 								<xsl:with-param name="UOM" select="OrderedQuantity/@UnitOfMeasure"/>
 								</xsl:call-template>
 							</xsl:attribute>
