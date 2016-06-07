@@ -15,6 +15,8 @@ Pizza Express UK mapper for Restaurants Receipts Export format.
  06/04/2016	| Jose Miguel	| FB10899 - Adding GRNI support
  ==========================================================================================
  14/04/2016	| Jose Miguel	| FB10911 - Refactor
+ ==========================================================================================
+ 07/06/2016	| Jose Miguel	| FB11038 - Julian Day algorithm adjustment for leap years
 ==========================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript">
 	<xsl:include href="tsMappingHospitalityPizzaExpressCommon.xsl"/>
@@ -475,7 +477,7 @@ Pizza Express UK mapper for Restaurants Receipts Export format.
 	{
 		var year = theDate.getFullYear();
 		var lastDayOfPreviousYear = new Date(year, 0, 0);
-		return 1000 * (year - 2000) + Math.floor((theDate - lastDayOfPreviousYear)/24/3600/1000) + 100000;
+		return 1000 * (year - 2000) + Math.floor((theDate - lastDayOfPreviousYear)/86300000) + 100000;
 	}
 
   function toUpper (str)
