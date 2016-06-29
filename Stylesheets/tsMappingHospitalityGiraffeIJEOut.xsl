@@ -9,16 +9,19 @@ Giraffe Concepts LTD mapper for invoices and credits journal format.
  21/01/2016	| Jose Miguel	| FB10768 - Created
 ==========================================================================================
  15/06/2016	| Jose Miguel	| FB10844 - Fixes
+==========================================================================================
+ 29/06/2016	| Jose Miguel	| FB11118 - CR & Fixes
 ==========================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"  xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript" exclude-result-prefixes="#default xsl msxsl js">
 	<xsl:output method="text" encoding="UTF-8"/>
+	
 	<xsl:key name="keyLinesByNominalCode" match="InvoiceCreditJournalEntriesLine" use="CategoryNominal"/>
-	<xsl:key name="keyLinesByRefAndNominalCodeAndVATCode" match="InvoiceCreditJournalEntriesLine" use="concat(../../InvoiceCreditJournalEntriesHeader/InvoiceReference,'|', CategoryNominal, '|', VATCode)"/>
+	<xsl:key name="keyLinesByRefAndNominalCode" match="InvoiceCreditJournalEntriesLine" use="concat(../../InvoiceCreditJournalEntriesHeader/InvoiceReference,'|', CategoryNominal)"/>
 	
 	<!-- Drive the transformation of the whole file -->
 	<xsl:template match="/">
 		<!-- Main headers -->
-		<xsl:text>AccountNumber,CBAccountNumber,DaysDiscountValid,DiscountValue,DiscountPercentage,DueDate,GoodsValueInAccountCurrency,PerControlValueInBaseCurrency,DocumentToBaseCurrencyRate,DocumentToAccountCurrencyRate,PostedDate,QueryCode,TransactionReference,SecondReference,Source,SysTraderTranType,TransactionDate,UniqueReferenceNumber,UserNumber,TaxValue,SYSTraderGenerationReasonType,GoodsValueInBaseCurrency,</xsl:text>
+		<xsl:text>AccountNumber,CBAccountNumber,DaysDiscountValid,DiscountValue,DiscountPercentage,DueDate,GoodsValueInAccountCurrency,PurControlValueInBaseCurrency,DocumentToBaseCurrencyRate,DocumentToAccountCurrencyRate,PostedDate,QueryCode,TransactionReference,SecondReference,Source,SysTraderTranType,TransactionDate,UniqueReferenceNumber,UserNumber,TaxValue,SYSTraderGenerationReasonType,GoodsValueInBaseCurrency,</xsl:text>
 		<!-- Category dynamic headers -->
 		<!-- Calculate the maximum number of categories -->
 		<xsl:for-each select="//InvoiceCreditJournalEntriesLine[generate-id() = generate-id(key('keyLinesByNominalCode', CategoryNominal)[1])]">
@@ -41,6 +44,7 @@ Giraffe Concepts LTD mapper for invoices and credits journal format.
 			<!-- F NominalAnalysisTransactionAnalysisCode -->
 			<xsl:value-of select="concat('NominalAnalysisTransactionAnalysisCode/', $currentCategoryIndex)"/>
 			<xsl:text>,</xsl:text>
+			<xsl:value-of select="js:addTotalCategoryNominal()"/>
 		</xsl:for-each>
 
 		<!-- Taxes -->
@@ -142,12 +146,11 @@ Giraffe Concepts LTD mapper for invoices and credits journal format.
 	<!-- Process the detail group the lines by Nominal Code and then by VATCode -->
 	<xsl:template match="InvoiceCreditJournalEntriesDetail" mode="category">
 		<xsl:variable name="currentDocReference" select="../InvoiceCreditJournalEntriesHeader/InvoiceReference"/>
-		<xsl:variable name="currentDocTotalGroups" select="count(InvoiceCreditJournalEntriesLine[generate-id() = generate-id(key('keyLinesByRefAndNominalCodeAndVATCode', concat($currentDocReference, '|', CategoryNominal, '|', VATCode))[1])])"/>
-		<xsl:for-each select="InvoiceCreditJournalEntriesLine[generate-id() = generate-id(key('keyLinesByRefAndNominalCodeAndVATCode', concat($currentDocReference, '|', CategoryNominal, '|', VATCode))[1])]">
+		<xsl:value-of select="js:resetCurrentCategoryNominals()"/>		
+		<xsl:for-each select="InvoiceCreditJournalEntriesLine[generate-id() = generate-id(key('keyLinesByRefAndNominalCode', concat($currentDocReference, '|', CategoryNominal))[1])]">
 			<xsl:variable name="currentCategoryNominal" select="CategoryNominal"/>
-			<xsl:variable name="currentVATCode" select="VATCode"/>
 			<!-- A NominalAnalysisTransactionValue = Category (Invoice not Delivery) Net Split Amount - Per Category Nominal Code & Tax Code per transaction on the same row. - SEE NOTE -->
-			<xsl:value-of select="sum(key('keyLinesByRefAndNominalCodeAndVATCode',concat($currentDocReference, '|', $currentCategoryNominal, '|', $currentVATCode))/LineNet)"/>
+			<xsl:value-of select="format-number(sum(key('keyLinesByRefAndNominalCode',concat($currentDocReference, '|', $currentCategoryNominal))/LineNet), '##.##')"/>
 			<xsl:text>,</xsl:text>
 			<!-- B NominalAnalysisNominalAccountNumber = Category / Item Type / Cost Center Nominal Split Code - SEE NOTE -->
 			<xsl:value-of select="$currentCategoryNominal"/>
@@ -163,7 +166,10 @@ Giraffe Concepts LTD mapper for invoices and credits journal format.
 			<xsl:text>,</xsl:text>
 			<!-- F NominalAnalysisTransactionAnalysisCode = Category Split - Analysis Code  - (Always blank field). -->
 			<xsl:text>,</xsl:text>
+			<xsl:value-of select="js:addCurrentCategoryNominal()"/>
 		</xsl:for-each>
+		<!-- insert remaining empty category nominal as needed to complete all allocated ones -->
+		<xsl:value-of select="js:insertEmptyCategoryNominals()"/>
     </xsl:template>
     
    	<!-- Process the VATCode trailer columns -->
@@ -172,7 +178,7 @@ Giraffe Concepts LTD mapper for invoices and credits journal format.
 		<xsl:text>0</xsl:text>
 		<xsl:text>,</xsl:text>
 		<!-- B TaxAnalysisGoodsValueBeforeDiscount = Exempt Rate (E = 0%) Taxable AmountTaxable amount per E Tax Letter, per transaction on the same row,or "0" if tax split does not exist. -->
-		<xsl:value-of select="sum(InvoiceCreditJournalEntriesLine[VATCode='E']/LineNet)"/>
+		<xsl:value-of select="format-number(sum(InvoiceCreditJournalEntriesLine[VATCode='E']/LineNet), '##.##')"/>
 		<xsl:text>,</xsl:text>
 		<!-- C TaxAnalysisDiscountValue = Discount ValueAlways "0". -->
 		<xsl:text>0</xsl:text>
@@ -188,7 +194,7 @@ Giraffe Concepts LTD mapper for invoices and credits journal format.
 		<xsl:text>1</xsl:text>
 		<xsl:text>,</xsl:text>
 		<!-- B TaxAnalysisGoodsValueBeforeDiscount = Standard Rate (S = 20% ) Taxable AmountTaxable amount per S Tax Letter, per transaction on the same row,or "0" if tax split does not exist. -->
-		<xsl:value-of select="sum(InvoiceCreditJournalEntriesLine[VATCode='S']/LineNet)"/>
+		<xsl:value-of select="format-number(sum(InvoiceCreditJournalEntriesLine[VATCode='S']/LineNet), '##.##')"/>
 		<xsl:text>,</xsl:text>
 		<!-- C TaxAnalysisDiscountValue = Discount ValueAlways "0". -->
 		<xsl:text>0</xsl:text>
@@ -197,12 +203,13 @@ Giraffe Concepts LTD mapper for invoices and credits journal format.
 		<xsl:text>0</xsl:text>
 		<xsl:text>,</xsl:text>
 		<!-- E TaxAnalysisTaxOnGoodsValue = Standard (S) Tax ValueTax value per S Tax Letter split, per transaction on the same row, or "0" if tax split does not exist.-->
+		<xsl:value-of select="format-number(sum(InvoiceCreditJournalEntriesLine[VATCode='S']/LineVAT),  '##.##')"/>
 	    <xsl:text>,</xsl:text>
 		<!-- A TaxAnalysisTaxRate = Zero Rated (Z = 0%) Tax Code MappingAlways show "9" (for Exempt (Z = 0%) Tax Rate) in this column.- CR show "2" -->
 		<xsl:text>2</xsl:text>
 		<xsl:text>,</xsl:text>
 		<!-- B TaxAnalysisGoodsValueBeforeDiscount	= Zero Rated (Z = 0%) Taxable AmountTaxable amount per Z Tax Letter, per transaction on the same row,or "0" if tax split does not exist. -->
-		<xsl:value-of select="sum(InvoiceCreditJournalEntriesLine[VATCode='Z']/LineNet)"/>
+		<xsl:value-of select="format-number(sum(InvoiceCreditJournalEntriesLine[VATCode='Z']/LineNet),  '##.##')"/>
 		<xsl:text>,</xsl:text>
 		<!-- C TaxAnalysisDiscountValue = Discount ValueAlways "0". -->
 		<xsl:text>0</xsl:text>
@@ -216,41 +223,47 @@ Giraffe Concepts LTD mapper for invoices and credits journal format.
 		</xsl:template>
 
 	<msxsl:script implements-prefix="js"><![CDATA[ 
-	var docRefs = [];
-	
-	function groupNumber (docRef, key)
+	function getFormattedDate(input) 
 	{
-		var counter = docRefs[docRef];
-		if (counter == undefined)
+		var pattern = /(.{4})-(.{2})-(.{2})$/;
+		var result = input.replace(pattern, function(match, p1, p2, p3)
+			{
+				return p3 + "/" + p2 + "/" + p1;
+			}
+		);
+		return result;
+	}
+	
+	var numTotalCategoryNominals = 0;
+	var numCurrentCategoryNominals = 0;
+	
+	function addTotalCategoryNominal ()
+	{
+		numTotalCategoryNominals ++;
+		return "";
+	}
+	
+	function addCurrentCategoryNominal ()
+	{
+		numCurrentCategoryNominals ++;
+		return "";
+	}
+	function resetCurrentCategoryNominals ()
+	{
+		numCurrentCategoryNominals = 0;
+		return "";
+	}
+	
+	function insertEmptyCategoryNominals ()
+	{
+		var c;
+		var result = "";
+		for (c = numCurrentCategoryNominals; numCurrentCategoryNominals < numTotalCategoryNominals; numCurrentCategoryNominals++)
 		{
-			counter = docRefs[docRef] = 0;
+			result += ",,,ADM,,,";
 		}
-		return docRefs[docRef] = ++counter;
+		numCurrentCategoryNominals = 0;
+		return result;
 	}
-	
-	function right (str, count)
-	{
-		return str.substring(str.length - count, str.length);
-	}
-	
-	function pad2 (str)
-	{
-		return right('0' + str, 2);
-	}
-	
-	function addYearsMonthsDays (string_date, years, months, days)
-	{
-		var parts = string_date.split("-")
-		if (parts.length != 3) return 'Error in date :' + string_date;
-
-		var year = parseInt(parts[0], 10);
-		var month = parseInt(parts[1], 10);
-		var day = parseInt(parts[2], 10);
-		
-		var date = new Date(year + years, month + months, day + days)
-		
-		return pad2(date.getDate()) + '/' + pad2(date.getMonth()) + '/' + date.getFullYear()
-	}
-	
 ]]></msxsl:script>
 </xsl:stylesheet>
