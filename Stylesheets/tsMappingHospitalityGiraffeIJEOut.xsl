@@ -21,7 +21,7 @@ Giraffe Concepts LTD mapper for invoices and credits journal format.
 	<!-- Drive the transformation of the whole file -->
 	<xsl:template match="/">
 		<!-- Main headers -->
-		<xsl:text>AccountNumber,CBAccountNumber,DaysDiscountValid,DiscountValue,DiscountPercentage,DueDate,GoodsValueInAccountCurrency,PurControlValueInBaseCurrency,DocumentToBaseCurrencyRate,DocumentToAccountCurrencyRate,PostedDate,QueryCode,TransactionReference,SecondReference,Source,SysTraderTranType,TransactionDate,UniqueReferenceNumber,UserNumber,TaxValue,SYSTraderGenerationReasonType,GoodsValueInBaseCurrency,</xsl:text>
+		<xsl:text>AccountNumber,CBAccountNumber,DaysDiscountValid,DiscountValue,DiscountPercentage,DueDate,GoodsValueInAccountCurrency,PurControlValueInBaseCurrency,DocumentToBaseCurrencyRate,DocumentToAccountCurrencyRate,PostedDate,QueryCode,TransactionReference,SecondReference,Source,SYSTraderTranType,TransactionDate,UniqueReferenceNumber,UserNumber,TaxValue,SYSTraderGenerationReasonType,GoodsValueInBaseCurrency,</xsl:text>
 		<!-- Category dynamic headers -->
 		<!-- Calculate the maximum number of categories -->
 		<xsl:for-each select="//InvoiceCreditJournalEntriesLine[generate-id() = generate-id(key('keyLinesByNominalCode', CategoryNominal)[1])]">
@@ -119,7 +119,7 @@ Giraffe Concepts LTD mapper for invoices and credits journal format.
 		<!-- O Source = SourceAlways "60". -->
 		<xsl:text>60</xsl:text>		
 		<xsl:text>,</xsl:text>
-		<!-- P SysTraderTranType = Transaction TypeShow "4" for Invoices, show "5" for Credit Notes. -->
+		<!-- P SYSTraderTranType = Transaction TypeShow "4" for Invoices, show "5" for Credit Notes. -->
 		<xsl:choose>
 			<xsl:when test="TransactionType='INV'"><xsl:text>4</xsl:text></xsl:when>
 			<xsl:when test="TransactionType='CRN'"><xsl:text>5</xsl:text></xsl:when>
