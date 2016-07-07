@@ -36,7 +36,7 @@
 						<IsPriceEditable/>
 						<IsCatchweight>
 							<xsl:choose>
-								<xsl:when test="LineExtraData/IsCatchWeight"><xsl:value-of select="LineExtraData/IsCatchWeight"/></xsl:when>
+								<xsl:when test="LineExtraData/IsCatchweightProduct"><xsl:value-of select="LineExtraData/IsCatchweightProduct"/></xsl:when>
 								<xsl:when test="OrderedQuantity/@UnitOfMeasure and DespatchedQuantity/@UnitOfMeasure">
 									<xsl:choose>
 										<xsl:when test="OrderedQuantity/@UnitOfMeasure = DespatchedQuantity/@UnitOfMeasure">FALSE</xsl:when>
