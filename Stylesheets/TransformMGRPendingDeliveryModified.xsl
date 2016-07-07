@@ -29,8 +29,8 @@
 						<ReceivedUnit><xsl:value-of select="DespatchedQuantity/@UnitOfMeasure"/></ReceivedUnit>
 						<OrderedQuantity><xsl:value-of select="OrderedQuantity"/></OrderedQuantity>
 						<ReceivedQuantity><xsl:value-of select="AcceptedQuantity"/></ReceivedQuantity>
-						<OrderedUnitPrice><xsl:value-of select="../PurchaseOrderLine/UnitValueExclVAT | ../PurchaseOrderConfirmationLine/UnitValueExclVAT"/></OrderedUnitPrice>
-						<ReceivedUnitPrice><xsl:value-of select="../DeliveryNoteLine/UnitValueExclVAT | ../ProofOfDeliveryLine/UnitValueExclVAT | ../InvoiceLine/UnitValueExclVAT"/></ReceivedUnitPrice>
+						<OrderedUnitPrice><xsl:value-of select="UnitValueExclVAT[local-name(..) = 'PurchaseOrderLine' or local-name(..) = 'PurchaseOrderConfirmationLine']"/></OrderedUnitPrice>
+						<ReceivedUnitPrice><xsl:value-of select="UnitValueExclVAT[local-name(..) = 'DeliveryNoteLine' or local-name(..) = 'ProofOfDeliveryLine' or local-name(..) = 'InvoiceLine']"/></ReceivedUnitPrice>
 						<OrderedCurrencyCode/>
 						<ReceivedCurrencyCode/>
 						<IsPriceEditable/>
