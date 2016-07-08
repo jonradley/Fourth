@@ -1,4 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+******************************************************************************************
+ Overview
+
+ This XSL file is used to transform the XML of an MGR Pending Delivery Modified document
+ that has been through Subs DB Extract using a reference document from the Document Repository
+
+ © Fourth 2016
+******************************************************************************************
+ Module History
+******************************************************************************************
+ Date				| Name				| Description of modification
+******************************************************************************************
+ 30/06/2016		|	Graham Neicho	| US13167. Created module.
+******************************************************************************************
+-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="xml" version="1.0" encoding="UTF-8"/>
 	<xsl:param name="ReferenceFilepath"/>
