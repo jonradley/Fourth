@@ -29,11 +29,14 @@
 	<xsl:template match="SubscriptionDetails" priority="2">
 		<SubscriptionDetails>
 			<xsl:apply-templates />
-			<xsl:call-template name="WriteLines"/>
+			<xsl:call-template name="WriteLines">
+				<xsl:with-param name="Status" select="Status"/>
+			</xsl:call-template>
 		</SubscriptionDetails>
 	</xsl:template>
 	
 	<xsl:template name="WriteLines">
+		<xsl:param name="Status"/>
 		<xsl:if test="$ReferenceDocument/*/*[substring(local-name(), string-length(local-name()) - string-length('Detail') + 1) = 'Detail']/*[substring(local-name(), string-length(local-name()) - string-length('Line') + 1) = 'Line']">
 			<Lines>
 				<xsl:for-each select="$ReferenceDocument/*/*[substring(local-name(), string-length(local-name()) - string-length('Detail') + 1) = 'Detail']/*[substring(local-name(), string-length(local-name()) - string-length('Line') + 1) = 'Line']">
@@ -61,12 +64,7 @@
 								</xsl:when>
 							</xsl:choose>
 						</IsCatchweight>
-						<Status>
-							<xsl:choose>
-								<xsl:when test="/GoodsReceivedNote">SUBMITTED</xsl:when>
-								<xsl:otherwise>MODIFIED</xsl:otherwise>
-							</xsl:choose>
-						</Status>
+						<Status><xsl:value-of select="$Status"/></Status>
 					</Item>
 				</xsl:for-each>
 			</Lines>
