@@ -30,12 +30,14 @@
 		<SubscriptionDetails>
 			<xsl:apply-templates />
 			<xsl:call-template name="WriteLines">
+				<xsl:with-param name="LocationId" select="LocationId"/>
 				<xsl:with-param name="Status" select="Status"/>
 			</xsl:call-template>
 		</SubscriptionDetails>
 	</xsl:template>
 	
 	<xsl:template name="WriteLines">
+		<xsl:param name="LocationId"/>
 		<xsl:param name="Status"/>
 		<xsl:if test="$ReferenceDocument/*/*[substring(local-name(), string-length(local-name()) - string-length('Detail') + 1) = 'Detail']/*[substring(local-name(), string-length(local-name()) - string-length('Line') + 1) = 'Line']">
 			<Lines>
@@ -65,6 +67,7 @@
 							</xsl:choose>
 						</IsCatchweight>
 						<Status><xsl:value-of select="$Status"/></Status>
+						<OutletId><xsl:value-of select="$LocationId"/></OutletId>
 					</Item>
 				</xsl:for-each>
 			</Lines>
