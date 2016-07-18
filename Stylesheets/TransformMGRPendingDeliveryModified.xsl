@@ -51,7 +51,7 @@
 						<OrderedQuantity><xsl:value-of select="OrderedQuantity[local-name(..) = 'PurchaseOrderLine'] | ConfirmedQuantity[local-name(..) = 'PurchaseOrderConfirmationLine'] | DespatchedQuantity[(local-name(..) = 'DeliveryNoteLine' or local-name(..) = 'ProofOfDeliveryLine')] | InvoicedQuantity[local-name(..) = 'InvoiceLine'] | AcceptedQuantity[local-name(..) = 'GoodsReceivedNoteLine']"/></OrderedQuantity>
 						<ReceivedQuantity><xsl:value-of select="AcceptedQuantity"/></ReceivedQuantity>
 						<OrderedUnitPrice><xsl:value-of select="UnitValueExclVAT[local-name(..) = 'PurchaseOrderLine' or local-name(..) = 'PurchaseOrderConfirmationLine']"/></OrderedUnitPrice>
-						<ReceivedUnitPrice><xsl:value-of select="UnitValueExclVAT[local-name(..) = 'DeliveryNoteLine' or local-name(..) = 'ProofOfDeliveryLine' or local-name(..) = 'InvoiceLine']"/></ReceivedUnitPrice>
+						<ReceivedUnitPrice><xsl:value-of select="UnitValueExclVAT[local-name(..) = 'DeliveryNoteLine' or local-name(..) = 'ProofOfDeliveryLine' or local-name(..) = 'InvoiceLine' or local-name(..) = 'GoodsReceivedNoteLine']"/></ReceivedUnitPrice>
 						<OrderedCurrencyCode/>
 						<ReceivedCurrencyCode/>
 						<IsPriceEditable/>
