@@ -113,7 +113,7 @@ Pizza Express UK mapper for Restaurants Receipts Export format.
 		<xsl:text>,</xsl:text>
 		<!--Q4TRQJ - Date - Requested - (Date 6) -->
 		<xsl:choose>
-			<xsl:when test="$Header/PurchaseOrderDate">
+			<xsl:when test="$Header/DeliveryNoteDate">
 				<xsl:value-of select="js:convertToJulianYYYY_MM_DD(string($Header/DeliveryNoteDate))"/>
 			</xsl:when>
 			<xsl:otherwise>
@@ -123,7 +123,7 @@ Pizza Express UK mapper for Restaurants Receipts Export format.
 		<xsl:text>,</xsl:text>
 		<!--Q4TRDJ - Date - Order/Transaction - (Date 6) -->
 		<xsl:choose>
-			<xsl:when test="$Header/PurchaseOrderDate">
+			<xsl:when test="$Header/DeliveryNoteDate">
 				<xsl:value-of select="js:convertToJulianYYYY_MM_DD(string($Header/DeliveryNoteDate))"/>
 			</xsl:when>
 			<xsl:otherwise>
