@@ -8,6 +8,8 @@ Name			| Date 				|	Description
 J Miguel		| 19/05/2016	| FB11000 - Fixes
 **************************************************************************************
 J Miguel		| 25/05/2016	| FB11028 - Adding support for more units of measure
+**************************************************************************************
+J Miguel		| 25/05/2016	| FB11037  - Fix the name of the template
 **************************************************************************************-->
 <xsl:stylesheet version="1.0" 
 				xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -226,7 +228,7 @@ J Miguel		| 25/05/2016	| FB11028 - Adding support for more units of measure
 						<xsl:choose>
 							<xsl:when test="InvoicedQuantity">
 								<xsl:attribute name="unitCode">
-									<xsl:call-template name="translateUOM">
+									<xsl:call-template name="translateUoM">
 										<xsl:with-param name="UOM" select="InvoicedQuantity/@UnitOfMeasure"/>
 									</xsl:call-template>
 								</xsl:attribute>
@@ -241,7 +243,7 @@ J Miguel		| 25/05/2016	| FB11028 - Adding support for more units of measure
 					<xsl:if test="CreditedQuantity">
 						<CreditQuantity>
 							<xsl:attribute name="unitCode">
-								<xsl:call-template name="translateUOM">
+								<xsl:call-template name="translateUoM">
 									<xsl:with-param name="UOM" select="CreditedQuantity/@UnitOfMeasure"/>
 								</xsl:call-template>
 							</xsl:attribute>

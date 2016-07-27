@@ -31,6 +31,8 @@
 ******************************************************************************************
  08/01/2016      | J Miguel		  | 10809 - Fix to the Supplier Code + Final live mappings
 ******************************************************************************************
+ 29/06/2016      | J Miguel		  | 11120 - Fix Debit Note Reference value as per JDE output
+******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl script">
 	<xsl:output method="text" encoding="UTF-8"/>
@@ -78,7 +80,24 @@
 		<xsl:text>19_ARATRADE</xsl:text>
 		<xsl:value-of select="$separator"/>
 		<!-- Invoice Ref -->
-		<xsl:value-of select="InvoiceHeader/InvoiceReferences/InvoiceReference | CreditNoteHeader/CreditNoteReferences/CreditNoteReference | DebitNoteHeader/DebitNoteReferences/DebitNoteReference"/>
+
+		<!-- store the Invoice/Debit Number-->
+		<xsl:variable name="DocumentReference">
+			<xsl:choose>
+				<xsl:when test="InvoiceHeader/InvoiceReferences/InvoiceReference">
+					<xsl:value-of select="InvoiceHeader/InvoiceReferences/InvoiceReference"/>
+				</xsl:when>
+				<xsl:when test="DebitNoteHeader/DebitNoteReferences/DebitNoteReference">
+					<xsl:value-of select="concat(DebitNoteHeader/InvoiceReferences/InvoiceReference,'/',substring(DebitNoteHeader/DebitNoteReferences/DebitNoteReference,string-length(DebitNoteHeader/DebitNoteReferences/DebitNoteReference)-7))"/> 
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="CreditNoteHeader/CreditNoteReferences/CreditNoteReference"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+				
+		<xsl:value-of select="translate($DocumentReference, 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')"/>
+		<!--<xsl:value-of select="InvoiceHeader/InvoiceReferences/InvoiceReference | CreditNoteHeader/CreditNoteReferences/CreditNoteReference | DebitNoteHeader/DebitNoteReferences/DebitNoteReference"/>-->
 		<xsl:value-of select="$separator"/>
 		<!-- Invoice Date -->
 		<xsl:value-of select="translate(InvoiceHeader/InvoiceReferences/InvoiceDate | CreditNoteHeader/InvoiceReferences/InvoiceDate | DebitNoteHeader/InvoiceReferences/InvoiceDate,'-','')"/>
