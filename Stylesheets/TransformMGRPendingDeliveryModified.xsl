@@ -14,11 +14,16 @@
 ******************************************************************************************
  30/06/2016		|	Graham Neicho	| US13167. Created module.
 ******************************************************************************************
+ 29/07/2016		|	Sandeep Sehgal	| US19670 Added QuantityPrecison and CurrencyPrecision
+******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="xml" version="1.0" encoding="UTF-8"/>
 	<xsl:param name="ReferenceFilepath"/>
 	<xsl:variable name="ReferenceDocument" select="document($ReferenceFilepath)"/>
+	<xsl:variable name="CurrencyPrecision" select="2" />
+	<xsl:variable name="QuantityPrecision" select="4" />
+
 	
 	<xsl:template match="@*|node()" priority="1">
 		<xsl:copy>
@@ -68,6 +73,8 @@
 						</IsCatchweight>
 						<Status><xsl:value-of select="$Status"/></Status>
 						<OutletId><xsl:value-of select="$LocationId"/></OutletId>
+						<CurrencyPrecision><xsl:value-of select="$CurrencyPrecision"/></CurrencyPrecision>
+						<QuantityPrecision><xsl:value-of select="$QuantityPrecision"/></QuantityPrecision>
 					</Item>
 				</xsl:for-each>
 			</Lines>
