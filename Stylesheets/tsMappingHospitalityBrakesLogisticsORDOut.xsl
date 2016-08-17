@@ -4,9 +4,11 @@ Alterations
 *******************************************************************************************************************************************************************
 Name			| Date				| Change
 *******************************************************************************************************************************************************************
-S Hussain 	| 2013-08-16		| 6904 - Created from (tsMappingHospitalityBrakesOrderOut.xsl)
+S Hussain 	| 2013-08-16	| 6904 - Created from (tsMappingHospitalityBrakesOrderOut.xsl)
 *******************************************************************************************************************************************************************
-M Dimant	 	| 2013-09-10		| 7037 - Pass on GLN based on the Accounting Center of the Ordering Unit for Brunning & Price orders
+M Dimant	| 2013-09-10	| 7037 - Pass on GLN based on the Accounting Center of the Ordering Unit for Brunning & Price orders
+*******************************************************************************************************************************************************************
+J Miguel		| 2016-08-12	| FB11248 - TRG Orders Only - Override UoM to CS
 ****************************************************************************************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:sh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" xmlns:eanucc="urn:ean.ucc:2" xmlns:order="urn:ean.ucc:order:2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:vbscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
@@ -269,6 +271,10 @@ M Dimant	 	| 2013-09-10		| 7037 - Pass on GLN based on the Accounting Center of 
 													<!--Mercure-->
 													<xsl:when test="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN = 5027615900020">
 														<xsl:text>EA</xsl:text>
+													</xsl:when>
+													<!--TRG -->
+													<xsl:when test="/PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN = 5060166760113">
+														<xsl:text>CS</xsl:text>
 													</xsl:when>
 													<xsl:otherwise>
 														<xsl:value-of select="OrderedQuantity/@UnitOfMeasure"/>
