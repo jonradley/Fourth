@@ -54,7 +54,7 @@
 						<OrderUnit><xsl:value-of select="OrderedQuantity/@UnitOfMeasure"/></OrderUnit>
 						<ReceivedUnit><xsl:value-of select="OrderedQuantity[local-name(..) = 'PurchaseOrderLine']/@UnitOfMeasure | ConfirmedQuantity[local-name(..) = 'PurchaseOrderConfirmationLine']/@UnitOfMeasure | DespatchedQuantity[(local-name(..) = 'DeliveryNoteLine' or local-name(..) = 'ProofOfDeliveryLine')]/@UnitOfMeasure | InvoicedQuantity[local-name(..) = 'InvoiceLine']/@UnitOfMeasure | AcceptedQuantity[local-name(..) = 'GoodsReceivedNoteLine']/@UnitOfMeasure"/></ReceivedUnit>
 						<OrderedQuantity><xsl:value-of select="OrderedQuantity"/></OrderedQuantity>
-						<ReceivedQuantity><xsl:value-of select="OrderedQuantity[local-name(..) = 'PurchaseOrderLine'] | ConfirmedQuantity[local-name(..) = 'PurchaseOrderConfirmationLine'] | DespatchedQuantity[(local-name(..) = 'DeliveryNoteLine' or local-name(..) = 'ProofOfDeliveryLine')] | InvoicedQuantity[local-name(..) = 'InvoiceLine']/ | AcceptedQuantity[local-name(..) = 'GoodsReceivedNoteLine']"/></ReceivedQuantity>
+						<ReceivedQuantity><xsl:value-of select="OrderedQuantity[local-name(..) = 'PurchaseOrderLine'] | ConfirmedQuantity[local-name(..) = 'PurchaseOrderConfirmationLine'] | DespatchedQuantity[(local-name(..) = 'DeliveryNoteLine' or local-name(..) = 'ProofOfDeliveryLine')] | InvoicedQuantity[local-name(..) = 'InvoiceLine'] | AcceptedQuantity[local-name(..) = 'GoodsReceivedNoteLine']"/></ReceivedQuantity>
 						<OrderedUnitPrice><xsl:value-of select="UnitValueExclVAT[local-name(..) = 'PurchaseOrderLine']"/></OrderedUnitPrice>
 						<ReceivedUnitPrice><xsl:value-of select="UnitValueExclVAT"/></ReceivedUnitPrice>
 						<OrderedCurrencyCode/>
