@@ -65,8 +65,8 @@
 								<xsl:when test="LineExtraData/IsCatchweightProduct"><xsl:value-of select="LineExtraData/IsCatchweightProduct"/></xsl:when>
 								<xsl:when test="OrderedQuantity/@UnitOfMeasure and (DespatchedQuantity[(local-name(..) = 'DeliveryNoteLine' or local-name(..) = 'ProofOfDeliveryLine')]/@UnitOfMeasure | InvoicedQuantity[local-name(..) = 'InvoiceLine']/@UnitOfMeasure | AcceptedQuantity[local-name(..) = 'GoodsReceivedNoteLine']/@UnitOfMeasure)">
 									<xsl:choose>
-										<xsl:when test="OrderedQuantity/@UnitOfMeasure = (DespatchedQuantity[(local-name(..) = 'DeliveryNoteLine' or local-name(..) = 'ProofOfDeliveryLine')]/@UnitOfMeasure | InvoicedQuantity[local-name(..) = 'InvoiceLine']/@UnitOfMeasure | AcceptedQuantity[local-name(..) = 'GoodsReceivedNoteLine']/@UnitOfMeasure)">FALSE</xsl:when>
-										<xsl:otherwise>TRUE</xsl:otherwise>
+										<xsl:when test="OrderedQuantity/@UnitOfMeasure = (DespatchedQuantity[(local-name(..) = 'DeliveryNoteLine' or local-name(..) = 'ProofOfDeliveryLine')]/@UnitOfMeasure | InvoicedQuantity[local-name(..) = 'InvoiceLine']/@UnitOfMeasure | AcceptedQuantity[local-name(..) = 'GoodsReceivedNoteLine']/@UnitOfMeasure)">False</xsl:when>
+										<xsl:otherwise>True</xsl:otherwise>
 									</xsl:choose>
 								</xsl:when>
 							</xsl:choose>
