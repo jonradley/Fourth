@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--======================================================================================
+ Overview
+
+ © Fourth Ltd, 2014.
+==========================================================================================
+ Module History
+==========================================================================================
+ Version	| 
+==========================================================================================
+ Date      	| Name 			|	Description of modification
+==========================================================================================
+06/06/16	| Ben Oliver	|	FB11054: Created from tsHospitalityIHGX12ORCCSV_FFS.xml
+=========================================================================================
+-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>~</ffsRecordSeparator>
+		<ffsEscapeChars>
+			<ffsEscapeChar>
+				<ffsNative>chr(13)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>chr(10)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?=</ffsNative>
+				<ffsTradesimple>¬E</ffsTradesimple>
+				<ffsLiteral>=</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?+</ffsNative>
+				<ffsTradesimple>¬P</ffsTradesimple>
+				<ffsLiteral>+</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?:</ffsNative>
+				<ffsTradesimple>¬C</ffsTradesimple>
+				<ffsLiteral>:</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?'</ffsNative>
+				<ffsTradesimple>¬A</ffsTradesimple>
+				<ffsLiteral>'</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>??</ffsNative>
+				<ffsTradesimple>¬Q</ffsTradesimple>
+				<ffsLiteral>?</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>"</ffsNative>
+			</ffsEscapeChar>
+		</ffsEscapeChars>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>*</ffsFieldSeparator>
+			<ffsSubFieldSeparator>-</ffsSubFieldSeparator>
+		</ffsFieldSeparators>
+		<ffsPadding/>
+		<ffsBatchHeader>
+			<!--list of records that make up the header, this will be added to each document in the batch -->
+			<ffsHeaderRecord RecordPos="ISA"/>
+			<ffsHeaderRecord RecordPos="GS"/>
+		</ffsBatchHeader>
+		<ffsSplitBatchRecord RecordPos="ST"/>
+	</ffsSettings>
+	<ffsRoot>
+		<PurchaseOrderConfirmation>
+			<TradeSimpleHeader>
+				<!--Dummy element <SendersName> to be removed in stylesheet.-->
+				<SendersName RecordPos="N1" LPos="2"/>
+				<SendersCodeForRecipient RecordPos="N1" LPos="5"/>
+				<!--Dummy element <RecipientsName> to be removed in stylesheet.-->
+				<RecipientsName RecordPos="ISA" LPos="16"/>
+				<TestFlag RecordPos="ISA" LPos="16"/>
+			</TradeSimpleHeader>
+			<PurchaseOrderConfirmationHeader>
+				<!--Dummy value <DocumentStatus> to be changed in stylesheet.-->
+				<DocumentStatus RecordPos="GS" LPos="3"/>
+				<Buyer>
+					<BuyersLocationID>
+						<SuppliersCode RecordPos="GS" LPos="4"/>
+					</BuyersLocationID>
+				</Buyer>
+				<Supplier>
+					<SuppliersLocationID>
+						<SuppliersCode RecordPos="GS" LPos="3"/>
+					</SuppliersLocationID>
+				</Supplier>
+				<ShipTo>
+					<ShipToLocationID>
+						<SuppliersCode RecordPos="N1" LPos="5"/>
+					</ShipToLocationID>
+				</ShipTo>
+				<PurchaseOrderReferences>
+					<PurchaseOrderReference RecordPos="BAK" LPos="4"/>
+					<PurchaseOrderDate RecordPos="BAK" LPos="5"/>
+				</PurchaseOrderReferences>
+				<PurchaseOrderConfirmationReferences>
+					<PurchaseOrderConfirmationReference RecordPos="BAK" LPos="9"/>
+					<PurchaseOrderConfirmationDate RecordPos="BAK" LPos="10"/>
+				</PurchaseOrderConfirmationReferences>
+				<ConfirmedDeliveryDetails>
+					<!--DTM 2 is the type of date segment -->
+					<DeliveryType RecordPos="DTM" LPos="2"/>
+					<DeliveryDate RecordPos="DTM" LPos="3"/>
+				</ConfirmedDeliveryDetails>
+			</PurchaseOrderConfirmationHeader>
+			<PurchaseOrderConfirmationDetail>
+				<PurchaseOrderConfirmationLine>
+					<LineNumber RecordPos="PO1" LPos="2" SFPos="2"/>
+					<ProductID>
+						<!-- Original product id -->
+						<SuppliersProductCode RecordPos="PO1" LPos="8"/>
+					</ProductID>
+					<SubstitutedProductID>
+						<!-- Confirm product id -->
+						<SuppliersProductCode RecordPos="ACK" LPos="9"/>
+					</SubstitutedProductID>
+					<ProductDescription RecordPos="PID" LPos="6"/>
+					<OrderedQuantity RecordPos="PO1" LPos="3">
+						<ffsAttribute1 name="UnitOfMeasure" RecordPos="PO1" LPos="4"/>
+					</OrderedQuantity>
+					<ConfirmedQuantity RecordPos="ACK" LPos="3"/>
+					<ConfirmedDeliveryDetailsLineLevel>
+						<DeliveryDate RecordPos="ACK" LPos="6"/>
+					</ConfirmedDeliveryDetailsLineLevel>
+					<Narrative RecordPos="ACK" LPos="7"/>
+					<LineExtraData>
+						<ProductGroup RecordPos="ACK" LPos="7"/>
+					</LineExtraData>
+					<ffsAttribute1 name="LineStatus" RecordPos="ACK" LPos="2"/>
+				</PurchaseOrderConfirmationLine>
+			</PurchaseOrderConfirmationDetail>
+		</PurchaseOrderConfirmation>
+	</ffsRoot>
+</ffsFlatFileSchema>
