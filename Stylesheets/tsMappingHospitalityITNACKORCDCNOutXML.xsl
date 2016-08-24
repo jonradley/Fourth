@@ -10,6 +10,8 @@ J Miguel		| 15/03/2016	| FB10876 - Created
 J Miguel		| 19/05/2016	| FB11000 - Fixes
 ***************************************************************************************
 J Miguel		| 25/05/2016	| FB11028 - Adding support for more units of measure
+***************************************************************************************
+J Miguel		| 24/08/2016	| FB11267 - Un-hardcode the suppliers code
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" exclude-result-prefixes="fo">
 	<xsl:output method="xml" encoding="utf-8" indent="yes"/>
@@ -95,8 +97,7 @@ J Miguel		| 25/05/2016	| FB11028 - Adding support for more units of measure
 	<xsl:template match="Supplier">
 		<SupplierDetails>
 			<SupplierId>
-				<!-- Hard coded for nigel Fredericks. PENDING: try to set this in the config for the relations -->
-				<xsl:text>NGLFRDUK</xsl:text>
+				<xsl:value-of select="SuppliersLocationID/BuyersCode"/>
 			</SupplierId>
 			<SupplierGLN>
 				<xsl:value-of select="SuppliersLocationID/GLN"/>

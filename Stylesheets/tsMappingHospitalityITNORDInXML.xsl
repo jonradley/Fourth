@@ -9,6 +9,8 @@ J Miguel		| 15/03/2016	| FB10876 - Created
 ***************************************************************************************
 J Miguel		| 25/05/2016	| FB11028 - Adding support for more units of measure
 ***************************************************************************************
+J Miguel		| 24/08/2016	| FB11267 - Map the SupplierCode instead of the their GLN
+***************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:itn="http://itn.hub.biztalk.orderapp.ext.GenericITNSupplier.schemas.Order" exclude-result-prefixes="#default xsl itn">
 	<xsl:output method="xml" encoding="utf-8" indent="yes"/>
@@ -28,7 +30,7 @@ J Miguel		| 25/05/2016	| FB11028 - Adding support for more units of measure
 			<PurchaseOrder>
 				<TradeSimpleHeader>
 					<SendersCodeForRecipient>
-						<xsl:value-of select="itn:SupplierDetails/itn:SupplierGLN"/>
+						<xsl:value-of select="itn:SupplierDetails/itn:SupplierId"/>
 					</SendersCodeForRecipient>
 				</TradeSimpleHeader>
 				<PurchaseOrderHeader>
