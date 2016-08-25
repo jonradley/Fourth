@@ -23,7 +23,6 @@
 	<xsl:variable name="ReferenceDocument" select="document($ReferenceFilepath)"/>
 	<xsl:variable name="CurrencyPrecision" select="2" />
 	<xsl:variable name="QuantityPrecision" select="4" />
-
 	
 	<xsl:template match="@*|node()" priority="1">
 		<xsl:copy>
@@ -73,6 +72,7 @@
 						</IsCatchweight>
 						<Status><xsl:value-of select="$Status"/></Status>
 						<OutletId><xsl:value-of select="$LocationId"/></OutletId>
+						<OutletName><xsl:value-of select="/*/*/ShipTo/ShipToName"/></OutletName>
 						<CurrencyPrecision><xsl:value-of select="$CurrencyPrecision"/></CurrencyPrecision>
 						<QuantityPrecision><xsl:value-of select="$QuantityPrecision"/></QuantityPrecision>
 					</Item>
