@@ -15,11 +15,8 @@
 ==========================================================================================
  2008-09-11	| R Cambridge     	| 2459 override any ship-to ANA/GLN provided
 ==========================================================================================
-           	|                 	|
-==========================================================================================
-           	|                 	|
-=======================================================================================-->
-
+J Miguel	| 24/08/2016		| FB11254 - Adapt mapper to change in their backend
+==========================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 	xmlns:HelperObj="urn:XSLHelper" 
 	xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript"
@@ -215,7 +212,6 @@
 			<xsl:text>OLD=</xsl:text>
 				<xsl:value-of select="HelperObj:GetNextCounterValue('OrderLineDetails')"/>
 				<xsl:text>+</xsl:text>
-				<xsl:text>:</xsl:text>
 				<xsl:value-of select="ProductID/SuppliersProductCode"/>
 				<xsl:text>+</xsl:text>
 				<xsl:text>+</xsl:text>
