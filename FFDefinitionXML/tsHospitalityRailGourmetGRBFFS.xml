@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--******************************************************************
+<!--********************************************************************************************
 Flat file map for Rail Gourmet GRN's from JDE.
-**********************************************************************
+************************************************************************************************
 Revision History
-**********************************************************************
+************************************************************************************************
 Date				| Name				| Change
-**********************************************************************
+************************************************************************************************
 15/03/2012	| Andrew Barber	| 6374 Created
-******************************************************************-->
+************************************************************************************************
+20/10/2015	| Moty Dimant	| 10483: Mapper changes in line with new RG system
+************************************************************************************************-->
 <ffsFlatFileSchema>
 	<ffsSettings>
 		<ffsRecordPositionType>named</ffsRecordPositionType>
@@ -32,22 +34,22 @@ Date				| Name				| Change
 				<BatchDocument>
 					<GoodsReceivedNote>
 						<TradeSimpleHeader>
-							<SendersCodeForRecipient RecordPos="H" LPos="14" UPos="18"/>
-							<SendersBranchReference RecordPos="H" LPos="19" UPos="24"/>
+							<SendersCodeForRecipient RecordPos="H" LPos="14" UPos="20"/>
+							<SendersBranchReference RecordPos="H" LPos="21" UPos="28"/>
 						</TradeSimpleHeader>
 						<GoodsReceivedNoteHeader>
 							<Supplier>
 								<SuppliersLocationID>
-									<BuyersCode RecordPos="H" LPos="14" UPos="18"/>
+									<BuyersCode RecordPos="H" LPos="15" UPos="20"/>
 								</SuppliersLocationID>
 							</Supplier>
 							<PurchaseOrderReferences>
 								<PurchaseOrderReference RecordPos="H" LPos="4" UPos="11"/>
-								<PurchaseOrderNoteDate RecordPos="H" LPos="25" UPos="32"/>
+								<PurchaseOrderNoteDate RecordPos="H" LPos="29" UPos="37"/>
 							</PurchaseOrderReferences>
 							<GoodsReceivedNoteReferences>
 								<GoodsReceivedNoteReference RecordPos="H" LPos="4" UPos="11"/>
-								<GoodsReceivedNoteDate RecordPos="H" LPos="25" UPos="32"/>
+								<GoodsReceivedNoteDate RecordPos="H" LPos="29" UPos="37"/>
 							</GoodsReceivedNoteReferences>
 						</GoodsReceivedNoteHeader>
 						<GoodsReceivedNoteDetail>
