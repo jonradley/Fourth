@@ -16,6 +16,8 @@
  2008-09-11	| R Cambridge     	| 2459 override any ship-to ANA/GLN provided
 ==========================================================================================
 J Miguel	| 24/08/2016		| FB11254 - Adapt mapper to change in their backend
+==========================================================================================
+J Miguel	| 09/09/2016		| FB11289 - Support for codes with 14 digits
 ==========================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 	xmlns:HelperObj="urn:XSLHelper" 
@@ -208,11 +210,13 @@ J Miguel	| 24/08/2016		| FB11254 - Adapt mapper to change in their backend
 		
 		<xsl:value-of select="HelperObj:ResetCounter('OrderLineDetails')"/>
 		<xsl:for-each select="PurchaseOrderDetail/PurchaseOrderLine">
-		
 			<xsl:text>OLD=</xsl:text>
 				<xsl:value-of select="HelperObj:GetNextCounterValue('OrderLineDetails')"/>
 				<xsl:text>+</xsl:text>
-				<xsl:value-of select="ProductID/SuppliersProductCode"/>
+				<!-- Use SPRO3 for product codes with length 14 (by prefixing with ::) -->
+				<xsl:variable name="sProductCode" select="ProductID/SuppliersProductCode"/>
+				<xsl:if test="string-length($sProductCode) = 14"><xsl:text>::</xsl:text></xsl:if>
+				<xsl:value-of select="$sProductCode"/>
 				<xsl:text>+</xsl:text>
 				<xsl:text>+</xsl:text>
 				<xsl:text>:</xsl:text>
