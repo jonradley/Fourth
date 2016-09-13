@@ -13,6 +13,13 @@
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+	<xsl:param name="sSendersBranchReference" select="'0'"/>
+	<xsl:param name="sBuyersCodeForSupplier" select="'0'"/>
+	<xsl:param name="sPOReference" select="'0'"/>
+	<xsl:param name="sPODate" select="'0'"/>
+	<xsl:param name="sGRNReference" select="'0'"/>
+	<xsl:param name="sGRNDate" select="'0'"/>
+	
 	<xsl:template match="/PendingDeliverySubmitted">
 	
 		<BatchRoot>
@@ -21,9 +28,9 @@
 				
 				<TradeSimpleHeader>
 				
-					<SendersCodeForRecipient><xsl:value-of select="'####'"/></SendersCodeForRecipient>
+					<SendersCodeForRecipient><xsl:value-of select="$sBuyersCodeForSupplier"/></SendersCodeForRecipient>
 					
-					<SendersBranchReference><xsl:value-of select="LocationId"/></SendersBranchReference>
+					<SendersBranchReference><xsl:value-of select="$sSendersBranchReference"/></SendersBranchReference>
 	
 				</TradeSimpleHeader>
 				
@@ -36,28 +43,28 @@
 				
 					<PurchaseOrderReferences>
 					
-						<PurchaseOrderReference><xsl:value-of select="PendingDeliveryId"/></PurchaseOrderReference>
-						<PurchaseOrderDate><xsl:value-of select="'##??##'"/></PurchaseOrderDate>
+						<PurchaseOrderReference><xsl:value-of select="$sPOReference"/></PurchaseOrderReference>
+						<PurchaseOrderDate><xsl:value-of select="$sPODate"/></PurchaseOrderDate>
 							
 					</PurchaseOrderReferences>
 					
 					
 					<DeliveryNoteReferences>
-						<DeliveryNoteReference><xsl:value-of select="'##missing##'"/></DeliveryNoteReference>
-						<DeliveryNoteDate><xsl:value-of select="'##system date??##'"/></DeliveryNoteDate>
+						<DeliveryNoteReference><xsl:value-of select="$sPOReference"/></DeliveryNoteReference>
+						<DeliveryNoteDate><xsl:value-of select="$sPODate"/></DeliveryNoteDate>
 					</DeliveryNoteReferences>					
 					
 					<GoodsReceivedNoteReferences>
-						<GoodsReceivedNoteReference><xsl:value-of select="'##missing##'"/></GoodsReceivedNoteReference>
-						<GoodsReceivedNoteDate><xsl:value-of select="'##system date??##'"/></GoodsReceivedNoteDate>
+						<GoodsReceivedNoteReference><xsl:value-of select="$sGRNReference"/></GoodsReceivedNoteReference>
+						<GoodsReceivedNoteDate><xsl:value-of select="$sGRNDate"/></GoodsReceivedNoteDate>
 					</GoodsReceivedNoteReferences>
 					
 					<DeliveredDeliveryDetails>
-						<DeliveryDate><xsl:value-of select="'ActualDeliveryDate##ticks_to_date'"/></DeliveryDate>
+						<DeliveryDate><xsl:value-of select="PlannedDeliveryDate"/></DeliveryDate>
 					</DeliveredDeliveryDetails>
 					
 					<ReceivedDeliveryDetails>
-						<DeliveryDate><xsl:value-of select="'ActualDeliveryDate##ticks_to_date'"/></DeliveryDate>
+						<DeliveryDate><xsl:value-of select="ActualDeliveryDate"/></DeliveryDate>
 					</ReceivedDeliveryDetails>
 	
 				</GoodsReceivedNoteHeader>
@@ -76,12 +83,12 @@
 							<ProductDescription><xsl:value-of select="ProductDescription"/></ProductDescription>						
 							
 							<OrderedQuantity>
-								<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="'OrderUnit##translation'"/></xsl:attribute>
+								<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="OrderUnit"/></xsl:attribute>
 								<xsl:value-of select="OrderedQuantity"/>							
 							</OrderedQuantity>
 							
 							<AcceptedQuantity>
-								<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="'ReceivedUnit##translation'"/></xsl:attribute>
+								<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="ReceivedUnit"/></xsl:attribute>
 								<xsl:value-of select="ReceivedQuantity"/>
 							</AcceptedQuantity>
 													
