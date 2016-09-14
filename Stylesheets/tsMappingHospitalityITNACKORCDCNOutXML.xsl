@@ -117,7 +117,7 @@ J Miguel		| 24/08/2016	| FB11267 - Un-hardcode the suppliers code
 			<ShipToGLN/>
 			<BuyerGroup>
 				<BuyerGroupGLN>
-					<xsl:value-of select="BuyersLocationID/GLN"/>
+					<xsl:value-of select="../ShipTo/ShipToLocationID/GLN"/>
 				</BuyerGroupGLN>
 				<BuyerGroupName>
 					<xsl:value-of select="BuyersLocationID/SuppliersCode"/>
