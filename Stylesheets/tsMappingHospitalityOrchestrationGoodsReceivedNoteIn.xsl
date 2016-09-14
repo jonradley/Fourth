@@ -11,13 +11,13 @@
 ==========================================================================================
            	|            		| 
 =======================================================================================-->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	<xsl:param name="sSendersBranchReference" select="'0'"/>
 	<xsl:param name="sBuyersCodeForSupplier" select="'0'"/>
 	<xsl:param name="sPOReference" select="'0'"/>
 	<xsl:param name="sPODate" select="'0'"/>
 	<xsl:param name="sGRNReference" select="'0'"/>
-	<xsl:param name="sGRNDate" select="'0'"/>
+	<xsl:variable name="CurrentDate" select="script:msGetTodaysDate()"/>
 	<xsl:template match="/PendingDeliverySubmitted">
 		<GoodsReceivedNote>
 			<TradeSimpleHeader>
@@ -44,7 +44,7 @@
 				</DeliveryNoteReferences>
 				<GoodsReceivedNoteReferences>
 					<GoodsReceivedNoteReference><xsl:value-of select="$sPOReference"/></GoodsReceivedNoteReference>
-					<GoodsReceivedNoteDate><xsl:value-of select="$sGRNDate"/></GoodsReceivedNoteDate>
+					<GoodsReceivedNoteDate><xsl:value-of select="$CurrentDate"/></GoodsReceivedNoteDate>
 				</GoodsReceivedNoteReferences>
 				<DeliveredDeliveryDetails>
 					<DeliveryDate>
@@ -90,4 +90,36 @@
 			</GoodsReceivedNoteTrailer>
 		</GoodsReceivedNote>
 	</xsl:template>
+	<msxsl:script language="JScript" implements-prefix="script"><![CDATA[ 
+		/*=========================================================================================
+		' Routine       	 : msGetTodaysDate
+		' Description 	 : Gets todays date, formatted to yyyy-mm-dd
+		' Inputs          	 : None
+		' Outputs       	 : None
+		' Returns       	 : Class of row
+		' Author       		 : Rave Tech, 26/11/2008
+		' Alterations   	 : 
+		'========================================================================================*/
+		function msGetTodaysDate()
+		{
+			var dtDate = new Date();
+			
+			var sDate = dtDate.getDate();
+			if(sDate<10)
+			{
+				sDate = '0' + sDate;
+			}
+			
+			var sMonth = dtDate.getMonth() + 1;
+			if(sMonth<10)
+			{
+				sMonth = '0' + sMonth;
+			}
+						
+			var sYear  = dtDate.getYear() ;
+			
+		
+			return sYear + '-'+ sMonth +'-'+ sDate;
+		}
+	]]></msxsl:script>
 </xsl:stylesheet>
