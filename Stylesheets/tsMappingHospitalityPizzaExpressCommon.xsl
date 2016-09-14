@@ -447,6 +447,7 @@ Pizza Express UK common script, which holds the Company Code translation logic.
 		3414 : '00010',
 		3415 : '00010',
 		3416 : '00010',
+		3417 : '00010',
 		3418 : '00010',
 		3419 : '00010',
 		3420 : '00010',
@@ -466,6 +467,9 @@ Pizza Express UK common script, which holds the Company Code translation logic.
 		3440 : '00010',
 		3441 : '00010',
 		3442 : '00010',
+		3444 : '00010',
+		3445 : '00010',
+		3446 : '00010',
 		4104 : '00010',
 		4010 : '00081',
 		4011 : '00081',
@@ -521,6 +525,10 @@ Pizza Express UK common script, which holds the Company Code translation logic.
 	function getSiteCodeToCompanyCode (strSiteCode)
 	{
 		var strCompanyCode = mapSiteCodeToCompanyCode[Number(strSiteCode)];
+		if (strCompanyCode == null)
+		{
+			strCompanyCode = '';
+		}
 		return strCompanyCode;
 	}
 	]]></msxsl:script>	
