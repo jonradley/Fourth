@@ -5,6 +5,8 @@ Alterations
 Name	 | Date			| Change
 =======================================================================================
 J Miguel | 27/08/2015	| 10474 (UK) / 10475 (US) - Fork from default voxel mapper
+=======================================================================================
+J Miguel | 11/09/2015	| 10496 (UK) / 10497 (US) - Changing order in comments.
 ====================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="xml" encoding="ISO-8859-1"/>
@@ -136,12 +138,13 @@ J Miguel | 27/08/2015	| 10474 (UK) / 10475 (US) - Fork from default voxel mapper
 				<Comments>
 					<Comment>
 						<xsl:attribute name="Msg">
-							<xsl:if test="PurchaseOrderHeader/ShipTo/ContactName[. != '']">
-								<xsl:text>Incidencias contactar con </xsl:text><xsl:value-of select="PurchaseOrderHeader/ShipTo/ContactName"/><xsl:text>. </xsl:text>
-							</xsl:if>
 							<!-- Pedido urgente!!! -->
 							<xsl:if test="PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions[. != '']">
 								<xsl:value-of select="PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions"/>
+							</xsl:if>
+							<xsl:text> </xsl:text>
+							<xsl:if test="PurchaseOrderHeader/ShipTo/ContactName[. != '']">
+								<xsl:text>Incidencias contactar con </xsl:text><xsl:value-of select="PurchaseOrderHeader/ShipTo/ContactName"/><xsl:text>. </xsl:text>
 							</xsl:if>
 						</xsl:attribute>
 					</Comment>

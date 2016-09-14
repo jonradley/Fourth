@@ -10,9 +10,11 @@
 ******************************************************************************************
  Module History
 ******************************************************************************************
- Date       | Name       	| Description of modification
+ Date       		| Name       		| Description of modification
 ******************************************************************************************
  07/07/2015	| Jose Miguel 	| FB10357 - Gather & Gather Ireland - Saffron feed mapper - new branch to adapt the VATCode column
+******************************************************************************************
+ 09/08/2016	| Jose Miguel 	| FB11244 - Fix invoice Mapper VAT Code R1
 ******************************************************************************************
 -->
 <xsl:stylesheet version="1.0"
@@ -183,7 +185,7 @@
 						<xsl:value-of select="concat('S', format-number(@VATRate, '00.0'))"/>
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:value-of select="substring(@VATCode,1,1)"/>
+						<xsl:value-of select="substring(@VATCode,1,2)"/>
 					</xsl:otherwise>
 				</xsl:choose>
 				<xsl:text>,</xsl:text>
@@ -263,7 +265,7 @@
 					<xsl:value-of select="concat('S', format-number(VATRate, '00.0'))"/>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:value-of select="substring(VATCode,1,1)"/>
+					<xsl:value-of select="substring(VATCode,1,2)"/>
 				</xsl:otherwise>
 			</xsl:choose>
 			<xsl:text>,</xsl:text>
