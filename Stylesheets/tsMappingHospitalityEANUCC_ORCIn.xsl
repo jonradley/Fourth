@@ -6,7 +6,7 @@ Maps EANUCC XML Confirmations to internal XML
 ******************************************************************************************
  Date        	| Name				| Description of modification
 ******************************************************************************************
- 11/06/2016  	| M Dimant	   	| Created.     
+ 11/06/2016  	| M Dimant	   	| FB7748: Created.     
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" 
 				xmlns:xsl="http://www.w3.org/1999/XSL/Transform"  
