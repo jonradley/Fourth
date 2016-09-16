@@ -14,7 +14,7 @@ Pizza Express UK common script, which holds the Company Code translation logic.
 ==========================================================================================
  24/08/2016	| Jose Miguel	| FB11269 - Adding new sites
 ==========================================================================================
- 12/09/2016	| Jose Miguel	| FB11269 - Removing default value for the company
+ 12/09/2016	| Jose Miguel	| FB11292 - Removing default value for the company
 ==========================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript">
