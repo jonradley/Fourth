@@ -10,11 +10,13 @@
 ******************************************************************************************
  Module History
 ******************************************************************************************
- Date				| Name				| Description of modification
+ Date          | Name            | Description of modification
 ******************************************************************************************
- 30/06/2016		|	Graham Neicho	| US13167. Created module.
+ 30/06/2016    | Graham Neicho   | US13167. Created module.
 ******************************************************************************************
- 29/07/2016		|	Sandeep Sehgal	| US19670 Added QuantityPrecison and CurrencyPrecision
+ 29/07/2016    | Sandeep Sehgal  | US19670 Added QuantityPrecison and CurrencyPrecision
+******************************************************************************************
+ 20/09/2016    | Graham Neicho   | US21198 Adding LinesCount1 template
 ******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -28,6 +30,10 @@
 		<xsl:copy>
 			<xsl:apply-templates select="@*|node()"/>
 		</xsl:copy>
+	</xsl:template>
+
+	<xsl:template match="LinesCount1" priority="2">
+		<LinesCount1><xsl:value-of select="$ReferenceDocument/*/*[substring(local-name(), string-length(local-name()) - string-length('Trailer') + 1) = 'Trailer']/NumberOfLines"/></LinesCount1>
 	</xsl:template>
 	
 	<xsl:template match="SubscriptionDetails" priority="2">
