@@ -23,7 +23,6 @@
 	<xsl:variable name="ReferenceDocument" select="document($ReferenceFilepath)"/>
 	<xsl:variable name="CurrencyPrecision" select="2" />
 	<xsl:variable name="QuantityPrecision" select="4" />
-
 	
 	<xsl:template match="@*|node()" priority="1">
 		<xsl:copy>
@@ -51,12 +50,12 @@
 						<LineId><xsl:value-of select="LineNumber"/></LineId>
 						<ProductNumber><xsl:value-of select="ProductID/SuppliersProductCode"/></ProductNumber>
 						<ProductDescription><xsl:value-of select="ProductDescription"/></ProductDescription>
-						<OrderUnit><xsl:value-of select="OrderedQuantity[local-name(..) = 'PurchaseOrderLine']/@UnitOfMeasure | ConfirmedQuantity[local-name(..) = 'PurchaseOrderConfirmationLine']/@UnitOfMeasure | DespatchedQuantity[(local-name(..) = 'DeliveryNoteLine' or local-name(..) = 'ProofOfDeliveryLine')]/@UnitOfMeasure | InvoicedQuantity[local-name(..) = 'InvoiceLine']/@UnitOfMeasure | AcceptedQuantity[local-name(..) = 'GoodsReceivedNoteLine']/@UnitOfMeasure"/></OrderUnit>
-						<ReceivedUnit><xsl:value-of select="DespatchedQuantity[(local-name(..) = 'DeliveryNoteLine' or local-name(..) = 'ProofOfDeliveryLine')]/@UnitOfMeasure | InvoicedQuantity[local-name(..) = 'InvoiceLine']/@UnitOfMeasure | AcceptedQuantity[local-name(..) = 'GoodsReceivedNoteLine']/@UnitOfMeasure"/></ReceivedUnit>
-						<OrderedQuantity><xsl:value-of select="OrderedQuantity[local-name(..) = 'PurchaseOrderLine'] | ConfirmedQuantity[local-name(..) = 'PurchaseOrderConfirmationLine'] | DespatchedQuantity[(local-name(..) = 'DeliveryNoteLine' or local-name(..) = 'ProofOfDeliveryLine')] | InvoicedQuantity[local-name(..) = 'InvoiceLine'] | AcceptedQuantity[local-name(..) = 'GoodsReceivedNoteLine']"/></OrderedQuantity>
-						<ReceivedQuantity><xsl:value-of select="AcceptedQuantity"/></ReceivedQuantity>
-						<OrderedUnitPrice><xsl:value-of select="UnitValueExclVAT[local-name(..) = 'PurchaseOrderLine' or local-name(..) = 'PurchaseOrderConfirmationLine']"/></OrderedUnitPrice>
-						<ReceivedUnitPrice><xsl:value-of select="UnitValueExclVAT[local-name(..) = 'DeliveryNoteLine' or local-name(..) = 'ProofOfDeliveryLine' or local-name(..) = 'InvoiceLine' or local-name(..) = 'GoodsReceivedNoteLine']"/></ReceivedUnitPrice>
+						<OrderUnit><xsl:value-of select="OrderedQuantity/@UnitOfMeasure"/></OrderUnit>
+						<ReceivedUnit><xsl:value-of select="OrderedQuantity[local-name(..) = 'PurchaseOrderLine']/@UnitOfMeasure | ConfirmedQuantity[local-name(..) = 'PurchaseOrderConfirmationLine']/@UnitOfMeasure | DespatchedQuantity[(local-name(..) = 'DeliveryNoteLine' or local-name(..) = 'ProofOfDeliveryLine')]/@UnitOfMeasure | InvoicedQuantity[local-name(..) = 'InvoiceLine']/@UnitOfMeasure | AcceptedQuantity[local-name(..) = 'GoodsReceivedNoteLine']/@UnitOfMeasure"/></ReceivedUnit>
+						<OrderedQuantity><xsl:value-of select="OrderedQuantity"/></OrderedQuantity>
+						<ReceivedQuantity><xsl:value-of select="OrderedQuantity[local-name(..) = 'PurchaseOrderLine'] | ConfirmedQuantity[local-name(..) = 'PurchaseOrderConfirmationLine'] | DespatchedQuantity[(local-name(..) = 'DeliveryNoteLine' or local-name(..) = 'ProofOfDeliveryLine')] | InvoicedQuantity[local-name(..) = 'InvoiceLine'] | AcceptedQuantity[local-name(..) = 'GoodsReceivedNoteLine']"/></ReceivedQuantity>
+						<OrderedUnitPrice><xsl:value-of select="UnitValueExclVAT[local-name(..) = 'PurchaseOrderLine']"/></OrderedUnitPrice>
+						<ReceivedUnitPrice><xsl:value-of select="UnitValueExclVAT"/></ReceivedUnitPrice>
 						<OrderedCurrencyCode/>
 						<ReceivedCurrencyCode/>
 						<IsPriceEditable/>
@@ -65,14 +64,15 @@
 								<xsl:when test="LineExtraData/IsCatchweightProduct"><xsl:value-of select="LineExtraData/IsCatchweightProduct"/></xsl:when>
 								<xsl:when test="OrderedQuantity/@UnitOfMeasure and (DespatchedQuantity[(local-name(..) = 'DeliveryNoteLine' or local-name(..) = 'ProofOfDeliveryLine')]/@UnitOfMeasure | InvoicedQuantity[local-name(..) = 'InvoiceLine']/@UnitOfMeasure | AcceptedQuantity[local-name(..) = 'GoodsReceivedNoteLine']/@UnitOfMeasure)">
 									<xsl:choose>
-										<xsl:when test="OrderedQuantity/@UnitOfMeasure = (DespatchedQuantity[(local-name(..) = 'DeliveryNoteLine' or local-name(..) = 'ProofOfDeliveryLine')]/@UnitOfMeasure | InvoicedQuantity[local-name(..) = 'InvoiceLine']/@UnitOfMeasure | AcceptedQuantity[local-name(..) = 'GoodsReceivedNoteLine']/@UnitOfMeasure)">FALSE</xsl:when>
-										<xsl:otherwise>TRUE</xsl:otherwise>
+										<xsl:when test="OrderedQuantity/@UnitOfMeasure = (DespatchedQuantity[(local-name(..) = 'DeliveryNoteLine' or local-name(..) = 'ProofOfDeliveryLine')]/@UnitOfMeasure | InvoicedQuantity[local-name(..) = 'InvoiceLine']/@UnitOfMeasure | AcceptedQuantity[local-name(..) = 'GoodsReceivedNoteLine']/@UnitOfMeasure)">False</xsl:when>
+										<xsl:otherwise>True</xsl:otherwise>
 									</xsl:choose>
 								</xsl:when>
 							</xsl:choose>
 						</IsCatchweight>
 						<Status><xsl:value-of select="$Status"/></Status>
 						<OutletId><xsl:value-of select="$LocationId"/></OutletId>
+						<OutletName><xsl:value-of select="/*/*/ShipTo/ShipToName"/></OutletName>
 						<CurrencyPrecision><xsl:value-of select="$CurrencyPrecision"/></CurrencyPrecision>
 						<QuantityPrecision><xsl:value-of select="$QuantityPrecision"/></QuantityPrecision>
 					</Item>
