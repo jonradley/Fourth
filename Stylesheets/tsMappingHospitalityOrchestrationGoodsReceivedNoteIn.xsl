@@ -62,8 +62,24 @@
 								<PurchaseOrderDate><xsl:value-of select="$sPODate"/></PurchaseOrderDate>
 							</PurchaseOrderReferences>
 							<DeliveryNoteReferences>
-								<DeliveryNoteReference><xsl:value-of select="$sPOReference"/></DeliveryNoteReference>
-								<DeliveryNoteDate><xsl:value-of select="$sPODate"/></DeliveryNoteDate>
+							<xsl:choose>
+										<xsl:when test="Note/DeliveryNoteNumber">
+											<xsl:choose>
+												<xsl:when test="string-length(Note/DeliveryNoteNumber) > 0">
+													<DeliveryNoteReference><xsl:value-of select="Note/DeliveryNoteNumber"/></DeliveryNoteReference>
+													<DeliveryNoteDate><xsl:value-of select="$CurrentDate"/></DeliveryNoteDate>
+												</xsl:when>
+												<xsl:otherwise>								
+													<DeliveryNoteReference><xsl:value-of select="$sPOReference"/></DeliveryNoteReference>
+													<DeliveryNoteDate><xsl:value-of select="$sPODate"/></DeliveryNoteDate>
+												</xsl:otherwise>
+											</xsl:choose>
+										</xsl:when>
+										<xsl:otherwise>								
+											<DeliveryNoteReference><xsl:value-of select="$sPOReference"/></DeliveryNoteReference>
+											<DeliveryNoteDate><xsl:value-of select="$sPODate"/></DeliveryNoteDate>
+										</xsl:otherwise>
+									</xsl:choose>
 							</DeliveryNoteReferences>
 							<GoodsReceivedNoteReferences>
 								<GoodsReceivedNoteReference>
