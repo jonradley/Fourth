@@ -13,6 +13,8 @@
                                                   set document-level SCR with new sSitesCodeForSupplier parameter
                                                   don't create order quantity if UoM is not provided
 ==========================================================================================
+ 2016-10-04	| S Sehgal		| 		US21645 Populate the GRN Reference from the PendingDeliverySubmitted XML
+==========================================================================================
            	|            		| 
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="xsl script msxsl">
@@ -64,7 +66,17 @@
 								<DeliveryNoteDate><xsl:value-of select="$sPODate"/></DeliveryNoteDate>
 							</DeliveryNoteReferences>
 							<GoodsReceivedNoteReferences>
-								<GoodsReceivedNoteReference><xsl:value-of select="$sPOReference"/></GoodsReceivedNoteReference>
+								<GoodsReceivedNoteReference>
+									<xsl:choose>
+										<xsl:when test="Note/DeliveryNoteNumber">
+											<xsl:choose>
+												<xsl:when test="string-length(Note/DeliveryNoteNumber) > 0"><xsl:value-of select="Note/DeliveryNoteNumber"/></xsl:when>
+												<xsl:otherwise><xsl:value-of select="$sPOReference"/></xsl:otherwise>
+											</xsl:choose>
+										</xsl:when>
+										<xsl:otherwise><xsl:value-of select="$sPOReference"/></xsl:otherwise>
+									</xsl:choose>
+								</GoodsReceivedNoteReference>
 								<GoodsReceivedNoteDate><xsl:value-of select="$CurrentDate"/></GoodsReceivedNoteDate>
 							</GoodsReceivedNoteReferences>
 							<DeliveredDeliveryDetails>
