@@ -9,7 +9,7 @@
 ==========================================================================================
  Date      		| Name 			|	Description of modification
  ==========================================================================================
- 00/09/2016	| M Dimant			|	FB11343 - Created from tsHospitalitySyscoINVX12_FFS.xml
+ 09/09/2016	| M Dimant			|	FB11343 - Created from tsHospitalitySyscoINVX12_FFS.xml
 ==========================================================================================-->
 <ffsFlatFileSchema>
 	<ffsSettings>
