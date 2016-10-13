@@ -22,6 +22,8 @@
 ==========================================================================================
  20/07/2015	| Jose Miguel	|	FB10409 - Sundance - Add temporary mapping to support new product codes - II
 ==========================================================================================
+ 28/08/2015	| Jose Miguel	|	FB10480 - Sundance - Add temporary mapping to support new product codes - III
+==========================================================================================
 -->
 <xsl:stylesheet version="1.0" 
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript" 
@@ -167,7 +169,8 @@ var mapProductInternalIds =
 '7063':'7750',
 '2722':'7758',
 '2726':'7759',
-'3201':'7716'
+'3201':'7716',
+'3652':'7607'
 }
 
 function getNewProductInternalId (nOldInternalId)
