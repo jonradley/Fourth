@@ -29,6 +29,8 @@ For each line with UoM equal to 'EA' and CaseSize greather than 1:
  Date				| Name				| Description of modification
 ==========================================================================================
  14/04/2016	| Jose Miguel	| FB11341 - Created
+==========================================================================================
+ 26/10/2016	| Jose Miguel	| FB11361 - Remove sufix -EA on the product code
 ==========================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript"  exclude-result-prefixes="msxsl js">
 	<xsl:output method="xml" encoding="UTF-8" indent="yes" omit-xml-declaration="yes"/>
@@ -79,10 +81,11 @@ For each line with UoM equal to 'EA' and CaseSize greather than 1:
 	<!-- Create an extra confirmation line, with Confirmed Quantity / CaseSize > 0 . This line keeps the extra eaches but the cases go to an extra line created in a different template  -->
 	<xsl:template match="PurchaseOrderConfirmationLine[(LineExtraData/CaseSize &gt; 1) and (ConfirmedQuantity mod LineExtraData/CaseSize > 0)]">
 		<xsl:variable name="CaseSize" select="LineExtraData/CaseSize"/>
+    <xsl:variable name="ProduceCode" select="concat(ProductID/SuppliersProductCode, '-EA')"/>
 		<xsl:call-template name="createConfirmationLine">
 			<xsl:with-param name="LineStatus" select="@LineStatus"/>
 			<xsl:with-param name="GTIN" select="ProductID/GTIN"/>
-			<xsl:with-param name="SuppliersProductCode" select="ProductID/SuppliersProductCode"/>
+			<xsl:with-param name="SuppliersProductCode" select="$ProduceCode"/>
 			<xsl:with-param name="ProductDescription" select="ProductDescription"/>
 			<xsl:with-param name="OrdererQuantityUoM" select="'EA'"/>
 			<xsl:with-param name="OrderedQuantity" select="floor(OrderedQuantity mod $CaseSize)"/>
@@ -150,13 +153,14 @@ For each line with UoM equal to 'EA' and CaseSize greather than 1:
 		</xsl:call-template>
 	</xsl:template>
 
-	<!-- Create an extra confirmation line, with Confirmed Quantity / CaseSize > 0 . This line keeps the extra eaches but the cases go to an extra line created in a different template  -->
+	<!-- Create an extra delivery note line, with Quantity / CaseSize > 0 . This line keeps the extra eaches but the cases go to an extra line created in a different template  -->
 	<xsl:template match="DeliveryNoteLine[(LineExtraData/CaseSize &gt; 1) and (DespatchedQuantity mod LineExtraData/CaseSize > 0)]">
 		<xsl:variable name="CaseSize" select="LineExtraData/CaseSize"/>
-		<xsl:call-template name="createDeliveryNoteLine">
+    <xsl:variable name="ProduceCode" select="concat(ProductID/SuppliersProductCode, '-EA')"/>
+    <xsl:call-template name="createDeliveryNoteLine">
 			<xsl:with-param name="GTIN" select="ProductID/GTIN"/>
-			<xsl:with-param name="SuppliersProductCode" select="ProductID/SuppliersProductCode"/>
-			<xsl:with-param name="BuyersProductCode" select="ProductID/BuyersProductCode"/>
+			<xsl:with-param name="SuppliersProductCode" select="$ProduceCode"/>
+			<xsl:with-param name="BuyersProductCode" select="$ProduceCode"/>
 			<xsl:with-param name="ProductDescription" select="ProductDescription"/>
 			<xsl:with-param name="OrdererQuantityUoM" select="'EA'"/>
 			<xsl:with-param name="OrderedQuantity" select="floor(OrderedQuantity mod $CaseSize)"/>
