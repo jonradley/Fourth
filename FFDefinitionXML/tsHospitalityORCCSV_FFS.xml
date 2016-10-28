@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/******************************************************************************************
+' Date        	| Name         | Description of modification
+'******************************************************************************************
+ 20-03-2013		| Jose Miguel  | FB7761 Generic CSV Specs FFS Mapper - Order Confirmation
+'******************************************************************************************
+-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>chr(10)</ffsRecordSeparator>
+		<ffsEscapeChars>
+			<ffsEscapeChar>
+				<ffsNative>chr(13)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+		</ffsEscapeChars>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>,</ffsFieldSeparator>
+		</ffsFieldSeparators>
+	</ffsSettings>
+	<ffsRoot>
+		<PurchaseOrderConfirmation>
+			<TradeSimpleHeader>
+				<SendersCodeForRecipient RecordPos="H" LPos="2"/>
+				<SendersBranchReference RecordPos="H" LPos="20"/>
+				<TestFlag RecordPos="H" LPos="3"/>
+			</TradeSimpleHeader>
+			<PurchaseOrderConfirmationHeader>
+				<Buyer>
+					<BuyersLocationID>
+						<SuppliersCode RecordPos="H" LPos="21"/>
+					</BuyersLocationID>
+				</Buyer>
+				<ShipTo>
+					<ShipToName RecordPos="H" LPos="11"/>
+					<ShipToAddress>
+						<AddressLine1 RecordPos="H" LPos="12"/>
+						<AddressLine2 RecordPos="H" LPos="13"/>
+						<AddressLine3 RecordPos="H" LPos="14"/>
+						<AddressLine4 RecordPos="H" LPos="15"/>
+						<PostCode RecordPos="H" LPos="16"/>
+					</ShipToAddress>
+					<ContactName RecordPos="H" LPos="10"/>
+				</ShipTo>
+				<PurchaseOrderReferences>
+					<PurchaseOrderReference RecordPos="H" LPos="4"/>
+					<PurchaseOrderDate RecordPos="H" LPos="5"/>
+				</PurchaseOrderReferences>
+				<OrderedDeliveryDetails>
+					<DeliveryDate RecordPos="H" LPos="6"/>
+				</OrderedDeliveryDetails>
+				<ConfirmedDeliveryDetails>
+					<DeliveryDate RecordPos="H" LPos="7"/>
+					<DeliverySlot>
+						<SlotStart RecordPos="H" LPos="8"/>
+						<SlotEnd RecordPos="H" LPos="9"/>
+					</DeliverySlot>
+				</ConfirmedDeliveryDetails>
+			</PurchaseOrderConfirmationHeader>
+			<PurchaseOrderConfirmationDetail>
+				<PurchaseOrderConfirmationLine>
+					<ProductID>
+						<SuppliersProductCode RecordPos="D" LPos="3"/>
+					</ProductID>
+					<SubstitutedProductID>
+						<SuppliersProductCode RecordPos="D" LPos="4"/>
+					</SubstitutedProductID>
+					<ProductDescription RecordPos="D" LPos="5"/>
+					<OrderedQuantity RecordPos="D" LPos="7">
+						<ffsAttribute1 name="UnitOfMeasure" RecordPos="D" LPos="12"/>
+					</OrderedQuantity>
+					<ConfirmedQuantity RecordPos="D" LPos="8">
+						<ffsAttribute1 name="UnitOfMeasure" RecordPos="D" LPos="13"/>
+					</ConfirmedQuantity>
+					<PackSize RecordPos="D" LPos="6"/>
+					<UnitValueExclVAT RecordPos="D" LPos="9"/>
+					<LineValueExclVAT RecordPos="D" LPos="10"/>
+					<Narrative RecordPos="D" LPos="11"/>
+					<ffsAttribute1 name="LineStatus" RecordPos="D" LPos="2"/>
+				</PurchaseOrderConfirmationLine>
+			</PurchaseOrderConfirmationDetail>
+			<PurchaseOrderConfirmationTrailer>
+				<NumberOfLines RecordPos="H" LPos="17"/>
+				<TotalExclVAT RecordPos="H" LPos="19"/>
+			</PurchaseOrderConfirmationTrailer>
+		</PurchaseOrderConfirmation>
+	</ffsRoot>
+</ffsFlatFileSchema>
