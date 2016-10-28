@@ -1,23 +1,25 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!--
-******************************************************************************************
+***********************************************************************************************
  Overview
 
  This XSL file is used to transform the XML of an MGR Pending Delivery Modified document
  that has been through Subs DB Extract using a reference document from the Document Repository
 
  © Fourth 2016
-******************************************************************************************
+***********************************************************************************************
  Module History
-******************************************************************************************
- Date          | Name            | Description of modification
-******************************************************************************************
- 30/06/2016    | Graham Neicho   | US13167. Created module.
-******************************************************************************************
- 29/07/2016    | Sandeep Sehgal  | US19670 Added QuantityPrecison and CurrencyPrecision
-******************************************************************************************
- 20/09/2016    | Graham Neicho   | US21198 Adding LinesCount1 template
-******************************************************************************************
+***********************************************************************************************
+ Date          | Name               | Description of modification
+***********************************************************************************************
+ 30/06/2016    | Graham Neicho      | US13167. Created module.
+***********************************************************************************************
+ 29/07/2016    | Sandeep Sehgal     | US19670 Added QuantityPrecison and CurrencyPrecision
+***********************************************************************************************
+ 20/09/2016    | Graham Neicho      | US21198 Adding LinesCount1 template
+***********************************************************************************************
+ 27/10/2016    | Padmavathi Govindu | US22768 Added Outlet OrderedQuantity and ReceivedQuantity
+***********************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="xml" version="1.0" encoding="UTF-8"/>
@@ -81,6 +83,8 @@
 						<OutletName><xsl:value-of select="/*/*/ShipTo/ShipToName"/></OutletName>
 						<CurrencyPrecision><xsl:value-of select="$CurrencyPrecision"/></CurrencyPrecision>
 						<QuantityPrecision><xsl:value-of select="$QuantityPrecision"/></QuantityPrecision>
+                                                <OutletOrderedQuantity><xsl:value-of select="OrderedQuantity"/></OutletOrderedQuantity>
+                                                <OutletReceivedQuantity><xsl:value-of select="OrderedQuantity[local-name(..) = 'PurchaseOrderLine'] | ConfirmedQuantity[local-name(..) = 'PurchaseOrderConfirmationLine'] | DespatchedQuantity[(local-name(..) = 'DeliveryNoteLine' or local-name(..) = 'ProofOfDeliveryLine')] | InvoicedQuantity[local-name(..) = 'InvoiceLine'] | AcceptedQuantity[local-name(..) = 'GoodsReceivedNoteLine']"/></OutletReceivedQuantity>
 					</Item>
 				</xsl:for-each>
 			</Lines>
