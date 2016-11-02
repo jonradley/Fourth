@@ -7,6 +7,8 @@
  04/12/2013	| M Dimant				| 7519: Small changes to correct how values are formatted - CLD: 2dp, CST and CTR: 4 dp
 =======================================================================================
  03/06/2014	| M Dimant				| 7843: Bug Fix - Added loop to catch all credit lines.
+ =======================================================================================
+ 02/11/2016	| M Dimant				| 11378: Pass across brand name in the CDT segment from BuyersName field
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 					xmlns:fo="http://www.w3.org/1999/XSL/Format"
@@ -83,7 +85,7 @@
 		<xsl:text>:</xsl:text>
 		<xsl:value-of select="substring(TradeSimpleHeader/RecipientsName,1,40)"/>
 		<xsl:text>+</xsl:text>
-		<xsl:value-of select="substring(TradeSimpleHeader/RecipientsName,1,40)"/>
+		<xsl:value-of select="substring(CreditNoteHeader/Buyer/BuyersName,1,40)"/>
 		<xsl:text>:</xsl:text>
 		<xsl:value-of select="substring(TradeSimpleHeader/RecipientsAddress/AddressLine1,1,35)"/>
 		<xsl:text>:</xsl:text>
