@@ -55,16 +55,16 @@ Giraffe Concepts LTD mapper for invoices and credits journal format.
 				<xsl:with-param name="currentDocReference" select="../InvoiceCreditJournalEntriesHeader/InvoiceReference"/>
 				<xsl:with-param name="currentCategoryNominal" select="14075"/>
 			</xsl:call-template>
-			<!-- Taxes breakdown -->
-			<xsl:apply-templates select="InvoiceCreditJournalEntries/InvoiceCreditJournalEntriesDetail" mode="tax"/>
-			<!-- Trailing columns -->
-			<!-- A ChequeCurrencyName = (Always blank field). -->
-			<xsl:text>,</xsl:text>
-			<!-- B ChequeToBankExchangeRate = (Always blank field). -->
-			<xsl:text>,</xsl:text>
-			<!-- C ChequeValueInChequeCurrency = (Always blank field). -->
-			<xsl:text>&#13;&#10;</xsl:text>
 		</xsl:for-each>
+		<!-- Taxes breakdown -->
+		<xsl:apply-templates select="InvoiceCreditJournalEntries/InvoiceCreditJournalEntriesDetail" mode="tax"/>
+		<!-- Trailing columns -->
+		<!-- A ChequeCurrencyName = (Always blank field). -->
+		<xsl:text>,</xsl:text>
+		<!-- B ChequeToBankExchangeRate = (Always blank field). -->
+		<xsl:text>,</xsl:text>
+		<!-- C ChequeValueInChequeCurrency = (Always blank field). -->
+		<xsl:text>&#13;&#10;</xsl:text>		
 	</xsl:template>
 		
 	<!-- format date from YYYY-MM-DD to DD/MM/YYYY -->
@@ -148,14 +148,14 @@ Giraffe Concepts LTD mapper for invoices and credits journal format.
 	<xsl:value-of select="$currentCategoryNominal"/>
 	<xsl:text>,</xsl:text>
 	<!-- C NominalAnalysisNominalCostCentre = Category Split Cost Centre - fnb manager Site Nominal Code (can be blank if none entered). -->
-	<xsl:value-of select="../../InvoiceCreditJournalEntriesHeader/UnitSiteNominal"/>
+	<xsl:value-of select="../InvoiceCreditJournalEntriesHeader/UnitSiteNominal"/>
 	<!--<xsl:value-of select="../../InvoiceCreditJournalEntriesHeader/BuyersSiteCode"/> -->
 	<xsl:text>,</xsl:text>
 	<!-- D NominalAnalysisNominalDepartment = Category Split Department - (Always blank field). -CR - ADM -->
 	<xsl:text>BS</xsl:text>
 	<xsl:text>,</xsl:text>
 	<!-- E NominalAnalysisNominalAnalysisNarrative = Category Split - Analysis Narrative - Supplier Name. -->
-	<xsl:value-of select="../../InvoiceCreditJournalEntriesHeader/SupplierNominalCode"/>
+	<xsl:value-of select="../InvoiceCreditJournalEntriesHeader/SupplierNominalCode"/>
 	<xsl:text>,</xsl:text>
 	<!-- F NominalAnalysisTransactionAnalysisCode = Category Split - Analysis Code  - (Always blank field). -->
 	<xsl:text>,</xsl:text>
