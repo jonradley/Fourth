@@ -7,6 +7,8 @@ Giraffe Concepts LTD mapper for invoices and credits journal format.
  Date      		| Name 				| Description of modification
 ==========================================================================================
  21/01/2016	| Jose Miguel	| FB11121 - Created
+==========================================================================================
+ 15/11/2016	| Jose Miguel	| FB11390 - MOD Pizza R9 - IJE integration - CR
 ==========================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"  xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript" exclude-result-prefixes="xsl msxsl js">
 	<xsl:output method="text" encoding="UTF-8"/>
