@@ -1,14 +1,17 @@
-<!--******************************************************************
+<!--**************************************************************************************************************************************************************************************************************
 Alterations
-**********************************************************************
-Name				| Date				| Change
-**********************************************************************
-K Oshaughnessy| 						| 3450
-**********************************************************************
+******************************************************************************************************************************************************************************************************************
+Name			| Date			| Change
+******************************************************************************************************************************************************************************************************************
+K Oshaughnessy	| 				| 3450
+******************************************************************************************************************************************************************************************************************
 R Cambridge		| 2011-07-26		| 4632 Added supplier's code for buyer (to allow tsProcessorHosptransSBR to remove SBR when required)
-**********************************************************************
-K OShaughnessy|2011-09-22		| 4876 Bugfix invoice reference was not being correctly mapped				
-*******************************************************************-->
+******************************************************************************************************************************************************************************************************************
+K OShaughnessy	| 2011-09-22		| 4876 Bugfix invoice reference was not being correctly mapped		
+******************************************************************************************************************************************************************************************************************
+M Dimant			| 2016-11-17		| 11400: Changed delivery note reference and date so it maps from invoice reference and date		
+*****************************************************************************************************************************************************************************************************************-->
+
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:sh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" 
 xmlns:eanucc="urn:ean.ucc:2" 
 xmlns:pay="urn:ean.ucc:pay:2" 
@@ -109,10 +112,10 @@ xmlns:vat="urn:ean.ucc:pay:vat:2">
 										
 										<DeliveryNoteReferences>
 												<DeliveryNoteReference>
-													<xsl:value-of select="//eanucc:documentCommand/documentCommandOperand/pay:invoice/invoiceLineItem/deliveryNote/referenceIdentification"/>
+													<xsl:value-of select="//eanucc:documentCommand/documentCommandOperand/pay:invoice/invoiceIdentification/uniqueCreatorIdentification"/>
 												</DeliveryNoteReference>
 												<DeliveryNoteDate>
-													<xsl:value-of select="substring-before(//eanucc:documentCommand/documentCommandOperand/pay:invoice/invoiceLineItem/deliveryNote/referenceDateTime,'T')"/>
+													<xsl:value-of select="substring-before(//eanucc:documentCommand/documentCommandOperand/pay:invoice/@creationDateTime,'T')"/>
 												</DeliveryNoteDate>
 										</DeliveryNoteReferences>
 										
