@@ -19,22 +19,18 @@
 06 Nov 2008| N Dry            | 2555 - Elior Invoice batches - based on standard OFSCI mapper, with a few extras (prod description etc)
 ******************************************************************************************
 27/10/2010  	| M Dimant    | Based on previous mapper, turned into Elior's new format xml
+******************************************************************************************
+16/11/2016  	| M Dimant    | FB11399: LineItemDescription tag moved and LineItemDiscount removed.
 ***************************************************************************************-->
-<xsl:stylesheet version="1.0" 
-	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-	xmlns="http://www.eanucc.org/2002/Pay/FoodService/FoodService/UK/EanUcc/Pay">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.eanucc.org/2002/Pay/FoodService/FoodService/UK/EanUcc/Pay">
 	<xsl:output method="xml" encoding="utf-8"/>
-
 	<!-- we use constants for default values -->
 	<xsl:variable name="creditLineIndicator" select="'2'"/>
 	<xsl:variable name="invoiceLineIndicator" select="'1'"/>
-	
 	<xsl:template match="/BatchRoot[Invoice]">
-	
 		<Invoices>
 			<xsl:for-each select="Invoice">
 				<Invoice>
-				
 					<!-- ~~~~~~~~~~~~~~~~~~~~~~~
 					      INVOICE DOCUMENT DETAILS 
 					      ~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -43,125 +39,104 @@
 							<xsl:value-of select="InvoiceHeader/InvoiceReferences/InvoiceDate"/>
 							<xsl:text>T00:00:00</xsl:text>
 						</InvoiceDocumentDate>
-						
 						<InvoiceDocumentNumber scheme="OTHER">
 							<xsl:value-of select="InvoiceHeader/InvoiceReferences/InvoiceReference"/>
 						</InvoiceDocumentNumber>
-						
 						<!-- Document Status is always going to be 7 - original -->
 						<!-- ??should this be 9?? -->
 						<DocumentStatus codeList="EANCOM">
 							<xsl:text>7</xsl:text>
 						</DocumentStatus>
 					</InvoiceDocumentDetails>
-					
 					<!-- ~~~~~~~~~~~~~~~~~~~~~~~
 					    TRADE AGREEMENT REFERENCE
 					      ~~~~~~~~~~~~~~~~~~~~~~~-->
 					<!-- if TradeAgreement exists then TradeAgreement/ContractReference must also exist -->
-					<xsl:if test="InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/TradeAgreement">	
-								      
-		 				<TradeAgreementReference>
-					      
-						      <xsl:if test="InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/TradeAgreement/ContractDate">
+					<xsl:if test="InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/TradeAgreement">
+						<TradeAgreementReference>
+							<xsl:if test="InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/TradeAgreement/ContractDate">
 								<ContractReferenceDate format="YYYY-MM-DDThh:mm:ss:TZD">
 									<xsl:value-of select="InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/TradeAgreement/ContractDate"/>
 									<xsl:text>T00:00:00</xsl:text>
 								</ContractReferenceDate>
 							</xsl:if>
-							
 							<ContractReferenceNumber scheme="OTHER">
 								<xsl:value-of select="InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/TradeAgreement/ContractReference"/>
-							</ContractReferenceNumber>				
-						</TradeAgreementReference> 			
+							</ContractReferenceNumber>
+						</TradeAgreementReference>
 					</xsl:if>
-		
 					<!-- ~~~~~~~~~~~~~~~~~~~~~~~
 					    ORDER REFERENCE
 					      ~~~~~~~~~~~~~~~~~~~~~~~-->
 					<xsl:if test="InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderDate or InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderReference">
 						<OrderReference>
-					
 							<xsl:if test="InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderDate">
 								<PurchaseOrderDate format="YYYY-MM-DDThh:mm:ss:TZD">
 									<xsl:value-of select="InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderDate"/>
 									<xsl:text>T00:00:00</xsl:text>
 								</PurchaseOrderDate>
 							</xsl:if>
-			
 							<xsl:if test="InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderReference">
 								<PurchaseOrderNumber scheme="OTHER">
 									<xsl:value-of select="InvoiceDetail/InvoiceLine[1]/PurchaseOrderReferences/PurchaseOrderReference"/>
 								</PurchaseOrderNumber>
-							</xsl:if>				
-						</OrderReference> 
+							</xsl:if>
+						</OrderReference>
 					</xsl:if>
-		
 					<!-- ~~~~~~~~~~~~~~~~~~~~~~~
 					    ORDER CONFIRMATION REFERENCE
 					      ~~~~~~~~~~~~~~~~~~~~~~~-->
 					<xsl:if test="InvoiceDetail/InvoiceLine[1]/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationDate or InvoiceDetail/InvoiceLine		[1]/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationReference">
 						<OrderConfirmationReference>
-						
 							<xsl:if test="InvoiceDetail/InvoiceLine[1]/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationDate">
 								<PurchaseOrderConfirmationDate format="YYYY-MM-DDThh:mm:ss:TZD">
 									<xsl:value-of select="InvoiceDetail/InvoiceLine[1]/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationDate"/>
 									<xsl:text>T00:00:00</xsl:text>
 								</PurchaseOrderConfirmationDate>
 							</xsl:if>
-							
 							<xsl:if test="InvoiceDetail/InvoiceLine[1]/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationReference">
 								<PurchaseOrderConfirmationNumber scheme="OTHER">
 									<xsl:value-of select="InvoiceDetail/InvoiceLine[1]/PurchaseOrderConfirmationReferences/PurchaseOrderConfirmationReference"/>
-								</PurchaseOrderConfirmationNumber>	
-							</xsl:if>			
-						</OrderConfirmationReference> 			
+								</PurchaseOrderConfirmationNumber>
+							</xsl:if>
+						</OrderConfirmationReference>
 					</xsl:if>
-					
 					<!-- ~~~~~~~~~~~~~~~~~~~~~~~
 					    DESPATCH REFERENCE
 					      ~~~~~~~~~~~~~~~~~~~~~~~-->
 					<xsl:if test="InvoiceDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteDate or InvoiceDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteReference">
-		
 						<DespatchReference>
-						
 							<xsl:if test="InvoiceDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteDate">
 								<DespatchDocumentDate format="YYYY-MM-DDThh:mm:ss:TZD">
 									<xsl:value-of select="InvoiceDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteDate"/>
 									<xsl:text>T00:00:00</xsl:text>
 								</DespatchDocumentDate>
 							</xsl:if>
-			
 							<xsl:if test="InvoiceDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteReference">
 								<DespatchDocumentNumber scheme="OTHER">
 									<xsl:value-of select="InvoiceDetail/InvoiceLine[1]/DeliveryNoteReferences/DeliveryNoteReference"/>
-								</DespatchDocumentNumber>				
+								</DespatchDocumentNumber>
 							</xsl:if>
-						</DespatchReference> 
+						</DespatchReference>
 					</xsl:if>
-		
 					<!-- ~~~~~~~~~~~~~~~~~~~~~~~
 					    RECEIPT ADVICE REFERENCE
 					      ~~~~~~~~~~~~~~~~~~~~~~~-->
 					<xsl:if test="InvoiceDetail/InvoiceLine[1]/GoodsReceivedNoteReferences/GoodsReceivedNoteDate or InvoiceDetail/InvoiceLine		[1]/GoodsReceivedNoteReferences/GoodsReceivedNoteReference">
-		   
 						<ReceiptAdviceReference>
-		
 							<xsl:if test="InvoiceDetail/InvoiceLine[1]/GoodsReceivedNoteReferences/GoodsReceivedNoteDate">
 								<ReceiptAdviceDocumentDate format="YYYY-MM-DDThh:mm:ss:TZD">
 									<xsl:value-of select="InvoiceDetail/InvoiceLine[1]/GoodsReceivedNoteReferences/GoodsReceivedNoteDate"/>
 									<xsl:text>T00:00:00</xsl:text>
 								</ReceiptAdviceDocumentDate>
 							</xsl:if>
-			
 							<xsl:if test="InvoiceDetail/InvoiceLine[1]/GoodsReceivedNoteReferences/GoodsReceivedNoteReference">
 								<ReceiptAdviceDocumentNumber scheme="OTHER">
 									<xsl:value-of select="InvoiceDetail/InvoiceLine[1]/GoodsReceivedNoteReferences/GoodsReceivedNoteReference"/>
 								</ReceiptAdviceDocumentNumber>
 							</xsl:if>
-						</ReceiptAdviceReference> 
+						</ReceiptAdviceReference>
 					</xsl:if>
-					
 					<!-- ~~~~~~~~~~~~~~~~~~~~~~~
 					    BUYER
 					      ~~~~~~~~~~~~~~~~~~~~~~~-->
@@ -175,54 +150,45 @@
 								<xsl:otherwise>
 									<xsl:value-of select="InvoiceHeader/Buyer/BuyersLocationID/GLN"/>
 								</xsl:otherwise>
-							</xsl:choose>					
+							</xsl:choose>
 						</BuyerGLN>
-					
 						<xsl:if test="InvoiceHeader/Buyer/BuyersLocationID/BuyersCode">
 							<BuyerAssigned scheme="OTHER">
 								<xsl:value-of select="InvoiceHeader/Buyer/BuyersLocationID/BuyersCode"/>
 							</BuyerAssigned>
 						</xsl:if>
-		
 						<xsl:if test="InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode">
 							<SellerAssigned scheme="OTHER">
 								<xsl:value-of select="InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode"/>
 							</SellerAssigned>
 						</xsl:if>
-						
 						<!-- check for BuyersAddress - if we have that we must at least have AddressLine1 -->
 						<xsl:if test="InvoiceHeader/Buyer/BuyersAddress">
 							<Address>
-
 								<BuildingIdentifier scheme="OTHER">
 									<xsl:value-of select="InvoiceHeader/Buyer/BuyersAddress/AddressLine1"/>
 								</BuildingIdentifier>
-								
 								<xsl:if test="InvoiceHeader/Buyer/BuyersAddress/AddressLine2">
 									<StreetName scheme="OTHER">
 										<xsl:value-of select="InvoiceHeader/Buyer/BuyersAddress/AddressLine2"/>
 									</StreetName>
 								</xsl:if>
-								
 								<xsl:if test="InvoiceHeader/Buyer/BuyersAddress/AddressLine3">
 									<City scheme="OTHER">
 										<xsl:value-of select="InvoiceHeader/Buyer/BuyersAddress/AddressLine3"/>
 									</City>
 								</xsl:if>
-								
-								<xsl:if test="InvoiceHeader/Buyer/BuyersAddress/PostCode">						
+								<xsl:if test="InvoiceHeader/Buyer/BuyersAddress/PostCode">
 									<PostCode scheme="OTHER">
 										<xsl:value-of select="InvoiceHeader/Buyer/BuyersAddress/PostCode"/>
 									</PostCode>
 								</xsl:if>
-								
 								<Country codeList="ISO">
 									<xsl:text>GB</xsl:text>
 								</Country>
 							</Address>
 						</xsl:if>
 					</Buyer>
-				
 					<!-- ~~~~~~~~~~~~~~~~~~~~~~~
 					    SELLER
 					      ~~~~~~~~~~~~~~~~~~~~~~~-->
@@ -230,103 +196,88 @@
 						<SellerGLN scheme="GLN">
 							<xsl:value-of select="InvoiceHeader/Supplier/SuppliersLocationID/GLN"/>
 						</SellerGLN>
-					
 						<!--Elior require each supplier to insert their company name in SellerAssigned -->
 						<xsl:if test="TradeSimpleHeader/SendersName">
 							<SellerAssigned scheme="OTHER">
 								<xsl:value-of select="TradeSimpleHeader/SendersName"/>
 							</SellerAssigned>
 						</xsl:if>
-						
 						<xsl:if test="InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode">
 							<BuyerAssigned scheme="OTHER">
 								<xsl:value-of select="InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode"/>
 							</BuyerAssigned>
 						</xsl:if>
-		
 						<!-- check for SellersAddress - if we have that we must at least have AddressLine1 -->
-						<xsl:if test="InvoiceHeader/Buyer/BuyersAddress">	
+						<xsl:if test="InvoiceHeader/Buyer/BuyersAddress">
 							<Address>
 								<BuildingIdentifier scheme="OTHER">
 									<xsl:value-of select="InvoiceHeader/Supplier/SuppliersAddress/AddressLine1"/>
 								</BuildingIdentifier>
-								
 								<xsl:if test="InvoiceHeader/Supplier/SuppliersAddress/AddressLine2">
 									<StreetName scheme="OTHER">
 										<xsl:value-of select="InvoiceHeader/Supplier/SuppliersAddress/AddressLine2"/>
 									</StreetName>
 								</xsl:if>
-								
 								<xsl:if test="InvoiceHeader/Supplier/SuppliersAddress/AddressLine3">
 									<City scheme="OTHER">
 										<xsl:value-of select="InvoiceHeader/Supplier/SuppliersAddress/AddressLine3"/>
 									</City>
 								</xsl:if>
-		
-								<xsl:if test="InvoiceHeader/Supplier/SuppliersAddress/PostCode">						
+								<xsl:if test="InvoiceHeader/Supplier/SuppliersAddress/PostCode">
 									<PostCode scheme="OTHER">
 										<xsl:value-of select="InvoiceHeader/Supplier/SuppliersAddress/PostCode"/>
 									</PostCode>
 								</xsl:if>
-									
 								<Country codeList="ISO">
 									<xsl:text>GB</xsl:text>
 								</Country>
-							</Address>					
-						</xsl:if>				
-											
+							</Address>
+						</xsl:if>
 						<VATRegisterationNumber scheme="OTHER">
 							<xsl:value-of select="InvoiceHeader/InvoiceReferences/VATRegNo"/>
 						</VATRegisterationNumber>
-						
 					</Seller>
-		
 					<!-- ~~~~~~~~~~~~~~~~~~~~~~~
 					    SHIPTO
-					      ~~~~~~~~~~~~~~~~~~~~~~~-->			
+					      ~~~~~~~~~~~~~~~~~~~~~~~-->
 					<ShipTo>
 						<ShipToGLN scheme="GLN">
 							<xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/GLN"/>
 						</ShipToGLN>
-					
-						<xsl:if test="InvoiceHeader/ShipTo/ShipToLocationID/SuppliersCode">				
+						<xsl:if test="InvoiceHeader/ShipTo/ShipToLocationID/SuppliersCode">
 							<BuyerAssigned scheme="OTHER">
 								<xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
 							</BuyerAssigned>
 						</xsl:if>
-						
-						<xsl:if test="InvoiceHeader/ShipTo/ShipToLocationID/SuppliersCode">				
+						<xsl:if test="InvoiceHeader/ShipTo/ShipToLocationID/SuppliersCode">
 							<SellerAssigned scheme="OTHER">
 								<xsl:value-of select="InvoiceHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
-							</SellerAssigned>			
+							</SellerAssigned>
 						</xsl:if>
 					</ShipTo>
-		
 					<!-- ~~~~~~~~~~~~~~~~~~~~~~~
 					    TAX POINT DATE TIME
-					      ~~~~~~~~~~~~~~~~~~~~~~~-->		
+					      ~~~~~~~~~~~~~~~~~~~~~~~-->
 					<TaxPointDateTime format="YYYY-MM-DDThh:mm:ss:TZD">
 						<xsl:value-of select="InvoiceHeader/InvoiceReferences/TaxPointDate"/>
 						<xsl:text>T00:00:00</xsl:text>
 					</TaxPointDateTime>
-					
 					<!-- ~~~~~~~~~~~~~~~~~~~~~~~
 					    INVOICE ITEM
-					      ~~~~~~~~~~~~~~~~~~~~~~~-->					
+					      ~~~~~~~~~~~~~~~~~~~~~~~-->
 					<xsl:for-each select="InvoiceDetail/InvoiceLine">
 						<xsl:sort select="LineNumber"/>
-						
 						<InvoiceItem>
-											
 							<LineItemNumber scheme="OTHER">
 								<xsl:value-of select="LineNumber"/>
 							</LineItemNumber>
-						
+							<LineItemDescription>
+								<xsl:value-of select="ProductDescription"/>
+							</LineItemDescription>
 							<ItemIdentifier>
 								<GTIN scheme="GTIN">
 									<xsl:value-of select="ProductID/GTIN"/>
 								</GTIN>
-								
 								<!-- we always use Supplier's code for the alternate -->
 								<xsl:if test="ProductID/SuppliersProductCode">
 									<AlternateCode scheme="OTHER">
@@ -334,17 +285,11 @@
 									</AlternateCode>
 								</xsl:if>
 							</ItemIdentifier>
-							<LineItemDescription>
-								<xsl:value-of select="ProductDescription"/>
-							</LineItemDescription>
 							<!-- Invoice Quantity is mandatory in EAN.UCC so we default to a UOM of 'EA' and a quantity of 0 if missing from the internal document -->
 							<InvoiceQuantity>
 								<xsl:choose>
 									<xsl:when test="InvoicedQuantity">
-										<xsl:attribute name="unitCode">
-											<xsl:value-of select="InvoicedQuantity/@UnitOfMeasure"/>
-										</xsl:attribute>
-										
+										<xsl:attribute name="unitCode"><xsl:value-of select="InvoicedQuantity/@UnitOfMeasure"/></xsl:attribute>
 										<!-- if this is a negative line value we make it positive and set the credit line indicator accordingly -->
 										<xsl:choose>
 											<xsl:when test="number(LineValueExclVAT) >= 0">
@@ -356,29 +301,20 @@
 										</xsl:choose>
 									</xsl:when>
 									<xsl:otherwise>
-										<xsl:attribute name="unitCode">
-											<xsl:text>EA</xsl:text>
-										</xsl:attribute>				
-										
-										<xsl:text>0.000</xsl:text>				
+										<xsl:attribute name="unitCode"><xsl:text>EA</xsl:text></xsl:attribute>
+										<xsl:text>0.000</xsl:text>
 									</xsl:otherwise>
 								</xsl:choose>
 							</InvoiceQuantity>
-		
 							<xsl:if test="OrderedQuantity">
 								<OrderedQuantity>
-									<xsl:attribute name="unitCode">
-										<xsl:value-of select="OrderedQuantity/@UnitOfMeasure"/>
-									</xsl:attribute>
-									
-									<xsl:value-of select="format-number(OrderedQuantity, '0.000')"></xsl:value-of>				
-								</OrderedQuantity>			
+									<xsl:attribute name="unitCode"><xsl:value-of select="OrderedQuantity/@UnitOfMeasure"/></xsl:attribute>
+									<xsl:value-of select="format-number(OrderedQuantity, '0.000')"/>
+								</OrderedQuantity>
 							</xsl:if>
-							
 							<UnitPrice Amount="GBP">
 								<xsl:value-of select="format-number(UnitValueExclVAT, '0.00')"/>
-							</UnitPrice>		
-							
+							</UnitPrice>
 							<LineItemPrice Amount="GBP">
 								<!-- if this is a negative line value we make it positive and set the credit line indicator accordingly -->
 								<xsl:choose>
@@ -388,37 +324,17 @@
 									<xsl:otherwise>
 										<xsl:value-of select="format-number(LineValueExclVAT * -1, '0.00')"/>
 									</xsl:otherwise>
-								</xsl:choose>								
+								</xsl:choose>
 							</LineItemPrice>
-							
-							<xsl:if test="LineDiscountValue or LineDiscountRate">
-								<LineItemDiscount>
-								
-									<xsl:if test="LineDiscountValue">
-										<DiscountValue Amount="GBP">
-											<xsl:value-of select="format-number(LineDiscountValue, '0.00')"/>
-										</DiscountValue>
-									</xsl:if>
-									
-									<xsl:if test="LineDiscountRate">								
-										<DiscountRate Format="PERCENT">
-											<xsl:value-of select="format-number(LineDiscountRate, '0.00')"/>
-										</DiscountRate>
-									</xsl:if>
-								</LineItemDiscount>
-							</xsl:if>
-							
 							<VATDetails>
 								<TaxCategory codeList="EANCOM">
 									<xsl:value-of select="VATCode"/>
 								</TaxCategory>
-							
 								<TaxRate Format="PERCENT">
-									<xsl:value-of select="format-number(VATRate, '0.00')"/>						
+									<xsl:value-of select="format-number(VATRate, '0.00')"/>
 								</TaxRate>
 							</VATDetails>
-							
-							<!-- we base this upon whether we had a negative or positive line value -->					
+							<!-- we base this upon whether we had a negative or positive line value -->
 							<CreditLineIndicator codeList="OFSCI">
 								<xsl:choose>
 									<xsl:when test="number(LineValueExclVAT) &lt; 0">
@@ -428,10 +344,9 @@
 										<xsl:value-of select="$invoiceLineIndicator"/>
 									</xsl:otherwise>
 								</xsl:choose>
-							</CreditLineIndicator>	
-						</InvoiceItem>			
+							</CreditLineIndicator>
+						</InvoiceItem>
 					</xsl:for-each>
-		
 					<!-- ~~~~~~~~~~~~~~~~~~~~~~~
 					    INVOICE TOTALS
 					      ~~~~~~~~~~~~~~~~~~~~~~~-->
@@ -439,66 +354,52 @@
 						<DocumentDiscountRate Format="PERCENT">
 							<xsl:value-of select="format-number(InvoiceTrailer/DocumentDiscountRate, '0.00')"/>
 						</DocumentDiscountRate>
-		
 						<SettlementDiscountRate Format="PERCENT">
 							<xsl:value-of select="format-number(InvoiceTrailer/SettlementDiscountRate, '0.00')"/>
 						</SettlementDiscountRate>
-						
-						<!-- loop through the VATSubTotal nodes -->	
+						<!-- loop through the VATSubTotal nodes -->
 						<xsl:for-each select="InvoiceTrailer/VATSubTotals/VATSubTotal">
 							<VATRateTotals>
 								<VATDetails>
 									<TaxCategory codeList="EANCOM">
 										<xsl:value-of select="@VATCode"/>
 									</TaxCategory>
-									
 									<TaxRate Format="PERCENT">
 										<xsl:value-of select="format-number(@VATRate, '0.00')"/>
 									</TaxRate>
 								</VATDetails>
-								
 								<DiscountedLineTotals Amount="GBP">
-									<xsl:value-of select="format-number(DiscountedLinesTotalExclVATAtRate, '0.00')"/>	
+									<xsl:value-of select="format-number(DiscountedLinesTotalExclVATAtRate, '0.00')"/>
 								</DiscountedLineTotals>
-								
-								<DocumentDiscountValue Amount="GBP">	
+								<DocumentDiscountValue Amount="GBP">
 									<xsl:value-of select="format-number(DocumentDiscountAtRate, '0.00')"/>
 								</DocumentDiscountValue>
-								
 								<SettlementDiscountValue Amount="GBP">
 									<xsl:value-of select="format-number(SettlementDiscountAtRate, '0.00')"/>
 								</SettlementDiscountValue>
-								
 								<TaxableAmount Amount="GBP">
 									<xsl:value-of select="format-number(SettlementTotalExclVATAtRate, '0.00')"/>
 								</TaxableAmount>
-								
 								<VATPayable Amount="GBP">
 									<xsl:value-of select="format-number(VATAmountAtRate, '0.00')"/>
 								</VATPayable>
 							</VATRateTotals>
 						</xsl:for-each>
-						
 						<SettlementSubTotal Amount="GBP">
 							<xsl:value-of select="format-number(InvoiceTrailer/SettlementTotalExclVAT, '0.00')"/>
 						</SettlementSubTotal>
-						
 						<InvoiceSubTotal Amount="GBP">
 							<xsl:value-of select="format-number(InvoiceTrailer/DocumentTotalExclVAT, '0.00')"/>
 						</InvoiceSubTotal>
-						
 						<VATTotal Amount="GBP">
 							<xsl:value-of select="format-number(InvoiceTrailer/VATAmount, '0.00')"/>
 						</VATTotal>
-						
 						<SettlementInvoiceTotal Amount="GBP">
 							<xsl:value-of select="format-number(InvoiceTrailer/SettlementTotalInclVAT, '0.00')"/>
 						</SettlementInvoiceTotal>
-						
 						<TotalPayable Amount="GBP">
 							<xsl:value-of select="format-number(InvoiceTrailer/DocumentTotalInclVAT, '0.00')"/>
 						</TotalPayable>
-						
 					</InvoiceTotals>
 				</Invoice>
 			</xsl:for-each>
