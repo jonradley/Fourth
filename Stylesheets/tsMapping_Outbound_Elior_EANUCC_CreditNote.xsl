@@ -17,6 +17,8 @@
 06 Nov 2008| N Dry            | 2555 - Elior CreditNote batches - based on standard OFSCI mapper, with a few extras (prod description etc)
 ******************************************************************************************
 27/10/2010  	| M Dimant    | Based on previous mapper, turned into Elior's new format xml
+******************************************************************************************
+16/11/2016  	| M Dimant    | FB11399: LineItemDescription tag moved 
 ***************************************************************************************-->
 <xsl:stylesheet version="1.0" 
 				xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -347,7 +349,11 @@
 							<LineItemNumber scheme="OTHER">
 								<xsl:value-of select="LineNumber"/>
 							</LineItemNumber>
-						
+							
+							<LineItemDescription>
+								<xsl:value-of select="ProductDescription"/>
+							</LineItemDescription>
+							
 							<ItemIdentifier>
 								<GTIN scheme="GTIN">
 									<xsl:value-of select="ProductID/GTIN"/>
@@ -360,9 +366,7 @@
 									</AlternateCode>
 								</xsl:if>
 							</ItemIdentifier>
-							<LineItemDescription>
-								<xsl:value-of select="ProductDescription"/>
-							</LineItemDescription>
+							
 							
 							<!-- Invoice Quantity is mandatory in EAN.UCC so we default to a UOM of 'EA' and a quantity of 0 if missing from the internal document -->
 							<InvoiceQuantity>
