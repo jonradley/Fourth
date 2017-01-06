@@ -101,7 +101,7 @@ For each line with UoM equal to 'EA' and CaseSize greather than 1:
 	</xsl:template>
 	
 		<!-- Create an extra confirmation line, with Confirmed Quantity / CaseSize > 0  with the whole cases -->
-	<xsl:template match="PurchaseOrderConfirmationLine[(LineExtraData/CaseSize &gt; 1) and (ConfirmedQuantity mod LineExtraData/CaseSize > 0)]" mode="new-lines-for-whole-cases">
+	<xsl:template match="PurchaseOrderConfirmationLine[(LineExtraData/CaseSize &gt; 1) and floor(ConfirmedQuantity div LineExtraData/CaseSize) != 0 and (ConfirmedQuantity mod LineExtraData/CaseSize > 0)]" mode="new-lines-for-whole-cases">
 		<xsl:variable name="CaseSize" select="LineExtraData/CaseSize"/>
 		<xsl:call-template name="createConfirmationLine">
 			<xsl:with-param name="LineStatus" select="@LineStatus"/>
@@ -124,7 +124,13 @@ For each line with UoM equal to 'EA' and CaseSize greather than 1:
 	<!-- Any lines with no case size will be output as they are -->
 	<xsl:template match="PurchaseOrderConfirmationLine">
 		<PurchaseOrderConfirmationLine>
-			<xsl:apply-templates/>
+      <xsl:attribute name="LineStatus">
+        <xsl:choose>
+          <xsl:when test="@LineStatus='QuantityChanged'"><xsl:text>Changed</xsl:text></xsl:when>
+          <xsl:otherwise><xsl:value-of select="@LineStatus"/></xsl:otherwise>
+        </xsl:choose>
+      </xsl:attribute>
+      <xsl:apply-templates/>
 		</PurchaseOrderConfirmationLine>
 	</xsl:template>
 		
@@ -178,7 +184,7 @@ For each line with UoM equal to 'EA' and CaseSize greather than 1:
 	</xsl:template>
 	
 	<!-- Create an extra confirmation line, with Confirmed Quantity / CaseSize > 0  with the whole cases -->
-	<xsl:template match="DeliveryNoteLine[(LineExtraData/CaseSize &gt; 1) and (DespatchedQuantity mod LineExtraData/CaseSize > 0)]" mode="new-lines-for-whole-cases">
+	<xsl:template match="DeliveryNoteLine[(LineExtraData/CaseSize &gt; 1) and floor(DespatchedQuantity div LineExtraData/CaseSize) != 0 and (DespatchedQuantity mod LineExtraData/CaseSize > 0)]" mode="new-lines-for-whole-cases">
 		<xsl:variable name="CaseSize" select="LineExtraData/CaseSize"/>
 		<xsl:call-template name="createDeliveryNoteLine">
 			<xsl:with-param name="GTIN" select="ProductID/GTIN"/>
@@ -236,8 +242,7 @@ For each line with UoM equal to 'EA' and CaseSize greather than 1:
 				<xsl:choose>
 					<xsl:when test="$LineStatus='QuantityChanged'"><xsl:text>Changed</xsl:text></xsl:when>
 					<xsl:otherwise><xsl:value-of select="$LineStatus"/></xsl:otherwise>
-				</xsl:choose>
-			
+				</xsl:choose>			
 			</xsl:attribute>
 			<xsl:apply-templates select="LineNumber"/>
 			<ProductID>
