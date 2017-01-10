@@ -31,8 +31,6 @@ For each line with UoM equal to 'EA' and CaseSize greather than 1:
  14/04/2016	| Jose Miguel	| FB11341 - Created
 ==========================================================================================
  26/10/2016	| Jose Miguel	| FB11361 - Remove sufix -EA on the product code
-==========================================================================================
- 31/11/2016	| Jose Miguel	| FB11434 - Change status of a line from QuantityChange to Change
 ==========================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript"  exclude-result-prefixes="msxsl js">
 	<xsl:output method="xml" encoding="UTF-8" indent="yes" omit-xml-declaration="yes"/>
@@ -232,13 +230,7 @@ For each line with UoM equal to 'EA' and CaseSize greather than 1:
 		<xsl:param name="LineValueExclVAT"/>
 		<xsl:param name="CaseSize"/>
 		<PurchaseOrderConfirmationLine>
-			<xsl:attribute name="LineStatus">
-				<xsl:choose>
-					<xsl:when test="$LineStatus='QuantityChanged'"><xsl:text>Changed</xsl:text></xsl:when>
-					<xsl:otherwise><xsl:value-of select="$LineStatus"/></xsl:otherwise>
-				</xsl:choose>
-			
-			</xsl:attribute>
+			<xsl:attribute name="LineStatus"><xsl:value-of select="$LineStatus"/></xsl:attribute>
 			<xsl:apply-templates select="LineNumber"/>
 			<ProductID>
 				<GTIN><xsl:value-of select="$GTIN"/></GTIN>
