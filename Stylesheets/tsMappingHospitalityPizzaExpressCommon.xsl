@@ -17,6 +17,8 @@ Pizza Express UK common script, which holds the Company Code translation logic.
  12/09/2016	| Jose Miguel	| FB11292 - Removing default value for the company
 ==========================================================================================
 15/11/2016	| Jose Miguel	| FB11398 - Adding new sites (2)
+==========================================================================================
+03/01/2017	| Moty Dimant	| FB11458 - Adding two new sites, PE Gretna and PE Poynton
 ==========================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript">
@@ -463,6 +465,7 @@ Pizza Express UK common script, which holds the Company Code translation logic.
 		3428 : '00010',
 		3429 : '00010',
 		3430 : '00010',
+		3433 : '00010',
 		3434 : '00010',
 		3435 : '00010',
 		3436 : '00010',
@@ -474,6 +477,7 @@ Pizza Express UK common script, which holds the Company Code translation logic.
 		3444 : '00010',
 		3445 : '00010',
 		3446 : '00010',
+		3450 : '00010',
 		4104 : '00010',
 		4010 : '00081',
 		4011 : '00081',
