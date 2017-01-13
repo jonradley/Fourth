@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--****************************************************************************************
+ANSI X12 850 V5 - order order mapper FFD
+*******************************************************************************************
+Name		| Date       | Change
+*******************************************************************************************
+J Miguel	| 24/11/2015 | FB10620 - ALDI - custom X12 mappers for Orders In
+*******************************************************************************************-->
+<ffsFlatFileSchema>
+    <ffsSettings>
+        <ffsRecordPositionType>noschema</ffsRecordPositionType>
+	<ffsEscapeChars>
+		<ffsEscapeChar>
+			<ffsNative>chr(13)</ffsNative>
+			<ffsTradesimple/>
+			<ffsLiteral/>
+		</ffsEscapeChar>
+		<ffsEscapeChar>
+			<ffsNative>chr(10)</ffsNative>
+			<ffsTradesimple/>
+			<ffsLiteral/>
+		</ffsEscapeChar>
+	</ffsEscapeChars>
+    </ffsSettings>
+    <ffsRoot>
+        <L1>
+            <Delim>!</Delim>
+            <L2>
+                <Delim>*</Delim>
+            </L2>
+        </L1>
+    </ffsRoot>
+</ffsFlatFileSchema>
