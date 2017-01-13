@@ -19,6 +19,8 @@
  15/01/2013	| A Barber				| FB5749	Updated for output each doc to batch queue, significant logic changes.
 ==========================================================================================
  17/01/2013	| A Barber				| FB5749	Update credit record line identifier.
+ ==========================================================================================
+ 13/01/2017	| M Dimant				| FB11436	Changes required for CDG upgrade from CODA 10 to CODA 13.
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl script">
 	<xsl:output method="text"/>
@@ -32,12 +34,12 @@
 			
 		<!-- Store the Company Code -->
 		<xsl:variable name="varCompanyCode">
-			<xsl:value-of select="script:msPad('TRAGUS1', 12)"/>
+			<xsl:value-of select="script:msPad('CMP05', 12)"/>
 		</xsl:variable>
 		
 		<!-- Store the Transaction Type -->
 		<xsl:variable name="varTransactionType">
-			<xsl:value-of select="script:msPad('PINEDI', 12)"/>
+			<xsl:value-of select="script:msPad('PINVEDII', 12)"/>
 		</xsl:variable>
 
 		<!-- Store the Transaction Number - {blank}-->
@@ -131,7 +133,7 @@
 			<xsl:value-of select="script:msPad($varTransactionReference6, 32)"/>
 			
 			<!-- Account Code String -->
-			<xsl:value-of select="script:msPad(concat('158','+.',$varRecipientsBranchReference,'.',substring-before($AccountCode,'+')), 82)"/>
+			<xsl:value-of select="script:msPad(concat('158','~.',substring-before($AccountCode,'+')),'.',$varRecipientsBranchReference, 82)"/>
 			<!-- Value -->
 			<xsl:value-of select="script:msPadNumber(format-number(sum(../InvoiceLine[concat(translate(LineExtraData/AccountCode,'&quot;',''),'+',VATCode) = $AccountCode]/LineValueExclVAT)-sum(../InvoiceLine[concat(translate(LineExtraData/AccountCode,'&quot;',''),'+',VATCode) = $AccountCode]/LineDiscountValue),'0.00'),15,2)"/>
 			<!-- Vat Code -->
@@ -183,7 +185,7 @@
 			<xsl:value-of select="script:msPad($varTransactionReference6, 32)"/>
 			
 			<!-- Account Code String -->
-			<xsl:value-of select="script:msPad(concat('159','+.000RR53.124200','.',$VATCode), 82)"/>
+			<xsl:value-of select="script:msPad(concat('159','~.124200','.',$VATCode), 82)"/>
 			<!-- Value -->
 			<xsl:value-of select="script:msPadNumber(VATAmountAtRate, 15, 2)"/>
 			<!-- Vat Code -->
@@ -208,7 +210,7 @@
 		<xsl:value-of select="script:msPad($varTransactionReference6, 32)"/>
 
 		<!-- Account Code String -->
-		<xsl:value-of select="script:msPad(concat('157','+.000RR53.122001','.',$varLedgerCode), 82)"/>
+		<xsl:value-of select="script:msPad(concat('157','~.122001','.',$varLedgerCode), 82)"/>
 		<!-- Value -->
 		<xsl:value-of select="script:msPadNumber(InvoiceTrailer/DocumentTotalInclVAT, 15, 2)"/>
 
@@ -225,12 +227,12 @@
 			
 		<!-- Store the Company Code -->
 		<xsl:variable name="varCompanyCode">
-			<xsl:value-of select="script:msPad('TRAGUS1', 12)"/>
+			<xsl:value-of select="script:msPad('CMP05', 12)"/>
 		</xsl:variable>
 		
 		<!-- Store the Transaction Type -->
 		<xsl:variable name="varTransactionType">
-			<xsl:value-of select="script:msPad('PCREDI', 12)"/>
+			<xsl:value-of select="script:msPad('PCRNEDII', 12)"/>
 		</xsl:variable>
 
 		<!-- Store the Transaction Number - {blank}-->
@@ -324,7 +326,7 @@
 			<xsl:value-of select="script:msPad($varTransactionReference6, 32)"/>
 			
 			<!-- Account Code String -->
-			<xsl:value-of select="script:msPad(concat('158','+.',$varRecipientsBranchReference,'.',substring-before($AccountCode,'+')), 82)"/>
+			<xsl:value-of select="script:msPad(concat('158','~.',substring-before($AccountCode,'+')),'.',$varRecipientsBranchReference, 82)"/>
 			<!-- Value -->
 			<xsl:value-of select="script:msPadNumber(-1 * format-number(sum(../CreditNoteLine[concat(translate(LineExtraData/AccountCode,'&quot;',''),'+',VATCode) = $AccountCode]/LineValueExclVAT)-sum(../CreditNoteLine[concat(translate(LineExtraData/AccountCode,'&quot;',''),'+',VATCode) = $AccountCode]/LineDiscountValue),'0.00'),15,2)"/>
 			<!-- Vat Code -->
@@ -376,7 +378,7 @@
 			<xsl:value-of select="script:msPad($varTransactionReference6, 32)"/>
 			
 			<!-- Account Code String -->
-			<xsl:value-of select="script:msPad(concat('159','+.000RR53.124200','.',$VATCode), 82)"/>
+			<xsl:value-of select="script:msPad(concat('159','~.124200','.',$VATCode), 82)"/>
 			<!-- Value -->
 			<xsl:value-of select="script:msPadNumber(-1 * VATAmountAtRate, 15, 2)"/>
 			<!-- Vat Code -->
@@ -401,7 +403,7 @@
 		<xsl:value-of select="script:msPad($varTransactionReference6, 32)"/>
 
 		<!-- Account Code String -->
-		<xsl:value-of select="script:msPad(concat('157','+.000RR53.122001','.',$varLedgerCode), 82)"/>
+		<xsl:value-of select="script:msPad(concat('157','~.122001','.',$varLedgerCode), 82)"/>
 		<!-- Value -->
 		<xsl:value-of select="script:msPadNumber(-1 * CreditNoteTrailer/DocumentTotalInclVAT, 15, 2)"/>
 
