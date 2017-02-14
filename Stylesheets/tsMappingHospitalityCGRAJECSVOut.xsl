@@ -71,7 +71,7 @@
 		<xsl:value-of select="$FieldSeperator"/>
 		
 		<!-- LineVAT -->
-		<!-- Sim on if credit, else output invoice sum  -->
+		<!-- When transaction type is a credit, else output invoice sum  -->
 		<xsl:choose>
 			<xsl:when test="string(../AccrualJournalEntriesHeader/TransactionType) = 'PurCredit' ">
 			<xsl:value-of select="js:quote(format-number(sum(AccrualJournalEntriesLine/LineVAT),'00.00'))"/>
@@ -83,8 +83,8 @@
 		</xsl:choose>
 	<xsl:value-of select="$FieldSeperator"/>
 
-	<!-- LineVAT -->
-		<!-- Sim on if credit, else output invoice sum  -->
+	<!-- LineGross-->
+		<!-- When transaction type is a credit, else output invoice sum  -->
 		<xsl:choose>
 			<xsl:when test="string(../AccrualJournalEntriesHeader/TransactionType) = 'PurCredit' ">
 			<xsl:value-of select="js:quote(format-number(sum(AccrualJournalEntriesLine/LineGross),'00.00'))"/>
