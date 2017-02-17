@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-/******************************************************************************************
-' Date        	| Name         | Description of modification
-'******************************************************************************************
+/************************************************************************************************************************************************************************************
+' Date        		| Name         | Description of modification
+'************************************************************************************************************************************************************************************
 19-02-2014		|J Miguel	   | FB7706 Generic CSV Specs FFS Mapper - Credit Notes
-'******************************************************************************************
+'************************************************************************************************************************************************************************************
+27-01-2017		|M Dimant   | FB11534 Correction to allow Suppliers Code for Buyer to be mapped in
+'************************************************************************************************************************************************************************************
 -->
 <ffsFlatFileSchema>
 	<ffsSettings>
@@ -23,7 +25,7 @@
 		<ffsPadding/>
 		<ffsBatchHeader>
 			<!--list of records that make up the header, this will be added to each document in the batch -->
-			<ffsHeaderRecord RecordPos="C"/>	
+			<ffsHeaderRecord RecordPos="C"/>
 		</ffsBatchHeader>
 		<ffsSplitBatchRecord RecordPos="H"/>
 	</ffsSettings>
@@ -47,7 +49,7 @@
 							</BatchInformation>
 							<Buyer>
 								<BuyersLocationID>
-									<SuppliersCode RecordPos="I" LPos="9"/>
+									<SuppliersCode RecordPos="C" LPos="9"/>
 								</BuyersLocationID>
 								<BuyersName RecordPos="H" LPos="10"/>
 								<BuyersAddress>

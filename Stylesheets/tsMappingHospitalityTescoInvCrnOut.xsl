@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-******************************************************************************************
+************************************************************************************************************************************************************************************
 Tesco outbound mapper for invoices and credit notes.
 This mapper is only prepared to process an invoice or a credit note.
-******************************************************************************************
+************************************************************************************************************************************************************************************
  Module History
-******************************************************************************************
- Date				| Name		| Description of modification
-******************************************************************************************
- 24/05/2016	| J Miguel	| FB11018 - Created
-******************************************************************************************
- 07/06/2016	| J Miguel	| FB11039 - Invoice / Credit Note Mapper - Change Requests
-******************************************************************************************
- 29/06/2016	| J Miguel	| FB11106 - Fixes
-******************************************************************************************
- 19/10/2016	| J Miguel	| FB11350 - Further change requests
-******************************************************************************************
+************************************************************************************************************************************************************************************
+ Date					| Name		| Description of modification
+************************************************************************************************************************************************************************************
+ 24/05/2016	| J Miguel		| FB11018 - Created
+************************************************************************************************************************************************************************************
+ 07/06/2016	| J Miguel		| FB11039 - Invoice / Credit Note Mapper - Change Requests
+************************************************************************************************************************************************************************************
+ 29/06/2016	| J Miguel		| FB11106 - Fixes
+************************************************************************************************************************************************************************************
+ 19/10/2016	| J Miguel		| FB11350 - Further change requests
+ ************************************************************************************************************************************************************************************
+ 02/02/2017	| M Dimant	| FB11539 - Change Company code to ‘653’. Set nominal code to 20460 for non-tax elements
+************************************************************************************************************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:script="http://mycompany.com/mynamespace"
@@ -97,7 +99,7 @@ This mapper is only prepared to process an invoice or a credit note.
 			</xsl:with-param>
 			<xsl:with-param name="NominalCode" select="'23220'"/>
 			<xsl:with-param name="UnitCode" select="'00000'"/>
-			<xsl:with-param name="CompanyCode" select="'00000'"/>
+			<xsl:with-param name="CompanyCode" select="$CompanyCode"/>
 			<xsl:with-param name="Site" select="$Site"/>
 			<xsl:with-param name="DocumentReference" select="$DocumentReference"/>
 			<xsl:with-param name="DocumentDate" select="$DocumentDate"/>
@@ -111,7 +113,7 @@ This mapper is only prepared to process an invoice or a credit note.
 				<xsl:with-param name="LineType" select="'Item'"/>
 				<xsl:with-param name="Amount" select="-number(DocumentTotalExclVATAtRate)"/>
 				<xsl:with-param name="TaxCode" select="number(@VATRate)"/>
-				<xsl:with-param name="NominalCode" select="'20400'"/>
+				<xsl:with-param name="NominalCode" select="'20460'"/>
 				<xsl:with-param name="UnitCode" select="$UnitCode"/>
 				<xsl:with-param name="CompanyCode" select="$CompanyCode"/>
 				<xsl:with-param name="Site" select="$Site"/>
