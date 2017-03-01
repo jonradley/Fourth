@@ -222,45 +222,6 @@ function gsFormatCurrency(vsNumber, vlDPs, vbUseCommas)
 }
 
 /*=========================================================================================
-' Routine       	 : gsGetRowClass
-' Description 	 : Gets listrow 0,1,0 etc.
-' Inputs          	 : None
-' Outputs       	 : None
-' Returns       	 : Class of row
-' Author       		 : A Sheppard, 23/02/2004.
-' Alterations   	 : 
-'========================================================================================*/
-var msPreviousRowClass = 'listrow0';
-function gsGetRowClass()
-{
-	if(msPreviousRowClass == 'listrow1')
-	{
-		msPreviousRowClass = 'listrow0';
-	}
-	else
-	{
-		msPreviousRowClass = 'listrow1';
-	}
-	return msPreviousRowClass;
-}
-
-/*=========================================================================================
-' Routine       	 : glGetRowNumber
-' Description 	 : Gets next row number.
-' Inputs          	 : None
-' Outputs       	 : None
-' Returns       	 : Row number
-' Author       		 : A Sheppard, 23/02/2004.
-' Alterations   	 : 
-'========================================================================================*/
-var mlPreviousRowNo = 0;
-function glGetRowNumber()
-{
-	mlPreviousRowNo = mlPreviousRowNo + 1;
-	return mlPreviousRowNo;
-}
-
-/*=========================================================================================
 ' Routine       	 : gsFormatFixedWidth
 ' Description 	 : Formats the string to a fixed width
 ' Inputs          	 : String

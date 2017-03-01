@@ -22,7 +22,7 @@ Pizza Express UK mapper for Restaurants Receipts Export format.
 ==========================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript">
 	<xsl:include href="tsMappingHospitalityPizzaExpressCommon.xsl"/>
-	<xsl:output method="text" encoding="UTF-8"/>
+	<xsl:output method="text" encoding="iso-8859-1"/>
 	<xsl:variable name="TotalLines" select="count(//ReceiptLine) + count(//ReturnLine)"/>
 	<xsl:variable name="Total" select="sum(//TotalExclVAT)"/>
 	<xsl:template match="/">
