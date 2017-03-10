@@ -22,6 +22,8 @@ Takes the internal version of a Credit Note and map it directly into the same fo
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 05/04/2012  | Sandeep Sehgal	| FB5348 Translate accented characters 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+10/03/2017  | Warith Nassor	| FB11638 Adding AWRS
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                     |                   |                                                                               
 ******************************************************************************************
 -->
@@ -342,6 +344,9 @@ Takes the internal version of a Credit Note and map it directly into the same fo
 					</xsl:element>
 					<xsl:element name="STXSupplierCode">
 						<xsl:value-of select="CreditNoteHeader/HeaderExtraData/STXSupplierCode"/>
+					</xsl:element>
+					<xsl:element name="AlcoholWholesalerRegistrationNumber">
+						<xsl:value-of select="InvoiceHeader/HeaderExtraData/AlcoholWholesalerRegistrationNumber"/>
 					</xsl:element>
 				</xsl:element>	
 			</xsl:element>
