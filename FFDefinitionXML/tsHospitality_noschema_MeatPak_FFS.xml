@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+'******************************************************************************************
+' Overview
+'		
+' Flat file mapping definition for Pipe Separated Values files in MeatPak format.
+'       
+' © Alternative Business Solutions Ltd., 2000,2001,2002,2003.
+'******************************************************************************************
+' Module History
+'******************************************************************************************
+' Date       | Name            | Description of modification
+'******************************************************************************************
+' 22/04/2003 | C Scott         | Created
+'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+'            |                 | 
+'******************************************************************************************
+-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>noschema</ffsRecordPositionType>
+	</ffsSettings>
+	<ffsRoot>
+		<L1>
+			<Delim>chr(13)chr(10)</Delim>
+			<ElementName Start="1" Length="1"/>
+			<L2>
+				<Delim>|</Delim>
+			</L2>
+		</L1>
+	</ffsRoot>
+</ffsFlatFileSchema>
