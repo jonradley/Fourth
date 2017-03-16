@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--**************************************************************************************
- Overview
+ Overview 
 
 Takes the internal version of a Credit Note and map it directly into the same format.
  
@@ -346,7 +346,7 @@ Takes the internal version of a Credit Note and map it directly into the same fo
 						<xsl:value-of select="CreditNoteHeader/HeaderExtraData/STXSupplierCode"/>
 					</xsl:element>
 					<xsl:element name="AlcoholWholesalerRegistrationNumber">
-						<xsl:value-of select="InvoiceHeader/HeaderExtraData/AlcoholWholesalerRegistrationNumber"/>
+						<xsl:value-of select="CreditNoteHeader/HeaderExtraData/AlcoholWholesalerRegistrationNumber"/>
 					</xsl:element>
 				</xsl:element>	
 			</xsl:element>
