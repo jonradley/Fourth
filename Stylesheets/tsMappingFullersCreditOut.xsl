@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--**************************************************************************************
- Overview
+ Overview 
 
 Takes the internal version of a Credit Note and map it directly into the same format.
  
@@ -21,6 +21,8 @@ Takes the internal version of a Credit Note and map it directly into the same fo
 08/10/2009  | Steve Hewitt		| FB3169 Format numbers and the test flag consistently
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 05/04/2012  | Sandeep Sehgal	| FB5348 Translate accented characters 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+10/03/2017  | Warith Nassor	| FB11638 Adding AWRS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                     |                   |                                                                               
 ******************************************************************************************
@@ -342,6 +344,9 @@ Takes the internal version of a Credit Note and map it directly into the same fo
 					</xsl:element>
 					<xsl:element name="STXSupplierCode">
 						<xsl:value-of select="CreditNoteHeader/HeaderExtraData/STXSupplierCode"/>
+					</xsl:element>
+					<xsl:element name="AlcoholWholesalerRegistrationNumber">
+						<xsl:value-of select="CreditNoteHeader/HeaderExtraData/AlcoholWholesalerRegistrationNumber"/>
 					</xsl:element>
 				</xsl:element>	
 			</xsl:element>
