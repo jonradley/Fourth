@@ -20,7 +20,7 @@
 ==========================================================================================
  17/01/2013	| A Barber				| FB5749	Update credit record line identifier.
  ==========================================================================================
- 13/01/2017	| M Dimant				| FB11436	Changes required for CDG upgrade from CODA 10 to CODA 13.
+ 26/01/2017	| M Dimant				| FB11436	Updates to move from Coda v10 to Coda v13
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl script">
 	<xsl:output method="text"/>
@@ -132,8 +132,8 @@
 			<xsl:value-of select="$varTransactionReference5"/>
 			<xsl:value-of select="script:msPad($varTransactionReference6, 32)"/>
 			
-			<!-- Account Code String -->
-			<xsl:value-of select="script:msPad(concat('158','~.',substring-before($AccountCode,'+')),'.',$varRecipientsBranchReference, 82)"/>
+			<!-- Account Code String-->
+			<xsl:value-of select="script:msPad(concat('158','~.',substring-before($AccountCode,'+'),'.',$varRecipientsBranchReference), 82)"/>  	
 			<!-- Value -->
 			<xsl:value-of select="script:msPadNumber(format-number(sum(../InvoiceLine[concat(translate(LineExtraData/AccountCode,'&quot;',''),'+',VATCode) = $AccountCode]/LineValueExclVAT)-sum(../InvoiceLine[concat(translate(LineExtraData/AccountCode,'&quot;',''),'+',VATCode) = $AccountCode]/LineDiscountValue),'0.00'),15,2)"/>
 			<!-- Vat Code -->
@@ -185,7 +185,7 @@
 			<xsl:value-of select="script:msPad($varTransactionReference6, 32)"/>
 			
 			<!-- Account Code String -->
-			<xsl:value-of select="script:msPad(concat('159','~.124200','.',$VATCode), 82)"/>
+			<xsl:value-of select="script:msPad(concat('159','~.23320','.',$VATCode), 82)"/>
 			<!-- Value -->
 			<xsl:value-of select="script:msPadNumber(VATAmountAtRate, 15, 2)"/>
 			<!-- Vat Code -->
@@ -210,7 +210,7 @@
 		<xsl:value-of select="script:msPad($varTransactionReference6, 32)"/>
 
 		<!-- Account Code String -->
-		<xsl:value-of select="script:msPad(concat('157','~.122001','.',$varLedgerCode), 82)"/>
+		<xsl:value-of select="script:msPad(concat('157','~.27100.C900008','.',$varLedgerCode), 82)"/>
 		<!-- Value -->
 		<xsl:value-of select="script:msPadNumber(InvoiceTrailer/DocumentTotalInclVAT, 15, 2)"/>
 
@@ -326,7 +326,7 @@
 			<xsl:value-of select="script:msPad($varTransactionReference6, 32)"/>
 			
 			<!-- Account Code String -->
-			<xsl:value-of select="script:msPad(concat('158','~.',substring-before($AccountCode,'+')),'.',$varRecipientsBranchReference, 82)"/>
+			<xsl:value-of select="script:msPad(concat('158','~.',substring-before($AccountCode,'+'),'.',$varRecipientsBranchReference), 82)"/>  
 			<!-- Value -->
 			<xsl:value-of select="script:msPadNumber(-1 * format-number(sum(../CreditNoteLine[concat(translate(LineExtraData/AccountCode,'&quot;',''),'+',VATCode) = $AccountCode]/LineValueExclVAT)-sum(../CreditNoteLine[concat(translate(LineExtraData/AccountCode,'&quot;',''),'+',VATCode) = $AccountCode]/LineDiscountValue),'0.00'),15,2)"/>
 			<!-- Vat Code -->
@@ -378,7 +378,7 @@
 			<xsl:value-of select="script:msPad($varTransactionReference6, 32)"/>
 			
 			<!-- Account Code String -->
-			<xsl:value-of select="script:msPad(concat('159','~.124200','.',$VATCode), 82)"/>
+			<xsl:value-of select="script:msPad(concat('159','~.23320','.',$VATCode), 82)"/>
 			<!-- Value -->
 			<xsl:value-of select="script:msPadNumber(-1 * VATAmountAtRate, 15, 2)"/>
 			<!-- Vat Code -->
@@ -403,7 +403,7 @@
 		<xsl:value-of select="script:msPad($varTransactionReference6, 32)"/>
 
 		<!-- Account Code String -->
-		<xsl:value-of select="script:msPad(concat('157','~.122001','.',$varLedgerCode), 82)"/>
+		<xsl:value-of select="script:msPad(concat('157','~.27100.C900008','.',$varLedgerCode), 82)"/>
 		<!-- Value -->
 		<xsl:value-of select="script:msPadNumber(-1 * CreditNoteTrailer/DocumentTotalInclVAT, 15, 2)"/>
 
