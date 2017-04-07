@@ -31,6 +31,8 @@ For each line with UoM equal to 'EA' and CaseSize greather than 1:
  14/04/2016	| Jose Miguel	| FB11341 - Created
 ==========================================================================================
  26/10/2016	| Jose Miguel	| FB11361 - Remove sufix -EA on the product code
+==========================================================================================
+ 31/11/2016	| Jose Miguel	| FB11434 - Change status of a line from QuantityChange to Change
 ==========================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript"  exclude-result-prefixes="msxsl js">
 	<xsl:output method="xml" encoding="UTF-8" indent="yes" omit-xml-declaration="yes"/>
@@ -99,7 +101,7 @@ For each line with UoM equal to 'EA' and CaseSize greather than 1:
 	</xsl:template>
 	
 		<!-- Create an extra confirmation line, with Confirmed Quantity / CaseSize > 0  with the whole cases -->
-	<xsl:template match="PurchaseOrderConfirmationLine[(LineExtraData/CaseSize &gt; 1) and (ConfirmedQuantity mod LineExtraData/CaseSize > 0)]" mode="new-lines-for-whole-cases">
+	<xsl:template match="PurchaseOrderConfirmationLine[(LineExtraData/CaseSize &gt; 1) and floor(ConfirmedQuantity div LineExtraData/CaseSize) != 0 and (ConfirmedQuantity mod LineExtraData/CaseSize > 0)]" mode="new-lines-for-whole-cases">
 		<xsl:variable name="CaseSize" select="LineExtraData/CaseSize"/>
 		<xsl:call-template name="createConfirmationLine">
 			<xsl:with-param name="LineStatus" select="@LineStatus"/>
@@ -122,7 +124,13 @@ For each line with UoM equal to 'EA' and CaseSize greather than 1:
 	<!-- Any lines with no case size will be output as they are -->
 	<xsl:template match="PurchaseOrderConfirmationLine">
 		<PurchaseOrderConfirmationLine>
-			<xsl:apply-templates/>
+      <xsl:attribute name="LineStatus">
+        <xsl:choose>
+          <xsl:when test="@LineStatus='QuantityChanged'"><xsl:text>Changed</xsl:text></xsl:when>
+          <xsl:otherwise><xsl:value-of select="@LineStatus"/></xsl:otherwise>
+        </xsl:choose>
+      </xsl:attribute>
+      <xsl:apply-templates/>
 		</PurchaseOrderConfirmationLine>
 	</xsl:template>
 		
@@ -176,7 +184,7 @@ For each line with UoM equal to 'EA' and CaseSize greather than 1:
 	</xsl:template>
 	
 	<!-- Create an extra confirmation line, with Confirmed Quantity / CaseSize > 0  with the whole cases -->
-	<xsl:template match="DeliveryNoteLine[(LineExtraData/CaseSize &gt; 1) and (DespatchedQuantity mod LineExtraData/CaseSize > 0)]" mode="new-lines-for-whole-cases">
+	<xsl:template match="DeliveryNoteLine[(LineExtraData/CaseSize &gt; 1) and floor(DespatchedQuantity div LineExtraData/CaseSize) != 0 and (DespatchedQuantity mod LineExtraData/CaseSize > 0)]" mode="new-lines-for-whole-cases">
 		<xsl:variable name="CaseSize" select="LineExtraData/CaseSize"/>
 		<xsl:call-template name="createDeliveryNoteLine">
 			<xsl:with-param name="GTIN" select="ProductID/GTIN"/>
@@ -230,7 +238,12 @@ For each line with UoM equal to 'EA' and CaseSize greather than 1:
 		<xsl:param name="LineValueExclVAT"/>
 		<xsl:param name="CaseSize"/>
 		<PurchaseOrderConfirmationLine>
-			<xsl:attribute name="LineStatus"><xsl:value-of select="$LineStatus"/></xsl:attribute>
+			<xsl:attribute name="LineStatus">
+				<xsl:choose>
+					<xsl:when test="$LineStatus='QuantityChanged'"><xsl:text>Changed</xsl:text></xsl:when>
+					<xsl:otherwise><xsl:value-of select="$LineStatus"/></xsl:otherwise>
+				</xsl:choose>			
+			</xsl:attribute>
 			<xsl:apply-templates select="LineNumber"/>
 			<ProductID>
 				<GTIN><xsl:value-of select="$GTIN"/></GTIN>
