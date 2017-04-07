@@ -17,6 +17,10 @@ Pizza Express UK common script, which holds the Company Code translation logic.
  12/09/2016	| Jose Miguel	| FB11292 - Removing default value for the company
 ==========================================================================================
 15/11/2016	| Jose Miguel	| FB11398 - Adding new sites (2)
+==========================================================================================
+03/01/2017	| Moty Dimant	| FB11458 - Adding two new sites, PE Gretna and PE Poynton
+==========================================================================================
+18/01/2017	| Moty Dimant	| FB11488 - Adding two new sites, PE Formby and IM Dublin
 ==========================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript">
@@ -377,6 +381,7 @@ Pizza Express UK common script, which holds the Company Code translation logic.
 		3331 : '00010',
 		3332 : '00010',
 		3333 : '00010',
+		3334 : '00010',
 		3335 : '00010',
 		3336 : '00010',
 		3337 : '00010',
@@ -463,6 +468,7 @@ Pizza Express UK common script, which holds the Company Code translation logic.
 		3428 : '00010',
 		3429 : '00010',
 		3430 : '00010',
+		3433 : '00010',
 		3434 : '00010',
 		3435 : '00010',
 		3436 : '00010',
@@ -474,6 +480,7 @@ Pizza Express UK common script, which holds the Company Code translation logic.
 		3444 : '00010',
 		3445 : '00010',
 		3446 : '00010',
+		3450 : '00010',
 		4104 : '00010',
 		4010 : '00081',
 		4011 : '00081',
@@ -505,6 +512,7 @@ Pizza Express UK common script, which holds the Company Code translation logic.
 		5020 : '00020',
 		5110 : '00025',
 		5112 : '00025',
+		5113 : '00025',
 		5120 : '00025',
 		5130 : '00025',
 		5140 : '00025',
