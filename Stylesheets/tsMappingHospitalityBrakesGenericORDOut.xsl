@@ -7,6 +7,8 @@ Name		| Date			| Change
 J Miguel	| 20/05/2015	| 10269 Brakes Logistics Generic Mapper Clean up
 *******************************************************************************************************************************************************************
 J Miguel	| 07/10/2015	| 10526 Brakes non food to use this mapper with a tiny change.
+*******************************************************************************************************************************************************************
+M Dimant	| 10/04/2017	| 11670: Get the correct buyer's code for supplier for TRG orders. Restrict ShipTo name to 30 characters.
 ****************************************************************************************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:sh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" xmlns:eanucc="urn:ean.ucc:2" xmlns:order="urn:ean.ucc:order:2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:vbscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8" indent="yes"/>
@@ -36,7 +38,7 @@ J Miguel	| 07/10/2015	| 10526 Brakes non food to use this mapper with a tiny cha
 				<sh:Sender>
 					<sh:Identifier>
 						<xsl:attribute name="Authority">EAN.UCC</xsl:attribute>
-						<xsl:value-of select="PurchaseOrderHeader/ShipTo/ShipToName"/>
+						<xsl:value-of select="substring(PurchaseOrderHeader/ShipTo/ShipToName,1,29)"/>
 					</sh:Identifier>
 				</sh:Sender>
 				<!--Target Vendor  - Description-->
@@ -148,11 +150,14 @@ J Miguel	| 07/10/2015	| 10526 Brakes non food to use this mapper with a tiny cha
 												<xsl:when test="TradeSimpleHeader/RecipientsName = 'Brakes Non-Food'">
 													<xsl:text>BRAKESNONFOOD</xsl:text>
 												</xsl:when>
+												<!-- FB 11670: Ensure correct buyers code is sent for TRG orders -->
+												<xsl:when test="PurchaseOrderHeader/Buyer/BuyersLocationID/GLN = '5060166760113'">
+													<xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/>
+												</xsl:when>
 												<xsl:otherwise>
 													<xsl:value-of select="PurchaseOrderHeader/Supplier/SuppliersLocationID/BuyersCode"/>
 												</xsl:otherwise>
-											</xsl:choose>	
-											
+											</xsl:choose>												
 										</additionalPartyIdentificationValue>
 										<additionalPartyIdentificationType>BUYER_ASSIGNED_IDENTIFIER_FOR_A_PARTY</additionalPartyIdentificationType>
 									</additionalPartyIdentification>
