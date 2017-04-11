@@ -18,6 +18,8 @@
 '******************************************************************************************
 ' 26/06/2013 | H Robson     | FB 6617 Some hard coding is required to integrate with Campbells Prime Meats
 '******************************************************************************************
+' 05/04/2017 | Warith Nassor     | FB 11668 - Adding AWRS
+'******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" 
 				xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -56,7 +58,6 @@
 					</xsl:choose>
 				</DocumentStatus>
 			</InvoiceDocumentDetails>
-
 			<!-- FB 6617 Hard code the contract reference Campbells invoices -->
 			<xsl:choose>
 				<xsl:when test="$Supplier = $CPM">
@@ -153,18 +154,23 @@
 				<SellerGLN scheme="GLN"><xsl:value-of select="/Invoice/InvoiceHeader/Supplier/SuppliersLocationID/GLN"/></SellerGLN>
 				<!-- FB 6617 Sellers code for seller originates from a different field in Campbells invoices -->
 				<xsl:choose>
-					<xsl:when test="$Supplier = $CPM">
+				<xsl:when test="$Supplier = $CPM">
 						<SellerAssigned scheme="OTHER"><xsl:value-of select="/Invoice/TradeSimpleHeader/RecipientsCodeForSender"/></SellerAssigned>
 						<BuyerAssigned scheme="OTHER"><xsl:text>52565</xsl:text></BuyerAssigned>
 					</xsl:when>
-					<xsl:otherwise>
-						<xsl:if test="/Invoice/InvoiceHeader/Supplier/SuppliersLocationID/SuppliersCode">
+					<xsl:when test="/InvoiceHeader/HeaderExtraData/AlcoholWholesalerRegistrationNumber">
+						<SellerAssigned scheme="OTHER"><xsl:value-of select="/InvoiceHeader/HeaderExtraData/AlcoholWholesalerRegistrationNumber"/></SellerAssigned>
+						<BuyerAssigned scheme="OTHER"><xsl:value-of select="/Invoice/TradeSimpleHeader/RecipientsCodeForSender"/></BuyerAssigned>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:if test="/Invoice/InvoiceHeader/Supplier/SuppliersLocationID/SuppliersCode">
 							<SellerAssigned scheme="OTHER"><xsl:value-of select="/Invoice/InvoiceHeader/Supplier/SuppliersLocationID/SuppliersCode"/></SellerAssigned>
 						</xsl:if>
 						<xsl:if test="/Invoice/TradeSimpleHeader/RecipientsCodeForSender">
 							<BuyerAssigned scheme="OTHER"><xsl:value-of select="/Invoice/TradeSimpleHeader/RecipientsCodeForSender"/></BuyerAssigned>
 						</xsl:if>
 					</xsl:otherwise>
+					
 				</xsl:choose>
 				<!-- FB 6617 end ****************************** -->
 

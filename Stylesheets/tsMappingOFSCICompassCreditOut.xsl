@@ -153,6 +153,10 @@
 						<SellerAssigned scheme="OTHER"><xsl:value-of select="/CreditNote/TradeSimpleHeader/RecipientsCodeForSender"/></SellerAssigned>
 						<BuyerAssigned scheme="OTHER"><xsl:text>52565</xsl:text></BuyerAssigned>
 					</xsl:when>
+					<xsl:when test="/CreditNoteHeader/HeaderExtraData/AlcoholWholesalerRegistrationNumber">
+						<SellerAssigned scheme="OTHER"><xsl:value-of select="/CreditNoteHeader/HeaderExtraData/AlcoholWholesalerRegistrationNumber"/></SellerAssigned>
+						<BuyerAssigned scheme="OTHER"><xsl:value-of select="/Credit/TradeSimpleHeader/RecipientsCodeForSender"/></BuyerAssigned>
+					</xsl:when>
 					<xsl:otherwise>
 						<xsl:if test="/CreditNote/CreditNoteHeader/Supplier/SuppliersLocationID/SuppliersCode">
 							<SellerAssigned scheme="OTHER"><xsl:value-of select="/CreditNote/CreditNoteHeader/Supplier/SuppliersLocationID/SuppliersCode"/></SellerAssigned>
