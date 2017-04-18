@@ -2,13 +2,15 @@
 <!--***************************************************************************************************************************************************************
 Alterations
 *******************************************************************************************************************************************************************
-Name			| Date				| Change
+Name		| Date			| Change
 *******************************************************************************************************************************************************************
 S Hussain 	| 2013-08-16	| 6904 - Created from (tsMappingHospitalityBrakesOrderOut.xsl)
 *******************************************************************************************************************************************************************
 M Dimant	| 2013-09-10	| 7037 - Pass on GLN based on the Accounting Center of the Ordering Unit for Brunning & Price orders
 *******************************************************************************************************************************************************************
-J Miguel		| 2016-08-12	| FB11248 - TRG Orders Only - Override UoM to CS
+J Miguel	| 2016-08-12	| FB11248 - TRG Orders Only - Override UoM to CS
+*******************************************************************************************************************************************************************
+M Dimant	| 10/04/2017	| 11670: Get the correct buyer's code for supplier for TRG orders.
 ****************************************************************************************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:sh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" xmlns:eanucc="urn:ean.ucc:2" xmlns:order="urn:ean.ucc:order:2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:vbscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
@@ -156,6 +158,9 @@ J Miguel		| 2016-08-12	| FB11248 - TRG Orders Only - Override UoM to CS
 											<xsl:choose>
 												<xsl:when test="TradeSimpleHeader/RecipientsBranchReference">
 													<xsl:value-of select="TradeSimpleHeader/RecipientsBranchReference"/>
+												</xsl:when>
+												<xsl:when test="PurchaseOrderHeader/Buyer/BuyersLocationID/GLN and TradeSimpleHeader/SendersCodeForRecipient='V015706'">
+													<xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/>
 												</xsl:when>
 												<xsl:otherwise>
 													<!-- 2012-03-02 HR 5295 Call a new template to return a code from a fixed list of codes that Brakes have agreed to receive -->
