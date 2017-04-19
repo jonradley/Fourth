@@ -28,7 +28,7 @@ This mapper is only prepared to process an invoice or a credit note.
 	<xsl:output method="text" encoding="UTF-8"/>
 	<xsl:template match="/">
 		<xsl:text>Type,Supplier Name,Supplier Number,Site,Date Invoice Received,Invoice Date,Invoice Number,Line Num,Line Type,Invoice Currency,Invoice Amount,Voucher Number,Tax Code,Tax Amount,Additional Comment,Distribution,Approval date,Approver</xsl:text>
-    <xsl:text>#13;#10;</xsl:text>
+    <xsl:text>&#13;&#10;</xsl:text>
 		<xsl:apply-templates select="//Invoice | //CreditNote"/>
 	</xsl:template>
 	<!-- Process a file with an Invoice -->
@@ -44,7 +44,7 @@ This mapper is only prepared to process an invoice or a credit note.
 
     <xsl:call-template name="createLine">
 			<xsl:with-param name="Type" select="'STANDARD'"/>
-			<xsl:with-param name="SuppliersName" select="InvoiceNoteHeader/Supplier/SuppliersName"/>
+			<xsl:with-param name="SuppliersName" select="InvoiceHeader/Supplier/SuppliersName"/>
 			<xsl:with-param name="RecipientsCodeForSender" select="TradeSimpleHeader/RecipientsCodeForSender"/>
 			<xsl:with-param name="LineNum" select="1"/>
 			<xsl:with-param name="LineType" select="'Tax'"/>
@@ -69,7 +69,7 @@ This mapper is only prepared to process an invoice or a credit note.
 		<xsl:for-each select="InvoiceTrailer/VATSubTotals/VATSubTotal">
 			<xsl:call-template name="createLine">
 				<xsl:with-param name="Type" select="'STANDARD'"/>
-				<xsl:with-param name="SuppliersName" select="../../../InvoiceNoteHeader/Supplier/SuppliersName"/>
+				<xsl:with-param name="SuppliersName" select="../../../InvoiceHeader/Supplier/SuppliersName"/>
 				<xsl:with-param name="RecipientsCodeForSender" select="../../../TradeSimpleHeader/RecipientsCodeForSender"/>
 				<xsl:with-param name="LineNum" select="1 + position()"/>
 				<xsl:with-param name="LineType" select="'Item'"/>
@@ -80,7 +80,7 @@ This mapper is only prepared to process an invoice or a credit note.
 				<xsl:with-param name="UnitCode" select="$UnitCode"/>
 				<xsl:with-param name="CompanyCode" select="$CompanyCode"/>
 				<xsl:with-param name="Site" select="$Site"/>
-				<xsl:with-param name="SendersTransmissionDate" select="../../InvoiceHeader/SendersTransmissionDate"/>
+				<xsl:with-param name="SendersTransmissionDate" select="../../../InvoiceHeader/SendersTransmissionDate"/>
 				<xsl:with-param name="DocumentReference" select="$DocumentReference"/>
         <xsl:with-param name="DocumentDate" select="$DocumentDate"/>
         <xsl:with-param name="AuthorisedDate" select="$AuthorisedDate"/>
@@ -120,7 +120,7 @@ This mapper is only prepared to process an invoice or a credit note.
       <xsl:with-param name="AuthorisedDate" select="''"/>
       <xsl:with-param name="AuthorisedBy" select="''"/>
 		</xsl:call-template>
-		<xsl:for-each select="CreditNoteTrailer/VATSubTotals/VATSubTotal">
+		<xsl:for-each select="CreditNoteTrailer/VATSubTotals/VATSubTotal">    
 			<xsl:call-template name="createLine">
 				<xsl:with-param name="Type" select="'CREDIT'"/>
 				<xsl:with-param name="SuppliersName" select="../../../CreditNoteHeader/Supplier/SuppliersName"/>
@@ -134,7 +134,7 @@ This mapper is only prepared to process an invoice or a credit note.
 				<xsl:with-param name="UnitCode" select="$UnitCode"/>
 				<xsl:with-param name="CompanyCode" select="$CompanyCode"/>
 				<xsl:with-param name="Site" select="$Site"/>
-				<xsl:with-param name="SendersTransmissionDate" select="../../CreditNoteHeader/SendersTransmissionDate"/>
+				<xsl:with-param name="SendersTransmissionDate" select="../../../CreditNoteHeader/SendersTransmissionDate"/>
 				<xsl:with-param name="DocumentReference" select="$DocumentReference"/>
 				<xsl:with-param name="DocumentDate" select="$DocumentDate"/>
 				<xsl:with-param name="AuthorisedDate" select="''"/>
@@ -234,7 +234,7 @@ This mapper is only prepared to process an invoice or a credit note.
     <xsl:text>,</xsl:text>
     <!-- Approver -->
     <xsl:value-of select="$AuthorisedBy"/>
-		<xsl:text>#13;#10;</xsl:text>
+		<xsl:text>&#13;&#10;</xsl:text>
 	</xsl:template>
 	<msxsl:script language="Javascript" implements-prefix="script"><![CDATA[
 	function getFormattedDate(input) 
