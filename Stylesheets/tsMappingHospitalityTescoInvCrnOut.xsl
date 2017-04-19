@@ -60,7 +60,7 @@ This mapper is only prepared to process an invoice or a credit note.
 			<xsl:with-param name="UnitCode" select="'00000'"/>
 			<xsl:with-param name="CompanyCode" select="$CompanyCode"/>
 			<xsl:with-param name="Site" select="$Site"/>
-			<xsl:with-param name="SendersTransmissionDate" select="../../SendersTransmissionDate"/>
+			<xsl:with-param name="SendersTransmissionDate" select="InvoiceHeader/SendersTransmissionDate"/>
 			<xsl:with-param name="DocumentReference" select="$DocumentReference"/>
 			<xsl:with-param name="DocumentDate" select="$DocumentDate"/>
       <xsl:with-param name="AuthorisedDate" select="$AuthorisedDate"/>
@@ -80,7 +80,7 @@ This mapper is only prepared to process an invoice or a credit note.
 				<xsl:with-param name="UnitCode" select="$UnitCode"/>
 				<xsl:with-param name="CompanyCode" select="$CompanyCode"/>
 				<xsl:with-param name="Site" select="$Site"/>
-				<xsl:with-param name="SendersTransmissionDate" select="../../SendersTransmissionDate"/>
+				<xsl:with-param name="SendersTransmissionDate" select="../../InvoiceHeader/SendersTransmissionDate"/>
 				<xsl:with-param name="DocumentReference" select="$DocumentReference"/>
         <xsl:with-param name="DocumentDate" select="$DocumentDate"/>
         <xsl:with-param name="AuthorisedDate" select="$AuthorisedDate"/>
@@ -114,7 +114,7 @@ This mapper is only prepared to process an invoice or a credit note.
 			<xsl:with-param name="UnitCode" select="'00000'"/>
 			<xsl:with-param name="CompanyCode" select="$CompanyCode"/>
 			<xsl:with-param name="Site" select="$Site"/>
-			<xsl:with-param name="SendersTransmissionDate" select="../../SendersTransmissionDate"/>
+			<xsl:with-param name="SendersTransmissionDate" select="InvoiceHeader/SendersTransmissionDate"/>
 			<xsl:with-param name="DocumentReference" select="$DocumentReference"/>
 			<xsl:with-param name="DocumentDate" select="$DocumentDate"/>
       <xsl:with-param name="AuthorisedDate" select="''"/>
@@ -134,7 +134,7 @@ This mapper is only prepared to process an invoice or a credit note.
 				<xsl:with-param name="UnitCode" select="$UnitCode"/>
 				<xsl:with-param name="CompanyCode" select="$CompanyCode"/>
 				<xsl:with-param name="Site" select="$Site"/>
-				<xsl:with-param name="SendersTransmissionDate" select="../../SendersTransmissionDate"/>
+				<xsl:with-param name="SendersTransmissionDate" select="../../CreditNoteHeader/SendersTransmissionDate"/>
 				<xsl:with-param name="DocumentReference" select="$DocumentReference"/>
 				<xsl:with-param name="DocumentDate" select="$DocumentDate"/>
 				<xsl:with-param name="AuthorisedDate" select="''"/>
