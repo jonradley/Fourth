@@ -18,6 +18,8 @@
 '******************************************************************************************
 ' 26/06/2013 | H Robson     | FB 6617 Some hard coding is required to integrate with Campbells Prime Meats
 '******************************************************************************************
+' 11/04/2017 | Warith Nassor     | FB 11668 - Adding AWRS
+'******************************************************************************************
 -->
 <xsl:stylesheet version="1.0" 
 				xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -152,6 +154,10 @@
 					<xsl:when test="$Supplier = $CPM">
 						<SellerAssigned scheme="OTHER"><xsl:value-of select="/CreditNote/TradeSimpleHeader/RecipientsCodeForSender"/></SellerAssigned>
 						<BuyerAssigned scheme="OTHER"><xsl:text>52565</xsl:text></BuyerAssigned>
+					</xsl:when>
+					<xsl:when test="/CreditNoteHeader/HeaderExtraData/AlcoholWholesalerRegistrationNumber">
+						<SellerAssigned scheme="OTHER"><xsl:value-of select="/CreditNoteHeader/HeaderExtraData/AlcoholWholesalerRegistrationNumber"/></SellerAssigned>
+						<BuyerAssigned scheme="OTHER"><xsl:value-of select="/Credit/TradeSimpleHeader/RecipientsCodeForSender"/></BuyerAssigned>
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:if test="/CreditNote/CreditNoteHeader/Supplier/SuppliersLocationID/SuppliersCode">
