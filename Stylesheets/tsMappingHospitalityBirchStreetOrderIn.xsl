@@ -1,4 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--==========================================================================================================================================================================
+Summary
+==============================================================================================================================================================================
+
+Map Birchstreet cXML orders into TS XML.
+
+==============================================================================================================================================================================
+Alterations
+==============================================================================================================================================================================
+Name		| Date			| Change
+==============================================================================================================================================================================
+C Scott		| ??			| ??
+==============================================================================================================================================================================
+M Dimant	| 13/04/2017	| FB 11683: Map 'KG' into KGM. Map Suppliers Code for ShipTo
+==============================================================================================================================================================================
+M Dimant	| 20/04/2017	| FB 11687: Change where we map SendersCodeForRecipient from
+===========================================================================================================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="fo msxsl">
 
 	<xsl:template match="cXML">
@@ -11,19 +28,21 @@
 					<TradeSimpleHeader>
 						<SendersCodeForRecipient>
 							<xsl:value-of select="../../Header/From/Credential/Identity"/>
-						</SendersCodeForRecipient>
-						<!--SendersBranchReference>
-							<xsl:value-of select="OrderRequestHeader/BillTo/Address/@addressID"/>
-						</SendersBranchReference-->
+						</SendersCodeForRecipient>						
 					</TradeSimpleHeader>
 					
 					<PurchaseOrderHeader>
+					
+
 						<ShipTo>
 							<ShipToLocationID>
 								<GLN>5555555555555</GLN>
 								<BuyersCode>
 									<xsl:value-of select="OrderRequestHeader/BillTo/Address/@addressID"/>
 								</BuyersCode>
+								<SuppliersCode>
+									<xsl:value-of select="/cXML/Header/To/Credential/Identity"/>
+								</SuppliersCode>
 							</ShipToLocationID>
 							<ShipToName>
 								<xsl:value-of select="OrderRequestHeader/ShipTo/Address/Name"/>
@@ -173,8 +192,11 @@
 								</ProductDescription>
 								<OrderedQuantity>
 									<xsl:attribute name="UnitOfMeasure">
-										<xsl:value-of select="ItemDetail/UnitOfMeasure"/>
-									</xsl:attribute>
+										<xsl:choose>
+											<xsl:when test="ItemDetail/UnitOfMeasure = 'KG'">KGM</xsl:when>
+											<xsl:otherwise><xsl:value-of select="ItemDetail/UnitOfMeasure"/></xsl:otherwise>
+										</xsl:choose>				
+									</xsl:attribute>								
 									<xsl:value-of select="@quantity"/>
 								</OrderedQuantity>
 								<UnitValueExclVAT>
