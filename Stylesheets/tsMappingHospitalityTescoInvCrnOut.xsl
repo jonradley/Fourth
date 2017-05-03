@@ -99,6 +99,7 @@ This mapper is only prepared to process an invoice or a credit note.
     <xsl:variable name="DocumentReference" select="CreditNoteHeader/CreditNoteReferences/CreditNoteReference"/>
     <xsl:variable name="DocumentDate" select="CreditNoteHeader/CreditNoteReferences/CreditNoteDate"/>
     <xsl:variable name="UnitCode" select="CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode"/>
+    
     <xsl:call-template name="createLine">
 			<xsl:with-param name="Type" select="'CREDIT'"/>
 			<xsl:with-param name="SuppliersName" select="CreditNoteHeader/Supplier/SuppliersName"/>
@@ -114,10 +115,10 @@ This mapper is only prepared to process an invoice or a credit note.
 				</xsl:choose>
 			</xsl:with-param>
 			<xsl:with-param name="NominalCode" select="'23220'"/>
-			<xsl:with-param name="UnitCode" select="'00000'"/>
+			<xsl:with-param name="UnitCode" select="'00000'"/> 
 			<xsl:with-param name="CompanyCode" select="$CompanyCode"/>
 			<xsl:with-param name="Site" select="$Site"/>
-			<xsl:with-param name="SendersTransmissionDate" select="InvoiceHeader/BatchInformation/SendersTransmissionDate"/>
+			<xsl:with-param name="SendersTransmissionDate" select="CreditNoteHeader/BatchInformation/SendersTransmissionDate"/>
 			<xsl:with-param name="DocumentReference" select="$DocumentReference"/>
 			<xsl:with-param name="DocumentDate" select="$DocumentDate"/>
       <xsl:with-param name="AuthorisedDate" select="''"/>
