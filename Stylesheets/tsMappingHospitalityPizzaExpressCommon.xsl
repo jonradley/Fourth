@@ -23,6 +23,8 @@ Pizza Express UK common script, which holds the Company Code translation logic.
 18/01/2017	| Moty Dimant	| FB11488 - Adding two new sites, PE Formby and IM Dublin
 ==========================================================================================
 15/03/2017	| Moty Dimant	| FB11641 - Addition of further Company Codes. Please see FB case for details.
+==========================================================================================
+15/05/2017	| Moty Dimant	| FB11716 - Addition of further Company Codes. Please see FB case for details.
 ==========================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript">
@@ -498,7 +500,17 @@ Pizza Express UK common script, which holds the Company Code translation logic.
 		3458 : '00010',
 		3459 : '00010',
 		3460 : '00010',
-		4104 : '00010',
+		4000 : '00010',
+		4001 : '00010',
+		4002 : '00010',
+		4003 : '00010',
+		4004 : '00010',
+		4005 : '00010',
+		4006 : '00010',
+		4007 : '00010',
+		4008 : '00010',
+		4009 : '00010',
+		4104 : '00010',		
 		4010 : '00081',
 		4011 : '00081',
 		4012 : '00081',
