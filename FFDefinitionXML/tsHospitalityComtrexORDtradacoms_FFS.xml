@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by Dev (ABS Ltd) -->
+<!--
+**************************************************************************************************************
+Date			| Name		| Change
+**************************************************************************************************************
+08/11/2011 	| M Dimant	| 5004. Created FFS for Comtrex inbound tradacoms orders
+**************************************************************************************************************
+27/04/2012	| M Dimant	| 5448: Added mapping for Unit of Measure
+**************************************************************************************************************
+04/02/2013	| M Dimant	| 5983: Map in ShipTo SuppliersCode instead of BuyersCode
+**************************************************************************************************************
+-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>'</ffsRecordSeparator>
+		<ffsEscapeChars>
+			<ffsEscapeChar>
+				<ffsNative>chr(13)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>chr(10)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?=</ffsNative>
+				<ffsTradesimple>¬E</ffsTradesimple>
+				<ffsLiteral>=</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?+</ffsNative>
+				<ffsTradesimple>¬P</ffsTradesimple>
+				<ffsLiteral>+</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?:</ffsNative>
+				<ffsTradesimple>¬C</ffsTradesimple>
+				<ffsLiteral>:</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?'</ffsNative>
+				<ffsTradesimple>¬A</ffsTradesimple>
+				<ffsLiteral>'</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>??</ffsNative>
+				<ffsTradesimple>¬Q</ffsTradesimple>
+				<ffsLiteral>?</ffsLiteral>
+			</ffsEscapeChar>
+		</ffsEscapeChars>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>+</ffsFieldSeparator>
+			<ffsSubFieldSeparator>:</ffsSubFieldSeparator>
+		</ffsFieldSeparators>
+		<ffsPadding/>
+		<ffsBatchHeader>
+			<ffsHeaderRecord RecordPos="STX="/>
+			<ffsHeaderRecord RecordPos="TYP="/>
+			<ffsHeaderRecord RecordPos="SDT="/>
+			<ffsHeaderRecord RecordPos="CDT="/>
+			<ffsHeaderRecord RecordPos="FIL="/>
+		</ffsBatchHeader>
+		<ffsSplitBatchRecord RecordPos="CLO="/>
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<BatchDocuments>
+				<BatchDocument>
+					<PurchaseOrder>
+						<TradeSimpleHeader>
+							<SendersCodeForRecipient RecordPos="SDT=" LPos="1" SFPos="2"/>
+						</TradeSimpleHeader>
+						<PurchaseOrderHeader>
+							<Buyer>
+								<BuyersLocationID>
+									<SuppliersCode RecordPos="CDT=" LPos="1" SFPos="1"/>
+								</BuyersLocationID>
+								<BuyersName RecordPos="CDT=" LPos="2"/>
+								<BuyersAddress>
+									<AddressLine1 RecordPos="CDT=" LPos="3" SFPos="1"/>
+									<AddressLine2 RecordPos="CDT=" LPos="3" SFPos="2"/>
+									<AddressLine3 RecordPos="CDT=" LPos="3" SFPos="3"/>
+									<AddressLine4 RecordPos="CDT=" LPos="3" SFPos="4"/>
+									<PostCode RecordPos="CDT=" LPos="3" SFPos="5"/>
+								</BuyersAddress>
+							</Buyer>
+							<Supplier>
+								<SuppliersLocationID>
+									<SuppliersCode RecordPos="SDT=" LPos="1" SFPos="1"/>
+								</SuppliersLocationID>
+								<SuppliersName RecordPos="SDT=" LPos="2"/>
+								<SuppliersAddress>
+									<AddressLine1 RecordPos="SDT=" LPos="3" SFPos="1"/>
+									<AddressLine2 RecordPos="SDT=" LPos="3" SFPos="2"/>
+									<AddressLine3 RecordPos="SDT=" LPos="3" SFPos="3"/>
+									<AddressLine4 RecordPos="SDT=" LPos="3" SFPos="4"/>
+									<PostCode RecordPos="SDT=" LPos="3" SFPos="5"/>
+								</SuppliersAddress>
+							</Supplier>
+							<ShipTo>
+								<ShipToLocationID>
+									<SuppliersCode RecordPos="CLO=" LPos="1" SFPos="2"/>
+								</ShipToLocationID>
+								<ShipToName RecordPos="CLO=" LPos="2"/>
+								<ShipToAddress>
+									<AddressLine1 RecordPos="CLO=" LPos="3" SFPos="1"/>
+									<AddressLine2 RecordPos="CLO=" LPos="3" SFPos="2"/>
+									<AddressLine3 RecordPos="CLO=" LPos="3" SFPos="3"/>
+									<AddressLine4 RecordPos="CLO=" LPos="3" SFPos="4"/>
+									<PostCode RecordPos="CLO=" LPos="3" SFPos="5"/>
+								</ShipToAddress>
+							</ShipTo>
+							<PurchaseOrderReferences>
+								<PurchaseOrderReference RecordPos="ORD=" LPos="1" SFPos="1"/>
+								<PurchaseOrderDate RecordPos="ORD=" LPos="1" SFPos="3"/>
+							</PurchaseOrderReferences>
+							<OrderedDeliveryDetails>
+								<DeliveryDate RecordPos="DIN=" LPos="1" SFPos="1"/>
+								<SpecialDeliveryInstructions RecordPos="DNA=" LPos="4" SFPos="1"/>
+							</OrderedDeliveryDetails>
+						</PurchaseOrderHeader>
+						<PurchaseOrderDetail>
+							<PurchaseOrderLine>
+								<LineNumber RecordPos="OLD=" LPos="1"/>
+								<ProductID>
+									<GTIN RecordPos="DNB=" LPos="1"/>
+									<SuppliersProductCode RecordPos="OLD=" LPos="2" SFPos="2"/>
+									<BuyersProductCode RecordPos="OLD=" LPos="4" SFPos="2"/>
+								</ProductID>
+								<ProductDescription RecordPos="OLD=" LPos="10" SFPos="1"/>
+								<OrderedQuantity RecordPos="OLD=" LPos="6" SFPos="2">
+									<ffsAttribute1 name="UnitOfMeasure" RecordPos="OLD=" LPos="6" SFPos="3"/>
+								</OrderedQuantity>
+								<UnitValueExclVAT RecordPos="OLD=" LPos="7" SFPos="1"/>
+								<!-- If a product is ordered in EA, quantity is placed in a different location. We put it here and sort it out in the stylesheet -->
+								<PackSize RecordPos="OLD=" LPos="6" SFPos="1"/>
+							</PurchaseOrderLine>
+						</PurchaseOrderDetail>
+					</PurchaseOrder>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>
