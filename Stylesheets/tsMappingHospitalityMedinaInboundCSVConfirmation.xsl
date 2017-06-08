@@ -24,6 +24,8 @@
 '******************************************************************************************
 ' 30/10/2010  | Graham Neicho  | FB3436 Added BackOrderQuantity
 '******************************************************************************************
+'07/06/2017	  | M Dimant       | FB11838: Removed BuyersCode for ShipTo so it can be populated by infiller
+'******************************************************************************************
 -->
 <xsl:stylesheet  version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt"  xmlns:vbscript="http://abs-Ltd.com">
 
@@ -76,7 +78,6 @@
 				</TradeSimpleHeader>
 				
 			<PurchaseOrderConfirmationHeader>
-			
 						<Buyer>
 							<BuyersLocationID>
 								<SuppliersCode>
@@ -84,12 +85,10 @@
 								</SuppliersCode>
 							</BuyersLocationID>
 						</Buyer>
+
 				
 						<ShipTo>
 								<ShipToLocationID>
-									<BuyersCode>
-										<xsl:value-of select="TradeSimpleHeader/SendersCodeForRecipient"/>
-									</BuyersCode>
 									<SuppliersCode>
 										<xsl:value-of select="PurchaseOrderConfirmationHeader/ShipTo/ShipToLocationID/SuppliersCode"/>
 									</SuppliersCode>
