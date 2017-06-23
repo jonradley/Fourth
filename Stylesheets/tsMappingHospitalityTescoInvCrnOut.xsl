@@ -18,6 +18,10 @@ This mapper is only prepared to process an invoice or a credit note.
  ************************************************************************************************************************************************************************************
  02/02/2017	| M Dimant	| FB11539 - Change Company code to ‘653’. Set nominal code to 20460 for non-tax elements
 ************************************************************************************************************************************************************************************
+ 19/04/2017	| W Nassor    | FB11684 - Changes made to SendersTransmissionDate, Supplier Name, RecipientsCodeForSender and Currency to pick up all values.
+************************************************************************************************************************************************************************************
+ 02/05/2017	| W Nassor    | FB11701 - Fix to output SendersTransmissionDate
+************************************************************************************************************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:script="http://mycompany.com/mynamespace"
@@ -42,8 +46,11 @@ This mapper is only prepared to process an invoice or a credit note.
 
     <xsl:call-template name="createLine">
 			<xsl:with-param name="Type" select="'STANDARD'"/>
+			<xsl:with-param name="SuppliersName" select="InvoiceHeader/Supplier/SuppliersName"/>
+			<xsl:with-param name="RecipientsCodeForSender" select="TradeSimpleHeader/RecipientsCodeForSender"/>
 			<xsl:with-param name="LineNum" select="1"/>
 			<xsl:with-param name="LineType" select="'Tax'"/>
+			<xsl:with-param name="Currency" select="InvoiceHeader/Currency"/>
 			<xsl:with-param name="Amount" select="number(InvoiceTrailer/VATAmount)"/>
 			<xsl:with-param name="TaxCode">
 				<xsl:choose>
@@ -55,6 +62,7 @@ This mapper is only prepared to process an invoice or a credit note.
 			<xsl:with-param name="UnitCode" select="'00000'"/>
 			<xsl:with-param name="CompanyCode" select="$CompanyCode"/>
 			<xsl:with-param name="Site" select="$Site"/>
+			<xsl:with-param name="SendersTransmissionDate" select="InvoiceHeader/BatchInformation/SendersTransmissionDate"/>
 			<xsl:with-param name="DocumentReference" select="$DocumentReference"/>
 			<xsl:with-param name="DocumentDate" select="$DocumentDate"/>
       <xsl:with-param name="AuthorisedDate" select="$AuthorisedDate"/>
@@ -63,15 +71,20 @@ This mapper is only prepared to process an invoice or a credit note.
 		<xsl:for-each select="InvoiceTrailer/VATSubTotals/VATSubTotal">
 			<xsl:call-template name="createLine">
 				<xsl:with-param name="Type" select="'STANDARD'"/>
+				<xsl:with-param name="SuppliersName" select="../../../InvoiceHeader/Supplier/SuppliersName"/>
+				<xsl:with-param name="RecipientsCodeForSender" select="../../../TradeSimpleHeader/RecipientsCodeForSender"/>
 				<xsl:with-param name="LineNum" select="1 + position()"/>
 				<xsl:with-param name="LineType" select="'Item'"/>
+				<xsl:with-param name="Currency" select="../../../InvoiceHeader/Currency"/>
 				<xsl:with-param name="Amount" select="number(DocumentTotalExclVATAtRate)"/>
 				<xsl:with-param name="TaxCode" select="number(@VATRate)"/>
 				<xsl:with-param name="NominalCode" select="'20460'"/>
 				<xsl:with-param name="UnitCode" select="$UnitCode"/>
 				<xsl:with-param name="CompanyCode" select="$CompanyCode"/>
 				<xsl:with-param name="Site" select="$Site"/>
-        <xsl:with-param name="DocumentReference" select="$DocumentReference"/>
+				<xsl:with-param name="SendersTransmissionDate" select="../../../InvoiceHeader/BatchInformation/SendersTransmissionDate"/>
+				
+				<xsl:with-param name="DocumentReference" select="$DocumentReference"/>
         <xsl:with-param name="DocumentDate" select="$DocumentDate"/>
         <xsl:with-param name="AuthorisedDate" select="$AuthorisedDate"/>
         <xsl:with-param name="AuthorisedBy" select="$AuthorisedBy"/>
@@ -86,10 +99,14 @@ This mapper is only prepared to process an invoice or a credit note.
     <xsl:variable name="DocumentReference" select="CreditNoteHeader/CreditNoteReferences/CreditNoteReference"/>
     <xsl:variable name="DocumentDate" select="CreditNoteHeader/CreditNoteReferences/CreditNoteDate"/>
     <xsl:variable name="UnitCode" select="CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode"/>
+    
     <xsl:call-template name="createLine">
 			<xsl:with-param name="Type" select="'CREDIT'"/>
+			<xsl:with-param name="SuppliersName" select="CreditNoteHeader/Supplier/SuppliersName"/>
+			<xsl:with-param name="RecipientsCodeForSender" select="TradeSimpleHeader/RecipientsCodeForSender"/>
 			<xsl:with-param name="LineNum" select="1"/>
 			<xsl:with-param name="LineType" select="'Tax'"/>
+			<xsl:with-param name="Currency" select="CreditNoteHeader/Currency"/>
 			<xsl:with-param name="Amount" select="-number(CreditNoteTrailer/VATAmount)"/>
 			<xsl:with-param name="TaxCode">
 				<xsl:choose>
@@ -98,43 +115,52 @@ This mapper is only prepared to process an invoice or a credit note.
 				</xsl:choose>
 			</xsl:with-param>
 			<xsl:with-param name="NominalCode" select="'23220'"/>
-			<xsl:with-param name="UnitCode" select="'00000'"/>
+			<xsl:with-param name="UnitCode" select="'00000'"/> 
 			<xsl:with-param name="CompanyCode" select="$CompanyCode"/>
 			<xsl:with-param name="Site" select="$Site"/>
+			<xsl:with-param name="SendersTransmissionDate" select="CreditNoteHeader/BatchInformation/SendersTransmissionDate"/>
 			<xsl:with-param name="DocumentReference" select="$DocumentReference"/>
 			<xsl:with-param name="DocumentDate" select="$DocumentDate"/>
       <xsl:with-param name="AuthorisedDate" select="''"/>
       <xsl:with-param name="AuthorisedBy" select="''"/>
 		</xsl:call-template>
-		<xsl:for-each select="CreditNoteTrailer/VATSubTotals/VATSubTotal">
+		<xsl:for-each select="CreditNoteTrailer/VATSubTotals/VATSubTotal">    
 			<xsl:call-template name="createLine">
 				<xsl:with-param name="Type" select="'CREDIT'"/>
+				<xsl:with-param name="SuppliersName" select="../../../CreditNoteHeader/Supplier/SuppliersName"/>
+				<xsl:with-param name="RecipientsCodeForSender" select="../../../TradeSimpleHeader/RecipientsCodeForSender"/>
 				<xsl:with-param name="LineNum" select="1 + position()"/>
 				<xsl:with-param name="LineType" select="'Item'"/>
+				<xsl:with-param name="Currency" select="../../../CreditNoteHeader/Currency"/>
 				<xsl:with-param name="Amount" select="-number(DocumentTotalExclVATAtRate)"/>
 				<xsl:with-param name="TaxCode" select="number(@VATRate)"/>
 				<xsl:with-param name="NominalCode" select="'20460'"/>
 				<xsl:with-param name="UnitCode" select="$UnitCode"/>
 				<xsl:with-param name="CompanyCode" select="$CompanyCode"/>
 				<xsl:with-param name="Site" select="$Site"/>
-        <xsl:with-param name="DocumentReference" select="$DocumentReference"/>
-        <xsl:with-param name="DocumentDate" select="$DocumentDate"/>
-        <xsl:with-param name="AuthorisedDate" select="''"/>
-        <xsl:with-param name="AuthorisedBy" select="''"/>
+				<xsl:with-param name="SendersTransmissionDate" select="../../../CreditNoteHeader/BatchInformation/SendersTransmissionDate"/>
+				<xsl:with-param name="DocumentReference" select="$DocumentReference"/>
+				<xsl:with-param name="DocumentDate" select="$DocumentDate"/>
+				<xsl:with-param name="AuthorisedDate" select="''"/>
+				<xsl:with-param name="AuthorisedBy" select="''"/>
       </xsl:call-template>
 		</xsl:for-each>
 	</xsl:template>
 	<!-- Create a line in the export -->
 	<xsl:template name="createLine">
 		<xsl:param name="Type"/>
+		<xsl:param name="SuppliersName"/>
+		<xsl:param name="RecipientsCodeForSender"/>
 		<xsl:param name="LineNum"/>
 		<xsl:param name="LineType"/>
+		<xsl:param name="Currency"/>
 		<xsl:param name="Amount"/>
 		<xsl:param name="TaxCode"/>
 		<xsl:param name="NominalCode"/>
 		<xsl:param name="UnitCode"/>
 		<xsl:param name="CompanyCode"/>
 		<xsl:param name="Site"/>
+		<xsl:param name="SendersTransmissionDate"/>
 		<xsl:param name="DocumentReference"/>
 		<xsl:param name="DocumentDate"/>
     <xsl:param name="AuthorisedDate"/>
@@ -144,16 +170,16 @@ This mapper is only prepared to process an invoice or a credit note.
 		<xsl:value-of select="$Type"/>
 		<xsl:text>,</xsl:text>
 		<!-- B - Supplier Name - To start with we will only have ‘Bidvest’ as a supplier that will send in EDI invoices. -->
-		<xsl:value-of select="//Supplier/SuppliersName"/>
+		<xsl:value-of select="$SuppliersName"/>
 		<xsl:text>,</xsl:text>
 		<!-- C - Supplier Number - To start with we will only have ‘Bidvest’ as a supplier that will send in EDI invoices. -->
-		<xsl:value-of select="//RecipientsCodeForSender"/>
+		<xsl:value-of select="$RecipientsCodeForSender"/>
 		<xsl:text>,</xsl:text>
 		<!-- D - Site - This code is relating the Supplier address and is fixed for each supplier -->
 		<xsl:value-of select="$Site"/>
 		<xsl:text>,</xsl:text>
 		<!-- E - Date Invoice Received - This will be the date that the electronic Invoice has arrived / loaded into Trade Simple DD/MM/YYYY -->
-		<xsl:value-of select="script:getFormattedDate(string(//SendersTransmissionDate))"/>
+		<xsl:value-of select="script:getFormattedDate(string($SendersTransmissionDate))"/>
 		<xsl:text>,</xsl:text>
 		<!-- F - Invoice Date - The date the supplier has included on the Invoice. -->
 		<xsl:value-of select="script:getFormattedDate(string($DocumentDate))"/>
@@ -168,7 +194,7 @@ This mapper is only prepared to process an invoice or a credit note.
 		<xsl:value-of select="$LineType"/>
 		<xsl:text>,</xsl:text>
 		<!-- J - Invoice Currency - Fixed -->
-		<xsl:value-of select="//Currency"/>
+		<xsl:value-of select="$Currency"/>
 		<xsl:text>,</xsl:text>
 		<!-- K - Invoice Amount - Positive amounts for Invoice row -->
 		<xsl:value-of select="$Amount"/>
