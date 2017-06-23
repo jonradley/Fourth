@@ -11,6 +11,8 @@
  Date      		| Name 			| Description of modification
 ====================================================================================================================================================================================
  12-04-2017		| M Dimant		| FB 11678: Created from standard Fourth Invoice Journal Export with Not Provided columns removed
+====================================================================================================================================================================================
+ 26-04-2017		| M Dimant		| FB 11691: Bug fix - correctly set OrganisationCode to a string
 ====================================================================================================================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript">
@@ -28,7 +30,7 @@
 		<xsl:text>B</xsl:text>
 		<xsl:value-of select="$FieldSeperator"/>
 		<!-- OrganisationCode -->
-		<xsl:value-of select="js:quote(/Batch/BatchHeader/OrganisationCode)"/>
+		<xsl:value-of select="js:quote(string(/Batch/BatchHeader/OrganisationCode))"/>
 		<xsl:value-of select="$FieldSeperator"/>		
 		<!-- SourceSystemExportID -->
 		<xsl:value-of select="js:quote(string(/Batch/BatchHeader/SourceSystemExportID))"/>
@@ -144,9 +146,8 @@
 		<!-- UnitSiteNominal -->
 		<xsl:value-of select="js:quote(string(../../InvoiceCreditJournalEntriesHeader/UnitSiteNominal))"/>
 		<xsl:value-of select="$RecordSeperator"/>
-	</xsl:template>
-	
-<msxsl:script language="JScript" implements-prefix="js"><![CDATA[ 
+	</xsl:template>	
+	<msxsl:script language="JScript" implements-prefix="js"><![CDATA[ 
 function quote (str)
 {
 	if (str == null) return null;
@@ -161,6 +162,5 @@ function quote (str)
 	}
 }
 
-	]]></msxsl:script>			
-	
+	]]></msxsl:script>		
 </xsl:stylesheet>

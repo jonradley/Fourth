@@ -13,6 +13,8 @@ Name		| Date			| Change
 C Scott		| ??			| ??
 ==============================================================================================================================================================================
 M Dimant	| 13/04/2017	| FB 11683: Map 'KG' into KGM. Map Suppliers Code for ShipTo
+==============================================================================================================================================================================
+M Dimant	| 20/04/2017	| FB 11687: Change where we map SendersCodeForRecipient from
 ===========================================================================================================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="fo msxsl">
 
@@ -25,7 +27,7 @@ M Dimant	| 13/04/2017	| FB 11683: Map 'KG' into KGM. Map Suppliers Code for Ship
 				<PurchaseOrder>
 					<TradeSimpleHeader>
 						<SendersCodeForRecipient>
-							<xsl:value-of select="../../Header/To/Credential/Identity"/>
+							<xsl:value-of select="../../Header/From/Credential/Identity"/>
 						</SendersCodeForRecipient>						
 					</TradeSimpleHeader>
 					
