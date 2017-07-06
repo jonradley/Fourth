@@ -63,7 +63,7 @@
 		<xsl:text>1111</xsl:text> 
 		<xsl:value-of select="$FieldSeperator"/>		
 		<!-- 12	El3	VSnnnnnnn – valid Coda supplier  -->
-		<xsl:value-of select="InvoiceCreditJournalEntriesHeader/BuyersCodeForSupplier"/>
+		<xsl:value-of select="InvoiceCreditJournalEntriesHeader/SupplierNominalCode"/>
 		<xsl:value-of select="$FieldSeperator"/>		
 		<!-- 13	El4	(Leave Blank) -->
 		<xsl:value-of select="$FieldSeperator"/>		
