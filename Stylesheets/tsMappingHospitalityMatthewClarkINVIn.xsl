@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-'******************************************************************************************
+'************************************************************************************************************************
 ' Overview
 '
 ' Maps EAN UCC format (OFSCI) Invoices into the King internal format
@@ -17,13 +17,15 @@
 '						DeliveredQuantity
 '
 ' © Alternative Business Solutions Ltd., 2005.
-'******************************************************************************************
+'***************************************************************************************************************************
 ' Module History
-'******************************************************************************************
+'***************************************************************************************************************************
 ' Date             | Name             | Description of modification
-'******************************************************************************************
+'***************************************************************************************************************************
 '21/05/2013    | S Hussain       | Case 6588: Created -  Supplier Product Code Formatting + Optimization
-'******************************************************************************************-->
+'***************************************************************************************************************************
+'20/07/2017   | H Mahbub     | Case 11948: Created -  Removing Code for Contractdate
+'****************************************************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:user="http://mycompany.com/mynamespace" exclude-result-prefixes="#default xsl msxsl user">
 	<xsl:import href="HospitalityInclude.xsl"/>
 	<xsl:import href="MatthewClarkInclude.xsl"/>
@@ -218,10 +220,6 @@
 														<ContractReference>
 															<xsl:value-of select="/Invoice/TradeAgreementReference/ContractReferenceNumber"/>
 														</ContractReference>
-														<xsl:call-template name="FormatDate">
-															<xsl:with-param name="DateField">ContractDate</xsl:with-param>
-															<xsl:with-param name="Node" select="/Invoice/TradeAgreementReference/ContractReferenceNumber"/>
-														</xsl:call-template>
 													</TradeAgreement>
 												</xsl:if>
 											</PurchaseOrderReferences>
