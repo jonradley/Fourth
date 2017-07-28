@@ -4,7 +4,11 @@ Alterations
 **********************************************************************
 Name			| Date			| Change
 **********************************************************************
-R Cambridge	| 17/04/2007	| 940 Created based on tsHospitalityCreditTradacomsBatchFFS.xml for MacKenzie Bros integration
+R Cambridge	    | 17/04/2007	| 940 Created based on tsHospitalityCreditTradacomsBatchFFS.xml for MacKenzie Bros integration	
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ??          | ??           	| ??	
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+R Cambridge	    | 28/07/2017	| 11954 Handle line level discounts
 **********************************************************************
 				|					|
 **********************************************************************
@@ -224,6 +228,8 @@ R Cambridge	| 17/04/2007	| 940 Created based on tsHospitalityCreditTradacomsBatc
 								<UnitValueExclVAT RecordPos="CLD=" LPos="7" SFPos="1"/>
 								<!-- MANDATORY Line Credit Ex VAT, MANDATORY, CREDIT – CLD – EXLV, 4 d.p. implied - If CREDIT – CLD – DRLI <> {blank} then multiply by –1, Should be equal to the quantity credited x the unit credit value rounded to two decimal places -->
 								<LineValueExclVAT RecordPos="CLD=" LPos="8"/>
+								<!--   CREDIT – CLD – CDSV  -->
+								<LineDiscountValue RecordPos="CLD=" LPos="16"/>
 								<!-- MANDATORY Supplier’s VAT Code, MANDATORY, CREDIT – CLD - VATC, Your VAT code for this line -->
 								<VATCode RecordPos="CLD=" LPos="9"/>
 								<!-- MANDATORY VAT Rate, MANDATORY, CREDIT – CLD - VATP, 3 d.p. implied, A percentage rate with up to two decimals.  Must be greater or equal to zero -->

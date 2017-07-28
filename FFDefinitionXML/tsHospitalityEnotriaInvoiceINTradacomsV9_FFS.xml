@@ -5,10 +5,12 @@ Alterations
 **********************************************************************
 Name			| Date			| Change
 **********************************************************************
-S Jefford	| 22/08/2005	| GTIN field now sourced from ILD/SPRO(1).
-				|					| ILD/CRLI now stored in BuyersProductCode
+S Jefford    	| 22/08/2005	| GTIN field now sourced from ILD/SPRO(1).
+				|				| ILD/CRLI now stored in BuyersProductCode
 **********************************************************************
-R Cambridge	| 17/01/2007	| 706 SCR read from CLO/CLOC(3)
+R Cambridge	    | 17/01/2007	| 706 SCR read from CLO/CLOC(3)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+R Cambridge	    | 28/07/2017	| 11954 Handle line level discounts
 **********************************************************************
 				|					|
 **********************************************************************
@@ -226,6 +228,8 @@ R Cambridge	| 17/01/2007	| 706 SCR read from CLO/CLOC(3)
 								<UnitValueExclVAT RecordPos="ILD=" LPos="8" SFPos="1"/>
 								<!-- MANDATORY Line Value Ex VAT, DERIVE, INVOIC – ILD – LEXC, 4 d.p. implied - If INVOIC – ILD – CRLI <> {blank} then multiply by –1, The quantity invoiced x the unit value rounded to two decimal places -->
 								<LineValueExclVAT RecordPos="ILD=" LPos="9"/>
+								<!--   INVOIC – ILD – DSCV  -->
+								<LineDiscountValue RecordPos="ILD=" LPos="18"/>
 								<!-- MANDATORY Supplier’s VAT Code, MANDATORY, INVOIC – ILD – VATC, Your VAT code for this line -->
 								<VATCode RecordPos="ILD=" LPos="10"/>
 								<!-- MANDATORY VAT Rate, MANDATORY, INVOIC – ILD – VATP, 3 d.p. implied, A percentage rate with up to two decimals.  Must be greater or equal to zero -->
