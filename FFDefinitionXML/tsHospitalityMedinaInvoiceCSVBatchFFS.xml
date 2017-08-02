@@ -11,6 +11,8 @@
  2014-09-02	| M Dimant				| 7998: Removed supplier's code for supplier so it can be populated by infiller
 ====================================================================================================================================================================================
  2017-06-07	| M Dimant         	   	| 11838: Removed BuyersCode for ShipTo so it can be populated by infiller
+====================================================================================================================================================================================
+ 2017-07-27	| M Dimant         	   	| 11952: Map Purchase Order Date from correct location. Previously mapped from Delivery Note Date.
 ====================================================================================================================================================================================-->
 <ffsFlatFileSchema>
 	<ffsSettings>
@@ -112,7 +114,7 @@
 								<!--<LineNumber RecordPos="" LPos=""/>-->
 								<PurchaseOrderReferences>
 									<PurchaseOrderReference RecordPos="D" LPos="2"/>
-									<PurchaseOrderDate RecordPos="D" LPos="5"/>
+									<PurchaseOrderDate RecordPos="D" LPos="3"/>
 								</PurchaseOrderReferences>
 								<DeliveryNoteReferences>
 									<DeliveryNoteReference RecordPos="D" LPos="4"/>
