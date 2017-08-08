@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+Maps XtraChef CSV Invoices to internal XML
+
+/******************************************************************************************
+' Date        	| Name		| Description of modification
+'******************************************************************************************
+17-03-2017		|M Dimant	| FB 11652 - Created.
+'******************************************************************************************
+-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>sequenced</ffsRecordPositionType>
+		<ffsRecordSeparator FixedSize="false">chr(13)chr(10)</ffsRecordSeparator>		
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>,</ffsFieldSeparator>
+		</ffsFieldSeparators>
+		<ffsSplitBatchRecord LPos="11"/>	
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<BatchDocuments>
+				<BatchDocument>
+					<Invoice>
+						<TradeSimpleHeader>
+							<SendersCodeForRecipient RecordLength="31" RecordPos="*" LPos="5"/>
+							<SendersBranchReference RecordLength="31" RecordPos="*" LPos="8"/>
+						</TradeSimpleHeader>
+						<InvoiceHeader>	
+							<Buyer>
+								<BuyersLocationID>
+									<SuppliersCode RecordLength="31" RecordPos="*" LPos="3"/>
+								</BuyersLocationID>
+								<BuyersName RecordLength="31" RecordPos="*" LPos="4"/>	
+							</Buyer>												
+							<Supplier>
+								<SuppliersLocationID>
+									<BuyersCode RecordLength="31" RecordPos="*" LPos="8"/>
+								</SuppliersLocationID>
+								<SuppliersName RecordLength="31" RecordPos="*" LPos="9"/>								
+							</Supplier>
+							<ShipTo>
+								<ShipToLocationID>
+									<SuppliersCode RecordLength="31" RecordPos="*" LPos="5"/>
+								</ShipToLocationID>
+								<ShipToName RecordLength="31" RecordPos="*" LPos="6"/>								
+							</ShipTo>
+							<InvoiceReferences>
+								<InvoiceReference RecordLength="31" RecordPos="*" LPos="11"/>
+								<InvoiceDate RecordLength="31" RecordPos="*" LPos="12"/>
+								<TaxPointDate RecordLength="31" RecordPos="*" LPos="12"/>								
+							</InvoiceReferences>							
+						</InvoiceHeader>
+						<InvoiceDetail>
+							<InvoiceLine>
+								<PurchaseOrderReferences>
+									<PurchaseOrderReference RecordLength="31" RecordPos="*" LPos="14"/>
+									<PurchaseOrderDate RecordLength="31" RecordPos="*" LPos="15"/>
+								</PurchaseOrderReferences>							
+								<ProductID>
+									<SuppliersProductCode RecordLength="31" RecordPos="*" LPos="21"/>
+								</ProductID>
+								<ProductDescription RecordLength="31" RecordPos="*" LPos="22"/>
+								<InvoicedQuantity RecordLength="31" RecordPos="*" LPos="23"/>
+								<PackSize RecordLength="31" RecordPos="*" LPos="28"/>
+								<UnitValueExclVAT RecordLength="31" RecordPos="*" LPos="24"/>
+								<LineValueExclVAT RecordLength="31" RecordPos="*" LPos="25"/>
+							</InvoiceLine>
+						</InvoiceDetail>						
+					</Invoice>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>
