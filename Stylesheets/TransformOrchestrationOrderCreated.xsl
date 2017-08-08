@@ -43,8 +43,8 @@
 			<xsl:for-each select="/OrderCreatedEvent/SubscriptionDetails/CurrencyIso4217Code"><CurrencyIso4217Code><xsl:value-of select ="."/></CurrencyIso4217Code></xsl:for-each>
 			
 			<!-- May be needed by Adaco in future -->
-			<!-- xsl:for-each select=""><IsDeliveryNoteRequired><xsl:value-of select ="."/></IsDeliveryNoteRequired></xsl:for-each>
-			<xsl:for-each select=""><Note><xsl:value-of select ="."/></Note></xsl:for-each-->
+			<IsDeliveryNoteRequired>1</IsDeliveryNoteRequired>
+			<xsl:for-each select="$ReferenceDocument/PurchaseOrder/PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions"><Note><xsl:value-of select ="."/></Note></xsl:for-each>
 			
 			<!-- Supplier details -->
 			<!--xsl:for-each select=""><SupplierExternalId><xsl:value-of select ="."/></SupplierExternalId></xsl:for-each-->
