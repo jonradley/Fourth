@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-**********************************************************************
+********************************************************************************************************************************************
 Alterations
-**********************************************************************
+********************************************************************************************************************************************
 Name		| Date			| Change
-**********************************************************************
+********************************************************************************************************************************************
 N Emsen	| 14/09/2006	| Not tested against any Brakes credit notes
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 17/11/2006	|	Nigel Emsen	| Case: 476, changes required for AS2 Orders
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 13/10/2009	| R Cambridge	| Case: 3121 Don't prefix PL account codes for non-Aramark PL accounts
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
            	|            	| 
 10/11/2009	| K O'Sh			| case 2976, we have changed where we pick up
 									the PO reference from
-
-**********************************************************************
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+01/08/2017	| M Dimant     	| Case 11956: Changes to allow for UOMs to be picked up correctly
+********************************************************************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
@@ -66,20 +67,19 @@ N Emsen	| 14/09/2006	| Not tested against any Brakes credit notes
 		</xsl:copy>
 	</xsl:template>
 	
-	<!-- CLD-QTYC(1) (CreditNoteLine/CreditedQuantity) needs to be multiplied by -1 if (CreditNoteLine/ProductID/BuyersProductCode) is NOT blank -->
-	<xsl:template match="CreditNoteLine/CreditedQuantity">
-		<xsl:choose>
-			<!--Parent of CreditedQuantity is CreditNoteLine-->
-			<xsl:when test="string-length(../ProductID/BuyersProductCode) &gt; 0" >
-				<!--CLD-DRLI is not blank, multiply by -1-->
-				<xsl:call-template name="copyCurrentNodeDPUnchanged">
-					<xsl:with-param name="lMultiplier" select="-1.0"/>
-				</xsl:call-template>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:call-template name="copyCurrentNodeDPUnchanged"/>
-			</xsl:otherwise>
-		</xsl:choose>
+	<xsl:template match="//CreditedQuantity" >
+		<xsl:variable name="sUnitOfMeasure" select="@UnitOfMeasure"/>
+		<xsl:variable name="sTotalMeasure" select="translate(../Measure/TotalMeasure,' ','')"/>
+		<CreditedQuantity>
+			<!-- UnitOfMeasure - If no UOM found we leave it for InFiller to populate with default EA -->
+			<xsl:if test="$sTotalMeasure !='' ">
+				<xsl:attribute name="UnitOfMeasure">
+					<xsl:value-of select="$sTotalMeasure"/>				
+				</xsl:attribute>	
+			</xsl:if>		
+			<!-- actual value -->			
+			<xsl:value-of select="."/>				
+		</CreditedQuantity>
 	</xsl:template>
 	
 	<!-- CLD-EXLV (CreditNoteLine/LineValueExclVAT) need to be multiplied by -1 if (CreditNoteLine/ProductID/BuyersProductCode) is NOT blank -->
@@ -119,11 +119,6 @@ N Emsen	| 14/09/2006	| Not tested against any Brakes credit notes
 						CreditNoteTrailer/DocumentTotalInclVAT |
 						CreditNoteTrailer/SettlementTotalInclVAT">
 		<xsl:call-template name="copyCurrentNodeExplicit2DP"/>
-	</xsl:template>
-	<!-- SIMPLE CONVERSION IMPLICIT TO EXPLICIT 3 D.P -->
-	<!-- Add any XPath whose text node needs to be converted from implicit to explicit 3 D.P. -->
-	<xsl:template match="TotalMeasure">
-		<xsl:call-template name="copyCurrentNodeExplicit3DP"/>
 	</xsl:template>
 	<!--Add any attribute XPath whose value needs to be converted from implicit 3 D.P to explicit 2 D.P. -->
 	<xsl:template match="VATSubTotal/@VATRate">
