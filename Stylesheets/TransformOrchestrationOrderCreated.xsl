@@ -88,7 +88,7 @@
 							<xsl:value-of select="."/>
 						</OrderedQuantity>
 					</xsl:for-each>
-					<xsl:for-each select="@UnitOfMeasure">
+					<xsl:for-each select="OrderedQuantity/@UnitOfMeasure">
 						<OrderUnitCode>
 							<xsl:value-of select="."/>
 						</OrderUnitCode>
@@ -103,11 +103,10 @@
 							<xsl:value-of select="."/>
 						</UnitPriceExcludingVAT>
 					</xsl:for-each>
-					<xsl:if test="CurrencyIso4217Code != ''">
-						<CurrencyIso4217Code>
-							<xsl:value-of select="$CurrencyIso4217Code"/>
-						</CurrencyIso4217Code>
-					</xsl:if>
+					
+					<CurrencyIso4217Code>
+						<xsl:value-of select="$CurrencyIso4217Code"/>
+					</CurrencyIso4217Code>
 				</OrderLine>
 			</xsl:for-each>
 		</Lines>
