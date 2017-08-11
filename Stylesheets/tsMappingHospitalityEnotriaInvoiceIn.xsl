@@ -4,11 +4,13 @@ Alterations
 **********************************************************************
 Name			| Date			| Change
 **********************************************************************
-R Cambridge	| 27/03/2007	| FB941 Handle catchweight items (derived from 
+R Cambridge	    | 27/03/2007	| FB941 Handle catchweight items (derived from 
 										tsMappingHospitalityInvoiceTradacomsBatch.xsl)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-K Oshaughnessy| 28/05/2012 	|FB5493 bugfix to check if delivery note reference is populated before mapping delivery note date 	
+K Oshaughnessy  | 28/05/2012 	| FB5493 bugfix to check if delivery note reference is populated before mapping delivery note date 	
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+R Cambridge	    | 28/07/2017	| 11954 Handle line level discounts
+**********************************************************************
 				|             	|
 **********************************************************************
 -->
@@ -105,7 +107,7 @@ K Oshaughnessy| 28/05/2012 	|FB5493 bugfix to check if delivery note reference i
 			<xsl:apply-templates select="PackSize"/>
 			<xsl:apply-templates select="UnitValueExclVAT"/>
 			<xsl:apply-templates select="LineValueExclVAT"/>
-			<xsl:apply-templates select="LineDiscountRate"/>
+			<xsl:call-template name="LineDiscountRate"/>
 			<xsl:apply-templates select="LineDiscountValue"/>
 			<xsl:apply-templates select="VATCode"/>
 			<xsl:apply-templates select="VATRate"/>
@@ -119,19 +121,24 @@ K Oshaughnessy| 28/05/2012 	|FB5493 bugfix to check if delivery note reference i
 	
 	<!-- INVOIC-ILD-LEXC(InvoiceLine/LineValueExclVAT) need to be multiplied by -1 if (InvoiceLine/ProductID/BuyersProductCode) is NOT blank -->
 	<xsl:template match="InvoiceLine/LineValueExclVAT">
-		<!-- Implicit 4DP conversion required regardless of BuyersProductCode -->
-		<xsl:choose>
-			<!--Parent of LineValueExclVAT is InvoiceLine -->
-			<xsl:when test="string-length(../ProductID/BuyersProductCode) &gt; 0" >
-				<!--INVOIC-ILD-CRLI is not blank, multiply by -1-->
-				<xsl:call-template name="copyCurrentNodeExplicit4DP">
-					<xsl:with-param name="lMultiplier" select="-1.0"/>
-				</xsl:call-template>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:call-template name="copyCurrentNodeExplicit4DP"/>
-			</xsl:otherwise>
-		</xsl:choose>
+		<LineValueExclVAT>
+			<xsl:choose>
+				<!--Parent of LineValueExclVAT is InvoiceLine -->
+				<xsl:when test="string-length(../ProductID/BuyersProductCode) &gt; 0" >
+					<xsl:text>-</xsl:text>
+				</xsl:when>
+			</xsl:choose>	
+	
+			<xsl:value-of select="format-number(sum(. | ../LineDiscountValue) div 10000, '#.00')"/>		
+		</LineValueExclVAT>	
+	</xsl:template>
+	
+	<xsl:template name="LineDiscountRate">
+		<xsl:if test="LineDiscountValue">
+			<LineDiscountRate>			
+				<xsl:value-of select="format-number(100 * LineDiscountValue div sum(LineValueExclVAT | LineDiscountValue) , '#.00')"/>		
+			</LineDiscountRate>	
+		</xsl:if>
 	</xsl:template>
 	
 	<!-- SIMPLE CONVERSION IMPLICIT TO EXPLICIT 2 D.P -->
@@ -166,7 +173,7 @@ K Oshaughnessy| 28/05/2012 	|FB5493 bugfix to check if delivery note reference i
 	</xsl:template>
 	<!-- SIMPLE CONVERSION IMPLICIT TO EXPLICIT 4 D.P -->
 	<!-- Add any XPath whose text node needs to be converted from implicit to explicit 4 D.P. -->
-	<xsl:template match="InvoiceLine/UnitValueExclVAT">
+	<xsl:template match="InvoiceLine/UnitValueExclVAT | InvoiceLine/LineDiscountValue">
 		<xsl:call-template name="copyCurrentNodeExplicit4DP"/>
 	</xsl:template>
 	<!-- END of SIMPLE CONVERSIONS-->
