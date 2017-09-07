@@ -11,6 +11,8 @@ Huffkins mapper for invoices and credits journal format.
  10/03/2016	| Jose Miguel	|  FB10869 - Fixes and changes.
 ==========================================================================================
  25/04/2016	| Jose Miguel	|  FB10934 - Adding support for CRN.
+===========================================================================================
+ 07/09/2017	| Jose Miguel	|  FB12119 - Fixing date function to handle months correctly.
 =========================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"  xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript" exclude-result-prefixes="#default xsl msxsl js">
 	<xsl:output method="text" encoding="UTF-8"/>
@@ -147,12 +149,12 @@ Huffkins mapper for invoices and credits journal format.
 		if (parts.length != 3) return 'Error in date :' + string_date;
 
 		var year = parseInt(parts[0], 10);
-		var month = parseInt(parts[1], 10);
+		var month = parseInt(parts[1], 10) - 1;
 		var day = parseInt(parts[2], 10);
 		
-		var date = new Date(year + years, month + months, day + days)
+		var date = new Date(year + years, month + months, day + days);
 		
-		return pad2(date.getDate()) + '/' + pad2(date.getMonth()) + '/' + date.getFullYear()
+		return pad2(date.getDate()) + '/' + pad2(date.getMonth() + 1) + '/' + date.getFullYear();
 	}
 	
 ]]></msxsl:script>
