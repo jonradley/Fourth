@@ -1,0 +1,292 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!--
+**********************************************************************
+Alterations
+**********************************************************************
+Name		| Date			| Change
+**********************************************************************
+S Jefford	| 22/08/2005	| GTIN field now sourced from CLD/SPRO(1).
+			|				| CLD/DRLI now stored in BuyersProductCode
+**********************************************************************
+			|				|
+**********************************************************************
+-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>'</ffsRecordSeparator>
+		<ffsEscapeChars>
+			<ffsEscapeChar>
+				<ffsNative>chr(13)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>chr(10)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?=</ffsNative>
+				<ffsTradesimple>¬E</ffsTradesimple>
+				<ffsLiteral>=</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?+</ffsNative>
+				<ffsTradesimple>¬P</ffsTradesimple>
+				<ffsLiteral>+</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?:</ffsNative>
+				<ffsTradesimple>¬C</ffsTradesimple>
+				<ffsLiteral>:</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?'</ffsNative>
+				<ffsTradesimple>¬A</ffsTradesimple>
+				<ffsLiteral>'</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>??</ffsNative>
+				<ffsTradesimple>¬Q</ffsTradesimple>
+				<ffsLiteral>?</ffsLiteral>
+			</ffsEscapeChar>
+		</ffsEscapeChars>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>+</ffsFieldSeparator>
+			<ffsSubFieldSeparator>:</ffsSubFieldSeparator>
+		</ffsFieldSeparators>
+		<ffsPadding/>
+		<ffsBatchHeader>
+			<!--list of records that make up the header, this will be added to each document in the batch -->
+			<ffsHeaderRecord RecordPos="STX="/>
+			<ffsHeaderRecord RecordPos="TYP="/>
+			<ffsHeaderRecord RecordPos="SDT="/>
+			<ffsHeaderRecord RecordPos="CDT="/>
+			<ffsHeaderRecord RecordPos="FIL="/>
+		</ffsBatchHeader>
+		<ffsGroups>
+			<ffsGroup>
+				<ffsGroupRecord RecordPos="OIR=" FieldTotal="6"/>
+				<!-- Because FieldTotal of CLD is 18, all line level references to OIR should be done as accesses to CLD, but with 18 added to the LPos value -->
+				<ffsSubGroupRecord RecordPos="CLD=" FieldTotal="18"/>
+			</ffsGroup>
+		</ffsGroups>
+		<ffsSplitBatchRecord RecordPos="CLO="/>
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<BatchHeader>
+				<MHDSegment>
+					<MHDHeader RecordPos="MHD=" LPos="2" SFPos="1"/>
+					<MHDVersion RecordPos="MHD=" LPos="2" SFPos="2"/>
+				</MHDSegment>
+				<VATSubTotals>
+					<VATSubTotal>
+						<!-- MANDATORY VATTLR - VRS - VSDE (File sub-total amount excluding discount) -->
+						<DocumentTotalExclVATAtRate RecordPos="VRS=" LPos="4"/>
+						<!-- MANDATORY VATTLR - VRS - VSDI (File sub total amount including discount) -->
+						<SettlementTotalExclVATAtRate RecordPos="VRS=" LPos="5"/>
+						<!-- MANDATORY VATTLR - VRS - VVAT (File VAT sub-total)-->
+						<VATAmountAtRate RecordPos="VRS=" LPos="6"/>
+						<!-- MANDATORY VATTLR - VRS - VPSE (File sub-total payable excluding discount) [ unless blank, then use VPSI ]-->
+						<DocumentTotalInclVATAtRate RecordPos="VRS=" LPos="7"/>
+						<!-- MANDATORY VATTLR - VRS - VPSI (File sub-total payable including discount) -->
+						<SettlementTotalInclVATAtRate RecordPos="VRS=" LPos="8"/>
+						<ffsAttribute1 name="VATCode" RecordPos="VRS=" LPos="2"/>
+						<ffsAttribute1 name="VATRate" RecordPos="VRS=" LPos="3"/>
+					</VATSubTotal>
+				</VATSubTotals>
+				<!-- MANDATORY CRETLR - TOT - FASE (File total amount ex VAT ex discount) -->
+				<DocumentTotalExclVAT RecordPos="TOT=" LPos="1"/>
+				<!-- MANDATORY CRETLR - TOT - FASI (File total amount ex VAT inc discount) -->
+				<SettlementTotalExclVAT RecordPos="TOT=" LPos="2"/>
+				<!-- MANDATORY CRETLR - TOT - FVAT (File total VAT) -->
+				<VATAmount RecordPos="TOT=" LPos="3"/>
+				<!-- MANDATORY CRETLR - TOT - FPSE (File total payable ex discount) -->
+				<DocumentTotalInclVAT RecordPos="TOT=" LPos="4"/>
+				<!-- MANDATORY CRETLR - TOT - FPSI (File total payable inc discount) -->
+				<SettlementTotalInclVAT RecordPos="TOT=" LPos="5"/>
+			</BatchHeader>
+			<BatchDocuments>
+				<BatchDocument>
+					<CreditNote>
+						<TradeSimpleHeader>
+							<!-- MANDATORY Sender’s code for recipient, MANDATORY, CREDIT – CLO – CLOC(2), You must provide this code.  It is your internal identifier for the company that is to receive the document. It must match the code that you have entered on the trading relationship you have with the other company -->
+							<SendersCodeForRecipient RecordPos="CLO=" LPos="1" SFPos="2"/>
+							<!-- OPTIONAL Sender’s Branch Reference, MANDATORY, CREHDR – CDT – CIDN(2), Depending on your particular relationship with the company, you must provide this code.  It is your internal identifier for the “contract” that the receiving company belongs to. It must match the code that you have provided to ABS on set-up -->
+							<SendersBranchReference RecordPos="CDT=" LPos="1" SFPos="2"/>
+						</TradeSimpleHeader>
+						<CreditNoteHeader>
+							<BatchInformation>
+								<!-- OPTIONAL Supplier’s File Generation Number, DERIVE, CREHDR - FIL – FLGN, This should be incremented by +1 for each transmission of credit notes sent to the exchange. This must return to 1 after 9999 -->
+								<FileGenerationNo RecordPos="FIL=" LPos="1"/>
+								<!-- OPTIONAL Supplier’s File Version Number, DERIVE, CREHDR - FIL – FLVN, This should be incremented by +1 for each retry of a transmission of credit notes sent to the exchange. This must return to 1 after 9999 -->
+								<FileVersionNo RecordPos="FIL=" LPos="2"/>
+								<!-- OPTIONAL Supplier’s File Creation Date, DERIVE, CREHDR – FIL - FLDT, This should be a valid date, and should be the date on which the credit note transmission file was created by your systems -->
+								<FileCreationDate RecordPos="FIL=" LPos="3"/>
+								<!-- OPTIONAL Sender’s Transmission Reference, OPTIONAL, STX – SNRF, If available – for use in transmission notifications -->
+								<SendersTransmissionReference RecordPos="STX=" LPos="5"/>
+								<!-- OPTIONAL Sender’s Transmission Date/Time, OPTIONAL, STX – TRDT, If available – for use in transmission notifications -->
+								<SendersTransmissionDate RecordPos="STX=" LPos="4"/>
+							</BatchInformation>
+							<Buyer>
+								<BuyersLocationID>
+									<!--CREHDR-CDT-CIDN(1)-->
+									<SuppliersCode RecordPos="CDT=" LPos="1" SFPos="1"/>
+								</BuyersLocationID>
+								<!-- OPTIONAL Buyer Name, LEGAL MANDATORY, CREHDR – CDT - CNAM, The “invoice to” name -->
+								<BuyersName RecordPos="CDT=" LPos="2"/>
+								<BuyersAddress>
+									<!-- OPTIONAL Buyer Address, LEGAL MANDATORY, CREHDR – CDT – CADD(1…5), The “invoice to” address -->
+									<AddressLine1 RecordPos="CDT=" LPos="3" SFPos="1"/>
+									<AddressLine2 RecordPos="CDT=" LPos="3" SFPos="2"/>
+									<AddressLine3 RecordPos="CDT=" LPos="3" SFPos="3"/>
+									<AddressLine4 RecordPos="CDT=" LPos="3" SFPos="4"/>
+									<PostCode RecordPos="CDT=" LPos="3" SFPos="5"/>
+								</BuyersAddress>
+							</Buyer>
+							<Supplier>
+								<SuppliersLocationID>
+									<!-- CREHDR-SDT-SIDN(1)-->
+									<SuppliersCode RecordPos="SDT=" LPos="1" SFPos="1"/>
+								</SuppliersLocationID>
+								<!-- OPTIONAL Supplier Name, LEGAL MANDATORY, CREHDR – SDT – SNAM, This field should be set to your company name as on your paper credit notes for this account. -->
+								<SuppliersName RecordPos="SDT=" LPos="2"/>
+								<SuppliersAddress>
+									<!-- OPTIONAL Supplier Address, LEGAL MANDATORY, CREHDR – SDT – SADD(1…5), Your address -->
+									<AddressLine1 RecordPos="SDT=" LPos="3" SFPos="1"/>
+									<AddressLine2 RecordPos="SDT=" LPos="3" SFPos="2"/>
+									<AddressLine3 RecordPos="SDT=" LPos="3" SFPos="3"/>
+									<AddressLine4 RecordPos="SDT=" LPos="3" SFPos="4"/>
+									<PostCode RecordPos="SDT=" LPos="3" SFPos="5"/>
+								</SuppliersAddress>
+							</Supplier>
+							<ShipTo>
+								<ShipToLocationID>
+									<!--CREHDR-CLO-(1)2)-->
+									<SuppliersCode RecordPos="CLO=" LPos="1" SFPos="2"/>
+								</ShipToLocationID>
+								<!-- OPTIONAL Delivery Location Name, OPTIONAL, CREDIT – CLO – CNAM -->
+								<ShipToName RecordPos="CLO=" LPos="2"/>
+								<ShipToAddress>
+									<!-- MANDATORY Delivery Location Address, OPTIONAL, CREDIT – CLO – CADD(1) -->
+									<AddressLine1 RecordPos="CLO=" LPos="3" SFPos="1"/>
+									<!-- OPTIONAL Delivery Location Address, OPTIONAL, CREDIT – CLO – CADD(2...5) -->
+									<AddressLine2 RecordPos="CLO=" LPos="3" SFPos="2"/>
+									<AddressLine3 RecordPos="CLO=" LPos="3" SFPos="3"/>
+									<AddressLine4 RecordPos="CLO=" LPos="3" SFPos="4"/>
+									<PostCode RecordPos="CLO=" LPos="3" SFPos="5"/>
+								</ShipToAddress>
+							</ShipTo>
+							<InvoiceReferences>
+								<!-- OPTIONAL Original Invoice Number, OPTIONAL, CREDIT – OIR – INVN, A unique invoice number for the date, if applicable -->
+								<InvoiceReference RecordPos="OIR=" LPos="2"/>
+								<!-- OPTIONAL Original Invoice Date, OPTIONAL, CREDIT – OIR – IVDT, YYMMDD, The date the invoice was issued, if applicable -->
+								<InvoiceDate RecordPos="OIR=" LPos="3"/>
+								<!-- Fix -->
+								<VATRegNo RecordPos="SDT=" LPos="4"/>
+							</InvoiceReferences>
+							<CreditNoteReferences>
+								<!-- MANDATORY Credit note Number, LEGAL MANDATORY, CREDIT – CRF – CRNR, A unique credit note number for the date -->
+								<CreditNoteReference RecordPos="CRF=" LPos="1"/>
+								<!-- MANDATORY Credit note Date, LEGAL MANDATORY, CREDIT – CRF – CRDT, YYMMDD, The date the credit note was issued -->
+								<CreditNoteDate RecordPos="CRF=" LPos="2"/>
+								<!-- MANDATORY Taxpoint Date, LEGAL MANDATORY, CREDIT – CRF – TXDT, YYMMDD, The tax point date of the credit note -->
+								<TaxPointDate RecordPos="CRF=" LPos="3"/>
+								<!-- MANDATORY Supplier VAT Number, LEGAL MANDATORY, CREHDR – SDT – VATN, Your VAT number -->
+								<VATRegNo RecordPos="SDT=" LPos="4"/>
+							</CreditNoteReferences>
+						</CreditNoteHeader>
+						<CreditNoteDetail>
+							<CreditNoteLine>
+								<LineNumber RecordPos="CLD=" LPos="1"/>
+								<PurchaseOrderReferences>
+									<!-- OIR LPos 5 OPTIONAL Purchase Order Reference, OPTIONAL, CREDIT – OIR – ORNO(1), Should be set to the customer’s order reference.  If the order has been generated without a customer reference then the seller’s order reference may be used -->
+									<PurchaseOrderReference RecordPos="CLD=" LPos="23" SFPos="1"/>
+									<!-- OIR LPos 5 OPTIONAL Purchase Order Date, OPTIONAL, CREDIT – OIR – ORNO(3), YYMMDD, Must be valid date, and should be set to the order date associated with the reference above -->
+									<PurchaseOrderDate RecordPos="CLD=" LPos="23" SFPos="3"/>
+								</PurchaseOrderReferences>
+								<ProductID>
+									<!-- MANDATORY GTIN, INVOIC - CLD - SPRO(1) -->
+									<GTIN RecordPos="CLD=" LPos="2" SFPos="1"/>
+									<!-- OPTIONAL Supplier’s Product Code, MANDATORY, CREDIT – CLD – SPRO(2), Your unique code for this product -->
+									<SuppliersProductCode RecordPos="CLD=" LPos="2" SFPos="2"/>
+									<!-- NOT BuyersProductCode, actually CLD - DRLI used by stylesheet to action -1.0 multiplier on QTYC and EXLV -->
+									<BuyersProductCode RecordPos="CLD=" LPos="13"/>
+								</ProductID>
+								<!-- MANDATORY Product Description, OPTIONAL, CREDIT – CLD – TDES(1), While not strictly mandatory, this is a very useful textual piece of information.  This will always contain something but may be set to ‘Not Provided’ -->
+								<ProductDescription RecordPos="CLD=" LPos="14" SFPos="1"/>
+								<!-- MANDATORY Quantity Credited, OPTIONAL, CREDIT – CLD – QTYC(1), If CREDIT – CLD – DRLI <> {blank} then multiply by –1	Must be greater or equal to zero if provided -->
+								<CreditedQuantity RecordPos="CLD=" LPos="6" SFPos="1"/>
+								<!-- MANDATORY Unit Credit Value Ex VAT, OPTIONAL, CREDIT – CLD – UCRV(1), 4 d.p. implied, If provided, must be numeric (it may be either positive or negative) and must have only two places of decimal -->
+								<UnitValueExclVAT RecordPos="CLD=" LPos="7" SFPos="1"/>
+								<!-- MANDATORY Line Credit Ex VAT, MANDATORY, CREDIT – CLD – EXLV, 4 d.p. implied - If CREDIT – CLD – DRLI <> {blank} then multiply by –1, Should be equal to the quantity credited x the unit credit value rounded to two decimal places -->
+								<LineValueExclVAT RecordPos="CLD=" LPos="8"/>
+								<!-- MANDATORY Supplier’s VAT Code, MANDATORY, CREDIT – CLD - VATC, Your VAT code for this line -->
+								<VATCode RecordPos="CLD=" LPos="9"/>
+								<!-- MANDATORY VAT Rate, MANDATORY, CREDIT – CLD - VATP, 3 d.p. implied, A percentage rate with up to two decimals.  Must be greater or equal to zero -->
+								<VATRate RecordPos="CLD=" LPos="10"/>
+								<!-- OPTIONAL Reason for Credit, OPTIONAL, CREDIT – CLD – CRRE(3), If possible you should provide a reason as to why you are issuing the credit -->
+								<Narrative RecordPos="CLD=" LPos="11" SFPos="3"/>
+								<Measure>
+									<!-- CREDIT-CLD-UNOR(1)  -->
+									<UnitsInPack RecordPos="CLD=" LPos="5" SFPos="1"/>
+									<!-- OPTIONAL Total Measure Credited, OPTIONAL, CREDIT – CLD –QTYC(2), 3 d.p. implied -->
+									<TotalMeasure RecordPos="CLD=" LPos="6" SFPos="2"/>
+									<!-- OPTIONAL Total Measure Indicator, OPTIONAL, CREDIT – CLD –QTYC(3), Text -->
+									<TotalMeasureIndicator RecordPos="CLD=" LPos="6" SFPos="3"/>
+								</Measure>
+								<LineExtraData>
+									<!-- CREDIT-CLD-IGPI -->
+									<ProductGroup RecordPos="CLD=" LPos="17"/>
+									<!-- CREDIT-CLD-UNOR(1) -->
+									<StandardPriceUnitCode RecordPos="CLD=" LPos="5" SFPos="1"/>
+									<!-- CREDIT-CLD-UNOR(2) -->
+									<StandardDeliveryUnitCost RecordPos="CLD=" LPos="5" SFPos="2"/>
+									<!-- CREDIT-CLD-TDES(2) -->
+									<ProductDescription2 RecordPos="CLD=" LPos="14" SFPos="2"/>
+									<!-- CREDIT-CLD-CPRO(2) -->
+									<CustomersConceptProductCode RecordPos="CLD=" LPos="4" SFPos="2"/>
+								</LineExtraData>
+							</CreditNoteLine>
+						</CreditNoteDetail>
+						<CreditNoteTrailer>
+							<VATSubTotals>
+								<VATSubTotal>
+									<!-- MANDATORY Line Total Ex VAT at rate, DERIVE, CREDIT – CST – EVLA, 2 d.p. implied, The total value of the all lines at this VAT rate -->
+									<DocumentTotalExclVATAtRate RecordPos="CST=" LPos="8"/>
+									<!-- MANDATORY Settlement Discount at rate, OPTIONAL, CREDIT – CST – SEDA, 2 d.p. implied, The value of any settlement discount applicable to the lines at this VAT rate -->
+									<SettlementDiscountAtRate RecordPos="CST=" LPos="9"/>
+									<!-- MANDATORY Taxable Amount (at rate), DERIVE, CREDIT – CST – ASDA, 2 d.p. implied, The total value of the all lines at this VAT rate plus settlement discount -->
+									<SettlementTotalExclVATAtRate RecordPos="CST=" LPos="10"/>
+									<!-- MANDATORY VAT Amount at rate, DERIVE, CREDIT – CST – VATA, 2 d.p. implied, The total amount of VAT payable at this VAT rate -->
+									<VATAmountAtRate RecordPos="CST=" LPos="11"/>
+									<!-- MANDATORY Total Payable at rate Ex Settlement Discount, DERIVE, CREDIT – CST – APSE, 2 d.p. implied - (use APSI if not provided) The total which is payable at this VAT rate, excluding settlement discount -->
+									<DocumentTotalInclVATAtRate RecordPos="CST=" LPos="12"/>
+									<!-- MANDATORY Total Payable at rate Inc Settlement Discount, DERIVE, CREDIT – CST – APSI, 2 d.p. implied, The total which is payable at this VAT rate, including settlement discount -->
+									<SettlementTotalInclVATAtRate RecordPos="CST=" LPos="13"/>
+									<ffsAttribute1 name="VATCode" RecordPos="CST=" LPos="2"/>
+									<ffsAttribute1 name="VATRate" RecordPos="CST=" LPos="3"/>
+								</VATSubTotal>
+							</VATSubTotals>
+							<!-- MANDATORY Lines Total Ex VAT, DERIVE, CREDIT – CTR – EVLT, 2 d.p. implied, The total value of the all lines, before VAT and settlement discount -->
+							<DocumentTotalExclVAT RecordPos="CTR=" LPos="5"/>
+							<!-- MANDATORY Settlement Discount Total, OPTIONAL, CREDIT – CTR – SEDT, 2 d.p. implied, The total value of any settlement discount -->
+							<SettlementDiscount RecordPos="CTR=" LPos="6"/>
+							<!-- MANDATORY Taxable Amount, DERIVE, CREDIT – CTR – ASDT, 2 d.p. implied, The total value of the all lines plus settlement discount -->
+							<SettlementTotalExclVAT RecordPos="CTR=" LPos="7"/>
+							<!-- MANDATORY VAT Amount Total, DERIVE, CREDIT – CTR – TVAT, 2 d.p. implied, The total amount of VAT payable -->
+							<VATAmount RecordPos="CTR=" LPos="8"/>
+							<!-- MANDATORY Total Payable Ex Settlement Discount, DERIVE, CREDIT – CTR – TPSE, 2 d.p. implied - (use TPSI if not provided) The document total which is payable, excluding settlement discount -->
+							<DocumentTotalInclVAT RecordPos="CTR=" LPos="9"/>
+							<!-- MANDATORY Total Payable Inc Settlement Discount, DERIVE, CREDIT – CTR - TPSI, 2 d.p. implied -->
+							<SettlementTotalInclVAT RecordPos="CTR=" LPos="10"/>
+						</CreditNoteTrailer>
+					</CreditNote>
+					<ffsAttribute1 name="DocumentTypeNo" RecordPos="TYP=" LPos="1"/>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>
