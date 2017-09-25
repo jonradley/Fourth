@@ -14,7 +14,7 @@
 ====================================================================================================================================================================================
  15-09-2017		| M Dimant  	| FB 12133: Slight changes to format and mapping of data from correct fields
 ====================================================================================================================================================================================
- 25-09-2017     | M Dimant  	| FB 12140: Added character (I) to FGN to avoid duplicaton with FnB export. Net ammount for credits is now always negative
+ 25-09-2017     | M Dimant  	| FB 12140: Added character (I) to FGN to avoid duplicaton with FnB export. Net ammount for credits is now always negative 
 =================================================================================================================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript">
 	<xsl:output method="text" encoding="UTF-8"/>
