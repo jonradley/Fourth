@@ -13,6 +13,8 @@
  07-07-2017		| M Dimant  	| FB 11925: Created
 ====================================================================================================================================================================================
  15-09-2017		| M Dimant  	| FB 12133: Slight changes to format and mapping of data from correct fields
+====================================================================================================================================================================================
+ 25-09-2017     | M Dimant  	| FB 12140: Added character (I) to FGN to avoid duplicaton with FnB export. Net ammount for credits is now always negative 
 =================================================================================================================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript">
 	<xsl:output method="text" encoding="UTF-8"/>
@@ -35,9 +37,9 @@
 		<xsl:if test="//LineExtraData/AccountCode[.=$ProdNom and ../../VATCode='Z']">
 	
 			<!-- FnB Shop Voucher Number (<storeno.>0000001) -->
-			<xsl:variable name="FGN" select="//InvoiceHeader/FileGenerationNo"/>	
+			<xsl:variable name="FGN" select="//InvoiceHeader/FileGenerationNumber"/>	
 			<xsl:variable name="CompanyCode" select="substring-after(//Invoice/InvoiceHeader/HeaderExtraData/CompanyCode,'-')"/>		
-			<xsl:value-of select="concat($CompanyCode,substring($FGN, string-length($FGN) - 5))"/>
+			<xsl:value-of select="concat($CompanyCode, 'I', format-number(substring($FGN, string-length($FGN) - 5), '00000'))"/>
 			<xsl:value-of select="$FieldSeperator"/>	
 			
 			<!-- Sage Supplier Number  -->
@@ -78,9 +80,9 @@
 		<xsl:if test="//LineExtraData/AccountCode[.=$ProdNom and ../../VATCode='S']">
 	
 			<!-- FnB Shop Voucher Number (<storeno.>0000001) -->
-			<xsl:variable name="FGN" select="//InvoiceHeader/FileGenerationNo"/>	
+			<xsl:variable name="FGN" select="//InvoiceHeader/FileGenerationNumber"/>	
 			<xsl:variable name="CompanyCode" select="substring-after(//Invoice/InvoiceHeader/HeaderExtraData/CompanyCode,'-')"/>		
-			<xsl:value-of select="concat($CompanyCode,substring($FGN, string-length($FGN) - 5))"/>
+			<xsl:value-of select="concat($CompanyCode, 'I', format-number(substring($FGN, string-length($FGN) - 5), '00000'))"/>
 			<xsl:value-of select="$FieldSeperator"/>	
 			
 			<!-- Sage Supplier Number  -->
@@ -135,9 +137,9 @@
 		<xsl:if test="//LineExtraData/AccountCode[.=$ProdNom and ../../VATCode='Z']">
 	
 			<!-- FnB Shop Voucher Number (<storeno.>0000001) -->
-			<xsl:variable name="FGN" select="//CreditNoteHeader/FileGenerationNo"/>	
+			<xsl:variable name="FGN" select="//CreditNoteHeader/FileGenerationNumber"/>	
 			<xsl:variable name="CompanyCode" select="substring-after(//CreditNote/CreditNoteHeader/HeaderExtraData/CompanyCode,'-')"/>		
-			<xsl:value-of select="concat($CompanyCode,substring($FGN, string-length($FGN) - 5))"/>
+			<xsl:value-of select="concat($CompanyCode, 'I', format-number(substring($FGN, string-length($FGN) - 5), '00000'))"/>
 			<xsl:value-of select="$FieldSeperator"/>
 			
 			<!-- Sage Supplier Number  -->			
@@ -164,8 +166,8 @@
 			<xsl:value-of select="concat(//CreditNoteHeader/HeaderExtraData/CompanyCode,'-',$ProdNom)"/>
 			<xsl:value-of select="$FieldSeperator"/>
 			
-			<!-- Net Amount for given Nominal Code and VAT code Z -->									
-			<xsl:value-of select="format-number(sum(../../../CreditNoteLine[LineExtraData/AccountCode=$ProdNom and VATCode='Z']/LineValueExclVAT),'0.00')"/>
+			<!-- Net Amount for given Nominal Code and VAT code Z -->
+            <xsl:value-of select="format-number(-1 * sum(../../../CreditNoteLine[LineExtraData/AccountCode=$ProdNom and VATCode='Z']/LineValueExclVAT),'0.00')"/>
 			<xsl:value-of select="$FieldSeperator"/>
 			
 			<!-- VAT Code –Z=Zero Rated, Z=Exempt, S=Standard 17.5%	Z -->
@@ -178,9 +180,9 @@
 		<xsl:if test="//LineExtraData/AccountCode[.=$ProdNom and ../../VATCode='S']">
 	
 			<!-- FnB Shop Voucher Number (<storeno.>0000001) -->
-			<xsl:variable name="FGN" select="//CreditNoteHeader/FileGenerationNo"/>	
+			<xsl:variable name="FGN" select="//CreditNoteHeader/FileGenerationNumber"/>	
 			<xsl:variable name="CompanyCode" select="substring-after(//CreditNote/CreditNoteHeader/HeaderExtraData/CompanyCode,'-')"/>		
-			<xsl:value-of select="concat($CompanyCode,substring($FGN, string-length($FGN) - 5))"/>
+			<xsl:value-of select="concat($CompanyCode, 'I', format-number(substring($FGN, string-length($FGN) - 5), '00000'))"/>
 			<xsl:value-of select="$FieldSeperator"/>
 			
 			<!-- Sage Supplier Number  -->
@@ -207,8 +209,8 @@
 			<xsl:value-of select="concat(//CreditNoteHeader/HeaderExtraData/CompanyCode,'-',$ProdNom)"/>
 			<xsl:value-of select="$FieldSeperator"/>
 			
-			<!-- Net Amount for given Nominal Code and VAT code S -->									
-			<xsl:value-of select="format-number(sum(../../../CreditNoteLine[LineExtraData/AccountCode=$ProdNom and VATCode='S']/LineValueExclVAT),'0.00')"/>
+			<!-- Net Amount for given Nominal Code and VAT code S -->
+            <xsl:value-of select="format-number(-1 * sum(../../../CreditNoteLine[LineExtraData/AccountCode=$ProdNom and VATCode='S']/LineValueExclVAT),'0.00')"/>
 			<xsl:value-of select="$FieldSeperator"/>
 			
 			<!-- VAT Code –Z=Zero Rated, Z=Exempt, S=Standard 17.5%	Z -->
