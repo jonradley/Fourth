@@ -6,7 +6,7 @@ Gaucho invoices and credits export in Sage Line 500 PSV format.
 ==========================================================================================
  Date      		| Name 				| Description of modification
 ==========================================================================================
-				| M Dimant			| FB11951 - Created
+10/10/2017		| M Dimant			| FB11951 - Created
 ==========================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 	<xsl:output method="text"/>
