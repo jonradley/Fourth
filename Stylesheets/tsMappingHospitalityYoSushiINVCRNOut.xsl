@@ -13,8 +13,8 @@ M Dimant		| 10/10/2017	| 12082: Created
 	
 		<xsl:variable name="NewLine" select="'&#13;&#10;'"/>
 		
-		<xsl:key name="InvNominal" match="Invoice/InvoiceDetail/InvoiceLine/LineExtraData/AccountCode" use="."/>
-		<xsl:key name="CredNominal" match="CreditNote/CreditNoteDetail/CreditNoteLine/LineExtraData/AccountCode" use="."/>
+		<xsl:key name="InvNominal" match="Invoice/InvoiceDetail/InvoiceLine/LineExtraData/AccountCode" use="concat(.,../../VATCode)"/>
+		<xsl:key name="CredNominal" match="CreditNote/CreditNoteDetail/CreditNoteLine/LineExtraData/AccountCode" use="concat(.,../../VATCode)"/>
 
 		<xsl:template match="Invoice">
 		
