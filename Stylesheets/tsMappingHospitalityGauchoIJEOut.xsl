@@ -7,6 +7,8 @@ Gaucho invoices and credits export in Sage Line 500 PSV format.
  Date      		| Name 				| Description of modification
 ==========================================================================================
 10/10/2017		| M Dimant			| FB11951 - Created
+==========================================================================================
+19/10/2017		| W Nassor			| FB11951 - Removed FnB Internal Ref from Column A. 
 ==========================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 	<xsl:output method="text"/>
@@ -18,8 +20,7 @@ Gaucho invoices and credits export in Sage Line 500 PSV format.
 	<xsl:template match="Batch">
 		<xsl:for-each select="BatchDocuments/BatchDocument/InvoiceCreditJournalEntries/InvoiceCreditJournalEntriesDetail/InvoiceCreditJournalEntriesLine">
 		
-				<!-- FnB Internal Ref -->
-				<xsl:value-of select="../../InvoiceCreditJournalEntriesHeader/FnBInternalRef"/>
+				<!-- Empty Column -->
 				<xsl:value-of select="$FieldSeperator"/>
 				<!-- Supplier Code -->
 				<xsl:choose>
