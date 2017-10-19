@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--***************************************************************************************************************************************
-Yo Susgi Invoice and Credit Batch Map
+Yo Sushi Invoice and Credit Batch Map
 *******************************************************************************************************************************************
 Name			| Date			| Change
 *******************************************************************************************************************************************
 M Dimant		| 10/10/2017	| 12082: Created
 *******************************************************************************************************************************************
-
+W Nassor		| 19/10/2017	| 12082: Removed '-' for credit values in Net Amount
 *******************************************************************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 	<xsl:output method="text" encoding="UTF-8"/>
@@ -56,10 +56,13 @@ M Dimant		| 10/10/2017	| 12082: Created
 				<xsl:otherwise><xsl:value-of select="$ProdNom"/></xsl:otherwise>
 			</xsl:choose>			
 			<xsl:text>,</xsl:text>			
+			
 			<!-- Net Amount for given Nominal Code and VAT code  -->
 			<xsl:variable name="NetAmount" select="sum(../../../InvoiceLine[LineExtraData/AccountCode=$ProdNom and VATCode=$ProdVAT]/LineValueExclVAT)"/> 
 			<xsl:value-of select="format-number($NetAmount,'0.00')"/>
-			<xsl:text>,</xsl:text>			
+			
+			<xsl:text>,</xsl:text>		
+				
 			<!-- VAT Amount -->
 			<xsl:value-of select="/Invoice/InvoiceTrailer/VATSubTotals/VATSubTotal[@VATCode=$ProdVAT]/VATAmountAtRate"/>
 			<xsl:text>,</xsl:text>			
@@ -138,8 +141,7 @@ M Dimant		| 10/10/2017	| 12082: Created
 			<xsl:text>,</xsl:text>			
 			<!-- Net Amount for given Nominal Code and VAT code -->			
 			<xsl:variable name="NetAmount" select="sum(../../../CreditNoteLine[LineExtraData/AccountCode=$ProdNom and VATCode=$ProdVAT]/LineValueExclVAT)"/> 		
-			<!-- Credit values must be represented as negatives --> 
-			<xsl:value-of select="concat('-',format-number($NetAmount,'0.00'))"/>
+			<xsl:value-of select="format-number($NetAmount,'0.00')"/>
 			<xsl:text>,</xsl:text>			
 			<!-- VAT Amount -->
 			<xsl:value-of select="/CreditNote/CreditNoteTrailer/VATSubTotals/VATSubTotal[@VATCode=$ProdVAT]/VATAmountAtRate"/>
