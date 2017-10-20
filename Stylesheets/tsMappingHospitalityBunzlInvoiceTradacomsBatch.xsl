@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-**********************************************************************
+********************************************************************************************************************************************
 Alterations
-**********************************************************************
+********************************************************************************************************************************************
 Name				| Date				| Change
-**********************************************************************
+********************************************************************************************************************************************
 S Jefford		| 22/08/2005		| GTIN field now sourced from ILD/SPRO(1).
 					|						| ILD/CRLI now stored in BuyersProductCode
-**********************************************************************
+********************************************************************************************************************************************
 02/10/2006	|	Nigel Emsen	|	Ready for delivery
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 17/11/2006	|	Nigel Emsen	| Case: 476, changes required for AS2 Orders
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 13/10/2009	| R Cambridge	| Case: 3121 Don't prefix PL account codes for non-Aramark PL accounts
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-           	|            	| 
-**********************************************************************
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+01/08/2017	| M Dimant     	| Case 11956: Changes to allow for UOMs to be picked up correctly
+********************************************************************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:jscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
@@ -59,32 +59,21 @@ S Jefford		| 22/08/2005		| GTIN field now sourced from ILD/SPRO(1).
 		</xsl:copy>
 	</xsl:template>
 		
-	<!-- Check if invoice QTY is given, if not use measured quantity taking the value from @UnitOfMeasure. Also we need to ensure this attribute is stripped to avoid a validation error later on. -->
 	<xsl:template match="//InvoicedQuantity" >
 		<xsl:variable name="sUnitOfMeasure" select="@UnitOfMeasure"/>
-		<xsl:variable name="sTotalMeasureIndicator" select="translate(../Measure/TotalMeasureIndicator,' ','')"/>
+		<xsl:variable name="sTotalMeasure" select="translate(../Measure/TotalMeasure,' ','')"/>
 		<InvoicedQuantity>
-			<!-- UnitOfMeasure -->
-			<xsl:if test="$sTotalMeasureIndicator !='' ">
+			<!-- UnitOfMeasure - If no UOM found we leave it for InFiller to populate with default EA -->
+			<xsl:if test="$sTotalMeasure !='' ">
 				<xsl:attribute name="UnitOfMeasure">
-					<xsl:call-template name="sConvertUOMForInternal">
-						<xsl:with-param name="vsGivenValue" select="$sTotalMeasureIndicator"/>
-					</xsl:call-template>
-				</xsl:attribute>
-			</xsl:if>
-			<!-- actual value -->
-			<xsl:choose>
-				<xsl:when test="$sUnitOfMeasure">
-					<!-- the value comes with an implied 3dp thats needs to be maintained -->
-					<xsl:value-of select="format-number($sUnitOfMeasure div 1000,'#0.###')"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="."/>
-				</xsl:otherwise>
-			</xsl:choose>
+					<xsl:value-of select="$sTotalMeasure"/>				
+				</xsl:attribute>	
+			</xsl:if>		
+			<!-- actual value -->			
+			<xsl:value-of select="."/>				
 		</InvoicedQuantity>
 	</xsl:template>
-		
+	
 	<!-- INVOIC-ILD-LEXC(InvoiceLine/LineValueExclVAT) need to be multiplied by -1 if (InvoiceLine/ProductID/BuyersProductCode) is NOT blank -->
 	<xsl:template match="InvoiceLine/LineValueExclVAT">
 		<!-- Implicit 4DP conversion required regardless of BuyersProductCode -->
@@ -101,6 +90,7 @@ S Jefford		| 22/08/2005		| GTIN field now sourced from ILD/SPRO(1).
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+
 	
 	<!-- SIMPLE CONVERSION IMPLICIT TO EXPLICIT 2 D.P -->
 	<!-- Add any XPath whose text node needs to be converted from implicit to explicit 2 D.P. -->
@@ -121,7 +111,6 @@ S Jefford		| 22/08/2005		| GTIN field now sourced from ILD/SPRO(1).
 	<!-- SIMPLE CONVERSION IMPLICIT TO EXPLICIT 3 D.P -->
 	<!-- Add any XPath whose text node needs to be converted from implicit to explicit 3 D.P. -->
 	<xsl:template match="OrderingMeasure | 
-						TotalMeasure | 
 						InvoiceLine/VATRate">
 		<xsl:call-template name="copyCurrentNodeExplicit3DP"/>
 	</xsl:template>
