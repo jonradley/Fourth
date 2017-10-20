@@ -10,6 +10,8 @@
 ************************************************************************************************************************************************************************************
 05/07/2017	| M Dimant	| FB 11934 : Created
 ************************************************************************************************************************************************************************************
+04/08/2017	| M Dimant	| FB 12091 : Use InvoiceDate instead of RunDate. Extra logic around SiteNominal to catch instances when it is incorrect or missing.
+************************************************************************************************************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:user="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 <xsl:output method="text" encoding="UTF-8"/>
@@ -26,8 +28,8 @@
 	
 	<xsl:template match="InvoiceCreditJournalEntries">
 	
-	<xsl:variable name="Date" select="InvoiceCreditJournalEntriesHeader/ExportRunDate"/>
-	<xsl:variable name="RunDate" select="concat(substring($Date,9,2),substring($Date,6,2),substring($Date,1,4))"/>
+	<xsl:variable name="Date" select="InvoiceCreditJournalEntriesHeader/InvoiceDate"/>
+	<xsl:variable name="InvDate" select="concat(substring($Date,9,2),substring($Date,6,2),substring($Date,1,4))"/>
 
 		<!-- SUMMARY LINE -->
 		
@@ -51,7 +53,7 @@
 		<!-- 7	Period	(Leave Blank) – system will default  -->
 		<xsl:value-of select="$FieldSeperator"/>		
 		<!-- 8	Transaction Date (Current date)  -->
-		<xsl:value-of select="$RunDate"/>
+		<xsl:value-of select="$InvDate"/>
 		<xsl:value-of select="$FieldSeperator"/>		
 		<!-- 9	Line Type	(S - Summary) -->
 		<xsl:text>S</xsl:text> 
@@ -136,7 +138,7 @@
 			<!-- 7	Period	(Leave Blank) – system will default  -->
 			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- 8	Transaction Date (Current date)  -->
-			<xsl:value-of select="$RunDate"/>
+			<xsl:value-of select="$InvDate"/>
 			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- 9	Line Type	(D - Detail) -->
 			<xsl:text>D</xsl:text> 
@@ -145,10 +147,26 @@
 			<xsl:text>233001</xsl:text> 
 			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- 11	Location (unit code) -->
-			<xsl:value-of select="substring-after(../../InvoiceCreditJournalEntriesHeader/UnitSiteNominal,'-')"/>
+			<xsl:choose>
+				<xsl:when test="contains(../../InvoiceCreditJournalEntriesHeader/UnitSiteNominal,'-')">
+					<xsl:value-of select="substring-after(../../InvoiceCreditJournalEntriesHeader/UnitSiteNominal,'-')"/>
+				</xsl:when>
+				<xsl:when test="../../InvoiceCreditJournalEntriesHeader/UnitSiteNominal !=''">
+					<xsl:value-of select="../../InvoiceCreditJournalEntriesHeader/UnitSiteNominal"/>
+				</xsl:when>
+				<xsl:otherwise><xsl:text>No Site Nominal Found</xsl:text></xsl:otherwise>
+			</xsl:choose>		
 			<xsl:value-of select="$FieldSeperator"/>		
-			<!-- 12	El3	- Department (Unit Nominal)  -->
-			<xsl:value-of select="substring-before(../../InvoiceCreditJournalEntriesHeader/UnitSiteNominal,'-')"/>
+			<!-- 12	El3	- Department (Unit Nominal) -->
+			<xsl:choose>
+				<xsl:when test="contains(../../InvoiceCreditJournalEntriesHeader/UnitSiteNominal,'-')">
+					<xsl:value-of select="substring-before(../../InvoiceCreditJournalEntriesHeader/UnitSiteNominal,'-')"/>
+				</xsl:when>
+				<xsl:when test="../../InvoiceCreditJournalEntriesHeader/UnitSiteNominal !=''">
+					<xsl:value-of select="../../InvoiceCreditJournalEntriesHeader/UnitSiteNominal"/>
+				</xsl:when>
+				<xsl:otherwise><xsl:text>No Site Nominal Found</xsl:text></xsl:otherwise>
+			</xsl:choose>	
 			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- 13	El4	(Leave Blank) -->
 			<xsl:value-of select="$FieldSeperator"/>		
@@ -234,7 +252,7 @@
 			<!-- 7	Period	(Leave Blank) – system will default  -->
 			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- 8	Transaction Date (Current date)  -->
-			<xsl:value-of select="$RunDate"/>
+			<xsl:value-of select="$InvDate"/>
 			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- 9	Line Type	(T - Tax) -->
 			<xsl:text>T</xsl:text> 
@@ -323,7 +341,7 @@
 			<!-- 7	Period	(Leave Blank) – system will default  -->
 			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- 8	Transaction Date (Current date)  -->
-			<xsl:value-of select="$RunDate"/>
+			<xsl:value-of select="$InvDate"/>
 			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- 9	Line Type	(T - Tax) -->
 			<xsl:text>T</xsl:text> 
