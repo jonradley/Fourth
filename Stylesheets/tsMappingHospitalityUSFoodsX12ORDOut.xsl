@@ -8,7 +8,7 @@
 ==========================================================================================
  Date      	| Name 		|	Description of modification
 ==========================================================================================
- 10/10/2017	| Warith Nassor	|	FB12127 - Copied from tsMappingHospitalityIHGORDOut.xsl - Changes made to map to US Foods Spec for Orders
+ 10/10/2017	| Warith Nassor	|	FB12181 - Copied from tsMappingHospitalityIHGORDOut.xsl - Changes made to map to US Foods Spec for Orders
 ==========================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
