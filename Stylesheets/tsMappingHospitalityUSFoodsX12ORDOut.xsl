@@ -8,7 +8,7 @@
 ==========================================================================================
  Date      	| Name 		|	Description of modification
 ==========================================================================================
- 10/10/2017	| Warith Nassor	|	FB12181 - Copied from tsMappingHospitalityIHGORDOut.xsl - Changes made to map to US Foods Spec for Orders
+ 10/10/2017	| Warith Nassor	|	FB12127 - Copied from tsMappingHospitalityIHGORDOut.xsl - Changes made to map to US Foods Spec for Orders
 ==========================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -48,6 +48,7 @@
 		<xsl:value-of select="$sFieldSep"/>
 		<xsl:text>01</xsl:text>
 		<xsl:value-of select="$sFieldSep"/>
+		<!--<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersLocationID/BuyersCode),15)"/>-->
 		<xsl:text>621481585</xsl:text>
 		<xsl:value-of select="js:msPad('',6)"/>
 		<xsl:value-of select="$sFieldSep"/>
@@ -64,9 +65,8 @@
 		<xsl:text>0</xsl:text>
 		<xsl:value-of select="$sFieldSep"/>		
 		<xsl:value-of select="js:msTestOrLive(TradeSimpleHeader/TestFlag)"/>
-		<!--<xsl:value-of select="$sFieldSep"/>-->
-		<!--<xsl:text>></xsl:text>-->
-		<xsl:value-of select="$sRecordSep"/>
+		<xsl:value-of select="$sFieldSep"/>
+		<xsl:text>></xsl:text>
 		<xsl:value-of select="$RecordSeperator"/>
 		
 		
@@ -223,13 +223,15 @@
 			<xsl:value-of select="$sFieldSep"/>
 			<xsl:text>UM</xsl:text>
 			<xsl:value-of select="$sFieldSep"/>
+			<xsl:text>VN</xsl:text>
+			<xsl:value-of select="$sFieldSep"/>
 			<xsl:value-of select="js:msSafeText(string(ProductID/SuppliersProductCode),48)"/>
 			<xsl:value-of select="$RecordSeperator"/>
 
 			<!-- PID Product/Item Description -->
 			<xsl:text>PID</xsl:text>
 			<xsl:value-of select="$sFieldSep"/>
-			<xsl:text>F</xsl:text>s
+			<xsl:text>F</xsl:text>
 			<xsl:value-of select="$sFieldSep"/>			
 			<xsl:value-of select="$sFieldSep"/>
 			<xsl:value-of select="$sFieldSep"/>
