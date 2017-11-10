@@ -9,6 +9,8 @@
  Date      	| Name 		|	Description of modification
 ==========================================================================================
  10/10/2017	| Warith Nassor	|	FB12181 - Copied from tsMappingHospitalityIHGORDOut.xsl - Changes made to map to US Foods Spec for Orders
+==========================================================================================
+ 10/11/2017	| Warith Nassor	|	FB12187 - Added FGN to Mapper
 ==========================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -59,7 +61,7 @@
 		<xsl:value-of select="$sFieldSep"/>
 		<xsl:text>00401</xsl:text>
 		<xsl:value-of select="$sFieldSep"/>
-		<xsl:text>000000001</xsl:text>
+		<xsl:value-of select="format-number(PurchaseOrderHeader/FileGenerationNumber,'000000000')"/>
 		<xsl:value-of select="$sFieldSep"/>
 		<xsl:text>0</xsl:text>
 		<xsl:value-of select="$sFieldSep"/>		
@@ -268,7 +270,7 @@
 		<xsl:value-of select="$sFieldSep"/>
 		<xsl:text>1</xsl:text>
 		<xsl:value-of select="$sFieldSep"/>
-		<xsl:text>000000001</xsl:text>
+		<xsl:value-of select="format-number(PurchaseOrderHeader/FileGenerationNumber,'000000000')"/>
 		<xsl:value-of select="$RecordSeperator"/>
 
 	</xsl:template>
