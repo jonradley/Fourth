@@ -7,6 +7,8 @@ Name			| Date			| Change
 M Dimant		| 10/10/2017	| 12082: Created
 *******************************************************************************************************************************************
 W Nassor		| 19/10/2017	| 12082: Removed '-' for credit values in Net Amount
+*******************************************************************************************************************************************
+M Dimant		| 15/11/2017	| 12192: Corrected output of Restaurant Code from Company Code for Credits
 *******************************************************************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 	<xsl:output method="text" encoding="UTF-8"/>
@@ -148,14 +150,14 @@ W Nassor		| 19/10/2017	| 12082: Removed '-' for credit values in Net Amount
 			<xsl:text>,</xsl:text>			
 			<!-- UK/US -->
 			<xsl:choose>
-				<xsl:when test="substring(/CreditNote/CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode,1,2) = 'Y9' ">
+				<xsl:when test="substring(/CreditNote/CreditNoteHeader/HeaderExtraData/CompanyCode,1,2) = 'Y9' ">
 					<xsl:text>US</xsl:text>
 				</xsl:when>
 				<xsl:otherwise><xsl:text>UK</xsl:text></xsl:otherwise>
 			</xsl:choose>
 			<xsl:text>,</xsl:text>			
 			<!-- Restaurant Code -->
-			<xsl:value-of select="/CreditNote/CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode"/>
+			<xsl:value-of select="/CreditNote/CreditNoteHeader/HeaderExtraData/CompanyCode"/>
 			<xsl:text>,</xsl:text>			
 			<!-- GL Code (Nominal) -->
 			<xsl:choose>
