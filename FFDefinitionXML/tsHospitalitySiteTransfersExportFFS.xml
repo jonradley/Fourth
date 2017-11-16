@@ -1,0 +1,27 @@
+<!--******************************************************************
+Alterations
+**********************************************************************
+Name			| Date				| Change
+**********************************************************************
+G Neicho		| 22-07-2013		| 6627 Created module
+**********************************************************************
+S Sehgal		| 04-02-2014		| 7691 Changed to a No-Schema FFS
+**********************************************************************
+				|					|
+*******************************************************************-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>noschema</ffsRecordPositionType>
+		<ffsSplitBatchRecord RecordPos="E"/>
+	</ffsSettings>
+	<ffsRoot>
+		<L1>
+			<Delim>chr(10)</Delim>
+			<ElementName Start="1" Length="1"/>
+			<L2>
+				<Delim>,</Delim>
+				<TextQual>"</TextQual>
+			</L2>
+		</L1>
+	</ffsRoot>
+</ffsFlatFileSchema>
