@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlatFileSchema>
+  <Structure>
+    <Expression>^([^",\r]*|"[^"]*")(?:,([^",\r]*|"(?:([^"]|""))*"))*\r\n</Expression>
+    <FileHeader match="E" xpath="Batch" target="BatchHeader"/>
+    <Header match="H" xpath="Batch/BatchDocuments" target="BatchDocument[]/Receipt">
+      <Detail match="D" xpath="ReceiptDetail" target="ReceiptLine[]"/>
+    </Header>
+  </Structure>
+  <Output>
+    <Batch>
+      <BatchHeader>
+        <OrganisationCode>{{FileHeader[2]}}</OrganisationCode>
+        <SourceSystemExportID>{{FileHeader[3]}}</SourceSystemExportID>
+        <SourceSystemOrgID>{{FileHeader[5]}}</SourceSystemOrgID>
+        <FormatCode>{{FileHeader[4]}}</FormatCode>
+        <OrganisationName>{{FileHeader[6]}}</OrganisationName>
+        <ExportRunDate>{{FileHeader[7]}}</ExportRunDate>
+        <ExportRunTime>{{FileHeader[8]}}</ExportRunTime>
+      </BatchHeader>
+      <BatchDocuments>
+        <BatchDocument>
+          <Receipt>
+            <ReceiptHeader>
+              <!-- Transaction Type -->
+              <DocumentType>{{Header[2]}}</DocumentType>
+              <!--  Unit Code  -->
+              <BuyersUnitCode>{{Header[3]}}</BuyersUnitCode>
+              <!--  Site Code  -->
+              <BuyersSiteCode>{{Header[4]}}</BuyersSiteCode>
+              <!--  Site Name  -->
+              <BuyersSiteName>{{Header[5]}}</BuyersSiteName>
+              <!--  Site Nominal Code  -->
+              <SiteNominalCode>{{Header[6]}}</SiteNominalCode>
+              <!--  Document Reference  -->
+              <DeliveryNoteReference>{{Header[7]}}</DeliveryNoteReference>
+              <!--  Document Date  -->
+              <DeliveryNoteDate>{{Header[8]}}</DeliveryNoteDate>
+              <!--  Call Reference  -->
+              <CallReference>{{Header[9]}}</CallReference>
+              <!--  Transaction Description  -->
+              <TransactionDescription>{{Header[10]}}</TransactionDescription>
+              <!--  Supplier Code  -->
+              <BuyersCodeForSupplier>{{Header[11]}}</BuyersCodeForSupplier>
+              <!--  Supplier Name  -->
+              <SuppliersName>{{Header[12]}}</SuppliersName>
+              <!--  Supplier Nominal Code  -->
+              <SupplierNominalCode>{{Header[13]}}</SupplierNominalCode>
+              <!--  Order Reference  -->
+              <PurchaseOrderReference>{{Header[14]}}</PurchaseOrderReference>
+              <!--  Order Date  -->
+              <PurchaseOrderDate>{{Header[15]}}</PurchaseOrderDate>
+              <!--  Total Ex VAT  -->
+              <TotalExclVAT>{{Header[16]}}</TotalExclVAT>
+              <!--  Total VAT  -->
+              <VATAmount>{{Header[17]}}</VATAmount>
+              <!--  Total Inc VAT  -->
+              <TotalInclVAT>{{Header[18]}}</TotalInclVAT>
+              <!--  Number of Lines  -->
+              <NumberOfLines>{{Header[19]}}</NumberOfLines>
+              <!--  Comments  -->
+              <Narrative>{{Header[20]}}</Narrative>
+              <!--  Voucher Number  -->
+              <VoucherNumber>{{Header[21]}}</VoucherNumber>
+              <!--  Approved Username  -->
+              <ApprovedBy>{{Header[22]}}</ApprovedBy>
+              <!--  Approved Date  -->
+              <ApprovedDate>{{Header[23]}}</ApprovedDate>
+              <!--  Transaction currency  -->
+              <CurrencyCode>{{Header[24]}}</CurrencyCode>
+              <!--  Stock Period Year  -->
+              <StockFinancialYear>{{Header[25]}}</StockFinancialYear>
+              <!--  Stock Period  -->
+              <StockFinancialPeriod>{{Header[26]}}</StockFinancialPeriod>
+              <!--  Company Code  -->
+              <CompanyCode>{{Header[27]}}</CompanyCode>
+              <!--  DocumentID  -->
+              <DocumentID>{{Header[28]}}</DocumentID>
+            </ReceiptHeader>
+            <ReceiptDetail>
+              <ReceiptLine>
+                <!-- LineNumber -->
+                <LineNumber>{{Detail[2]}}</LineNumber>
+                <!-- SupplierProductCode -->
+                <SuppliersProductCode>{{Detail[3]}}</SuppliersProductCode>
+                <!-- Description -->
+                <ProductDescription>{{Detail[4]}}</ProductDescription>
+                <!-- PackSize -->
+                <PackSize>{{Detail[5]}}</PackSize>
+                <!-- OrderedQuantity -->
+                <OrderedQuantity>{{Detail[6]}}</OrderedQuantity>
+                <!-- AcceptedQuantity -->
+                <AcceptedQuantity>{{Detail[7]}}</AcceptedQuantity>
+                <!-- UnitCostPrice -->
+                <UnitValueExclVAT>{{Detail[8]}}</UnitValueExclVAT>
+                <!-- VATCode -->
+                <CustomerVATCode>{{Detail[9]}}</CustomerVATCode>
+                <!-- VATRate -->
+                <VATRate>{{Detail[10]}}</VATRate>
+                <!-- LineValueExVAT -->
+                <LineValueExclVAT>{{Detail[11]}}</LineValueExclVAT>
+                <!-- LineVAT -->
+                <LineVAT>{{Detail[12]}}</LineVAT>
+                <!-- LineValueIncVAT -->
+                <!--<LineValueIncVAT>{{Detail[13]}}</LineValueIncVAT> -->
+                <!-- CategoryNominal -->
+                <CategoryNominal>{{Detail[14]}}</CategoryNominal>
+                <!-- CategoryName -->
+                <CategoryName>{{Detail[15]}}</CategoryName>
+                <!-- Comments -->
+                <Narrative>{{Detail[16]}}</Narrative>
+                <!-- Reason -->
+                <Reason>{{Detail[17]}}</Reason>
+              </ReceiptLine>
+            </ReceiptDetail>
+          </Receipt>
+        </BatchDocument>
+      </BatchDocuments>
+    </Batch>
+  </Output>
+</FlatFileSchema>
