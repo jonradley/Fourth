@@ -65,10 +65,7 @@
             <!-- VAT Code: Always 1 -->
             <xsl:text>"1"</xsl:text>
             <xsl:value-of select="$EOC"/>
-            <!-- VAT Amount: LineVAT -->
-            <xsl:text>"</xsl:text>
-            <xsl:value-of select="format-number(sum(.//AccrualJournalEntriesDetail/AccrualJournalEntriesLine/LineVAT),'0.00')"/>
-            <xsl:text>"</xsl:text>
+            <!-- VAT Amount: Blank -->
             <xsl:value-of select="$EOC"/>
             <!-- Goods Ammount (Excluding VAT): LineNet -->
             <xsl:text>"</xsl:text>
