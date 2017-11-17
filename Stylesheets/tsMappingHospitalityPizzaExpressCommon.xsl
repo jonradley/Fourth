@@ -25,6 +25,8 @@ Pizza Express UK common script, which holds the Company Code translation logic.
 15/03/2017	| Moty Dimant	| FB11641 - Addition of further Company Codes. Please see FB case for details.
 ==========================================================================================
 15/05/2017	| Moty Dimant	| FB11716 - Addition of further Company Codes. Please see FB case for details.
+==========================================================================================
+18/10/2017	| Helen Mahbub	| FB12163 - Addition of further Company Codes. Please see FB case for details.
 ==========================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript">
@@ -566,6 +568,7 @@ Pizza Express UK common script, which holds the Company Code translation logic.
 		5214 : '00012',
 		5215 : '00012',
 		6001 : '00018',
+		6201 : '00019',
 		6536 : '00011'
 	};
 
