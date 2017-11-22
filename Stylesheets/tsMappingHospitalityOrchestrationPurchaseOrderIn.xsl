@@ -14,15 +14,15 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="xsl script msxsl">
 	<xsl:output method="xml" />
 
-	<xsl:param name="sBuyersCodeForSupplier" select="'BuyersCodeForSupplier'"/>
-	<xsl:param name="sSendersBranchReference" select="'SendersBranchReference'"/>
-	<xsl:param name="sSitesCodeForSupplier" select="'SitesCodeForSupplier'"/>
+	<xsl:param name="BuyersCodeForSupplier" select="'BuyersCodeForSupplier'"/>
+	<xsl:param name="SendersBranchReference" select="'SendersBranchReference'"/>
+	<xsl:param name="SitesCodeForSupplier" select="'SitesCodeForSupplier'"/>
 	
 	<xsl:template match="/PurchaseOrder">
 		<Batch>
 			<TradeSimpleHeader>
 				<SendersCodeForRecipient>
-					<xsl:value-of select="$sBuyersCodeForSupplier"/>
+					<xsl:value-of select="$BuyersCodeForSupplier"/>
 				</SendersCodeForRecipient>
 			</TradeSimpleHeader>
 			<BatchDocuments>
@@ -30,18 +30,38 @@
 					<PurchaseOrder>
 						<TradeSimpleHeader>
 							<SendersCodeForRecipient>
-								<xsl:value-of select="$sSitesCodeForSupplier"/>
+								<xsl:value-of select="$SitesCodeForSupplier"/>
 							</SendersCodeForRecipient>
 							<SendersBranchReference>
-								<xsl:value-of select="$sSendersBranchReference"/>
+								<xsl:value-of select="$SendersBranchReference"/>
 							</SendersBranchReference>
 						</TradeSimpleHeader>
 							<PurchaseOrderHeader>
 								<Buyer>
 									<BuyersLocationID>
-										<xsl:value-of select="$sSitesCodeForSupplier"/>
+										<xsl:value-of select="$SitesCodeForSupplier"/>
 									</BuyersLocationID>
 								</Buyer>
+								<Supplier>
+									<SupplierName>
+										<xsl:value-of select="SupplierName"/>
+									</SupplierName>
+									<SuppliersLocationID>
+										<SuppliersCode>
+											<xsl:value-of select="SupplierCode"/>
+										</SuppliersCode>
+									</SuppliersLocationID>
+								</Supplier>
+								<ShipTo>
+									<ShipToName>
+										<xsl:value-of select="LocationName"/>
+									</ShipToName>
+									<ShipToLocationId>
+										<BuyersCode>
+											<xsl:value-of select="LocationCode"/>
+										</BuyersCode>
+									</ShipToLocationId>
+								</ShipTo>
 								<PurchaseOrderReferences>
 									<PurchaseOrderReference>
 										<xsl:value-of select="OrderReference"/>
@@ -73,10 +93,10 @@
 		<PurchaseOrderLine>
 			<ProductID>
 				<SuppliersProductCode>
-					<xsl:value-of select="ProductExternalId"/>
+					<xsl:value-of select="SupplierProductCode"/>
 				</SuppliersProductCode>
 				<BuyersProductCode>
-					<xsl:value-of select="ProductExternalId"/>
+					<xsl:value-of select="SupplierProductCode"/>
 				</BuyersProductCode>
 			</ProductID>
 			<ProductDescription>
