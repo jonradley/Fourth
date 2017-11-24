@@ -17,7 +17,7 @@
 	<xsl:param name="BuyersCodeForSupplier" select="'BuyersCodeForSupplier'"/>
 	<xsl:param name="SendersBranchReference" select="'SendersBranchReference'"/>
 	<xsl:param name="SitesCodeForSupplier" select="'SitesCodeForSupplier'"/>
-	
+
 	<xsl:template match="/PurchaseOrder">
 		<Batch>
 			<TradeSimpleHeader>
@@ -36,54 +36,71 @@
 								<xsl:value-of select="$SendersBranchReference"/>
 							</SendersBranchReference>
 						</TradeSimpleHeader>
-							<PurchaseOrderHeader>
-								<Buyer>
-									<BuyersLocationID>
+						<PurchaseOrderHeader>
+							<DocumentStatus>
+								<xsl:text>Original</xsl:text>
+							</DocumentStatus>
+
+							<Buyer>
+								<BuyersLocationID>
+									<GLN>GLN</GLN>
+									<BuyersCode>
 										<xsl:value-of select="$SitesCodeForSupplier"/>
-									</BuyersLocationID>
-								</Buyer>
-								<Supplier>
-									<SupplierName>
-										<xsl:value-of select="SupplierName"/>
-									</SupplierName>
-									<SuppliersLocationID>
-										<SuppliersCode>
-											<xsl:value-of select="SupplierCode"/>
-										</SuppliersCode>
-									</SuppliersLocationID>
-								</Supplier>
-								<ShipTo>
-									<ShipToName>
-										<xsl:value-of select="LocationName"/>
-									</ShipToName>
-									<ShipToLocationId>
-										<BuyersCode>
-											<xsl:value-of select="LocationCode"/>
-										</BuyersCode>
-									</ShipToLocationId>
-								</ShipTo>
-								<PurchaseOrderReferences>
-									<PurchaseOrderReference>
-										<xsl:value-of select="OrderReference"/>
-									</PurchaseOrderReference>
-									<PurchaseOrderDate>
-										<xsl:value-of select="script:convertUnixToDate(string(OrderDate))"/>
-									</PurchaseOrderDate>
-								</PurchaseOrderReferences>
-								<OrderedDeliveryDetails>
-									<DeliveryDate>
-										<xsl:value-of select="script:convertUnixToDate(string(DeliveryDate))"/>
-									</DeliveryDate>
-								</OrderedDeliveryDetails>
-							</PurchaseOrderHeader>
-							<PurchaseOrderDetail>
-								<xsl:apply-templates select="Lines"/>
-							</PurchaseOrderDetail>
-							<PurchaseOrderTrailer>
-								<NumberOfLines>
-									<xsl:value-of select="count(Lines)"/>
-								</NumberOfLines>
-							</PurchaseOrderTrailer>
+									</BuyersCode>
+								</BuyersLocationID>
+							</Buyer>
+							<Supplier>
+								<SuppliersLocationID>
+									<GLN>GLN</GLN>
+									<SuppliersCode>
+										<xsl:value-of select="SupplierCode"/>
+									</SuppliersCode>
+								</SuppliersLocationID>
+								<SuppliersName>
+									<xsl:value-of select="SupplierName"/>
+								</SuppliersName>
+							</Supplier>
+							<ShipTo>
+								<ShipToLocationID>
+									<GLN>GLN</GLN>
+									<BuyersCode>
+										<xsl:value-of select="LocationCode"/>
+									</BuyersCode>
+								</ShipToLocationID>
+								<ShipToName>
+									<xsl:value-of select="LocationName"/>
+								</ShipToName>
+								<ShipToAddress>
+									<AddressLine1>AddressLine1</AddressLine1>
+									<AddressLine2>AddressLine2</AddressLine2>
+									<AddressLine3>AddressLine3</AddressLine3>
+									<AddressLine4>AddressLine4</AddressLine4>
+									<PostCode>PostCode</PostCode>
+								</ShipToAddress>
+							</ShipTo>
+							<PurchaseOrderReferences>
+								<PurchaseOrderReference>
+									<xsl:value-of select="OrderReference"/>
+								</PurchaseOrderReference>
+								<PurchaseOrderDate>
+									<xsl:value-of select="script:convertUnixToDate(string(OrderDate))"/>
+								</PurchaseOrderDate>
+							</PurchaseOrderReferences>
+							<OrderedDeliveryDetails>
+								<DeliveryType>Delivery</DeliveryType>
+								<DeliveryDate>
+									<xsl:value-of select="script:convertUnixToDate(string(DeliveryDate))"/>
+								</DeliveryDate>
+							</OrderedDeliveryDetails>
+						</PurchaseOrderHeader>
+						<PurchaseOrderDetail>
+							<xsl:apply-templates select="Lines"/>
+						</PurchaseOrderDetail>
+						<PurchaseOrderTrailer>
+							<NumberOfLines>
+								<xsl:value-of select="count(Lines)"/>
+							</NumberOfLines>
+						</PurchaseOrderTrailer>
 					</PurchaseOrder>
 				</BatchDocument>
 			</BatchDocuments>
@@ -91,7 +108,11 @@
 	</xsl:template>
 	<xsl:template match="Lines">
 		<PurchaseOrderLine>
+			<LineNumber>
+				<xsl:value-of select="LineNumber"/>
+			</LineNumber>		
 			<ProductID>
+				<GTIN>GTIN</GTIN>
 				<SuppliersProductCode>
 					<xsl:value-of select="SupplierProductCode"/>
 				</SuppliersProductCode>
@@ -103,6 +124,7 @@
 				<xsl:value-of select="ProductDescription"/>
 			</ProductDescription>
 			<OrderedQuantity>
+				<xsl:attribute name="UnitOfMeasure"><xsl:call-template name="decodeUoM"><xsl:with-param name="sInput"><xsl:value-of select="OrderUnitCode"/></xsl:with-param></xsl:call-template></xsl:attribute>
 				<xsl:value-of select="script:convertDecimalToNumber(number(OrderedQuantity/Lo), number(OrderedQuantity/Mid), number(OrderedQuantity/Hi), number(OrderedQuantity/SignScale))"/>
 			</OrderedQuantity>
 			<PackSize>
@@ -113,8 +135,18 @@
 			</UnitValueExclVAT>
 		</PurchaseOrderLine>
 	</xsl:template>
+	<xsl:template name="decodeUoM">
+		<xsl:param name="sInput"/>
+		<xsl:choose>
+			<xsl:when test="substring($sInput,string-length($sInput)-1,2) = 'Kg'">KGM</xsl:when>
+			<xsl:when test="$sInput = 'each'">EA</xsl:when>
+			<xsl:otherwise>
+				<xsl:text>EA</xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>	
 	<msxsl:script language="C#" implements-prefix="script">
-	<![CDATA[ 
+		<![CDATA[ 
 
 DateTime unixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
 string format = "yyyy-MM-dd";
@@ -131,5 +163,6 @@ public string convertDecimalToNumber (double lo, double mid, double hi, double s
  return new decimal((int)lo, (int)mid, (int)hi, false, (byte)signScale).ToString();
 }
 
-	]]></msxsl:script>
+	]]>
+	</msxsl:script>
 </xsl:stylesheet>
