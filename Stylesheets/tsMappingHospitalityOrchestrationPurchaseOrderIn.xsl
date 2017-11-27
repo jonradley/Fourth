@@ -71,11 +71,11 @@
 									<xsl:value-of select="LocationName"/>
 								</ShipToName>
 								<ShipToAddress>
-									<AddressLine1>AddressLine1</AddressLine1>
-									<AddressLine2>AddressLine2</AddressLine2>
-									<AddressLine3>AddressLine3</AddressLine3>
-									<AddressLine4>AddressLine4</AddressLine4>
-									<PostCode>PostCode</PostCode>
+									<AddressLine1>.</AddressLine1>
+									<AddressLine2>.</AddressLine2>
+									<AddressLine3>.</AddressLine3>
+									<AddressLine4>.</AddressLine4>
+									<PostCode>.</PostCode>
 								</ShipToAddress>
 							</ShipTo>
 							<PurchaseOrderReferences>
@@ -158,9 +158,12 @@ public string convertUnixToDate (string date)
 	return dateTime.ToString(format);
 }
 
-public string convertDecimalToNumber (double lo, double mid, double hi, double signScale)
+public string convertDecimalToNumber (int lo, int mid, int hi, int signScale)
 {
- return new decimal((int)lo, (int)mid, (int)hi, false, (byte)signScale).ToString();
+	bool sign = (signScale & 0x80000000) != 0;
+	byte scale = (byte)((signScale >> 16) & 0x7F);
+
+	return new decimal(lo, mid, hi, sign, scale).ToString();
 }
 
 	]]>
