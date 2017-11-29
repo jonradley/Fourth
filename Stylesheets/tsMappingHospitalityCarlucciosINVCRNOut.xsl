@@ -15,6 +15,8 @@
  15-09-2017		| M Dimant  	| FB 12133: Slight changes to format and mapping of data from correct fields
 ====================================================================================================================================================================================
  25-09-2017     | M Dimant  	| FB 12140: Added character (I) to FGN to avoid duplicaton with FnB export. Net ammount for credits is now always negative 
+====================================================================================================================================================================================
+ 22-11-2017     | M Dimant  	| FB 12197: Trim the PO reference to max 10 characters. If PO ref field is empty add a full stop 
 =================================================================================================================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript">
 	<xsl:output method="text" encoding="UTF-8"/>
@@ -46,8 +48,18 @@
 			<xsl:value-of select="//Invoice/InvoiceHeader/HeaderExtraData/STXSupplierCode"/>
 			<xsl:value-of select="$FieldSeperator"/>
 			
-			<!-- Carluccios PO Number. This could be blank but will be a maximum of 10 characters	 -->
-			<xsl:value-of select="//InvoiceDetail/InvoiceLine/PurchaseOrderReferences/PurchaseOrderReference"/>
+			<!-- Carluccios PO Number -->
+			<xsl:variable name="PORef" select="//InvoiceDetail/InvoiceLine/PurchaseOrderReferences/PurchaseOrderReference"/>
+			<xsl:choose>
+				<!-- If PO ref is empty or not provided, output a full stop  -->
+				<xsl:when test="$PORef ='' or  not($PORef) ">
+					<xsl:text>.</xsl:text>
+				</xsl:when>
+				<!-- PO ref must be a maximum of 10 characters --> 
+				<xsl:otherwise>
+					<xsl:value-of select="substring($PORef,1,10)"/>					
+				</xsl:otherwise>
+			</xsl:choose>			
 			<xsl:value-of select="$FieldSeperator"/>
 			
 			<!-- Supplier Invoice No (30 characters) -->
@@ -89,8 +101,18 @@
 			<xsl:value-of select="//Invoice/InvoiceHeader/HeaderExtraData/STXSupplierCode"/>
 			<xsl:value-of select="$FieldSeperator"/>
 			
-			<!-- Carluccios PO Number. This could be blank but will be a maximum of 10 characters	 -->
-			<xsl:value-of select="//InvoiceDetail/InvoiceLine/PurchaseOrderReferences/PurchaseOrderReference"/>
+			<!-- Carluccios PO Number -->
+			<xsl:variable name="PORef" select="//InvoiceDetail/InvoiceLine/PurchaseOrderReferences/PurchaseOrderReference"/>
+			<xsl:choose>
+				<!-- If PO ref is empty or not provided, output a full stop  -->
+				<xsl:when test="$PORef ='' or  not($PORef) ">
+					<xsl:text>.</xsl:text>
+				</xsl:when>
+				<!-- PO ref must be a maximum of 10 characters --> 
+				<xsl:otherwise>
+					<xsl:value-of select="substring($PORef,1,10)"/>					
+				</xsl:otherwise>
+			</xsl:choose>
 			<xsl:value-of select="$FieldSeperator"/>
 			
 			<!-- Supplier Invoice No (30 characters) -->
@@ -146,9 +168,20 @@
 			<xsl:value-of select="//CreditNote/CreditNoteHeader/HeaderExtraData/STXSupplierCode"/>
 			<xsl:value-of select="$FieldSeperator"/>
 			
-			<!-- Carluccios PO Number. This could be blank but will be a maximum of 10 characters	 -->
-			<xsl:value-of select="//CreditNoteDetail/CreditNoteLine/PurchaseOrderReferences/PurchaseOrderReference"/>
-			<xsl:value-of select="$FieldSeperator"/>
+			<!-- Carluccios PO Number -->
+			<xsl:variable name="PORef" select="//CreditNoteDetail/CreditNoteLine/PurchaseOrderReferences/PurchaseOrderReference"/>
+			<xsl:choose>
+				<!-- If PO ref is empty or not provided, output a full stop  -->
+				<xsl:when test="$PORef ='' or  not($PORef) ">
+					<xsl:text>.</xsl:text>
+				</xsl:when>
+				<!-- PO ref must be a maximum of 10 characters --> 
+				<xsl:otherwise>
+					<xsl:value-of select="substring($PORef,1,10)"/>					
+				</xsl:otherwise>
+			</xsl:choose>
+			<xsl:value-of select="$FieldSeperator"/>			
+			
 			
 			<!-- Supplier Invoice No (30 characters) -->
 			<xsl:value-of select="//CreditNoteHeader/CreditNoteReferences/CreditNoteReference"/>
@@ -189,8 +222,18 @@
 			<xsl:value-of select="//CreditNote/CreditNoteHeader/HeaderExtraData/STXSupplierCode"/>
 			<xsl:value-of select="$FieldSeperator"/>
 			
-			<!-- Carluccios PO Number. This could be blank but will be a maximum of 10 characters	 -->
-			<xsl:value-of select="//CreditNoteDetail/CreditNoteLine/PurchaseOrderReferences/PurchaseOrderReference"/>
+			<!-- Carluccios PO Number -->
+			<xsl:variable name="PORef" select="//CreditNoteDetail/CreditNoteLine/PurchaseOrderReferences/PurchaseOrderReference"/>
+			<xsl:choose>
+				<!-- If PO ref is empty or not provided, output a full stop  -->
+				<xsl:when test="$PORef ='' or  not($PORef) ">
+					<xsl:text>.</xsl:text>
+				</xsl:when>
+				<!-- PO ref must be a maximum of 10 characters --> 
+				<xsl:otherwise>
+					<xsl:value-of select="substring($PORef,1,10)"/>					
+				</xsl:otherwise>
+			</xsl:choose>
 			<xsl:value-of select="$FieldSeperator"/>
 			
 			<!-- Supplier Invoice No (30 characters) -->
