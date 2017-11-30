@@ -54,7 +54,7 @@
             <xsl:value-of select="$EOC"/>
             <!-- Cost Centre: BuyersUnitCode -->
             <xsl:text>"</xsl:text>
-            <xsl:value-of select="AccrualJournalEntriesHeader/BuyersUnitCode"/>
+            <xsl:value-of select="AccrualJournalEntriesHeader/UnitSiteNominal"/>
             <xsl:text>"</xsl:text>
             <xsl:value-of select="$EOC"/>
             <!-- Department: BuyersSiteCode -->
