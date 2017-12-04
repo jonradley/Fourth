@@ -11,6 +11,8 @@
  Date      	| Name 			| Description of modification
 ==========================================================================================
  17/10/2017	| Warith Nassor	| FB12162 - CRO Closing Stock Export to convert this back to the CSV flat file
+==========================================================================================
+ 01/12/2017	| Warith Nassor	| FB12212 - Removed @FieldSeperator at end of document
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript">
 
@@ -66,7 +68,6 @@
 		
 		<!--FLAG-->
 		<xsl:text>1</xsl:text>
-		<xsl:value-of select="$FieldSeperator"/>
 		<xsl:value-of select="$RecordSeperator"/>
 		</xsl:template>
 		
