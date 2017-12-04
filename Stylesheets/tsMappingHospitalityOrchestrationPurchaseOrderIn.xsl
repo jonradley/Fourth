@@ -91,6 +91,9 @@
 								<DeliveryDate>
 									<xsl:value-of select="script:convertUnixToDate(string(DeliveryDate))"/>
 								</DeliveryDate>
+								<SpecialDeliveryInstructions>
+									<xsl:value-of select="DeliveryInstructions"/>
+								</SpecialDeliveryInstructions>
 							</OrderedDeliveryDetails>
 						</PurchaseOrderHeader>
 						<PurchaseOrderDetail>
