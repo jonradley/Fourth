@@ -17,7 +17,12 @@
 	<xsl:param name="BuyersCodeForSupplier" select="'BuyersCodeForSupplier'"/>
 	<xsl:param name="SendersBranchReference" select="'SendersBranchReference'"/>
 	<xsl:param name="SitesCodeForSupplier" select="'SitesCodeForSupplier'"/>
-
+	<xsl:param name="LocationAddressLine1" select="'.'"/>
+	<xsl:param name="LocationAddressLine2" select="''"/>
+	<xsl:param name="LocationAddressLine3" select="''"/>
+	<xsl:param name="LocationAddressLine4" select="''"/>
+	<xsl:param name="LocationPostCode" select="'.'"/>
+	
 	<xsl:template match="/PurchaseOrder">
 		<Batch>
 			<TradeSimpleHeader>
@@ -71,11 +76,27 @@
 									<xsl:value-of select="LocationName"/>
 								</ShipToName>
 								<ShipToAddress>
-									<AddressLine1>.</AddressLine1>
-									<AddressLine2>.</AddressLine2>
-									<AddressLine3>.</AddressLine3>
-									<AddressLine4>.</AddressLine4>
-									<PostCode>.</PostCode>
+									<AddressLine1>
+										<xsl:value-of select="$LocationAddressLine1"/>
+									</AddressLine1>
+									<xsl:if test="$LocationAddressLine2 != ''">
+										<AddressLine2>
+											<xsl:value-of select="$LocationAddressLine2"/>
+										</AddressLine2>
+									</xsl:if>
+									<xsl:if test="$LocationAddressLine3 != ''">
+										<AddressLine3>
+											<xsl:value-of select="$LocationAddressLine3"/>
+										</AddressLine3>
+									</xsl:if>
+									<xsl:if test="$LocationAddressLine4 != ''">
+										<AddressLine4>
+											<xsl:value-of select="$LocationAddressLine4"/>
+										</AddressLine4>
+									</xsl:if>
+									<PostCode>
+										<xsl:value-of select="$LocationPostCode"/>
+									</PostCode>
 								</ShipToAddress>
 							</ShipTo>
 							<PurchaseOrderReferences>
@@ -90,10 +111,12 @@
 								<DeliveryType>Delivery</DeliveryType>
 								<DeliveryDate>
 									<xsl:value-of select="script:convertUnixToDate(string(DeliveryDate))"/>
-								</DeliveryDate>
-								<SpecialDeliveryInstructions>
-									<xsl:value-of select="DeliveryInstructions"/>
-								</SpecialDeliveryInstructions>
+								</DeliveryDate>								
+								<xsl:if test="DeliveryInstructions != ''">
+									<SpecialDeliveryInstructions>
+										<xsl:value-of select="DeliveryInstructions"/>
+									</SpecialDeliveryInstructions>
+								</xsl:if>
 							</OrderedDeliveryDetails>
 						</PurchaseOrderHeader>
 						<PurchaseOrderDetail>
@@ -131,11 +154,11 @@
 				<xsl:value-of select="script:convertDecimalToNumber(number(OrderedQuantity/Lo), number(OrderedQuantity/Mid), number(OrderedQuantity/Hi), number(OrderedQuantity/SignScale))"/>
 			</OrderedQuantity>
 			<PackSize>
-				<xsl:value-of select="OrderUnitDescription"/>
+				<xsl:value-of select="PackSize"/>
 			</PackSize>
 			<UnitValueExclVAT>
 				<xsl:value-of select="script:convertDecimalToNumber(number(UnitPriceExcludingVAT/Lo), number(UnitPriceExcludingVAT/Mid), number(UnitPriceExcludingVAT/Hi), number(UnitPriceExcludingVAT/SignScale))"/>
-			</UnitValueExclVAT>
+			</UnitValueExclVAT>			
 		</PurchaseOrderLine>
 	</xsl:template>
 	<xsl:template name="decodeUoM">
