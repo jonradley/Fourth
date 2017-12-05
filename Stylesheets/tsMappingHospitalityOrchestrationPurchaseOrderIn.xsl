@@ -153,9 +153,11 @@
 				<xsl:attribute name="UnitOfMeasure"><xsl:call-template name="decodeUoM"><xsl:with-param name="sInput"><xsl:value-of select="OrderUnitCode"/></xsl:with-param></xsl:call-template></xsl:attribute>
 				<xsl:value-of select="script:convertDecimalToNumber(number(OrderedQuantity/Lo), number(OrderedQuantity/Mid), number(OrderedQuantity/Hi), number(OrderedQuantity/SignScale))"/>
 			</OrderedQuantity>
-			<PackSize>
-				<xsl:value-of select="PackSize"/>
-			</PackSize>
+			<xsl:if test="PackSize != ''">
+				<PackSize>
+					<xsl:value-of select="PackSize"/>
+				</PackSize>
+			</xsl:if>
 			<UnitValueExclVAT>
 				<xsl:value-of select="script:convertDecimalToNumber(number(UnitPriceExcludingVAT/Lo), number(UnitPriceExcludingVAT/Mid), number(UnitPriceExcludingVAT/Hi), number(UnitPriceExcludingVAT/SignScale))"/>
 			</UnitValueExclVAT>			
