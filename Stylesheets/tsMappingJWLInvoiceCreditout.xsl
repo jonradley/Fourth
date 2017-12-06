@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-******************************************************************************************
+*************************************************************************************************************************
  Overview
 
  Maps internal invoices and credits into a  csv format for JW Lees .
  The csv files will be concatenated by a subsequent processor.
 
  © Alternative Business Solutions Ltd., 2008.
-******************************************************************************************
+*************************************************************************************************************************
  Module History
-******************************************************************************************
- Date       | Name       | Description of modification
-******************************************************************************************
+*************************************************************************************************************************
+ Date       | Name       	| Description of modification
+*************************************************************************************************************************
  13/08/2008 | Shailesh Dubey| Created module.
-******************************************************************************************
- 27/10/2008 | Lee Boyton | 2537. Spec. change (DRAFT 3). Credit note monetary
-                                         |           values need to be negative.
-******************************************************************************************
+*************************************************************************************************************************
+ 27/10/2008 | Lee Boyton	| 2537. Spec. change (DRAFT 3). Credit note monetary values need to be negative.
+*************************************************************************************************************************
+ 06/12/2017 | Moty Dimant 	| 12223: Corrected how total value of Credits are calculated
+*************************************************************************************************************************
 -->
 <xsl:stylesheet version="1.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -94,7 +95,7 @@
 							<xsl:value-of select="format-number(sum(//InvoiceLine[LineExtraData/AccountCode = $AccountCode and LineExtraData/BuyersVATCode= $TranslatedVatCode]/LineValueExclVAT) + sum(//InvoiceLine[LineExtraData/BuyersVATCode= $TranslatedVatCode]/LineValueExclVAT)  * ($VATRate div 100),'0.00')"/>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:value-of select="format-number(-1 * sum(//CreditNoteLine[LineExtraData/AccountCode = $AccountCode and LineExtraData/BuyersVATCode= $TranslatedVatCode]/LineValueExclVAT) + sum(//CreditNoteLine[LineExtraData/BuyersVATCode= $TranslatedVatCode]/LineValueExclVAT) * ($VATRate div 100),'0.00')"/>
+							<xsl:value-of select="-1 * (format-number(sum(//CreditNoteLine[LineExtraData/AccountCode = $AccountCode and LineExtraData/BuyersVATCode= $TranslatedVatCode]/LineValueExclVAT) + sum(//CreditNoteLine[LineExtraData/BuyersVATCode= $TranslatedVatCode]/LineValueExclVAT) * ($VATRate div 100),'0.00'))"/>
 						</xsl:otherwise>
 					</xsl:choose>
 					<xsl:text>,</xsl:text>
