@@ -56,19 +56,30 @@
 			<xsl:value-of select="$FieldSeperator"/>	
 			
 			<!-- GROSS (inc vat) -->
-			<xsl:value-of select="LineGross"/>
+			<xsl:choose>
+				<xsl:when test="../../InvoiceCreditJournalEntriesHeader/TransactionType = 'CRN'">
+					<xsl:value-of select="format-number(LineGross * -1,'0.00')"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="format-number(LineGross,'0.00')"/>
+				</xsl:otherwise>
+			</xsl:choose>			
 			<xsl:value-of select="$FieldSeperator"/>	
 				
 			<!-- Nom Code -->	
 			<xsl:value-of select="CategoryNominal"/>
 			<xsl:value-of select="$FieldSeperator"/>	
 			
+			<xsl:variable name="UnitSite">
+				<xsl:value-of select="substring-before(../../InvoiceCreditJournalEntriesHeader/UnitSiteName,'/')"/>
+			</xsl:variable>
+			
 			<!-- Area -->
-			<xsl:value-of select="substring-before(../../InvoiceCreditJournalEntriesHeader/UnitSiteName,'/')"/>
+			<xsl:value-of select="substring-before($UnitSite,'-')"/>
 			<xsl:value-of select="$FieldSeperator"/>	
 				
 			<!-- VBPG -->	
-			<xsl:value-of select="../../InvoiceCreditJournalEntriesHeader/UnitSiteNominal"/>
+			<xsl:value-of select="substring-after($UnitSite,'-')"/>
 			<xsl:value-of select="$FieldSeperator"/>	
 			
 			<!-- VAT00% -->
