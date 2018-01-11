@@ -79,22 +79,30 @@
             <xsl:value-of select="$EOC"/>
             <!-- Net: LineNet -->
             <xsl:text>"</xsl:text>
-            <xsl:value-of select="format-number(LineNet,'0.00')"/>
+            <xsl:if test="string(number(LineNet)) != 'NaN'">
+                <xsl:value-of select="format-number(LineNet,'0.00')"/>
+            </xsl:if>
             <xsl:text>"</xsl:text>
             <xsl:value-of select="$EOC"/>
             <!-- Gross: LineGross -->
             <xsl:text>"</xsl:text>
-            <xsl:value-of select="format-number(LineGross,'0.00')"/>
+            <xsl:if test="string(number(LineGross)) != 'NaN'">
+                <xsl:value-of select="format-number(LineGross,'0.00')"/>
+            </xsl:if>
             <xsl:text>"</xsl:text>
             <xsl:value-of select="$EOC"/>
             <!-- VAT Code: VATCode -->
             <xsl:text>"</xsl:text>
-            <xsl:value-of select="VATCode"/>
+            <xsl:if test="VATCode != 'Not provided'">
+                <xsl:value-of select="VATCode"/>
+            </xsl:if>
             <xsl:text>"</xsl:text>
             <xsl:value-of select="$EOC"/>
             <!-- VAT Percentage: LineVATPercentage -->
             <xsl:text>"</xsl:text>
-            <xsl:value-of select="format-number(LineVATPercentage,'0.00')"/>
+            <xsl:if test="string(number(LineVATPercentage)) != 'NaN'">
+                <xsl:value-of select="format-number(LineVATPercentage,'0.00')"/>
+            </xsl:if>
             <xsl:text>"</xsl:text>
             <xsl:value-of select="$EOL"/>
         </xsl:for-each>
