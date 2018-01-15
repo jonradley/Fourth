@@ -25,7 +25,9 @@ R Cambridge	| 2012-08-02		| 5611 MandJ buyers-code-for-vendor masking issue for 
 M Dimant        	|  2017-03-14 		| 11639: Output relevant vendor code for Stonegate Walkabout orders
 *****************************************************************************************************************************************************************************************************************
 H Mahbub     	|  2017-07-27 		| 11953: Add Brakes Pauleys to Brakes standard order out process
-******************************************************************************************************************************************************************************************************************-->
+******************************************************************************************************************************************************************************************************************
+H Mahbub     	|  2018-01-08 		| 12246: Add Fresh Direct to Brakes standard order out process
+*******************************************************************************************************************************************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:sh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" xmlns:eanucc="urn:ean.ucc:2" xmlns:order="urn:ean.ucc:order:2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:vbscript="http://abs-Ltd.com">
 	<xsl:output method="xml" encoding="UTF-8"/>
 	
@@ -415,6 +417,7 @@ H Mahbub     	|  2017-07-27 		| 11953: Add Brakes Pauleys to Brakes standard ord
 			<xsl:when test="$vendorGLN = '5036036000030'">Brakes Logistics</xsl:when>
 			<xsl:when test="$vendorGLN = '5013546120137'">Woodward Foodservice Limited</xsl:when>
 			<xsl:when test="$vendorGLN = '5036036000054'">Brakes Pauleys</xsl:when>
+			<xsl:when test="$vendorGLN = '5036036000900'">Fresh Direct</xsl:when>
 			<xsl:otherwise>
 				<xsl:text>??? no code found for </xsl:text>
 				<xsl:value-of select="$vendorGLN"/>
@@ -527,6 +530,7 @@ H Mahbub     	|  2017-07-27 		| 11953: Add Brakes Pauleys to Brakes standard ord
 			<xsl:when test="$vendorGLN = '5013546120137'">WOODWARD</xsl:when>
 			<xsl:when test="$vendorGLN = '5036036000030'">BRAKESLOGISTICS</xsl:when>
 			<xsl:when test="$vendorGLN = '5036036000054'">BrakesPauleys</xsl:when>
+			<xsl:when test="$vendorGLN = '5036036000900'">FreshDirect</xsl:when>
 
 		</xsl:choose>	
 		
