@@ -9,7 +9,9 @@
 ==========================================================================================
  Date      		| Name 			|	Description of modification
  ==========================================================================================
- 09/09/2016	| M Dimant			|	FB11343 - Created from tsHospitalitySyscoINVX12_FFS.xml
+ 01/09/2016	| M Dimant			|	FB11343 - Created from tsHospitalitySyscoINVX12_FFS.xml
+ ==========================================================================================
+ 22/01/2018	| M Dimant			|	FB12239 - Added SendersBranchReference
 ==========================================================================================-->
 <ffsFlatFileSchema>
 	<ffsSettings>
@@ -47,6 +49,8 @@
 						<TradeSimpleHeader>
 							<!-- N104 - 67 - Identification Code -->
 							<SendersCodeForRecipient RecordPos="N1" LPos="5"/>
+							<!-- ISA - 6 pending -->
+							<SendersBranchReference RecordPos="REF" LPos="3"/>
 						</TradeSimpleHeader>
 						<InvoiceHeader>
 							<BatchInformation>
