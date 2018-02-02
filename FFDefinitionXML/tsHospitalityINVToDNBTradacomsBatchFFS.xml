@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--****************************************************************************************************************************************
+Maps inbound Tradacoms Invoices into Delivery Notes
+
+
+********************************************************************************************************************************************
+Name			| Date			| Change
+********************************************************************************************************************************************
+M Dimant		| 16/01/2018	| 12253: Created for Trucklife Ltd
+********************************************************************************************************************************************
+
+********************************************************************************************************************************************-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>'</ffsRecordSeparator>
+		<ffsEscapeChars>
+			<ffsEscapeChar>
+				<ffsNative>chr(13)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>chr(10)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?=</ffsNative>
+				<ffsTradesimple>¬E</ffsTradesimple>
+				<ffsLiteral>=</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?+</ffsNative>
+				<ffsTradesimple>¬P</ffsTradesimple>
+				<ffsLiteral>+</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?:</ffsNative>
+				<ffsTradesimple>¬C</ffsTradesimple>
+				<ffsLiteral>:</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>?'</ffsNative>
+				<ffsTradesimple>¬A</ffsTradesimple>
+				<ffsLiteral>'</ffsLiteral>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>??</ffsNative>
+				<ffsTradesimple>¬Q</ffsTradesimple>
+				<ffsLiteral>?</ffsLiteral>
+			</ffsEscapeChar>
+		</ffsEscapeChars>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>+</ffsFieldSeparator>
+			<ffsSubFieldSeparator>:</ffsSubFieldSeparator>
+		</ffsFieldSeparators>
+		<ffsPadding/>
+		<ffsBatchHeader>
+			<!--list of records that make up the header, this will be added to each document in the batch -->
+			<ffsHeaderRecord RecordPos="STX="/>
+			<ffsHeaderRecord RecordPos="TYP="/>
+			<ffsHeaderRecord RecordPos="SDT="/>
+			<ffsHeaderRecord RecordPos="CDT="/>
+			<ffsHeaderRecord RecordPos="FIL="/>
+		</ffsBatchHeader>
+		<ffsSplitBatchRecord RecordPos="CLO="/>
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<BatchDocuments>
+				<BatchDocument>
+					<DeliveryNote>
+						<TradeSimpleHeader>
+							<SendersCodeForRecipient RecordPos="CLO=" LPos="1" SFPos="3"/>
+							<SendersBranchReference RecordPos="CDT=" LPos="1" SFPos="2"/>
+						</TradeSimpleHeader>
+						<DeliveryNoteHeader>
+							<Buyer>
+								<BuyersLocationID>
+									<SuppliersCode RecordPos="CDT=" LPos="1" SFPos="1"/>
+								</BuyersLocationID>
+								<BuyersName RecordPos="CDT=" LPos="2"/>
+								<BuyersAddress>
+									<AddressLine1 RecordPos="CDT=" LPos="3" SFPos="1"/>
+									<AddressLine2 RecordPos="CDT=" LPos="3" SFPos="2"/>
+									<AddressLine3 RecordPos="CDT=" LPos="3" SFPos="3"/>
+									<AddressLine4 RecordPos="CDT=" LPos="3" SFPos="4"/>
+									<PostCode RecordPos="CDT=" LPos="3" SFPos="5"/>
+								</BuyersAddress>
+							</Buyer>
+							<Supplier>
+								<SuppliersLocationID>
+									<!--GLN RecordPos="SDT=" LPos="1" SFPos="1"/-->
+									<SuppliersCode RecordPos="SDT=" LPos="1" SFPos="1"/>
+								</SuppliersLocationID>
+								<SuppliersName RecordPos="SDT=" LPos="2"/>
+								<SuppliersAddress>
+									<AddressLine1 RecordPos="SDT=" LPos="3" SFPos="1"/>
+									<AddressLine2 RecordPos="SDT=" LPos="3" SFPos="2"/>
+									<AddressLine3 RecordPos="SDT=" LPos="3" SFPos="3"/>
+									<AddressLine4 RecordPos="SDT=" LPos="3" SFPos="4"/>
+									<PostCode RecordPos="SDT=" LPos="3" SFPos="5"/>
+								</SuppliersAddress>
+							</Supplier>
+							<ShipTo>
+								<ShipToLocationID>
+									<SuppliersCode RecordPos="CLO=" LPos="1" SFPos="3"/>
+								</ShipToLocationID>
+								<ShipToName RecordPos="CLO=" LPos="2" SFPos="1"/>
+								<ShipToAddress>
+									<AddressLine1 RecordPos="CLO=" LPos="3" SFPos="1"/>
+									<AddressLine2 RecordPos="CLO=" LPos="3" SFPos="2"/>
+									<AddressLine3 RecordPos="CLO=" LPos="3" SFPos="3"/>
+									<AddressLine4 RecordPos="CLO=" LPos="3" SFPos="4"/>
+									<PostCode RecordPos="CLO=" LPos="3" SFPos="5"/>
+								</ShipToAddress>
+							</ShipTo>
+							<PurchaseOrderReferences>
+								<PurchaseOrderReference RecordPos="ODD=" LPos="2" SFPos="1"/>
+								<PurchaseOrderDate RecordPos="IRF=" LPos="2" SFPos="1"/>
+							</PurchaseOrderReferences>
+							<DeliveryNoteReferences>
+								<DeliveryNoteReference RecordPos="IRF=" LPos="1" SFPos="1"/>
+								<DeliveryNoteDate RecordPos="IRF=" LPos="2" SFPos="1"/>
+								<DespatchDate RecordPos="IRF=" LPos="2" SFPos="1"/>
+							</DeliveryNoteReferences>
+							<DeliveredDeliveryDetails>
+								<DeliveryDate RecordPos="IRF=" LPos="2" SFPos="1"/>
+							</DeliveredDeliveryDetails>
+						</DeliveryNoteHeader>
+						<DeliveryNoteDetail>
+							<DeliveryNoteLine>
+								<ProductID>
+									<GTIN RecordPos="ILD=" LPos="3" SFPos="1"/>
+									<SuppliersProductCode RecordPos="ILD=" LPos="3" SFPos="2"/>
+								</ProductID>
+								<ProductDescription RecordPos="ILD=" LPos="14" SFPos="1"/>								
+								<DespatchedQuantity RecordPos="ILD=" LPos="7" SFPos="1"/>
+								<PackSize RecordPos="ILD=" LPos="6" SFPos="1"/>
+							</DeliveryNoteLine>
+						</DeliveryNoteDetail>
+					</DeliveryNote>					
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>
