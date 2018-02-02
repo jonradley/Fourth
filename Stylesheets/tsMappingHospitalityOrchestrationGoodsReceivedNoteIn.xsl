@@ -16,6 +16,7 @@
  2016-10-04	| S Sehgal		| 		US21645 Populate the GRN Reference from the PendingDeliverySubmitted XML
 ==========================================================================================
  2018-02-02	| R Cambridge		| D20420 Ensure UoMs are valid, invalid values converted to EA
+                                         Defensively limit product code and product description to 255 chars (a limit for succesful processing in tsProcessorXMLExtract)
 ==========================================================================================
            	|            		| 
 =======================================================================================-->
@@ -117,12 +118,12 @@
 								
 									<ProductID>
 										<SuppliersProductCode>
-											<xsl:value-of select="ProductNumber"/>
+											<xsl:value-of select="substring(ProductNumber, 1, 255)"/>
 										</SuppliersProductCode>
 									</ProductID>
 									
 									<ProductDescription>
-										<xsl:value-of select="ProductDescription"/>
+										<xsl:value-of select="substring(ProductDescription, 1, 255)"/>
 									</ProductDescription>
 									
 									<xsl:if test="OrderUnit != '' and OrderedQuantity != ''">
