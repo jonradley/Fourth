@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!--======================================================================================
  Overview
 
@@ -8,15 +8,13 @@
 ==========================================================================================
  Version        | 
 ==========================================================================================
- Date       | Name          |       Description of modification
+ Date           | Name          |       Description of modification
 ==========================================================================================
-01/07/2015  | Jose Miguel   |   FB10341 - X12 batch Invoice mapper
+01/07/2015      | Jose Miguel   |       FB10341 - X12 batch Invoice mapper
 ==========================================================================================
-28/09/2015  | Jose Miguel   |   FB10512 - Additional Doctype INV for Sysco Corporate
+28/09/2015      | Jose Miguel   |       FB10512 - Additional Doctype INV for Sysco Corporate
 ==========================================================================================
 04/07/2016	| Ben Oliver	|	FB11343 - Created from tsMappingHospitalitySyscoINVX12n
-==========================================================================================
-22/01/2018	| M Dimant		|	FB12239 - Applied correct formatting to UnitValue & LineValue
 ==========================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="msxsl">
         <xsl:output method="xml" encoding="UTF-8" indent="yes"/>
@@ -167,7 +165,7 @@
         <!-- Remove the sign of amounts as credits have negative values -->
         <xsl:template match="UnitValueExclVAT | LineValueExclVAT">
                 <xsl:element name="{name(.)}">
-                        <xsl:value-of select="translate(format-number(. div 100, '00.00'), '-', '')"/>
+                        <xsl:value-of select="translate(., '-', '')"/>
                 </xsl:element>
         </xsl:template>
         
@@ -184,7 +182,7 @@
         <!-- Remove all InvoiceMatchingDetails node and contents as this has been handled manually -->
         <xsl:template match="InvoiceMatchingDetails"/>
         
-        <!-- Total in the document is provided with no decimal position (x 100) so I am just dividing it back -->
+        <!-- For some reason, still unclear, the total in the document is provided with no decimal position (x 100) so I am just dividing it back-->
         <xsl:template match="DocumentTotalInclVAT">
                 <DocumentTotalInclVAT>
                         <xsl:value-of select="translate(format-number(. div 100, '00.00'), '-', '')"/>
