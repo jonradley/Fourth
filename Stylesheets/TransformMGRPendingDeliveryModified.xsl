@@ -78,7 +78,18 @@
 								</xsl:when>
 							</xsl:choose>
 						</IsCatchweight>
-						<Status><xsl:value-of select="$Status"/></Status>
+						<Status>
+							<xsl:choose>
+								<xsl:when test="local-name(..) = 'PurchaseOrderDetail'">Unchanged</xsl:when>
+								<xsl:when test="local-name(..) = 'PurchaseOrderConfirmationDetail'">
+									<xsl:choose>
+										<xsl:when test="./@LineStatus = 'Changed'">Modified</xsl:when>
+										<xsl:otherwise><xsl:value-of select="./@LineStatus"/></xsl:otherwise>
+									</xsl:choose>	
+								</xsl:when>
+								<xsl:otherwise><xsl:value-of select="$Status"/></xsl:otherwise>
+							</xsl:choose>
+						</Status>
 						<OutletId><xsl:value-of select="$LocationId"/></OutletId>
 						<OutletName><xsl:value-of select="/*/*/ShipTo/ShipToName"/></OutletName>
 						<CurrencyPrecision><xsl:value-of select="$CurrencyPrecision"/></CurrencyPrecision>
