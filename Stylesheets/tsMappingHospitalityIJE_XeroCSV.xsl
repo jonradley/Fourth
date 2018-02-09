@@ -9,6 +9,12 @@
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  Case: 12579
  Notes: Initially created for Paesan and Scarpetta
+=========================================================== 
+ Module History
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ Date      	| Name              | Description
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ 14/10/2015	| Johann Rodríguez  | Creation
 ======================================================= -->
 <xsl:stylesheet version="1.0" 
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
