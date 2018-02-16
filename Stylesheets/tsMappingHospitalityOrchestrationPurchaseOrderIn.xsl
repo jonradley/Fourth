@@ -7,9 +7,9 @@
 ==========================================================================================
  Date      	| Name 				| Description of modification
 ==========================================================================================
- 2017-11-16	| J Miguel		| US13171 FB11284 Created
+ 2017-11-16	| J Miguel   		| US13171 FB11284 Created
 ==========================================================================================
-						|							| 
+ 2018-01-24 | Y Valkov          | US43516 Purchasing API > Handle UOM on Order for Products for Product Catalogue Customers (Remove "EA" Hard-coding)
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="xsl script msxsl">
 	<xsl:output method="xml" />
@@ -166,8 +166,24 @@
 	<xsl:template name="decodeUoM">
 		<xsl:param name="sInput"/>
 		<xsl:choose>
-			<xsl:when test="substring($sInput,string-length($sInput)-1,2) = 'Kg'">KGM</xsl:when>
-			<xsl:when test="$sInput = 'each'">EA</xsl:when>
+			<xsl:when test="script:toLower($sInput) = 'case'">CS</xsl:when>
+			<xsl:when test="script:toLower($sInput) = 'cs'">CS</xsl:when>
+			<xsl:when test="script:toLower($sInput) = 'grm'">GRM</xsl:when>
+			<xsl:when test="script:toLower($sInput) = 'kg'">KGM</xsl:when>
+			<xsl:when test="script:toLower($sInput) = 'kgm'">KGM</xsl:when>
+			<xsl:when test="script:toLower($sInput) = 'pnd'">PND</xsl:when>
+			<xsl:when test="script:toLower($sInput) = 'onz'">ONZ</xsl:when>
+			<xsl:when test="script:toLower($sInput) = 'gli'">GLI</xsl:when>
+			<xsl:when test="script:toLower($sInput) = 'l'">LTR</xsl:when>
+			<xsl:when test="script:toLower($sInput) = 'ltr'">LTR</xsl:when>
+			<xsl:when test="script:toLower($sInput) = 'ozi'">OZI</xsl:when>
+			<xsl:when test="script:toLower($sInput) = 'pti'">PTI</xsl:when>
+			<xsl:when test="script:toLower($sInput) = 'ptn'">PTN</xsl:when>
+			<xsl:when test="script:toLower($sInput) = '001'">001</xsl:when>
+			<xsl:when test="script:toLower($sInput) = 'dzn'">DZN</xsl:when>
+			<xsl:when test="script:toLower($sInput) = 'pf'">PF</xsl:when>
+			<xsl:when test="script:toLower($sInput) = 'pr'">PR</xsl:when>
+			<xsl:when test="script:toLower($sInput) = 'hur'">HUR</xsl:when>
 			<xsl:otherwise>
 				<xsl:text>EA</xsl:text>
 			</xsl:otherwise>
@@ -192,6 +208,16 @@ public string convertDecimalToNumber (int lo, int mid, int hi, int signScale)
 	byte scale = (byte)((signScale >> 16) & 0x7F);
 
 	return new decimal(lo, mid, hi, sign, scale).ToString();
+}
+
+public string toLower(string @string)
+{
+	if (string.IsNullOrEmpty(@string))
+	{
+		return string.Empty;
+	}
+	
+	return @string.ToLower();
 }
 
 	]]>

@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-'******************************************************************************************
+'*************************************************************************************************************************
 ' Maps iXML invoices into EanUcc format for Westbury Street Holdings
 ' 
-'******************************************************************************************
+'*************************************************************************************************************************
 ' Module History
-'******************************************************************************************
+'*************************************************************************************************************************
 ' Date			| Name			| Description of modification
-'******************************************************************************************
+'*************************************************************************************************************************
 ' 10/08/2017 	| M Dimant		| 12251:Created 
-'******************************************************************************************
+'*************************************************************************************************************************
+' 02/02/2018 	| M Dimant		| 12568: Made several further changes as per Wax Digital requirements
+'*************************************************************************************************************************
 -->
 <xsl:stylesheet version="1.0" 
 				xmlns="http://www.eanucc.org/2002/Pay/FoodService/FoodService/UK/EanUcc/Pay" 
@@ -90,10 +92,11 @@
 			</xsl:if>
 			
 			<Buyer>
-				<BuyerGLN><xsl:value-of select="/Invoice/InvoiceHeader/Buyer/BuyersLocationID/GLN"/></BuyerGLN>
-				<xsl:if test="/Invoice/InvoiceHeader/Buyer/BuyersLocationID/BuyersCode">
+				<BuyerGLN><xsl:value-of select="/Invoice/InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode"/></BuyerGLN>
+				<xsl:if test="/Invoice/InvoiceHeader/Buyer/BuyersName">
 					<BuyerAssigned>
-						<xsl:value-of select="/Invoice/InvoiceHeader/Buyer/BuyersLocationID/BuyersCode"/></BuyerAssigned>
+						<xsl:value-of select="/Invoice/InvoiceHeader/Buyer/BuyersName"/>
+					</BuyerAssigned>
 				</xsl:if>
 				<xsl:if test="/Invoice/InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode">
 					<SellerAssigned><xsl:value-of select="/Invoice/InvoiceHeader/Buyer/BuyersLocationID/SuppliersCode"/></SellerAssigned>
@@ -112,12 +115,14 @@
 			</Buyer>
 			
 			<Seller>
-				<SellerGLN scheme="GLN"><xsl:value-of select="/Invoice/InvoiceHeader/Supplier/SuppliersLocationID/GLN"/></SellerGLN>
-				<xsl:if test="/Invoice/InvoiceHeader/Supplier/SuppliersLocationID/SuppliersCode">
-					<SellerAssigned><xsl:value-of select="/Invoice/InvoiceHeader/Supplier/SuppliersLocationID/SuppliersCode"/></SellerAssigned>
+				<SellerGLN><xsl:value-of select="/Invoice/InvoiceHeader/Supplier/SuppliersLocationID/GLN"/></SellerGLN>
+				<xsl:if test="/Invoice/InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode">
+					<SellerAssigned><xsl:value-of select="/Invoice/InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode"/></SellerAssigned>
 				</xsl:if>
 				<xsl:if test="/Invoice/InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode">
-					<BuyerAssigned><xsl:value-of select="/Invoice/InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode"/></BuyerAssigned>
+					<BuyerAssigned>
+						<xsl:value-of select="/Invoice/InvoiceHeader/Supplier/SuppliersLocationID/BuyersCode"/>
+					</BuyerAssigned>
 				</xsl:if>
 				<Address>
 					<BuildingIdentifier><xsl:value-of select="/Invoice/InvoiceHeader/Supplier/SuppliersAddress/AddressLine1"/></BuildingIdentifier>
@@ -136,7 +141,7 @@
 			</Seller>
 			
 			<ShipTo>
-				<ShipToGLN scheme="GLN"><xsl:value-of select="/Invoice/InvoiceHeader/ShipTo/ShipToLocationID/GLN"/></ShipToGLN>
+				<ShipToGLN><xsl:value-of select="/Invoice/InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode"/></ShipToGLN>
 				<xsl:if test="/Invoice/InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode">
 					<BuyerAssigned><xsl:value-of select="/Invoice/InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode"/></BuyerAssigned>
 				</xsl:if>
@@ -288,10 +293,11 @@
 			
 			
 			<Buyer>
-				<BuyerGLN><xsl:value-of select="/CreditNote/CreditNoteHeader/Buyer/BuyersLocationID/GLN"/></BuyerGLN>
-				<xsl:if test="/CreditNote/CreditNoteHeader/Buyer/BuyersLocationID/BuyersCode">
+				<BuyerGLN><xsl:value-of select="/CreditNote/CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode"/></BuyerGLN>
+				<xsl:if test="/CreditNote/CreditNoteHeader/Buyer/BuyersName">
 					<BuyerAssigned>
-						<xsl:value-of select="/CreditNote/CreditNoteHeader/Buyer/BuyersLocationID/BuyersCode"/></BuyerAssigned>
+						<xsl:value-of select="/CreditNote/CreditNoteHeader/Buyer/BuyersName"/>
+					</BuyerAssigned>
 				</xsl:if>
 				<xsl:if test="/CreditNote/CreditNoteHeader/Buyer/BuyersLocationID/SuppliersCode">
 					<SellerAssigned><xsl:value-of select="/CreditNote/CreditNoteHeader/Buyer/BuyersLocationID/SuppliersCode"/></SellerAssigned>
@@ -310,12 +316,14 @@
 			</Buyer>
 			
 			<Seller>
-				<SellerGLN scheme="GLN"><xsl:value-of select="/CreditNote/CreditNoteHeader/Supplier/SuppliersLocationID/GLN"/></SellerGLN>
-				<xsl:if test="/CreditNote/CreditNoteHeader/Supplier/SuppliersLocationID/SuppliersCode">
-					<SellerAssigned><xsl:value-of select="/CreditNote/CreditNoteHeader/Supplier/SuppliersLocationID/SuppliersCode"/></SellerAssigned>
+				<SellerGLN><xsl:value-of select="/CreditNote/CreditNoteHeader/Supplier/SuppliersLocationID/GLN"/></SellerGLN>
+				<xsl:if test="/CreditNote/CreditNoteHeader/Supplier/BuyersCode">
+					<SellerAssigned>
+						<xsl:value-of select="/CreditNote/CreditNoteHeader/Supplier/BuyersCode"/>
+					</SellerAssigned>
 				</xsl:if>
-				<xsl:if test="/CreditNote/CreditNoteHeader/Supplier/SuppliersLocationID/BuyersCode">
-					<BuyerAssigned><xsl:value-of select="/CreditNote/CreditNoteHeader/Supplier/SuppliersLocationID/BuyersCode"/></BuyerAssigned>
+				<xsl:if test="/CreditNote/CreditNoteHeader/Buyer/BuyersName">
+					<BuyerAssigned><xsl:value-of select="/CreditNote/CreditNoteHeader/Buyer/BuyersName"/></BuyerAssigned>
 				</xsl:if>
 				<Address>
 					<BuildingIdentifier><xsl:value-of select="/CreditNote/CreditNoteHeader/Supplier/SuppliersAddress/AddressLine1"/></BuildingIdentifier>
