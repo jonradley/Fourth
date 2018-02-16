@@ -177,12 +177,55 @@
 	<xsl:template name="translateUoM">
 		<xsl:param name="inputUoM"/>
 		
-		<xsl:variable name="validUoMs" select="'|EA|CS|KGM|GRM|PND|ONZ|GLI|LTR|OZI|PTI|PTN|001|DZN|PF|PR|HUR|'"/>
-		
 		<xsl:variable name="inputUoM_UpperCase" select="translate($inputUoM, 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')"/>
 		
 		<xsl:choose>
-			<xsl:when test="contains($validUoMs, concat('|',$inputUoM_UpperCase,'|'))">
+			<xsl:when test="'CS' = $inputUoM_UpperCase">
+				<xsl:value-of select="$inputUoM_UpperCase"/>
+			</xsl:when>
+			<xsl:when test="'GRM' = $inputUoM_UpperCase">
+				<xsl:value-of select="$inputUoM_UpperCase"/>
+			</xsl:when>
+			<xsl:when test="'KGM' = $inputUoM_UpperCase">
+				<xsl:value-of select="$inputUoM_UpperCase"/>
+			</xsl:when>
+			<xsl:when test="'PND' = $inputUoM_UpperCase">
+				<xsl:value-of select="$inputUoM_UpperCase"/>
+			</xsl:when>
+			<xsl:when test="'ONZ' = $inputUoM_UpperCase">
+				<xsl:value-of select="$inputUoM_UpperCase"/>
+			</xsl:when>
+			<xsl:when test="'GLI' = $inputUoM_UpperCase">
+				<xsl:value-of select="$inputUoM_UpperCase"/>
+			</xsl:when>
+			<xsl:when test="'LTR' = $inputUoM_UpperCase">
+				<xsl:value-of select="$inputUoM_UpperCase"/>
+			</xsl:when>
+			<xsl:when test="'OZI' = $inputUoM_UpperCase">
+				<xsl:value-of select="$inputUoM_UpperCase"/>
+			</xsl:when>
+			<xsl:when test="'PTI' = $inputUoM_UpperCase">
+				<xsl:value-of select="$inputUoM_UpperCase"/>
+			</xsl:when>
+			<xsl:when test="'PTN' = $inputUoM_UpperCase">
+				<xsl:value-of select="$inputUoM_UpperCase"/>
+			</xsl:when>
+			<xsl:when test="'001' = $inputUoM_UpperCase">
+				<xsl:value-of select="$inputUoM_UpperCase"/>
+			</xsl:when>
+			<xsl:when test="'DZN' = $inputUoM_UpperCase">
+				<xsl:value-of select="$inputUoM_UpperCase"/>
+			</xsl:when>
+			<xsl:when test="'EA' = $inputUoM_UpperCase">
+				<xsl:value-of select="$inputUoM_UpperCase"/>
+			</xsl:when>
+			<xsl:when test="'PF' = $inputUoM_UpperCase">
+				<xsl:value-of select="$inputUoM_UpperCase"/>
+			</xsl:when>
+			<xsl:when test="'PR' = $inputUoM_UpperCase">
+				<xsl:value-of select="$inputUoM_UpperCase"/>
+			</xsl:when>
+			<xsl:when test="'HUR' = $inputUoM_UpperCase">
 				<xsl:value-of select="$inputUoM_UpperCase"/>
 			</xsl:when>
 			<xsl:otherwise>EA</xsl:otherwise>
