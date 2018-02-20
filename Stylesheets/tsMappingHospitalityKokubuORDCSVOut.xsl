@@ -13,6 +13,8 @@ Outbound Purchase Orders in CSV based on Kokubu CSV format.
  20/04/2017		| M Dimant		| FB11686: Created.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  10/12/2017		| M Dimant		| FB12153: Add quotes around descriptions. Map UOM to supplier's format.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 20/02/2018		| M Dimant		| FB12628: Removed description field
 =======================================================================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 	xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:vbscript="http://abs-ltd.com/blah">
@@ -69,12 +71,7 @@ Outbound Purchase Orders in CSV based on Kokubu CSV format.
 			</xsl:choose>			
 			<xsl:value-of select="$FieldSeperator"/>
 							
-			<!-- 商品名全角 K Product Description -->
-			<xsl:text>"</xsl:text>
-			<xsl:call-template name="msQuotes">
-				<xsl:with-param name="vs" select="ProductDescription"/>
-			</xsl:call-template>			
-			<xsl:text>"</xsl:text>
+			<!-- 商品名全角 K Product Description -->			
 			<xsl:value-of select="$FieldSeperator"/>
 								
 			<!-- 商品名半角 L Product Description -->	
