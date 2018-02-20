@@ -115,6 +115,25 @@
 						<ProductPrice>
 							<xsl:value-of select="UnitValueExclVAT"/>
 						</ProductPrice>
+							<ProductDescription>
+							<xsl:value-of select="ProductDescription"/>
+						</ProductDescription>
+						<PackSize>
+							<xsl:value-of select="PackSize"/>
+						</PackSize>
+						<Category>
+							<xsl:choose>
+								<xsl:when test="contains(SectionID, '+++++')">
+									<xsl:value-of select="substring-before(./SectionID,'+++++')"/>	
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="SectionID"/>	
+								</xsl:otherwise>
+							</xsl:choose>
+						</Category>
+						<SubCategory>
+							<xsl:value-of select="substring-after(./SectionID,'+++++')"/>
+						</SubCategory>
 					</Product>
 										
 				</xsl:for-each>
