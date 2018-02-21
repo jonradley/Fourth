@@ -13,7 +13,7 @@
 ******************************************************************************************
  2015-05-18  | Y Kovalenko 	| FB10274 Added catalogue code and name
 ******************************************************************************************
-             |            	| 
+ 2018-02-20 | K Stoyanova   | US43893 Adaco XML feed
 ******************************************************************************************
              |             	|           
 ***************************************************************************************-->
@@ -115,7 +115,7 @@
 						<ProductPrice>
 							<xsl:value-of select="UnitValueExclVAT"/>
 						</ProductPrice>
-							<ProductDescription>
+						<ProductDescription>
 							<xsl:value-of select="ProductDescription"/>
 						</ProductDescription>
 						<PackSize>
