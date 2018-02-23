@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!--======================================================================================
+<!--
+==========================================================================================
  Overview
 
  © Alternative Business Solutions Ltd, 2006.
@@ -17,7 +18,10 @@
  												Adoption for Orchid Pubs and TCG
 ==========================================================================================
 16/06/2008  | A Sheppard	| 2271. Created S and N specific version
-=======================================================================================-->
+==========================================================================================
+22/02/2018  | Jack Saunders | 12633. Include customer GLN in CDT segment
+==========================================================================================
+-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 	xmlns:HelperObj="urn:XSLHelper" 
@@ -109,7 +113,7 @@
 		<xsl:value-of select="$sRecordSep"/>
 		
 		<xsl:text>CDT=</xsl:text>
-			<!--xsl:value-of select="PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/-->
+			<xsl:value-of select="PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/>
 			<xsl:text>:</xsl:text>
 			<xsl:value-of select="PurchaseOrder/PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode"/>
 			<xsl:text>+</xsl:text>
