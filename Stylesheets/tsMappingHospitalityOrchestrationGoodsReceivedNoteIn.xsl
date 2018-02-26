@@ -15,6 +15,9 @@
 ==========================================================================================
  2016-10-04	| S Sehgal		| 		US21645 Populate the GRN Reference from the PendingDeliverySubmitted XML
 ==========================================================================================
+ 2018-02-02	| R Cambridge		| D20420 Ensure UoMs are valid, invalid values converted to EA
+                                         Defensively limit product code and product description to 255 chars (a limit for succesful processing in tsProcessorXMLExtract)
+==========================================================================================
            	|            		| 
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="xsl script msxsl">
@@ -112,28 +115,43 @@
 							<xsl:for-each select="Lines">
 							
 								<GoodsReceivedNoteLine>
+								
 									<ProductID>
 										<SuppliersProductCode>
-											<xsl:value-of select="ProductNumber"/>
+											<xsl:value-of select="substring(ProductNumber, 1, 255)"/>
 										</SuppliersProductCode>
 									</ProductID>
+									
 									<ProductDescription>
-										<xsl:value-of select="ProductDescription"/>
+										<xsl:value-of select="substring(ProductDescription, 1, 255)"/>
 									</ProductDescription>
+									
 									<xsl:if test="OrderUnit != '' and OrderedQuantity != ''">
 										<OrderedQuantity>
-											<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="OrderUnit"/></xsl:attribute>
+											<xsl:attribute name="UnitOfMeasure">
+												<xsl:call-template name="translateUoM">
+													<xsl:with-param name="inputUoM" select="OrderUnit"/>
+												</xsl:call-template>
+											</xsl:attribute>
 											<xsl:value-of select="OrderedQuantity"/>
 										</OrderedQuantity>
-									</xsl:if>									
+									</xsl:if>		
+																
 									<AcceptedQuantity>
-										<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="ReceivedUnit"/></xsl:attribute>
+										<xsl:attribute name="UnitOfMeasure">
+											<xsl:call-template name="translateUoM">
+												<xsl:with-param name="inputUoM" select="ReceivedUnit"/>
+											</xsl:call-template>
+										</xsl:attribute>
 										<xsl:value-of select="ReceivedQuantity"/>
 									</AcceptedQuantity>
+									
 									<!--PackSize>Pack</PackSize-->
+									
 									<UnitValueExclVAT>
 										<xsl:value-of select="format-number(ReceivedUnitPrice, '0.##')"/>
 									</UnitValueExclVAT>
+									
 								</GoodsReceivedNoteLine>
 								
 							</xsl:for-each>
@@ -155,6 +173,24 @@
 		</Batch>
 			
 	</xsl:template>
+	
+	<xsl:template name="translateUoM">
+		<xsl:param name="inputUoM"/>
+		
+		<xsl:variable name="validUoMs" select="'|EA|CS|KGM|GRM|PND|ONZ|GLI|LTR|OZI|PTI|PTN|001|DZN|PF|PR|HUR|'"/>
+		
+		<xsl:variable name="inputUoM_UpperCase" select="translate($inputUoM, 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')"/>
+		
+		<xsl:choose>
+			<xsl:when test="contains($validUoMs, concat('|',$inputUoM_UpperCase,'|'))">
+				<xsl:value-of select="$inputUoM_UpperCase"/>
+			</xsl:when>
+			<xsl:otherwise>EA</xsl:otherwise>
+		</xsl:choose>
+	
+	</xsl:template>
+	
+	
 	<msxsl:script language="JScript" implements-prefix="script"><![CDATA[ 
 		/*=========================================================================================
 		' Routine       	 : msGetTodaysDate
