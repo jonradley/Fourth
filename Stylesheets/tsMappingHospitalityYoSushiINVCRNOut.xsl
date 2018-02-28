@@ -9,6 +9,8 @@ M Dimant		| 10/10/2017	| 12082: Created
 W Nassor		| 19/10/2017	| 12082: Removed '-' for credit values in Net Amount
 *******************************************************************************************************************************************
 M Dimant		| 15/11/2017	| 12192: Corrected output of Restaurant Code from Company Code for Credits
+*******************************************************************************************************************************************
+M Dimant		| 15/02/2018	| 12616: Corrected output of VAT ammount for each nominal/VAT rate combination
 *******************************************************************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 	<xsl:output method="text" encoding="UTF-8"/>
@@ -65,8 +67,8 @@ M Dimant		| 15/11/2017	| 12192: Corrected output of Restaurant Code from Company
 			
 			<xsl:text>,</xsl:text>		
 				
-			<!-- VAT Amount -->
-			<xsl:value-of select="/Invoice/InvoiceTrailer/VATSubTotals/VATSubTotal[@VATCode=$ProdVAT]/VATAmountAtRate"/>
+			<!-- VAT Amount for given Nominal Code and VAT code -->
+			<xsl:value-of select="format-number($NetAmount * (../../../InvoiceLine[LineExtraData/AccountCode=$ProdNom and VATCode=$ProdVAT]/VATRate div 100),'0.00')"/>
 			<xsl:text>,</xsl:text>			
 			<!-- UK/US -->
 			<xsl:choose>
@@ -145,8 +147,8 @@ M Dimant		| 15/11/2017	| 12192: Corrected output of Restaurant Code from Company
 			<xsl:variable name="NetAmount" select="sum(../../../CreditNoteLine[LineExtraData/AccountCode=$ProdNom and VATCode=$ProdVAT]/LineValueExclVAT)"/> 		
 			<xsl:value-of select="format-number($NetAmount,'0.00')"/>
 			<xsl:text>,</xsl:text>			
-			<!-- VAT Amount -->
-			<xsl:value-of select="/CreditNote/CreditNoteTrailer/VATSubTotals/VATSubTotal[@VATCode=$ProdVAT]/VATAmountAtRate"/>
+			<!-- VAT Amount for given Nominal Code and VAT code -->
+			<xsl:value-of select="format-number($NetAmount * (../../../CreditNoteLine[LineExtraData/AccountCode=$ProdNom and VATCode=$ProdVAT]/VATRate div 100),'0.00')"/>
 			<xsl:text>,</xsl:text>			
 			<!-- UK/US -->
 			<xsl:choose>
