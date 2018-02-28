@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!--********************************************************************************************************************************************
+Date				| Name				|	Description
+************************************************************************************************************************************************
+12/02/2018	| W Nassor		| FB 12252: Created Module
+************************************************************************************************************************************************-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>chr(10)</ffsRecordSeparator>
+		<ffsEscapeChars>
+			<ffsEscapeChar>
+				<ffsNative>chr(13)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>""</ffsNative>
+				<ffsTradesimple>¬Q</ffsTradesimple>
+				<ffsLiteral>"</ffsLiteral>
+			</ffsEscapeChar>
+		</ffsEscapeChars>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>,</ffsFieldSeparator>
+		</ffsFieldSeparators>
+		<ffsGroups>
+			<ffsGroup>
+				<ffsGroupRecord RecordPos="HDR" FieldTotal="35"/>
+				<ffsSubGroupRecord RecordPos="CLD" FieldTotal="14"/>
+			</ffsGroup>
+		</ffsGroups>
+		<ffsSplitBatchRecord RecordPos="HDR"/>
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<BatchDocuments>
+				<BatchDocument>
+					<CreditNote>
+						<TradeSimpleHeader>
+							<SendersCodeForRecipient RecordPos="HDR" LPos="4"/>
+							<SendersBranchReference  RecordPos="HDR" LPos="7"/>
+						</TradeSimpleHeader>
+						<CreditNoteHeader>
+							<Buyer>
+								<BuyersLocationID>
+									<GLN RecordPos="HDR" LPos="3"/>
+									<SuppliersCode RecordPos="HDR" LPos="4"/>
+								</BuyersLocationID>
+								<BuyersName RecordPos="HDR" LPos="5"/>
+							</Buyer>
+							<Supplier>
+								<SuppliersLocationID>
+									<GLN RecordPos="HDR" LPos="6"/>
+								</SuppliersLocationID>
+								<SuppliersName RecordPos="HDR" LPos="8"/>
+							</Supplier>
+							<ShipTo>
+								<ShipToLocationID>
+									<SuppliersCode RecordPos="HDR" LPos="4"/>
+								</ShipToLocationID>
+								<ShipToName RecordPos="HDR" LPos="12"/>
+								<ShipToAddress>
+									<AddressLine1 RecordPos="HDR" LPos="13"/>
+									<AddressLine2 RecordPos="HDR" LPos="14"/>
+									<AddressLine3 RecordPos="HDR" LPos="15"/>
+									<AddressLine4 RecordPos="HDR" LPos="16"/>
+									<PostCode RecordPos="HDR" LPos="17"/>
+								</ShipToAddress>
+							</ShipTo>
+							<InvoiceReferences>
+								<InvoiceReference RecordPos="HDR" LPos="22"/>
+								<InvoiceDate RecordPos="HDR" LPos="23"/>
+							</InvoiceReferences>
+							<CreditNoteReferences>
+								<CreditNoteReference RecordPos="HDR" LPos="18"/>
+								<CreditNoteDate RecordPos="HDR" LPos="19"/>
+							</CreditNoteReferences>
+						</CreditNoteHeader>
+						<CreditNoteDetail>
+							<CreditNoteLine>	
+								<PurchaseOrderReferences>
+									<PurchaseOrderReference RecordPos="HDR" LPos="27"/>
+									<PurchaseOrderDate RecordPos="HDR" LPos="28"/>
+								</PurchaseOrderReferences>
+								<!--<DeliveryNoteReferences>
+									<DeliveryNoteReference RecordPos="CLD" LPos="43"/>
+									<DeliveryNoteDate RecordPos="CLD" LPos="44"/>
+								</DeliveryNoteReferences>-->							
+								<ProductID>
+									<GTIN RecordPos="CLD" LPos="2"/>
+									<SuppliersProductCode RecordPos="CLD" LPos="3"/>
+									<BuyersProductCode RecordPos="CLD" LPos="4"/>
+								</ProductID>
+								<ProductDescription RecordPos="CLD" LPos="8"/>
+								<CreditedQuantity RecordPos="CLD" LPos="5">
+									<ffsAttribute1 name="UnitOfMeasure" RecordPos="CLD" LPos="7"/>
+								</CreditedQuantity>
+								<PackSize RecordPos="CLD" LPos="6"/>
+								<UnitValueExclVAT RecordPos="CLD" LPos="11"/>
+								<!--<LineDiscountRate RecordPos="CST" LPos="16"/>
+								<LineDiscountValue RecordPos="CST" LPos="15"/>-->
+								<VATCode RecordPos="CLD" LPos="12"/>
+								<VATRate RecordPos="CLD" LPos="13"/>
+							</CreditNoteLine>
+						</CreditNoteDetail>
+						<CreditNoteTrailer>
+							<VATSubTotals>
+								<VATSubTotal>
+									<ffsAttribute1 name="VATCode" RecordPos="CST" LPos="2"/>
+									<ffsAttribute1 name="VATRate" RecordPos="CST" LPos="3"/>
+									<DocumentDiscountAtRate RecordPos="CST" LPos="6"/>
+									<DocumentTotalExclVATAtRate RecordPos="CST" LPos="4"/>
+									<SettlementTotalExclVATAtRate RecordPos="CST" LPos="9"/>
+									<VATAmountAtRate RecordPos="CST" LPos="10"/>
+									<DocumentTotalInclVATAtRate RecordPos="CST" LPos="11"/>
+									<SettlementTotalInclVATAtRate RecordPos="CST" LPos="12"/>
+								</VATSubTotal>
+							</VATSubTotals>
+							<DocumentDiscount RecordPos="CTR" LPos="4"/>
+							<DocumentTotalExclVAT RecordPos="CTR" LPos="2"/>
+							<SettlementDiscount RecordPos="CTR" LPos="6"/>
+							<SettlementTotalExclVAT RecordPos="CTR" LPos="7"/>
+							<VATAmount RecordPos="CTR" LPos="8"/>
+							<DocumentTotalInclVAT RecordPos="CTR" LPos="10"/>
+							<SettlementTotalInclVAT RecordPos="CTR" LPos="11"/>
+						</CreditNoteTrailer>
+					</CreditNote>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>
