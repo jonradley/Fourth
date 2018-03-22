@@ -151,7 +151,7 @@
 			</ProductDescription>
 			<OrderedQuantity>
 				<xsl:attribute name="UnitOfMeasure"><xsl:call-template name="decodeUoM"><xsl:with-param name="sInput"><xsl:value-of select="OrderUnitCode"/></xsl:with-param></xsl:call-template></xsl:attribute>
-				<xsl:value-of select="script:convertDecimalToNumber(number(OrderedQuantity/Lo), number(OrderedQuantity/Mid), number(OrderedQuantity/Hi), number(OrderedQuantity/SignScale))"/>
+				<xsl:value-of select="script:convertOrderedQuantity(number(OrderedQuantity/Lo), number(OrderedQuantity/Mid), number(OrderedQuantity/Hi), number(OrderedQuantity/SignScale))"/>
 			</OrderedQuantity>
 			<xsl:if test="PackSize != ''">
 				<PackSize>
@@ -159,7 +159,7 @@
 				</PackSize>
 			</xsl:if>
 			<UnitValueExclVAT>
-				<xsl:value-of select="script:convertDecimalToNumber(number(UnitPriceExcludingVAT/Lo), number(UnitPriceExcludingVAT/Mid), number(UnitPriceExcludingVAT/Hi), number(UnitPriceExcludingVAT/SignScale))"/>
+				<xsl:value-of select="script:convertUnitValueExclVat(number(UnitPriceExcludingVAT/Lo), number(UnitPriceExcludingVAT/Mid), number(UnitPriceExcludingVAT/Hi), number(UnitPriceExcludingVAT/SignScale))"/>
 			</UnitValueExclVAT>			
 		</PurchaseOrderLine>
 	</xsl:template>
@@ -202,12 +202,22 @@ public string convertUnixToDate (string date)
 	return dateTime.ToString(format);
 }
 
-public string convertDecimalToNumber (int lo, int mid, int hi, int signScale)
+public string convertOrderedQuantity(int lo, int mid, int hi, int signScale)
 {
-	bool sign = (signScale & 0x80000000) != 0;
-	byte scale = (byte)((signScale >> 16) & 0x7F);
+    return convertToDecimal(lo, mid, hi, signScale).ToString("#");
+}
 
-	return new decimal(lo, mid, hi, sign, scale).ToString();
+public string convertUnitValueExclVat(int lo, int mid, int hi, int signScale)
+{
+    return convertToDecimal(lo, mid, hi, signScale).ToString();
+}
+
+public decimal convertToDecimal(int lo, int mid, int hi, int signScale)
+{
+    bool sign = (signScale & 0x80000000) != 0;
+    byte scale = (byte)((signScale >> 16) & 0x7F);
+
+    return new decimal(lo, mid, hi, sign, scale);
 }
 
 public string toLower(string @string)
