@@ -19,6 +19,8 @@
  13/02/2015	| Jose Miguel	|	FB10144 - even more further fix to the padding of the time
 ==========================================================================================
  08/06/2015	| Jose Miguel	|	FB10300 - IHG - Further Integration of more suppliers
+==========================================================================================
+ 08/03/2018	| Moty Dimant	|	FB12693 - Generate time stamp in GS05 if none present (hhmmss)
 ==========================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -84,7 +86,13 @@
 		<xsl:value-of select="$sFieldSep"/>		
 		<xsl:value-of select="translate(PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderDate,'-','')"/>
 		<xsl:value-of select="$sFieldSep"/>
-		<xsl:value-of select="js:msSafeText(translate(PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderTime,':',''),4)"/>
+		<!-- Use time value if present, otherwise generate current time -->
+		<xsl:choose>
+			<xsl:when test="PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderTime">
+				<xsl:value-of select="js:msSafeText(translate(PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderTime,':',''),6)"/>
+			</xsl:when>
+			<xsl:otherwise><xsl:value-of select="js:msFileGenerationTime()"/></xsl:otherwise>
+		</xsl:choose>
 		<xsl:value-of select="$sFieldSep"/>
 		<xsl:text>1</xsl:text>
 		<xsl:value-of select="$sFieldSep"/>
@@ -233,10 +241,10 @@ function msFileGenerationDate ()
 
 /*=========================================================================================
 ' Routine        : msFileGenerationTime()
-' Description    : Gets the date in 'hhmm' format and works in all regions and time configurations (UK, US).
+' Description    : Gets the date in 'hhmmss' format and works in all regions and time configurations (UK, US).
 ' Returns        : A string
-' Author         : Jose Miguel
-' Version        : 1.0
+' Author         : Moty Dimant
+' Version        : 1.1
 ' Alterations    : (none)
 '========================================================================================*/
 function msFileGenerationTime()
@@ -245,8 +253,9 @@ function msFileGenerationTime()
 	var now = new Date();
 	var hours = now.getHours();
 	var minutes = now.getMinutes();
+	var seconds = now.getSeconds();
 
-	return '' + pad2(hours) + pad2(minutes);
+	return '' + pad2(hours) + pad2(minutes) + pad2(seconds);
 }
 
 /*=========================================================================================
