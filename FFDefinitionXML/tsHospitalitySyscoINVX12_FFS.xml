@@ -1,0 +1,130 @@
+<!--======================================================================================
+ Overview
+
+ Fourth Hospitality Ltd, 2015.
+==========================================================================================
+ Module History
+==========================================================================================
+ Version	| 
+==========================================================================================
+ Date      	| Name 			|	Description of modification
+==========================================================================================
+ 01/07/2015	| Jose Miguel	|	FB10341 - X12 batch Invoice mapper
+==========================================================================================
+ 28/09/2015	| Jose Miguel	|	FB10512 - Additional Doctype INV for Sysco Corporate
+==========================================================================================
+ 20/10/2015	| Jose Miguel	|	FB10541 - Fix Invoice FFD Mapper - Purchase Order Reference
+==========================================================================================-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>~</ffsRecordSeparator>
+		<ffsEscapeChars>
+			<ffsEscapeChar>
+				<ffsNative>chr(13)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+			<ffsEscapeChar>
+				<ffsNative>chr(10)</ffsNative>
+				<ffsTradesimple/>
+				<ffsLiteral/>
+			</ffsEscapeChar>
+		</ffsEscapeChars>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>*</ffsFieldSeparator>
+		</ffsFieldSeparators>
+		<ffsBatchHeader>
+			<!--list of records that make up the header, this will be added to each document in the batch -->
+			<ffsHeaderRecord RecordPos="ISA"/>
+			<ffsHeaderRecord RecordPos="GS"/>
+		</ffsBatchHeader>		
+		<ffsSplitBatchRecord RecordPos="ST"/>
+		<ffsPadding/>
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<BatchDocuments>
+				<BatchDocument>
+					<ffsAttribute1 name="DocumentTypeNo" RecordPos="BIG" LPos="8"/>
+					<Invoice>
+						<TradeSimpleHeader>
+							<!-- N104 - 67 - Identification Code -->
+							<SendersCodeForRecipient RecordPos="N1" LPos="5"/>
+							<!-- ISA - 6 pending -->
+							<SendersBranchReference RecordPos="ISA" LPos="7"/>
+						</TradeSimpleHeader>
+						<InvoiceHeader>
+							<BatchInformation>
+								<!-- ST02 - 329 - Transaction Set Control Number -->
+								<FileGenerationNo RecordPos="ST" LPos="3"/>
+							</BatchInformation>
+							<Buyer>
+								<BuyersLocationID>
+									<!-- GS - - pending -->
+									<SuppliersCode RecordPos="GS" LPos="4"/>
+								</BuyersLocationID>
+							</Buyer>
+							<Supplier>
+								<SuppliersLocationID>
+									<!-- GS - - pending -->
+									<SuppliersCode RecordPos="GS" LPos="3"/>
+								</SuppliersLocationID>
+							</Supplier>
+							<ShipTo>
+								<ShipToLocationID>
+									<!-- N104 - 67 - Identification Code -->
+									<SuppliersCode RecordPos="N1" LPos="5"/>
+								</ShipToLocationID>
+							</ShipTo>
+							<InvoiceReferences>
+								<!-- BIG02 - 76 - Invoice Number. For credit notes is the credit Ref and needs to be moved in the xsl -->
+								<InvoiceReference RecordPos="BIG" LPos="3"/>
+								<!-- BIG01 - 373 - Date -->
+								<InvoiceDate RecordPos="BIG" LPos="2"/>
+								<InvoiceMatchingDetails>
+									<!-- BIG04 - 324 - Purchase Order Number -->
+									<!-- Placeholder for PurchaseOrderReference. Native tag cannot be used as it appears in the input in a different hierarchy level -->
+									<!-- So it needs to be bring towards the header -->
+									<!-- It will be relocated to the detail in the xsl -->
+									<GoodsReceivedNoteReference RecordPos="BIG" LPos="5"/>
+									<!-- REF02 - 127 - Reference Identification-->
+									<!-- Placeholder for the InvoiceReference - only for Credit Notes -->
+									<CreditNoteReference RecordPos="REF" LPos="3"/>
+								</InvoiceMatchingDetails>
+							</InvoiceReferences>
+						</InvoiceHeader>
+						<InvoiceDetail>
+							<InvoiceLine>
+								<ProductID>
+									<!-- IT107 - 234 - Product/Service ID for the supplier -->
+									<SuppliersProductCode RecordPos="IT1" LPos="8"/>
+									<!-- IT115 - 234 - Product/Service ID  for the customer -->
+									<BuyersProductCode RecordPos="IT1" LPos="14"/>
+								</ProductID>
+								<!-- PID05 - 352 - Description -->
+								<ProductDescription RecordPos="PID" LPos="6"/>
+								<!-- CTP04 - 380 - Quantity -->
+								<InvoicedQuantity RecordPos="CTP" LPos="5">
+									<!-- QTY03 - C001 - Composite Unit of Measure -->
+									<ffsAttribute1 name="UnitOfMeasure" RecordPos="QTY" LPos="4"/>
+								</InvoicedQuantity>
+								<!--CTP03 - 212 - Unit Price -->
+								<UnitValueExclVAT RecordPos="CTP" LPos="4"/>
+								<!-- CTP08 - 782 - Monetary Amount -->
+								<LineValueExclVAT RecordPos="CTP" LPos="9"/>
+								<!-- TXI01 - 963 - Tax Type Code -->
+								<VATCode RecordPos="TXI*LS" LPos="2"/>
+								<!-- TXI02 - 782 - Monetary Amount -->
+								<VATRate RecordPos="TXI*LS" LPos="3"/>
+							</InvoiceLine>
+						</InvoiceDetail>
+						<InvoiceTrailer>
+							<DocumentTotalInclVAT RecordPos="TDS" LPos="2"/>
+						</InvoiceTrailer>
+					</Invoice>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>

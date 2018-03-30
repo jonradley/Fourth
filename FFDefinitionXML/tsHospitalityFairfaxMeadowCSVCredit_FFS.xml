@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--**************************************************************************************
+ Overview
+
+	Fairfax Meadow's csv delivery note format
+
+******************************************************************************************
+ Module History
+******************************************************************************************
+ Date         | Name       		| Description of modification
+******************************************************************************************
+     ?       	|       ?       	| Created
+******************************************************************************************
+ 30/03/2012		| H Robson	 	| 5541 handle CSV correctly, ensure field totals are correct in ffs
+******************************************************************************************
+ 15/08/2012   	| H Robson	 	| 5602 set ffsRecordSeparator to CrLf to match format of inbound files
+***************************************************************************************-->
+<ffsFlatFileSchema>
+	<ffsSettings>
+		<ffsRecordPositionType>named</ffsRecordPositionType>
+		<ffsRecordSeparator>chr(13)chr(10)</ffsRecordSeparator>
+		<ffsFieldSeparators>
+			<ffsFieldSeparator>,</ffsFieldSeparator>
+		</ffsFieldSeparators>
+		<ffsPadding/>
+		<ffsGroups>
+			<ffsGroup>
+				<!--References below which MEAN RecordPos 'H' with LPos 1 would be CODED as 'D' and LPos 14 (13+1)-->
+				<ffsGroupRecord RecordPos="HEAD" FieldTotal="40"/>
+				<ffsSubGroupRecord RecordPos="LINE" FieldTotal="39"/>
+			</ffsGroup>
+		</ffsGroups>
+		<ffsSplitBatchRecord RecordPos="HEAD"/>
+	</ffsSettings>
+	<ffsRoot>
+		<Batch>
+			<BatchHeader>
+				<!--MHDSegment>
+					<MHDHeader RecordPos="MHD=" LPos="2" SFPos="1"/>
+					<MHDVersion RecordPos="MHD=" LPos="2" SFPos="2"/>
+				</MHDSegment>
+				<VATSubTotals>
+					<VATSubTotal>
+						<DocumentTotalExclVATAtRate RecordPos="VRS=" LPos="4"/>
+						<SettlementTotalExclVATAtRate RecordPos="VRS=" LPos="5"/>
+						<VATAmountAtRate RecordPos="VRS=" LPos="6"/>
+						<DocumentTotalInclVATAtRate RecordPos="VRS=" LPos="7"/>
+						<SettlementTotalInclVATAtRate RecordPos="VRS=" LPos="8"/>
+						<ffsAttribute1 name="VATCode" RecordPos="VRS=" LPos="2"/>
+						<ffsAttribute1 name="VATRate" RecordPos="VRS=" LPos="3"/>
+					</VATSubTotal>
+				</VATSubTotals>
+				<DocumentTotalExclVAT RecordPos="TOT=" LPos="1"/>
+				<SettlementTotalExclVAT RecordPos="TOT=" LPos="2"/>
+				<VATAmount RecordPos="TOT=" LPos="3"/>
+				<DocumentTotalInclVAT RecordPos="TOT=" LPos="4"/>
+				<SettlementTotalInclVAT RecordPos="TOT=" LPos="5"/-->
+			</BatchHeader>
+			<BatchDocuments>
+				<BatchDocument>
+					<CreditNote>
+						<TradeSimpleHeader>
+							<SendersCodeForRecipient RecordPos="HEAD" LPos="4"/>
+							<SendersBranchReference RecordPos="HEAD" LPos="40"/>
+						</TradeSimpleHeader>
+						<CreditNoteHeader>
+							<Buyer>
+								<BuyersLocationID>
+									<SuppliersCode RecordPos="HEAD" LPos="3"/>
+								</BuyersLocationID>
+								<!--BuyersName RecordPos="HEAD" LPos="17"/-->
+								<!--BuyersAddress>
+									<AddressLine1 RecordPos="CDT=" LPos="3" SFPos="1"/>
+									<AddressLine2 RecordPos="CDT=" LPos="3" SFPos="2"/>
+									<AddressLine3 RecordPos="CDT=" LPos="3" SFPos="3"/>
+									<AddressLine4 RecordPos="CDT=" LPos="3" SFPos="4"/>
+									<PostCode RecordPos="CDT=" LPos="3" SFPos="5"/>
+								</BuyersAddress-->
+							</Buyer>
+							<!--Supplier>
+								<SuppliersLocationID>
+									<SuppliersCode RecordPos="HEAD" LPos="3"/>
+								</SuppliersLocationID>
+								<SuppliersName RecordPos="HEAD" LPos="3"/>
+								<SuppliersAddress>
+									<AddressLine1 RecordPos="SDT=" LPos="3" SFPos="1"/>
+									<AddressLine2 RecordPos="SDT=" LPos="3" SFPos="2"/>
+									<AddressLine3 RecordPos="SDT=" LPos="3" SFPos="3"/>
+									<AddressLine4 RecordPos="SDT=" LPos="3" SFPos="4"/>
+									<PostCode RecordPos="SDT=" LPos="3" SFPos="5"/>
+								</SuppliersAddress>
+							</Supplier-->
+							<ShipTo>
+								<ShipToLocationID>
+									<BuyersCode RecordPos="HEAD" LPos="24"/>
+									<SuppliersCode RecordPos="HEAD" LPos="4"/>
+								</ShipToLocationID>
+								<!--ShipToName RecordPos="HEAD" LPos="17"/-->
+							</ShipTo>
+							<InvoiceReferences>
+								<InvoiceReference RecordPos="HEAD" LPos="28"/>
+								<InvoiceDate RecordPos="HEAD" LPos="29"/>
+							</InvoiceReferences>
+							<CreditNoteReferences>
+								<CreditNoteReference RecordPos="HEAD" LPos="5"/>
+								<CreditNoteDate RecordPos="HEAD" LPos="6"/>
+								<TaxPointDate RecordPos="HEAD" LPos="6"/>
+							</CreditNoteReferences>
+						</CreditNoteHeader>
+						<CreditNoteDetail>
+							<CreditNoteLine>
+								<CreditRequestReferences>
+									<CreditRequestReference RecordPos="LINE" LPos="48"/>
+									<CreditRequestDate RecordPos="LINE" LPos="49"/>
+								</CreditRequestReferences>
+								<PurchaseOrderReferences>
+									<PurchaseOrderReference RecordPos="LINE" LPos="67"/>
+									<PurchaseOrderDate RecordPos="LINE" LPos="68"/>
+									<TradeAgreement>
+										<ContractReference RecordPos="LINE" LPos="79"/>
+									</TradeAgreement>
+								</PurchaseOrderReferences>
+								<DeliveryNoteReferences>
+									<DeliveryNoteReference RecordPos="LINE" LPos="67"/>
+									<DeliveryNoteDate RecordPos="LINE" LPos="68"/>
+								</DeliveryNoteReferences>
+								<ProductID>
+									<SuppliersProductCode RecordPos="LINE" LPos="2"/>
+								</ProductID>
+								<ProductDescription RecordPos="LINE" LPos="25"/>
+								<!-- Hijacked to overcome a weirdness in the flat file -->
+								<OrderedQuantity RecordPos="LINE" LPos="7"/>
+								<CreditedQuantity RecordPos="LINE" LPos="8"/>
+								<PackSize RecordPos="LINE" LPos="6"/>
+								<UnitValueExclVAT RecordPos="LINE" LPos="10"/>
+								<LineValueExclVAT RecordPos="LINE" LPos="15"/>
+								<VATCode RecordPos="LINE" LPos="14"/>
+							</CreditNoteLine>
+						</CreditNoteDetail>
+						<!--CreditNoteTrailer>
+							<DocumentTotalExclVAT RecordPos="TRAIL" LPos="2"/>
+							<VATAmount RecordPos="TRAIL" LPos="7"/>
+						</CreditNoteTrailer-->
+					</CreditNote>
+				</BatchDocument>
+			</BatchDocuments>
+		</Batch>
+	</ffsRoot>
+</ffsFlatFileSchema>
