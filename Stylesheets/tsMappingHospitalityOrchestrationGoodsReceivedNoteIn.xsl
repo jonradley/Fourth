@@ -18,6 +18,8 @@
  2018-02-02	| R Cambridge		| D20420 Ensure UoMs are valid, invalid values converted to EA
                                          Defensively limit product code and product description to 255 chars (a limit for succesful processing in tsProcessorXMLExtract)
 ==========================================================================================
+ 2018-04-03	| S Sehgal		| US48371 Set the received quantity as the Delivered quantity
+==========================================================================================
            	|            		| 
 =======================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="xsl script msxsl">
@@ -136,6 +138,14 @@
 											<xsl:value-of select="OrderedQuantity"/>
 										</OrderedQuantity>
 									</xsl:if>		
+									<DeliveredQuantity>
+										<xsl:attribute name="UnitOfMeasure">
+											<xsl:call-template name="translateUoM">
+												<xsl:with-param name="inputUoM" select="ReceivedUnit"/>
+											</xsl:call-template>
+										</xsl:attribute>
+										<xsl:value-of select="ReceivedQuantity"/>
+									</DeliveredQuantity>
 																
 									<AcceptedQuantity>
 										<xsl:attribute name="UnitOfMeasure">
