@@ -12,6 +12,10 @@ M Dimant			|05/02/2018		| 12567: Created
 	<xsl:key name="InvNominal" match="Invoice/InvoiceDetail/InvoiceLine/LineExtraData/AccountCode" use="concat(.,../../VATCode)"/>
 	<xsl:key name="CredNominal" match="CreditNote/CreditNoteDetail/CreditNoteLine/LineExtraData/AccountCode" use="concat(.,../../VATCode)"/>
 	
+	<xsl:variable name="FieldSeperator">
+		<xsl:text>,</xsl:text>
+	</xsl:variable>
+	
 	<xsl:variable name="NewLine">
 		<xsl:text>&#13;&#10;</xsl:text>
 	</xsl:variable>
@@ -33,70 +37,70 @@ M Dimant			|05/02/2018		| 12567: Created
 			<xsl:variable name="ProdVAT"><xsl:value-of select="../../VATCode"/></xsl:variable>	
 		
 			<!-- Internal Reference field - leave blank-->
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>			
 			<!-- Record Type -->
 			<xsl:text>INV</xsl:text>
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- 2nd Reference field - leave blank-->
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- Invoice Date -->
 			<xsl:value-of select="/Invoice/InvoiceHeader/InvoiceReferences/InvoiceDate"/>
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- Due Date -->
 			<xsl:value-of select="/Invoice/InvoiceHeader/InvoiceReferences/InvoiceDate"/>
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- Description (Supplier name) -->
 			<xsl:value-of select="/Invoice/InvoiceHeader/Supplier/SuppliersName"/>
-			<xsl:text>,</xsl:text>		
+			<xsl:value-of select="$FieldSeperator"/>	
 			<!-- Supplier Ledger Code -->	
 			<xsl:value-of select="/Invoice/InvoiceHeader/HeaderExtraData/STXSupplierCode"/>
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- Actual Invoice Number -->
 			<xsl:value-of select="/Invoice/InvoiceHeader/InvoiceReferences/InvoiceReference"/>
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- Invoice Number -->
 			<xsl:value-of select="/Invoice/InvoiceHeader/InvoiceReferences/InvoiceReference"/>
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- Total Invoice Value -->
 			<xsl:value-of select="/Invoice/InvoiceTrailer/DocumentTotalInclVAT"/>
-			<xsl:text>,</xsl:text>		
+			<xsl:value-of select="$FieldSeperator"/>	
 			<!-- Invoice VAT -->
 			<xsl:value-of select="/Invoice/InvoiceTrailer/VATAmount"/>
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- Site Name -->
 			<xsl:value-of select="/Invoice/InvoiceHeader/ShipTo/ShipToName"/>
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- Site Code -->
 			<xsl:value-of select="/Invoice/InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode"/>
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- Nominal Name - leave blank-->
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- Expense Code -->
 			<xsl:value-of select="$ProdNom"/>
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- Nominal Code -->	
 			<xsl:value-of select="concat(/Invoice/InvoiceHeader/ShipTo/ShipToLocationID/BuyersCode,'-',$ProdNom)"/>
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- VAT Code - PV=20% VAT, NIL=0 VAT -->
 			<xsl:choose>
 				<xsl:when test="$ProdVAT = 'S'"><xsl:text>PV</xsl:text></xsl:when>
 				<xsl:when test="$ProdVAT = 'Z'"><xsl:text>NIL</xsl:text></xsl:when>
 				<xsl:otherwise><xsl:value-of select="$ProdVAT"/></xsl:otherwise>
 			</xsl:choose>	
-			<xsl:text>,</xsl:text>							
+			<xsl:value-of select="$FieldSeperator"/>						
 			<!-- Net Amount for given Nominal Code and VAT code  -->
 			<xsl:variable name="NetAmount" select="sum(../../../InvoiceLine[LineExtraData/AccountCode=$ProdNom and VATCode=$ProdVAT]/LineValueExclVAT)"/> 
 			<xsl:value-of select="format-number($NetAmount,'0.00')"/>		
-			<xsl:text>,</xsl:text>					
+			<xsl:value-of select="$FieldSeperator"/>				
 			<!-- VAT Amount for given Nominal Code and VAT code -->
 			<xsl:variable name="VATAmount">
 				<xsl:value-of select="format-number($NetAmount * (../../../InvoiceLine[LineExtraData/AccountCode=$ProdNom and VATCode=$ProdVAT]/VATRate div 100),'0.00')"/>
 			</xsl:variable>
 			<xsl:value-of select="$VATAmount"/>
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- Gross  for given Nominal Code and VAT code -->	
 			<xsl:value-of select="format-number($NetAmount + $VATAmount,'0.00')"/>
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- Status - always Approved -->
 			<xsl:text>Approved</xsl:text>
 			
@@ -126,50 +130,50 @@ M Dimant			|05/02/2018		| 12567: Created
 		<xsl:if test="//LineExtraData/AccountCode[.=$ProdNom and ../../VATCode='Z']">
 		
 			<!-- Internal Reference field - leave blank-->
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- Record Type -->
 			<xsl:text>CRN</xsl:text>
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- 2nd Reference field - leave blank-->
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- CreditNote Date -->
 			<xsl:value-of select="//CreditNoteHeader/CreditNoteReferences/CreditNoteDate"/>
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- Due Date -->
 			<xsl:value-of select="//CreditNoteHeader/CreditNoteReferences/CreditNoteDate"/>
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- Description (Supplier name) -->
 			<xsl:value-of select="//CreditNoteHeader/Supplier/SuppliersName"/>
-			<xsl:text>,</xsl:text>		
+			<xsl:value-of select="$FieldSeperator"/>	
 			<!-- Supplier Ledger Code -->	
 			<xsl:value-of select="//CreditNoteHeader/HeaderExtraData/STXSupplierCode"/>
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- Actual CreditNote Number -->
 			<xsl:value-of select="//CreditNoteHeader/CreditNoteReferences/CreditNoteReference"/>
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- CreditNote Number -->
 			<xsl:value-of select="//CreditNoteHeader/CreditNoteReferences/CreditNoteReference"/>
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- Total CreditNote Value -->
 			<xsl:value-of select="//CreditNoteTrailer/DocumentTotalInclVAT"/>
-			<xsl:text>,</xsl:text>		
+			<xsl:value-of select="$FieldSeperator"/>	
 			<!-- CreditNote VAT -->
 			<xsl:value-of select="//CreditNoteTrailer/VATAmount"/>
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- Site Name -->
 			<xsl:value-of select="//CreditNoteHeader/ShipTo/ShipToName"/>
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- Site Code -->
 			<xsl:value-of select="//CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode"/>	
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- Nominal Name - leave blank-->
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- Expense Code -->
 			<xsl:value-of select="$ProdNom"/>
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- Nominal Code -->	
 			<xsl:value-of select="concat(//CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode,'-',$ProdNom)"/>
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- VAT Code - PV=20% VAT, NIL=0 VAT -->			
 			<xsl:text>NIL,</xsl:text>			
 			<!-- Value-->
@@ -177,16 +181,16 @@ M Dimant			|05/02/2018		| 12567: Created
 				<xsl:value-of select="format-number(sum(../../../CreditNoteLine[LineExtraData/AccountCode=$ProdNom and VATCode='Z']/LineValueExclVAT),'0.00')"/>
 			</xsl:variable>			
 			<xsl:value-of select="$LineValue"/>
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- VAT Amount -->			
 			<xsl:variable name="VATAmount">
 				<xsl:value-of select="format-number($LineValue * (../../../CreditNoteLine[LineExtraData/AccountCode=$ProdNom and VATCode='S']/VATRate * 0.01),'0.00')"/>
 			</xsl:variable>	
 			<xsl:value-of select="$VATAmount"/>
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- Gross (£) -->	
 			<xsl:value-of select="format-number($LineValue + $VATAmount,'0.00')"/>
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- Status - always Approved -->
 			<xsl:text>Approved</xsl:text>
 			
@@ -198,50 +202,50 @@ M Dimant			|05/02/2018		| 12567: Created
 		<xsl:if test="//LineExtraData/AccountCode[.=$ProdNom and ../../VATCode='S']">
 		
 			<!-- Internal Reference field - leave blank-->
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- Record Type -->
 			<xsl:text>INV</xsl:text>
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- 2nd Reference field - leave blank-->
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- CreditNote Date -->
 			<xsl:value-of select="//CreditNoteHeader/CreditNoteReferences/CreditNoteDate"/>
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- Due Date -->
 			<xsl:value-of select="//CreditNoteHeader/CreditNoteReferences/CreditNoteDate"/>
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- Description (Supplier name) -->
 			<xsl:value-of select="//CreditNoteHeader/Supplier/SuppliersName"/>
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- Supplier Ledger Code -->	
 			<xsl:value-of select="//CreditNoteHeader/HeaderExtraData/STXSupplierCode"/>
-			<xsl:text>,</xsl:text>				
+			<xsl:value-of select="$FieldSeperator"/>			
 			<!-- Actual CreditNote Number -->
 			<xsl:value-of select="//CreditNoteHeader/CreditNoteReferences/CreditNoteReference"/>
-			<xsl:text>,</xsl:text>				
+			<xsl:value-of select="$FieldSeperator"/>			
 			<!-- CreditNote Number -->
 			<xsl:value-of select="//CreditNoteHeader/CreditNoteReferences/CreditNoteReference"/>
-			<xsl:text>,</xsl:text>				
+			<xsl:value-of select="$FieldSeperator"/>			
 			<!-- Total CreditNote Value -->
 			<xsl:value-of select="//CreditNoteTrailer/DocumentTotalInclVAT"/>
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- CreditNote VAT -->
 			<xsl:value-of select="//CreditNoteTrailer/VATAmount"/>
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- Site Name -->
 			<xsl:value-of select="//CreditNoteHeader/ShipTo/ShipToName"/>
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- Site Code -->
 			<xsl:value-of select="//CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode"/>	
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- Nominal Name - leave blank-->
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- Expense Code -->
 			<xsl:value-of select="$ProdNom"/>
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- Nominal Code -->	
 			<xsl:value-of select="concat(//CreditNoteHeader/ShipTo/ShipToLocationID/BuyersCode,'-',$ProdNom)"/>
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- VAT Code - PV=20% VAT, NIL=0 VAT -->			
 			<xsl:text>PV,</xsl:text>			
 			<!-- Value-->
@@ -249,16 +253,16 @@ M Dimant			|05/02/2018		| 12567: Created
 				<xsl:value-of select="format-number(sum(../../../CreditNoteLine[LineExtraData/AccountCode=$ProdNom and VATCode='S']/LineValueExclVAT),'0.00')"/>
 			</xsl:variable>			
 			<xsl:value-of select="$LineValue"/>
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- VAT Amount -->			
 			<xsl:variable name="VATAmount">
 				<xsl:value-of select="format-number($LineValue * (../../../CreditNoteLine[LineExtraData/AccountCode=$ProdNom and VATCode='S']/VATRate * 0.01),'0.00')"/>
 			</xsl:variable>	
 			<xsl:value-of select="$VATAmount"/>
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- Gross (£) -->	
 			<xsl:value-of select="format-number($LineValue + $VATAmount,'0.00')"/>
-			<xsl:text>,</xsl:text>			
+			<xsl:value-of select="$FieldSeperator"/>		
 			<!-- Status - always Approved -->
 			<xsl:text>Approved</xsl:text>
 			
