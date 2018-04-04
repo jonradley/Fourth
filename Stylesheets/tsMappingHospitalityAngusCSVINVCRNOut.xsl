@@ -23,10 +23,6 @@ M Dimant			|05/02/2018		| 12567: Created
 	
 	<xsl:template match="Invoice">	
 	
-	<!-- HEADERS -->
-	<xsl:text>Our Reference,Invoice/Credit Note,2nd Reference,Invoice Date,Due Date,Description,Supplier,Actual Invoice No.,Invoice No.,Invoice Total,Total VAT,Site,Site Code,Nominal Name,Expense Code,Nominal Code,VAT Code,Value,VAT Amount,Gross (£),Status</xsl:text>
-	<xsl:value-of select="$NewLine"/>	
-				
 		<!-- Create a line for each product nominal -->		
 		<xsl:for-each select="InvoiceDetail/InvoiceLine/LineExtraData/AccountCode[generate-id() = generate-id(key('InvNominal',concat(.,../../VATCode))[1])]">
 	
