@@ -22,6 +22,7 @@
 	<xsl:param name="LocationAddressLine3" select="''"/>
 	<xsl:param name="LocationAddressLine4" select="''"/>
 	<xsl:param name="LocationPostCode" select="'.'"/>
+	<xsl:param name="ContactName" select="'N/A'"/>
 	
 	<xsl:template match="/PurchaseOrder">
 		<Batch>
@@ -98,6 +99,11 @@
 										<xsl:value-of select="$LocationPostCode"/>
 									</PostCode>
 								</ShipToAddress>
+								<xsl:if test ="$ContactName != ''">
+									<ContactName>
+										<xsl:value-of select="$ContactName"/>
+									</ContactName>
+								</xsl:if>
 							</ShipTo>
 							<PurchaseOrderReferences>
 								<PurchaseOrderReference>
