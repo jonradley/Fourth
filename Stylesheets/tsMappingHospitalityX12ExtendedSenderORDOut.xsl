@@ -21,6 +21,8 @@
 ==========================================================================================
  21/03/2018	| Moty Dimant	|	FB12704 - Generate time stamp in GS05 if none present (hhmmss)
 ==========================================================================================
+ 18/04/2018	| Moty Dimant	|	FB12726 - Format time stamp in ISA10 to hhmm
+==========================================================================================
 -->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
@@ -60,7 +62,7 @@
 		<xsl:value-of select="$sFieldSep"/>
 		<xsl:value-of select="js:msFileGenerationDate()"/>
 		<xsl:value-of select="$sFieldSep"/>
-		<xsl:value-of select="js:msFileGenerationTime()"/>
+		<xsl:value-of select="substring(string(js:msFileGenerationTime()),1,4)"/>
 		<xsl:value-of select="$sFieldSep"/>
 		<xsl:text>U</xsl:text>
 		<xsl:value-of select="$sFieldSep"/>
