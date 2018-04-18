@@ -53,16 +53,16 @@
 	          	<xsl:text>ARAMARK Servicios Integrales S.A.U</xsl:text>
 	          </xsl:when>
 	          <xsl:when test="$primaryCodePrefix = '1805'">
-	          	<xsl:text>COMERTEL, S.A.</xsl:text>
+	          	<xsl:text>COMERTEL S.A.</xsl:text>
 	          </xsl:when>
 	          <xsl:when test="$primaryCodePrefix = '1806'">
-	          	<xsl:text>GESALCO, S.L.</xsl:text>
+	          	<xsl:text>GESALCO S.L.</xsl:text>
 	          </xsl:when>
 	          <xsl:when test="$primaryCodePrefix = '1807'">
-	          	<xsl:text>COMERTEL EDUCA, S.L.</xsl:text>
+	          	<xsl:text>COMERTEL EDUCA S.L.</xsl:text>
 	          </xsl:when>
 	          <xsl:when test="$primaryCodePrefix = '1808'">
-	          	<xsl:text>COMERTEL RESIDENCIAS, S.L.</xsl:text>
+	          	<xsl:text>COMERTEL RESIDENCIAS S.L.</xsl:text>
 	          </xsl:when>
 	          <xsl:otherwise>
 	          	<xsl:text>Unknown</xsl:text>
