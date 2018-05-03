@@ -4,6 +4,7 @@
 ' Date		    | Name					| Description of modification
 '******************************************************************************************
 ' 12/01/2018	| W Nassor			| FB12252: Created Module: Created.
+' 03/05/2018 | W Nassor			| FB12734: Changes to Mapper - Removed ANA Location Code (Buyers GLN), Escaped double quotes from product description, changes to comma positioning. 
 '******************************************************************************************
 -->
   
@@ -21,8 +22,7 @@
 		<xsl:text>,,,,,,,</xsl:text>
 		
 		<!-- ANA Location Code -->
-		<xsl:apply-templates select="PurchaseOrderHeader/Buyer/BuyersLocationID/GLN"/>		
-			<xsl:text>,</xsl:text>
+		<xsl:text>,</xsl:text>
 		
 		<!-- Branch Location Code -->
 		<xsl:apply-templates select="PurchaseOrderHeader/ShipTo/ShipToLocationID/BuyersCode"/>		
@@ -58,6 +58,7 @@
 		
 		<!--  Customer Order No -->
 		<xsl:apply-templates select="PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference"/>
+		<!--<xsl:value-of select="translate(PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderReference,'*\%!@$&amp;', )"/>-->
 		<xsl:text>,</xsl:text>
 		
 		<!--  Order Date  -->
@@ -98,11 +99,11 @@
 		<xsl:text>,</xsl:text>
 		
 		<!--  Delivery instructions 3 -->
+		<xsl:apply-templates select="PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions"/>
 		<xsl:text>,</xsl:text>
 		
 		<!-- Delivery instructions 4 -->
-		<xsl:apply-templates select="PurchaseOrderHeader/OrderedDeliveryDetails/SpecialDeliveryInstructions"/>
-		<xsl:text>,,,,</xsl:text>
+		<xsl:text>,</xsl:text>
 		
 		<!-- File No -->
 		<xsl:value-of select="substring(PurchaseOrderHeader/OrderID,2,6)"/>
@@ -113,22 +114,22 @@
 			<xsl:with-param name="date" select="PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderDate"/>
 		</xsl:call-template>
 		<xsl:text>,</xsl:text>
-				
+		
 		<!-- Cash Sales Indicator -->
 		<xsl:text>N,</xsl:text>
 		
 		<!--  Payment Method Code -->
 		<xsl:text>,</xsl:text>
-			
+	
 		<!--  Delivery Method Code -->
 		<xsl:text>,</xsl:text>
-				
+	
 		<!-- Carriage Value -->
 		<xsl:text>,</xsl:text>
-					
+	
 		<!--  Discount Rate -->
 		<xsl:text>,</xsl:text>
-						
+	
 		<!--  Retain Price Indicator -->
 		<xsl:text>,</xsl:text>
 		
@@ -172,7 +173,7 @@
 				
 				<!-- Description -->
 				<xsl:text>"</xsl:text>
-				<xsl:value-of select="ProductDescription"/>
+				<xsl:value-of select="translate(ProductDescription,'3&quot;',' ')"/>
 				<xsl:text>"</xsl:text>
 				<xsl:text>,</xsl:text>
 				
