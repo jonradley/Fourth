@@ -19,7 +19,7 @@
 ==========================================================================================
  31/03/2015	| Jose Miguel	|	FB10127 US - Tradesimple generic mapper Changes
 ==========================================================================================
- 11/05/2018	| Jon Radley	|	FB12774 - Changed ISA07 - Interchange ID Qualifier from ZZ to 09 for Specific supplier Southern Glazier Wine and Spirits - MEMBER ID 12164
+ 11/05/2018	| Jon Radley	|	FB12774 - Changed ISA07 - Interchange ID Qualifier from ZZ to 09 for Specific supplier Southern Glazier Wine and Spirits - MEMBER ID 12164 
 ==========================================================================================
 -->
 
