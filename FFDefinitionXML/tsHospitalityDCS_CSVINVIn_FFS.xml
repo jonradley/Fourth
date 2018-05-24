@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--********************************************************************************************************************************************
-Date				| Name				|	Description
-************************************************************************************************************************************************
-16/01/2018	| W Nassor		| FB12252: Created Module
-************************************************************************************************************************************************-->
+<!-- *****************************************************************************************************************************
+Date            | Name                  | Description
+**********************************************************************************************************************************        
+16/01/2018      | W Nassor              | FB12252: Created Module
+**********************************************************************************************************************************        
+24/05/2018      | Johann R              | XXXXXXX: Fix header references on invoice detail lines
+****************************************************************************************************************************** -->
 <ffsFlatFileSchema>
 	<ffsSettings>
 		<ffsRecordPositionType>named</ffsRecordPositionType>
@@ -38,7 +40,8 @@ Date				| Name				|	Description
 					<Invoice>
 						<TradeSimpleHeader>
 							<SendersCodeForRecipient RecordPos="HDR" LPos="4"/>
-							<SendersBranchReference  RecordPos="HDR" LPos="7"/><!--**Customers Code for Supplier-->
+							<SendersBranchReference RecordPos="HDR" LPos="7"/>
+							<!--**Customers Code for Supplier-->
 						</TradeSimpleHeader>
 						<InvoiceHeader>
 							<Buyer>
@@ -70,18 +73,21 @@ Date				| Name				|	Description
 							<InvoiceReferences>
 								<InvoiceReference RecordPos="HDR" LPos="18"/>
 								<InvoiceDate RecordPos="HDR" LPos="19"/>
-								<TaxPointDate RecordPos="HDR" LPos="19"/><!--**TBC if needed-->
+								<TaxPointDate RecordPos="HDR" LPos="19"/>
+								<!--**TBC if needed-->
 							</InvoiceReferences>
 						</InvoiceHeader>
 						<InvoiceDetail>
 							<InvoiceLine>
 								<PurchaseOrderReferences>
-									<PurchaseOrderReference RecordPos="HDR" LPos="23"/><!--Customer Order Number-->
-									<PurchaseOrderDate RecordPos="HDR" LPos="24"/><!--Customer Order Date-->
+									<PurchaseOrderReference RecordPos="ILD" LPos="39"/>
+									<!--Customer Order Number-->
+									<PurchaseOrderDate RecordPos="ILD" LPos="40"/>
+									<!--Customer Order Date-->
 								</PurchaseOrderReferences>
 								<DeliveryNoteReferences>
-									<DeliveryNoteReference RecordPos="HDR" LPos="27"/>
-									<DeliveryNoteDate RecordPos="HDR" LPos="28"/>
+									<DeliveryNoteReference RecordPos="ILD" LPos="27"/>
+									<DeliveryNoteDate RecordPos="ILD" LPos="28"/>
 								</DeliveryNoteReferences>
 								<ProductID>
 									<GTIN RecordPos="ILD" LPos="2"/>
