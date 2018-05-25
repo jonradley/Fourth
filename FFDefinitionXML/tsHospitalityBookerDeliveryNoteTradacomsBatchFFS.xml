@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--******************************************************************
+<!--************************************************************************************************************************************
 Alterations
 
 
-**********************************************************************
+****************************************************************************************************************************************
 Name			| Date			| Change
-**********************************************************************
-M Dimant	| 06/01/2009	| 2262 Created bespoke mapper to satisfy location of Suppliers Product Code 
-**********************************************************************
-M Emanuel	|	24/02/2012	| Created Delivery Note FF Mapper for Booker
-*********************************************************************
-K Oshaughnessy| 08/08/201 | FB 5607 Senders branch reference added
-*******************************************************************-->
+****************************************************************************************************************************************
+M Dimant		| 06/01/2009	| 2262 Created bespoke mapper to satisfy location of Suppliers Product Code 
+****************************************************************************************************************************************
+M Emanuel		| 24/02/2012	| Created Delivery Note FF Mapper for Booker
+***************************************************************************************************************************************
+K Oshaughnessy	| 08/08/201 	| FB 5607 Senders branch reference added
+***************************************************************************************************************************************
+M Dimant		| 23/05/2018 	| FB 12854: Changes to handle Catchweight lines
+*************************************************************************************************************************************-->
 <ffsFlatFileSchema>
 	<ffsSettings>
 		<ffsRecordPositionType>named</ffsRecordPositionType>
@@ -145,6 +147,10 @@ K Oshaughnessy| 08/08/201 | FB 5607 Senders branch reference added
 									<ffsAttribute1 name="UnitOfMeasure" RecordPos="DLD=" LPos="7" SFPos="3"/>
 								</DespatchedQuantity>
 								<PackSize RecordPos="DLD=" LPos="6" SFPos="1"/>
+								<LineExtraData>
+									<!-- Quantity will appear here for catchweight items-->
+									<DespatchedQuantity RecordPos="DLD=" LPos="7" SFPos="2"/>									
+								</LineExtraData>
 							</DeliveryNoteLine>
 						</DeliveryNoteDetail>
 					</DeliveryNote>

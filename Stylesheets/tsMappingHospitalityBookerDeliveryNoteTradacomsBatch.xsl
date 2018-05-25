@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--******************************************************************
+<!--***************************************************************************************************************************************
 Alterations
 
 
-**********************************************************************
-Name			| Date			| Change
-**********************************************************************
+***************************************************************************************************************************************
+Name		| Date			| Change
+***************************************************************************************************************************************
 R Cambridge	| 29/10/2007	| 1556 Create module
-**********************************************************************
-M Emanuel	|	24/02/2012	| Created Delivery Note Mapper for Booker
-*******************************************************************-->
+***************************************************************************************************************************************
+M Emanuel	| 24/02/2012	| Created Delivery Note Mapper for Booker
+***************************************************************************************************************************************
+M Dimant	| 23/05/2018 	| FB 12854: Changes to handle Catchweight lines
+***************************************************************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="xml" encoding="utf-8"/>
 
@@ -110,15 +112,25 @@ M Emanuel	|	24/02/2012	| Created Delivery Note Mapper for Booker
 												</OrderedQuantity>
 											</xsl:for-each>
 																						
-											<DespatchedQuantity UnitOfMeasure="EA">		
-																				
+											<DespatchedQuantity UnitOfMeasure="EA">																						
 												<xsl:if test="string(DespatchedQuantity/@UnitOfMeasure) != ''">
-													<xsl:attribute name="UnitOfMeasure"><xsl:value-of select="DespatchedQuantity/@UnitOfMeasure"/></xsl:attribute>
-												</xsl:if>												
-												
-												<xsl:value-of select="DespatchedQuantity"/>
-												
-											</DespatchedQuantity>
+													<xsl:attribute name="UnitOfMeasure">
+														<xsl:choose>
+															<xsl:when test="DespatchedQuantity/@UnitOfMeasure = 'KG'">KGM</xsl:when>
+															<xsl:otherwise><xsl:value-of select="DespatchedQuantity/@UnitOfMeasure"/></xsl:otherwise>
+														</xsl:choose>
+													</xsl:attribute>
+												</xsl:if>
+												<xsl:choose>
+													<!-- If value is present in LineExtraData, item must be catchwright-->
+													<xsl:when test="LineExtraData/DespatchedQuantity">
+														<xsl:value-of select="number(LineExtraData/DespatchedQuantity) div 1000"/>
+													</xsl:when>
+													<!-- Otherwise it is not catchweight-->
+													<xsl:otherwise><xsl:value-of select="DespatchedQuantity"/></xsl:otherwise>
+												</xsl:choose>																								
+											</DespatchedQuantity>			
+											
 											
 											<xsl:for-each select="PackSize[1]">
 												<PackSize><xsl:value-of select="."/></PackSize>
