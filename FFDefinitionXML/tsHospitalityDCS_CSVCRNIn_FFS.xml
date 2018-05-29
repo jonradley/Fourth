@@ -84,7 +84,6 @@ Date            | Name                  | Description
 									<PurchaseOrderReference RecordPos="CLD" LPos="41"/>
 									<PurchaseOrderDate RecordPos="CLD" LPos="42"/>
 								</PurchaseOrderReferences>
-								<!--<DeliveryNoteReferences><DeliveryNoteReference RecordPos="CLD" LPos="43"/><DeliveryNoteDate RecordPos="CLD" LPos="44"/></DeliveryNoteReferences>-->
 								<ProductID>
 									<GTIN RecordPos="CLD" LPos="2"/>
 									<SuppliersProductCode RecordPos="CLD" LPos="3"/>
@@ -96,7 +95,6 @@ Date            | Name                  | Description
 								</CreditedQuantity>
 								<PackSize RecordPos="CLD" LPos="6"/>
 								<UnitValueExclVAT RecordPos="CLD" LPos="11"/>
-								<!--<LineDiscountRate RecordPos="CST" LPos="16"/><LineDiscountValue RecordPos="CST" LPos="15"/>-->
 								<VATCode RecordPos="CLD" LPos="12"/>
 								<VATRate RecordPos="CLD" LPos="13"/>
 							</CreditNoteLine>

@@ -41,7 +41,6 @@ Date            | Name                  | Description
 						<TradeSimpleHeader>
 							<SendersCodeForRecipient RecordPos="HDR" LPos="4"/>
 							<SendersBranchReference RecordPos="HDR" LPos="7"/>
-							<!--**Customers Code for Supplier-->
 						</TradeSimpleHeader>
 						<InvoiceHeader>
 							<Buyer>
@@ -74,16 +73,13 @@ Date            | Name                  | Description
 								<InvoiceReference RecordPos="HDR" LPos="18"/>
 								<InvoiceDate RecordPos="HDR" LPos="19"/>
 								<TaxPointDate RecordPos="HDR" LPos="19"/>
-								<!--**TBC if needed-->
 							</InvoiceReferences>
 						</InvoiceHeader>
 						<InvoiceDetail>
 							<InvoiceLine>
 								<PurchaseOrderReferences>
 									<PurchaseOrderReference RecordPos="ILD" LPos="39"/>
-									<!--Customer Order Number-->
 									<PurchaseOrderDate RecordPos="ILD" LPos="40"/>
-									<!--Customer Order Date-->
 								</PurchaseOrderReferences>
 								<DeliveryNoteReferences>
 									<DeliveryNoteReference RecordPos="ILD" LPos="27"/>
