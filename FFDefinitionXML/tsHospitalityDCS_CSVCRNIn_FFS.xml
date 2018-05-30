@@ -1,9 +1,11 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<!--********************************************************************************************************************************************
-Date				| Name				|	Description
-************************************************************************************************************************************************
-12/02/2018	| W Nassor		| FB 12252: Created Module
-************************************************************************************************************************************************-->
+<!-- *****************************************************************************************************************************
+Date            | Name                  | Description
+**********************************************************************************************************************************        
+12/01/2018      | W Nassor              | FB12252: Created Module
+**********************************************************************************************************************************        
+24/05/2018      | Johann R              | XXXXXXX: Fix header references on credit note detail lines
+****************************************************************************************************************************** -->
 <ffsFlatFileSchema>
 	<ffsSettings>
 		<ffsRecordPositionType>named</ffsRecordPositionType>
@@ -38,7 +40,7 @@ Date				| Name				|	Description
 					<CreditNote>
 						<TradeSimpleHeader>
 							<SendersCodeForRecipient RecordPos="HDR" LPos="4"/>
-							<SendersBranchReference  RecordPos="HDR" LPos="7"/>
+							<SendersBranchReference RecordPos="HDR" LPos="7"/>
 						</TradeSimpleHeader>
 						<CreditNoteHeader>
 							<Buyer>
@@ -77,15 +79,11 @@ Date				| Name				|	Description
 							</CreditNoteReferences>
 						</CreditNoteHeader>
 						<CreditNoteDetail>
-							<CreditNoteLine>	
+							<CreditNoteLine>
 								<PurchaseOrderReferences>
-									<PurchaseOrderReference RecordPos="HDR" LPos="27"/>
-									<PurchaseOrderDate RecordPos="HDR" LPos="28"/>
+									<PurchaseOrderReference RecordPos="CLD" LPos="41"/>
+									<PurchaseOrderDate RecordPos="CLD" LPos="42"/>
 								</PurchaseOrderReferences>
-								<!--<DeliveryNoteReferences>
-									<DeliveryNoteReference RecordPos="CLD" LPos="43"/>
-									<DeliveryNoteDate RecordPos="CLD" LPos="44"/>
-								</DeliveryNoteReferences>-->							
 								<ProductID>
 									<GTIN RecordPos="CLD" LPos="2"/>
 									<SuppliersProductCode RecordPos="CLD" LPos="3"/>
@@ -97,8 +95,6 @@ Date				| Name				|	Description
 								</CreditedQuantity>
 								<PackSize RecordPos="CLD" LPos="6"/>
 								<UnitValueExclVAT RecordPos="CLD" LPos="11"/>
-								<!--<LineDiscountRate RecordPos="CST" LPos="16"/>
-								<LineDiscountValue RecordPos="CST" LPos="15"/>-->
 								<VATCode RecordPos="CLD" LPos="12"/>
 								<VATRate RecordPos="CLD" LPos="13"/>
 							</CreditNoteLine>
