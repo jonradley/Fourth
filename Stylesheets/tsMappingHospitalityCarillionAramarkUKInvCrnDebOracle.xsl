@@ -3,7 +3,7 @@
 ************************************************************************************************************************************************************************************
  Overview
 
- This XSL file is used to transform XML for a Hospitality Invoice/Credit note/ Debit note into the Oracle file for Carillion/Aramark UK
+ This XSL file is used to transform XML for a Hospitality Invoice/Credit note/ Debit note into the Oracle file for Aramark UK
 
  © Fourth Hospitality
 ************************************************************************************************************************************************************************************
@@ -13,7 +13,7 @@
 ************************************************************************************************************************************************************************************
  07/08/2017      | M Dimant		  | 12081 - Created based on Aramark UK Oracle invoice export, with changes for Carillion Join Venture
 ************************************************************************************************************************************************************************************
-
+ 24/05/2018		 | H Mahbub		  | 12856 - Changed company name due to Carillion going under
 ************************************************************************************************************************************************************************************
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:script="http://mycompany.com/mynamespace" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="#default xsl msxsl script">
@@ -56,7 +56,7 @@
 		<xsl:text>IH</xsl:text>
 		<xsl:value-of select="$separator"/>
 		<!-- Operating Unit -->
-		<xsl:text>CARILLIONARAMARK (OU)</xsl:text>
+		<xsl:text>Aramark Defence Services Ltd (OU)</xsl:text>
 		<xsl:value-of select="$separator"/>
 		<!-- Source Name -->
 		<xsl:text>19_ARATRADE</xsl:text>
@@ -251,7 +251,7 @@
 		<!-- Add Tax to Inv Amt BLANK -->
 		<xsl:value-of select="$separator"/>
 		<!-- Legal Entity Name -->
-		<xsl:text>CarillionAramark Limited</xsl:text>
+		<xsl:text>Aramark Defence Services Limited</xsl:text>
 		<xsl:value-of select="$separator"/>		
 		<!-- Withholding Tax Group BLANK -->
 		<xsl:value-of select="$separator"/>	
