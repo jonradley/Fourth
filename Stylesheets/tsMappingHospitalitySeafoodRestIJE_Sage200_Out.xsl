@@ -9,6 +9,8 @@ The Seafood Restaurant (Padstow Ltd) (38705) mapper for invoices and credits jou
  31/08/2017	| W Nassor	| FB11930 - Created
 
  05/06/2018 | W Nassor | FB12878 - Amendments/Changes - Removed all descrepency lines from export
+
+08/06/2018 | W Nassor | FB12878 - Added Custom Tax Code (5%)
 ==========================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript" exclude-result-prefixes="#default xsl msxsl js">
 
@@ -33,6 +35,8 @@ The Seafood Restaurant (Padstow Ltd) (38705) mapper for invoices and credits jou
 		<!-- Taxes : always ten taxes groups -->
 		<xsl:text>TaxAnalysisTaxRate/1,TaxAnalysisGoodsValueBeforeDiscount/1,TaxAnalysisDiscountValue/1,TaxAnalysisDiscountPercentage/1,TaxAnalysisTaxOnGoodsValue/1,</xsl:text>
 		<xsl:text>TaxAnalysisTaxRate/2,TaxAnalysisGoodsValueBeforeDiscount/2,TaxAnalysisDiscountValue/2,TaxAnalysisDiscountPercentage/2,TaxAnalysisTaxOnGoodsValue/2,</xsl:text>
+		
+		<xsl:text>TaxAnalysisTaxRate/3,TaxAnalysisGoodsValueBeforeDiscount/3,TaxAnalysisDiscountValue/3,TaxAnalysisDiscountPercentage/3,TaxAnalysisTaxOnGoodsValue/3,</xsl:text>
 		
 		<!-- Trailer -->
 		<xsl:text>ChequeCurrencyName,ChequeToBankExchangeRate,ChequeValueInChequeCurrency</xsl:text>
@@ -204,7 +208,7 @@ The Seafood Restaurant (Padstow Ltd) (38705) mapper for invoices and credits jou
 		<xsl:text>,</xsl:text>
 		
 		<!-- TAX RATE STANDARD - 20% -->
-		<!-- A TaxAnalysisTaxRate (1) - Code is 0 if VAT Code is Z else value is 1 -->
+		<!-- A TaxAnalysisTaxRate (1) - Code is 1 if VAT Code is S else value is Blank -->
 		<xsl:choose>
 			<xsl:when test="InvoiceCreditJournalEntriesLine/VATCode='S'">
 				<xsl:text>1</xsl:text>
@@ -255,6 +259,29 @@ The Seafood Restaurant (Padstow Ltd) (38705) mapper for invoices and credits jou
 				<xsl:text/>
 			</xsl:otherwise>
 		</xsl:choose>
+		<xsl:text>,</xsl:text>
+		
+			
+		<!-- TAX RATE STANDARD - 5% -->
+		<!-- A TaxAnalysisTaxRate (9) - Code is 9 if VAT Code is A else value is Blank -->
+		<xsl:choose>
+			<xsl:when test="InvoiceCreditJournalEntriesLine/VATCode='A'">
+				<xsl:text>9</xsl:text>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text/>
+			</xsl:otherwise>
+		</xsl:choose>
+		<xsl:text>,</xsl:text>
+		<!-- B TaxAnalysisGoodsValueBeforeDiscount = Custom Tax Rate (A = 5%) Taxable AmountTaxable amount per S Tax Letter, per transaction on the same row,or "0" if tax split does not exist. -->
+		<xsl:value-of select="format-number(sum(InvoiceCreditJournalEntriesLine[VATCode='A']/LineNet), '00.00')"/>
+		<xsl:text>,</xsl:text>
+		<!-- C TaxAnalysisDiscountValue = Discount Value Always Blank. -->
+		<xsl:text>,</xsl:text>
+		<!-- D TaxAnalysisDiscountPercentage = Discount Value Always Blank. -->
+		<xsl:text>,</xsl:text>
+		<!-- E TaxAnalysisTaxOnGoodsValue = Custom Tax Rate (A = 5%) Tax Amount Value for this Tax Code Letter.  -->
+		<xsl:value-of select="format-number(sum(InvoiceCreditJournalEntriesLine[VATCode='A']/LineVAT), '00.00')"/>
 		<xsl:text>,</xsl:text>
 		
 	</xsl:template>
