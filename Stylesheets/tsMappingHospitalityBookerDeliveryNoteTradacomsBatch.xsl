@@ -11,6 +11,8 @@ R Cambridge	| 29/10/2007	| 1556 Create module
 M Emanuel	| 24/02/2012	| Created Delivery Note Mapper for Booker
 ***************************************************************************************************************************************
 M Dimant	| 23/05/2018 	| FB 12854: Changes to handle Catchweight lines
+***************************************************************************************************************************************
+M Dimant	| 13/06/2018 	| FB 12952: Correction to fix Catchweight lines logic
 ***************************************************************************************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="xml" encoding="utf-8"/>
@@ -122,9 +124,9 @@ M Dimant	| 23/05/2018 	| FB 12854: Changes to handle Catchweight lines
 													</xsl:attribute>
 												</xsl:if>
 												<xsl:choose>
-													<!-- If value is present in LineExtraData, item must be catchwright-->
-													<xsl:when test="LineExtraData/DespatchedQuantity">
-														<xsl:value-of select="number(LineExtraData/DespatchedQuantity) div 1000"/>
+													<!-- Quantity for weighted items is temporarily held in ConfirmedQuantity. So if a value is present here, the line must be catchweight -->
+													<xsl:when test="ConfirmedQuantity">
+														<xsl:value-of select="number(ConfirmedQuantity) div 1000"/>
 													</xsl:when>
 													<!-- Otherwise it is not catchweight-->
 													<xsl:otherwise><xsl:value-of select="DespatchedQuantity"/></xsl:otherwise>
