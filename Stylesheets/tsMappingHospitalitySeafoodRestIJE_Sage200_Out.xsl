@@ -25,12 +25,12 @@ The Seafood Restaurant (Padstow Ltd) (38705) mapper for invoices and credits jou
 <xsl:text>AccountNumber,CBAccountNumber,DaysDiscountValid,DiscountValue,DiscountPercentage,DueDate,GoodsValueInAccountCurrency,PurControlValueInBaseCurrency,DocumentToBaseCurrencyRate,DocumentToAccountCurrencyRate,PostedDate,QueryCode,TransactionReference,SecondReference,Source,SYSTraderTranType,TransactionDate,UniqueReferenceNumber,UserNumber,TaxValue,SYSTraderGenerationReasonType,GoodsValueInBaseCurrency,</xsl:text>
 		
 		<!-- Calculate the maximum number of categories : Always 5 categories-->
-		<xsl:text>	NominalAnalysisTransactionValue/1,NominalAnalysisNominalAccountNumber/1,NominalAnalysisNominalCostCentre/1,NominalAnalysisNominalDepartment/1,NominalAnalysisNominalAnalysisNarrative/1,NominalAnalysisTransactionAnalysisCode/1,</xsl:text>
-		<xsl:text>	NominalAnalysisTransactionValue/2,NominalAnalysisNominalAccountNumber/2,NominalAnalysisNominalCostCentre/2,NominalAnalysisNominalDepartment/2,NominalAnalysisNominalAnalysisNarrative/2,</xsl:text>
-		<xsl:text>	NominalAnalysisTransactionValue/3,NominalAnalysisNominalAccountNumber/3,NominalAnalysisNominalCostCentre/3,NominalAnalysisNominalDepartment/3,NominalAnalysisNominalAnalysisNarrative/3,NominalAnalysisTransactionAnalysisCode/3,</xsl:text>
-		<xsl:text>	NominalAnalysisTransactionValue/4,NominalAnalysisNominalAccountNumber/4,NominalAnalysisNominalCostCentre/4,NominalAnalysisNominalDepartment/4,NominalAnalysisNominalAnalysisNarrative/4,</xsl:text>
-		<xsl:text>	NominalAnalysisTransactionValue/5,NominalAnalysisNominalAccountNumber/5,NominalAnalysisNominalCostCentre/5,NominalAnalysisNominalDepartment/5,NominalAnalysisNominalAnalysisNarrative/5,NominalAnalysisTransactionAnalysisCode/5,</xsl:text>
-		<xsl:text> NominalAnalysisTransactionValue/6,NominalAnalysisNominalAccountNumber/6,NominalAnalysisNominalCostCentre/6,NominalAnalysisNominalDepartment/6,NominalAnalysisNominalAnalysisNarrative/6,</xsl:text>
+		<xsl:text>NominalAnalysisTransactionValue/1,NominalAnalysisNominalAccountNumber/1,NominalAnalysisNominalCostCentre/1,NominalAnalysisNominalDepartment/1,NominalAnalysisNominalAnalysisNarrative/1,NominalAnalysisTransactionAnalysisCode/1,</xsl:text>
+		<xsl:text>NominalAnalysisTransactionValue/2,NominalAnalysisNominalAccountNumber/2,NominalAnalysisNominalCostCentre/2,NominalAnalysisNominalDepartment/2,NominalAnalysisNominalAnalysisNarrative/2,</xsl:text>
+		<xsl:text>NominalAnalysisTransactionValue/3,NominalAnalysisNominalAccountNumber/3,NominalAnalysisNominalCostCentre/3,NominalAnalysisNominalDepartment/3,NominalAnalysisNominalAnalysisNarrative/3,NominalAnalysisTransactionAnalysisCode/3,</xsl:text>
+		<xsl:text>NominalAnalysisTransactionValue/4,NominalAnalysisNominalAccountNumber/4,NominalAnalysisNominalCostCentre/4,NominalAnalysisNominalDepartment/4,NominalAnalysisNominalAnalysisNarrative/4,</xsl:text>
+		<xsl:text>NominalAnalysisTransactionValue/5,NominalAnalysisNominalAccountNumber/5,NominalAnalysisNominalCostCentre/5,NominalAnalysisNominalDepartment/5,NominalAnalysisNominalAnalysisNarrative/5,NominalAnalysisTransactionAnalysisCode/5,</xsl:text>
+		<xsl:text>NominalAnalysisTransactionValue/6,NominalAnalysisNominalAccountNumber/6,NominalAnalysisNominalCostCentre/6,NominalAnalysisNominalDepartment/6,NominalAnalysisNominalAnalysisNarrative/6,</xsl:text>
 		
 		<!-- Taxes : always ten taxes groups -->
 		<xsl:text>TaxAnalysisTaxRate/1,TaxAnalysisGoodsValueBeforeDiscount/1,TaxAnalysisDiscountValue/1,TaxAnalysisDiscountPercentage/1,TaxAnalysisTaxOnGoodsValue/1,</xsl:text>
