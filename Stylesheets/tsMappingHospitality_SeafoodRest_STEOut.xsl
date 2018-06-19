@@ -66,10 +66,10 @@
 		<!-- GOODS-AMOUNT -->
 		<xsl:choose>
 			<xsl:when test="TransactionType = 'Credit'">
-				<xsl:value-of select="format-number(LineValueExclVAT,'00.00')"/>
+				<xsl:value-of select="format-number(LineValueExclVAT,'-00.00')"/>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:value-of select="format-number(LineValueExclVAT,'-00.00')"/>
+				<xsl:value-of select="format-number(LineValueExclVAT,'00.00')"/>
 			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:value-of select="$FieldSeperator"/>
