@@ -27,10 +27,7 @@ node('ie1tsbld03')
 		
 		stage('Build')
 		{
-			dir('build')
-			{
-				powershell "integration_package.ps1"
-			}
+			powershell "Build/integration_package.ps1"
 		}
 
 		if (onReleaseBranch())
