@@ -10,10 +10,12 @@ R Cambridge	| 2007-11-13		| 1332 no info to populate Buyer tag
 **********************************************************************
 R Cambridge	| 2008-01-03		| 1686 revised rejection codes
 **********************************************************************
-R Cambridge	| 2009-03-04		| 2787 Only split out SBR if SCR contains a slash
-												 Reject lines with certain response codes
+R Cambridge	| 2009-03-04		| 2787 Only split out SBR if SCR contains a slash, Reject lines with certain response codes
 **********************************************************************
-				|						|				
+R Cambridge	| 2018-01-03		| D25610 Set Supplier's code for ship to to match trading relationship (as the form <PLAccountCode>/<LocationCode> 
+                                          causes invoices doc-built from the confirmation to fail validation 97 "Invalid unit code")
+**********************************************************************
+            |						|				
 *******************************************************************-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 	xmlns:sh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" 
@@ -108,7 +110,7 @@ R Cambridge	| 2009-03-04		| 2787 Only split out SBR if SCR contains a slash
 								<xsl:value-of select="$sendersCodeForRecipient"/>
 							</BuyersCode>
 							<xsl:for-each select="buyer/additionalPartyIdentification[additionalPartyIdentificationType='SELLER_ASSIGNED_IDENTIFIER_FOR_A_PARTY']/additionalPartyIdentificationValue[1]">
-								<SuppliersCode><xsl:value-of select="."/></SuppliersCode>
+								<SuppliersCode><xsl:value-of select="$sendersCodeForRecipient"/></SuppliersCode>
 							</xsl:for-each>
 						</ShipToLocationID>
 					</ShipTo>
