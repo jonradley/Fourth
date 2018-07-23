@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--======================================================================================
+<!--
+=======================================================================================================
 Overview
 
 The Seafood Restaurant (Padstow Ltd) (38705) mapper for invoices and credits journal format.
-==========================================================================================
- Date      		| Name 				| Description of modification
-==========================================================================================
- 31/08/2017	| W Nassor	| FB11930 - Created
-
- 05/06/2018 | W Nassor | FB12878 - Amendments/Changes - Removed all descrepency lines from export
-
-08/06/2018 | W Nassor | FB12878 - Added Custom Tax Code (5%)
-==========================================================================================-->
+=======================================================================================================
+ Date      		| Name 		| Description of modification
+=======================================================================================================
+31/08/2017		| W Nassor	| FB11930 - Created
+*******************************************************************************************************
+05/06/2018 		| W Nassor 	| FB12878 - Amendments/Changes - Removed all descrepency lines from export
+*******************************************************************************************************
+08/06/2018		| W Nassor	| FB12878 - Added Custom Tax Code (5%)
+=======================================================================================================
+-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript" exclude-result-prefixes="#default xsl msxsl js">
 
 	<xsl:output method="text" encoding="UTF-8"/>
 	
 	<xsl:key name="keyLinesByRefAndNominalCode" match="InvoiceCreditJournalEntriesLine" use="concat(../../InvoiceCreditJournalEntriesHeader/InvoiceReference,'|', CategoryNominal)"/>
+	<xsl:key name="keyVATCode" match="InvoiceCreditJournalEntriesLine" use="concat(../../InvoiceCreditJournalEntriesHeader/InvoiceReference,'|', VATCode)" />
 	
 	<!-- Drive the transformation of the whole file -->
 	<xsl:template match="/">
@@ -49,7 +52,6 @@ The Seafood Restaurant (Padstow Ltd) (38705) mapper for invoices and credits jou
 	<xsl:template match="BatchDocument">
 		<xsl:apply-templates select="InvoiceCreditJournalEntries/InvoiceCreditJournalEntriesHeader"/>
 		<xsl:apply-templates select="InvoiceCreditJournalEntries/InvoiceCreditJournalEntriesDetail" mode="category"/>
-		<!-- Taxes breakdown -->
 		<xsl:apply-templates select="InvoiceCreditJournalEntries/InvoiceCreditJournalEntriesDetail" mode="tax"/>
 		<!-- Trailing columns -->
 		<!-- A ChequeCurrencyName = (Always blank field). -->
@@ -86,12 +88,12 @@ The Seafood Restaurant (Padstow Ltd) (38705) mapper for invoices and credits jou
 		<xsl:text>,</xsl:text>
 		<!-- G -->
 		<!-- GoodsValueInAccountCurrency = Account Currency ValueTransaction (Invoice not Delivery) Gross Total. -->
-		<xsl:value-of select="format-number(sum(../InvoiceCreditJournalEntriesDetail/InvoiceCreditJournalEntriesLine[CostCentreName != 'Discrepancy']/LineGross), '##.##')"/>
+		<xsl:value-of select="format-number(sum(../InvoiceCreditJournalEntriesDetail/InvoiceCreditJournalEntriesLine/LineGross), '##.##')"/>
 
 		<xsl:text>,</xsl:text>
 		<!-- H -->
 		<!-- PurControlValueInBaseCurrency = Control Base Currency Value -->
-		<xsl:value-of select="format-number(sum(../InvoiceCreditJournalEntriesDetail/InvoiceCreditJournalEntriesLine[CostCentreName != 'Discrepancy']/LineGross), '##.##')"/>
+		<xsl:value-of select="format-number(sum(../InvoiceCreditJournalEntriesDetail/InvoiceCreditJournalEntriesLine/LineGross), '##.##')"/>
 		<xsl:text>,</xsl:text>
 		<!-- I -->
 		<!-- DocumentToBaseCurrencyRate = Base Currency RateAlways "1". -->
@@ -154,14 +156,14 @@ The Seafood Restaurant (Padstow Ltd) (38705) mapper for invoices and credits jou
 		<xsl:text>,</xsl:text>
 		<!-- T -->
 		<!-- TaxValue = Transaction (Invoice not Delivery) Tax Total -->
-		<xsl:value-of select="format-number(sum(../InvoiceCreditJournalEntriesDetail/InvoiceCreditJournalEntriesLine[CostCentreName != 'Discrepancy']/LineVAT), '##.##')"/>
+		<xsl:value-of select="format-number(sum(../InvoiceCreditJournalEntriesDetail/InvoiceCreditJournalEntriesLine/LineVAT), '##.##')"/>
 		<xsl:text>,</xsl:text>
 		<!-- U -->
 		<!-- SYSTraderGenerationReasonType = Reason Type(Always blank field). -->
 		<xsl:text>,</xsl:text>
 		<!-- V -->
 		<!-- GoodsValueInBaseCurrency = Base Currency ValueTransaction Line Net Total. -->
-		<xsl:value-of select="format-number(sum(../InvoiceCreditJournalEntriesDetail/InvoiceCreditJournalEntriesLine[CostCentreName != 'Discrepancy']/LineNet), '##.##')"/>
+		<xsl:value-of select="format-number(sum(../InvoiceCreditJournalEntriesDetail/InvoiceCreditJournalEntriesLine/LineNet), '##.##')"/>
 		<xsl:text>,</xsl:text>
 	</xsl:template>
 	
@@ -178,7 +180,26 @@ The Seafood Restaurant (Padstow Ltd) (38705) mapper for invoices and credits jou
 			<xsl:if test="CostCentreName != 'Discrepancy'">
 			
 			<!-- A NominalAnalysisTransactionValue = Category (Invoice not Delivery) Net Split Amount - Per Category Nominal Code & Tax Code per transaction on the same row. - SEE NOTE -->
-			<xsl:value-of select="format-number(sum(key('keyLinesByRefAndNominalCode',concat($currentDocReference, '|', $currentCategoryNominal))/LineNet), '##.##')"/>
+			<xsl:variable name="NominalNet">
+				<xsl:value-of select="format-number(sum(key('keyLinesByRefAndNominalCode',concat($currentDocReference, '|', $currentCategoryNominal))/LineNet), '##.##')"/>
+			</xsl:variable>
+			<xsl:variable name="DiscrepencyNet">
+				<xsl:choose>
+					<xsl:when test="../InvoiceCreditJournalEntriesLine/CostCentreName = 'Discrepancy'">
+						<xsl:value-of select="format-number(sum(../InvoiceCreditJournalEntriesLine[CostCentreName = 'Discrepancy']/LineNet), '##.##')"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="0.00"/>
+					</xsl:otherwise>
+				</xsl:choose>				
+			</xsl:variable>	
+			<xsl:choose>
+				<!-- Add the sum of all discrepency lines only to the first Category Net value-->
+				<xsl:when test="count(preceding-sibling::InvoiceCreditJournalEntriesLine[CostCentreName != 'Discrepancy']) = 0">
+					<xsl:value-of select="format-number($NominalNet + $DiscrepencyNet,'##.##')"/>
+				</xsl:when>
+				<xsl:otherwise><xsl:value-of select="format-number($NominalNet,'##.##')"/></xsl:otherwise>
+			</xsl:choose>
 			<xsl:text>,</xsl:text>
 			<!-- B NominalAnalysisNominalAccountNumber = Category / Item Type / Cost Center Nominal Split Code - SEE NOTE -->
 			<xsl:value-of select="$currentCategoryNominal"/>
@@ -193,96 +214,57 @@ The Seafood Restaurant (Padstow Ltd) (38705) mapper for invoices and credits jou
 			<!-- F NominalAnalysisTransactionAnalysisCode = Category Split - Analysis Code  - (Always blank field). -->
 			<xsl:text>,</xsl:text>
 			<xsl:value-of select="js:addCurrentCategoryNominal()"/>
-			</xsl:if> 
+			</xsl:if>
 		</xsl:for-each>
 		
 		<!-- insert remaining empty category nominal as needed to complete all allocated ones -->
-		<xsl:value-of select="js:insertEmptyCategoryNominals()"/>
-	</xsl:template>
-	
-	<!-- Process the VATCode trailer columns -->
-	<xsl:template match="InvoiceCreditJournalEntriesDetail" mode="tax">
+		<xsl:value-of select="js:insertEmptyCategoryNominals()"/>	
+		
 		<!-- Extra Comma's to keep file aligned -->
 		<xsl:text>,</xsl:text>
 		<xsl:text>,</xsl:text>
 		<xsl:text>,</xsl:text>
 		
-		<!-- TAX RATE STANDARD - 20% -->
-		<!-- A TaxAnalysisTaxRate (1) - Code is 1 if VAT Code is S else value is Blank -->
+		</xsl:template>
+		
+		
+		<!-- PROCESS THE VAT TRAILER COLUMNS -->
+		<xsl:template match="InvoiceCreditJournalEntriesDetail" mode="tax">	
+				
+		<xsl:for-each select="InvoiceCreditJournalEntriesLine[generate-id() = generate-id(key('keyVATCode',concat(../../InvoiceCreditJournalEntriesHeader/InvoiceReference,'|', VATCode))[1])]">
+
+		
+		<xsl:variable name="currentVATCode" select="VATCode"/>		
+		<!-- TAX RATE -->
+		<!-- A TaxAnalysisTaxRate (1) - Set Tax Code as required -->
 		<xsl:choose>
-			<xsl:when test="InvoiceCreditJournalEntriesLine/VATCode='S'">
+			<xsl:when test="$currentVATCode ='Z'">
+				<xsl:text>0</xsl:text>
+			</xsl:when>
+			<xsl:when test="$currentVATCode ='S'">
 				<xsl:text>1</xsl:text>
 			</xsl:when>
-			<xsl:otherwise>
-				<xsl:text/>
-			</xsl:otherwise>
-		</xsl:choose>
-		<xsl:text>,</xsl:text>
-		<!-- B TaxAnalysisGoodsValueBeforeDiscount = Standard Rate (S = 20%) Taxable AmountTaxable amount per S Tax Letter, per transaction on the same row,or "0" if tax split does not exist. -->
-		<xsl:value-of select="format-number(sum(InvoiceCreditJournalEntriesLine[VATCode='S']/LineNet), '00.00')"/>
-		<xsl:text>,</xsl:text>
-		<!-- C TaxAnalysisDiscountValue = Discount Value Always Blank. -->
-		<xsl:text>,</xsl:text>
-		<!-- D TaxAnalysisDiscountPercentage = Discount Value Always Blank. -->
-		<xsl:text>,</xsl:text>
-		<!-- E TaxAnalysisTaxOnGoodsValue = Standard (S) Tax Amount Value for this Tax Code Letter.  -->
-		<xsl:value-of select="format-number(sum(InvoiceCreditJournalEntriesLine[VATCode='S']/LineVAT), '00.00')"/>
-		<xsl:text>,</xsl:text>
-		
-		<!-- TAX RATE ZERO - 0% -->
-		<!-- A TaxAnalysisTaxRate (2) =  Zero (Z = 0%) Tax Code Mapping  -->
-		<!-- Zero if there are zero rated goods, otherwise blank -->
-		<xsl:choose>
-			<xsl:when test="InvoiceCreditJournalEntriesLine/VATCode='Z'">
-				<xsl:text>0</xsl:text>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:text/>
-			</xsl:otherwise>
-		</xsl:choose>
-		<xsl:text>,</xsl:text>
-		<!-- B TaxAnalysisGoodsValueBeforeDiscount = Zero Rate (Z = 0% ) Taxable AmountTaxable amount per Z Tax Letter, per transaction on the same row,or "0" if tax split does not exist. -->
-		<xsl:value-of select="format-number(sum(InvoiceCreditJournalEntriesLine[VATCode='Z']/LineNet), '00.00')"/>
-		<xsl:text>,</xsl:text>
-		<!-- C TaxAnalysisDiscountValue = Discount ValueAlways Blank. -->
-		<xsl:text>,</xsl:text>
-		<!-- D TaxAnalysisDiscountPercentage = Discount ValueAlways Blank. -->
-		<xsl:text>,</xsl:text>
-		<!-- E TaxAnalysisTaxOnGoodsValue = Zero (Z) Tax ValueTax value per Z Tax Letter split, per transaction on the same row, or "0" if tax split does not exist.-->
-		<!--  Zero if zero rated goods, or blank if not -->
-		<!--<xsl:value-of select="format-number(sum(InvoiceCreditJournalEntriesLine[VATCode='Z']/LineVAT),  '##.##')"/>-->
-		<xsl:choose>
-			<xsl:when test="InvoiceCreditJournalEntriesLine/VATCode='Z'">
-				<xsl:text>0</xsl:text>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:text/>
-			</xsl:otherwise>
-		</xsl:choose>
-		<xsl:text>,</xsl:text>
-		
-			
-		<!-- TAX RATE STANDARD - 5% -->
-		<!-- A TaxAnalysisTaxRate (9) - Code is 9 if VAT Code is A else value is Blank -->
-		<xsl:choose>
-			<xsl:when test="InvoiceCreditJournalEntriesLine/VATCode='A'">
+			<xsl:when test="$currentVATCode ='A'">
 				<xsl:text>9</xsl:text>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:text/>
+				<xsl:value-of select="$currentVATCode"/>
 			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:text>,</xsl:text>
-		<!-- B TaxAnalysisGoodsValueBeforeDiscount = Custom Tax Rate (A = 5%) Taxable AmountTaxable amount per S Tax Letter, per transaction on the same row,or "0" if tax split does not exist. -->
-		<xsl:value-of select="format-number(sum(InvoiceCreditJournalEntriesLine[VATCode='A']/LineNet), '00.00')"/>
+		<!-- B TaxAnalysisGoodsValueBeforeDiscount -->
+		<xsl:value-of select="format-number(sum(../InvoiceCreditJournalEntriesLine[VATCode = $currentVATCode]/LineNet), '##.##')"/>	
 		<xsl:text>,</xsl:text>
 		<!-- C TaxAnalysisDiscountValue = Discount Value Always Blank. -->
 		<xsl:text>,</xsl:text>
 		<!-- D TaxAnalysisDiscountPercentage = Discount Value Always Blank. -->
 		<xsl:text>,</xsl:text>
-		<!-- E TaxAnalysisTaxOnGoodsValue = Custom Tax Rate (A = 5%) Tax Amount Value for this Tax Code Letter.  -->
-		<xsl:value-of select="format-number(sum(InvoiceCreditJournalEntriesLine[VATCode='A']/LineVAT), '00.00')"/>
-		<xsl:text>,</xsl:text>
+		<!-- E TaxAnalysisTaxOnGoodsValue  -->
+		<xsl:value-of select="format-number(sum(../InvoiceCreditJournalEntriesLine[VATCode = $currentVATCode]/LineVAT), '##.##')"/>
+		<xsl:text>,</xsl:text>	
+		
+
+		</xsl:for-each>	
 		
 	</xsl:template>
 	
