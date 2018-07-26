@@ -33,6 +33,8 @@ Pizza Express UK common script, which holds the Company Code translation logic.
 29/11/2017	| Moty Dimant	| FB12208 - Addition of further Company Codes. Please see FB case for details.
 ==========================================================================================
 24/05/2018	| Jorge Paya  	| FB12516 - Addition of further Company Codes. Please see FB case for details.
+==========================================================================================
+26/07/2018	| Jorge Paya  	| FB13190 - Addition of further Company Codes. Please see FB case for details.
 ==========================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript">
@@ -553,6 +555,7 @@ Pizza Express UK common script, which holds the Company Code translation logic.
 		4038 : '00081',
 		4039 : '00081',
 		4040 : '00081',
+		4203 : '00041',
 		4205 : '00041',
 		5010 : '00020',
 		5020 : '00020',
