@@ -42,6 +42,15 @@ node('ie1tsbld03')
 				archiveArtifacts artifacts: "**\\Output\\**\\*", fingerprint: false
 			}
 			
+			stage('Inject Deployment Scripts')
+			{
+				step ([$class: 'CopyArtifact', 
+					projectName: 'Tradesimple-Hospitality.Deployment/master'])
+				
+				bat "copy /Y deployment\\*.psm1 build\\Output\\"
+				bat "copy /Y deployment\\{$projectName}}\\*.ps1 build\\Output\\"
+			}
+			
 			stage('Package Zip')
 			{
 				echo "Creating artifact ${pack}"
