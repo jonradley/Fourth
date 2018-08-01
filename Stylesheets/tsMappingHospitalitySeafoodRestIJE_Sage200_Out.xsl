@@ -12,6 +12,8 @@ The Seafood Restaurant (Padstow Ltd) (38705) mapper for invoices and credits jou
 05/06/2018 		| W Nassor 	| FB12878 - Amendments/Changes - Removed all descrepency lines from export
 *******************************************************************************************************
 08/06/2018		| W Nassor	| FB12878 - Added Custom Tax Code (5%)
+*******************************************************************************************************
+01/08/2018		| M Dimant	| FB12878 - Various Amendments - add missing headers and remove empty spaces
 =======================================================================================================
 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript" exclude-result-prefixes="#default xsl msxsl js">
