@@ -29,11 +29,11 @@ The Seafood Restaurant (Padstow Ltd) (38705) mapper for invoices and credits jou
 		
 		<!-- Calculate the maximum number of categories : Always 5 categories-->
 		<xsl:text>NominalAnalysisTransactionValue/1,NominalAnalysisNominalAccountNumber/1,NominalAnalysisNominalCostCentre/1,NominalAnalysisNominalDepartment/1,NominalAnalysisNominalAnalysisNarrative/1,NominalAnalysisTransactionAnalysisCode/1,</xsl:text>
-		<xsl:text>NominalAnalysisTransactionValue/2,NominalAnalysisNominalAccountNumber/2,NominalAnalysisNominalCostCentre/2,NominalAnalysisNominalDepartment/2,NominalAnalysisNominalAnalysisNarrative/2,</xsl:text>
+		<xsl:text>NominalAnalysisTransactionValue/2,NominalAnalysisNominalAccountNumber/2,NominalAnalysisNominalCostCentre/2,NominalAnalysisNominalDepartment/2,NominalAnalysisNominalAnalysisNarrative/2,NominalAnalysisTransactionAnalysisCode/2,</xsl:text>
 		<xsl:text>NominalAnalysisTransactionValue/3,NominalAnalysisNominalAccountNumber/3,NominalAnalysisNominalCostCentre/3,NominalAnalysisNominalDepartment/3,NominalAnalysisNominalAnalysisNarrative/3,NominalAnalysisTransactionAnalysisCode/3,</xsl:text>
-		<xsl:text>NominalAnalysisTransactionValue/4,NominalAnalysisNominalAccountNumber/4,NominalAnalysisNominalCostCentre/4,NominalAnalysisNominalDepartment/4,NominalAnalysisNominalAnalysisNarrative/4,</xsl:text>
+		<xsl:text>NominalAnalysisTransactionValue/4,NominalAnalysisNominalAccountNumber/4,NominalAnalysisNominalCostCentre/4,NominalAnalysisNominalDepartment/4,NominalAnalysisNominalAnalysisNarrative/4,NominalAnalysisTransactionAnalysisCode/4,</xsl:text>
 		<xsl:text>NominalAnalysisTransactionValue/5,NominalAnalysisNominalAccountNumber/5,NominalAnalysisNominalCostCentre/5,NominalAnalysisNominalDepartment/5,NominalAnalysisNominalAnalysisNarrative/5,NominalAnalysisTransactionAnalysisCode/5,</xsl:text>
-		<xsl:text>NominalAnalysisTransactionValue/6,NominalAnalysisNominalAccountNumber/6,NominalAnalysisNominalCostCentre/6,NominalAnalysisNominalDepartment/6,NominalAnalysisNominalAnalysisNarrative/6,</xsl:text>
+		<xsl:text>NominalAnalysisTransactionValue/6,NominalAnalysisNominalAccountNumber/6,NominalAnalysisNominalCostCentre/6,NominalAnalysisNominalDepartment/6,NominalAnalysisNominalAnalysisNarrative/6,NominalAnalysisTransactionAnalysisCode/6,</xsl:text>
 		
 		<!-- Taxes : always ten taxes groups -->
 		<xsl:text>TaxAnalysisTaxRate/1,TaxAnalysisGoodsValueBeforeDiscount/1,TaxAnalysisDiscountValue/1,TaxAnalysisDiscountPercentage/1,TaxAnalysisTaxOnGoodsValue/1,</xsl:text>
@@ -179,52 +179,47 @@ The Seafood Restaurant (Padstow Ltd) (38705) mapper for invoices and credits jou
 			
 			<xsl:if test="CostCentreName != 'Discrepancy'">
 			
-			<!-- A NominalAnalysisTransactionValue = Category (Invoice not Delivery) Net Split Amount - Per Category Nominal Code & Tax Code per transaction on the same row. - SEE NOTE -->
-			<xsl:variable name="NominalNet">
-				<xsl:value-of select="format-number(sum(key('keyLinesByRefAndNominalCode',concat($currentDocReference, '|', $currentCategoryNominal))/LineNet), '##.##')"/>
-			</xsl:variable>
-			<xsl:variable name="DiscrepencyNet">
+				<!-- W NominalAnalysisTransactionValue = Category (Invoice not Delivery) Net Split Amount - Per Category Nominal Code & Tax Code per transaction on the same row. - SEE NOTE -->
+				<xsl:variable name="NominalNet">
+					<xsl:value-of select="format-number(sum(key('keyLinesByRefAndNominalCode',concat($currentDocReference, '|', $currentCategoryNominal))/LineNet), '##.##')"/>
+				</xsl:variable>
+				<xsl:variable name="DiscrepencyNet">
+					<xsl:choose>
+						<xsl:when test="../InvoiceCreditJournalEntriesLine/CostCentreName = 'Discrepancy'">
+							<xsl:value-of select="format-number(sum(../InvoiceCreditJournalEntriesLine[CostCentreName = 'Discrepancy']/LineNet), '##.##')"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="0.00"/>
+						</xsl:otherwise>
+					</xsl:choose>				
+				</xsl:variable>	
 				<xsl:choose>
-					<xsl:when test="../InvoiceCreditJournalEntriesLine/CostCentreName = 'Discrepancy'">
-						<xsl:value-of select="format-number(sum(../InvoiceCreditJournalEntriesLine[CostCentreName = 'Discrepancy']/LineNet), '##.##')"/>
+					<!-- Add the sum of all discrepency lines only to the first Category Net value-->
+					<xsl:when test="count(preceding-sibling::InvoiceCreditJournalEntriesLine[CostCentreName != 'Discrepancy']) = 0">
+						<xsl:value-of select="format-number($NominalNet + $DiscrepencyNet,'##.##')"/>
 					</xsl:when>
-					<xsl:otherwise>
-						<xsl:value-of select="0.00"/>
-					</xsl:otherwise>
-				</xsl:choose>				
-			</xsl:variable>	
-			<xsl:choose>
-				<!-- Add the sum of all discrepency lines only to the first Category Net value-->
-				<xsl:when test="count(preceding-sibling::InvoiceCreditJournalEntriesLine[CostCentreName != 'Discrepancy']) = 0">
-					<xsl:value-of select="format-number($NominalNet + $DiscrepencyNet,'##.##')"/>
-				</xsl:when>
-				<xsl:otherwise><xsl:value-of select="format-number($NominalNet,'##.##')"/></xsl:otherwise>
-			</xsl:choose>
-			<xsl:text>,</xsl:text>
-			<!-- B NominalAnalysisNominalAccountNumber = Category / Item Type / Cost Center Nominal Split Code - SEE NOTE -->
-			<xsl:value-of select="$currentCategoryNominal"/>
-			<xsl:text>,</xsl:text>
-			<!-- C NominalAnalysisNominalCostCentre = Category Split Cost Centre - fnb manager Site Nominal Code (can be blank if none entered). -->
-			<xsl:value-of select="../../InvoiceCreditJournalEntriesHeader/UnitSiteNominal"/>
-			<xsl:text>,</xsl:text>
-			<!-- D NominalAnalysisNominalDepartment = Category Split Department - (Always blank field). -CR - ADM -->
-			<xsl:text>,</xsl:text>
-			<!-- E NominalAnalysisNominalAnalysisNarrative = Category Split - Analysis Narrative - Supplier Name. -->
-			<xsl:text>,</xsl:text>
-			<!-- F NominalAnalysisTransactionAnalysisCode = Category Split - Analysis Code  - (Always blank field). -->
-			<xsl:text>,</xsl:text>
-			<xsl:value-of select="js:addCurrentCategoryNominal()"/>
+					<xsl:otherwise><xsl:value-of select="format-number($NominalNet,'##.##')"/></xsl:otherwise>
+				</xsl:choose>
+				<xsl:text>,</xsl:text>
+				<!-- X NominalAnalysisNominalAccountNumber = Category / Item Type / Cost Center Nominal Split Code - SEE NOTE -->
+				<xsl:value-of select="$currentCategoryNominal"/>
+				<xsl:text>,</xsl:text>
+				<!-- Y NominalAnalysisNominalCostCentre = Category Split Cost Centre - fnb manager Site Nominal Code (can be blank if none entered). -->
+				<xsl:value-of select="../../InvoiceCreditJournalEntriesHeader/UnitSiteNominal"/>
+				<xsl:text>,</xsl:text>
+				<!-- Z NominalAnalysisNominalDepartment = Category Split Department - (Always blank field). -CR - ADM -->
+				<xsl:text>,</xsl:text>
+				<!-- AA NominalAnalysisNominalAnalysisNarrative = Category Split - Analysis Narrative - Supplier Name. -->
+				<xsl:text>,</xsl:text>
+				<!-- AB NominalAnalysisTransactionAnalysisCode = Category Split - Analysis Code  - (Always blank field). -->
+				<xsl:text>,</xsl:text>
+				<xsl:value-of select="js:addCurrentCategoryNominal()"/>
 			</xsl:if>
 		</xsl:for-each>
 		
 		<!-- insert remaining empty category nominal as needed to complete all allocated ones -->
 		<xsl:value-of select="js:insertEmptyCategoryNominals()"/>	
-		
-		<!-- Extra Comma's to keep file aligned -->
-		<xsl:text>,</xsl:text>
-		<xsl:text>,</xsl:text>
-		<xsl:text>,</xsl:text>
-		
+			
 		</xsl:template>
 		
 		
@@ -236,7 +231,7 @@ The Seafood Restaurant (Padstow Ltd) (38705) mapper for invoices and credits jou
 		
 		<xsl:variable name="currentVATCode" select="VATCode"/>		
 		<!-- TAX RATE -->
-		<!-- A TaxAnalysisTaxRate (1) - Set Tax Code as required -->
+		<!-- BG TaxAnalysisTaxRate (1) - Set Tax Code as required -->
 		<xsl:choose>
 			<xsl:when test="$currentVATCode ='Z'">
 				<xsl:text>0</xsl:text>
@@ -252,14 +247,14 @@ The Seafood Restaurant (Padstow Ltd) (38705) mapper for invoices and credits jou
 			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:text>,</xsl:text>
-		<!-- B TaxAnalysisGoodsValueBeforeDiscount -->
+		<!-- BH TaxAnalysisGoodsValueBeforeDiscount -->
 		<xsl:value-of select="format-number(sum(../InvoiceCreditJournalEntriesLine[VATCode = $currentVATCode]/LineNet), '##.##')"/>	
 		<xsl:text>,</xsl:text>
-		<!-- C TaxAnalysisDiscountValue = Discount Value Always Blank. -->
+		<!-- BI TaxAnalysisDiscountValue = Discount Value Always Blank. -->
 		<xsl:text>,</xsl:text>
-		<!-- D TaxAnalysisDiscountPercentage = Discount Value Always Blank. -->
+		<!-- BJ TaxAnalysisDiscountPercentage = Discount Value Always Blank. -->
 		<xsl:text>,</xsl:text>
-		<!-- E TaxAnalysisTaxOnGoodsValue  -->
+		<!-- BK TaxAnalysisTaxOnGoodsValue  -->
 		<xsl:value-of select="format-number(sum(../InvoiceCreditJournalEntriesLine[VATCode = $currentVATCode]/LineVAT), '##.##')"/>
 		<xsl:text>,</xsl:text>	
 		
@@ -269,7 +264,7 @@ The Seafood Restaurant (Padstow Ltd) (38705) mapper for invoices and credits jou
 	</xsl:template>
 	
 	<msxsl:script implements-prefix="js"><![CDATA[ 
-	var numTotalCategoryNominals = 5;
+	var numTotalCategoryNominals = 6;
 	var numCurrentCategoryNominals = 0;
 	
 	function addTotalCategoryNominal ()
