@@ -166,8 +166,7 @@ Giraffe Concepts LTD mapper for invoices and credits journal format.
 			<!-- C NominalAnalysisNominalCostCentre = Category Split Cost Centre - fnb manager Site Nominal Code (can be blank if none entered). -->
 			<xsl:value-of select="../../InvoiceCreditJournalEntriesHeader/UnitSiteNominal"/>
 			<xsl:text>,</xsl:text>
-			<!-- D NominalAnalysisNominalDepartment = Category Split Department - (Always blank field). -CR - ADM -->
-			<xsl:text></xsl:text>			
+			<!-- D NominalAnalysisNominalDepartment = Category Split Department - (Always blank field).-->
 			<xsl:text>,</xsl:text>
 			<!-- E NominalAnalysisNominalAnalysisNarrative = Category Split - Analysis Narrative - Supplier Name. -->
 			<xsl:value-of select="../../InvoiceCreditJournalEntriesHeader/SupplierName"/>
