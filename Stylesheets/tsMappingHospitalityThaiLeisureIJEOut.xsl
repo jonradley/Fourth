@@ -10,7 +10,7 @@ Giraffe Concepts LTD mapper for invoices and credits journal format.
 ==========================================================================================
  28/06/2016	| Jose Miguel	| FB11110 - Change to static column header and other fixes
 ==========================================================================================
- 25/07/2018	| Warith Nassor	| FB13204 - Removed ADM from being outputted for all analysis nominal department column 
+ 25/07/2018	| Warith Nassor	| FB13204 - Removed ADM from being outputted for all analysis nominal department column
 ==========================================================================================-->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"  xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript" exclude-result-prefixes="#default xsl msxsl js">
 	<xsl:output method="text" encoding="UTF-8"/>
