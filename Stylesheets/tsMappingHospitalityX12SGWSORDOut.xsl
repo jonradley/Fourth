@@ -21,7 +21,8 @@
 ==========================================================================================
  11/05/2018	| Jon Radley	|	FB12774 - Changed ISA07 - Interchange ID Qualifier from ZZ to 09 for Specific supplier Southern Glazier Wine and Spirits - MEMBER ID 12164 
 ==========================================================================================
--->
+ 03/08/2018	| Jon Radley	|	FB13207 - Adding GS05 Timestamp HHMM Segment
+==========================================================================================-->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 	xmlns:js="http://www.abs-ltd.com/dummynamespaces/javascript"
@@ -75,25 +76,31 @@
 		<xsl:text>></xsl:text>
 		<xsl:value-of select="$sRecordSep"/>
 		
-		<!-- GS Functional Group Header -->	
-		<xsl:text>GS</xsl:text>
-		<xsl:value-of select="$sFieldSep"/>
-		<xsl:text>PO</xsl:text>
-		<xsl:value-of select="$sFieldSep"/>
-		<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode),15)"/>		
-		<xsl:value-of select="$sFieldSep"/>
-		<xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersLocationID/SuppliersCode),15)"/>		
-		<xsl:value-of select="$sFieldSep"/>		
-		<xsl:value-of select="translate(PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderDate,'-','')"/>
-		<xsl:value-of select="$sFieldSep"/>
-		<xsl:value-of select="js:msSafeText(translate(PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderTime,':',''),4)"/>
-		<xsl:value-of select="$sFieldSep"/>
-		<xsl:value-of select="format-number(PurchaseOrderHeader/FileGenerationNumber,'000000000')"/>
-		<xsl:value-of select="$sFieldSep"/>
-		<xsl:text>X</xsl:text>
-		<xsl:value-of select="$sFieldSep"/>		
-		<xsl:text>004010</xsl:text>		
-		<xsl:value-of select="$sRecordSep"/>
+		<!-- GS Functional Group Header -->        
+                <xsl:text>GS</xsl:text>
+                <xsl:value-of select="$sFieldSep"/>
+                <xsl:text>PO</xsl:text>
+                <xsl:value-of select="$sFieldSep"/>
+                <xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Buyer/BuyersLocationID/SuppliersCode),15)"/>          
+                <xsl:value-of select="$sFieldSep"/>
+                <xsl:value-of select="js:msSafeText(string(PurchaseOrderHeader/Supplier/SuppliersLocationID/SuppliersCode),15)"/>                 
+                <xsl:value-of select="$sFieldSep"/>                
+                <xsl:value-of select="translate(PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderDate,'-','')"/>
+                <xsl:value-of select="$sFieldSep"/>
+                <!-- Use time value if present, otherwise generate current time -->
+                <xsl:choose>
+                	<xsl:when test="PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderTime">
+                		<xsl:value-of select="js:msSafeText(translate(PurchaseOrderHeader/PurchaseOrderReferences/PurchaseOrderTime,':',''),6)"/>
+                	</xsl:when>
+                	<xsl:otherwise><xsl:value-of select="js:msFileGenerationTime()"/></xsl:otherwise>
+                </xsl:choose>
+                <xsl:value-of select="$sFieldSep"/>
+                <xsl:value-of select="format-number(PurchaseOrderHeader/FileGenerationNumber,'000000000')"/>
+                <xsl:value-of select="$sFieldSep"/>
+                <xsl:text>X</xsl:text>
+                <xsl:value-of select="$sFieldSep"/>                
+                <xsl:text>004010</xsl:text>                
+                <xsl:value-of select="$sRecordSep"/> 
 		
 		<!-- ST Transaction Set Header -->
 		<xsl:text>ST</xsl:text>
