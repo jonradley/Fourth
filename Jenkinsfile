@@ -48,7 +48,7 @@ node('ie1tsbld03')
 					projectName: 'Tradesimple-Hospitality.Deployment/master'])
 				
 				bat "copy /Y deployment\\*.psm1 build\\Output\\"
-				bat "copy /Y deployment\\{$projectName}}\\*.ps1 build\\Output\\"
+				bat "copy /Y deployment\\${projectName}\\*.ps1 build\\Output\\"
 			}
 			
 			stage('Package Zip')
